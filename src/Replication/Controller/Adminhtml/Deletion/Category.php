@@ -4,51 +4,19 @@ namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
-use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\Registry;
-use Magento\Store\Api\Data\StoreInterface;
-use Symfony\Component\Filesystem\Filesystem;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class CategoryDeletion
  */
-class Category extends Action
+class Category extends AbstractReset
 {
-
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /** @var Registry $registry */
-    public $registry;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var Filesystem */
-    public $filesystem;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
-    protected $categoryRepository;
-    /**
-     * @var ResourceModelCategory
-     */
-    protected $categoryResourceModel;
+    public const DEPENDENT_CRONS = [
+        LSR::SC_SUCCESS_CRON_CATEGORY,
+        LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
+        LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
+    ];
 
     // @codingStandardsIgnoreStart
     /** @var array */
@@ -56,139 +24,97 @@ class Category extends Action
     // @codingStandardsIgnoreEnd
 
     /** @var array List of ls tables required in categories */
-    public $lsTables = [
-        "ls_replication_repl_hierarchy_node",
-        "ls_replication_repl_hierarchy_leaf"
-    ];
-
-    public $lsTranslationTables = [
-        "ls_replication_repl_data_translation"
+    public const LS_CATEGORY_TABLES = [
+        'ls_replication_repl_hierarchy_node',
+        'ls_replication_repl_hierarchy_leaf'
     ];
 
     /** @var array List of magento tables required in categories */
-    public $categoryTables = [
-        "catalog_category_product",
-        "catalog_category_product_index",
-        "catalog_category_product_index_tmp"
+    public const MAGENTO_CATEGORY_TABLES = [
+        'catalog_category_product',
+        'catalog_category_product_index',
+        'catalog_category_product_index_tmp'
     ];
-
-    /**
-     * Category constructor.
-     * @param Logger $logger
-     * @param Context $context
-     * @param ResourceConnection $resource
-     * @param LSR $LSR
-     * @param ReplicationHelper $replicationHelper
-     * @param Filesystem $filesystem
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param ResourceModelCategory $categoryResourceModel
-     */
-    public function __construct(
-        Logger $logger,
-        Context $context,
-        ResourceConnection $resource,
-        LSR $LSR,
-        ReplicationHelper $replicationHelper,
-        Filesystem $filesystem,
-        CategoryRepositoryInterface $categoryRepository,
-        ResourceModelCategory $categoryResourceModel
-    ) {
-        $this->logger                = $logger;
-        $this->resource              = $resource;
-        $this->lsr                   = $LSR;
-        $this->replicationHelper     = $replicationHelper;
-        $this->filesystem            = $filesystem;
-        $this->categoryRepository    = $categoryRepository;
-        $this->categoryResourceModel = $categoryResourceModel;
-        parent::__construct($context);
-    }
 
     /**
      * Remove categories tree
      *
-     * @return void
+     * @return ResponseInterface
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        try {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
-            if (!empty($stores)) {
-                foreach ($stores as $store) {
-                    $rootCategory = $this->categoryRepository->get($store->getRootCategoryId());
-                    $this->categoryResourceModel->deleteChildren($rootCategory);
-                }
-            }
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
+        $scopeId = $this->_request->getParam('store');
+        $where   = [];
 
-        // @codingStandardsIgnoreStart
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-
-        $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-        foreach ($this->categoryTables as $categoryTable) {
-            $tableName = $this->resource->getTableName($categoryTable);
-            try {
-                if ($connection->isTableExists($tableName)) {
-                    $connection->truncateTable($tableName);
-                }
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+        if ($scopeId != '') {
+            $stores = [$this->replicationHelper->storeManager->getStore($scopeId)];
+            $this->deleteAllStoresCategoriesUnderRootCategory($stores);
+            $where = [
+                'scope_id = ?' => $scopeId
+            ];
+        } else {
+            $stores = $this->replicationHelper->lsr->getAllStores();
+            $this->deleteAllStoresCategoriesUnderRootCategory($stores);
+            $this->truncateAllGivenTables(self::MAGENTO_CATEGORY_TABLES);
+            $this->clearRequiredMediaDirectories();
         }
-        $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
 
         // Update dependent ls tables to not processed
-        foreach ($this->lsTables as $lsTable) {
-            $lsTableName = $this->resource->getTableName($lsTable);
-            // @codingStandardsIgnoreLine
-            $lsQuery = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
-            try {
-                $connection->query($lsQuery);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
-        }
-
+        $this->updateAllGivenTablesToUnprocessed(self::LS_CATEGORY_TABLES, $where);
         // Update translation ls tables to not processed for hierarchy
-        foreach ($this->lsTranslationTables as $lsTranslationTable) {
-            $lsTableName = $this->resource->getTableName($lsTranslationTable);
-            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
-            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_HIERARCHY_NODE . '"';
-            try {
-                $connection->query($lsQuery);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
-        }
-
-        $mediaDirectory    = $this->replicationHelper->getMediaPathtoStore();
-        $mediaDirectory    .= 'catalog' . DIRECTORY_SEPARATOR . 'category' . DIRECTORY_SEPARATOR;
-        $mediaTmpDirectory = $mediaDirectory . "tmp" . DIRECTORY_SEPARATOR . "catalog" . DIRECTORY_SEPARATOR . "category" . DIRECTORY_SEPARATOR;
-        try {
-            $this->filesystem->remove($mediaDirectory);
-            $this->filesystem->remove($mediaTmpDirectory);
-
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
+        $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_HIERARCHY_NODE;
+        $this->updateDataTranslationTables($where);
         // remove the url keys from url_rewrite table.
-        $this->replicationHelper->resetUrlRewriteByType('category');
-
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_CATEGORY
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_ITEM_UPDATES
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
-        );
+        $this->replicationHelper->resetUrlRewriteByType('category', $scopeId);
+        $this->replicationHelper->updateAllGivenCronsWithGivenStatus(self::DEPENDENT_CRONS, $scopeId, false);
         $this->messageManager->addSuccessMessage(__('Categories deleted successfully.'));
-        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
+
+        return $this->_redirect('adminhtml/system_config/edit/section/ls_mag', ['store' => $scopeId]);
+    }
+
+    /**
+     * Delete root categories
+     *
+     * @param $stores
+     * @return void
+     */
+    public function deleteAllStoresCategoriesUnderRootCategory($stores)
+    {
+        try {
+            if (!empty($stores)) {
+                foreach ($stores as $store) {
+                    $rootCategory = $this->replicationHelper->getCategoryGivenId($store->getRootCategoryId());
+                    $this->replicationHelper->deleteChildrenGivenCategory($rootCategory);
+                }
+            }
+        } catch (Exception $e) {
+            $this->replicationHelper->_logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Clear required media directories
+     *
+     * @return void
+     */
+    public function clearRequiredMediaDirectories()
+    {
+        $mediaDirectory        = $this->replicationHelper->getMediaPathtoStore();
+        $catalogMediaDirectory = sprintf(
+            '%scatalog%scategory%s',
+            $mediaDirectory,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+        );
+        $mediaTmpDirectory     = sprintf(
+            '%stmp%scatalog%scategory%s',
+            $mediaDirectory,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR,
+            DIRECTORY_SEPARATOR
+        );
+        $this->replicationHelper->removeDirectory($catalogMediaDirectory);
+        $this->replicationHelper->removeDirectory($mediaTmpDirectory);
     }
 }

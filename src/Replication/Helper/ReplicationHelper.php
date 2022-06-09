@@ -26,6 +26,7 @@ use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as 
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
@@ -71,6 +72,8 @@ use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 
 /**
  * Useful helper functions for replication
@@ -262,6 +265,15 @@ class ReplicationHelper extends AbstractHelper
     public $productCollectionFactory;
 
     /**
+     * @var CategoryRepositoryInterface
+     */
+    public $categoryRepository;
+    /**
+     * @var ResourceModelCategory
+     */
+    public $categoryResourceModel;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -306,6 +318,8 @@ class ReplicationHelper extends AbstractHelper
      * @param SourceItemInterfaceFactory $sourceItemFactory
      * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ResourceModelCategory $categoryResourceModel
      */
     public function __construct(
         Context $context,
@@ -351,7 +365,9 @@ class ReplicationHelper extends AbstractHelper
         SourceItemsSaveInterface $sourceItemsSaveInterface,
         SourceItemInterfaceFactory $sourceItemFactory,
         DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+        CategoryRepositoryInterface $categoryRepository,
+        ResourceModelCategory $categoryResourceModel
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -396,6 +412,8 @@ class ReplicationHelper extends AbstractHelper
         $this->sourceItemFactory                         = $sourceItemFactory;
         $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
         $this->productCollectionFactory                  = $productCollectionFactory;
+        $this->categoryRepository                        = $categoryRepository;
+        $this->categoryResourceModel                     = $categoryResourceModel;
         parent::__construct(
             $context
         );
@@ -2521,27 +2539,51 @@ public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, 
     }
 
     /**
-     * Update all given crons status
+     * Update all given crons with given status
      *
      * @param $crons
      * @param $scopeId
+     * @param $status
      * @return void
      */
-    public function updateAllGivenCronStatus($crons, $scopeId)
+    public function updateAllGivenCronsWithGivenStatus($crons, $scopeId, $status)
     {
         foreach ($crons as $cron) {
             if (!empty($scopeId)) {
                 $this->updateConfigValue(
-                    false,
+                    $status,
                     $cron,
                     $scopeId
                 );
             } else {
                 $this->updateCronStatusForAllStores(
-                    false,
+                    $status,
                     $cron
                 );
             }
         }
+    }
+
+    /**
+     * Get category given id
+     *
+     * @param $categoryId
+     * @return CategoryInterface
+     * @throws NoSuchEntityException
+     */
+    public function getCategoryGivenId($categoryId)
+    {
+        return $this->categoryRepository->get($categoryId);
+    }
+
+    /**
+     * Delete category children given category
+     *
+     * @param $category
+     * @return void
+     */
+    public function deleteChildrenGivenCategory($category)
+    {
+        $this->categoryResourceModel->deleteChildren($category);
     }
 }

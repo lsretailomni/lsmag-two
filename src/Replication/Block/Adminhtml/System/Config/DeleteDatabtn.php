@@ -2,11 +2,35 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
+use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field;
+use Magento\Customer\Model\Config\Share;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 
 class DeleteDatabtn extends Field
 {
+    /**
+     * @var Share
+     */
+    public $shareConfig;
+
+    /**
+     * @param Context $context
+     * @param Share $shareConfig
+     * @param array $data
+     * @param SecureHtmlRenderer|null $secureRenderer
+     */
+    public function __construct(
+        Context $context,
+        Share $shareConfig,
+        array $data = [],
+        ?SecureHtmlRenderer $secureRenderer = null
+    ) {
+        parent::__construct($context, $data, $secureRenderer);
+        $this->shareConfig = $shareConfig;
+    }
+
     /**
      * @return $this
      */
@@ -26,6 +50,15 @@ class DeleteDatabtn extends Field
     public function render(AbstractElement $element)
     {
         $element->unsScope()->unsCanUseWebsiteValue()->unsCanUseDefaultValue();
+        $scopeId = $this->_request->getParam('store');
+
+        if ($element->getId() == 'ls_mag_restore_database_customers' &&
+            $scopeId != '' &&
+            $this->shareConfig->isGlobalScope()
+        ) {
+            return '';
+        }
+
         return parent::render($element);
     }
 

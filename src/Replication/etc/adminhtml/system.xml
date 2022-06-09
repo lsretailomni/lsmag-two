@@ -224,7 +224,7 @@
                        type="button"
                        sortOrder="10"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Orders</label>
                     <comment>You cannot recover from this action</comment>
@@ -237,7 +237,7 @@
                        type="button"
                        sortOrder="20"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Customers</label>
                     <comment>You cannot recover from this action</comment>
@@ -250,7 +250,7 @@
                        type="button"
                        sortOrder="30"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Products &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -263,7 +263,7 @@
                        type="button"
                        sortOrder="40"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Categories &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -276,7 +276,7 @@
                        type="button"
                        sortOrder="50"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Attributes &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -289,7 +289,7 @@
                        type="button"
                        sortOrder="60"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Discounts &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -302,8 +302,8 @@
                        type="button"
                        sortOrder="70"
                        showInDefault="1"
-                       showInWebsite="1"
-                       showInStore="1">
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Delete Tax Rules &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
@@ -315,7 +315,7 @@
                        type="button"
                        sortOrder="80"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Truncate all ls_ tables</label>
                     <comment>You cannot recover from this action</comment>

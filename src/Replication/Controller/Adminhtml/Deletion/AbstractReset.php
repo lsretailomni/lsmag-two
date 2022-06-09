@@ -25,6 +25,8 @@ abstract class AbstractReset extends Action
         'ls_replication_repl_hierarchy_hosp_deal_line'
     ];
 
+    public const LS_TRANSLATION_TABLE = 'ls_replication_repl_data_translation';
+
     /** @var ReplicationHelper */
     public $replicationHelper;
 
@@ -38,5 +40,70 @@ abstract class AbstractReset extends Action
     ) {
         parent::__construct($context);
         $this->replicationHelper = $replicationHelper;
+    }
+
+    /**
+     * Truncate all given tables
+     *
+     * @param $tables
+     * @return void
+     */
+    public function truncateAllGivenTables($tables)
+    {
+        $connection = $this->replicationHelper->getConnection();
+        $connection->startSetup();
+
+        foreach ($tables as $table) {
+            $tableName = $this->replicationHelper->getGivenTableName($table);
+            $this->replicationHelper->truncateGivenTable($tableName);
+        }
+        $connection->endSetup();
+    }
+
+    /**
+     * Update All dependent ls tables
+     *
+     * @param $tables
+     * @param $where
+     * @return void
+     */
+    public function updateAllGivenTablesToUnprocessed($tables, $where)
+    {
+        foreach ($tables as $table) {
+            $lsTableName = $this->replicationHelper->getGivenTableName($table);
+            $this->replicationHelper->updateGivenTableDataGivenConditions(
+                $lsTableName,
+                [
+                    'processed' => 0,
+                    'is_updated' => 0,
+                    'is_failed' => 0,
+                    'processed_at' => null
+                ],
+                $where
+            );
+        }
+    }
+
+    /**
+     * Update data translation tables
+     *
+     * @param $where
+     * @return void
+     */
+    public function updateDataTranslationTables($where)
+    {
+        $lsTableName = $this->replicationHelper->getGivenTableName(
+            self::LS_TRANSLATION_TABLE
+        );
+        $this->replicationHelper->updateGivenTableDataGivenConditions(
+            $lsTableName,
+            [
+                'processed' => 0,
+                'is_updated' => 0,
+                'is_failed' => 0,
+                'processed_at' => null
+            ],
+            $where
+        );
     }
 }
