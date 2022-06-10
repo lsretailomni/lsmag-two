@@ -10,29 +10,21 @@ use Magento\Framework\App\ResponseInterface;
  */
 class LsTables extends AbstractReset
 {
-    /** @var array List of all the ls_ tables */
+    /** List of all the ls_ tables */
     public const LS_TABLES = [
         'ls_replication_loy_item',
-        'ls_replication_repl_attribute',
-        'ls_replication_repl_attribute_option_value',
-        'ls_replication_repl_country_code',
         'ls_replication_repl_currency',
         'ls_replication_repl_currency_exch_rate',
         'ls_replication_repl_customer',
         'ls_replication_repl_data_translation',
         'ls_replication_repl_data_translation_lang_code',
-        'ls_replication_repl_discount',
-        'ls_replication_repl_discount_validation',
-        'ls_replication_repl_extended_variant_value',
         'ls_replication_repl_hierarchy',
-        'ls_replication_repl_hierarchy_node',
         'ls_replication_repl_image',
         'ls_replication_repl_item_category',
         'ls_replication_repl_product_group',
         'ls_replication_repl_shipping_agent',
         'ls_replication_repl_store',
         'ls_replication_repl_store_tender_type',
-        'ls_replication_repl_tax_setup',
         'ls_replication_repl_unit_of_measure',
         'ls_replication_repl_vendor'
     ];
@@ -70,6 +62,7 @@ class LsTables extends AbstractReset
 
         $this->replicationHelper->getConnection()->endSetup();
         $this->messageManager->addSuccessMessage($message);
+
         return $this->_redirect($redirectPath, $arguments);
     }
 
@@ -121,7 +114,15 @@ class LsTables extends AbstractReset
      */
     public function resetAllCronsData($scopeId, $coreConfigTableName)
     {
-        foreach (array_merge(self::LS_ITEM_RELATED_TABLES, self::LS_TABLES) as $lsTable) {
+        $mergedTables = array_merge(
+            self::LS_DISCOUNT_RELATED_TABLES,
+            self::LS_TAX_RELATED_TABLES,
+            self::LS_ATTRIBUTE_RELATED_TABLES,
+            self::LS_CATEGORY_RELATED_TABLES,
+            self::LS_ITEM_RELATED_TABLES,
+            self::LS_TABLES
+        );
+        foreach ($mergedTables as $lsTable) {
             $tableName = $this->replicationHelper->getGivenTableName($lsTable);
 
             if ($scopeId) {

@@ -3,6 +3,8 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ResourceModel\ReplAttribute\CollectionFactory as ReplAttributeCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedCollectionFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 
@@ -25,21 +27,62 @@ abstract class AbstractReset extends Action
         'ls_replication_repl_hierarchy_hosp_deal_line'
     ];
 
+    /** List of ls tables required in attributes */
+    public const LS_ATTRIBUTE_RELATED_TABLES = [
+        'ls_replication_repl_attribute',
+        'ls_replication_repl_attribute_option_value',
+        'ls_replication_repl_extended_variant_value'
+    ];
+
+    /** List of ls tables required in categories */
+    public const LS_CATEGORY_RELATED_TABLES = [
+        'ls_replication_repl_hierarchy_node',
+        'ls_replication_repl_hierarchy_leaf'
+    ];
+
+    /** List of ls tables required in tax rules */
+    public const LS_TAX_RELATED_TABLES = [
+        'ls_replication_repl_country_code',
+        'ls_replication_repl_tax_setup'
+    ];
+
+    /** List of ls tables required in discount rules */
+    public const LS_DISCOUNT_RELATED_TABLES = [
+        'ls_replication_repl_discount',
+        'ls_replication_repl_discount_validation'
+    ];
+
     public const LS_TRANSLATION_TABLE = 'ls_replication_repl_data_translation';
 
     /** @var ReplicationHelper */
     public $replicationHelper;
 
     /**
+     * @var ReplAttributeCollectionFactory
+     */
+    public $replAttributeCollectionFactory;
+
+    /**
+     * @var ReplExtendedCollectionFactory
+     */
+    public $replExtendedCollectionFactory;
+
+    /**
      * @param Context $context
      * @param ReplicationHelper $replicationHelper
+     * @param ReplAttributeCollectionFactory $replAttributeCollectionFactory
+     * @param ReplExtendedCollectionFactory $replExtendedCollectionFactory
      */
     public function __construct(
         Context $context,
-        ReplicationHelper $replicationHelper
+        ReplicationHelper $replicationHelper,
+        ReplAttributeCollectionFactory $replAttributeCollectionFactory,
+        ReplExtendedCollectionFactory $replExtendedCollectionFactory
     ) {
         parent::__construct($context);
-        $this->replicationHelper = $replicationHelper;
+        $this->replicationHelper              = $replicationHelper;
+        $this->replAttributeCollectionFactory = $replAttributeCollectionFactory;
+        $this->replExtendedCollectionFactory  = $replExtendedCollectionFactory;
     }
 
     /**

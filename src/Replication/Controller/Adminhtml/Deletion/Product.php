@@ -12,7 +12,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class Product extends AbstractReset
 {
-    /** @var array List of all the Catalog Product tables */
+    /** List of all the Catalog Product tables */
     public const CATALOG_PRODUCT_TABLES = [
         'catalog_product_bundle_option',
         'catalog_product_bundle_option_value',
@@ -121,11 +121,6 @@ class Product extends AbstractReset
         LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
     ];
 
-    // @codingStandardsIgnoreStart
-    /** @var array */
-    protected $_publicActions = ['product'];
-    // @codingStandardsIgnoreEnd
-
     /**
      * Remove products
      *
@@ -145,9 +140,7 @@ class Product extends AbstractReset
                 $this->replicationHelper->getGivenTableName('catalog_product_entity'),
                 ['sku IN (?)' => $parentCollection->getSelect()]
             );
-            $where = [
-                'scope_id = ?' => $scopeId
-            ];
+            $where = ['scope_id = ?' => $scopeId];
         } else {
             $this->truncateAllGivenTables(self::CATALOG_PRODUCT_TABLES);
             $this->clearRequiredMediaDirectories();

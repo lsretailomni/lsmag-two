@@ -10,7 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class Order extends AbstractReset
 {
-    /** @var array List of all the Order tables */
+    /** List of all the Order tables */
     public const MAGENTO_ORDER_TOTALS = [
         'gift_message',
         'quote',
@@ -65,11 +65,6 @@ class Order extends AbstractReset
         'sales_creditmemo_grid',
         'sales_invoice_grid'
     ];
-
-    // @codingStandardsIgnoreStart
-    /** @var array */
-    protected $_publicActions = ['order'];
-    // @codingStandardsIgnoreEnd
 
     /**
      * Remove Orders

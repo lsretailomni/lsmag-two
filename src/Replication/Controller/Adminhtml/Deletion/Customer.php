@@ -10,7 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class Customer extends AbstractReset
 {
-    /** @var array List of all the Customer tables */
+    /** List of all the Customer tables */
     public const MAGENTO_CUSTOMER_TABLES = [
         'customer_address_entity',
         'customer_address_entity_datetime',
@@ -35,11 +35,6 @@ class Customer extends AbstractReset
     public const MAGENTO_CUSTOMER_GRIDS = [
         'customer_grid_flat'
     ];
-
-    // @codingStandardsIgnoreStart
-    /** @var array */
-    protected $_publicActions = ['customer'];
-    // @codingStandardsIgnoreEnd
 
     /**
      * Remove customers

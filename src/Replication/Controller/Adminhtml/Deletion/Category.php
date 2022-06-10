@@ -18,17 +18,6 @@ class Category extends AbstractReset
         LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
     ];
 
-    // @codingStandardsIgnoreStart
-    /** @var array */
-    protected $_publicActions = ['category'];
-    // @codingStandardsIgnoreEnd
-
-    /** @var array List of ls tables required in categories */
-    public const LS_CATEGORY_TABLES = [
-        'ls_replication_repl_hierarchy_node',
-        'ls_replication_repl_hierarchy_leaf'
-    ];
-
     /** @var array List of magento tables required in categories */
     public const MAGENTO_CATEGORY_TABLES = [
         'catalog_category_product',
@@ -50,9 +39,7 @@ class Category extends AbstractReset
         if ($scopeId != '') {
             $stores = [$this->replicationHelper->storeManager->getStore($scopeId)];
             $this->deleteAllStoresCategoriesUnderRootCategory($stores);
-            $where = [
-                'scope_id = ?' => $scopeId
-            ];
+            $where = ['scope_id = ?' => $scopeId];
         } else {
             $stores = $this->replicationHelper->lsr->getAllStores();
             $this->deleteAllStoresCategoriesUnderRootCategory($stores);
@@ -61,7 +48,7 @@ class Category extends AbstractReset
         }
 
         // Update dependent ls tables to not processed
-        $this->updateAllGivenTablesToUnprocessed(self::LS_CATEGORY_TABLES, $where);
+        $this->updateAllGivenTablesToUnprocessed(self::LS_CATEGORY_RELATED_TABLES, $where);
         // Update translation ls tables to not processed for hierarchy
         $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_HIERARCHY_NODE;
         $this->updateDataTranslationTables($where);

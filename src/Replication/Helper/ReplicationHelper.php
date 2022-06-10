@@ -30,6 +30,7 @@ use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
@@ -274,6 +275,11 @@ class ReplicationHelper extends AbstractHelper
     public $categoryResourceModel;
 
     /**
+     * @var RuleCollectionFactory
+     */
+    public $ruleCollectionFactory;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -320,6 +326,7 @@ class ReplicationHelper extends AbstractHelper
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ResourceModelCategory $categoryResourceModel
+     * @param RuleCollectionFactory $ruleCollectionFactory
      */
     public function __construct(
         Context $context,
@@ -367,7 +374,8 @@ class ReplicationHelper extends AbstractHelper
         DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         CategoryRepositoryInterface $categoryRepository,
-        ResourceModelCategory $categoryResourceModel
+        ResourceModelCategory $categoryResourceModel,
+        RuleCollectionFactory $ruleCollectionFactory
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -414,6 +422,7 @@ class ReplicationHelper extends AbstractHelper
         $this->productCollectionFactory                  = $productCollectionFactory;
         $this->categoryRepository                        = $categoryRepository;
         $this->categoryResourceModel                     = $categoryResourceModel;
+        $this->ruleCollectionFactory                     = $ruleCollectionFactory;
         parent::__construct(
             $context
         );
@@ -799,7 +808,7 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
+    public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
         $attr_processed = $this->filterBuilder->setField('main_table.processed')
             ->setValue('0')
@@ -2585,5 +2594,20 @@ public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, 
     public function deleteChildrenGivenCategory($category)
     {
         $this->categoryResourceModel->deleteChildren($category);
+    }
+
+    /**
+     * Get all catalog rules in a website
+     *
+     * @param $websiteId
+     * @return \Magento\CatalogRule\Model\ResourceModel\Rule\Collection
+     */
+    public function getCatalogRulesCollectionGivenWebsiteId($websiteId)
+    {
+        $websiteIds = [$websiteId];
+        $collection = $this->ruleCollectionFactory->create();
+        $collection->addFieldToFilter('website_ids', $websiteIds);
+
+        return $collection;
     }
 }
