@@ -219,6 +219,11 @@
                    showInWebsite="0"
                    showInStore="1">
                 <label>Restore Database</label>
+                <comment>
+                    <![CDATA[
+                In case of Multi store setup, you can reset data specifically for a store by changing scope to specific store view, otherwise it will reset data for all the stores in the Magento database.
+                ]]>
+                </comment>
                 <field id="orders"
                        translate="label"
                        type="button"
