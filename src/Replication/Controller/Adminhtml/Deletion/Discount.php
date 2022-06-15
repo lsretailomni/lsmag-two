@@ -2,107 +2,67 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
-use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Magento uses Catalog Price Rule for discounts replication
  * Class Discount Deletion
  */
-class Discount extends Action
+class Discount extends AbstractReset
 {
-    /** @var Logger */
-    public $logger;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    /** @var array List of all the Discount tables */
-    public $discount_tables = [
-        "catalogrule",
-        "catalogrule_customer_group",
-        "catalogrule_group_website",
-        "catalogrule_group_website_replica",
-        "catalogrule_product_price",
-        "catalogrule_product_price_replica",
-        "catalogrule_product",
-        "catalogrule_product_replica",
-        "catalogrule_website",
-        "sequence_catalogrule"
+    /**  List of all the Discount tables */
+    public const MAGENTO_DISCOUNT_TABLES = [
+        'catalogrule',
+        'catalogrule_customer_group',
+        'catalogrule_group_website',
+        'catalogrule_group_website_replica',
+        'catalogrule_product_price',
+        'catalogrule_product_price_replica',
+        'catalogrule_product',
+        'catalogrule_product_replica',
+        'catalogrule_website',
+        'sequence_catalogrule'
     ];
 
-    // @codingStandardsIgnoreStart
-    /** @var array */
-    protected $_publicActions = ['discount'];
-    // @codingStandardsIgnoreEnd
-
-    /**
-     * Discount Deletion constructor.
-     * @param ResourceConnection $resource
-     * @param Logger $logger
-     * @param LSR $LSR
-     * @param ReplicationHelper $replicationHelper
-     */
-    public function __construct(
-        ResourceConnection $resource,
-        Logger $logger,
-        Context $context,
-        LSR $LSR,
-        ReplicationHelper $replicationHelper
-    ) {
-        $this->resource          = $resource;
-        $this->logger            = $logger;
-        $this->lsr               = $LSR;
-        $this->replicationHelper = $replicationHelper;
-        parent::__construct($context);
-    }
+    public const DEPENDENT_CRONS = [
+        LSR::SC_SUCCESS_CRON_DISCOUNT
+    ];
 
     /**
      * Remove discounts
      *
-     * @return void
+     * @return ResponseInterface
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
-        // @codingStandardsIgnoreStart
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-        foreach ($this->discount_tables as $discountTable) {
-            $tableName = $this->resource->getTableName($discountTable);
-            try {
-                if ($connection->isTableExists($tableName)) {
-                    $connection->truncateTable($tableName);
-                }
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+        $scopeId = $this->_request->getParam('store');
+        $where   = [];
+
+        if ($scopeId != '') {
+            $websiteId = $this->replicationHelper->getWebsiteIdGivenStoreId($scopeId);
+            $childCollection = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId($websiteId);
+            $parentCollection = $this->replicationHelper->getGivenColumnsFromGivenCollection(
+                $childCollection,
+                ['rule_id']
+            );
+            $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                $this->replicationHelper->getGivenTableName('catalogrule'),
+                ['rule_id IN (?)' => $parentCollection->getSelect()]
+            );
+
+            $where = ['scope_id = ?' => $scopeId];
+        } else {
+            $this->truncateAllGivenTables(self::MAGENTO_DISCOUNT_TABLES);
         }
-        $connection  = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $lsTableName = $this->resource->getTableName('ls_replication_repl_discount');
-        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
-        try {
-            $connection->query($lsQuery);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
-        $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
-        // @codingStandardsIgnoreEnd
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_DISCOUNT
-        );
+
+        $this->updateAllGivenTablesToUnprocessed(self::LS_DISCOUNT_RELATED_TABLES, $where);
+        $this->replicationHelper->updateAllGivenCronsWithGivenStatus(self::DEPENDENT_CRONS, $scopeId, false);
+
         $this->messageManager->addSuccessMessage(__('Discounts deleted successfully.'));
-        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
+
+        return $this->_redirect('adminhtml/system_config/edit/section/ls_mag', ['store' => $scopeId]);
     }
 }
