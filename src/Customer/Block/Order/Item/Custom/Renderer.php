@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\Customer\Block\Order\Item;
+namespace Ls\Customer\Block\Order\Item\Custom;
 
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
@@ -21,7 +21,7 @@ class Renderer extends DefaultRenderer
      * @var string
      */
     // @codingStandardsIgnoreStart
-    protected $_template = 'Ls_Customer::order/item/renderer.phtml';
+    protected $_template = 'Ls_Customer::order/item/custom/renderer.phtml';
     // @codingStandardsIgnoreEnd
 
     /**

@@ -2,7 +2,7 @@
 // @codingStandardsIgnoreFile
 
 use Magento\Shipping\Helper\Data;
-use \Ls\Customer\Block\Order\View;
+use \Ls\Customer\Block\Order\Custom\View;
 
 ?>
 <?php /** @var  $block View * */ ?>
@@ -70,5 +70,5 @@ use \Ls\Customer\Block\Order\View;
             </a>
         <?php endif; ?>
     </div>
-    <?= /* @noEscape */ $block->getChildHtml('custom_order_items') ?>
+    <?= /* @noEscape */ $block->getChildHtml('custom_order_items_custom') ?>
 </div>
