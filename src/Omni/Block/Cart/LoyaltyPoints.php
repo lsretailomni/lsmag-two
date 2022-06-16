@@ -2,27 +2,24 @@
 
 namespace Ls\Omni\Block\Cart;
 
+use \Ls\Omni\Client\Ecommerce\Entity\CardGetPointBalanceResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
 use Magento\Checkout\Model\Session\Proxy;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 
-/**
- * Class Loyaltypoints
- * @package Ls\Omni\Block\Cart
- */
-class Loyaltypoints extends AbstractCart
+class LoyaltyPoints extends AbstractCart
 {
-
     /**
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
 
     /**
-     * Loyaltypoints constructor.
      * @param LoyaltyHelper $loyaltyHelper
      * @param Context $context
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
@@ -42,15 +39,21 @@ class Loyaltypoints extends AbstractCart
     }
 
     /**
-     * @return int
+     * Get Member points for current customer
+     *
+     * @return int|CardGetPointBalanceResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
      */
     public function getMemberPoints()
     {
-        return $this->loyaltyHelper->getMemberPoints();
+        return $this->loyaltyHelper->getLoyaltyPointsAvailableToCustomer();
     }
 
     /**
+     * Get point rate
+     *
      * @return float|GetPointRateResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
      */
     public function getPointsRate()
     {
@@ -58,9 +61,11 @@ class Loyaltypoints extends AbstractCart
     }
 
     /**
+     * Get base currency code
+     *
      * @return string
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getBaseCurrencyCode()
     {
@@ -68,6 +73,8 @@ class Loyaltypoints extends AbstractCart
     }
 
     /**
+     * Get ls points spent
+     *
      * @return mixed
      */
     public function getLsPointsSpent()

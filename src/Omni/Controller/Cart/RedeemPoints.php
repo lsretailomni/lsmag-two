@@ -90,8 +90,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
      */
     public function execute()
     {
-        $loyaltyPoints = $this->getRequest()->getParam('remove-points') == 1
-            ? 0
+        $loyaltyPoints = $this->getRequest()->getParam('remove-points') == 1 ? 0
             : trim($this->getRequest()->getParam('loyalty_points'));
 
         if (!is_numeric($loyaltyPoints) || $loyaltyPoints < 0) {
@@ -129,12 +128,18 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
                             )
                         );
                     } else {
-                        $this->messageManager->addErrorMessage(
-                            __(
-                                'The loyalty points "%1" are not valid.',
-                                $loyaltyPoints
-                            )
-                        );
+                        if (!$isPointsLimitValid) {
+                            $this->messageManager->addErrorMessage(
+                                __('The loyalty points "%1" are exceeding order total amount.', $loyaltyPoints)
+                            );
+                        } else {
+                            $this->messageManager->addErrorMessage(
+                                __(
+                                    'The loyalty points "%1" are not valid.',
+                                    $loyaltyPoints
+                                )
+                            );
+                        }
                     }
                 } else {
                     $this->messageManager->addErrorMessage(

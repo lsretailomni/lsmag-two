@@ -10,7 +10,7 @@
                    after="checkout.cart" ifconfig="ls_mag/ls_recommend/cart"/>
         </referenceContainer>
         <referenceContainer name="cart.discount">
-            <block class="Ls\Omni\Block\Cart\Loyaltypoints" name="checkout.cart.loyaltypoints" as="loyaltypoints"
+            <block class="Ls\Omni\Block\Cart\LoyaltyPoints" name="checkout.cart.loyaltypoints" as="loyaltypoints"
                    template="Ls_Omni::cart/loyalty-points.phtml" before="-" ifconfig="ls_mag/ls_loyaltypoints/cart"/>
             <block class="Ls\Omni\Block\Cart\Giftcard" name="checkout.cart.giftcard" as="giftcard"
                    template="Ls_Omni::cart/gift-card.phtml" before="-" ifconfig="ls_mag/ls_giftcard/cart"/>

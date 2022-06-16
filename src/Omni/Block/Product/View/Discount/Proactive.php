@@ -33,10 +33,6 @@ use Magento\Framework\Stdlib\StringUtils;
 use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
-/**
- * Class View
- * @package Ls\Omni\Block\Product\View
- */
 class Proactive extends View
 {
     /** @var LSR */
@@ -171,8 +167,10 @@ class Proactive extends View
     }
 
     /**
+     * Get all coupons
+     *
      * @param $sku
-     * @return array|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface|null
+     * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
      */
     public function getCoupons($sku)
     {
@@ -184,7 +182,7 @@ class Proactive extends View
                 $email     = $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL);
                 $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
                 $cardId    = $customer->getData('lsr_cardid');
-                if ($response = $this->loyaltyHelper->getPublishedOffers($itemId, $storeId, $cardId)) {
+                if ($response = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $itemId)) {
                     return $response;
                 }
                 return [];
