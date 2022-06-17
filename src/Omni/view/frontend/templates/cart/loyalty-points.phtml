@@ -18,7 +18,8 @@ $availablePoints = (int)$block->getMemberPoints();
          data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
         <div class="title" data-role="title">
             <strong id="block-loyalty-heading" role="heading" aria-level="2">
-                <?= /* @noEscape */  __('Apply Loyalty Points') ?></strong>
+                <?= /* @noEscape */  __('Apply Loyalty Points') ?>
+            </strong>
         </div>
         <div class="content" data-role="loyalty-content" aria-labelledby="block-loyalty-heading">
             <form id="loyalty-points-form"
@@ -53,7 +54,7 @@ $availablePoints = (int)$block->getMemberPoints();
                                    id="loyalty_points"
                                    name="loyalty_points"
                                    value="<?= /* @noEscape */  $block->getLsPointsSpent() ?>"
-                                   placeholder="Enter points to redeem"/>
+                                   placeholder="<?= /* @noEscape */ __('Enter points to redeem') ?>"/>
                         </div>
                     </div>
                     <div class="actions actions-toolbar">
