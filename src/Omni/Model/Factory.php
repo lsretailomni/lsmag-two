@@ -32,7 +32,7 @@ class Factory
     }
 
     /**
-     * Insitiate the class
+     * Initialize module class
      *
      * @param $moduleName
      * @param $fileNameWithPath
