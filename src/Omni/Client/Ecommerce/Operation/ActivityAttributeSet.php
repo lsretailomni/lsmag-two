@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityAttributeSetResponse as ActivityAttr
 
 class ActivityAttributeSet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_ATTRIBUTE_SET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityAttributeSet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

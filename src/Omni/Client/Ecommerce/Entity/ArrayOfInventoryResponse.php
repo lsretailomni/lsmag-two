@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfInventoryResponse implements IteratorAggregate
 {
-
     /**
      * @property InventoryResponse[] $InventoryResponse
      */
@@ -34,7 +33,7 @@ class ArrayOfInventoryResponse implements IteratorAggregate
     /**
      * @return InventoryResponse[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->InventoryResponse );
     }
@@ -46,7 +45,5 @@ class ArrayOfInventoryResponse implements IteratorAggregate
     {
         return $this->InventoryResponse;
     }
-
-
 }
 

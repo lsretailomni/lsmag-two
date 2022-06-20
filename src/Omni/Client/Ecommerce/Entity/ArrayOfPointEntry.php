@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfPointEntry implements IteratorAggregate
 {
-
     /**
      * @property PointEntry[] $PointEntry
      */
@@ -34,7 +33,7 @@ class ArrayOfPointEntry implements IteratorAggregate
     /**
      * @return PointEntry[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->PointEntry );
     }
@@ -46,7 +45,5 @@ class ArrayOfPointEntry implements IteratorAggregate
     {
         return $this->PointEntry;
     }
-
-
 }
 

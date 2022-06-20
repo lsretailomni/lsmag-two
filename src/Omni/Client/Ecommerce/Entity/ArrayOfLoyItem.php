@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfLoyItem implements IteratorAggregate
 {
-
     /**
      * @property LoyItem[] $LoyItem
      */
@@ -34,7 +33,7 @@ class ArrayOfLoyItem implements IteratorAggregate
     /**
      * @return LoyItem[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->LoyItem );
     }
@@ -46,7 +45,5 @@ class ArrayOfLoyItem implements IteratorAggregate
     {
         return $this->LoyItem;
     }
-
-
 }
 

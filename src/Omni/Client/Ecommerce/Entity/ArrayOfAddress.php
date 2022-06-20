@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfAddress implements IteratorAggregate
 {
-
     /**
      * @property Address[] $Address
      */
@@ -34,7 +33,7 @@ class ArrayOfAddress implements IteratorAggregate
     /**
      * @return Address[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Address );
     }
@@ -46,7 +45,5 @@ class ArrayOfAddress implements IteratorAggregate
     {
         return $this->Address;
     }
-
-
 }
 

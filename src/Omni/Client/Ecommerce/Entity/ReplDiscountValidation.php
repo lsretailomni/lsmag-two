@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplDiscountValidation
 {
-
     /**
      * @property string $Description
      */
@@ -907,7 +906,5 @@ class ReplDiscountValidation
     {
         return $this->scope_id;
     }
-
-
 }
 

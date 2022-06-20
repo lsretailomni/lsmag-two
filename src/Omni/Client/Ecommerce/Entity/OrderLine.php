@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderLine extends Entity
 {
-
     /**
      * @property float $Amount
      */
@@ -483,7 +482,5 @@ class OrderLine extends Entity
     {
         return $this->VariantId;
     }
-
-
 }
 

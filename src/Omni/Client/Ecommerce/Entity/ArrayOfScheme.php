@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfScheme implements IteratorAggregate
 {
-
     /**
      * @property Scheme[] $Scheme
      */
@@ -34,7 +33,7 @@ class ArrayOfScheme implements IteratorAggregate
     /**
      * @return Scheme[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Scheme );
     }
@@ -46,7 +45,5 @@ class ArrayOfScheme implements IteratorAggregate
     {
         return $this->Scheme;
     }
-
-
 }
 

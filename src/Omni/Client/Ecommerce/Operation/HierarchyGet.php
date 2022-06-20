@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\HierarchyGetResponse as HierarchyGetResponse
 
 class HierarchyGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'HIERARCHY_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class HierarchyGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

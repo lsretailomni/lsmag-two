@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class StoresGetByCoordinates implements RequestInterface
 {
-
     /**
      * @property double $latitude
      */
@@ -81,7 +80,5 @@ class StoresGetByCoordinates implements RequestInterface
     {
         return $this->maxDistance;
     }
-
-
 }
 

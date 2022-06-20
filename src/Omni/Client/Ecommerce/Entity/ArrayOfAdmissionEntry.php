@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfAdmissionEntry implements IteratorAggregate
 {
-
     /**
      * @property AdmissionEntry[] $AdmissionEntry
      */
@@ -34,7 +33,7 @@ class ArrayOfAdmissionEntry implements IteratorAggregate
     /**
      * @return AdmissionEntry[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->AdmissionEntry );
     }
@@ -46,7 +45,5 @@ class ArrayOfAdmissionEntry implements IteratorAggregate
     {
         return $this->AdmissionEntry;
     }
-
-
 }
 

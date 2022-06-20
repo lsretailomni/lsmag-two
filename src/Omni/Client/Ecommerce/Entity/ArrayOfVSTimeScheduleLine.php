@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfVSTimeScheduleLine implements IteratorAggregate
 {
-
     /**
      * @property VSTimeScheduleLine[] $VSTimeScheduleLine
      */
@@ -34,7 +33,7 @@ class ArrayOfVSTimeScheduleLine implements IteratorAggregate
     /**
      * @return VSTimeScheduleLine[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->VSTimeScheduleLine );
     }
@@ -46,7 +45,5 @@ class ArrayOfVSTimeScheduleLine implements IteratorAggregate
     {
         return $this->VSTimeScheduleLine;
     }
-
-
 }
 

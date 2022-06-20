@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCurrencyExchRateResponse
 {
-
     /**
      * @property ArrayOfReplCurrencyExchRate $CurrencyExchRates
      */
@@ -102,7 +101,5 @@ class ReplCurrencyExchRateResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

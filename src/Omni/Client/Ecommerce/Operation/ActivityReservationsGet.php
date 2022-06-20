@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityReservationsGetResponse as ActivityR
 
 class ActivityReservationsGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_RESERVATIONS_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityReservationsGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

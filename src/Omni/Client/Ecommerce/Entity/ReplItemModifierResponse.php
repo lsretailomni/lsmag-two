@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemModifierResponse
 {
-
     /**
      * @property ArrayOfReplItemModifier $Modifiers
      */
@@ -102,7 +101,5 @@ class ReplItemModifierResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

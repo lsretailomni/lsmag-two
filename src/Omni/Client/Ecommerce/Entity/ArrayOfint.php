@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfint implements IteratorAggregate
 {
-
     /**
      * @property int[] $int
      */
@@ -34,7 +33,7 @@ class ArrayOfint implements IteratorAggregate
     /**
      * @return int[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->int );
     }
@@ -46,7 +45,5 @@ class ArrayOfint implements IteratorAggregate
     {
         return $this->int;
     }
-
-
 }
 

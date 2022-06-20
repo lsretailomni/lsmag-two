@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommItemUnitOfMeasuresResponse implements ResponseInterface
 {
-
     /**
      * @property ReplItemUnitOfMeasureResponse $ReplEcommItemUnitOfMeasuresResult
      */
@@ -43,7 +42,5 @@ class ReplEcommItemUnitOfMeasuresResponse implements ResponseInterface
     {
         return $this->ReplEcommItemUnitOfMeasuresResult;
     }
-
-
 }
 

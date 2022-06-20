@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemCustomerPricesGet implements RequestInterface
 {
-
     /**
      * @property ArrayOfItemCustomerPrice $items
      */
@@ -81,7 +80,5 @@ class ItemCustomerPricesGet implements RequestInterface
     {
         return $this->cardId;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfIngredientItem implements IteratorAggregate
 {
-
     /**
      * @property IngredientItem[] $IngredientItem
      */
@@ -34,7 +33,7 @@ class ArrayOfIngredientItem implements IteratorAggregate
     /**
      * @return IngredientItem[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->IngredientItem );
     }
@@ -46,7 +45,5 @@ class ArrayOfIngredientItem implements IteratorAggregate
     {
         return $this->IngredientItem;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfVariantExt implements IteratorAggregate
 {
-
     /**
      * @property VariantExt[] $VariantExt
      */
@@ -34,7 +33,7 @@ class ArrayOfVariantExt implements IteratorAggregate
     /**
      * @return VariantExt[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->VariantExt );
     }
@@ -46,7 +45,5 @@ class ArrayOfVariantExt implements IteratorAggregate
     {
         return $this->VariantExt;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfActivityLocation implements IteratorAggregate
 {
-
     /**
      * @property ActivityLocation[] $ActivityLocation
      */
@@ -34,7 +33,7 @@ class ArrayOfActivityLocation implements IteratorAggregate
     /**
      * @return ActivityLocation[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ActivityLocation );
     }
@@ -46,7 +45,5 @@ class ArrayOfActivityLocation implements IteratorAggregate
     {
         return $this->ActivityLocation;
     }
-
-
 }
 

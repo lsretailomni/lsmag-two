@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplExtendedVariantValuesResponse
 {
-
     /**
      * @property ArrayOfReplExtendedVariantValue $ExtendedVariantValue
      */
@@ -102,7 +101,5 @@ class ReplExtendedVariantValuesResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

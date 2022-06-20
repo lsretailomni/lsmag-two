@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityAvailabilityGet implements RequestInterface
 {
-
     /**
      * @property string $locationNo
      */
@@ -219,7 +218,5 @@ class ActivityAvailabilityGet implements RequestInterface
     {
         return $this->noOfPersons;
     }
-
-
 }
 

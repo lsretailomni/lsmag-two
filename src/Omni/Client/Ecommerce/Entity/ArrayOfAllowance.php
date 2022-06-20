@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfAllowance implements IteratorAggregate
 {
-
     /**
      * @property Allowance[] $Allowance
      */
@@ -34,7 +33,7 @@ class ArrayOfAllowance implements IteratorAggregate
     /**
      * @return Allowance[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Allowance );
     }
@@ -46,7 +45,5 @@ class ArrayOfAllowance implements IteratorAggregate
     {
         return $this->Allowance;
     }
-
-
 }
 

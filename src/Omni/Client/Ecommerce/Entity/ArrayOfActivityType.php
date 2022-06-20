@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfActivityType implements IteratorAggregate
 {
-
     /**
      * @property ActivityType[] $ActivityType
      */
@@ -34,7 +33,7 @@ class ArrayOfActivityType implements IteratorAggregate
     /**
      * @return ActivityType[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ActivityType );
     }
@@ -46,7 +45,5 @@ class ArrayOfActivityType implements IteratorAggregate
     {
         return $this->ActivityType;
     }
-
-
 }
 

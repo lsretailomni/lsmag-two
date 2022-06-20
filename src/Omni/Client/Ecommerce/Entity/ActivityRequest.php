@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityRequest
 {
-
     /**
      * @property string $ActivityTime
      */
@@ -85,6 +84,11 @@ class ActivityRequest
      * @property string $ReservationNo
      */
     protected $ReservationNo = null;
+
+    /**
+     * @property boolean $SetGroupHeaderStatus
+     */
+    protected $SetGroupHeaderStatus = null;
 
     /**
      * @property string $SetGroupReservation
@@ -372,6 +376,24 @@ class ActivityRequest
     }
 
     /**
+     * @param boolean $SetGroupHeaderStatus
+     * @return $this
+     */
+    public function setSetGroupHeaderStatus($SetGroupHeaderStatus)
+    {
+        $this->SetGroupHeaderStatus = $SetGroupHeaderStatus;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSetGroupHeaderStatus()
+    {
+        return $this->SetGroupHeaderStatus;
+    }
+
+    /**
      * @param string $SetGroupReservation
      * @return $this
      */
@@ -424,7 +446,5 @@ class ActivityRequest
     {
         return $this->UnitPrice;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class MenuNodeLine
 {
-
     /**
      * @property int $DisplayOrder
      */
@@ -92,7 +91,5 @@ class MenuNodeLine
     {
         return $this->NodeLineType;
     }
-
-
 }
 

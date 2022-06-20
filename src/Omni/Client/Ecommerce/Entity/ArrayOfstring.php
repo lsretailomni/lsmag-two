@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfstring implements IteratorAggregate
 {
-
     /**
      * @property string[] $string
      */
@@ -34,7 +33,7 @@ class ArrayOfstring implements IteratorAggregate
     /**
      * @return string[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->string );
     }
@@ -46,7 +45,5 @@ class ArrayOfstring implements IteratorAggregate
     {
         return $this->string;
     }
-
-
 }
 

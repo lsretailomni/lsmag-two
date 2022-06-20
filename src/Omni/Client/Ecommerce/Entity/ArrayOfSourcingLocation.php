@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfSourcingLocation implements IteratorAggregate
 {
-
     /**
      * @property SourcingLocation[] $SourcingLocation
      */
@@ -34,7 +33,7 @@ class ArrayOfSourcingLocation implements IteratorAggregate
     /**
      * @return SourcingLocation[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->SourcingLocation );
     }
@@ -46,7 +45,5 @@ class ArrayOfSourcingLocation implements IteratorAggregate
     {
         return $this->SourcingLocation;
     }
-
-
 }
 

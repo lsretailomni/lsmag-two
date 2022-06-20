@@ -191,6 +191,7 @@ CODE
                             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
                         );
                         $iterator_method->setName('getIterator');
+                        $iterator_method->setReturnType('Traversable');
                         $iterator_method->setBody(<<<CODE
 return new ArrayIterator( \$this->$field_name );
 CODE

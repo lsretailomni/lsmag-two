@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplImageLink implements IteratorAggregate
 {
-
     /**
      * @property ReplImageLink[] $ReplImageLink
      */
@@ -34,7 +33,7 @@ class ArrayOfReplImageLink implements IteratorAggregate
     /**
      * @return ReplImageLink[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplImageLink );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplImageLink implements IteratorAggregate
     {
         return $this->ReplImageLink;
     }
-
-
 }
 

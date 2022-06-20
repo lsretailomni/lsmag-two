@@ -21,7 +21,6 @@ use MyCLabs\Enum\Enum;
  */
 class HierarchyDealType extends Enum
 {
-
     public const ITEM = 'Item';
 
     public const PRODUCT_GROUP = 'ProductGroup';
@@ -35,7 +34,5 @@ class HierarchyDealType extends Enum
     public const MODIFIER = 'Modifier';
 
     public const SPECIAL_GROUP = 'SpecialGroup';
-
-
 }
 

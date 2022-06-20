@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfPromotion implements IteratorAggregate
 {
-
     /**
      * @property Promotion[] $Promotion
      */
@@ -34,7 +33,7 @@ class ArrayOfPromotion implements IteratorAggregate
     /**
      * @return Promotion[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Promotion );
     }
@@ -46,7 +45,5 @@ class ArrayOfPromotion implements IteratorAggregate
     {
         return $this->Promotion;
     }
-
-
 }
 

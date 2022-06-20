@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfNotification implements IteratorAggregate
 {
-
     /**
      * @property Notification[] $Notification
      */
@@ -34,7 +33,7 @@ class ArrayOfNotification implements IteratorAggregate
     /**
      * @return Notification[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Notification );
     }
@@ -46,7 +45,5 @@ class ArrayOfNotification implements IteratorAggregate
     {
         return $this->Notification;
     }
-
-
 }
 

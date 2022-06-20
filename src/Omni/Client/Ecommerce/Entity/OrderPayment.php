@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderPayment
 {
-
     /**
      * @property float $Amount
      */
@@ -345,7 +344,5 @@ class OrderPayment
     {
         return $this->TokenNumber;
     }
-
-
 }
 

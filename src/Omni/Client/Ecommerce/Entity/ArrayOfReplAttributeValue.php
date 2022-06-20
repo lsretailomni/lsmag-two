@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplAttributeValue implements IteratorAggregate
 {
-
     /**
      * @property ReplAttributeValue[] $ReplAttributeValue
      */
@@ -34,7 +33,7 @@ class ArrayOfReplAttributeValue implements IteratorAggregate
     /**
      * @return ReplAttributeValue[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplAttributeValue );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplAttributeValue implements IteratorAggregate
     {
         return $this->ReplAttributeValue;
     }
-
-
 }
 

@@ -18,7 +18,6 @@ use MyCLabs\Enum\Enum;
  */
 class OrderType extends Enum
 {
-
     public const SALE = 'Sale';
 
     public const CLICK_AND_COLLECT = 'ClickAndCollect';
@@ -26,7 +25,5 @@ class OrderType extends Enum
     public const SCAN_PAY_GO = 'ScanPayGo';
 
     public const SCAN_PAY_GO_SUSPEND = 'ScanPayGoSuspend';
-
-
 }
 

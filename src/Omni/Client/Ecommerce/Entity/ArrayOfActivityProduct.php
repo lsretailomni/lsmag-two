@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfActivityProduct implements IteratorAggregate
 {
-
     /**
      * @property ActivityProduct[] $ActivityProduct
      */
@@ -34,7 +33,7 @@ class ArrayOfActivityProduct implements IteratorAggregate
     /**
      * @return ActivityProduct[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ActivityProduct );
     }
@@ -46,7 +45,5 @@ class ArrayOfActivityProduct implements IteratorAggregate
     {
         return $this->ActivityProduct;
     }
-
-
 }
 

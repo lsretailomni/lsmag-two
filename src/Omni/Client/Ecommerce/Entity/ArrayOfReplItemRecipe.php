@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplItemRecipe implements IteratorAggregate
 {
-
     /**
      * @property ReplItemRecipe[] $ReplItemRecipe
      */
@@ -34,7 +33,7 @@ class ArrayOfReplItemRecipe implements IteratorAggregate
     /**
      * @return ReplItemRecipe[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplItemRecipe );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplItemRecipe implements IteratorAggregate
     {
         return $this->ReplItemRecipe;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplDataTranslationLangCode implements IteratorAggregate
 {
-
     /**
      * @property ReplDataTranslationLangCode[] $ReplDataTranslationLangCode
      */
@@ -34,7 +33,7 @@ class ArrayOfReplDataTranslationLangCode implements IteratorAggregate
     /**
      * @return ReplDataTranslationLangCode[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplDataTranslationLangCode );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplDataTranslationLangCode implements IteratorAggregate
     {
         return $this->ReplDataTranslationLangCode;
     }
-
-
 }
 

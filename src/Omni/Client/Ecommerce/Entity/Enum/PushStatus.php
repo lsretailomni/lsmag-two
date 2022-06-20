@@ -16,11 +16,8 @@ use MyCLabs\Enum\Enum;
  */
 class PushStatus extends Enum
 {
-
     public const DISABLED = 'Disabled';
 
     public const ENABLED = 'Enabled';
-
-
 }
 

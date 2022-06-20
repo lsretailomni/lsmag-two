@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\OrderCheckAvailabilityResponse as OrderCheck
 
 class OrderCheckAvailability extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ORDER_CHECK_AVAILABILITY';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class OrderCheckAvailability extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

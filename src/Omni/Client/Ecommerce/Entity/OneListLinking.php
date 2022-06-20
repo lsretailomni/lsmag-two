@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListLinking implements RequestInterface
 {
-
     /**
      * @property string $oneListId
      */
@@ -29,6 +28,11 @@ class OneListLinking implements RequestInterface
      * @property string $email
      */
     protected $email = null;
+
+    /**
+     * @property string $phone
+     */
+    protected $phone = null;
 
     /**
      * @property LinkStatus $status
@@ -90,6 +94,24 @@ class OneListLinking implements RequestInterface
     }
 
     /**
+     * @param string $phone
+     * @return $this
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
      * @param LinkStatus|string $status
      * @return $this
      * @throws InvalidEnumException
@@ -116,7 +138,5 @@ class OneListLinking implements RequestInterface
     {
         return $this->status;
     }
-
-
 }
 

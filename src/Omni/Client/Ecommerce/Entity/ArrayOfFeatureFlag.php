@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfFeatureFlag implements IteratorAggregate
 {
-
     /**
      * @property FeatureFlag[] $FeatureFlag
      */
@@ -34,7 +33,7 @@ class ArrayOfFeatureFlag implements IteratorAggregate
     /**
      * @return FeatureFlag[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->FeatureFlag );
     }
@@ -46,7 +45,5 @@ class ArrayOfFeatureFlag implements IteratorAggregate
     {
         return $this->FeatureFlag;
     }
-
-
 }
 

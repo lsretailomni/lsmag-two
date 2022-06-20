@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\PingResponse as PingResponse;
 
 class Ping extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'PING';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class Ping extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

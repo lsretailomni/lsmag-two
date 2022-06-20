@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplCountryCode implements IteratorAggregate
 {
-
     /**
      * @property ReplCountryCode[] $ReplCountryCode
      */
@@ -34,7 +33,7 @@ class ArrayOfReplCountryCode implements IteratorAggregate
     /**
      * @return ReplCountryCode[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplCountryCode );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplCountryCode implements IteratorAggregate
     {
         return $this->ReplCountryCode;
     }
-
-
 }
 

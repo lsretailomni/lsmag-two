@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfCard implements IteratorAggregate
 {
-
     /**
      * @property Card[] $Card
      */
@@ -34,7 +33,7 @@ class ArrayOfCard implements IteratorAggregate
     /**
      * @return Card[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Card );
     }
@@ -46,7 +45,5 @@ class ArrayOfCard implements IteratorAggregate
     {
         return $this->Card;
     }
-
-
 }
 

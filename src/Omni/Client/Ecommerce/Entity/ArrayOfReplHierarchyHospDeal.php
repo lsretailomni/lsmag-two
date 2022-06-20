@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplHierarchyHospDeal implements IteratorAggregate
 {
-
     /**
      * @property ReplHierarchyHospDeal[] $ReplHierarchyHospDeal
      */
@@ -34,7 +33,7 @@ class ArrayOfReplHierarchyHospDeal implements IteratorAggregate
     /**
      * @return ReplHierarchyHospDeal[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplHierarchyHospDeal );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplHierarchyHospDeal implements IteratorAggregate
     {
         return $this->ReplHierarchyHospDeal;
     }
-
-
 }
 

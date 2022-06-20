@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfImageView implements IteratorAggregate
 {
-
     /**
      * @property ImageView[] $ImageView
      */
@@ -34,7 +33,7 @@ class ArrayOfImageView implements IteratorAggregate
     /**
      * @return ImageView[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ImageView );
     }
@@ -46,7 +45,5 @@ class ArrayOfImageView implements IteratorAggregate
     {
         return $this->ImageView;
     }
-
-
 }
 

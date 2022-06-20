@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
 {
-
     /**
      * @property ReplLoyVendorItemMapping[] $ReplLoyVendorItemMapping
      */
@@ -34,7 +33,7 @@ class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
     /**
      * @return ReplLoyVendorItemMapping[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplLoyVendorItemMapping );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
     {
         return $this->ReplLoyVendorItemMapping;
     }
-
-
 }
 

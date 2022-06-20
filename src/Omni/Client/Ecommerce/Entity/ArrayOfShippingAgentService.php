@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfShippingAgentService implements IteratorAggregate
 {
-
     /**
      * @property ShippingAgentService[] $ShippingAgentService
      */
@@ -34,7 +33,7 @@ class ArrayOfShippingAgentService implements IteratorAggregate
     /**
      * @return ShippingAgentService[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ShippingAgentService );
     }
@@ -46,7 +45,5 @@ class ArrayOfShippingAgentService implements IteratorAggregate
     {
         return $this->ShippingAgentService;
     }
-
-
 }
 

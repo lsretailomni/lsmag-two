@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemsSearch implements RequestInterface
 {
-
     /**
      * @property string $search
      */
@@ -81,7 +80,5 @@ class ItemsSearch implements RequestInterface
     {
         return $this->includeDetails;
     }
-
-
 }
 

@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OneListHospCalculateResponse implements ResponseInterface
 {
-
     /**
      * @property OrderHosp $OneListHospCalculateResult
      */
@@ -43,7 +42,5 @@ class OneListHospCalculateResponse implements ResponseInterface
     {
         return $this->OneListHospCalculateResult;
     }
-
-
 }
 

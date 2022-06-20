@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfValidationScheduleLine implements IteratorAggregate
 {
-
     /**
      * @property ValidationScheduleLine[] $ValidationScheduleLine
      */
@@ -34,7 +33,7 @@ class ArrayOfValidationScheduleLine implements IteratorAggregate
     /**
      * @return ValidationScheduleLine[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ValidationScheduleLine );
     }
@@ -46,7 +45,5 @@ class ArrayOfValidationScheduleLine implements IteratorAggregate
     {
         return $this->ValidationScheduleLine;
     }
-
-
 }
 

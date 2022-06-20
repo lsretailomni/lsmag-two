@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfRecommendedItem implements IteratorAggregate
 {
-
     /**
      * @property RecommendedItem[] $RecommendedItem
      */
@@ -34,7 +33,7 @@ class ArrayOfRecommendedItem implements IteratorAggregate
     /**
      * @return RecommendedItem[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->RecommendedItem );
     }
@@ -46,7 +45,5 @@ class ArrayOfRecommendedItem implements IteratorAggregate
     {
         return $this->RecommendedItem;
     }
-
-
 }
 

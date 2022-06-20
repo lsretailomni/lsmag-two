@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfProfile implements IteratorAggregate
 {
-
     /**
      * @property Profile[] $Profile
      */
@@ -34,7 +33,7 @@ class ArrayOfProfile implements IteratorAggregate
     /**
      * @return Profile[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Profile );
     }
@@ -46,7 +45,5 @@ class ArrayOfProfile implements IteratorAggregate
     {
         return $this->Profile;
     }
-
-
 }
 

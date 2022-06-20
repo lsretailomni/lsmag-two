@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class StoresGetByCoordinatesResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfStore $StoresGetByCoordinatesResult
      */
@@ -43,7 +42,5 @@ class StoresGetByCoordinatesResponse implements ResponseInterface
     {
         return $this->StoresGetByCoordinatesResult;
     }
-
-
 }
 

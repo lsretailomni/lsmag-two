@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfOneListItem implements IteratorAggregate
 {
-
     /**
      * @property OneListItem[] $OneListItem
      */
@@ -34,7 +33,7 @@ class ArrayOfOneListItem implements IteratorAggregate
     /**
      * @return OneListItem[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OneListItem );
     }
@@ -46,7 +45,5 @@ class ArrayOfOneListItem implements IteratorAggregate
     {
         return $this->OneListItem;
     }
-
-
 }
 

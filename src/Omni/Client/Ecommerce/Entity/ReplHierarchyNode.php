@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplHierarchyNode
 {
-
     /**
      * @property int $ChildrenOrder
      */
@@ -263,7 +262,5 @@ class ReplHierarchyNode
     {
         return $this->scope_id;
     }
-
-
 }
 

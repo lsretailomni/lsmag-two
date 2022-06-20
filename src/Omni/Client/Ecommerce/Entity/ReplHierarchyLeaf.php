@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplHierarchyLeaf
 {
-
     /**
      * @property float $DealPrice
      */
@@ -70,6 +69,11 @@ class ReplHierarchyLeaf
     protected $NodeId = null;
 
     /**
+     * @property float $Prepayment
+     */
+    protected $Prepayment = null;
+
+    /**
      * @property int $SortOrder
      */
     protected $SortOrder = null;
@@ -83,6 +87,11 @@ class ReplHierarchyLeaf
      * @property string $ValidationPeriod
      */
     protected $ValidationPeriod = null;
+
+    /**
+     * @property boolean $VendorSourcing
+     */
+    protected $VendorSourcing = null;
 
     /**
      * @property string $scope
@@ -293,6 +302,24 @@ class ReplHierarchyLeaf
     }
 
     /**
+     * @param float $Prepayment
+     * @return $this
+     */
+    public function setPrepayment($Prepayment)
+    {
+        $this->Prepayment = $Prepayment;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrepayment()
+    {
+        return $this->Prepayment;
+    }
+
+    /**
      * @param int $SortOrder
      * @return $this
      */
@@ -357,6 +384,24 @@ class ReplHierarchyLeaf
     }
 
     /**
+     * @param boolean $VendorSourcing
+     * @return $this
+     */
+    public function setVendorSourcing($VendorSourcing)
+    {
+        $this->VendorSourcing = $VendorSourcing;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getVendorSourcing()
+    {
+        return $this->VendorSourcing;
+    }
+
+    /**
      * @param string $scope
      * @return $this
      */
@@ -391,7 +436,5 @@ class ReplHierarchyLeaf
     {
         return $this->scope_id;
     }
-
-
 }
 

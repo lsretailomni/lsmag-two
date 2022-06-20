@@ -19,7 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class ShippingStatus extends Enum
 {
-
     public const SHIPPIG_NOT_REQUIRED = 'ShippigNotRequired';
 
     public const NOT_YET_SHIPPED = 'NotYetShipped';
@@ -29,7 +28,5 @@ class ShippingStatus extends Enum
     public const SHIPPED = 'Shipped';
 
     public const DELIVERED = 'Delivered';
-
-
 }
 

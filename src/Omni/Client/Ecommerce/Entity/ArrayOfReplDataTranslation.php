@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplDataTranslation implements IteratorAggregate
 {
-
     /**
      * @property ReplDataTranslation[] $ReplDataTranslation
      */
@@ -34,7 +33,7 @@ class ArrayOfReplDataTranslation implements IteratorAggregate
     /**
      * @return ReplDataTranslation[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplDataTranslation );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplDataTranslation implements IteratorAggregate
     {
         return $this->ReplDataTranslation;
     }
-
-
 }
 

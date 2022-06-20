@@ -14,7 +14,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplDiscount
 {
-
     /**
      * @property string $CurrencyCode
      */
@@ -540,7 +539,5 @@ class ReplDiscount
     {
         return $this->scope_id;
     }
-
-
 }
 

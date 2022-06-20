@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfMenuNode implements IteratorAggregate
 {
-
     /**
      * @property MenuNode[] $MenuNode
      */
@@ -34,7 +33,7 @@ class ArrayOfMenuNode implements IteratorAggregate
     /**
      * @return MenuNode[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->MenuNode );
     }
@@ -46,7 +45,5 @@ class ArrayOfMenuNode implements IteratorAggregate
     {
         return $this->MenuNode;
     }
-
-
 }
 

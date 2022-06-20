@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfOrderLineAvailabilityResponse implements IteratorAggregate
 {
-
     /**
      * @property OrderLineAvailabilityResponse[] $OrderLineAvailabilityResponse
      */
@@ -34,7 +33,7 @@ class ArrayOfOrderLineAvailabilityResponse implements IteratorAggregate
     /**
      * @return OrderLineAvailabilityResponse[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OrderLineAvailabilityResponse );
     }
@@ -46,7 +45,5 @@ class ArrayOfOrderLineAvailabilityResponse implements IteratorAggregate
     {
         return $this->OrderLineAvailabilityResponse;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplCustomer implements IteratorAggregate
 {
-
     /**
      * @property ReplCustomer[] $ReplCustomer
      */
@@ -34,7 +33,7 @@ class ArrayOfReplCustomer implements IteratorAggregate
     /**
      * @return ReplCustomer[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplCustomer );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplCustomer implements IteratorAggregate
     {
         return $this->ReplCustomer;
     }
-
-
 }
 

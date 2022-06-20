@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfBooking implements IteratorAggregate
 {
-
     /**
      * @property Booking[] $Booking
      */
@@ -34,7 +33,7 @@ class ArrayOfBooking implements IteratorAggregate
     /**
      * @return Booking[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Booking );
     }
@@ -46,7 +45,5 @@ class ArrayOfBooking implements IteratorAggregate
     {
         return $this->Booking;
     }
-
-
 }
 

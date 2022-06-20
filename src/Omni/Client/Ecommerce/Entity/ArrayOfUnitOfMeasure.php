@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfUnitOfMeasure implements IteratorAggregate
 {
-
     /**
      * @property UnitOfMeasure[] $UnitOfMeasure
      */
@@ -34,7 +33,7 @@ class ArrayOfUnitOfMeasure implements IteratorAggregate
     /**
      * @return UnitOfMeasure[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->UnitOfMeasure );
     }
@@ -46,7 +45,5 @@ class ArrayOfUnitOfMeasure implements IteratorAggregate
     {
         return $this->UnitOfMeasure;
     }
-
-
 }
 

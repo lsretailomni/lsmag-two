@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplCollection implements IteratorAggregate
 {
-
     /**
      * @property ReplCollection[] $ReplCollection
      */
@@ -34,7 +33,7 @@ class ArrayOfReplCollection implements IteratorAggregate
     /**
      * @return ReplCollection[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplCollection );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplCollection implements IteratorAggregate
     {
         return $this->ReplCollection;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfScanPayGoTender implements IteratorAggregate
 {
-
     /**
      * @property ScanPayGoTender[] $ScanPayGoTender
      */
@@ -34,7 +33,7 @@ class ArrayOfScanPayGoTender implements IteratorAggregate
     /**
      * @return ScanPayGoTender[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ScanPayGoTender );
     }
@@ -46,7 +45,5 @@ class ArrayOfScanPayGoTender implements IteratorAggregate
     {
         return $this->ScanPayGoTender;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfOrderHospSubLine implements IteratorAggregate
 {
-
     /**
      * @property OrderHospSubLine[] $OrderHospSubLine
      */
@@ -34,7 +33,7 @@ class ArrayOfOrderHospSubLine implements IteratorAggregate
     /**
      * @return OrderHospSubLine[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OrderHospSubLine );
     }
@@ -46,7 +45,5 @@ class ArrayOfOrderHospSubLine implements IteratorAggregate
     {
         return $this->OrderHospSubLine;
     }
-
-
 }
 

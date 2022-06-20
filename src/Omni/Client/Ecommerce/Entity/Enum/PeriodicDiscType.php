@@ -20,7 +20,6 @@ use MyCLabs\Enum\Enum;
  */
 class PeriodicDiscType extends Enum
 {
-
     public const UNKNOWN = 'Unknown';
 
     public const MULTIBUY = 'Multibuy';
@@ -32,7 +31,5 @@ class PeriodicDiscType extends Enum
     public const ITEM_POINT = 'ItemPoint';
 
     public const LINE_DISCOUNT = 'LineDiscount';
-
-
 }
 

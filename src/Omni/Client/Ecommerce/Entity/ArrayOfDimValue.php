@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfDimValue implements IteratorAggregate
 {
-
     /**
      * @property DimValue[] $DimValue
      */
@@ -34,7 +33,7 @@ class ArrayOfDimValue implements IteratorAggregate
     /**
      * @return DimValue[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->DimValue );
     }
@@ -46,7 +45,5 @@ class ArrayOfDimValue implements IteratorAggregate
     {
         return $this->DimValue;
     }
-
-
 }
 

@@ -14,7 +14,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Notification extends Entity
 {
-
     /**
      * @property ArrayOfImageView $Images
      */
@@ -241,7 +240,5 @@ class Notification extends Entity
     {
         return $this->Status;
     }
-
-
 }
 

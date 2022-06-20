@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfHierarchyLeaf implements IteratorAggregate
 {
-
     /**
      * @property HierarchyLeaf[] $HierarchyLeaf
      */
@@ -34,7 +33,7 @@ class ArrayOfHierarchyLeaf implements IteratorAggregate
     /**
      * @return HierarchyLeaf[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->HierarchyLeaf );
     }
@@ -46,7 +45,5 @@ class ArrayOfHierarchyLeaf implements IteratorAggregate
     {
         return $this->HierarchyLeaf;
     }
-
-
 }
 

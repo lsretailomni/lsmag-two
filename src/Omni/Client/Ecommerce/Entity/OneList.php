@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneList extends Entity
 {
-
     /**
      * @property ArrayOfOneListLink $CardLinks
      */
@@ -58,6 +57,11 @@ class OneList extends Entity
      * @property ListType $ListType
      */
     protected $ListType = null;
+
+    /**
+     * @property string $Name
+     */
+    protected $Name = null;
 
     /**
      * @property float $PointAmount
@@ -277,6 +281,24 @@ class OneList extends Entity
     }
 
     /**
+     * @param string $Name
+     * @return $this
+     */
+    public function setName($Name)
+    {
+        $this->Name = $Name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->Name;
+    }
+
+    /**
      * @param float $PointAmount
      * @return $this
      */
@@ -437,7 +459,5 @@ class OneList extends Entity
     {
         return $this->TotalTaxAmount;
     }
-
-
 }
 

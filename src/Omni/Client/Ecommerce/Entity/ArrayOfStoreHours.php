@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfStoreHours implements IteratorAggregate
 {
-
     /**
      * @property StoreHours[] $StoreHours
      */
@@ -34,7 +33,7 @@ class ArrayOfStoreHours implements IteratorAggregate
     /**
      * @return StoreHours[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->StoreHours );
     }
@@ -46,7 +45,5 @@ class ArrayOfStoreHours implements IteratorAggregate
     {
         return $this->StoreHours;
     }
-
-
 }
 

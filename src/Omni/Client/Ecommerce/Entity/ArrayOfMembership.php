@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfMembership implements IteratorAggregate
 {
-
     /**
      * @property Membership[] $Membership
      */
@@ -34,7 +33,7 @@ class ArrayOfMembership implements IteratorAggregate
     /**
      * @return Membership[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Membership );
     }
@@ -46,7 +45,5 @@ class ArrayOfMembership implements IteratorAggregate
     {
         return $this->Membership;
     }
-
-
 }
 

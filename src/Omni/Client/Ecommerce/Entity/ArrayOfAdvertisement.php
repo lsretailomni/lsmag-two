@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfAdvertisement implements IteratorAggregate
 {
-
     /**
      * @property Advertisement[] $Advertisement
      */
@@ -34,7 +33,7 @@ class ArrayOfAdvertisement implements IteratorAggregate
     /**
      * @return Advertisement[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Advertisement );
     }
@@ -46,7 +45,5 @@ class ArrayOfAdvertisement implements IteratorAggregate
     {
         return $this->Advertisement;
     }
-
-
 }
 

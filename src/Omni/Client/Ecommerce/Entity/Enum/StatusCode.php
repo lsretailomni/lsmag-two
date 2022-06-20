@@ -124,6 +124,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode SCHEME_INVALID()
  * @$method static StatusCode SCHEME_CLUB_INVALID()
  * @$method static StatusCode RECEIPT_NO_MISSING()
+ * @$method static StatusCode LOOKUP_VALUES_MISSING()
  * @$method static StatusCode CONTACT_IS_BLOCKED()
  * @$method static StatusCode ORDER_ALREADY_EXIST()
  * @$method static StatusCode ORDER_ID_NOT_FOUND()
@@ -176,7 +177,6 @@ use MyCLabs\Enum\Enum;
  */
 class StatusCode extends Enum
 {
-
     public const O_K = 'OK';
 
     public const ERROR = 'Error';
@@ -403,6 +403,8 @@ class StatusCode extends Enum
 
     public const RECEIPT_NO_MISSING = 'ReceiptNoMissing';
 
+    public const LOOKUP_VALUES_MISSING = 'LookupValuesMissing';
+
     public const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
 
     public const ORDER_ALREADY_EXIST = 'OrderAlreadyExist';
@@ -500,7 +502,5 @@ class StatusCode extends Enum
     public const CUSTOMER_ORDER_ITEM_QUANTITY_TOO_HIGH = 'CustomerOrderItemQuantityTooHigh';
 
     public const CUSTOMER_ORDER_ALREADY_SCANNED = 'CustomerOrderAlreadyScanned';
-
-
 }
 

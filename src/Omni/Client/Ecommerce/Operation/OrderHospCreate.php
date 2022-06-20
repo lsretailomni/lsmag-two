@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\OrderHospCreateResponse as OrderHospCreateRe
 
 class OrderHospCreate extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ORDER_HOSP_CREATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class OrderHospCreate extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

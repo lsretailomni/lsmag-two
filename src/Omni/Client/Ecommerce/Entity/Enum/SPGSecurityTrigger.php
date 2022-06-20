@@ -17,13 +17,10 @@ use MyCLabs\Enum\Enum;
  */
 class SPGSecurityTrigger extends Enum
 {
-
     public const PAYMENT_SELECT = 'PaymentSelect';
 
     public const AFTER_PAYMENT = 'AfterPayment';
 
     public const NEVER = 'Never';
-
-
 }
 

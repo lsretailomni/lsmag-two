@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfProductModifier implements IteratorAggregate
 {
-
     /**
      * @property ProductModifier[] $ProductModifier
      */
@@ -34,7 +33,7 @@ class ArrayOfProductModifier implements IteratorAggregate
     /**
      * @return ProductModifier[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ProductModifier );
     }
@@ -46,7 +45,5 @@ class ArrayOfProductModifier implements IteratorAggregate
     {
         return $this->ProductModifier;
     }
-
-
 }
 

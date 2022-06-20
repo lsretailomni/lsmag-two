@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfSalesEntryLine implements IteratorAggregate
 {
-
     /**
      * @property SalesEntryLine[] $SalesEntryLine
      */
@@ -34,7 +33,7 @@ class ArrayOfSalesEntryLine implements IteratorAggregate
     /**
      * @return SalesEntryLine[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->SalesEntryLine );
     }
@@ -46,7 +45,5 @@ class ArrayOfSalesEntryLine implements IteratorAggregate
     {
         return $this->SalesEntryLine;
     }
-
-
 }
 

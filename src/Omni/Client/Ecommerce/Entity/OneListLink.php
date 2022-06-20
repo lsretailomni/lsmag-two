@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneListLink extends Entity
 {
-
     /**
      * @property string $CardId
      */
@@ -115,7 +114,5 @@ class OneListLink extends Entity
     {
         return $this->Status;
     }
-
-
 }
 

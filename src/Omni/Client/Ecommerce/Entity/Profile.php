@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Profile extends Entity
 {
-
     /**
      * @property boolean $ContactValue
      */
@@ -38,6 +37,11 @@ class Profile extends Entity
      * @property boolean $Mandatory
      */
     protected $Mandatory = null;
+
+    /**
+     * @property string $TextValue
+     */
+    protected $TextValue = null;
 
     /**
      * @param boolean $ContactValue
@@ -139,6 +143,22 @@ class Profile extends Entity
         return $this->Mandatory;
     }
 
+    /**
+     * @param string $TextValue
+     * @return $this
+     */
+    public function setTextValue($TextValue)
+    {
+        $this->TextValue = $TextValue;
+        return $this;
+    }
 
+    /**
+     * @return string
+     */
+    public function getTextValue()
+    {
+        return $this->TextValue;
+    }
 }
 

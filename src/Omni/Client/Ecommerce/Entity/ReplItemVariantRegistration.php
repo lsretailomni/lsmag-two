@@ -10,6 +10,15 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemVariantRegistration
 {
+    /**
+     * @property int $BlockedOnECom
+     */
+    protected $BlockedOnECom = null;
+
+    /**
+     * @property int $BlockedOnPos
+     */
+    protected $BlockedOnPos = null;
 
     /**
      * @property string $FrameworkCode
@@ -70,6 +79,42 @@ class ReplItemVariantRegistration
      * @property int $scope_id
      */
     protected $scope_id = null;
+
+    /**
+     * @param int $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedOnECom($BlockedOnECom)
+    {
+        $this->BlockedOnECom = $BlockedOnECom;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnECom()
+    {
+        return $this->BlockedOnECom;
+    }
+
+    /**
+     * @param int $BlockedOnPos
+     * @return $this
+     */
+    public function setBlockedOnPos($BlockedOnPos)
+    {
+        $this->BlockedOnPos = $BlockedOnPos;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnPos()
+    {
+        return $this->BlockedOnPos;
+    }
 
     /**
      * @param string $FrameworkCode
@@ -286,7 +331,5 @@ class ReplItemVariantRegistration
     {
         return $this->scope_id;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfMemberContact implements IteratorAggregate
 {
-
     /**
      * @property MemberContact[] $MemberContact
      */
@@ -34,7 +33,7 @@ class ArrayOfMemberContact implements IteratorAggregate
     /**
      * @return MemberContact[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->MemberContact );
     }
@@ -46,7 +45,5 @@ class ArrayOfMemberContact implements IteratorAggregate
     {
         return $this->MemberContact;
     }
-
-
 }
 

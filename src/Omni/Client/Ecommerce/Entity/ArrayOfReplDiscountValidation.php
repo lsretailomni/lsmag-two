@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplDiscountValidation implements IteratorAggregate
 {
-
     /**
      * @property ReplDiscountValidation[] $ReplDiscountValidation
      */
@@ -34,7 +33,7 @@ class ArrayOfReplDiscountValidation implements IteratorAggregate
     /**
      * @return ReplDiscountValidation[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplDiscountValidation );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplDiscountValidation implements IteratorAggregate
     {
         return $this->ReplDiscountValidation;
     }
-
-
 }
 

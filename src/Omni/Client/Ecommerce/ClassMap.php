@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce;
 
 class ClassMap
 {
-
     final public static function getClassMap()
     {
         return [		'Entity' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Entity',
@@ -26,6 +25,10 @@ class ClassMap
         		'OfferDetails' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OfferDetails',
         		'ArrayOfPublishedOfferLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfPublishedOfferLine',
         		'PublishedOfferLine' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\PublishedOfferLine',
+        		'ArrayOfItemModifier' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfItemModifier',
+        		'ItemModifier' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ItemModifier',
+        		'ArrayOfItemRecipe' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfItemRecipe',
+        		'ItemRecipe' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ItemRecipe',
         		'UnitOfMeasure' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\UnitOfMeasure',
         		'UnknownUnitOfMeasure' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\UnknownUnitOfMeasure',
         		'VariantRegistration' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\VariantRegistration',
@@ -160,6 +163,10 @@ class ClassMap
         		'ReplTaxSetupResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplTaxSetupResponse',
         		'ArrayOfReplTaxSetup' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfReplTaxSetup',
         		'ReplTaxSetup' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ReplTaxSetup',
+        		'ActivityAttributesGet' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributesGet',
+        		'ActivityAttributesGetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributesGetResponse',
+        		'ActivityAttributeSet' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributeSet',
+        		'ActivityAttributeSetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributeSetResponse',
         		'ActivityReservationInsert' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityReservationInsert',
         		'ActivityReservationInsertResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityReservationInsertResponse',
         		'ActivityReservationUpdate' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityReservationUpdate',
@@ -284,6 +291,8 @@ class ClassMap
         		'SalesEntryGetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesEntryGetResponse',
         		'SalesEntryGetReturnSales' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesEntryGetReturnSales',
         		'SalesEntryGetReturnSalesResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesEntryGetReturnSalesResponse',
+        		'SalesEntryGetSalesByOrderId' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesEntryGetSalesByOrderId',
+        		'SalesEntryGetSalesByOrderIdResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SalesEntryGetSalesByOrderIdResponse',
         		'ContactCreate' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactCreate',
         		'ContactCreateResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactCreateResponse',
         		'ContactUpdate' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactUpdate',
@@ -292,6 +301,8 @@ class ClassMap
         		'ContactGetByCardIdResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactGetByCardIdResponse',
         		'ContactSearch' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactSearch',
         		'ContactSearchResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactSearchResponse',
+        		'ContactGet' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactGet',
+        		'ContactGetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactGetResponse',
         		'ContactAddCard' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactAddCard',
         		'ContactAddCardResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ContactAddCardResponse',
         		'CardGetPointBalance' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\CardGetPointBalance',
@@ -474,10 +485,7 @@ class ClassMap
         		'ActivityProductChargesGetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityProductChargesGetResponse',
         		'ActivityAdditionalChargesSet' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAdditionalChargesSet',
         		'ActivityAdditionalChargesSetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAdditionalChargesSetResponse',
-        		'ActivityAttributesGet' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributesGet',
-        		'ActivityAttributesGetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributesGetResponse',
-        		'ActivityAttributeSet' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributeSet',
-        		'ActivityAttributeSetResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityAttributeSetResponse',
+        		'AttributeResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\AttributeResponse',
         		'Reservation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Reservation',
         		'MembershipResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\MembershipResponse',
         		'ArrayOfAvailabilityResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfAvailabilityResponse',
@@ -511,7 +519,6 @@ class ClassMap
         		'ArrayOfActivityResource' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfActivityResource',
         		'ActivityResource' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ActivityResource',
         		'AdditionalCharge' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\AdditionalCharge',
-        		'AttributeResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\AttributeResponse',
         		'ClientToken' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ClientToken',
         		'ScanPayGoProfile' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ScanPayGoProfile',
         		'ArrayOfScanPayGoTender' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfScanPayGoTender',
@@ -530,12 +537,8 @@ class ClassMap
         		'AttributeOptionValue' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\AttributeOptionValue',
         		'ArrayOfItemLocation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfItemLocation',
         		'ItemLocation' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ItemLocation',
-        		'ArrayOfItemModifier' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfItemModifier',
-        		'ItemModifier' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ItemModifier',
         		'ArrayOfPrice' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfPrice',
         		'Price' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Price',
-        		'ArrayOfItemRecipe' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfItemRecipe',
-        		'ItemRecipe' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ItemRecipe',
         		'GiftCard' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GiftCard',
         		'ArrayOfNotification' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfNotification',
         		'Notification' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Notification',
@@ -709,8 +712,8 @@ class ClassMap
         		'StoreServiceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreServiceType',
         		'DiscountValueType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\DiscountValueType',
         		'ReplDiscountType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ReplDiscountType',
-        		'ProductChargeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProductChargeType',
         		'AttributeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\AttributeType',
+        		'ProductChargeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProductChargeType',
         		'SPGSecurityTrigger' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\SPGSecurityTrigger',
         		'FeatureFlagName' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\FeatureFlagName',
         		'AttributeLinkType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\AttributeLinkType',
@@ -744,7 +747,5 @@ class ClassMap
         		'VSTimeScheduleType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\VSTimeScheduleType',
         ];
     }
-
-
 }
 

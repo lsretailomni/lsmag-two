@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfRetailAttribute implements IteratorAggregate
 {
-
     /**
      * @property RetailAttribute[] $RetailAttribute
      */
@@ -34,7 +33,7 @@ class ArrayOfRetailAttribute implements IteratorAggregate
     /**
      * @return RetailAttribute[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->RetailAttribute );
     }
@@ -46,7 +45,5 @@ class ArrayOfRetailAttribute implements IteratorAggregate
     {
         return $this->RetailAttribute;
     }
-
-
 }
 

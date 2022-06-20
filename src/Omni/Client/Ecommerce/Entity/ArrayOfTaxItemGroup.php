@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfTaxItemGroup implements IteratorAggregate
 {
-
     /**
      * @property TaxItemGroup[] $TaxItemGroup
      */
@@ -34,7 +33,7 @@ class ArrayOfTaxItemGroup implements IteratorAggregate
     /**
      * @return TaxItemGroup[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->TaxItemGroup );
     }
@@ -46,7 +45,5 @@ class ArrayOfTaxItemGroup implements IteratorAggregate
     {
         return $this->TaxItemGroup;
     }
-
-
 }
 

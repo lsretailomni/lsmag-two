@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCustomer
 {
-
     /**
      * @property ArrayOfCard $Cards
      */
@@ -723,7 +722,5 @@ class ReplCustomer
     {
         return $this->scope_id;
     }
-
-
 }
 

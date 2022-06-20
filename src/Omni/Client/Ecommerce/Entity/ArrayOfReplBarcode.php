@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplBarcode implements IteratorAggregate
 {
-
     /**
      * @property ReplBarcode[] $ReplBarcode
      */
@@ -34,7 +33,7 @@ class ArrayOfReplBarcode implements IteratorAggregate
     /**
      * @return ReplBarcode[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplBarcode );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplBarcode implements IteratorAggregate
     {
         return $this->ReplBarcode;
     }
-
-
 }
 

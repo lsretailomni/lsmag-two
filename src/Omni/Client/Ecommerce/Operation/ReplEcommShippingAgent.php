@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommShippingAgentResponse as ReplEcommS
 
 class ReplEcommShippingAgent extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_SHIPPING_AGENT';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommShippingAgent extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

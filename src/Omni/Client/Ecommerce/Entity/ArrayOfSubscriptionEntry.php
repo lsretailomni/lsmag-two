@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfSubscriptionEntry implements IteratorAggregate
 {
-
     /**
      * @property SubscriptionEntry[] $SubscriptionEntry
      */
@@ -34,7 +33,7 @@ class ArrayOfSubscriptionEntry implements IteratorAggregate
     /**
      * @return SubscriptionEntry[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->SubscriptionEntry );
     }
@@ -46,7 +45,5 @@ class ArrayOfSubscriptionEntry implements IteratorAggregate
     {
         return $this->SubscriptionEntry;
     }
-
-
 }
 

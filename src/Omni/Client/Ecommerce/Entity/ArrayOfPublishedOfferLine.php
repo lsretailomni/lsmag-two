@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfPublishedOfferLine implements IteratorAggregate
 {
-
     /**
      * @property PublishedOfferLine[] $PublishedOfferLine
      */
@@ -34,7 +33,7 @@ class ArrayOfPublishedOfferLine implements IteratorAggregate
     /**
      * @return PublishedOfferLine[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->PublishedOfferLine );
     }
@@ -46,7 +45,5 @@ class ArrayOfPublishedOfferLine implements IteratorAggregate
     {
         return $this->PublishedOfferLine;
     }
-
-
 }
 

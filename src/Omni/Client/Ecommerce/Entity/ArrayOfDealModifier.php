@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfDealModifier implements IteratorAggregate
 {
-
     /**
      * @property DealModifier[] $DealModifier
      */
@@ -34,7 +33,7 @@ class ArrayOfDealModifier implements IteratorAggregate
     /**
      * @return DealModifier[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->DealModifier );
     }
@@ -46,7 +45,5 @@ class ArrayOfDealModifier implements IteratorAggregate
     {
         return $this->DealModifier;
     }
-
-
 }
 

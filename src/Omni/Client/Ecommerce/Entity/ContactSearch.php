@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactSearch implements RequestInterface
 {
-
     /**
      * @property ContactSearchType $searchType
      */
@@ -93,7 +92,5 @@ class ContactSearch implements RequestInterface
     {
         return $this->maxNumberOfRowsReturned;
     }
-
-
 }
 

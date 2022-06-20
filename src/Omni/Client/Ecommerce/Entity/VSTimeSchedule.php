@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class VSTimeSchedule
 {
-
     /**
      * @property ArrayOfVSTimeScheduleLine $Lines
      */
@@ -115,7 +114,5 @@ class VSTimeSchedule
     {
         return $this->Type;
     }
-
-
 }
 

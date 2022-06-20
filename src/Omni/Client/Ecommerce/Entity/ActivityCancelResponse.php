@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityCancelResponse implements ResponseInterface
 {
-
     /**
      * @property ActivityResponse $ActivityCancelResult
      */
@@ -43,7 +42,5 @@ class ActivityCancelResponse implements ResponseInterface
     {
         return $this->ActivityCancelResult;
     }
-
-
 }
 

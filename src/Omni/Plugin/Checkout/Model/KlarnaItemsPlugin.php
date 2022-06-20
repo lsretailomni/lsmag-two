@@ -3,13 +3,10 @@
 namespace Ls\Omni\Plugin\Checkout\Model;
 
 use \Ls\Core\Model\LSR;
-use Klarna\Core\Api\BuilderInterface;
-use Klarna\Core\Helper\KlarnaConfig;
+use \Ls\Omni\Model\Factory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Tax\Model\Calculation;
-use Klarna\Core\Helper\DataConverter;
-use Klarna\Core\Model\Checkout\Orderline\Items;
 
 /**
  * For fixing klarna items total in the api
@@ -17,7 +14,7 @@ use Klarna\Core\Model\Checkout\Orderline\Items;
 class KlarnaItemsPlugin
 {
     /**
-     * @var DataConverter
+     * @var object
      */
     private $dataConverter;
 
@@ -32,7 +29,7 @@ class KlarnaItemsPlugin
     private $taxCalculation;
 
     /**
-     * @var KlarnaConfig
+     * @var object
      */
     private $klarnaConfig;
 
@@ -42,44 +39,54 @@ class KlarnaItemsPlugin
     private $lsr;
 
     /**
-     * @param DataConverter $dataConverter
+     * @var Factory
+     */
+    private $factory;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param Calculation $taxCalculation
-     * @param KlarnaConfig $klarnaConfig
+     * @param Factory $factory
      * @param LSR $lsr
      */
     public function __construct(
-        DataConverter $dataConverter,
         StoreManagerInterface $storeManager,
         Calculation $taxCalculation,
-        KlarnaConfig $klarnaConfig,
+        Factory $factory,
         LSR $lsr
     ) {
-        $this->dataConverter  = $dataConverter;
         $this->storeManager   = $storeManager;
         $this->taxCalculation = $taxCalculation;
-        $this->klarnaConfig   = $klarnaConfig;
+        $this->factory        = $factory;
         $this->lsr            = $lsr;
     }
 
     /**
      * For modifying item amount in request
      *
-     * @param Items $subject
+     * @param $subject
      * @param callable $proceed
-     * @param BuilderInterface $checkout
+     * @param  $checkout
      * @return void
      * @throws NoSuchEntityException
      */
     public function aroundFetch(
-        Items $subject,
+        $subject,
         callable $proceed,
-        BuilderInterface $checkout
+        $checkout
     ) {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $object = $checkout->getObject();
-            $items  = $itemsArray = [];
+            $object             = $checkout->getObject();
+            $items              = $itemsArray = [];
+            $this->klarnaConfig = $this->factory->create(
+                'Klarna_Core',
+                'Klarna\Core\Helper\KlarnaConfig'
+            );
 
+            $this->dataConverter = $this->factory->create(
+                'Klarna_Core',
+                'Klarna\Core\Helper\DataConverter'
+            );
             foreach ($object->getAllVisibleItems() as $singleItem) {
                 if ($checkout->getRequest()) {
                     $data = $checkout->getRequest()->toArray();

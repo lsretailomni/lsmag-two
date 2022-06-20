@@ -122,7 +122,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $cronsGroupListing = $this->readCronFile();
         $items             = [];
         $counter           = 1;
-        $storeId = $this->request->getParam('store');
+        $storeId           = $this->request->getParam('store');
         if (empty($storeId)) {
             $storeId = 1;
         }
@@ -232,11 +232,11 @@ class CronsProvider extends DataProvider implements DataProviderInterface
 
     /**
      * This is being used in Hospitality module, so do not change the structure of it.
-     * @param null $cronName
-     * @param null $storeId
+     * @param $cronName
+     * @param $storeId
      * @return bool|int|string
      */
-    public function getStatusByCronCode($cronName = null, $storeId = null, $fullReplicationStatus)
+    public function getStatusByCronCode($cronName, $storeId, $fullReplicationStatus)
     {
         if ($cronName == 'repl_data_translation_to_magento') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(

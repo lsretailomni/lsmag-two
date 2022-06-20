@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ClientToken
 {
-
     /**
      * @property string $CustomerId
      */
@@ -56,7 +55,5 @@ class ClientToken
     {
         return $this->Token;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplItemVariantRegistration implements IteratorAggregate
 {
-
     /**
      * @property ReplItemVariantRegistration[] $ReplItemVariantRegistration
      */
@@ -34,7 +33,7 @@ class ArrayOfReplItemVariantRegistration implements IteratorAggregate
     /**
      * @return ReplItemVariantRegistration[]
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplItemVariantRegistration );
     }
@@ -46,7 +45,5 @@ class ArrayOfReplItemVariantRegistration implements IteratorAggregate
     {
         return $this->ReplItemVariantRegistration;
     }
-
-
 }
 

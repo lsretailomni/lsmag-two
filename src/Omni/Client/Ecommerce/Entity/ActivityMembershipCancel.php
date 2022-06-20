@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityMembershipCancel implements RequestInterface
 {
-
     /**
      * @property string $contactNo
      */
@@ -81,7 +80,5 @@ class ActivityMembershipCancel implements RequestInterface
     {
         return $this->comment;
     }
-
-
 }
 

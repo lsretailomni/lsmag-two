@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityGetByResourceResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfBooking $ActivityGetByResourceResult
      */
@@ -43,7 +42,5 @@ class ActivityGetByResourceResponse implements ResponseInterface
     {
         return $this->ActivityGetByResourceResult;
     }
-
-
 }
 
