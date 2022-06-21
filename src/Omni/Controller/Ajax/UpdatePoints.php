@@ -147,7 +147,7 @@ class UpdatePoints extends Action
                 $response = [
                     'error'   => 'true',
                     'message' => __(
-                        'The loyalty points "%1" are not valid.',
+                        'The loyalty points "%1" are exceeding order total amount.',
                         $loyaltyPoints
                     )
                 ];
