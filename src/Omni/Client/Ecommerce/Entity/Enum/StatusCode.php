@@ -124,6 +124,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode SCHEME_INVALID()
  * @$method static StatusCode SCHEME_CLUB_INVALID()
  * @$method static StatusCode RECEIPT_NO_MISSING()
+ * @$method static StatusCode LOOKUP_VALUES_MISSING()
  * @$method static StatusCode CONTACT_IS_BLOCKED()
  * @$method static StatusCode ORDER_ALREADY_EXIST()
  * @$method static StatusCode ORDER_ID_NOT_FOUND()
@@ -402,6 +403,8 @@ class StatusCode extends Enum
     public const SCHEME_CLUB_INVALID = 'SchemeClubInvalid';
 
     public const RECEIPT_NO_MISSING = 'ReceiptNoMissing';
+
+    public const LOOKUP_VALUES_MISSING = 'LookupValuesMissing';
 
     public const CONTACT_IS_BLOCKED = 'ContactIsBlocked';
 

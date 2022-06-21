@@ -1,12 +1,13 @@
 <?php
 
-namespace Ls\Customer\Block\Order;
+namespace Ls\Customer\Block\Order\Custom;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Framework\Phrase;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
+use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
+use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 
 /**
  * Block being used for order detail items grid
@@ -20,7 +21,15 @@ class Items extends AbstractItems
      * @var OrderHelper
      */
     public $orderHelper;
+    /**
+     * @var CollectionFactory|mixed|null
+     */
+    public $itemCollectionFactory;
 
+    /**
+     * @var Collection|null
+     */
+    private $itemCollection;
     /**
      * @param Context $context
      * @param LSR $lsr
@@ -31,30 +40,34 @@ class Items extends AbstractItems
         Context $context,
         LSR $lsr,
         OrderHelper $orderHelper,
+        CollectionFactory $itemCollectionFactory,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->lsr                   = $lsr;
         $this->orderHelper           = $orderHelper;
+        $this->itemCollectionFactory = $itemCollectionFactory;
     }
 
     /**
-     * Get orderLines either using magento order or central order object
+     * Get items
      *
-     * @return mixed
+     * @return \Magento\Framework\DataObject[]
      */
-    public function getItems($trans)
+    public function getItems()
     {
-        $orderLines = $trans->getLines()->getSalesEntryLine();
-        $this->getChildBlock("custom_order_item_renderer")->setData("order", $trans);
+        if ($this->getMagOrder()) {
+            return $this->itemCollection->getItems();
+        }
 
+        $orderLines = $this->getOrder()->getLines()->getSalesEntryLine();
+        $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
                 break;
             }
         }
-
         return $orderLines;
     }
 
@@ -87,45 +100,19 @@ class Items extends AbstractItems
      */
     public function getCustomItemRenderer($item)
     {
-        return $this->getChildBlock("custom_order_item_renderer")->setData("item", $item)->toHtml();
+        return $this->getChildBlock("custom_order_item_renderer_custom")->setData("item", $item)->toHtml();
     }
 
     /**
-     * Get Id value from SalesEntryGetReturnSalesResult response
-     * @param $order
-     * @return mixed
+     * @inheritDoc
      */
-    public function getRelevantId($order)
+    protected function _prepareLayout()
     {
-        return $this->orderHelper->getParameterValues($order, "Id");
-    }
-
-    /**
-     * Get id based on current detail
-     *
-     * @param $order
-     * @return Phrase|string
-     */
-    public function getIdBasedOnDetail($order)
-    {
-        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
-        $id = '';
-
-        switch ($detail) {
-            case 'order':
-                $id = __('Order Transaction # %1', $this->getRelevantId($order));
-                break;
-            case 'shipment':
-                $id = __('Shipment # %1', $this->getRelevantId($order));
-                break;
-            case 'invoice':
-                $id = __('Invoice # %1', $this->getRelevantId($order));
-                break;
-            case 'creditmemo':
-                $id = __('Refund # %1', $this->getRelevantId($order));
-                break;
+        if ($this->getMagOrder()) {
+            $this->itemCollection = $this->itemCollectionFactory->create();
+            $this->itemCollection->setOrderFilter($this->getMagOrder());
         }
 
-        return $id;
+        return parent::_prepareLayout();
     }
 }

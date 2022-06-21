@@ -60,6 +60,11 @@ class OneList extends Entity
     protected $ListType = null;
 
     /**
+     * @property string $Name
+     */
+    protected $Name = null;
+
+    /**
      * @property float $PointAmount
      */
     protected $PointAmount = null;
@@ -274,6 +279,24 @@ class OneList extends Entity
     public function getListType()
     {
         return $this->ListType;
+    }
+
+    /**
+     * @param string $Name
+     * @return $this
+     */
+    public function setName($Name)
+    {
+        $this->Name = $Name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->Name;
     }
 
     /**

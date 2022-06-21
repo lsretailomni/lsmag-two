@@ -1,0 +1,49 @@
+<?php
+
+// @codingStandardsIgnoreFile
+
+/** @var  $block Renderer */
+$_item        = $block->getItem();
+$discountInfo = $block->getItemDiscountLines();
+$sku          = $block->getSku();
+if (!empty($_item->getVariantId())) {
+    $sku .= '-' . $_item->getVariantId();
+}
+
+if (!empty($_item->getUomId())) {
+    $sku .= '-' . $_item->getUomId();
+}
+
+use \Ls\Customer\Block\Order\Item\Custom\Renderer; ?>
+<tr id="order-item-row-<?= /* @noEscape */ $_item->getItemId() ?>">
+    <td class="col name" data-th="<?= /* @noEscape */ __('Product Name') ?>">
+        <strong class="product name product-item-name"><?= /* @noEscape */ $_item->getItemDescription() ?></strong>
+        <?php if (!empty($_item->getVariantDescription())): ?>
+            <p><?= /* @noEscape */ $_item->getVariantDescription() ?></p>
+        <?php endif;?>
+        <?php if (!empty($discountInfo)): ?>
+            <p><strong><?= /* @noEscape */ $discountInfo[0]; ?></strong></p>
+        <?php endif; ?>
+    </td>
+    <td class="col sku" data-th="<?= /* @noEscape */ __('SKU') ?>"><?= /* @noEscape */ $sku ?></td>
+    <td class="col price" data-th="<?= /* @noEscape */ __('Price') ?>">
+        <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() > 0): ?>
+            <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()); ?>
+            <div class="lsdiscountprice2">
+                <strike>
+                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()); ?>
+                </strike></div>
+            <div class="lsdiscountamount">
+                <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->priceCurrency->format($_item->getDiscountAmount()) . ')'; ?>
+            </div>
+        <?php else: ?>
+            <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice()); ?>
+        <?php endif; ?>
+    </td>
+    <td class="col qty" data-th="<?= /* @noEscape */ __('Qty') ?>">
+        <?= /* @noEscape */ $block->getFormattedQty($_item->getQuantity()); ?>
+    </td>
+    <td class="col subtotal" data-th="<?= /* @noEscape */ __('Subtotal') ?>">
+        <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()); ?>
+    </td>
+</tr>

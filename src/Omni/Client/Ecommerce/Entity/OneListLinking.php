@@ -31,6 +31,11 @@ class OneListLinking implements RequestInterface
     protected $email = null;
 
     /**
+     * @property string $phone
+     */
+    protected $phone = null;
+
+    /**
      * @property LinkStatus $status
      */
     protected $status = null;
@@ -87,6 +92,24 @@ class OneListLinking implements RequestInterface
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $phone
+     * @return $this
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     /**
