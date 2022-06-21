@@ -3,56 +3,39 @@
 namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use Magento\Framework\Registry;
+use \Ls\Omni\Helper\OrderHelper;
+use Magento\Framework\Phrase;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
-use Magento\Sales\Model\ResourceModel\Order\Item\Collection;
-use Magento\Sales\Model\ResourceModel\Order\Item\CollectionFactory;
 
 /**
  * Block being used for order detail items grid
  */
 class Items extends AbstractItems
 {
-    /**
-     * Core registry
-     *
-     * @var Registry
-     */
-    public $coreRegistry = null;
-
     /** @var  LSR $lsr */
     public $lsr;
 
     /**
-     * @var CollectionFactory|mixed|null
+     * @var OrderHelper
      */
-    public $itemCollectionFactory;
+    public $orderHelper;
 
     /**
-     * @var Collection|null
-     */
-    private $itemCollection;
-
-    /**
-     * Items constructor.
      * @param Context $context
-     * @param Registry $registry
      * @param LSR $lsr
+     * @param OrderHelper $orderHelper
      * @param array $data
-     * @param CollectionFactory|null $itemCollectionFactory
      */
     public function __construct(
         Context $context,
-        Registry $registry,
         LSR $lsr,
-        CollectionFactory $itemCollectionFactory,
+        OrderHelper $orderHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->coreRegistry          = $registry;
         $this->lsr                   = $lsr;
-        $this->itemCollectionFactory = $itemCollectionFactory;
+        $this->orderHelper           = $orderHelper;
     }
 
     /**
@@ -60,40 +43,45 @@ class Items extends AbstractItems
      *
      * @return mixed
      */
-    public function getItems()
+    public function getItems($trans)
     {
-        if ($this->getMagOrder()) {
-            return $this->itemCollection->getItems();
-        }
+        $orderLines = $trans->getLines()->getSalesEntryLine();
+        $this->getChildBlock("custom_order_item_renderer")->setData("order", $trans);
 
-        $orderLines = $this->getOrder()->getLines()->getSalesEntryLine();
-        $this->getChildBlock("custom_order_item_renderer")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
                 break;
             }
         }
+
         return $orderLines;
     }
 
     /**
-     * @return mixed
+     * Retrieve current order model instance
+     *
+     * @param $all
+     * @return false|mixed|null
      */
-    public function getOrder()
+    public function getOrder($all = false)
     {
-        return $this->coreRegistry->registry('current_order');
+        return $this->orderHelper->getOrder($all);
     }
 
     /**
+     * Get magento order
+     *
      * @return mixed
      */
     public function getMagOrder()
     {
-        return $this->coreRegistry->registry('current_mag_order');
+        return $this->orderHelper->getGivenValueFromRegistry('current_mag_order');
     }
 
     /**
+     * Get custom item renderer
+     *
      * @param $item
      * @return string
      */
@@ -103,15 +91,41 @@ class Items extends AbstractItems
     }
 
     /**
-     * @inheritDoc
+     * Get Id value from SalesEntryGetReturnSalesResult response
+     * @param $order
+     * @return mixed
      */
-    protected function _prepareLayout()
+    public function getRelevantId($order)
     {
-        if ($this->getMagOrder()) {
-            $this->itemCollection = $this->itemCollectionFactory->create();
-            $this->itemCollection->setOrderFilter($this->getMagOrder());
+        return $this->orderHelper->getParameterValues($order, "Id");
+    }
+
+    /**
+     * Get id based on current detail
+     *
+     * @param $order
+     * @return Phrase|string
+     */
+    public function getIdBasedOnDetail($order)
+    {
+        $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
+        $id = '';
+
+        switch ($detail) {
+            case 'order':
+                $id = __('Order Transaction # %1', $this->getRelevantId($order));
+                break;
+            case 'shipment':
+                $id = __('Shipment # %1', $this->getRelevantId($order));
+                break;
+            case 'invoice':
+                $id = __('Invoice # %1', $this->getRelevantId($order));
+                break;
+            case 'creditmemo':
+                $id = __('Refund # %1', $this->getRelevantId($order));
+                break;
         }
 
-        return parent::_prepareLayout();
+        return $id;
     }
 }

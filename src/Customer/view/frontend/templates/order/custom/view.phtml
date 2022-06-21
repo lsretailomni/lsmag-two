@@ -1,0 +1,74 @@
+<?php
+// @codingStandardsIgnoreFile
+
+use Magento\Shipping\Helper\Data;
+use \Ls\Customer\Block\Order\Custom\View;
+
+?>
+<?php /** @var  $block View * */ ?>
+<?php list($title, $class) = $block->getTitleAndClassBasedOnDetail(); ?>
+<div class="order-details-items <?= /* @noEscape */ $class; ?>">
+    <?php
+    $_order = $block->getOrder();
+    $magOrder = $block->getMagOrder();
+    ?>
+    <div class="order-title">
+        <strong><?= /* @noEscape */ $title ?></strong>
+        <?php if ($block->getInvoiceOption()): ?>
+            <a href="<?= /* @noEscape */ $block->getPrintAllInvoicesUrl($magOrder) ?>"
+               target="_blank"
+               class="action print">
+                <span><?= /* @noEscape */ __('Print Invoice') ?></span>
+            </a>
+        <?php elseif ($block->getShipmentOption() && $block->hideShippingLinks()) : ?>
+            <a href="<?= /* @noEscape */  $block->getPrintAllShipmentUrl($magOrder) ?>"
+               target="_blank"
+               class="action print">
+                <span><?= /* @noEscape */ __('Print Shipment') ?></span>
+            </a>
+            <?php foreach ($magOrder->getShipmentsCollection() as $_shipment): ?>
+                <?php $tracks = $_shipment->getTracksCollection(); ?>
+                <?php if ($tracks->count()): ?>
+                    <dl class="order-tracking"
+                        id="my-tracking-table-<?=  /* @noEscape */ $_shipment->getId() ?>">
+                        <dt class="tracking-title"><?=  /* @noEscape */__('Tracking Number(s):') ?></dt>
+                        <dd class="tracking-content">
+                            <?php
+                            $i     = 1;
+                            $_size = $tracks->count();
+                            ?>
+                            <?php foreach ($tracks as $track): ?>
+                                <?= $track->getTitle(); ?>
+                                <?php if ($track->isCustom()): ?>
+                                    <?=  /* @noEscape */ $track->getNumber() ?>
+                                <?php else: ?>
+                                <a href="#"
+                                    data-mage-init='{"popupWindow": {"windowURL":"<?= /* @escapeNotVerified */
+                                    $this->helper(Data::class)->getTrackingPopupUrlBySalesModel($track) ?>","windowName":"trackorder","width":800,"height":600,"left":0,"top":0,"resizable":1,"scrollbars":1}}'>
+                                    <span><?= $block->escapeHtml($track->getNumber()) ?></span>
+                                </a>
+                                <?php endif; ?>
+                                <?php if ($i != $_size): ?> , <?php endif; ?>
+                                <?php $i++;?>
+                            <?php endforeach; ?>
+                            <a href="#"
+                               data-mage-init='{"popupWindow": {"windowURL":"<?= /* @noEscape */
+                               $this->helper(Data::class)->getTrackingPopupUrlBySalesModel($_shipment) ?>","windowName":"trackshipment","width":800,"height":600,"top":0,"left":0,"resizable":1,"scrollbars":1}}'
+                               title="<?=  /* @noEscape */ __('Track this shipment') ?>"
+                               class="action track">
+                                <span><?=  /* @noEscape */ __('Track this shipment') ?></span>
+                            </a>
+                        </dd>
+                    </dl>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        <?php elseif ($class == 'refunds') : ?>
+            <a href="<?= /* @noEscape */  $block->getPrintAllRefundsUrl($magOrder) ?>"
+               target="_blank"
+               class="action print">
+                <span><?= /* @noEscape */ __('Print Refunds') ?></span>
+            </a>
+        <?php endif; ?>
+    </div>
+    <?= /* @noEscape */ $block->getChildHtml('custom_order_items_custom') ?>
+</div>

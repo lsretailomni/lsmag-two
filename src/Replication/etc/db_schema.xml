@@ -432,6 +432,8 @@
   </table>
   <table name="ls_replication_repl_item_variant_registration" resource="default" engine="innodb" comment="ReplEcommItemVariantRegistrations">
     <column xsi:type="int" name="repl_item_variant_registration_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_item_variant_registration_id"/>
+    <column xsi:type="int" name="BlockedOnECom" padding="11" nullable="true" comment="BlockedOnECom"/>
+    <column xsi:type="int" name="BlockedOnPos" padding="11" nullable="true" comment="BlockedOnPos"/>
     <column xsi:type="text" name="FrameworkCode" nullable="true" comment="FrameworkCode"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>

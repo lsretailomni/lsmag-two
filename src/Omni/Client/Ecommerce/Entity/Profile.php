@@ -40,6 +40,11 @@ class Profile extends Entity
     protected $Mandatory = null;
 
     /**
+     * @property string $TextValue
+     */
+    protected $TextValue = null;
+
+    /**
      * @param boolean $ContactValue
      * @return $this
      */
@@ -137,6 +142,24 @@ class Profile extends Entity
     public function getMandatory()
     {
         return $this->Mandatory;
+    }
+
+    /**
+     * @param string $TextValue
+     * @return $this
+     */
+    public function setTextValue($TextValue)
+    {
+        $this->TextValue = $TextValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextValue()
+    {
+        return $this->TextValue;
     }
 
 

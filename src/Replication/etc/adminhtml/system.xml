@@ -220,17 +220,14 @@
             <group id="restore_database"
                    translate="label"
                    type="text"
-                   sortOrder="180"
+                   sortOrder="500"
                    showInDefault="1"
                    showInWebsite="0"
-                   showInStore="0">
-                <depends>
-                    <field id="ls_mag/ls_enable/enabled">1</field>
-                </depends>
+                   showInStore="1">
                 <label>Restore Database</label>
                 <comment>
                     <![CDATA[
-                In case of Multi store setup, this will reset data for all the stores in the Magento database.
+                In case of Multi store setup, you can reset data specifically for a store by changing scope to specific store view, otherwise it will reset data for all the stores in the Magento database.
                 ]]>
                 </comment>
                 <field id="orders"
@@ -238,7 +235,7 @@
                        type="button"
                        sortOrder="10"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Orders</label>
                     <comment>You cannot recover from this action</comment>
@@ -251,7 +248,7 @@
                        type="button"
                        sortOrder="20"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Customers</label>
                     <comment>You cannot recover from this action</comment>
@@ -264,7 +261,7 @@
                        type="button"
                        sortOrder="30"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Products &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -277,7 +274,7 @@
                        type="button"
                        sortOrder="40"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Categories &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -290,7 +287,7 @@
                        type="button"
                        sortOrder="50"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Attributes &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -303,7 +300,7 @@
                        type="button"
                        sortOrder="60"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Delete Discounts &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
@@ -316,8 +313,8 @@
                        type="button"
                        sortOrder="70"
                        showInDefault="1"
-                       showInWebsite="1"
-                       showInStore="1">
+                       showInWebsite="0"
+                       showInStore="0">
                     <label>Delete Tax Rules &amp; set processed to false</label>
                     <comment>You cannot recover from this action</comment>
                     <button_label>Delete !</button_label>
@@ -329,7 +326,7 @@
                        type="button"
                        sortOrder="80"
                        showInDefault="1"
-                       showInWebsite="1"
+                       showInWebsite="0"
                        showInStore="1">
                     <label>Truncate all ls_ tables</label>
                     <comment>You cannot recover from this action</comment>

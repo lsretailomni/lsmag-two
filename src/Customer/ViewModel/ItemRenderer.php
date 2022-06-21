@@ -4,9 +4,9 @@ namespace Ls\Customer\ViewModel;
 
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
@@ -14,17 +14,15 @@ use Magento\Framework\View\Element\Block\ArgumentInterface;
  */
 class ItemRenderer implements ArgumentInterface
 {
-
     /**
      * @var ItemHelper
      */
     public $itemHelper;
 
     /**
-     *
-     * @var Registry
+     * @var OrderHelper
      */
-    public $coreRegistry;
+    public $orderHelper;
 
     /**
      * @var PriceCurrencyInterface
@@ -33,13 +31,13 @@ class ItemRenderer implements ArgumentInterface
 
     /**
      * @param ItemHelper $itemHelper
-     * @param Registry $registry
+     * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
      */
-    public function __construct(ItemHelper $itemHelper, Registry $registry, PriceCurrencyInterface $priceCurrency)
+    public function __construct(ItemHelper $itemHelper, OrderHelper $orderHelper, PriceCurrencyInterface $priceCurrency)
     {
-        $this->itemHelper = $itemHelper;
-        $this->coreRegistry = $registry;
+        $this->itemHelper    = $itemHelper;
+        $this->orderHelper   = $orderHelper;
         $this->priceCurrency = $priceCurrency;
     }
 
@@ -50,7 +48,7 @@ class ItemRenderer implements ArgumentInterface
      */
     public function getOrder()
     {
-        return $this->coreRegistry->registry('current_order');
+        return $this->orderHelper->getGivenValueFromRegistry('current_order');
     }
 
     /**

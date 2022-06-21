@@ -15,6 +15,8 @@ use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
+use Magento\CatalogRule\Model\Rule\Condition\Combine;
+use Magento\CatalogRule\Model\Rule\Condition\Product;
 use Magento\CatalogRule\Model\Rule\Job;
 use Magento\CatalogRule\Model\RuleFactory;
 use Magento\Framework\DataObject;
@@ -30,9 +32,6 @@ use Magento\Store\Api\Data\StoreInterface;
  * One Sales Rule  = All discounts based on Published Offer.
  * Condition will be to have any of the value equal to the SKUs found in it.
  * Priority will be same for published offer as it was created in Nav.
- *
- * Class DiscountCreateTask
- * @package Ls\Replication\Cron
  */
 class DiscountCreateTask
 {
@@ -95,7 +94,6 @@ class DiscountCreateTask
     public $store;
 
     /**
-     * DiscountCreateTask constructor.
      * @param CatalogRuleRepositoryInterface $catalogRule
      * @param RuleFactory $ruleFactory
      * @param RuleCollectionFactory $ruleCollectionFactory
@@ -282,79 +280,83 @@ class DiscountCreateTask
     }
 
     /**
+     * Add new catalog rule
+     *
      * @param ReplDiscount $replDiscount
      * @param array $skuArray
      * @param $customerGroupIds
-     * @param null $amount
+     * @param $amount
+     * @return void
+     * @throws NoSuchEntityException
      */
     public function addSalesRule(ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
     {
-        if ($replDiscount instanceof ReplDiscount) {
-            $websiteIds = $this->replicationHelper->getAllWebsitesIds();
-            if ($amount == null) {
-                $amount = $replDiscount->getDiscountValue();
-            }
-            $rule = $this->ruleFactory->create();
-            // Create root conditions to match with all child conditions
-            $conditions['1']    =
-                [
-                    'type'       => 'Magento\CatalogRule\Model\Rule\Condition\Combine',
-                    'aggregator' => 'all',
-                    'value'      => 1,
-                    'new_child'  => ''
-                ];
-            $conditions['1--1'] =
-                [
-                    'type'      => 'Magento\CatalogRule\Model\Rule\Condition\Product',
-                    'attribute' => 'sku',
-                    'operator'  => '()',
-                    'value'     => implode(',', $skuArray)
-                ];
-            $rule->setName($replDiscount->getOfferNo())
-                ->setDescription($replDiscount->getDescription())
-                ->setIsActive(1)
-                ->setCustomerGroupIds($customerGroupIds)
-                ->setWebsiteIds($websiteIds)
-                ->setFromDate($replDiscount->getFromDate());
+        $websiteIds = [$this->replicationHelper->getWebsiteIdGivenStoreId($replDiscount->getScopeId())];
 
-            if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
-                $rule->setToDate($replDiscount->getToDate());
-            }
+        if ($amount == null) {
+            $amount = $replDiscount->getDiscountValue();
+        }
+        $rule = $this->ruleFactory->create();
+        // Create root conditions to match with all child conditions
+        $conditions['1']    =
+            [
+                'type'       => Combine::class,
+                'aggregator' => 'all',
+                'value'      => 1,
+                'new_child'  => ''
+            ];
+        $conditions['1--1'] =
+            [
+                'type'      => Product::class,
+                'attribute' => 'sku',
+                'operator'  => '()',
+                'value'     => implode(',', $skuArray)
+            ];
+        $rule->setName($replDiscount->getOfferNo())
+            ->setDescription($replDiscount->getDescription())
+            ->setIsActive(1)
+            ->setCustomerGroupIds($customerGroupIds)
+            ->setWebsiteIds($websiteIds)
+            ->setFromDate($replDiscount->getFromDate());
 
-            /**
-             * Default Values for Action Types.
-             * by_percent
-             * by_fixed
-             * to_percent
-             * to_fixed
-             */
-            if ($replDiscount->getDiscountValueType() == 'Amount') {
-                $type = 'by_fixed';
-            } else {
-                $type = 'by_percent';
+        if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
+            $rule->setToDate($replDiscount->getToDate());
+        }
+
+        /**
+         * Default Values for Action Types.
+         * by_percent
+         * by_fixed
+         * to_percent
+         * to_fixed
+         */
+        if ($replDiscount->getDiscountValueType() == 'Amount') {
+            $type = 'by_fixed';
+        } else {
+            $type = 'by_percent';
+        }
+        $rule->setSimpleAction($type)
+            ->setDiscountAmount($amount)
+            ->setStopRulesProcessing(1)
+            ->setSortOrder($replDiscount->getPriorityNo());
+        $rule->setData('conditions', $conditions);
+        // @codingStandardsIgnoreLine
+        $validateResult = $rule->validateData(new DataObject($rule->getData()));
+
+        if ($validateResult !== true) {
+            foreach ($validateResult as $errorMessage) {
+                $this->logger->debug($errorMessage);
             }
-            $rule->setSimpleAction($type)
-                ->setDiscountAmount($amount)
-                ->setStopRulesProcessing(1)
-                ->setSortOrder($replDiscount->getPriorityNo());
-            $rule->setData('conditions', $conditions);
+            return;
+        }
+        try {
+            $rule->loadPost($rule->getData());
+            $this->catalogRule->save($rule);
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
+            $replDiscount->setData('is_failed', 1);
             // @codingStandardsIgnoreLine
-            $validateResult = $rule->validateData(new DataObject($rule->getData()));
-            if ($validateResult !== true) {
-                foreach ($validateResult as $errorMessage) {
-                    $this->logger->debug($errorMessage);
-                }
-                return;
-            }
-            try {
-                $rule->loadPost($rule->getData());
-                $this->catalogRule->save($rule);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-                $replDiscount->setData('is_failed', 1);
-                // @codingStandardsIgnoreLine
-                $this->replDiscountRepository->save($replDiscount);
-            }
+            $this->replDiscountRepository->save($replDiscount);
         }
     }
 

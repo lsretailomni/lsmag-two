@@ -26,8 +26,11 @@ use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as 
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
@@ -52,6 +55,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -69,6 +73,8 @@ use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
+use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 
 /**
  * Useful helper functions for replication
@@ -93,6 +99,9 @@ class ReplicationHelper extends AbstractHelper
         'category',
         'product'
     ];
+
+    public $connection;
+
     /** @var StoreManagerInterface */
     public $storeManager;
 
@@ -252,6 +261,25 @@ class ReplicationHelper extends AbstractHelper
     public $defaultSourceProviderFactory;
 
     /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory
+     */
+    public $productCollectionFactory;
+
+    /**
+     * @var CategoryRepositoryInterface
+     */
+    public $categoryRepository;
+    /**
+     * @var ResourceModelCategory
+     */
+    public $categoryResourceModel;
+
+    /**
+     * @var RuleCollectionFactory
+     */
+    public $ruleCollectionFactory;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -295,6 +323,10 @@ class ReplicationHelper extends AbstractHelper
      * @param SourceItemsSaveInterface $sourceItemsSaveInterface
      * @param SourceItemInterfaceFactory $sourceItemFactory
      * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ResourceModelCategory $categoryResourceModel
+     * @param RuleCollectionFactory $ruleCollectionFactory
      */
     public function __construct(
         Context $context,
@@ -339,7 +371,11 @@ class ReplicationHelper extends AbstractHelper
         ReplInvStatusRepository $replInvStatusRepository,
         SourceItemsSaveInterface $sourceItemsSaveInterface,
         SourceItemInterfaceFactory $sourceItemFactory,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
+        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
+        CategoryRepositoryInterface $categoryRepository,
+        ResourceModelCategory $categoryResourceModel,
+        RuleCollectionFactory $ruleCollectionFactory
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -383,6 +419,10 @@ class ReplicationHelper extends AbstractHelper
         $this->sourceItemsSaveInterface                  = $sourceItemsSaveInterface;
         $this->sourceItemFactory                         = $sourceItemFactory;
         $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
+        $this->productCollectionFactory                  = $productCollectionFactory;
+        $this->categoryRepository                        = $categoryRepository;
+        $this->categoryResourceModel                     = $categoryResourceModel;
+        $this->ruleCollectionFactory                     = $ruleCollectionFactory;
         parent::__construct(
             $context
         );
@@ -768,7 +808,7 @@ class ReplicationHelper extends AbstractHelper
      * @param boolean $excludeDeleted
      * @return SearchCriteria
      */
-public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
+    public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, $excludeDeleted = true)
     {
         $attr_processed = $this->filterBuilder->setField('main_table.processed')
             ->setValue('0')
@@ -1475,8 +1515,12 @@ public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, 
      */
     public function removeDirectory($mediaDirectory)
     {
-        if ($this->fileSystemDirectory->exists($mediaDirectory)) {
-            $this->fileSystemDirectory->remove($mediaDirectory);
+        try {
+            if ($this->fileSystemDirectory->exists($mediaDirectory)) {
+                $this->fileSystemDirectory->remove($mediaDirectory);
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
         }
     }
 
@@ -1573,21 +1617,25 @@ public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, 
     }
 
     /**
-     * @param string $type
+     * Delete url rewrites for given type and scope_id
+     *
+     * @param $type
+     * @param $scopeId
+     * @return void
      */
-    public function resetUrlRewriteByType($type = '')
+    public function resetUrlRewriteByType($type = '', $scopeId = '')
     {
         if ($type && in_array($type, $this->allowedUrlTypes)) {
-            // only process if type is either category|product
-            $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-            $lsQuery    = "DELETE FROM " . $this->resource->getTableName("url_rewrite") . " WHERE entity_type = '" . $type . "' ";
-            try {
-                $connection->query($lsQuery);
-            } catch (Exception $e) {
-                $this->_logger->debug($e->getMessage());
+            $conditions['entity_type = ?'] = $type;
+
+            if (!empty($scopeId)) {
+                $conditions['store_id = ?'] = $scopeId;
             }
+            $this->deleteGivenTableDataGivenConditions(
+                $this->resource->getTableName('url_rewrite'),
+                $conditions
+            );
         }
-        return;
     }
 
     /**
@@ -2357,5 +2405,209 @@ public function buildCriteriaForArrayWithAlias(array $filters, $pagesize = 100, 
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Get all products in a store
+     *
+     * @param $websiteId
+     * @return Collection
+     */
+    public function getProductCollectionGivenWebsiteId($websiteId)
+    {
+        $collection = $this->productCollectionFactory->create();
+        $collection->addStoreFilter($websiteId);
+
+        return $collection;
+    }
+
+    /**
+     * @param $childCollection
+     * @param $columns
+     * @return mixed
+     */
+    public function getGivenColumnsFromGivenCollection($childCollection, $columns)
+    {
+        $parentCollection = clone $childCollection;
+        $parentCollection
+            ->getSelect()
+            ->reset()
+            ->from(['e' => new \Zend_Db_Expr('(' . $childCollection->getSelect() . ')')]);
+        $parentCollection
+            ->getSelect()
+            ->reset(\Zend_Db_Select::COLUMNS)
+            ->columns($columns);
+
+        return $parentCollection;
+    }
+
+    /**
+     * Get Connection
+     *
+     * @return AdapterInterface
+     */
+    public function getConnection()
+    {
+        if (!$this->connection) {
+            $this->connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        }
+
+        return $this->connection;
+    }
+
+    /**
+     * Delete given table data given scope_id
+     *
+     * @param $tableName
+     * @param $conditions
+     * @return void
+     */
+    public function deleteGivenTableDataGivenConditions($tableName, $conditions)
+    {
+        try {
+            $this->getConnection()->delete($tableName, $conditions);
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Update given table data given conditions
+     *
+     * @param $tableName
+     * @param $bind
+     * @param $conditions
+     * @return void
+     */
+    public function updateGivenTableDataGivenConditions($tableName, $bind, $conditions)
+    {
+        try {
+            $this->getConnection()->update(
+                $tableName,
+                $bind,
+                $conditions
+            );
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Get given table name
+     *
+     * @param $tableName
+     * @return string
+     */
+    public function getGivenTableName($tableName)
+    {
+        return $this->resource->getTableName($tableName);
+    }
+
+    /**
+     * Truncate given table
+     *
+     * @param $tableName
+     * @return void
+     */
+    public function truncateGivenTable($tableName)
+    {
+        try {
+            if ($this->getConnection()->isTableExists($tableName)) {
+                $this->getConnection()->truncateTable($tableName);
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Execute Given Query
+     *
+     * @param $query
+     * @return void
+     */
+    public function executeGivenQuery($query)
+    {
+        try {
+            $this->getConnection()->query($query);
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Get website id given store id
+     *
+     * @param $storeId
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getWebsiteIdGivenStoreId($storeId)
+    {
+        return $this->storeManager->getStore($storeId)->getWebsiteId();
+    }
+
+    /**
+     * Update all given crons with given status
+     *
+     * @param $crons
+     * @param $scopeId
+     * @param $status
+     * @return void
+     */
+    public function updateAllGivenCronsWithGivenStatus($crons, $scopeId, $status)
+    {
+        foreach ($crons as $cron) {
+            if (!empty($scopeId)) {
+                $this->updateConfigValue(
+                    $status,
+                    $cron,
+                    $scopeId
+                );
+            } else {
+                $this->updateCronStatusForAllStores(
+                    $status,
+                    $cron
+                );
+            }
+        }
+    }
+
+    /**
+     * Get category given id
+     *
+     * @param $categoryId
+     * @return CategoryInterface
+     * @throws NoSuchEntityException
+     */
+    public function getCategoryGivenId($categoryId)
+    {
+        return $this->categoryRepository->get($categoryId);
+    }
+
+    /**
+     * Delete category children given category
+     *
+     * @param $category
+     * @return void
+     */
+    public function deleteChildrenGivenCategory($category)
+    {
+        $this->categoryResourceModel->deleteChildren($category);
+    }
+
+    /**
+     * Get all catalog rules in a website
+     *
+     * @param $websiteId
+     * @return \Magento\CatalogRule\Model\ResourceModel\Rule\Collection
+     */
+    public function getCatalogRulesCollectionGivenWebsiteId($websiteId)
+    {
+        $websiteIds = [$websiteId];
+        $collection = $this->ruleCollectionFactory->create();
+        $collection->addFieldToFilter('website_ids', $websiteIds);
+
+        return $collection;
     }
 }
