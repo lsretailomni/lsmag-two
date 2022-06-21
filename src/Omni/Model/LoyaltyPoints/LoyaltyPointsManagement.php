@@ -91,7 +91,11 @@ class LoyaltyPointsManagement
         }
         $itemsCount         = $cartQuote->getItemsCount();
         $isPointValid       = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);
-        $orderBalance       = $cartQuote->getData('grand_total');
+        $orderBalance = $this->loyaltyHelper->dataHelper->getOrderBalance(
+            $cartQuote->getLsGiftCardAmountUsed(),
+            0,
+            $this->loyaltyHelper->basketHelper->getBasketSessionValue()
+        );
         $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid(
             $orderBalance,
             $loyaltyPoints
@@ -102,9 +106,15 @@ class LoyaltyPointsManagement
             $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
             $this->quoteRepository->save($cartQuote);
         } else {
-            throw new CouldNotSaveException(
-                __("The loyalty points '%1' are not valid.", $loyaltyPoints)
-            );
+            if (!$isPointsLimitValid) {
+                throw new CouldNotSaveException(
+                    __('The loyalty points "%1" are exceeding order total amount.', $loyaltyPoints)
+                );
+            } else {
+                throw new CouldNotSaveException(
+                    __("The loyalty points '%1' are not valid.", $loyaltyPoints)
+                );
+            }
         }
         return true;
     }

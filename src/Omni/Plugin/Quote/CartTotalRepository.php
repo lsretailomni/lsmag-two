@@ -17,10 +17,6 @@ use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\ResourceModel\Quote as QuoteResourceModel;
 use Magento\SalesRule\Model\Coupon;
 
-/**
- * Class CartTotalRepository
- * @package Ls\Omni\Plugin\Quote
- */
 class CartTotalRepository
 {
     /**
@@ -106,10 +102,10 @@ class CartTotalRepository
         if ($this->lsr->isLSR($quote->getStoreId())) {
             $pointsConfig = [
                 'rateLabel' => $quote->getBaseCurrencyCode() . ' ' . round(
-                        $this->loyaltyHelper->getPointRate() * 10,
-                        2
-                    ),
-                'balance'   => $this->loyaltyHelper->getMemberPoints(),
+                    $this->loyaltyHelper->getPointRate() * 10,
+                    2
+                ),
+                'balance'   => $this->loyaltyHelper->getLoyaltyPointsAvailableToCustomer(),
             ];
 
             /** @var TotalsExtensionInterface $totalsExtension */

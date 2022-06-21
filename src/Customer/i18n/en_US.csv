@@ -4,16 +4,13 @@
 Loyalty,Loyalty
 "Go To Product","Go To Product"
 "Go To Category","Go To Category"
+"Order # %1","Order # %1"
+"Back to My Orders","Back to My Orders"
+"View Another Order","View Another Order"
+Order,Order
 "%1 # %2","%1 # %2"
 "Click and Collect","Click and Collect"
-"Flat Rate - Fixed","Flat Rate - Fixed"
-Cash,Cash
-Card,Card
-Coupon,Coupon
-"Loyalty Points","Loyalty Points"
-"Gift Card","Gift Card"
 Unknown,Unknown
-"Pay At Store","Pay At Store"
 Save,Save
 "There is no account found with the provided email/username.","There is no account found with the provided email/username."
 "We're unable to send the password reset email.","We're unable to send the password reset email."
@@ -41,6 +38,12 @@ Save,Save
 "Your email address is invalid.","Your email address is invalid."
 "Sorry! No account found with the provided email address.","Sorry! No account found with the provided email address."
 "Invalid LS Central login or password.","Invalid LS Central login or password."
+"There is already an account with this email address.
+                             If you are sure that it is your email address,
+                             please proceed to login or use different email address.","There is already an account with this email address.
+                             If you are sure that it is your email address,
+                             please proceed to login or use different email address."
+"Cannot set the customer's password","Cannot set the customer's password"
 "Membership Information","Membership Information"
 "Member Contact No.:","Member Contact No.:"
 "Member Card No.:","Member Card No.:"
@@ -79,6 +82,19 @@ Password,Password
 "Offer Type: ","Offer Type: "
 "Expiry: ","Expiry: "
 "No offers","No offers"
+"Print All Refunds","Print All Refunds"
+"Refund #","Refund #"
+"Items Refunded","Items Refunded"
+"Product Name","Product Name"
+SKU,SKU
+Price,Price
+Qty,Qty
+Subtotal,Subtotal
+"Useful Information","Useful Information"
+"Store Name:","Store Name:"
+"Click & Collect:","Click & Collect:"
+"Loyalty Points Rewarded:","Loyalty Points Rewarded:"
+"Gift Card Code:","Gift Card Code:"
 Orders,Orders
 "Doc ID","Doc ID"
 Date,Date
@@ -102,31 +118,24 @@ Cancel,Cancel
 "Billing Address","Billing Address"
 "Payment Method","Payment Method"
 "Print Order","Print Order"
-"Product Name","Product Name"
-SKU,SKU
-Price,Price
-Qty,Qty
-Subtotal,Subtotal
 Ordered,Ordered
 Shipped,Shipped
 Canceled,Canceled
 Refunded,Refunded
+Invoiced,Invoiced
 "Items Ordered","Items Ordered"
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
 "Recent Orders","Recent Orders"
 "View All","View All"
 "Qty Shipped","Qty Shipped"
-"Useful Information","Useful Information"
-"Store Name:","Store Name:"
-"Click & Collect:","Click & Collect:"
-"Loyalty Points Rewarded:","Loyalty Points Rewarded:"
-"Gift Card Code:","Gift Card Code:"
+"Requested Delivery Date:","Requested Delivery Date:"
 "Print Invoice","Print Invoice"
 "Print Shipment","Print Shipment"
-"Track this shipment","Track this shipment"
 "Tracking Number(s):","Tracking Number(s):"
+"Track this shipment","Track this shipment"
 Name,Name
 "Phone Number","Phone Number"
+or,or
 "Enter a valid username prefix. Valid characters are A-Z a-z 0-9 . _ - @.","Enter a valid username prefix. Valid characters are A-Z a-z 0-9 . _ - @."
 "Customer Dashboard and Loyalty Elements","Customer Dashboard and Loyalty Elements"
 "Show Customer Club Information","Show Customer Club Information"
@@ -142,7 +151,9 @@ Name,Name
 "Expiry Date Format","Expiry Date Format"
 "Customer username prefix","Customer username prefix"
 "Allow Order Cancellation on Frontend","Allow Order Cancellation on Frontend"
+"Master Password","Master Password"
 "Member Card No.","Member Card No."
 "Member Username","Member Username"
 Invoices,Invoices
 "Order Shipments","Order Shipments"
+Refunds,Refunds

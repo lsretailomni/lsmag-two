@@ -21,6 +21,7 @@ use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
@@ -117,7 +118,11 @@ class BasketHelper extends AbstractHelper
     public $cartRepository;
 
     /**
-     * BasketHelper constructor.
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
      * @param Context $context
      * @param Cart $cart
      * @param ProductRepository $productRepository
@@ -135,6 +140,7 @@ class BasketHelper extends AbstractHelper
      * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
      * @param CustomerFactory $customerFactory
      * @param CartRepositoryInterface $cartRepository
+     * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
         Context $context,
@@ -153,7 +159,8 @@ class BasketHelper extends AbstractHelper
         CartRepositoryInterface $quoteRepository,
         \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
         CustomerFactory $customerFactory,
-        CartRepositoryInterface $cartRepository
+        CartRepositoryInterface $cartRepository,
+        LoyaltyHelper $loyaltyHelper
     ) {
         parent::__construct($context);
         $this->cart                           = $cart;
@@ -173,6 +180,7 @@ class BasketHelper extends AbstractHelper
         $this->customerFactory                = $customerFactory;
         $this->cartRepository                 = $cartRepository;
         $this->calculateBasket                = $this->lsr->getPlaceToCalculateBasket();
+        $this->loyaltyHelper                  = $loyaltyHelper;
     }
 
     /**
@@ -1076,15 +1084,43 @@ class BasketHelper extends AbstractHelper
 
         $basketData = $this->update($oneList);
         $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+        $cartQuote = $this->checkoutSession->getQuote();
 
-        if ($this->checkoutSession->getQuote()->getLsGiftCardAmountUsed() > 0 ||
-            $this->checkoutSession->getQuote()->getLsPointsSpent() > 0) {
-            $this->data->orderBalanceCheck(
-                $this->checkoutSession->getQuote()->getLsGiftCardNo(),
-                $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
-                $this->checkoutSession->getQuote()->getLsPointsSpent(),
-                $basketData
-            );
+        if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
+            $cartQuote->getLsPointsSpent() > 0) {
+            $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+        }
+    }
+
+    /**
+     * Check if loyalty points valid, if not remove loyalty points and show error msg
+     *
+     * @param $cartQuote
+     * @param $basketData
+     * @return void
+     * @throws NoSuchEntityException
+     * @throws AlreadyExistsException
+     */
+    public function validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData)
+    {
+        $this->data->orderBalanceCheck(
+            $cartQuote->getLsGiftCardNo(),
+            $cartQuote->getLsGiftCardAmountUsed(),
+            $cartQuote->getLsPointsSpent(),
+            $basketData
+        );
+        $loyaltyPoints = $cartQuote->getLsPointsSpent();
+        $orderBalance = $this->data->getOrderBalance(
+            $cartQuote->getLsGiftCardAmountUsed(),
+            0,
+            $this->getBasketSessionValue()
+        );
+        $isPointsLimitValid = $this->loyaltyHelper->isPointsLimitValid($orderBalance, $loyaltyPoints);
+
+        if (!$isPointsLimitValid) {
+            $cartQuote->setLsPointsSpent(0);
+            $this->quoteRepository->save($cartQuote);
+            $this->itemHelper->setGrandTotalGivenQuote($cartQuote, $basketData, 1);
         }
     }
 
