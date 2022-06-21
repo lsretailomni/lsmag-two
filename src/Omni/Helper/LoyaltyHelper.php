@@ -9,103 +9,16 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
-use Magento\Directory\Model\Currency;
-use Magento\Checkout\Model\Session\Proxy;
-use Magento\Customer\Api\GroupRepositoryInterface;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\App\Filesystem\DirectoryList;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Filesystem;
 use Magento\Quote\Model\Quote\Item;
 
 /**
  * Class LoyaltyHelper for handling loyalty points
  */
-class LoyaltyHelper extends AbstractHelper
+class LoyaltyHelper extends AbstractHelperOmni
 {
-
-    const SERVICE_TYPE = 'ecommerce';
-
-    /**
-     * @var CustomerFactory
-     */
-    public $customerFactory;
-
-    /**
-     * @var CustomerProxy
-     */
-    public $customerSession;
-
-    /**
-     * @var Filesystem
-     */
-    public $filesystem;
-
-    /**
-     * @var $checkoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var GroupRepositoryInterface
-     */
-    public $groupRepository;
-
-    /**
-     * @var CacheHelper
-     */
-    public $cacheHelper;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var Currency
-     */
-    public $currencyHelper;
-
-    /**
-     * LoyaltyHelper constructor.
-     * @param Context $context
-     * @param CustomerFactory $customerFactory
-     * @param CustomerProxy $customerSession
-     * @param Proxy $checkoutSession
-     * @param Filesystem $Filesystem
-     * @param GroupRepositoryInterface $groupRepository
-     * @param CacheHelper $cacheHelper
-     * @param LSR $lsr
-     * @param Currency $currencyHelper
-     */
-    public function __construct(
-        Context $context,
-        CustomerFactory $customerFactory,
-        CustomerProxy $customerSession,
-        Proxy $checkoutSession,
-        Filesystem $Filesystem,
-        GroupRepositoryInterface $groupRepository,
-        CacheHelper $cacheHelper,
-        LSR $lsr,
-        Currency $currencyHelper
-    ) {
-        $this->customerFactory = $customerFactory;
-        $this->customerSession = $customerSession;
-        $this->checkoutSession = $checkoutSession;
-        $this->filesystem      = $Filesystem;
-        $this->groupRepository = $groupRepository;
-        $this->cacheHelper     = $cacheHelper;
-        $this->lsr             = $lsr;
-        $this->currencyHelper  = $currencyHelper;
-        parent::__construct(
-            $context
-        );
-    }
-
     /**
      * @return Entity\ArrayOfProfile|Entity\ProfilesGetAllResponse|ResponseInterface|null
      */
@@ -204,6 +117,37 @@ class LoyaltyHelper extends AbstractHelper
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Get loyalty points available to customer
+     *
+     * @return int|Entity\CardGetPointBalanceResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
+     */
+    public function getLoyaltyPointsAvailableToCustomer()
+    {
+        $cardId = $this->contactHelper->getCardIdFromCustomerSession();
+        $points = $this->basketHelper->getMemberPointsFromCheckoutSession();
+        $response = null;
+
+        if ($points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            // @codingStandardsIgnoreStart
+            $request = new Operation\CardGetPointBalance();
+            $entity = new Entity\CardGetPointBalance();
+            // @codingStandardsIgnoreEnd
+            $entity->setCardId($cardId);
+            try {
+                $response = $request->execute($entity);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            $points = $response ? $response->getResult() : 0;
+
+            $this->basketHelper->setMemberPointsInCheckoutSession($points);
+        }
+
+        return $points ?? 0;
     }
 
     /**
@@ -322,13 +266,10 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function isPointsLimitValid($grandTotal, $loyaltyPoints)
     {
-        $pointrate      = $this->getPointRate();
-        $requiredAmount = $pointrate * $loyaltyPoints;
-        if ($requiredAmount <= $grandTotal) {
-            return true;
-        } else {
-            return false;
-        }
+        $pointRate      = $this->getPointRate();
+        $requiredAmount = $pointRate * $loyaltyPoints;
+
+        return $requiredAmount <= $grandTotal;
     }
 
     /**
@@ -338,15 +279,9 @@ class LoyaltyHelper extends AbstractHelper
      */
     public function isPointsAreValid($loyaltyPoints)
     {
-        $memberProfile = $this->getMemberInfo();
-        if ($memberProfile != null) {
-            $points = $memberProfile->getAccount()->getPointBalance();
-            if ($points >= $loyaltyPoints) {
-                return true;
-            }
-        } else {
-            return false;
-        }
+        $points = $this->getLoyaltyPointsAvailableToCustomer();
+
+        return $points >= $loyaltyPoints;
     }
 
     /**
@@ -399,26 +334,32 @@ class LoyaltyHelper extends AbstractHelper
     }
 
     /**
-     * @param $itemId
-     * @param $storeId
+     * Get published offers for given card_id, store_id, item_id
+     *
      * @param $cardId
-     * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetResponse|ResponseInterface|null
+     * @param $storeId
+     * @param $itemId
+     * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
-    public function getPublishedOffers($itemId, $storeId, $cardId)
+    public function getPublishedOffers($cardId, $storeId, $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $response = null;
+            $cacheId = LSR::COUPONS;
+            $cacheId = $itemId ? $cacheId . $itemId . '_' : $cacheId;
+            $cacheId .= $cardId . "_" . $storeId;
+            $response = $this->cacheHelper->getCachedContent($cacheId);
+
+            if ($response) {
+                $this->_logger->debug("Found coupons from cache " . $cacheId);
+
+                return $response;
+            }
+
             // @codingStandardsIgnoreStart
             $request = new Operation\PublishedOffersGetByCardId();
             $entity  = new Entity\PublishedOffersGetByCardId();
             // @codingStandardsIgnoreEnd
-            $cacheId  = LSR::COUPONS . $itemId . "_" . $cardId . "_" . $storeId;
-            $response = $this->cacheHelper->getCachedContent($cacheId);
-            if ($response) {
-                $this->_logger->debug("Found coupons from cache " . $cacheId);
-                return $response;
-            }
             $entity->setCardId($cardId);
             $entity->setItemId($itemId);
             try {
@@ -426,6 +367,7 @@ class LoyaltyHelper extends AbstractHelper
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
+
             if (!empty($response) &&
                 !empty($response->getPublishedOffersGetByCardIdResult())) {
                 $this->cacheHelper->persistContentInCache(
@@ -444,15 +386,20 @@ class LoyaltyHelper extends AbstractHelper
     }
 
     /**
+     * Get available coupons for logged in customers
+     *
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     *
+     * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $memberInfo         = $this->getMemberInfo();
-            $publishedOffersObj = $memberInfo->getPublishedOffers();
+            $storeId            = $this->lsr->getActiveWebStore();
+            $cardId             = $this->contactHelper->getCardIdFromCustomerSession();
+            $publishedOffersObj = $this->getPublishedOffers($cardId, $storeId);
             $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
             $itemsSku           = [];
             $coupons            = [];
@@ -476,9 +423,9 @@ class LoyaltyHelper extends AbstractHelper
                     }
                 }
             }
+
             if ($publishedOffersObj) {
-                $publishedOffers = $publishedOffersObj->getPublishedOffer();
-                foreach ($publishedOffers as $each) {
+                foreach ($publishedOffersObj as $each) {
                     $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
                     if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
                         foreach ($getPublishedOfferLineArray as $publishedOfferLine) {

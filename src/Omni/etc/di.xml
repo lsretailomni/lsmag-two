@@ -147,4 +147,22 @@
         <plugin name="display_central_shipping_id"
                 type="Ls\Omni\Plugin\Order\TrackPlugin"/>
     </type>
+    <type name="Ls\Omni\Helper\AbstractHelperOmni">
+        <arguments>
+            <argument name="basketHelper" xsi:type="object">Ls\Omni\Helper\BasketHelper\Proxy</argument>
+            <argument name="cacheHelper" xsi:type="object">Ls\Omni\Helper\CacheHelper\Proxy</argument>
+            <argument name="contactHelper" xsi:type="object">Ls\Omni\Helper\ContactHelper\Proxy</argument>
+            <argument name="dataHelper" xsi:type="object">Ls\Omni\Helper\Data\Proxy</argument>
+            <argument name="giftCardHelper" xsi:type="object">Ls\Omni\Helper\GiftCardHelper\Proxy</argument>
+            <argument name="itemHelper" xsi:type="object">Ls\Omni\Helper\ItemHelper\Proxy</argument>
+            <argument name="loyaltyHelper" xsi:type="object">Ls\Omni\Helper\LoyaltyHelper\Proxy</argument>
+            <argument name="lsRecommendHelper" xsi:type="object">Ls\Omni\Helper\LSRecommend\Proxy</argument>
+            <argument name="orderHelper" xsi:type="object">Ls\Omni\Helper\OrderHelper\Proxy</argument>
+            <argument name="sessionHelper" xsi:type="object">Ls\Omni\Helper\SessionHelper\Proxy</argument>
+            <argument name="stockHelper" xsi:type="object">Ls\Omni\Helper\StockHelper\Proxy</argument>
+            <argument name="storeHelper" xsi:type="object">Ls\Omni\Helper\StoreHelper\Proxy</argument>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
 </config>

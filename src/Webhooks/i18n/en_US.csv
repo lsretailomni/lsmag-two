@@ -1,5 +1,7 @@
 "The credit memo's total must be positive.","The credit memo's total must be positive."
+"REFUNDED ITEM(S) FROM LS CENTRAL THROUGH WEBHOOK","REFUNDED ITEM(S) FROM LS CENTRAL THROUGH WEBHOOK"
 "Shipment added from LS Central","Shipment added from LS Central"
+"Could not update Tracking Id, see error log for details","Could not update Tracking Id, see error log for details"
 Items,Items
 Sku,Sku
 Qty,Qty
@@ -19,6 +21,3 @@ Qty,Qty
 "Email template For Order Collected","Email template For Order Collected"
 "Order Cancelled Notification","Order Cancelled Notification"
 "Email template For Order Cancellation","Email template For Order Cancellation"
-"Shipment posted successfully.","Shipment posted successfully."
-"Tracking Id updated successfully.","Tracking Id updated successfully."
-"Tracking Id update failed.","Tracking Id update failed."

@@ -38,7 +38,6 @@ use Magento\Sales\Model\Order\Creditmemo;
  */
 class Data extends AbstractHelper
 {
-
     /** @var ReplStoreRepositoryInterface */
     public $storeRepository;
 
@@ -344,7 +343,7 @@ class Data extends AbstractHelper
                 $combinedTotalLoyalGiftCard    = $giftCardAmount + $loyaltyAmount;
                 $combinedDiscountPaymentAmount = $discountAmount + $combinedTotalLoyalGiftCard;
                 if ($loyaltyAmount > $totalAmount) {
-                    $message = __('The loyalty points "%1" are not valid.', $loyaltyPoints);
+                    $message = __('The loyalty points "%1" are exceeding order total amount.', $loyaltyPoints);
                 } elseif ($giftCardAmount > $totalAmount) {
                     $message = __(
                         'The amount "%1" of gift card code %2 is not valid.',

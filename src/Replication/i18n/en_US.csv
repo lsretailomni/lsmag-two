@@ -13,6 +13,7 @@ DEFAULT,DEFAULT
 Add,Add
 "Gift Card","Gift Card"
 "Loyalty Points","Loyalty Points"
+"Select tender type","Select tender type"
 N/A,N/A
 No,No
 "Cron Listing","Cron Listing"
@@ -24,10 +25,12 @@ No,No
 "All ls_ tables truncated successfully.","All ls_ tables truncated successfully."
 "Orders deleted successfully.","Orders deleted successfully."
 "Products deleted successfully.","Products deleted successfully."
+"Tax Rules deleted successfully.","Tax Rules deleted successfully."
 "Attribute Replication","Attribute Replication"
 "Attribute Option Value Replication","Attribute Option Value Replication"
 "Attribute Value Replication","Attribute Value Replication"
 "Barcode Replication","Barcode Replication"
+"Country Code","Country Code"
 "Data Translation Replication","Data Translation Replication"
 "Data Translation Lang Code Replication","Data Translation Lang Code Replication"
 "Discount Replication","Discount Replication"
@@ -77,6 +80,7 @@ Pending,Pending
 "Remaining entries ","Remaining entries "
 "Do you want to execute More Data?","Do you want to execute More Data?"
 "Click Here","Click Here"
+"A total of %1 record(s) were updated.","A total of %1 record(s) were updated."
 Configuration,Configuration
 "LS Retail Configuration","LS Retail Configuration"
 "Manual Crons","Manual Crons"
@@ -102,9 +106,11 @@ Attribute,Attribute
 "Attribute Option Value","Attribute Option Value"
 Store,Store
 Replication,Replication
+"Replicate All Stores Items","Replicate All Stores Items"
 "Data Translation Language Code","Data Translation Language Code"
 "Manual Cron Grid Default Store","Manual Cron Grid Default Store"
-"Replicate All Stores Items","Replicate All Stores Items"
+"Create attribute sets on the basis of","Create attribute sets on the basis of"
+"Web Service List","Web Service List"
 "Default Batch Size","Default Batch Size"
 "Product Batch Size","Product Batch Size"
 "Product Attribute Batch Size","Product Attribute Batch Size"
@@ -115,7 +121,6 @@ Replication,Replication
 "Product Barcode Batch Size","Product Barcode Batch Size"
 "Variant Batch Size","Variant Batch Size"
 "Product Assignment to Category Batch Size","Product Assignment to Category Batch Size"
-"Create attribute sets on the basis of","Create attribute sets on the basis of"
 "Item Availability","Item Availability"
 "Availability Check","Availability Check"
 "Product Availability in Stores","Product Availability in Stores"
@@ -127,6 +132,7 @@ Replication,Replication
 "Delete Categories & set processed to false","Delete Categories & set processed to false"
 "Delete Attributes & set processed to false","Delete Attributes & set processed to false"
 "Delete Discounts & set processed to false","Delete Discounts & set processed to false"
+"Delete Tax Rules & set processed to false","Delete Tax Rules & set processed to false"
 "Truncate all ls_ tables","Truncate all ls_ tables"
 "Nav ID","Nav ID"
 ID,ID
@@ -158,6 +164,9 @@ Value,Value
 Blocked,Blocked
 "Item Id","Item Id"
 "Variant ID","Variant ID"
+Name,Name
+CustomerNo,CustomerNo
+TaxPostGroup,TaxPostGroup
 "Language Code","Language Code"
 Key,Key
 Text,Text
@@ -233,6 +242,8 @@ TableName,TableName
 "Variant Id","Variant Id"
 Quantity,Quantity
 "Store Id","Store Id"
+"Reset selected items?","Reset selected items?"
+"Reset items","Reset items"
 "Blocked On eCommerce","Blocked On eCommerce"
 "Base Unit Of Measure","Base Unit Of Measure"
 "Unit Price","Unit Price"
@@ -258,7 +269,6 @@ Order,Order
 "Variant Dimension 5","Variant Dimension 5"
 "Variant Dimension 6","Variant Dimension 6"
 "Item Category ID","Item Category ID"
-Name,Name
 City,City
 "Click And Collect","Click And Collect"
 Country,Country
