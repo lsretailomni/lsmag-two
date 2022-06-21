@@ -2,116 +2,149 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
-use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
-use Magento\Backend\App\Action;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResourceConnection;
+use Ls\Replication\Model\ResourceModel\ReplAttribute\Collection;
+use Magento\Framework\App\ResponseInterface;
 
 /**
  * Class Attribute Deletion
  */
-class Attribute extends Action
+class Attribute extends AbstractReset
 {
-    /**
-     * @var Logger
-     */
-    public $logger;
-
-    /** @var ResourceConnection */
-    public $resource;
-
-    /** @var LSR */
-    public $lsr;
-
-    /** @var ReplicationHelper */
-    public $replicationHelper;
-
-    // @codingStandardsIgnoreStart
-    /** @var array */
-    protected $_publicActions = ['attribute'];
-    // @codingStandardsIgnoreEnd
-
-    /** @var array List of ls tables required in attributes */
-    public $ls_tables = [
-        "ls_replication_repl_attribute",
-        "ls_replication_repl_attribute_option_value",
-        "ls_replication_repl_extended_variant_value"
+    public const DEPENDENT_CRONS = [
+        LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+        LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+        LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
     ];
-
-    /**
-     * Attribute constructor.
-     * @param ResourceConnection $resource
-     * @param Logger $logger
-     * @param Context $context
-     * @param LSR $LSR
-     * @param ReplicationHelper $replicationHelper
-     */
-    public function __construct(
-        ResourceConnection $resource,
-        Logger $logger,
-        Context $context,
-        LSR $LSR,
-        ReplicationHelper $replicationHelper
-    ) {
-        $this->resource          = $resource;
-        $this->logger            = $logger;
-        $this->lsr               = $LSR;
-        $this->replicationHelper = $replicationHelper;
-        parent::__construct($context);
-    }
 
     /**
      * Remove Attributes
      *
-     * @return void
+     * @return ResponseInterface
      */
     public function execute()
     {
-        // @codingStandardsIgnoreStart
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-        $tableName  = $this->resource->getTableName('eav_attribute');
-        $query      = "DELETE FROM $tableName WHERE attribute_code LIKE 'ls\_%'";
-        try {
-            $connection->query($query);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
+        $scopeId = $this->_request->getParam('store');
+        $where   = [];
+
+        if ($scopeId != '') {
+            $this->removeSoftAttributes($scopeId);
+            $this->removeHardAttributes($scopeId);
+            $where = ['scope_id = ?' => $scopeId];
+        } else {
+            $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                $this->replicationHelper->getGivenTableName('eav_attribute'),
+                ['attribute_code like (?)' => 'ls\_%']
+            );
         }
-        // Update all dependent ls tables to not processed
-        foreach ($this->ls_tables as $lsTable) {
-            $lsTableName = $this->resource->getTableName($lsTable);
-            $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0, processed_at = NULL;';
-            try {
-                $connection->query($lsQuery);
-            } catch (Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
-        }
+
+        $this->updateAllGivenTablesToUnprocessed(self::LS_ATTRIBUTE_RELATED_TABLES, $where);
         // Reset Data Translation Table for attributes
-        $lsTableName = $this->resource->getTableName("ls_replication_repl_data_translation");
-        $lsQuery     = 'UPDATE ' . $lsTableName . ' SET processed = 0, is_updated = 0, is_failed = 0,
-            processed_at = NULL WHERE TranslationId ="' . LSR::SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE . '" OR TranslationId ="' . LSR::SC_TRANSLATION_ID_ATTRIBUTE . '"';
-        try {
-            $connection->query($lsQuery);
-        } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT
-        );
-        $this->replicationHelper->updateCronStatusForAllStores(
-            false,
-            LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO
-        );
-        // @codingStandardsIgnoreEnd
+        $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE;
+        $this->updateDataTranslationTables($where);
+
+        $this->replicationHelper->updateAllGivenCronsWithGivenStatus(self::DEPENDENT_CRONS, $scopeId, false);
         $this->messageManager->addSuccessMessage(__('LS Attributes deleted successfully.'));
-        $this->_redirect('adminhtml/system_config/edit/section/ls_mag');
+
+        return $this->_redirect('adminhtml/system_config/edit/section/ls_mag', ['store' => $scopeId]);
+    }
+
+    /**
+     * Only fetching those attributes which are uncommon in multiple websites
+     *
+     * @param $scopeId
+     * @return Collection
+     */
+    public function getAllUnCommonSoftReplicationAttributesGivenScopeId($scopeId)
+    {
+        $childCollection = $this->replAttributeCollectionFactory->create();
+        $parentCollection = clone $childCollection;
+        $childCollection->getSelect()
+            ->reset(\Zend_Db_Select::COLUMNS)
+            ->columns('main_table.Code')
+            ->group('main_table.Code')
+            ->having(new \Zend_Db_Expr('COUNT(main_table.Code)') . ' = 1');
+
+        $parentCollection
+            ->getSelect()
+            ->where('Code IN (?)', new \Zend_Db_Expr($childCollection->getSelect()))
+            ->where('scope_id = (?)', $scopeId);
+
+        return $parentCollection;
+    }
+
+    /**
+     * Only fetching those attributes which are uncommon in multiple websites
+     *
+     * @param $scopeId
+     * @return \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\Collection
+     */
+    public function getAllUnCommonHardReplicationAttributesGivenScopeId($scopeId)
+    {
+        $storeIds = array_keys($this->replicationHelper->storeManager->getStores());
+        $storeIds = array_diff($storeIds, [$scopeId]);
+        $childCollection = $this->replExtendedCollectionFactory->create();
+        $parentCollection = clone $childCollection;
+        $childCollection->getSelect()
+            ->reset(\Zend_Db_Select::COLUMNS)
+            ->columns('main_table.Code')
+            ->group('main_table.Code')
+            ->where('scope_id IN (?)', $storeIds);
+
+        $parentCollection->getSelect()
+            ->where('Code NOT IN (?)', new \Zend_Db_Expr($childCollection->getSelect()))
+            ->where('scope_id = (?)', $scopeId)
+            ->group('Code');
+
+        return $parentCollection;
+    }
+
+    /**
+     * Get formatted attribute codes given collection
+     *
+     * @param $parentCollection
+     * @return array
+     */
+    public function getFormattedAttributeCodesGivenCollection($parentCollection)
+    {
+        $attributes = [];
+        foreach ($parentCollection as $attribute) {
+            $formattedCode = $this->replicationHelper->formatAttributeCode($attribute->getCode());
+            $attributes[] = $formattedCode;
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Remove all soft attributes
+     *
+     * @param $scopeId
+     * @return void
+     */
+    public function removeSoftAttributes($scopeId)
+    {
+        $parentCollection = $this->getAllUnCommonSoftReplicationAttributesGivenScopeId($scopeId);
+        $attributes = $this->getFormattedAttributeCodesGivenCollection($parentCollection);
+        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+            $this->replicationHelper->getGivenTableName('eav_attribute'),
+            ['attribute_code IN (?)' => $attributes]
+        );
+    }
+
+    /**
+     * Remove all hard attributes
+     *
+     * @param $scopeId
+     * @return void
+     */
+    public function removeHardAttributes($scopeId)
+    {
+        $parentCollection = $this->getAllUnCommonHardReplicationAttributesGivenScopeId($scopeId);
+        $attributes = $this->getFormattedAttributeCodesGivenCollection($parentCollection);
+        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+            $this->replicationHelper->getGivenTableName('eav_attribute'),
+            ['attribute_code IN (?)' => $attributes]
+        );
     }
 }
