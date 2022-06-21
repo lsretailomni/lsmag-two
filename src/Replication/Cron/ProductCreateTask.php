@@ -1254,6 +1254,11 @@ class ProductCreateTask
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->store->getId());
 
+        if (empty($attributesCode)) {
+            $this->handleVariantsInCaseOfNoItemAttributeInExtendedVariant($variants);
+            $variants = [];
+        }
+
         foreach ($attributesCode as $attributeCode) {
             $this->attributeAssignmentToAttributeSet(
                 $configProduct->getAttributeSetId(),
@@ -1271,7 +1276,7 @@ class ProductCreateTask
         }
 
         if (empty($attributesCode)) {
-            $this->handleNoItemAttributeInExtendedVariant($variants, $uomCodesNotProcessed, $item->getNavId());
+            $this->handleUomCodesInCaseOfNoItemAttributeInExtendedVariant($uomCodesNotProcessed, $item->getNavId());
         }
 
         $attributesIds        = [];
@@ -1296,7 +1301,13 @@ class ProductCreateTask
                         try {
                             $name                   = $this->getNameForVariant($value, $item);
                             $name                   = $this->getNameForUom($name, $uomCode->getDescription());
-                            $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode, $value);
+                            $associatedProductIds[] = $this->updateConfigProduct(
+                                $productData,
+                                $item,
+                                $name,
+                                $uomCode,
+                                $value
+                            );
                             $associatedProductIds   = array_unique($associatedProductIds);
                         } catch (Exception $e) {
                             $this->logger->debug($e->getMessage());
@@ -1305,7 +1316,13 @@ class ProductCreateTask
                     } catch (NoSuchEntityException $e) {
                         $isVariantContainNull = $this->validateVariant($attributesCode, $value);
                         if ($isVariantContainNull) {
-                            $this->logger->debug(sprintf('Variant issue : Item %s-%s contain null attribute', $value->getItemId(), $value->getVariantId()));
+                            $this->logger->debug(
+                                sprintf(
+                                    'Variant issue : Item %s-%s contain null attribute',
+                                    $value->getItemId(),
+                                    $value->getVariantId()
+                                )
+                            );
                             $value->setData('is_failed', 1);
                         } else {
                             $name      = $this->getNameForVariant($value, $item);
@@ -1324,7 +1341,13 @@ class ProductCreateTask
                             if ($productId) {
                                 $associatedProductIds[] = $productId;
                             } else {
-                                $this->logger->debug(sprintf('Variant issue : Item %s-%s option_id does not exists in attribute', $value->getItemId(), $value->getVariantId()));
+                                $this->logger->debug(
+                                    sprintf(
+                                        'Variant issue : Item %s-%s option_id does not exists in attribute',
+                                        $value->getItemId(),
+                                        $value->getVariantId()
+                                    )
+                                );
                                 $value->setData('is_failed', 1);
                             }
                         }
@@ -1370,7 +1393,13 @@ class ProductCreateTask
                     if ($productId) {
                         $associatedProductIds[] = $productId;
                     } else {
-                        $this->logger->debug(sprintf('Variant issue : Item %s-%s option_id does not exists in attribute', $uomCode->getItemId(), $uomCode->getCode()));
+                        $this->logger->debug(
+                            sprintf(
+                                'Variant issue : Item %s-%s option_id does not exists in attribute',
+                                $uomCode->getItemId(),
+                                $uomCode->getCode()
+                            )
+                        );
                         $uomCode->setData('is_failed', 1);
                     }
                 }
@@ -1388,7 +1417,13 @@ class ProductCreateTask
                     $productData = $this->saveProductForWebsite($sku);
                     try {
                         $name                   = $this->getNameForVariant($value, $item);
-                        $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode, $value);
+                        $associatedProductIds[] = $this->updateConfigProduct(
+                            $productData,
+                            $item,
+                            $name,
+                            $uomCode,
+                            $value
+                        );
                         $associatedProductIds   = array_unique($associatedProductIds);
                     } catch (Exception $e) {
                         $this->logger->debug($e->getMessage());
@@ -1397,7 +1432,13 @@ class ProductCreateTask
                 } catch (NoSuchEntityException $e) {
                     $isVariantContainNull = $this->validateVariant($attributesCode, $value);
                     if ($isVariantContainNull) {
-                        $this->logger->debug(sprintf('Variant issue : Item %s-%s contain null attribute', $value->getItemId(), $value->getVariantId()));
+                        $this->logger->debug(
+                            sprintf(
+                                'Variant issue : Item %s-%s contain null attribute',
+                                $value->getItemId(),
+                                $value->getVariantId()
+                            )
+                        );
                         $value->setData('is_failed', 1);
                     } else {
                         $name      = $this->getNameForVariant($value, $item);
@@ -1415,7 +1456,13 @@ class ProductCreateTask
                         if ($productId) {
                             $associatedProductIds[] = $productId;
                         } else {
-                            $this->logger->debug(sprintf('Variant issue : Item %s-%s option_id does not exists in attribute', $value->getItemId(), $value->getVariantId()));
+                            $this->logger->debug(
+                                sprintf(
+                                    'Variant issue : Item %s-%s option_id does not exists in attribute',
+                                    $value->getItemId(),
+                                    $value->getVariantId()
+                                )
+                            );
                             $value->setData('is_failed', 1);
                         }
                     }
@@ -1469,7 +1516,13 @@ class ProductCreateTask
         try {
             $this->productRepository->save($configProduct);
         } catch (Exception $e) {
-            $this->logger->debug(sprintf('Exception while saving Configurable Product Id : %s - %s', $productId, $e->getMessage()));
+            $this->logger->debug(
+                sprintf(
+                    'Exception while saving Configurable Product Id : %s - %s',
+                    $productId,
+                    $e->getMessage()
+                )
+            );
         }
     }
 
@@ -1477,32 +1530,58 @@ class ProductCreateTask
      * Handle crappy data when zero relevant attribute is available in extended variants
      *
      * @param $variants
-     * @param $uomCodesNotProcessed
-     * @param $itemId
-     * @throws Exception
      */
-    public function handleNoItemAttributeInExtendedVariant($variants, $uomCodesNotProcessed, $itemId)
+    public function handleVariantsInCaseOfNoItemAttributeInExtendedVariant($variants)
     {
         foreach ($variants as $value) {
-            $this->logger->debug(sprintf('Variant issue : Item %s has zero attribute available in extended variants', $value->getItemId()));
-            $value->setData('is_updated', 0);
-            $value->setData('processed_at', $this->replicationHelper->getDateTime());
-            $value->setData('processed', 1);
-            $value->setData('is_failed', 1);
+            $this->logger->debug(
+                sprintf(
+                    'Variant issue : Item %s has zero attribute available in extended variants',
+                    $value->getItemId()
+                )
+            );
+            $value->addData(
+                [
+                    'is_updated' => 0,
+                    'processed_at' => $this->replicationHelper->getDateTime(),
+                    'processed' => 1,
+                    'is_failed' => 1
+                ]
+            );
             $this->replItemVariantRegistrationRepository->save($value);
         }
+    }
 
+    /**
+     * Handle crappy data when zero uom attribute is available for creating configurable product
+     *
+     * @param $uomCodesNotProcessed
+     * @param $itemId
+     * @return mixed
+     * @throws Exception
+     */
+    public function handleUomCodesInCaseOfNoItemAttributeInExtendedVariant($uomCodesNotProcessed, $itemId)
+    {
         if ($uomCodesNotProcessed) {
             foreach ($uomCodesNotProcessed as $uomCode) {
-                $this->logger->debug(sprintf('Variant issue : Item %s has zero attribute available in extended variants', $uomCode->getItemId()));
-                $uomCode->setData('is_updated', 0);
-                $uomCode->setData('processed_at', $this->replicationHelper->getDateTime());
-                $uomCode->setData('processed', 1);
-                $uomCode->setData('is_failed', 1);
+                $this->logger->debug(
+                    sprintf(
+                        'Variant issue : Item %s has zero uom attribute available',
+                        $uomCode->getItemId()
+                    )
+                );
+                $uomCode->addData(
+                    [
+                        'is_updated' => 0,
+                        'processed_at' => $this->replicationHelper->getDateTime(),
+                        'processed' => 1,
+                        'is_failed' => 1
+                    ]
+                );
                 $this->replItemUomRepository->save($uomCode);
             }
         }
-
+        // phpcs:ignore Magento2.Exceptions.DirectThrow
         throw new \Exception(sprintf('Could not create any variant for item %s due to crappy data', $itemId));
     }
 
