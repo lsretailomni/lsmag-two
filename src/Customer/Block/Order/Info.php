@@ -186,10 +186,8 @@ class Info extends Template
     {
         $order = $this->getOrder();
         if ($order) {
-
-            $orderId         = $this->orderHelper->getParameterValues($order, "CustomerOrderNo") ?:
-                $this->orderHelper->getParameterValues($order, "Id");
             $customerOrderNo = $this->orderHelper->getParameterValues($order, "CustomerOrderNo");
+            $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
 
             if (!empty($customerOrderNo)) {
                 $type = __('Order');
