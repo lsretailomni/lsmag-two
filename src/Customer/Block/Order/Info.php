@@ -22,6 +22,8 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\OrderRepository;
 
 /**
+ * This class is overriding in hospitality module
+ *
  * Block being used for various sections on order detail
  */
 class Info extends Template
@@ -178,16 +180,15 @@ class Info extends Template
     }
 
     /**
-     * @return void
+     * @inheritDoc
      */
-    // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $order           = $this->getOrder();
-        $customerOrderNo = null;
+        $order = $this->getOrder();
         if ($order) {
 
-            $orderId         = $this->orderHelper->getParameterValues($order, "CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order, "Id");
+            $orderId         = $this->orderHelper->getParameterValues($order, "CustomerOrderNo") ?:
+                $this->orderHelper->getParameterValues($order, "Id");
             $customerOrderNo = $this->orderHelper->getParameterValues($order, "CustomerOrderNo");
 
             if (!empty($customerOrderNo)) {
@@ -198,7 +199,6 @@ class Info extends Template
             $this->pageConfig->getTitle()->set(__('%1 # %2', $type, $orderId));
         }
     }
-    // @codingStandardsIgnoreEnd
 
     /**
      * Retrieve current order model instance
