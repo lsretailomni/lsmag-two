@@ -21,6 +21,16 @@ class ReplItemVariantRegistration
     protected $BlockedOnPos = null;
 
     /**
+     * @property int $BlockedOnECom
+     */
+    protected $BlockedOnECom = null;
+
+    /**
+     * @property int $BlockedOnPos
+     */
+    protected $BlockedOnPos = null;
+
+    /**
      * @property string $FrameworkCode
      */
     protected $FrameworkCode = null;

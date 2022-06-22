@@ -4,42 +4,10 @@ namespace Ls\Customer\Block\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
-use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
-use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Helper\Data as DataHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
-use Magento\Framework\Registry;
-use Magento\Framework\View\Element\Template;
-use Magento\Framework\View\Element\Template\Context;
-use \Ls\Omni\Helper\OrderHelper;
 
-/**
- * Class Totals
- *  Ls\Customer\Block\Order
- */
-class Totals extends Template
+class Totals extends AbstractOrderBlock
 {
-    /**
-     * @var Registry|null
-     */
-    public $coreRegistry = null;
-
-    /**
-     * @var PriceCurrencyInterface
-     */
-    public $priceCurrency;
-
-    /**
-     * @var OrderHelper
-     */
-    public $orderHelper;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
     /**
      * @var int
      */
@@ -49,53 +17,6 @@ class Totals extends Template
      * @var int
      */
     public $loyaltyPointAmount = 0;
-
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var DataHelper
-     */
-    public $dataHelper;
-
-    /**
-     * @param Context $context
-     * @param Registry $registry
-     * @param PriceCurrencyInterface $priceCurrency
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param LSR $lsr
-     * @param OrderHelper $orderHelper
-     * @param DataHelper $dataHelper
-     * @param array $data
-     */
-    public function __construct(
-        Context $context,
-        Registry $registry,
-        PriceCurrencyInterface $priceCurrency,
-        LoyaltyHelper $loyaltyHelper,
-        LSR $lsr,
-        OrderHelper $orderHelper,
-        DataHelper $dataHelper,
-        array $data = []
-    ) {
-        $this->priceCurrency = $priceCurrency;
-        $this->loyaltyHelper = $loyaltyHelper;
-        $this->coreRegistry  = $registry;
-        $this->lsr           = $lsr;
-        $this->orderHelper   = $orderHelper;
-        $this->dataHelper    = $dataHelper;
-        parent::__construct($context, $data);
-    }
-
-    /**
-     * Retrieve current order model instance
-     *
-     * @return SalesEntry
-     */
-    public function getOrder()
-    {
-        return $this->coreRegistry->registry('current_order');
-    }
 
     /**
      * Get items.
@@ -149,7 +70,7 @@ class Totals extends Template
     }
 
     /**
-     * @return float|GiftCardAmount|LoyaltyAmount
+     * @return float
      */
     public function getTotalAmount()
     {
@@ -179,9 +100,9 @@ class Totals extends Template
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(
-                    LSR::LSR_SHIPMENT_ITEM_ID,
-                    $this->lsr->getCurrentStoreId()
-                )) {
+                LSR::LSR_SHIPMENT_ITEM_ID,
+                $this->lsr->getCurrentStoreId()
+            )) {
                 $fee = $line->getAmount();
                 break;
             }
@@ -190,6 +111,8 @@ class Totals extends Template
     }
 
     /**
+     * Get Subtotal
+     *
      * @return mixed
      * @throws NoSuchEntityException
      */
@@ -199,11 +122,12 @@ class Totals extends Template
         $shipmentFee = $this->getShipmentChargeLineFee();
         $grandTotal  = $this->getGrandTotal();
         $discount    = $this->getTotalDiscount();
-        $fee         = (float)$grandTotal + $discount - (float)$shipmentFee;
-        return $fee;
+        return (float)$grandTotal + $discount - (float)$shipmentFee;
     }
 
     /**
+     * Get Loyalty gift card info
+     *
      * @return array
      * @throws NoSuchEntityException
      */
@@ -241,6 +165,8 @@ class Totals extends Template
     }
 
     /**
+     * Get lines
+     *
      * @return mixed
      */
     public function getLines()
@@ -251,6 +177,8 @@ class Totals extends Template
 
 
     /**
+     * Get Ordre payments
+     *
      * @return mixed
      */
     public function getOrderPayments()
@@ -260,6 +188,8 @@ class Totals extends Template
     }
 
     /**
+     * Convert loyalty points to amount
+     *
      * @param $loyaltyPoints
      * @return float|int
      * @throws NoSuchEntityException

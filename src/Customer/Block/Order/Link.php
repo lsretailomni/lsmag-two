@@ -2,12 +2,13 @@
 
 namespace Ls\Customer\Block\Order;
 
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\App\DefaultPathInterface;
-use Magento\Framework\Registry;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Html\Link\Current;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -17,19 +18,9 @@ use Magento\Store\Model\StoreManagerInterface;
 class Link extends Current
 {
     /**
-     * @var Registry
-     */
-    public $_registry;
-
-    /**
      * @var OrderHelper
      */
     public $orderHelper;
-
-    /**
-     * @var Context
-     */
-    private Context $context;
 
     /**
      * @var StoreManagerInterface
@@ -42,7 +33,6 @@ class Link extends Current
      * @param DefaultPathInterface $defaultPath
      * @param OrderHelper $orderHelper
      * @param StoreManagerInterface $storeManager
-     * @param Registry $registry
      * @param array $data
      */
     public function __construct(
@@ -50,12 +40,9 @@ class Link extends Current
         DefaultPathInterface $defaultPath,
         OrderHelper $orderHelper,
         StoreManagerInterface $storeManager,
-        Registry $registry,
         array $data = []
     ) {
         parent::__construct($context, $defaultPath, $data);
-        $this->_registry   = $registry;
-        $this->context = $context;
         $this->orderHelper = $orderHelper;
         $this->storeManager = $storeManager;
     }
@@ -63,11 +50,12 @@ class Link extends Current
     /**
      * Retrieve current order model instance
      *
-     * @return Order
+     * @param $all
+     * @return false|mixed|null
      */
-    private function getOrder()
+    public function getOrder($all = false)
     {
-        return $this->_registry->registry('current_order');
+        return $this->orderHelper->getOrder($all);
     }
 
     /**
@@ -77,7 +65,7 @@ class Link extends Current
      */
     public function getMagOrder()
     {
-        return $this->_registry->registry('current_mag_order');
+        return $this->orderHelper->getGivenValueFromRegistry('current_mag_order');
     }
 
     /**
@@ -89,7 +77,12 @@ class Link extends Current
     public function getHref()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $type = $this->orderHelper->getParameterValues($this->getOrder(), "IdType");
+
+        if ($this->getPath() == 'customer/order/view') {
+            $type = DocumentIdType::ORDER;
+        } else {
+            $type = DocumentIdType::RECEIPT;
+        }
 
         return $this->getUrl(
             $this->getPath(),
@@ -101,15 +94,14 @@ class Link extends Current
     }
 
     /**
-     * Generate order view page tabs.
-     * @inheritdoc
+     * @inheritDoc
      *
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     protected function _toHtml()
     {
-        $orderId = $this->orderHelper->getParameterValues($this->getOrder(), "Id");
         $order = $this->getMagOrder();
         if (!empty($order)) {
             if ($this->getKey() == "Invoices" && !($order->hasInvoices())) {
@@ -120,8 +112,9 @@ class Link extends Current
                 return '';
             }
 
-            if ($this->getKey() == "Creditmemos" && !strpos($this->getCurrentUrl(), "creditmemo")
-                && !($this->orderHelper->hasReturnSale($orderId))
+            if ($this->getKey() == "Creditmemos" &&
+                !$this->orderHelper->getGivenValueFromRegistry('has_return_sales')
+                && !strpos($this->getCurrentUrl(), "creditmemo")
             ) {
                 return '';
             }
@@ -141,7 +134,7 @@ class Link extends Current
     /**
      * Get current store URL
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getCurrentUrl()
     {

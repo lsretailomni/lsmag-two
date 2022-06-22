@@ -111,6 +111,17 @@
                 </item>
             </argument>
         </column>
+        <column name="BlockedOnECom">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ls\Replication\Model\BlockedStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="sortOrder" xsi:type="number">9</item>
+                    <item name="label" xsi:type="string" translate="true">Blocked On eCommerce</item>
+                </item>
+            </argument>
+        </column>
         <column name="processed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ls\Replication\Model\ProcessedStatus</item>

@@ -1,27 +1,14 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-    <update handle="customer_account"/>
-    <update handle="customer_order_info_links"/>
-    <update handle="sales_order_item_renderers"/>
-    <update handle="sales_order_item_price"/>
+    <update handle="common"/>
     <body>
-        <referenceContainer name="page.main.title">
-            <block class="Ls\Customer\Block\Order\Info" name="custom.order.status"
-                   template="Ls_Customer::order/order_status.phtml"/>
-            <block class="Ls\Customer\Block\Order\Info" name="custom.order.date"
-                   template="Ls_Customer::order/order_date.phtml"/>
-            <container name="order.actions.container" htmlTag="div" htmlClass="actions-toolbar order-actions-toolbar">
-                <block class="Ls\Customer\Block\Order\Info" as="buttons" name="sales.order.info.buttons"
-                       template="Ls_Customer::order/info/buttons.phtml" cacheable="false"/>
-            </container>
-        </referenceContainer>
         <referenceContainer name="content">
-            <block class="Ls\Customer\Block\Order\View" name="sales.order.view" cacheable="false"
+            <block class="Ls\Customer\Block\Order\Custom\View" name="sales.order.view" cacheable="false"
                    after="sales.order.info.links">
-                <block class="Ls\Customer\Block\Order\Items" name="custom_order_items"
-                       template="Ls_Customer::order/items.phtml">
-                    <block class="Ls\Customer\Block\Order\Item\Renderer" name="custom_order_item_renderer"/>
+                <block class="Ls\Customer\Block\Order\Custom\Items" name="custom_order_items_custom"
+                       template="Ls_Customer::order/custom/items.phtml">
+                    <block class="Ls\Customer\Block\Order\Item\Custom\Renderer" name="custom_order_item_renderer_custom"/>
                     <block class="Magento\Framework\View\Element\RendererList" name="sales.order.items.renderers" as="renderer.list"/>
                     <block class="Ls\Customer\Block\Order\Totals" name="custom_order_totals"
                            template="Ls_Customer::order/totals.phtml">
@@ -32,15 +19,11 @@
                     </block>
                 </block>
             </block>
-            <block class="Ls\Customer\Block\Order\Info" name="custom.order.info"
-                   template="Ls_Customer::order/useful_info.phtml" after="custom_order_view"/>
-            <block class="Ls\Customer\Block\Order\Info" as="info" name="sales.order.info" after="custom.order.info"/>
+            <referenceBlock name="sales.order.items.renderers.default" template="Ls_Customer::order/item/renderer/default.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Customer\ViewModel\ItemRenderer</argument>
+                </arguments>
+            </referenceBlock>
         </referenceContainer>
-
-        <referenceBlock name="sales.order.items.renderers.default" template="Ls_Customer::order/item/renderer/default.phtml">
-            <arguments>
-                <argument name="view_model" xsi:type="object">Ls\Customer\ViewModel\ItemRenderer</argument>
-            </arguments>
-        </referenceBlock>
     </body>
 </page>

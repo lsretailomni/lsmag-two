@@ -12,6 +12,28 @@ interface ReplItemVariantRegistrationInterface
 {
 
     /**
+     * @param int $BlockedOnECom
+     * @return $this
+     */
+    public function setBlockedOnECom($BlockedOnECom);
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnECom();
+
+    /**
+     * @param int $BlockedOnPos
+     * @return $this
+     */
+    public function setBlockedOnPos($BlockedOnPos);
+
+    /**
+     * @return int
+     */
+    public function getBlockedOnPos();
+
+    /**
      * @param string $FrameworkCode
      * @return $this
      */

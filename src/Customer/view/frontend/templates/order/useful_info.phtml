@@ -1,41 +1,50 @@
 <?php
 // @codingStandardsIgnoreFile
-
 ?>
-<?php /** @var $block \Ls\Customer\Block\Order\Info */ ?>
-<?php $_order = $block->getOrder() ?>
+<?php
+/** @var $block Info */
+use Ls\Customer\Block\Order\Info;
+?>
+<?php $_order = $block->getOrder();
+$formattedLoyaltyPoints = $block->getFormattedLoyaltyPoints();
+?>
 <div class="block block-order-details-view-loyalty">
     <div class="block-title">
-        <strong><?= /* @escapeNotVerified */
-            __('Useful Information') ?></strong>
+        <strong>
+            <?= /* @noEscape */ __('Useful Information') ?>
+        </strong>
     </div>
     <div class="block-content">
         <?php if (!empty($_order->getStoreName())): ?>
             <div class="custom-box">
-                <strong class="box-title"><span><?= /* @escapeNotVerified */
-                        __('Store Name:') ?></span></strong>
-                <span><?= $_order->getStoreName() ?></span>
+                <strong class="box-title">
+                    <span><?= /* @noEscape */ __('Store Name:') ?></span>
+                </strong>
+                <span><?= /* @noEscape */ $_order->getStoreName() ?></span>
             </div>
         <?php endif; ?>
-        <?php if ($block->canShowClickAndCollect()): ?>
+        <?php if ($block->canShowClickAndCollect() && $_order->getClickAndCollectOrder()): ?>
             <div class="custom-box">
-                <strong class="box-title"><span><?= /* @escapeNotVerified */
-                        __('Click & Collect:') ?></span></strong>
-                <span><?= $_order->getClickAndCollectOrder() ? 'Yes' : 'No'; ?></span>
+                <strong class="box-title">
+                    <span><?= /* @noEscape */ __('Click & Collect:') ?></span>
+                </strong>
+                <span><?= /* @noEscape */ __('Yes'); ?></span>
             </div>
         <?php endif; ?>
-        <?php if ($_order->getPointsRewarded() > 0): ?>
+        <?php if ($formattedLoyaltyPoints > 0): ?>
         <div class="custom-box">
-            <strong class="box-title"><span><?= /* @escapeNotVerified */
-                    __('Loyalty Points Rewarded:') ?></span></strong>
-            <span><?= $block->getFormattedLoyaltyPoints($_order->getPointsRewarded()); ?></span>
+            <strong class="box-title">
+                <span><?= /* @noEscape */ __('Loyalty Points Rewarded:') ?></span>
+            </strong>
+            <span><?= /* @noEscape */ $formattedLoyaltyPoints; ?></span>
         </div>
         <?php endif; ?>
-        <?php if (!empty($gittcardNumber = $block->getPaymentDescription()[1])): ?>
+        <?php if (!empty($giftCardNumber = $block->getPaymentDescription()[1])): ?>
             <div class="custom-box">
-                <strong class="box-title"><span><?= /* @escapeNotVerified */
-                        __('Gift Card Code:') ?></span></strong>
-                <span><?= $gittcardNumber[0]; ?></span>
+                <strong class="box-title">
+                    <span><?= /* @noEscape */ __('Gift Card Code:') ?></span>
+                </strong>
+                <span><?= /* @noEscape */ $giftCardNumber[0]; ?></span>
             </div>
         <?php endif; ?>
         <?php if (
@@ -43,9 +52,10 @@
             !empty($requestedDeliveryDate = $block->getRequestedDeliveryDate())
         ): ?>
             <div class="custom-box">
-                <strong class="box-title"><span><?= /* @escapeNotVerified */
-                        __('Requested Delivery Date:') ?></span></strong>
-                <span><?= $requestedDeliveryDate; ?></span>
+                <strong class="box-title">
+                    <span><?= /* @noEscape */ __('Requested Delivery Date:') ?></span>
+                </strong>
+                <span><?= /* @noEscape */ $requestedDeliveryDate; ?></span>
             </div>
         <?php endif; ?>
     </div>
