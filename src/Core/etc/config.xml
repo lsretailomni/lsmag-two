@@ -3,6 +3,9 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <ls_mag>
+            <ls_enable>
+                <enabled>1</enabled>
+            </ls_enable>
             <general>
                 <enabled>0</enabled>
             </general>

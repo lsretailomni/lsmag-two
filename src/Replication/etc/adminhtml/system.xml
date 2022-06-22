@@ -6,10 +6,13 @@
             <group id="replication"
                    translate="label"
                    type="text"
-                   sortOrder="2"
+                   sortOrder="40"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Replication</label>
                 <field id="replicate_all_stores_items"
                        translate="label"
@@ -169,10 +172,13 @@
             <group id="one_list"
                    translate="label"
                    type="text"
-                   sortOrder="3"
+                   sortOrder="50"
                    showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Item Availability</label>
                 <field id="availability_check"
                        translate="label"
@@ -214,7 +220,7 @@
             <group id="restore_database"
                    translate="label"
                    type="text"
-                   sortOrder="100"
+                   sortOrder="500"
                    showInDefault="1"
                    showInWebsite="0"
                    showInStore="1">

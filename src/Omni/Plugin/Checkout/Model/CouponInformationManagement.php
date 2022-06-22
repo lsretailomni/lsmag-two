@@ -6,16 +6,12 @@ use Exception;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Exception\CouldNotDeleteException;
-use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\CouponManagement;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\QuoteRepository;
 
-/**
- * Class CouponInformationManagement
- * @package Ls\Omni\Plugin\Checkout\Model
- */
 class CouponInformationManagement
 {
     /** @var QuoteRepository */
@@ -25,7 +21,6 @@ class CouponInformationManagement
     public $basketHelper;
 
     /**
-     * CouponInformationManagement constructor.
      * @param QuoteRepository $quoteRepository
      * @param BasketHelper $basketHelper
      */
@@ -38,18 +33,25 @@ class CouponInformationManagement
     }
 
     /**
+     * Around plugin to set and validate coupon from Central on checkout
+     *
      * @param CouponManagement $subject
      * @param $proceed
      * @param $cartId
      * @param $couponCode
-     * @return bool
-     * @throws CouldNotSaveException
-     * @throws NoSuchEntityException
+     * @return bool|mixed
      * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
-    // @codingStandardsIgnoreLine
     public function aroundSet(CouponManagement $subject, $proceed, $cartId, $couponCode)
     {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if (!$lsr->isLSR($lsr->getCurrentStoreId())) {
+            return $proceed($cartId, $couponCode);
+        }
+
         $couponCode = trim($couponCode);
         /** @var  Quote $quote */
         $quote = $this->quoteRepository->getActive($cartId);
@@ -69,12 +71,14 @@ class CouponInformationManagement
     }
 
     /**
+     * Before plugin to remove and validate coupon from Central on checkout
+     *
      * @param CouponManagement $subject
      * @param $cartId
+     * @return void
      * @throws CouldNotDeleteException
      * @throws NoSuchEntityException
      */
-    // @codingStandardsIgnoreLine
     public function beforeRemove(CouponManagement $subject, $cartId)
     {
         /** @var  Quote $quote */

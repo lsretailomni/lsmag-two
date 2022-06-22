@@ -35,7 +35,9 @@ class QuoteRepositoryPlugin
      */
     public function beforeSave($subject, CartInterface $quote)
     {
-        if ($this->basketHelper->lsr->isLSR($this->basketHelper->lsr->getCurrentStoreId())) {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if ($lsr->isLSR($lsr->getCurrentStoreId())) {
             $oneListCalculate = $this->basketHelper->getOneListCalculationFromCheckoutSession();
 
             if ($oneListCalculate) {

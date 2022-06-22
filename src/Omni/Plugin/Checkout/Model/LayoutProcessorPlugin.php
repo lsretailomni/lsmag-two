@@ -76,8 +76,12 @@ class LayoutProcessorPlugin
         $sideBar            = &$jsLayout['components']['checkout']['children']['sidebar'];
         $shippingAdditional = &$shippingStep['children']['shippingAddress']['children']['shippingAdditional'];
 
-        if ($this->data->isCouponsEnabled('checkout') == '0') {
-            unset($billingStep['children']['payment']['children']['afterMethods']['children']['discount']);
+        if ($this->lsr->isEnabled()) {
+            $billingStep['children']['payment']['children']['afterMethods']['children']['discount']['component'] =
+                'Ls_Omni/js/view/payment/discount';
+            if ($this->data->isCouponsEnabled('checkout') == '0') {
+                unset($billingStep['children']['payment']['children']['afterMethods']['children']['discount']);
+            }
         }
 
         if ($this->loyaltyHelper->isLoyaltyPointsEnabled('checkout') == '0' ||
@@ -91,7 +95,7 @@ class LayoutProcessorPlugin
         }
 
         if (!($this->lsr->isPickupTimeslotsEnabled() && $this->lsr->isLSR($this->lsr->getCurrentStoreId()))) {
-            unset($jsLayout['components']['checkout']['children']['steps']['children']['shipping-step']['children']['shippingAddress']['children']['shippingAdditional']['children']['ls-pickup-additional-options-wrapper']);
+            unset($shippingAdditional['children']['ls-pickup-additional-options-wrapper']);
         }
 
         if (isset($shippingAdditional['children'])) {

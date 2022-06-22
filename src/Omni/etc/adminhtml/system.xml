@@ -5,8 +5,16 @@
         <section id="ls_mag">
             <tab>ls_retail</tab>
             <resource>Ls_Core::config</resource>
-            <group id="service" translate="label" type="text" sortOrder="1"
-                   showInDefault="1" showInWebsite="1" showInStore="0">
+            <group id="service"
+                   translate="label"
+                   type="text"
+                   sortOrder="30"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="0">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Configuration</label>
                 <field id="extension_version" translate="label" type="label" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">
@@ -61,7 +69,14 @@
                     <comment>Max time in seconds to wait for omni response</comment>
                 </field>
             </group>
-            <group id="ls_disaster_recovery" translate="label" type="text" sortOrder="5" showInWebsite="1">
+            <group id="ls_disaster_recovery"
+                   translate="label"
+                   type="text"
+                   sortOrder="50"
+                   showInWebsite="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Service Down Notification</label>
                 <field id="notification" translate="label" type="select" sortOrder="1"
                        showInWebsite="1">
@@ -76,8 +91,16 @@
                     </depends>
                 </field>
             </group>
-            <group id="ls_recommend" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1"
+            <group id="ls_recommend"
+                   translate="label"
+                   type="text"
+                   sortOrder="60"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>LS Recommend</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
                        showInStore="1">
@@ -109,8 +132,16 @@
                     </depends>
                 </field>
             </group>
-            <group id="ls_loyaltypoints" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1"
+            <group id="ls_loyaltypoints"
+                   translate="label"
+                   type="text"
+                   sortOrder="70"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Loyalty Points</label>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
@@ -124,8 +155,16 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_coupons" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1"
+            <group id="ls_coupons"
+                   translate="label"
+                   type="text"
+                   sortOrder="80"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Coupons</label>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
@@ -144,8 +183,16 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_giftcard" translate="label" type="text" sortOrder="8" showInDefault="1" showInWebsite="1"
+            <group id="ls_giftcard"
+                   translate="label"
+                   type="text"
+                   sortOrder="90"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Gift Card</label>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
@@ -159,8 +206,16 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="ls_discounts" translate="label" type="text" sortOrder="9" showInDefault="1" showInWebsite="1"
+            <group id="ls_discounts"
+                   translate="label"
+                   type="text"
+                   sortOrder="100"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Discount Management</label>
                 <field id="discount" translate="label" type="select" sortOrder="1" showInDefault="1"
                        showInWebsite="1"
@@ -189,8 +244,16 @@
                     </comment>
                 </field>
             </group>
-            <group id="ls_stores" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1"
+            <group id="ls_stores"
+                   translate="label"
+                   type="text"
+                   sortOrder="110"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Stores Listing</label>
                 <field id="timeformat" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
@@ -199,9 +262,16 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
                 </field>
             </group>
-            <group id="ls_basket_calculation" translate="label" type="text" sortOrder="90" showInDefault="1"
+            <group id="ls_basket_calculation"
+                   translate="label"
+                   type="text"
+                   sortOrder="120"
+                   showInDefault="1"
                    showInWebsite="0"
                    showInStore="0">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Basket Calculation</label>
                 <field id="place_to_sync" translate="label comment" type="select" sortOrder="3"
                        showInDefault="1" showInWebsite="0">
@@ -210,9 +280,16 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation</source_model>
                 </field>
             </group>
-            <group id="ls_order_management" translate="label" type="text" sortOrder="90" showInDefault="1"
+            <group id="ls_order_management"
+                   translate="label"
+                   type="text"
+                   sortOrder="130"
+                   showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Order Management</label>
                 <field id="prefix" translate="label comment" type="text" sortOrder="1" showInDefault="1"
                        showInWebsite="1"
@@ -240,9 +317,16 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                 </field>
             </group>
-            <group id="delivery_pickup_date_time" translate="label" type="text" sortOrder="90" showInDefault="1"
+            <group id="delivery_pickup_date_time"
+                   translate="label"
+                   type="text"
+                   sortOrder="140"
+                   showInDefault="1"
                    showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Delivery and Pickup Date Management</label>
                 <field id="pickup_date_time_slot" translate="label" type="select" sortOrder="6" showInDefault="1"
                        showInWebsite="1">
@@ -275,8 +359,16 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
                 </field>
             </group>
-            <group id="return_policy" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1"
+            <group id="return_policy"
+                   translate="label"
+                   type="text"
+                   sortOrder="150"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Return Policy</label>
                 <field id="show_return_policy" translate="label" type="select" sortOrder="1" showInDefault="1"
                        showInWebsite="1"
@@ -288,9 +380,19 @@
             </group>
         </section>
         <!-- For shipment Method -->
-        <section id="carriers" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+        <section id="carriers"
+                 translate="label"
+                 type="text"
+                 sortOrder="2"
+                 showInDefault="1"
+                 showInWebsite="1"
                  showInStore="1">
-            <group id="clickandcollect" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1"
+            <group id="clickandcollect"
+                   translate="label"
+                   type="text"
+                   sortOrder="2"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
                 <label>Click And Collect</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
@@ -345,8 +447,13 @@
             </group>
         </section>
         <section id="payment">
-            <group id="ls_payment_method_pay_at_store" translate="label comment" type="text" sortOrder="50"
-                   showInDefault="1" showInWebsite="1" showInStore="1">
+            <group id="ls_payment_method_pay_at_store"
+                   translate="label comment"
+                   type="text"
+                   sortOrder="50"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
                 <label>Pay at the Store</label>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1"
                        showInStore="0">
@@ -364,11 +471,14 @@
                 </field>
             </group>
         </section>
-        <section id="omni_clickandcollect" sortOrder="2" showInDefault="1">
+        <section id="omni_clickandcollect"
+                 sortOrder="2"
+                 showInDefault="1">
             <tab>ls_retail</tab>
             <label>Click And Collect</label>
             <resource>Ls_Core::config</resource>
-            <group id="general" showInDefault="1">
+            <group id="general"
+                   showInDefault="1">
                 <label>Default Maps Settings</label>
                 <field id="maps_api_key" translate="label" type="text" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">

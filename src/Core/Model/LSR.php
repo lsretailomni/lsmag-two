@@ -59,6 +59,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // SYSTEM CONFIG
     const SC_SYSTEM_SYMLINK = 'dev/template/allow_symlink';
 
+    // ENABLE
+    const SC_MODULE_ENABLED = 'ls_mag/ls_enable/enabled';
+
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
@@ -565,6 +568,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($store_id = false, $scope = false)
     {
+        if (!$this->isEnabled()) {
+            return false;
+        }
+
         if (isset($this->validateBaseUrlResponse)) {
             return $this->validateBaseUrlResponse;
         }
@@ -809,7 +816,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         );
     }
 
-
     /**
      * Return pickup and delivery option is enabled or not
      *
@@ -821,6 +827,20 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         return $this->scopeConfig->getValue(
             self::PICKUP_TIMESLOTS_ENABLED,
             ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
+
+    /**
+     * Config to check if module is enabled or not
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function isEnabled()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_MODULE_ENABLED,
             $this->storeManager->getStore()->getWebsiteId()
         );
     }
