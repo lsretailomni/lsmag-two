@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfScanPayGoTender implements IteratorAggregate
 {
+
     /**
      * @property ScanPayGoTender[] $ScanPayGoTender
      */
@@ -45,5 +46,7 @@ class ArrayOfScanPayGoTender implements IteratorAggregate
     {
         return $this->ScanPayGoTender;
     }
+
+
 }
 

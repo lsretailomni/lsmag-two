@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommBarcodesResponse implements ResponseInterface
 {
+
     /**
      * @property ReplBarcodeResponse $ReplEcommBarcodesResult
      */
@@ -42,5 +43,7 @@ class ReplEcommBarcodesResponse implements ResponseInterface
     {
         return $this->ReplEcommBarcodesResult;
     }
+
+
 }
 

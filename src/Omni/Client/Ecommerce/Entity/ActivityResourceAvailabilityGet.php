@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityResourceAvailabilityGet implements RequestInterface
 {
+
     /**
      * @property string $locationNo
      */
@@ -126,5 +127,7 @@ class ActivityResourceAvailabilityGet implements RequestInterface
     {
         return $this->noOfDays;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Reservation extends Entity
 {
+
     /**
      * @property string $Comment
      */
@@ -400,5 +401,7 @@ class Reservation extends Entity
     {
         return $this->Status;
     }
+
+
 }
 

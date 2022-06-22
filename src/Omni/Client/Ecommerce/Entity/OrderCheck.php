@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderCheck
 {
+
     /**
      * @property ArrayOfOrderCheckLines $Lines
      */
@@ -101,5 +102,7 @@ class OrderCheck
     {
         return $this->OrderPayed;
     }
+
+
 }
 

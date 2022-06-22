@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommBasePricesResponse implements ResponseInterface
 {
+
     /**
      * @property ReplPriceResponse $ReplEcommBasePricesResult
      */
@@ -42,5 +43,7 @@ class ReplEcommBasePricesResponse implements ResponseInterface
     {
         return $this->ReplEcommBasePricesResult;
     }
+
+
 }
 

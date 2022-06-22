@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ScanPayGoProfileGet implements RequestInterface
 {
+
     /**
      * @property string $profileId
      */
@@ -57,5 +58,7 @@ class ScanPayGoProfileGet implements RequestInterface
     {
         return $this->storeNo;
     }
+
+
 }
 

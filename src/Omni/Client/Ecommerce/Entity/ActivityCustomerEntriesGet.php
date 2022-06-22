@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityCustomerEntriesGet implements RequestInterface
 {
+
     /**
      * @property string $contactNo
      */
@@ -57,5 +58,7 @@ class ActivityCustomerEntriesGet implements RequestInterface
     {
         return $this->customerNo;
     }
+
+
 }
 

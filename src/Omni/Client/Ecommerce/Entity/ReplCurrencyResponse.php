@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCurrencyResponse
 {
+
     /**
      * @property ArrayOfReplCurrency $Currencies
      */
@@ -101,5 +102,7 @@ class ReplCurrencyResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

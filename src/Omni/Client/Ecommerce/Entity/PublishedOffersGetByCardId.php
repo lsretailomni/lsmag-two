@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class PublishedOffersGetByCardId implements RequestInterface
 {
+
     /**
      * @property string $cardId
      */
@@ -57,5 +58,7 @@ class PublishedOffersGetByCardId implements RequestInterface
     {
         return $this->itemId;
     }
+
+
 }
 

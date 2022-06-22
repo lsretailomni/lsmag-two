@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHospStatus
 {
+
     /**
      * @property boolean $Confirmed
      */
@@ -160,5 +161,7 @@ class OrderHospStatus
     {
         return $this->Status;
     }
+
+
 }
 

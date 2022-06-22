@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class AdmissionEntry extends Entity
 {
+
     /**
      * @property string $ContactNo
      */
@@ -239,5 +240,7 @@ class AdmissionEntry extends Entity
     {
         return $this->Type;
     }
+
+
 }
 

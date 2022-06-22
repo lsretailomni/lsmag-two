@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfileResponse as SecurityChec
 
 class SecurityCheckProfile extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SECURITY_CHECK_PROFILE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class SecurityCheckProfile extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

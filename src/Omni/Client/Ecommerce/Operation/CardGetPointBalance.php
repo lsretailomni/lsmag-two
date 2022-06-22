@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\CardGetPointBalanceResponse as CardGetPointB
 
 class CardGetPointBalance extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'CARD_GET_POINT_BALANCE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class CardGetPointBalance extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

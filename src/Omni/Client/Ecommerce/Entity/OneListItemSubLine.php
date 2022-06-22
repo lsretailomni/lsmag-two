@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneListItemSubLine extends Entity
 {
+
     /**
      * @property int $DealLineId
      */
@@ -321,5 +322,7 @@ class OneListItemSubLine extends Entity
     {
         return $this->VariantId;
     }
+
+
 }
 

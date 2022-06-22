@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ImageSize extends Entity
 {
+
     /**
      * @property int $Height
      */
@@ -78,5 +79,7 @@ class ImageSize extends Entity
     {
         return $this->Width;
     }
+
+
 }
 

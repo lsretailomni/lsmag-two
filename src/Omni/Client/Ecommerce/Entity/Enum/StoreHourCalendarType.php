@@ -19,6 +19,7 @@ use MyCLabs\Enum\Enum;
  */
 class StoreHourCalendarType extends Enum
 {
+
     public const ALL = 'All';
 
     public const OPENING_HOURS = 'OpeningHours';
@@ -28,5 +29,7 @@ class StoreHourCalendarType extends Enum
     public const REST_ORDER_TAKING = 'RestOrderTaking';
 
     public const OTHER = 'Other';
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplCurrencyExchRate implements IteratorAggregate
 {
+
     /**
      * @property ReplCurrencyExchRate[] $ReplCurrencyExchRate
      */
@@ -45,5 +46,7 @@ class ArrayOfReplCurrencyExchRate implements IteratorAggregate
     {
         return $this->ReplCurrencyExchRate;
     }
+
+
 }
 

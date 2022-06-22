@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfMenuDealLineItem implements IteratorAggregate
 {
+
     /**
      * @property MenuDealLineItem[] $MenuDealLineItem
      */
@@ -45,5 +46,7 @@ class ArrayOfMenuDealLineItem implements IteratorAggregate
     {
         return $this->MenuDealLineItem;
     }
+
+
 }
 

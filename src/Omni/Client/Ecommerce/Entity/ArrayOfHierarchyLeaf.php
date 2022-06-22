@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfHierarchyLeaf implements IteratorAggregate
 {
+
     /**
      * @property HierarchyLeaf[] $HierarchyLeaf
      */
@@ -45,5 +46,7 @@ class ArrayOfHierarchyLeaf implements IteratorAggregate
     {
         return $this->HierarchyLeaf;
     }
+
+
 }
 

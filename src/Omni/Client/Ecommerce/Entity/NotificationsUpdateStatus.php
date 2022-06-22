@@ -14,6 +14,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class NotificationsUpdateStatus implements RequestInterface
 {
+
     /**
      * @property ArrayOfstring $notificationIds
      */
@@ -92,5 +93,7 @@ class NotificationsUpdateStatus implements RequestInterface
     {
         return $this->notificationStatus;
     }
+
+
 }
 

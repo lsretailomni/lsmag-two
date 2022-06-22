@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdExResponse as SalesEn
 
 class SalesEntriesGetByCardIdEx extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SALES_ENTRIES_GET_BY_CARD_ID_EX';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class SalesEntriesGetByCardIdEx extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

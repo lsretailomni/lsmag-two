@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ProactiveDiscount
 {
+
     /**
      * @property ArrayOfstring $BenefitItemIds
      */
@@ -390,5 +391,7 @@ class ProactiveDiscount
     {
         return $this->VariantId;
     }
+
+
 }
 

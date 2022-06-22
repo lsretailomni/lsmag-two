@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class RecommendedItem
 {
+
     /**
      * @property string $itemNo
      */
@@ -55,5 +56,7 @@ class RecommendedItem
     {
         return $this->lift;
     }
+
+
 }
 

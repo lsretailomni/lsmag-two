@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class NotificationGetByIdResponse implements ResponseInterface
 {
+
     /**
      * @property Notification $NotificationGetByIdResult
      */
@@ -42,5 +43,7 @@ class NotificationGetByIdResponse implements ResponseInterface
     {
         return $this->NotificationGetByIdResult;
     }
+
+
 }
 

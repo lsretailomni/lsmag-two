@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactGetByCardId implements RequestInterface
 {
+
     /**
      * @property string $cardId
      */
@@ -34,5 +35,7 @@ class ContactGetByCardId implements RequestInterface
     {
         return $this->cardId;
     }
+
+
 }
 

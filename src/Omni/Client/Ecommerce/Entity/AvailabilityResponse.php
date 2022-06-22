@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class AvailabilityResponse
 {
+
     /**
      * @property string $AvailDate
      */
@@ -285,5 +286,7 @@ class AvailabilityResponse
     {
         return $this->WeekDay;
     }
+
+
 }
 

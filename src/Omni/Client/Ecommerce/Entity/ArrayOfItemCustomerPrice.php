@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfItemCustomerPrice implements IteratorAggregate
 {
+
     /**
      * @property ItemCustomerPrice[] $ItemCustomerPrice
      */
@@ -45,5 +46,7 @@ class ArrayOfItemCustomerPrice implements IteratorAggregate
     {
         return $this->ItemCustomerPrice;
     }
+
+
 }
 

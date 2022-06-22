@@ -10,15 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemVariantRegistration
 {
-    /**
-     * @property int $BlockedOnECom
-     */
-    protected $BlockedOnECom = null;
-
-    /**
-     * @property int $BlockedOnPos
-     */
-    protected $BlockedOnPos = null;
 
     /**
      * @property int $BlockedOnECom
@@ -341,5 +332,7 @@ class ReplItemVariantRegistration
     {
         return $this->scope_id;
     }
+
+
 }
 

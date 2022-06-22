@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MembershipResponse extends Entity
 {
+
     /**
      * @property string $BookingRef
      */
@@ -124,5 +125,7 @@ class MembershipResponse extends Entity
     {
         return $this->Quantity;
     }
+
+
 }
 

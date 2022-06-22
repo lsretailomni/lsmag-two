@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class WebRequest implements RequestInterface
 {
+
     /**
      * @property string $xmlRequest
      */
@@ -34,5 +35,7 @@ class WebRequest implements RequestInterface
     {
         return $this->xmlRequest;
     }
+
+
 }
 

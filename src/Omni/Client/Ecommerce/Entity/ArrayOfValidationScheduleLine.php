@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfValidationScheduleLine implements IteratorAggregate
 {
+
     /**
      * @property ValidationScheduleLine[] $ValidationScheduleLine
      */
@@ -45,5 +46,7 @@ class ArrayOfValidationScheduleLine implements IteratorAggregate
     {
         return $this->ValidationScheduleLine;
     }
+
+
 }
 

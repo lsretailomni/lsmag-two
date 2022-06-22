@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplBarcode
 {
+
     /**
      * @property int $Blocked
      */
@@ -216,5 +217,7 @@ class ReplBarcode
     {
         return $this->scope_id;
     }
+
+
 }
 

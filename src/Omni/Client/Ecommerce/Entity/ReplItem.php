@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItem
 {
+
     /**
      * @property string $BaseUnitOfMeasure
      */
@@ -883,5 +884,7 @@ class ReplItem
     {
         return $this->scope_id;
     }
+
+
 }
 

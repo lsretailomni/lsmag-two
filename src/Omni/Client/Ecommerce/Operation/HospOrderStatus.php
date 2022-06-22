@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\HospOrderStatusResponse as HospOrderStatusRe
 
 class HospOrderStatus extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'HOSP_ORDER_STATUS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class HospOrderStatus extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

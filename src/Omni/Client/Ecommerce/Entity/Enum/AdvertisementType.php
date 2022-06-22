@@ -19,6 +19,7 @@ use MyCLabs\Enum\Enum;
  */
 class AdvertisementType extends Enum
 {
+
     public const NONE = 'None';
 
     public const ITEM_ID = 'ItemId';
@@ -28,5 +29,7 @@ class AdvertisementType extends Enum
     public const MENU_NODE_ID = 'MenuNodeId';
 
     public const DEAL = 'Deal';
+
+
 }
 

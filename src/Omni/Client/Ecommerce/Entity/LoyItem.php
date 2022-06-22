@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class LoyItem extends Entity
 {
+
     /**
      * @property ArrayOfImageView $Images
      */
@@ -653,5 +654,7 @@ class LoyItem extends Entity
     {
         return $this->UnitsPerParcel;
     }
+
+
 }
 

@@ -18,6 +18,7 @@ use MyCLabs\Enum\Enum;
  */
 class LinkStatus extends Enum
 {
+
     public const REQUESTING = 'Requesting';
 
     public const ACTIVE = 'Active';
@@ -25,5 +26,7 @@ class LinkStatus extends Enum
     public const BLOCKED = 'Blocked';
 
     public const REMOVE = 'Remove';
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityGetAvailabilityToken implements RequestInterface
 {
+
     /**
      * @property string $locationNo
      */
@@ -126,5 +127,7 @@ class ActivityGetAvailabilityToken implements RequestInterface
     {
         return $this->quantity;
     }
+
+
 }
 

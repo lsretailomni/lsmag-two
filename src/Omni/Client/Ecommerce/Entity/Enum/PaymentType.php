@@ -20,6 +20,7 @@ use MyCLabs\Enum\Enum;
  */
 class PaymentType extends Enum
 {
+
     public const NONE = 'None';
 
     public const PAYMENT = 'Payment';
@@ -31,5 +32,7 @@ class PaymentType extends Enum
     public const SHIPPED = 'Shipped';
 
     public const COLLECTED = 'Collected';
+
+
 }
 

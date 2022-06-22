@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MemberProduct extends Entity
 {
+
     /**
      * @property string $AccessType
      */
@@ -469,5 +470,7 @@ class MemberProduct extends Entity
     {
         return $this->SubscriptionType;
     }
+
+
 }
 
