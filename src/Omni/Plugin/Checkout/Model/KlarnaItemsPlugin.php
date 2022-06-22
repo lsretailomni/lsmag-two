@@ -64,9 +64,9 @@ class KlarnaItemsPlugin
     /**
      * For modifying item amount in request
      *
-     * @param $subject
+     * @param \Klarna\Core\Model\Checkout\Orderline\Items $subject
      * @param callable $proceed
-     * @param  $checkout
+     * @param \Klarna\Core\Api\BuilderInterface $checkout
      * @return void
      * @throws NoSuchEntityException
      */
@@ -80,12 +80,12 @@ class KlarnaItemsPlugin
             $items              = $itemsArray = [];
             $this->klarnaConfig = $this->factory->create(
                 'Klarna_Core',
-                'Klarna\Core\Helper\KlarnaConfig'
+                \Klarna\Core\Helper\KlarnaConfig::class
             );
 
             $this->dataConverter = $this->factory->create(
                 'Klarna_Core',
-                'Klarna\Core\Helper\DataConverter'
+                \Klarna\Core\Helper\DataConverter::class
             );
             foreach ($object->getAllVisibleItems() as $singleItem) {
                 if ($checkout->getRequest()) {
@@ -113,11 +113,17 @@ class KlarnaItemsPlugin
                     }
                     if (array_key_exists('reference', $item)) {
                         if ($this->klarnaConfig->isSeparateTaxLine($singleItem->getStore())) {
-                            $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['unit_price']);
+                            $item['unit_price'] = $this->dataConverter->toApiFloat(
+                                $items[$item['reference']]['unit_price']
+                            );
                         } else {
-                            $item['unit_price'] = $this->dataConverter->toApiFloat($items[$item['reference']]['row_total']);
+                            $item['unit_price'] = $this->dataConverter->toApiFloat(
+                                $items[$item['reference']]['row_total']
+                            );
                         }
-                        $item['total_amount'] = $this->dataConverter->toApiFloat($items[$item['reference']] ['row_total']);
+                        $item['total_amount'] = $this->dataConverter->toApiFloat(
+                            $items[$item['reference']]['row_total']
+                        );
                     }
                     $itemsArray[] = $item;
                 }
@@ -130,10 +136,10 @@ class KlarnaItemsPlugin
     }
 
     /**
-     * get tax percentage
+     * Get tax percentage
      *
-     * @param $product
-     * @param $country
+     * @param \Magento\Catalog\Model\Product $product
+     * @param string $country
      * @return float|int
      * @throws NoSuchEntityException
      */
