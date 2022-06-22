@@ -133,6 +133,17 @@ interface ReplHierarchyLeafInterface
     public function getNodeId();
 
     /**
+     * @param float $Prepayment
+     * @return $this
+     */
+    public function setPrepayment($Prepayment);
+
+    /**
+     * @return float
+     */
+    public function getPrepayment();
+
+    /**
      * @param int $SortOrder
      * @return $this
      */
@@ -164,6 +175,17 @@ interface ReplHierarchyLeafInterface
      * @return string
      */
     public function getValidationPeriod();
+
+    /**
+     * @param boolean $VendorSourcing
+     * @return $this
+     */
+    public function setVendorSourcing($VendorSourcing);
+
+    /**
+     * @return boolean
+     */
+    public function getVendorSourcing();
 
     /**
      * @param string $scope

@@ -1130,9 +1130,11 @@
     <column xsi:type="text" name="ItemUOM" nullable="true" comment="ItemUOM"/>
     <column xsi:type="text" name="MemberValue" nullable="true" comment="MemberValue"/>
     <column xsi:type="varchar" name="NodeId" length="200" nullable="true" comment="NodeId"/>
+    <column xsi:type="decimal" name="Prepayment" scale="4" precision="20" nullable="true" comment="Prepayment"/>
     <column xsi:type="int" name="SortOrder" padding="11" nullable="true" comment="SortOrder"/>
     <column xsi:type="varchar" name="Type" length="200" nullable="true" comment="Type"/>
     <column xsi:type="text" name="ValidationPeriod" nullable="true" comment="ValidationPeriod"/>
+    <column xsi:type="boolean" name="VendorSourcing" default="0" nullable="true" comment="VendorSourcing"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
