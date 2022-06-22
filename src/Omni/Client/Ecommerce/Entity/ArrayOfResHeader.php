@@ -31,7 +31,7 @@ class ArrayOfResHeader implements IteratorAggregate
     }
 
     /**
-     * @return ResHeader[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

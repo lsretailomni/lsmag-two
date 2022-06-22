@@ -31,7 +31,7 @@ class ArrayOfMembership implements IteratorAggregate
     }
 
     /**
-     * @return Membership[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

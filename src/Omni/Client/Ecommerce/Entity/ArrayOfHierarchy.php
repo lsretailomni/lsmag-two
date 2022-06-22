@@ -31,7 +31,7 @@ class ArrayOfHierarchy implements IteratorAggregate
     }
 
     /**
-     * @return Hierarchy[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfReplTaxSetup implements IteratorAggregate
     }
 
     /**
-     * @return ReplTaxSetup[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

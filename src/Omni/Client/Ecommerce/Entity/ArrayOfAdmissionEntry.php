@@ -31,7 +31,7 @@ class ArrayOfAdmissionEntry implements IteratorAggregate
     }
 
     /**
-     * @return AdmissionEntry[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

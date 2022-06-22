@@ -31,7 +31,7 @@ class ArrayOfIngredient implements IteratorAggregate
     }
 
     /**
-     * @return Ingredient[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

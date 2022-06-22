@@ -31,7 +31,7 @@ class ArrayOfReturnPolicy implements IteratorAggregate
     }
 
     /**
-     * @return ReturnPolicy[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

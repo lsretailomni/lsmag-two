@@ -31,7 +31,7 @@ class ArrayOfPublishedOffer implements IteratorAggregate
     }
 
     /**
-     * @return PublishedOffer[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

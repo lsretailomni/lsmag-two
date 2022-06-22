@@ -31,7 +31,7 @@ class ArrayOfReplDataTranslation implements IteratorAggregate
     }
 
     /**
-     * @return ReplDataTranslation[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

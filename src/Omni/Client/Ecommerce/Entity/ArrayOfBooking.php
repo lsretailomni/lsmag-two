@@ -31,7 +31,7 @@ class ArrayOfBooking implements IteratorAggregate
     }
 
     /**
-     * @return Booking[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

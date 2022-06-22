@@ -31,7 +31,7 @@ class ArrayOfOneListItemSubLine implements IteratorAggregate
     }
 
     /**
-     * @return OneListItemSubLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

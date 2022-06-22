@@ -31,7 +31,7 @@ class ArrayOfCard implements IteratorAggregate
     }
 
     /**
-     * @return Card[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

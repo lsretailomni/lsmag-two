@@ -31,7 +31,7 @@ class ArrayOfItemCategory implements IteratorAggregate
     }
 
     /**
-     * @return ItemCategory[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

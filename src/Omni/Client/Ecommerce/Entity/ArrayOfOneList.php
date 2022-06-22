@@ -31,7 +31,7 @@ class ArrayOfOneList implements IteratorAggregate
     }
 
     /**
-     * @return OneList[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

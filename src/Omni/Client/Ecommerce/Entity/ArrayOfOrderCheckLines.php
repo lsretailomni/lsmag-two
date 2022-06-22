@@ -31,7 +31,7 @@ class ArrayOfOrderCheckLines implements IteratorAggregate
     }
 
     /**
-     * @return OrderCheckLines[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

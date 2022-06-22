@@ -31,7 +31,7 @@ class ArrayOfProactiveDiscount implements IteratorAggregate
     }
 
     /**
-     * @return ProactiveDiscount[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfProfile implements IteratorAggregate
     }
 
     /**
-     * @return Profile[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

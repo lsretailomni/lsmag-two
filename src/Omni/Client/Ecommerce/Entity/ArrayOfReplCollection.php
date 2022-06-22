@@ -31,7 +31,7 @@ class ArrayOfReplCollection implements IteratorAggregate
     }
 
     /**
-     * @return ReplCollection[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

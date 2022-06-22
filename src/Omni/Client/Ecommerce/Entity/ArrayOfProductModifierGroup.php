@@ -31,7 +31,7 @@ class ArrayOfProductModifierGroup implements IteratorAggregate
     }
 
     /**
-     * @return ProductModifierGroup[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

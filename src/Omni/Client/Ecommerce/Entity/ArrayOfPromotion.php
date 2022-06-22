@@ -31,7 +31,7 @@ class ArrayOfPromotion implements IteratorAggregate
     }
 
     /**
-     * @return Promotion[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

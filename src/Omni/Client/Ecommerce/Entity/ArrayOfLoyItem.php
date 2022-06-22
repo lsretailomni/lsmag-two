@@ -31,7 +31,7 @@ class ArrayOfLoyItem implements IteratorAggregate
     }
 
     /**
-     * @return LoyItem[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

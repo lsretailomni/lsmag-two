@@ -31,7 +31,7 @@ class ArrayOfReplItemVariantRegistration implements IteratorAggregate
     }
 
     /**
-     * @return ReplItemVariantRegistration[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

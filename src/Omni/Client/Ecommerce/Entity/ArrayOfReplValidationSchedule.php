@@ -31,7 +31,7 @@ class ArrayOfReplValidationSchedule implements IteratorAggregate
     }
 
     /**
-     * @return ReplValidationSchedule[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfReplUnitOfMeasure implements IteratorAggregate
     }
 
     /**
-     * @return ReplUnitOfMeasure[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

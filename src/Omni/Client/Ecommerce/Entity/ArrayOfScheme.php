@@ -31,7 +31,7 @@ class ArrayOfScheme implements IteratorAggregate
     }
 
     /**
-     * @return Scheme[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

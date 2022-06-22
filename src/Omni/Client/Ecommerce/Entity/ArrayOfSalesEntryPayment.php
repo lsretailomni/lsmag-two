@@ -31,7 +31,7 @@ class ArrayOfSalesEntryPayment implements IteratorAggregate
     }
 
     /**
-     * @return SalesEntryPayment[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

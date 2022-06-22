@@ -31,7 +31,7 @@ class ArrayOfReplDiscount implements IteratorAggregate
     }
 
     /**
-     * @return ReplDiscount[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

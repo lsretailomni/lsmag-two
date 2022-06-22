@@ -31,7 +31,7 @@ class ArrayOfReplBarcode implements IteratorAggregate
     }
 
     /**
-     * @return ReplBarcode[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

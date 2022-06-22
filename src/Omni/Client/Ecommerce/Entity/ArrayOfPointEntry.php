@@ -31,7 +31,7 @@ class ArrayOfPointEntry implements IteratorAggregate
     }
 
     /**
-     * @return PointEntry[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfAdvertisement implements IteratorAggregate
     }
 
     /**
-     * @return Advertisement[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

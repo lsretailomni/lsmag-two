@@ -31,7 +31,7 @@ class ArrayOfReplItemModifier implements IteratorAggregate
     }
 
     /**
-     * @return ReplItemModifier[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

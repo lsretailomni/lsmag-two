@@ -31,7 +31,7 @@ class ArrayOfProduct implements IteratorAggregate
     }
 
     /**
-     * @return Product[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

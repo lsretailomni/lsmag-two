@@ -31,7 +31,7 @@ class ArrayOfMenuNodeLine implements IteratorAggregate
     }
 
     /**
-     * @return MenuNodeLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfOrderLineAvailabilityResponse implements IteratorAggregate
     }
 
     /**
-     * @return OrderLineAvailabilityResponse[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

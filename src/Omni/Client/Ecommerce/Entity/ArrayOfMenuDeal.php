@@ -31,7 +31,7 @@ class ArrayOfMenuDeal implements IteratorAggregate
     }
 
     /**
-     * @return MenuDeal[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfInventoryRequest implements IteratorAggregate
     }
 
     /**
-     * @return InventoryRequest[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

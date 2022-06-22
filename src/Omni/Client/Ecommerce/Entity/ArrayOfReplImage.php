@@ -31,7 +31,7 @@ class ArrayOfReplImage implements IteratorAggregate
     }
 
     /**
-     * @return ReplImage[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

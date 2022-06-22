@@ -31,7 +31,7 @@ class ArrayOfReplHierarchyLeaf implements IteratorAggregate
     }
 
     /**
-     * @return ReplHierarchyLeaf[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

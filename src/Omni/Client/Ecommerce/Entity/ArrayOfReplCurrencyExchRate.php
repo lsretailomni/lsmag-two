@@ -31,7 +31,7 @@ class ArrayOfReplCurrencyExchRate implements IteratorAggregate
     }
 
     /**
-     * @return ReplCurrencyExchRate[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

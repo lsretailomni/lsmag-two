@@ -31,7 +31,7 @@ class ArrayOfDealModifierGroup implements IteratorAggregate
     }
 
     /**
-     * @return DealModifierGroup[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

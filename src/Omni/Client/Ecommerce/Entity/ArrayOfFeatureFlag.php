@@ -31,7 +31,7 @@ class ArrayOfFeatureFlag implements IteratorAggregate
     }
 
     /**
-     * @return FeatureFlag[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfTaxItemGroup implements IteratorAggregate
     }
 
     /**
-     * @return TaxItemGroup[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

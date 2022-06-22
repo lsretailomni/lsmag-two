@@ -31,7 +31,7 @@ class ArrayOfReplExtendedVariantValue implements IteratorAggregate
     }
 
     /**
-     * @return ReplExtendedVariantValue[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

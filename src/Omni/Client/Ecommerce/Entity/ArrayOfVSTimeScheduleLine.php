@@ -31,7 +31,7 @@ class ArrayOfVSTimeScheduleLine implements IteratorAggregate
     }
 
     /**
-     * @return VSTimeScheduleLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

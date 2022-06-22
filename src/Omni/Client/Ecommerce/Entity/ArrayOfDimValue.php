@@ -31,7 +31,7 @@ class ArrayOfDimValue implements IteratorAggregate
     }
 
     /**
-     * @return DimValue[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

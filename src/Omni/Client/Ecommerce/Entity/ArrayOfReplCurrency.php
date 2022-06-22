@@ -31,7 +31,7 @@ class ArrayOfReplCurrency implements IteratorAggregate
     }
 
     /**
-     * @return ReplCurrency[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

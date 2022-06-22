@@ -31,7 +31,7 @@ class ArrayOfstring implements IteratorAggregate
     }
 
     /**
-     * @return string[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

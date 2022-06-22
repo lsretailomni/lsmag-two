@@ -31,7 +31,7 @@ class ArrayOfItemLocation implements IteratorAggregate
     }
 
     /**
-     * @return ItemLocation[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

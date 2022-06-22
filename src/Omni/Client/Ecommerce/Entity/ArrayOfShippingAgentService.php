@@ -31,7 +31,7 @@ class ArrayOfShippingAgentService implements IteratorAggregate
     }
 
     /**
-     * @return ShippingAgentService[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfAvailabilityResponse implements IteratorAggregate
     }
 
     /**
-     * @return AvailabilityResponse[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfValidationScheduleLine implements IteratorAggregate
     }
 
     /**
-     * @return ValidationScheduleLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfVariantExt implements IteratorAggregate
     }
 
     /**
-     * @return VariantExt[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

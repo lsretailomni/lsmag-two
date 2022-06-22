@@ -31,7 +31,7 @@ class ArrayOfReplHierarchyHospDealLine implements IteratorAggregate
     }
 
     /**
-     * @return ReplHierarchyHospDealLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfScanPayGoTender implements IteratorAggregate
     }
 
     /**
-     * @return ScanPayGoTender[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

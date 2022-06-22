@@ -31,7 +31,7 @@ class ArrayOfAllowance implements IteratorAggregate
     }
 
     /**
-     * @return Allowance[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

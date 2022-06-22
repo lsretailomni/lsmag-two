@@ -31,7 +31,7 @@ class ArrayOfReplShippingAgent implements IteratorAggregate
     }
 
     /**
-     * @return ReplShippingAgent[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

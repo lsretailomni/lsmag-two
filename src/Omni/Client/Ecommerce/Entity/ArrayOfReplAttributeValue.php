@@ -31,7 +31,7 @@ class ArrayOfReplAttributeValue implements IteratorAggregate
     }
 
     /**
-     * @return ReplAttributeValue[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

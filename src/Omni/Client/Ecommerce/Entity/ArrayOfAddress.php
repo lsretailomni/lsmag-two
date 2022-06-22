@@ -31,7 +31,7 @@ class ArrayOfAddress implements IteratorAggregate
     }
 
     /**
-     * @return Address[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

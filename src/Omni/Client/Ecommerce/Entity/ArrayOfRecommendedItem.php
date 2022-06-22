@@ -31,7 +31,7 @@ class ArrayOfRecommendedItem implements IteratorAggregate
     }
 
     /**
-     * @return RecommendedItem[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

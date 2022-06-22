@@ -31,7 +31,7 @@ class ArrayOfReplItemCategory implements IteratorAggregate
     }
 
     /**
-     * @return ReplItemCategory[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

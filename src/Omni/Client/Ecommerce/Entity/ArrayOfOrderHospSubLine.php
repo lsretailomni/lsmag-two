@@ -31,7 +31,7 @@ class ArrayOfOrderHospSubLine implements IteratorAggregate
     }
 
     /**
-     * @return OrderHospSubLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

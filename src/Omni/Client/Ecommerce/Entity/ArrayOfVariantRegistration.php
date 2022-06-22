@@ -31,7 +31,7 @@ class ArrayOfVariantRegistration implements IteratorAggregate
     }
 
     /**
-     * @return VariantRegistration[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

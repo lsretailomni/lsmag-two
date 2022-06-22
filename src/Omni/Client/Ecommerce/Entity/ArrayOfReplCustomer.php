@@ -31,7 +31,7 @@ class ArrayOfReplCustomer implements IteratorAggregate
     }
 
     /**
-     * @return ReplCustomer[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

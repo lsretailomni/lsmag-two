@@ -31,7 +31,7 @@ class ArrayOfSubscriptionEntry implements IteratorAggregate
     }
 
     /**
-     * @return SubscriptionEntry[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

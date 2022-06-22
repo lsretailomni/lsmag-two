@@ -31,7 +31,7 @@ class ArrayOfImageView implements IteratorAggregate
     }
 
     /**
-     * @return ImageView[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

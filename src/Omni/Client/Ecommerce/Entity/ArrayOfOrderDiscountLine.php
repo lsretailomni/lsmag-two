@@ -31,7 +31,7 @@ class ArrayOfOrderDiscountLine implements IteratorAggregate
     }
 
     /**
-     * @return OrderDiscountLine[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

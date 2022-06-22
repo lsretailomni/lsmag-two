@@ -31,7 +31,7 @@ class ArrayOfint implements IteratorAggregate
     }
 
     /**
-     * @return int[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

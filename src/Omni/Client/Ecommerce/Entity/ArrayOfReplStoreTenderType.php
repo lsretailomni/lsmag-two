@@ -31,7 +31,7 @@ class ArrayOfReplStoreTenderType implements IteratorAggregate
     }
 
     /**
-     * @return ReplStoreTenderType[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

@@ -31,7 +31,7 @@ class ArrayOfStoreHours implements IteratorAggregate
     }
 
     /**
-     * @return StoreHours[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

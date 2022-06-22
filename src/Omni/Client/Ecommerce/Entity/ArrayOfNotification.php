@@ -31,7 +31,7 @@ class ArrayOfNotification implements IteratorAggregate
     }
 
     /**
-     * @return Notification[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

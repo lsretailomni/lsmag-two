@@ -31,7 +31,7 @@ class ArrayOfReplInvStatus implements IteratorAggregate
     }
 
     /**
-     * @return ReplInvStatus[]
+     * @return \Traversable
      */
     public function getIterator() : \Traversable
     {

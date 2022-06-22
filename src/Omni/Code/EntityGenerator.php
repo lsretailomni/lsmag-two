@@ -188,7 +188,7 @@ CODE
                         $this->class->setImplementedInterfaces([IteratorAggregate::class]);
                         $iterator_method = new MethodGenerator();
                         $iterator_method->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['\Traversable'])]])
                         );
                         $iterator_method->setName('getIterator');
                         $iterator_method->setReturnType('Traversable');
