@@ -3,8 +3,16 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
         <section id="ls_mag">
-            <group id="loyalty" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1"
+            <group id="loyalty"
+                   translate="label"
+                   type="text"
+                   sortOrder="60"
+                   showInDefault="1"
+                   showInWebsite="1"
                    showInStore="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <label>Customer Dashboard and Loyalty Elements</label>
                 <field id="show_club_information" translate="label" type="select" sortOrder="1" showInDefault="1"
                        showInWebsite="1" showInStore="1">

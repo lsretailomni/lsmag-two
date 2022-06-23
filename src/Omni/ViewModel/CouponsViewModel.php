@@ -3,6 +3,7 @@
 namespace Ls\Omni\ViewModel;
 
 use \Ls\Omni\Helper\Data;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 
 /**
@@ -26,10 +27,24 @@ class CouponsViewModel implements ArgumentInterface
     }
 
     /**
-     * @return string
+     * Is Coupons Enabled
+     *
+     * @return bool
+     * @throws NoSuchEntityException
      */
     public function isCouponsEnabled()
     {
         return $this->data->isCouponsEnabled("cart");
+    }
+
+    /**
+     * Is Module Enabled
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function isModuleEnabled()
+    {
+        return $this->data->lsr->isEnabled();
     }
 }

@@ -87,23 +87,6 @@
                                                             <item name="displayArea" xsi:type="string">afterMethods
                                                             </item>
                                                             <item name="children" xsi:type="array">
-                                                                <item name="discount" xsi:type="array">
-                                                                    <item name="component" xsi:type="string">
-                                                                        Ls_Omni/js/view/payment/discount
-                                                                    </item>
-                                                                    <item name="children" xsi:type="array">
-                                                                        <item name="errors" xsi:type="array">
-                                                                            <item name="sortOrder" xsi:type="string">0
-                                                                            </item>
-                                                                            <item name="component" xsi:type="string">
-                                                                                Magento_SalesRule/js/view/payment/discount-messages
-                                                                            </item>
-                                                                            <item name="displayArea" xsi:type="string">
-                                                                                messages
-                                                                            </item>
-                                                                        </item>
-                                                                    </item>
-                                                                </item>
                                                                 <item name="loyalty-points" xsi:type="array">
                                                                     <item name="component" xsi:type="string">
                                                                         Ls_Omni/js/view/loyalty-points

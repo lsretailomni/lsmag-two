@@ -5,14 +5,45 @@
         <tab id="ls_retail" sortOrder="650" translate="label">
             <label>LS Retail</label>
         </tab>
-        <section id="ls_mag" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
+        <section id="ls_mag"
+                 translate="label"
+                 type="text"
+                 sortOrder="1"
+                 showInDefault="1"
+                 showInWebsite="1"
                  showInStore="1">
             <class>separator-top</class>
             <label>General Configuration</label>
             <tab>ls_retail</tab>
             <resource>Ls_Core::config</resource>
-            <group id="ls_industry" translate="label" type="text" sortOrder="1" showInWebsite="1">
+            <group id="ls_enable"
+                   translate="label"
+                   type="text"
+                   sortOrder="10"
+                   showInDefault="1"
+                   showInWebsite="1"
+                   showInStore="1">
+                <label>Enable</label>
+                <field id="enabled"
+                       translate="label"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Module</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="ls_industry"
+                   translate="label"
+                   type="text"
+                   sortOrder="20"
+                   showInWebsite="1">
                 <label>Industry</label>
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
                 <field id="ls_choose_industry" translate="label" type="select" sortOrder="2" showInWebsite="1">
                     <label>Choose Industry</label>
                     <source_model>Ls\Core\Model\Config\Source\Industry</source_model>
@@ -20,7 +51,11 @@
             </group>
         </section>
         <section id="general">
-            <group id="single_store_mode" translate="label" type="text" sortOrder="150" showInDefault="1">
+            <group id="single_store_mode"
+                   translate="label"
+                   type="text"
+                   sortOrder="150"
+                   showInDefault="1">
                 <label>Single-Store Mode</label>
                 <field id="enabled" translate="label comment" type="select" sortOrder="10" showInDefault="1">
                     <label>Enable Single-Store Mode</label>

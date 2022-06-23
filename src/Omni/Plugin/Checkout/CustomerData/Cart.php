@@ -133,14 +133,16 @@ class Cart
                 $this->logger->error($e->getMessage());
             }
         } else {
-            $result['subtotalAmount'] = $quote->getGrandTotal();
-            $result['subtotal']       = $this->checkoutHelper->formatPrice($quote->getGrandTotal());
-
             if (is_array($result['items'])) {
                 foreach ($result['items'] as $key => $itemAsArray) {
                     $result['items'][$key]['lsPriceOriginal']  = "";
                     $result['items'][$key]['lsDiscountAmount'] = "";
                 }
+            }
+
+            if ($this->lsr->isEnabled()) {
+                $result['subtotalAmount'] = $quote->getGrandTotal();
+                $result['subtotal']       = $this->checkoutHelper->formatPrice($quote->getGrandTotal());
             }
         }
         return $result;

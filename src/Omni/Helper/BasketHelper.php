@@ -1340,4 +1340,14 @@ class BasketHelper extends AbstractHelper
     {
         return $this->quoteRepository;
     }
+
+    /**
+     * Get lsr model
+     *
+     * @return LSR
+     */
+    public function getLsrModel()
+    {
+        return $this->lsr;
+    }
 }

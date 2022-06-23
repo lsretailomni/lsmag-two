@@ -12,13 +12,15 @@ use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
+use Magento\SalesRule\Api\Data\DiscountDataInterfaceFactory;
+use Magento\SalesRule\Api\Data\RuleDiscountInterfaceFactory;
 use Magento\SalesRule\Model\Validator;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Class Discount to apply different type of discounts
  */
-class Discount extends AbstractTotal
+class Discount extends \Magento\SalesRule\Model\Quote\Discount
 {
     /**
      * Discount calculation object
@@ -58,7 +60,6 @@ class Discount extends AbstractTotal
     public $checkoutSession;
 
     /**
-     * Discount constructor.
      * @param ManagerInterface $eventManager
      * @param StoreManagerInterface $storeManager
      * @param Validator $validator
@@ -66,6 +67,8 @@ class Discount extends AbstractTotal
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param Proxy $checkoutSession
+     * @param RuleDiscountInterfaceFactory|null $discountInterfaceFactory
+     * @param DiscountDataInterfaceFactory|null $discountDataInterfaceFactory
      */
     public function __construct(
         ManagerInterface $eventManager,
@@ -74,9 +77,18 @@ class Discount extends AbstractTotal
         PriceCurrencyInterface $priceCurrency,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
-        Proxy $checkoutSession
+        Proxy $checkoutSession,
+        RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
+        DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
     ) {
-        $this->setCode('discount');
+        parent::__construct(
+            $eventManager,
+            $storeManager,
+            $validator,
+            $priceCurrency,
+            $discountInterfaceFactory,
+            $discountDataInterfaceFactory
+        );
         $this->eventManager = $eventManager;
         $this->calculator = $validator;
         $this->storeManager = $storeManager;
@@ -87,6 +99,8 @@ class Discount extends AbstractTotal
     }
 
     /**
+     * Discount collect
+     *
      * @param Quote $quote
      * @param ShippingAssignmentInterface $shippingAssignment
      * @param Total $total
@@ -98,6 +112,11 @@ class Discount extends AbstractTotal
         ShippingAssignmentInterface $shippingAssignment,
         Total $total
     ) {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if (!$lsr->isLSR($lsr->getCurrentStoreId())) {
+            return parent::collect($quote, $shippingAssignment, $total);
+        }
         $total->setData('discount_description', ''); //For fixing explode issue on graph ql
         $items = $shippingAssignment->getItems();
         if (!count($items)) {
@@ -117,6 +136,8 @@ class Discount extends AbstractTotal
     }
 
     /**
+     * Discount Fetch
+     *
      * @param Quote $quote
      * @param Total $total
      * @return array|null
@@ -124,6 +145,12 @@ class Discount extends AbstractTotal
      */
     public function fetch(Quote $quote, Total $total)
     {
+        $lsr = $this->basketHelper->getLsrModel();
+
+        if ($lsr->isLSR($lsr->getCurrentStoreId())) {
+            return parent::fetch($quote, $total);
+        }
+
         $result = null;
         $amount = $this->getTotalDiscount($quote);
         $title = __('Discount');
