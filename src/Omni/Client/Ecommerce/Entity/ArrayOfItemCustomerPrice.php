@@ -32,9 +32,9 @@ class ArrayOfItemCustomerPrice implements IteratorAggregate
     }
 
     /**
-     * @return ItemCustomerPrice[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ItemCustomerPrice );
     }

@@ -32,9 +32,9 @@ class ArrayOfIngredientItem implements IteratorAggregate
     }
 
     /**
-     * @return IngredientItem[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->IngredientItem );
     }

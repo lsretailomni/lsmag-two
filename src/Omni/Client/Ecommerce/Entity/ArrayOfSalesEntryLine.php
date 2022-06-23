@@ -32,9 +32,9 @@ class ArrayOfSalesEntryLine implements IteratorAggregate
     }
 
     /**
-     * @return SalesEntryLine[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->SalesEntryLine );
     }

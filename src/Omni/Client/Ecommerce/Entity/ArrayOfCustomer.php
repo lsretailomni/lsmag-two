@@ -32,9 +32,9 @@ class ArrayOfCustomer implements IteratorAggregate
     }
 
     /**
-     * @return Customer[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Customer );
     }

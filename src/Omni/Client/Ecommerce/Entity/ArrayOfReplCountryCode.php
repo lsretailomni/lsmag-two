@@ -32,9 +32,9 @@ class ArrayOfReplCountryCode implements IteratorAggregate
     }
 
     /**
-     * @return ReplCountryCode[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplCountryCode );
     }

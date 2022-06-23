@@ -32,9 +32,9 @@ class ArrayOfLoyItem implements IteratorAggregate
     }
 
     /**
-     * @return LoyItem[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->LoyItem );
     }

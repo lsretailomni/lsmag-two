@@ -32,9 +32,9 @@ class ArrayOfReplItemRecipe implements IteratorAggregate
     }
 
     /**
-     * @return ReplItemRecipe[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplItemRecipe );
     }

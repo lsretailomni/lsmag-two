@@ -32,9 +32,9 @@ class ArrayOfRecommendedItem implements IteratorAggregate
     }
 
     /**
-     * @return RecommendedItem[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->RecommendedItem );
     }

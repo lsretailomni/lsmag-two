@@ -32,9 +32,9 @@ class ArrayOfCard implements IteratorAggregate
     }
 
     /**
-     * @return Card[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Card );
     }

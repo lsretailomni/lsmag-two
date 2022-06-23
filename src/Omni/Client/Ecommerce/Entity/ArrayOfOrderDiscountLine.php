@@ -32,9 +32,9 @@ class ArrayOfOrderDiscountLine implements IteratorAggregate
     }
 
     /**
-     * @return OrderDiscountLine[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OrderDiscountLine );
     }

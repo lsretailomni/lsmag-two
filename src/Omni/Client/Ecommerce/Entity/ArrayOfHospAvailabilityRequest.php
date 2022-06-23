@@ -32,9 +32,9 @@ class ArrayOfHospAvailabilityRequest implements IteratorAggregate
     }
 
     /**
-     * @return HospAvailabilityRequest[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->HospAvailabilityRequest );
     }

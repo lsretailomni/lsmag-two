@@ -32,9 +32,9 @@ class ArrayOfNotification implements IteratorAggregate
     }
 
     /**
-     * @return Notification[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Notification );
     }

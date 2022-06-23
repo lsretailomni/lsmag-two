@@ -54,7 +54,7 @@
                         <item name="namespace" xsi:type="string">current.paging</item>
                     </item>
                     <item name="sizesConfig" xsi:type="array">
-                        <item name="value" xsi:type="number">40</item>
+                        <item name="value" xsi:type="number">60</item>
                     </item>
                 </item>
             </argument>

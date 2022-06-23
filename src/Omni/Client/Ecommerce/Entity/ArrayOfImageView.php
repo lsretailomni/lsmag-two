@@ -32,9 +32,9 @@ class ArrayOfImageView implements IteratorAggregate
     }
 
     /**
-     * @return ImageView[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ImageView );
     }

@@ -32,9 +32,9 @@ class ArrayOfSourcingLocation implements IteratorAggregate
     }
 
     /**
-     * @return SourcingLocation[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->SourcingLocation );
     }

@@ -32,9 +32,9 @@ class ArrayOfReplPrice implements IteratorAggregate
     }
 
     /**
-     * @return ReplPrice[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplPrice );
     }

@@ -32,9 +32,9 @@ class ArrayOfProductModifier implements IteratorAggregate
     }
 
     /**
-     * @return ProductModifier[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ProductModifier );
     }

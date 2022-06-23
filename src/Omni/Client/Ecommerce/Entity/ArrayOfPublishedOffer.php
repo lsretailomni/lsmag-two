@@ -32,9 +32,9 @@ class ArrayOfPublishedOffer implements IteratorAggregate
     }
 
     /**
-     * @return PublishedOffer[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->PublishedOffer );
     }

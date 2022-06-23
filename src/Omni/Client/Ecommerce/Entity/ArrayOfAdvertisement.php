@@ -32,9 +32,9 @@ class ArrayOfAdvertisement implements IteratorAggregate
     }
 
     /**
-     * @return Advertisement[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Advertisement );
     }

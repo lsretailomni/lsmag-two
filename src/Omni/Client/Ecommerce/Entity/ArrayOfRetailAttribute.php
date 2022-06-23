@@ -32,9 +32,9 @@ class ArrayOfRetailAttribute implements IteratorAggregate
     }
 
     /**
-     * @return RetailAttribute[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->RetailAttribute );
     }

@@ -32,9 +32,9 @@ class ArrayOfReturnPolicy implements IteratorAggregate
     }
 
     /**
-     * @return ReturnPolicy[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReturnPolicy );
     }

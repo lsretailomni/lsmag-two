@@ -32,9 +32,9 @@ class ArrayOfReplDataTranslationLangCode implements IteratorAggregate
     }
 
     /**
-     * @return ReplDataTranslationLangCode[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplDataTranslationLangCode );
     }

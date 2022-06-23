@@ -32,9 +32,9 @@ class ArrayOfMenu implements IteratorAggregate
     }
 
     /**
-     * @return Menu[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Menu );
     }

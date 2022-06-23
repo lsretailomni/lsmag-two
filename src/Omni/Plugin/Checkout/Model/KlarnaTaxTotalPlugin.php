@@ -3,9 +3,7 @@
 namespace Ls\Omni\Plugin\Checkout\Model;
 
 use \Ls\Core\Model\LSR;
-use Klarna\Core\Exception;
-use Klarna\Core\Helper\KlarnaConfig;
-use Klarna\Kp\Model\Api\Request\Builder;
+use \Ls\Omni\Model\Factory;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -20,7 +18,7 @@ class KlarnaTaxTotalPlugin
     private $storeManager;
 
     /**
-     * @var KlarnaConfig
+     * @var object
      */
     private $klarnaConfig;
 
@@ -30,34 +28,42 @@ class KlarnaTaxTotalPlugin
     private $lsr;
 
     /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
      * @param StoreManagerInterface $storeManager
-     * @param KlarnaConfig $klarnaConfig
+     * @param Factory $factory
      * @param LSR $lsr
      */
     public function __construct(
         StoreManagerInterface $storeManager,
-        KlarnaConfig $klarnaConfig,
+        Factory $factory,
         LSR $lsr
     ) {
         $this->storeManager = $storeManager;
-        $this->klarnaConfig = $klarnaConfig;
+        $this->factory      = $factory;
         $this->lsr          = $lsr;
     }
 
     /**
      * For setting order tax amount to zero in case of separate line
      *
-     * @param Builder $subject
-     * @param $amount
+     * @param \Klarna\Kp\Model\Api\Request\Builder $subject
+     * @param int $amount
      * @return int|void
-     * @throws Exception
      * @throws NoSuchEntityException
      */
     public function beforeSetOrderTaxAmount(
-        Builder $subject,
+        $subject,
         $amount
     ) {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            $this->klarnaConfig = $this->factory->create(
+                'Klarna_Core',
+                \Klarna\Core\Helper\KlarnaConfig::class
+            );
             if ($this->klarnaConfig->isSeparateTaxLine($this->storeManager->getStore())) {
                 return 0;
             }

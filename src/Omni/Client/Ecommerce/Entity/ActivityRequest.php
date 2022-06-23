@@ -87,6 +87,11 @@ class ActivityRequest
     protected $ReservationNo = null;
 
     /**
+     * @property boolean $SetGroupHeaderStatus
+     */
+    protected $SetGroupHeaderStatus = null;
+
+    /**
      * @property string $SetGroupReservation
      */
     protected $SetGroupReservation = null;
@@ -369,6 +374,24 @@ class ActivityRequest
     public function getReservationNo()
     {
         return $this->ReservationNo;
+    }
+
+    /**
+     * @param boolean $SetGroupHeaderStatus
+     * @return $this
+     */
+    public function setSetGroupHeaderStatus($SetGroupHeaderStatus)
+    {
+        $this->SetGroupHeaderStatus = $SetGroupHeaderStatus;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSetGroupHeaderStatus()
+    {
+        return $this->SetGroupHeaderStatus;
     }
 
     /**

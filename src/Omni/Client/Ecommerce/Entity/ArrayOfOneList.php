@@ -32,9 +32,9 @@ class ArrayOfOneList implements IteratorAggregate
     }
 
     /**
-     * @return OneList[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OneList );
     }

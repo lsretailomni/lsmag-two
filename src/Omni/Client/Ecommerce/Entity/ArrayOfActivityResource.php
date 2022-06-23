@@ -32,9 +32,9 @@ class ArrayOfActivityResource implements IteratorAggregate
     }
 
     /**
-     * @return ActivityResource[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ActivityResource );
     }
