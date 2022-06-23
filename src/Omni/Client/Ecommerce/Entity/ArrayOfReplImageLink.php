@@ -32,9 +32,9 @@ class ArrayOfReplImageLink implements IteratorAggregate
     }
 
     /**
-     * @return ReplImageLink[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplImageLink );
     }

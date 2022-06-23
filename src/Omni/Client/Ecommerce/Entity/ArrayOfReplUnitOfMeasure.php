@@ -32,9 +32,9 @@ class ArrayOfReplUnitOfMeasure implements IteratorAggregate
     }
 
     /**
-     * @return ReplUnitOfMeasure[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplUnitOfMeasure );
     }

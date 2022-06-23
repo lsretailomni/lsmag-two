@@ -32,9 +32,9 @@ class ArrayOfOrderLineStatus implements IteratorAggregate
     }
 
     /**
-     * @return OrderLineStatus[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OrderLineStatus );
     }

@@ -11,6 +11,8 @@ use Magento\Framework\Phrase;
 use Magento\Sales\Api\Data\OrderInterface;
 
 /**
+ * This class is overriding in hospitality module
+ *
  * Block being used for various sections on order detail
  */
 class Info extends AbstractOrderBlock
@@ -79,15 +81,12 @@ class Info extends AbstractOrderBlock
     /**
      * @inheritDoc
      */
-    // @codingStandardsIgnoreStart
     protected function _prepareLayout()
     {
-        $order           = $this->getOrder();
-        $customerOrderNo = null;
+        $order = $this->getOrder();
         if ($order) {
-
-            $orderId         = $this->orderHelper->getParameterValues($order, "CustomerOrderNo") ?: $this->orderHelper->getParameterValues($order, "Id");
             $customerOrderNo = $this->orderHelper->getParameterValues($order, "CustomerOrderNo");
+            $orderId         = $customerOrderNo ?: $this->orderHelper->getParameterValues($order, "Id");
 
             if (!empty($customerOrderNo)) {
                 $type = __('Order');
@@ -97,7 +96,6 @@ class Info extends AbstractOrderBlock
             $this->pageConfig->getTitle()->set(__('%1 # %2', $type, $orderId));
         }
     }
-    // @codingStandardsIgnoreEnd
 
     /**
      * Retrieve current order model instance

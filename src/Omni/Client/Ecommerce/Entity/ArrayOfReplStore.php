@@ -32,9 +32,9 @@ class ArrayOfReplStore implements IteratorAggregate
     }
 
     /**
-     * @return ReplStore[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplStore );
     }

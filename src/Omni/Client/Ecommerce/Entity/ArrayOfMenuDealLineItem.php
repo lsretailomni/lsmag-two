@@ -32,9 +32,9 @@ class ArrayOfMenuDealLineItem implements IteratorAggregate
     }
 
     /**
-     * @return MenuDealLineItem[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->MenuDealLineItem );
     }

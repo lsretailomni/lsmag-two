@@ -32,9 +32,9 @@ class ArrayOfResHeader implements IteratorAggregate
     }
 
     /**
-     * @return ResHeader[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ResHeader );
     }

@@ -32,9 +32,9 @@ class ArrayOfActivityType implements IteratorAggregate
     }
 
     /**
-     * @return ActivityType[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ActivityType );
     }

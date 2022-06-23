@@ -32,9 +32,9 @@ class ArrayOfItemModifier implements IteratorAggregate
     }
 
     /**
-     * @return ItemModifier[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ItemModifier );
     }

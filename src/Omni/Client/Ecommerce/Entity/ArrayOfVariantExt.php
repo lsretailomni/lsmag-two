@@ -32,9 +32,9 @@ class ArrayOfVariantExt implements IteratorAggregate
     }
 
     /**
-     * @return VariantExt[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->VariantExt );
     }

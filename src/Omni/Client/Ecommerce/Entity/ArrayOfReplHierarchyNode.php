@@ -32,9 +32,9 @@ class ArrayOfReplHierarchyNode implements IteratorAggregate
     }
 
     /**
-     * @return ReplHierarchyNode[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplHierarchyNode );
     }

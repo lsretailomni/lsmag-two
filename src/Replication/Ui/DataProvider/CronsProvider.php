@@ -3,8 +3,8 @@
 namespace Ls\Replication\Ui\DataProvider;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
 use Magento\Framework\App\Request\Http;
@@ -18,13 +18,13 @@ use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\System\Store as StoreManager;
 use Magento\Ui\DataProvider\AddFieldToCollectionInterface;
 use Magento\Ui\DataProvider\AddFilterToCollectionInterface;
+use Psr\Log\LoggerInterface;
 
 /**
- * Class ProductDataProvider
+ * Data Provider for cron listing
  */
 class CronsProvider extends DataProvider implements DataProviderInterface
 {
-
     /**
      * @var AddFieldToCollectionInterface[]
      */
@@ -61,7 +61,11 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     public $rep_helper;
 
     /**
-     * CronsProvider constructor.
+     * @var LoggerInterface
+     */
+    public $logger;
+
+    /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
@@ -74,6 +78,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
      * @param StoreManager $storeManager
      * @param LSR $lsr
      * @param ReplicationHelper $repHelper
+     * @param LoggerInterface $logger
      * @param array $meta
      * @param array $data
      */
@@ -90,6 +95,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         StoreManager $storeManager,
         LSR $lsr,
         ReplicationHelper $repHelper,
+        LoggerInterface $logger,
         array $meta = [],
         array $data = []
     ) {
@@ -111,10 +117,13 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $this->filterBuilder   = $filterBuilder;
         $this->rep_helper      = $repHelper;
         $this->storeManager    = $storeManager;
+        $this->logger          = $logger;
     }
 
     /**
-     * @return array|mixed
+     * @inheritDoc
+     *
+     * @return array
      * @throws Exception
      */
     public function getData()
@@ -122,15 +131,20 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $cronsGroupListing = $this->readCronFile();
         $items             = [];
         $counter           = 1;
-        $storeId = $this->request->getParam('store');
+        $storeId           = $this->request->getParam('store');
+        $pagingParam       = $this->request->getParam('paging');
+
         if (empty($storeId)) {
-            $storeId = 1;
+            $storeId = '1';
         }
+
         foreach ($cronsGroupListing as $cronlist) {
             $path = '';
+
             if (array_key_exists('_value', $cronlist['_value']['job'])) {
                 $cronlist['_value']['job'] = [$cronlist['_value']['job']];
             }
+
             if ($cronlist['_attribute']['id'] == "replication" || $cronlist['_attribute']['id'] == "sync_operations") {
                 $condition = __('Flat to Magento');
             } elseif ($cronlist['_attribute']['id'] == "flat_replication") {
@@ -139,9 +153,11 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             } else {
                 $condition = '';
             }
+
             foreach ($cronlist['_value']['job'] as $joblist) {
-                $fullReplicationStatus = 0;
+                $fullReplicationStatus = '0';
                 $cronName              = $joblist['_attribute']['name'];
+
                 if ($path != '') {
                     $pathNew               = $path . $cronName;
                     $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
@@ -166,6 +182,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $statusStr             = ($fullReplicationStatus == 1) ?
                     '<div class="flag-green custom-grid-flag">' . __("Complete") . '</div>' :
                     '<div class="flag-yellow custom-grid-flag">' . __("Pending") . '</div>';
+
                 if (strpos($cronName, '_reset') !== false || $cronName == "sync_version" ||
                     $cronName == "sync_orders" || $cronName == "sync_customers") {
                     $condition = $statusStr = '';
@@ -183,8 +200,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $counter++;
             }
         }
-        $pageSize    = $this->request->getParam('paging') && (int)$this->request->getParam('paging')['pageSize'] ? (int)$this->request->getParam('paging')['pageSize'] : 20;
-        $pageCurrent = $this->request->getParam('paging') && (int)$this->request->getParam('paging')['current'] ? (int)$this->request->getParam('paging')['current'] : 1;
+
+        $pageSize    = $pagingParam && (int)$pagingParam['pageSize'] ? (int)$pagingParam['pageSize'] : 60;
+        $pageCurrent = $pagingParam && (int)$pagingParam['current'] ? (int)$pagingParam['current'] : 1;
         $pageOffset  = ($pageCurrent - 1) * $pageSize;
 
         return [
@@ -195,6 +213,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
 
     /**
      * This is being used in Hospitality module, so do not change the structure of it.
+     *
      * @return mixed
      */
     public function readCronFile()
@@ -202,11 +221,18 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         try {
             $filePath    = $this->moduleDirReader->getModuleDir('etc', 'Ls_Replication') . '/crontab.xml';
             $parsedArray = $this->parser->load($filePath)->xmlToArray();
-            return $parsedArray['config']['_value']['group'];
         } catch (Exception $e) {
+            $this->logger->debug($e);
         }
+
+        return $parsedArray['config']['_value']['group'];
     }
 
+    /**
+     * Prepare Update Url
+     *
+     * @return void
+     */
     public function prepareUpdateUrl()
     {
         if (!isset($this->data['config']['filter_url_params'])) {
@@ -232,17 +258,20 @@ class CronsProvider extends DataProvider implements DataProviderInterface
 
     /**
      * This is being used in Hospitality module, so do not change the structure of it.
-     * @param null $cronName
-     * @param null $storeId
+     *
+     * @param string $cronName
+     * @param string $storeId
+     * @param string $fullReplicationStatus
      * @return bool|int|string
      */
-    public function getStatusByCronCode($cronName = null, $storeId = null, $fullReplicationStatus)
+    public function getStatusByCronCode($cronName, $storeId, $fullReplicationStatus)
     {
         if ($cronName == 'repl_data_translation_to_magento') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
                 ScopeInterface::SCOPE_STORES,
-                $storeId);
+                $storeId
+            );
             return $fullReplicationStatus;
         }
 
@@ -262,6 +291,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             }
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_category') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_CATEGORY,
@@ -270,6 +300,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_products') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_PRODUCT,
@@ -278,6 +309,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_discount_create') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_DISCOUNT,
@@ -286,6 +318,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_price_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
@@ -294,6 +327,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_inventory_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
@@ -302,6 +336,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_item_updates_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
@@ -310,6 +345,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_item_images_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
@@ -318,6 +354,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_attributes_value_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
@@ -326,6 +363,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_vendor_attributes_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
@@ -334,6 +372,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         if ($cronName == 'repl_tax_rules') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_TAX_RULES,
@@ -342,6 +381,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             );
             return $fullReplicationStatus;
         }
+
         return $fullReplicationStatus;
     }
 }

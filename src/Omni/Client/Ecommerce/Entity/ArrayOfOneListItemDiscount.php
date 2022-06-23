@@ -32,9 +32,9 @@ class ArrayOfOneListItemDiscount implements IteratorAggregate
     }
 
     /**
-     * @return OneListItemDiscount[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OneListItemDiscount );
     }

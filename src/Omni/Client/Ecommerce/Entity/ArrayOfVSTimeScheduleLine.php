@@ -32,9 +32,9 @@ class ArrayOfVSTimeScheduleLine implements IteratorAggregate
     }
 
     /**
-     * @return VSTimeScheduleLine[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->VSTimeScheduleLine );
     }

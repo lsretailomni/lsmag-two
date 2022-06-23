@@ -32,9 +32,9 @@ class ArrayOfMemberContact implements IteratorAggregate
     }
 
     /**
-     * @return MemberContact[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->MemberContact );
     }

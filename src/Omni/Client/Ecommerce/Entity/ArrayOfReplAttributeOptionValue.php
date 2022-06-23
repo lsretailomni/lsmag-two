@@ -32,9 +32,9 @@ class ArrayOfReplAttributeOptionValue implements IteratorAggregate
     }
 
     /**
-     * @return ReplAttributeOptionValue[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplAttributeOptionValue );
     }

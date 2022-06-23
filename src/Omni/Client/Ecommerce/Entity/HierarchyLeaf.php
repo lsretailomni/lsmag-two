@@ -15,6 +15,16 @@ class HierarchyLeaf extends HierarchyPoint
 {
 
     /**
+     * @property ArrayOfItemModifier $Modifiers
+     */
+    protected $Modifiers = null;
+
+    /**
+     * @property ArrayOfItemRecipe $Recipies
+     */
+    protected $Recipies = null;
+
+    /**
      * @property float $AddedAmount
      */
     protected $AddedAmount = null;
@@ -55,6 +65,11 @@ class HierarchyLeaf extends HierarchyPoint
     protected $MinSelection = null;
 
     /**
+     * @property float $Prepayment
+     */
+    protected $Prepayment = null;
+
+    /**
      * @property int $SortOrder
      */
     protected $SortOrder = null;
@@ -68,6 +83,42 @@ class HierarchyLeaf extends HierarchyPoint
      * @property string $VariantCode
      */
     protected $VariantCode = null;
+
+    /**
+     * @param ArrayOfItemModifier $Modifiers
+     * @return $this
+     */
+    public function setModifiers($Modifiers)
+    {
+        $this->Modifiers = $Modifiers;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemModifier
+     */
+    public function getModifiers()
+    {
+        return $this->Modifiers;
+    }
+
+    /**
+     * @param ArrayOfItemRecipe $Recipies
+     * @return $this
+     */
+    public function setRecipies($Recipies)
+    {
+        $this->Recipies = $Recipies;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfItemRecipe
+     */
+    public function getRecipies()
+    {
+        return $this->Recipies;
+    }
 
     /**
      * @param float $AddedAmount
@@ -211,6 +262,24 @@ class HierarchyLeaf extends HierarchyPoint
     public function getMinSelection()
     {
         return $this->MinSelection;
+    }
+
+    /**
+     * @param float $Prepayment
+     * @return $this
+     */
+    public function setPrepayment($Prepayment)
+    {
+        $this->Prepayment = $Prepayment;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrepayment()
+    {
+        return $this->Prepayment;
     }
 
     /**

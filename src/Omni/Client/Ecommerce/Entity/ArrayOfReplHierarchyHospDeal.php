@@ -32,9 +32,9 @@ class ArrayOfReplHierarchyHospDeal implements IteratorAggregate
     }
 
     /**
-     * @return ReplHierarchyHospDeal[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplHierarchyHospDeal );
     }

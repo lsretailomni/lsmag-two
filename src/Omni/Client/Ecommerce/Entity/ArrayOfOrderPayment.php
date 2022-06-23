@@ -32,9 +32,9 @@ class ArrayOfOrderPayment implements IteratorAggregate
     }
 
     /**
-     * @return OrderPayment[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->OrderPayment );
     }

@@ -32,9 +32,9 @@ class ArrayOfReplDiscountValidation implements IteratorAggregate
     }
 
     /**
-     * @return ReplDiscountValidation[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplDiscountValidation );
     }

@@ -32,9 +32,9 @@ class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
     }
 
     /**
-     * @return ReplLoyVendorItemMapping[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplLoyVendorItemMapping );
     }

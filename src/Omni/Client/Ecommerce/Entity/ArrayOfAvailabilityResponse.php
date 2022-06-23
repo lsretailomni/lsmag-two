@@ -32,9 +32,9 @@ class ArrayOfAvailabilityResponse implements IteratorAggregate
     }
 
     /**
-     * @return AvailabilityResponse[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->AvailabilityResponse );
     }

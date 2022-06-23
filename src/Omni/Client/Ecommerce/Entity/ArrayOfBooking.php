@@ -32,9 +32,9 @@ class ArrayOfBooking implements IteratorAggregate
     }
 
     /**
-     * @return Booking[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->Booking );
     }

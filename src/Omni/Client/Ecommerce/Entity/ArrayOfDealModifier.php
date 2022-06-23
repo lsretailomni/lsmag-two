@@ -32,9 +32,9 @@ class ArrayOfDealModifier implements IteratorAggregate
     }
 
     /**
-     * @return DealModifier[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->DealModifier );
     }

@@ -32,9 +32,9 @@ class ArrayOfScanPayGoTender implements IteratorAggregate
     }
 
     /**
-     * @return ScanPayGoTender[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ScanPayGoTender );
     }

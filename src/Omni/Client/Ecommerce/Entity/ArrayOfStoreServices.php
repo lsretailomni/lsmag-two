@@ -32,9 +32,9 @@ class ArrayOfStoreServices implements IteratorAggregate
     }
 
     /**
-     * @return StoreServices[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->StoreServices );
     }

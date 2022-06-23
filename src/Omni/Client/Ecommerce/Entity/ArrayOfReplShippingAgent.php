@@ -32,9 +32,9 @@ class ArrayOfReplShippingAgent implements IteratorAggregate
     }
 
     /**
-     * @return ReplShippingAgent[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ReplShippingAgent );
     }

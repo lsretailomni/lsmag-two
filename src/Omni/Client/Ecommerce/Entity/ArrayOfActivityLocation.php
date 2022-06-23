@@ -32,9 +32,9 @@ class ArrayOfActivityLocation implements IteratorAggregate
     }
 
     /**
-     * @return ActivityLocation[]
+     * @return \Traversable
      */
-    public function getIterator()
+    public function getIterator() : \Traversable
     {
         return new ArrayIterator( $this->ActivityLocation );
     }

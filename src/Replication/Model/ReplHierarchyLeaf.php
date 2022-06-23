@@ -77,6 +77,11 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     protected $NodeId = null;
 
     /**
+     * @property float $Prepayment
+     */
+    protected $Prepayment = null;
+
+    /**
      * @property int $SortOrder
      */
     protected $SortOrder = null;
@@ -90,6 +95,11 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
      * @property string $ValidationPeriod
      */
     protected $ValidationPeriod = null;
+
+    /**
+     * @property boolean $VendorSourcing
+     */
+    protected $VendorSourcing = null;
 
     /**
      * @property string $scope
@@ -367,6 +377,26 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     }
 
     /**
+     * @param float $Prepayment
+     * @return $this
+     */
+    public function setPrepayment($Prepayment)
+    {
+        $this->setData( 'Prepayment', $Prepayment );
+        $this->Prepayment = $Prepayment;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrepayment()
+    {
+        return $this->getData( 'Prepayment' );
+    }
+
+    /**
      * @param int $SortOrder
      * @return $this
      */
@@ -424,6 +454,26 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     public function getValidationPeriod()
     {
         return $this->getData( 'ValidationPeriod' );
+    }
+
+    /**
+     * @param boolean $VendorSourcing
+     * @return $this
+     */
+    public function setVendorSourcing($VendorSourcing)
+    {
+        $this->setData( 'VendorSourcing', $VendorSourcing );
+        $this->VendorSourcing = $VendorSourcing;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getVendorSourcing()
+    {
+        return $this->getData( 'VendorSourcing' );
     }
 
     /**
