@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.17.0] - 2022-06-27
+
+### Added
+
+- Added support for the compatibility of Magento 2.4.4. [20457](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/20457)
+- Added functionality to enable/disable item variants from LS Central - This is helpful for merchants who want to enable/disable specific variants from selling on eCommerce. [18548](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/18548)
+- Added functionality to enable/disable LS eCommerce module on specific website level. This is helpful for partners/customers who are using multi stores on licensed Magento instance with one or more store not connected to LS Central. [19117](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/19117)  
+- Added support to replicate modifier and ingredient images to be used for custom options on the product detail page. [OMNI-5601](https://solutions.lsretail.com/jira/browse/OMNI-5601)
+- Added support to display swatch images on the frontend for modifiers and ingredients selection. [OMNI-5601](https://solutions.lsretail.com/jira/browse/OMNI-5601)
+- Added support to configure, select and send 'requested delivery date' information from Magento to LS Central. [OMNI-5502](https://solutions.lsretail.com/jira/browse/OMNI-5502)
+- Added support to display LS Central shipment id in shipment detail page in Magento. [15377](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/15377)
+- Added functionality to reset catalog, orders, and customers data on website/store view level. This is helpful for clients who already have one website live and another website in development. [19131](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/19131)
+
+
+
+
+### Changed
+
+- Changed api parameter from ShipmentId to ShipmentNo from LS Central while creating shipment through webhooks. [OMNI-5600](https://solutions.lsretail.com/jira/browse/OMNI-5600)
+- Changed LS Commerce web service from **SalesEntryGet**  to **SalesEntryGetSalesByOrderId** for fetching invoice and shipment transactions once the order is posted.  [19126](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/19126)
+
+
+### Bugs/Fixes
+
+- Fixed issue in syncing all customers to LS Central which were created from the admin panel during downtime. [OMNI-5583](https://solutions.lsretail.com/jira/browse/OMNI-5583)
+- Fixed issue in syncing customers to the correct Commerce Service endpoint when multiple Commerce Service instances are being used for multiple stores in Magento. [OMNI-5583](https://solutions.lsretail.com/jira/browse/OMNI-5583)
+- Fixed issue in basket calculation when items are added to the requisition list. [OMNI-5583](https://solutions.lsretail.com/jira/browse/OMNI-5583)
+- Fixed issue in creating variant when one of the variant dimension has 0 value. [OMNI-5600](https://solutions.lsretail.com/jira/browse/OMNI-5600)
+- Fixed issue with processing of data for price replication when qty for unit of measure comes as 1. [OMNI-5600](https://solutions.lsretail.com/jira/browse/OMNI-5600)
+- Fix invoice rounding issue when order was placed in offline mode and synced later to LS Central. [16611](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/16611)
+- Fixed issue in displaying the return transactions in the original order. [15374](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/15374)
+- Fixed issue with sending total amount in partial payment webhook when gift card or loyalty points are being used on the order. [16292](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/16292)
+- Fixed issue in adding additional validation during product replication when uom exists but respective records are missing in extended variants. [20374](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/20374)
+
+
+
+
 ## [1.16.0] - 2022-03-07
 
 ### Added
