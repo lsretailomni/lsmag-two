@@ -19,7 +19,6 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
  */
 class SetShippingMethodsOnCartPlugin
 {
-
     /**
      * @var DataHelper
      */
@@ -53,10 +52,10 @@ class SetShippingMethodsOnCartPlugin
     /**
      * Around plugin to validate cart items stock before setting pickup store for click and collect
      *
-     * @param $subject
+     * @param mixed $subject
      * @param callable $proceed
      * @param Field $field
-     * @param $context
+     * @param mixed $context
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
@@ -94,6 +93,16 @@ class SetShippingMethodsOnCartPlugin
 
             $maskedCartId    = $args['input']['cart_id'];
             $storeId         = $args['input']['store_id'];
+            $pickupDate = $pickupTimeslot = '';
+
+            if (isset($args['input']['pickup_date']) && !empty($args['input']['pickup_date'])) {
+                $pickupDate = $args['input']['pickup_date'];
+            }
+
+            if (isset($args['input']['pickup_time_slot']) && !empty($args['input']['pickup_time_slot'])) {
+                $pickupTimeslot = $args['input']['pickup_time_slot'];
+            }
+
             $scopeId         = (int)$context->getExtensionAttributes()->getStore()->getId();
             $userId          = $context->getUserId();
             $stockCollection = $this->dataHelper->fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId);
@@ -116,7 +125,7 @@ class SetShippingMethodsOnCartPlugin
             $cart = $result['cart']['model'];
             $this->basketHelper->syncBasketWithCentral($cart->getId());
             if ($validForClickAndCollect) {
-                $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId);
+                $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId, $pickupDate, $pickupTimeslot);
 
                 return [
                     'cart' => [

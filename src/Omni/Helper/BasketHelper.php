@@ -27,6 +27,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
 use Magento\Framework\Registry;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
@@ -123,6 +124,11 @@ class BasketHelper extends AbstractHelper
     public $loyaltyHelper;
 
     /**
+     * @var DateTime
+     */
+    public $dateTime;
+
+    /**
      * @param Context $context
      * @param Cart $cart
      * @param ProductRepository $productRepository
@@ -141,6 +147,7 @@ class BasketHelper extends AbstractHelper
      * @param CustomerFactory $customerFactory
      * @param CartRepositoryInterface $cartRepository
      * @param LoyaltyHelper $loyaltyHelper
+     * @param DateTime $dateTime
      */
     public function __construct(
         Context $context,
@@ -160,7 +167,8 @@ class BasketHelper extends AbstractHelper
         \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
         CustomerFactory $customerFactory,
         CartRepositoryInterface $cartRepository,
-        LoyaltyHelper $loyaltyHelper
+        LoyaltyHelper $loyaltyHelper,
+        DateTime $dateTime
     ) {
         parent::__construct($context);
         $this->cart                           = $cart;
@@ -181,6 +189,7 @@ class BasketHelper extends AbstractHelper
         $this->cartRepository                 = $cartRepository;
         $this->calculateBasket                = $this->lsr->getPlaceToCalculateBasket();
         $this->loyaltyHelper                  = $loyaltyHelper;
+        $this->dateTime                       = $dateTime;
     }
 
     /**
@@ -1122,6 +1131,36 @@ class BasketHelper extends AbstractHelper
             $this->quoteRepository->save($cartQuote);
             $this->itemHelper->setGrandTotalGivenQuote($cartQuote, $basketData, 1);
         }
+    }
+
+    /**
+     * Get Pickup time slot
+     *
+     * @param String $pickupDate
+     * @param String $pickupTimeslot
+     * @return string
+     */
+    public function getPickupTimeSlot($pickupDate, $pickupTimeslot)
+    {
+        $pickupDateTimeslot = '';
+
+        if (!empty($pickupDate) && !empty($pickupTimeslot)) {
+            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+            $pickupTimeFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_FORMAT);
+            $pickupDateTimeslot = $pickupDate . ' ' . $pickupTimeslot;
+            $pickupDateTimeslot = $this->dateTime->date(
+                $pickupDateFormat . ' ' . $pickupTimeFormat,
+                strtotime($pickupDateTimeslot)
+            );
+        } elseif (!empty($pickupDate)) {
+            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
+            $pickupDateTimeslot = $this->dateTime->date(
+                $pickupDateFormat,
+                strtotime($pickupDate)
+            );
+        }
+
+        return $pickupDateTimeslot;
     }
 
     /**

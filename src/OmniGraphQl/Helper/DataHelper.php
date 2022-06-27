@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
+use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -101,6 +102,11 @@ class DataHelper extends AbstractHelper
     public $stockHelper;
 
     /**
+     * @var StoreHelper
+     */
+    public $storeHelper;
+
+    /**
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -116,6 +122,7 @@ class DataHelper extends AbstractHelper
      * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
      * @param CartRepositoryInterface $cartRepository
      * @param StockHelper $stockHelper
+     * @param StoreHelper $storeHelper
      */
     public function __construct(
         Context $context,
@@ -132,7 +139,8 @@ class DataHelper extends AbstractHelper
         GetCartForUser $getCartForUser,
         MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         CartRepositoryInterface $cartRepository,
-        StockHelper $stockHelper
+        StockHelper $stockHelper,
+        StoreHelper $storeHelper
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -149,6 +157,7 @@ class DataHelper extends AbstractHelper
         $this->maskedQuoteIdToQuoteId = $maskedQuoteIdToQuoteId;
         $this->cartRepository         = $cartRepository;
         $this->stockHelper            = $stockHelper;
+        $this->storeHelper            = $storeHelper;
     }
 
     /**
@@ -232,26 +241,28 @@ class DataHelper extends AbstractHelper
     /**
      * Format given store data for better understandability
      *
-     * @param $store
+     * @param array $store
      * @return array
      */
     public function formatStoreData($store)
     {
         return [
-            'store_id'                   => $store['nav_id'],
-            'store_name'                 => $store['Name'],
-            'click_and_collect_accepted' => $store['ClickAndCollect'],
-            'latitude'                   => $store['Latitute'],
-            'longitude'                  => $store['Longitude'],
-            'phone'                      => $store['Phone'],
-            'city'                       => $store['City'],
-            'country'                    => $store['Country'],
-            'county'                     => $store['County'],
-            'state'                      => $store['State'],
-            'zip_code'                   => $store['ZipCode'],
-            'currency_accepted'          => $store['Currency'],
-            'street'                     => $store['Street'],
-            'store_hours'                => $this->formatStoreTiming($store['nav_id'])
+            'store_id'                          => $store['nav_id'],
+            'store_name'                        => $store['Name'],
+            'click_and_collect_accepted'        => $store['ClickAndCollect'],
+            'latitude'                          => $store['Latitute'],
+            'longitude'                         => $store['Longitude'],
+            'phone'                             => $store['Phone'],
+            'city'                              => $store['City'],
+            'country'                           => $store['Country'],
+            'county'                            => $store['County'],
+            'state'                             => $store['State'],
+            'zip_code'                          => $store['ZipCode'],
+            'currency_accepted'                 => $store['Currency'],
+            'street'                            => $store['Street'],
+            'available_hospitality_sales_types' =>
+                $store['HospSalesTypes'] ? explode('|', $store['HospSalesTypes']) : null,
+            'store_hours'                       => $this->formatStoreTiming($store['nav_id'])
         ];
     }
 
@@ -321,13 +332,19 @@ class DataHelper extends AbstractHelper
     /**
      * Get all click and collect supported stores for given scope_id
      *
-     * @param $scopeId
+     * @param String $scopeId
+     * @param String $salesType
      * @return Collection
      */
-    public function getStores($scopeId)
+    public function getStores($scopeId, $salesType)
     {
-        return $this->storeCollectionFactory
-            ->create()
+        $storeCollection = $this->storeCollectionFactory->create();
+
+        if (!empty($salesType)) {
+            $storeCollection->addFieldToFilter('HospSalesTypes', ['like' => '%'.$salesType.'%']);
+        }
+
+        return $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
             ->addFieldToFilter('ClickAndCollect', 1);
     }
@@ -375,13 +392,43 @@ class DataHelper extends AbstractHelper
     /**
      * Set pickup store given cart
      *
-     * @param $cart
-     * @param $pickupStore
+     * @param mixed $cart
+     * @param String $pickupStore
+     * @param String $pickupDate
+     * @param String $pickupTimeslot
+     * @return void
      */
-    public function setPickUpStoreGivenCart(&$cart, $pickupStore)
+    public function setPickUpStoreGivenCart(&$cart, $pickupStore, $pickupDate, $pickupTimeslot)
     {
+        $pickupDateTimeslot = $this->basketHelper->getPickupTimeSlot($pickupDate, $pickupTimeslot);
+
+        if (!empty($pickupDateTimeslot)) {
+            $cart->setPickupDateTimeslot($pickupDateTimeslot);
+        }
+
         $cart->setPickupStore($pickupStore);
 
         $this->cartRepository->save($cart);
+    }
+
+    /**
+     * Get order taking calendar given store id and website id
+     *
+     * @param String $storeId
+     * @param String $websiteId
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId)
+    {
+        $store = $this->storeHelper->getStore($websiteId, $storeId);
+        $slots = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
+        $formattedData = [];
+
+        foreach ($slots as $index => $slot) {
+            $formattedData[] = ['date' => $index, 'slots' => $slot];
+        }
+
+        return $formattedData;
     }
 }

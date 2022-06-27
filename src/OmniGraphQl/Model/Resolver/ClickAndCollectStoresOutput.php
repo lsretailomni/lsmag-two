@@ -31,16 +31,20 @@ class ClickAndCollectStoresOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
+        $salesType = '';
+
+        if (!empty($args['hospitality_sales_type'])) {
+            $salesType = $args['hospitality_sales_type'];
+        }
+
         $scopeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-        $stores  = $this->dataHelper->getStores($scopeId);
+        $stores  = $this->dataHelper->getStores($scopeId, $salesType);
         $stores  = $stores->toArray()['items'];
 
         foreach ($stores as &$store) {
             $store = $this->dataHelper->formatStoreData($store);
         }
 
-        return [
-            'stores' => $stores,
-        ];
+        return ['stores' => $stores];
     }
 }

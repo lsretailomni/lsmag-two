@@ -844,7 +844,7 @@ class ContactHelper extends AbstractHelper
                 $address->setAddress1($street);
                 $address->setAddress2('');
             }
-            $region = substr($customerAddress->getRegion(), 0, 30);
+            $region = $customerAddress->getRegion() ? substr($customerAddress->getRegion(), 0, 30) : null;
             $address->setCity($customerAddress->getCity())
                 ->setCountry($customerAddress->getCountryId())
                 ->setPostCode($customerAddress->getPostcode())
