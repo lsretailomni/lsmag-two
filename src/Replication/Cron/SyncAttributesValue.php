@@ -124,12 +124,16 @@ class SyncAttributesValue extends ProductCreateTask
                     $checkIsException = false;
                     $itemId           = $attributeValue->getLinkField1();
                     $variantId        = $attributeValue->getLinkField2();
-                    $sku              = $itemId;
                     if (!empty($variantId)) {
-                        $sku            = $sku . '-' . $variantId;
-                        $checkIsVariant = true;
+                        $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
+                            ->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId)
+                            ->addFilter('store_id', 0)->create();
+                    } else {
+                        $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
+                            ->addFilter('store_id', 0)->create();
                     }
-                    $product        = $this->productRepository->get($sku, true, 0);
+                    $productList    = $this->productRepository->getList($searchCriteria)->getItems();
+                    $product        = array_pop($productList);
                     $formattedCode  = $this->replicationHelper->formatAttributeCode(
                         $attributeValue->getCode()
                     );
@@ -165,7 +169,6 @@ class SyncAttributesValue extends ProductCreateTask
                     $this->replicationHelper->processUomAttributes(
                         $uomCodes,
                         $itemId,
-                        $sku,
                         $formattedCode,
                         $value,
                         $variantId,

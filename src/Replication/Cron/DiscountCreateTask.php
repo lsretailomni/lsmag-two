@@ -212,7 +212,7 @@ class DiscountCreateTask
                                 $appendUom     = '';
                                 if (!empty($replDiscount->getUnitOfMeasureId())) {
                                     // @codingStandardsIgnoreLine
-                                    $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replDiscount->getItemId());
+                                    $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replDiscount->getCustomItemId());
                                     if (($baseUnitOfMeasure != $replDiscount->getUnitOfMeasureId()) ||
                                         ($replDiscount->getVariantId() == '' ||
                                             $replDiscount->getVariantId() == null)) {
@@ -223,7 +223,7 @@ class DiscountCreateTask
                                 if ($replDiscount->getVariantId() == '' ||
                                     $replDiscount->getVariantId() == null
                                 ) {
-                                    $skuAmountArray[$discountValue][] = $replDiscount->getItemId() . $appendUom;
+                                    $skuAmountArray[$discountValue][] = $replDiscount->getCustomItemId() . $appendUom;
                                 } else {
                                     $skuAmountArray[$discountValue][] = $replDiscount->getItemId() . '-' .
                                         $replDiscount->getVariantId() . $appendUom;

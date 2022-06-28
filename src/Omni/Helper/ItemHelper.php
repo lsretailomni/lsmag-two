@@ -457,13 +457,29 @@ class ItemHelper extends AbstractHelper
         $productList    = $this->productRepository->getList($searchCriteria)->getItems();
         /** @var Product $product */
         $product   = array_pop($productList);
-        $itemId    = $this->productRepository->getById($productId, false, null, true)->getSku();
+        $itemId    = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $uom       = $product->getData('uom');
         $barCode   = $product->getData('barcode');
         $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
         return [$itemId, $variantId, $uom, $barCode, $uomQty];
+    }
+
+
+    /**
+     * @param $sku
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getLsCentralItemIdBySku($sku)
+    {
+        $product = $this->productRepository->get($sku);
+        $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        if ($itemId)
+            return $itemId;
+        else
+            return $sku;
     }
 
     /**

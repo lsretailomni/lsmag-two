@@ -145,7 +145,7 @@ class Proactive extends View
      */
     public function getProactiveDiscounts($sku)
     {
-        $itemId   = $sku;
+        $itemId   = $this->itemHelper->getLsCentralItemIdBySku($sku);
         $webStore = $this->lsr->getActiveWebStore();
         if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             if (!is_array($response)) {
@@ -174,7 +174,7 @@ class Proactive extends View
      */
     public function getCoupons($sku)
     {
-        $itemId = $sku;
+        $itemId = $this->itemHelper->getLsCentralItemIdBySku($sku);
         try {
             $storeId = $this->lsr->getActiveWebStore();
             if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID)) {

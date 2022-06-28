@@ -60,19 +60,19 @@ class SyncInventory extends ProductCreateTask
                                 $variants = null;
                                 $checkIsNotVariant = true;
                                 if (!$replInvStatus->getVariantId()) {
-                                    $sku = $replInvStatus->getItemId();
+                                    $sku = $replInvStatus->getCustomItemId();
                                 } else {
                                     $sku               = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
                                     $checkIsNotVariant = false;
                                 }
                                 $this->replicationHelper->updateInventory($sku, $replInvStatus);
-                                $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
+                                $uomCodes = $this->getUomCodesProcessed($replInvStatus->getCustomItemId());
                                 if (!empty($uomCodes)) {
-                                    if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                                    if (count($uomCodes[$replInvStatus->getCustomItemId()]) > 1) {
                                         // @codingStandardsIgnoreLine
-                                        $baseUnitOfMeasure = $uomCodes[$replInvStatus->getItemId() . '-' . 'BaseUnitOfMeasure'];
+                                        $baseUnitOfMeasure = $uomCodes[$replInvStatus->getCustomItemId() . '-' . 'BaseUnitOfMeasure'];
                                         $variants          = $this->getProductVariants($sku);
-                                        foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                                        foreach ($uomCodes[$replInvStatus->getCustomItemId()] as $uomCode) {
                                             if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
                                                 $skuUom = $sku . "-" . $uomCode;
                                                 $this->replicationHelper->updateInventory($skuUom, $replInvStatus);

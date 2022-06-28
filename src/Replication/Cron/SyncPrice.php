@@ -72,7 +72,7 @@ class SyncPrice extends ProductCreateTask
                                 $baseUnitOfMeasure = null;
                                 $itemPriceCount    = null;
                                 if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
-                                    $sku = $replPrice->getItemId();
+                                    $sku = $replPrice->getCustomItemId();
                                 } else {
                                     $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
                                 }

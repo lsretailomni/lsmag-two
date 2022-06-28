@@ -88,33 +88,33 @@ class SyncImages extends ProductCreateTask
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 try {
+                    $variantId         = '';
                     $checkIsNotVariant = true;
-                    $itemSku           = $itemImage->getKeyValue();
-                    $itemSku           = str_replace(',', '-', $itemSku);
-
-                    $explodeSku = explode("-", $itemSku);
+                    $keyValue          = $itemImage->getKeyValue();
+                    $explodeSku        = explode(",", $keyValue);
                     if (count($explodeSku) > 1) {
                         $checkIsNotVariant = false;
+                        $variantId         = $explodeSku[1];
                     }
-                    $sku           = $explodeSku[0];
-                    $uomCodesTotal = $this->replicationHelper->getUomCodes($sku, $this->store->getId());
+                    $itemId        = $explodeSku[0];
+                    $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->store->getId());
                     if (!empty($uomCodesTotal)) {
-                        if (count($uomCodesTotal[$sku]) > 1) {
-                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $sku);
+                        if (count($uomCodesTotal[$itemId]) > 1) {
+                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
                             if (count($uomCodesNotProcessed) == 0) {
-                                $this->processImages($itemImage, $sortOrder, $itemSku);
-                                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($sku);
-                                foreach ($uomCodesTotal[$sku] as $uomCode) {
+                                $this->processImages($itemImage, $sortOrder, $itemId);
+                                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
+                                foreach ($uomCodesTotal[$itemId] as $uomCode) {
                                     if ($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) {
-                                        $this->processImages($itemImage, $sortOrder, $itemSku, $uomCode);
+                                        $this->processImages($itemImage, $sortOrder, $itemId, $variantId, $uomCode);
                                     }
                                 }
                             }
                         } else {
-                            $this->processImages($itemImage, $sortOrder, $itemSku);
+                            $this->processImages($itemImage, $sortOrder, $itemId);
                         }
                     } else {
-                        $this->processImages($itemImage, $sortOrder, $itemSku);
+                        $this->processImages($itemImage, $sortOrder, $itemId);
                     }
                 } catch (Exception $e) {
                     $this->logger->debug(
@@ -195,20 +195,14 @@ class SyncImages extends ProductCreateTask
     /**
      * @param $itemImage
      * @param $sortOrder
-     * @param $itemSku
+     * @param $itemId
+     * @param null $variantId
      * @param null $uomCode
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws StateException
-     * @throws NoSuchEntityException
      */
-    public function processImages($itemImage, $sortOrder, $itemSku, $uomCode = null)
+    public function processImages($itemImage, $sortOrder, $itemId, $variantId = null, $uomCode = null)
     {
-        if (!empty($uomCode)) {
-            $itemSku = $itemSku . '-' . $uomCode;
-        }
         try {
-            $productData = $this->productRepository->get($itemSku, true, 0, true);
+            $productData = $this->getProductDataByItemId($itemId, $variantId, $uomCode);
         } catch (NoSuchEntityException $e) {
             return;
         }
@@ -270,7 +264,7 @@ class SyncImages extends ProductCreateTask
 
         if ($saveMe) {
             $this->logger->debug(
-                'Fixed no_selection issue for images of product : '. $customProduct->getSku()
+                'Fixed no_selection issue for images of product : ' . $customProduct->getSku()
             );
             $this->updateHandlerFactory->create()->execute($customProduct);
         }
@@ -289,7 +283,7 @@ class SyncImages extends ProductCreateTask
             $batchSize = -1;
         }
         /** Get Images for only those items which are already processed */
-        $filters = [
+        $filters  = [
             ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
             ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']

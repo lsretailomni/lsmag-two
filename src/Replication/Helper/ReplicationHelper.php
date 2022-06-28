@@ -1746,17 +1746,15 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getBaseUnitOfMeasure($itemId)
     {
-        $baseUnitOfMeasure = null;
-        $filters           = [
-            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']
+        $filters  = [
+            ['field' => 'CustomItemId', 'value' => $itemId, 'condition_type' => 'eq']
         ];
-        $criteria          = $this->buildCriteriaForDirect($filters, 1);
-        $items             = $this->itemRepository->getList($criteria)->getItems();
+        $criteria = $this->buildCriteriaForDirect($filters, 1);
+        $items    = $this->itemRepository->getList($criteria)->getItems();
         foreach ($items as $item) {
             return $item->getBaseUnitOfMeasure();
         }
-
-        return $baseUnitOfMeasure;
+        return null;
     }
 
     /**
@@ -1777,7 +1775,7 @@ class ReplicationHelper extends AbstractHelper
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
-            ['field' => 'nav_id', 'value' => $product->getSku(), 'condition_type' => 'eq']
+            ['field' => 'CustomItemId', 'value' => $product->getSku(), 'condition_type' => 'eq']
         ];
         $criteria             = $this->buildCriteriaForDirect($filters);
         $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
@@ -1999,7 +1997,7 @@ class ReplicationHelper extends AbstractHelper
             foreach ($types as $attribute) {
                 $formattedCode = $this->formatAttributeCode($attribute);
 
-                $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
                 if (!$attribute->getId()) {
                     continue;
@@ -2075,11 +2073,16 @@ class ReplicationHelper extends AbstractHelper
         foreach ($items->getItems() as $item) {
             $itemId    = $item->getLinkField1();
             $variantId = $item->getLinkField2();
-            $sku       = $itemId;
             if (!empty($variantId)) {
-                $sku = $sku . '-' . $variantId;
+                $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
+                    ->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId)
+                    ->addFilter('store_id', 0)->create();
+            } else {
+                $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
+                    ->addFilter('store_id', 0)->create();
             }
-            $product       = $productRepository->get($sku, true, 0);
+            $productList   = $productRepository->getList($searchCriteria)->getItems();
+            $product       = array_pop($productList);
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
@@ -2104,17 +2107,20 @@ class ReplicationHelper extends AbstractHelper
             } else {
                 $value = $item->getValue();
             }
-            $product->setData($formattedCode, $value);
-            $product->getResource()->saveAttribute($product, $formattedCode);
-            $this->processUomAttributes(
-                $uomCodes,
-                $itemId,
-                $sku,
-                $formattedCode,
-                $value,
-                $variantId,
-                $productRepository
-            );
+            if (isset($formattedCode)) {
+                $product->setData($formattedCode, $value);
+                $product->getResource()->saveAttribute($product, $formattedCode);
+                $this->processUomAttributes(
+                    $uomCodes,
+                    $itemId,
+                    $formattedCode,
+                    $value,
+                    $variantId,
+                    $productRepository
+                );
+            } else {
+                $item->setData('is_failed', 1);
+            }
             $item->setData('processed_at', $this->getDateTime());
             $item->setData('processed', 1);
             $item->setData('is_updated', 0);
@@ -2196,7 +2202,7 @@ class ReplicationHelper extends AbstractHelper
         $d5 = (($variant->getVariantDimension5()) ?: '');
         $d6 = (($variant->getVariantDimension6()) ?: '');
 
-        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getSku(), $storeId);
+        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), $storeId);
         $configurableAttributes = [];
 
         foreach ($attributeCodes as $keyCode => $valueCode) {
@@ -2271,6 +2277,7 @@ class ReplicationHelper extends AbstractHelper
         $finalCodes = [];
         try {
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
+                ->addFilter('Dimensions', '1', 'neq') // This is to ignore Dimension 1
                 ->addFilter('isDeleted', 0, 'eq')
                 ->addFilter('Code', true, 'notnull')
                 ->addFilter('Dimensions', true, 'notnull')
@@ -2306,7 +2313,7 @@ class ReplicationHelper extends AbstractHelper
     public function getUomCodes($itemId, $storeId)
     {
         $filters = [
-            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'CustomItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
         ];
 
@@ -2410,7 +2417,6 @@ class ReplicationHelper extends AbstractHelper
      *
      * @param $uomCodes
      * @param $itemId
-     * @param $sku
      * @param $formattedCode
      * @param $value
      * @param $variantId
@@ -2419,7 +2425,6 @@ class ReplicationHelper extends AbstractHelper
     public function processUomAttributes(
         $uomCodes,
         $itemId,
-        $sku,
         $formattedCode,
         $value,
         $variantId,
@@ -2430,8 +2435,12 @@ class ReplicationHelper extends AbstractHelper
                 $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
                 foreach ($uomCodes[$itemId] as $uomCode) {
                     if ($baseUnitOfMeasure != $uomCode && !empty($variantId)) {
-                        $skuUom  = $sku . "-" . $uomCode;
-                        $product = $productRepository->get($skuUom, true, 0);
+                        $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
+                            ->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId)
+                            ->addFilter('uom', $uomCode)
+                            ->addFilter('store_id', 0)->create();
+                        $productList    = $productRepository->getList($searchCriteria)->getItems();
+                        $product        = array_pop($productList);
                         $product->setData($formattedCode, $value);
                         $product->getResource()->saveAttribute($product, $formattedCode);
                     }

@@ -116,7 +116,7 @@ class SyncItemUpdates extends ProductCreateTask
         $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
-            'nav_id',
+            'CustomItemId',
             null,
             'catalog_product_entity',
             'sku'
@@ -127,7 +127,7 @@ class SyncItemUpdates extends ProductCreateTask
             foreach ($collection as $hierarchyLeaf) {
                 try {
                     $sku     = $hierarchyLeaf->getNavId();
-                    $product = $this->productRepository->get($hierarchyLeaf->getNavId());
+                    $product = $this->productRepository->get($hierarchyLeaf->getCustomItemId());
                     $this->replicationHelper->assignProductToCategories($product, $this->store);
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);

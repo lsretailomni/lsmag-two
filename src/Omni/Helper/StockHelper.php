@@ -42,11 +42,11 @@ class StockHelper extends AbstractHelper
     /**
      * StockHelper constructor.
      *
-     * @param Context                    $context
+     * @param Context $context
      * @param ProductRepositoryInterface $productRepository
-     * @param CollectionFactory          $storeCollectionFactory
-     * @param LSR                        $lsr
-     * @param ItemHelper                 $itemHelper
+     * @param CollectionFactory $storeCollectionFactory
+     * @param LSR $lsr
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         Context $context,
@@ -152,12 +152,12 @@ class StockHelper extends AbstractHelper
         $itemStock->setLocationId('');
         foreach ($items as $item) {
             $inventoryRequest = new Entity\InventoryRequest();
-            $parentProductId  = reset($item);
-            $childProductId   = end($item);
-            if (!empty($parentProductId) && !empty($childProductId)) {
-                $inventoryRequest->setItemId($parentProductId)->setVariantId($childProductId);
+            $itemId           = reset($item);
+            $variantId        = end($item);
+            if (!empty($itemId) && !empty($variantId)) {
+                $inventoryRequest->setItemId($itemId)->setVariantId($variantId);
             } else {
-                $inventoryRequest->setItemId($parentProductId);
+                $inventoryRequest->setItemId($itemId);
             }
             $inventoryRequestCollection[] = $inventoryRequest;
         }
@@ -292,8 +292,8 @@ class StockHelper extends AbstractHelper
      */
     public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
     {
-        $storesNavId     = [];
-        $response = $this->getAllStoresItemInStock(
+        $storesNavId = [];
+        $response    = $this->getAllStoresItemInStock(
             $simpleProductId,
             $productSku
         );
@@ -394,15 +394,15 @@ class StockHelper extends AbstractHelper
                 if (!empty($uomQty)) {
                     $qty = $qty * $uomQty;
                 }
-                [$parentProductSku, $childProductSku] = $this->itemHelper->getComparisonValues(
+                [$itemId, $variantId] = $this->itemHelper->getComparisonValues(
                     $item->getProductId(),
                     $item->getSku()
                 );
 
                 $stock = $this->getItemStockInStore(
                     $storeId,
-                    $parentProductSku,
-                    $childProductSku
+                    $itemId,
+                    $variantId
                 );
 
                 if ($stock) {

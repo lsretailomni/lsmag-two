@@ -110,7 +110,7 @@ class SyncVendorAttributesValue extends ProductCreateTask
         if ($collection->getSize() > 0) {
             /** @var ReplLoyVendorItemMapping $attributeValue */
             foreach ($collection as $attributeValue) {
-                $itemId = $attributeValue->getNavProductId();
+                $itemId = $attributeValue->getCustomItemId();
                 try {
                     $vendorName = $attributeValue->getData('name');
                     $product    = $this->productRepository->get($itemId);
