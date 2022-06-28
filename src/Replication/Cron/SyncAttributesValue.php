@@ -119,11 +119,15 @@ class SyncAttributesValue extends ProductCreateTask
             /** @var ReplAttributeValue $attributeValue */
             foreach ($collection as $attributeValue) {
                 try {
-                    $itemId    = $attributeValue->getLinkField1();
-                    $variantId = $attributeValue->getLinkField2();
-                    $sku       = $itemId;
+                    // skipping is failed and processed in case of variant attribute value
+                    $checkIsVariant   = false;
+                    $checkIsException = false;
+                    $itemId           = $attributeValue->getLinkField1();
+                    $variantId        = $attributeValue->getLinkField2();
+                    $sku              = $itemId;
                     if (!empty($variantId)) {
-                        $sku = $sku . '-' . $variantId;
+                        $sku            = $sku . '-' . $variantId;
+                        $checkIsVariant = true;
                     }
                     $product        = $this->productRepository->get($sku, true, 0);
                     $formattedCode  = $this->replicationHelper->formatAttributeCode(
@@ -168,15 +172,20 @@ class SyncAttributesValue extends ProductCreateTask
                         $this->productRepository
                     );
                 } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
-                    $this->logger->debug($e->getMessage());
-                    $attributeValue->setData('is_failed', 1);
+                    if (!$checkIsVariant) {
+                        $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                        $this->logger->debug($e->getMessage());
+                        $attributeValue->setData('is_failed', 1);
+                    }
+                    $checkIsException = true;
                 }
-                $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
-                $attributeValue->setData('processed', 1);
-                $attributeValue->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->replAttributeValueRepositoryInterface->save($attributeValue);
+                if (!$checkIsVariant || !$checkIsException) {
+                    $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $attributeValue->setData('processed', 1);
+                    $attributeValue->setData('is_updated', 0);
+                    // @codingStandardsIgnoreLine
+                    $this->replAttributeValueRepositoryInterface->save($attributeValue);
+                }
             }
         }
     }
