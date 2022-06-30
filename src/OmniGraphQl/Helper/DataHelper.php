@@ -11,11 +11,14 @@ use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Quote\Api\Data\AddressInterface;
+use Magento\Quote\Api\Data\AddressInterfaceFactory;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -29,7 +32,9 @@ use Magento\Quote\Model\Quote;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Useful helper functions for the module
@@ -107,6 +112,19 @@ class DataHelper extends AbstractHelper
     public $storeHelper;
 
     /**
+     * @var Information
+     */
+    public $storeInfo;
+
+    /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /** @var AddressInterfaceFactory */
+    public $addressFactory;
+
+    /**
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -123,6 +141,9 @@ class DataHelper extends AbstractHelper
      * @param CartRepositoryInterface $cartRepository
      * @param StockHelper $stockHelper
      * @param StoreHelper $storeHelper
+     * @param Information $storeInfo
+     * @param StoreManagerInterface $storeManager
+     * @param AddressInterfaceFactory $addressFactory
      */
     public function __construct(
         Context $context,
@@ -140,7 +161,10 @@ class DataHelper extends AbstractHelper
         MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         CartRepositoryInterface $cartRepository,
         StockHelper $stockHelper,
-        StoreHelper $storeHelper
+        StoreHelper $storeHelper,
+        Information $storeInfo,
+        StoreManagerInterface $storeManager,
+        AddressInterfaceFactory $addressFactory
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -158,6 +182,9 @@ class DataHelper extends AbstractHelper
         $this->cartRepository         = $cartRepository;
         $this->stockHelper            = $stockHelper;
         $this->storeHelper            = $storeHelper;
+        $this->storeInfo              = $storeInfo;
+        $this->storeManager           = $storeManager;
+        $this->addressFactory         = $addressFactory;
     }
 
     /**
@@ -430,5 +457,71 @@ class DataHelper extends AbstractHelper
         }
 
         return $formattedData;
+    }
+
+    /**
+     * Get cart model given required data
+     *
+     * @param String $maskedCartId
+     * @param String $userId
+     * @param String $storeId
+     * @return Quote
+     * @throws GraphQlAuthorizationException
+     * @throws GraphQlInputException
+     * @throws GraphQlNoSuchEntityException
+     * @throws NoSuchEntityException
+     */
+    public function getCartGivenRequiredData($maskedCartId, $userId, $storeId)
+    {
+        return $this->getCartForUser->execute($maskedCartId, $userId, $storeId);
+    }
+
+    /**
+     * Get store information
+     *
+     * @return DataObject
+     * @throws NoSuchEntityException
+     */
+    public function getStoreInformation()
+    {
+        $store = $this->storeManager->getStore();
+
+        return $this->storeInfo->getStoreInformationObject($store);
+    }
+
+    /**
+     * Get anonymous address
+     *
+     * @return AddressInterface
+     * @throws NoSuchEntityException
+     */
+    public function getAnonymousAddress()
+    {
+        $storeInformation = $this->getStoreInformation();
+        $address = $this->addressFactory->create();
+        $address->setFirstname($storeInformation->getName())
+            ->setLastname($storeInformation->getName())
+            ->setCountryId($storeInformation->getCountryId())
+            ->setPostcode($storeInformation->getPostcode())
+            ->setRegionId($storeInformation->getRegionId())
+            ->setCity($storeInformation->getCity())
+            ->setTelephone($storeInformation->getPhone())
+            ->setStreet([$storeInformation->getData('street_line1'), $storeInformation->getData('street_line2')])
+            ->setShippingMethod('flatrate_flatrate');
+
+        return $address;
+    }
+
+    /**
+     * Get customer email for anonymous orders
+     *
+     * @return mixed
+     */
+    public function getAnonymousOrderCustomerEmail()
+    {
+        return $this->scopeConfig->getValue(
+            'trans_email/ident_custom1/email',
+            ScopeInterface::SCOPE_STORE
+        );
     }
 }

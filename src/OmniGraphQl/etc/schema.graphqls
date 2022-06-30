@@ -155,3 +155,7 @@ type StoreConfig {
     ls_mag_hospitality_takeaway_sales_type: String @doc(description: "To fetch the configured takeaway sales type.")
     ls_mag_hospitality_delivery_salas_type: String @doc(description: "To fetch the configured delivery sales type.")
 }
+
+input SetPaymentMethodOnCartInput {
+    anonymous: Boolean @doc(description: "Set payment method without shipping and billing address.")
+}

@@ -76,4 +76,9 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\SetPaymentMethodOnCart">
+        <plugin name="set_payment_method_without_address" type="Ls\OmniGraphQl\Plugin\Model\Resolver\SetPaymentMethodOnCartPlugin"
+                sortOrder="1"/>
+    </type>
 </config>
