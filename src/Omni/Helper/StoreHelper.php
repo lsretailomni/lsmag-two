@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Helper;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
@@ -12,6 +13,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Store Helper function
@@ -44,22 +46,28 @@ class StoreHelper extends AbstractHelper
      */
     public $pickupTimeFormat;
 
+    /** @var TimezoneInterface */
+    public $timezone;
+
     /**
      * @param Context $context
      * @param Data $dataHelper
      * @param DateTime $dateTime
      * @param LSR $lsr
+     * @param TimezoneInterface $timezone
      */
     public function __construct(
         Context $context,
         Data $dataHelper,
         DateTime $dateTime,
-        LSR $lsr
+        LSR $lsr,
+        TimezoneInterface $timezone
     ) {
         parent::__construct($context);
         $this->lsr        = $lsr;
         $this->dataHelper = $dataHelper;
         $this->dateTime   = $dateTime;
+        $this->timezone = $timezone;
     }
 
     /**
@@ -102,7 +110,7 @@ class StoreHelper extends AbstractHelper
 
         try {
             $response = $operation->execute($request);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
@@ -124,17 +132,16 @@ class StoreHelper extends AbstractHelper
         // @codingStandardsIgnoreEnd
         try {
             $response = $operation->execute($request);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return $response ? $response->getResult() : $response;
     }
 
-
     /**
      * Getting store hours
      *
-     * @param $storeHours
+     * @param array $storeHours
      * @return array
      * @throws NoSuchEntityException
      */
@@ -224,22 +231,29 @@ class StoreHelper extends AbstractHelper
     /**
      * Get date time slots
      *
-     * @param $storeHours
+     * @param array $storeHours
      * @return array
+     * @throws Exception
      */
     public function getDateTimeSlotsValues($storeHours)
     {
         $dateTimeSlots      = [];
         $storeOrderingHours = $this->getStoreOrderingHours($storeHours);
         $timeInterval       = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_INTERVAL);
-        $currentTime        = $this->dateTime->gmtDate($this->pickupTimeFormat);
+
         foreach ($storeOrderingHours as $date => $storeOrderHour) {
             foreach ($storeOrderHour as $type => $value) {
-                $dateTimeSlots[$date][$type] = $this->applyPickupTimeInterval(
+                $typeValues = $this->applyPickupTimeInterval(
                     $value['open'],
                     $value['close'],
-                    $timeInterval
+                    $timeInterval,
+                    $this->getCurrentDate() == $date
                 );
+
+                if (!empty($typeValues)) {
+                    $dateTimeSlots[$date][$type] = $typeValues;
+                }
+
                 if ($type == StoreHourOpeningType::CLOSED) {
                     if (array_key_exists(StoreHourOpeningType::NORMAL, $dateTimeSlots[$date])) {
                         $dateTimeSlots[$date][StoreHourOpeningType::NORMAL] = array_diff(
@@ -248,6 +262,7 @@ class StoreHelper extends AbstractHelper
                         );
                     }
                 }
+
                 if ($type == StoreHourOpeningType::TEMPORARY) {
                     if (array_key_exists(StoreHourOpeningType::NORMAL, $dateTimeSlots[$date])) {
                         $dateTimeSlots[$date][StoreHourOpeningType::NORMAL] =
@@ -255,24 +270,35 @@ class StoreHelper extends AbstractHelper
                     }
                 }
             }
-            if ($this->getCurrentDate() == $date) {
-                if (array_key_exists(StoreHourOpeningType::NORMAL, $dateTimeSlots[$date])) {
-                    $arrayResult = $dateTimeSlots[$date][StoreHourOpeningType::NORMAL] = array_diff(
-                        $dateTimeSlots[$date][StoreHourOpeningType::NORMAL],
-                        $this->applyPickupTimeInterval(
-                            reset($dateTimeSlots[$date][StoreHourOpeningType::NORMAL]),
-                            $currentTime,
-                            $timeInterval,
-                            0
-                        )
-                    );
-                    if (empty($arrayResult)) {
-                        unset($dateTimeSlots[$date]);
-                    }
-                }
+
+            if ($this->getCurrentDate() == $date &&
+                isset($dateTimeSlots[$date]) &&
+                isset($dateTimeSlots[$date][StoreHourOpeningType::NORMAL])
+            ) {
+                $dateTimeSlots = $this->replaceKey($dateTimeSlots, $date, 'Today');
             }
         }
+
         return $dateTimeSlots;
+    }
+
+    /**
+     * Replace Key
+     *
+     * @param array $orginalArray
+     * @param String $oldKey
+     * @param String $newKey
+     * @return array
+     */
+    public function replaceKey($orginalArray, $oldKey, $newKey)
+    {
+        if (array_key_exists($oldKey, $orginalArray)) {
+            $keys = array_keys($orginalArray);
+            $keys[array_search($oldKey, $keys)] = $newKey;
+            return array_combine($keys, $orginalArray);
+        }
+
+        return $orginalArray;
     }
 
     /**
@@ -288,44 +314,45 @@ class StoreHelper extends AbstractHelper
     /**
      * Apply pickup time interval
      *
-     * @param $startTime
-     * @param $endTime
-     * @param $interval
-     * @param int $isNotTimeDifference
+     * @param String $startTime
+     * @param String $endTime
+     * @param String $interval
+     * @param int $filterCurrentDate
      * @return array
+     * @throws Exception
      */
-    public function applyPickupTimeInterval($startTime, $endTime, $interval, $isNotTimeDifference = 1)
+    public function applyPickupTimeInterval($startTime, $endTime, $interval, $filterCurrentDate)
     {
-        $counter = 0;
-        $time    = [];
-        if ($isNotTimeDifference || strtotime($startTime) < strtotime($endTime)) {
-            $time [] = $this->dateTime->date(
-                $this->pickupTimeFormat,
-                strtotime($startTime)
-            );
+        if ($filterCurrentDate) {
+            $currentTime = $this->dateTime->gmtDate($this->pickupTimeFormat);
+            $startTime = $this->timezone->date(new \DateTime($currentTime))->format($this->pickupTimeFormat);
         }
-        while (strtotime($startTime) <= strtotime($endTime)) {
+
+        $startTime = $this->dateTime->date(
+            $this->pickupTimeFormat,
+            ceil(strtotime($startTime) / ($interval * 60)) * ($interval * 60)
+        );
+        $endTime = $this->dateTime->date(
+            $this->pickupTimeFormat,
+            floor(strtotime($endTime) / ($interval * 60)) * ($interval * 60)
+        );
+        $startTimeSeconds = strtotime($startTime);
+        $endTimeSeconds = strtotime($endTime);
+        $time    = [];
+
+        while ($startTimeSeconds <= $endTimeSeconds) {
+            $time[] = $startTime;
             $end       = $this->dateTime->date(
                 $this->pickupTimeFormat,
-                strtotime(
-                    '+' . $interval . ' minutes',
-                    strtotime($startTime)
-                )
+                strtotime('+' . $interval . ' minutes', $startTimeSeconds)
             );
-            $startTime = $this->dateTime->date(
-                $this->pickupTimeFormat,
-                strtotime(
-                    '+' . $interval . ' minutes',
-                    strtotime($startTime)
-                )
-            );
-            $counter++;
+            $startTime = $end;
+
             if ($startTime == "00:00" || $startTime == "12:00 AM") {
                 $startTime = "24:00";
             }
-            if (strtotime($startTime) <= strtotime($endTime)) {
-                $time[] = $end;
-            }
+
+            $startTimeSeconds = strtotime($startTime);
         }
 
         return $time;
