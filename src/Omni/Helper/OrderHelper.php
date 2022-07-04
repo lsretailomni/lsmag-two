@@ -350,7 +350,8 @@ class OrderHelper extends AbstractHelper
     public function setOrderPayments(Model\Order $order, $cardId)
     {
         $transId          = $order->getPayment()->getLastTransId();
-        $ccType           = substr($order->getPayment()->getCcType(), 0, 10);
+        $ccType           = $order->getPayment()->getCcType() ?
+            substr($order->getPayment()->getCcType(), 0, 10) : '';
         $cardNumber       = $order->getPayment()->getCcLast4();
         $paidAmount       = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
