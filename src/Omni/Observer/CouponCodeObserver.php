@@ -14,10 +14,6 @@ use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\UrlInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class CouponCodeObserver
- * @package Ls\Omni\Observer
- */
 class CouponCodeObserver implements ObserverInterface
 {
     /** @var BasketHelper */
@@ -39,7 +35,6 @@ class CouponCodeObserver implements ObserverInterface
     private $lsr;
 
     /**
-     * CouponCodeObserver constructor.
      * @param BasketHelper $basketHelper
      * @param LoggerInterface $logger
      * @param ManagerInterface $messageManager
@@ -64,11 +59,13 @@ class CouponCodeObserver implements ObserverInterface
     }
 
     /**
+     * @inheritDoc
+     *
      * @param Observer $observer
      * @return $this|void
      * @throws InvalidEnumException
-     * @throws NoSuchEntityException
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
@@ -78,7 +75,7 @@ class CouponCodeObserver implements ObserverInterface
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             $controller = $observer->getControllerAction();
             $couponCode = $controller->getRequest()->getParam('coupon_code');
-            $couponCode = trim($couponCode);
+            $couponCode = !empty($couponCode) ? trim($couponCode) : '';
             $status     = $this->basketHelper->setCouponCode($couponCode);
             if ($controller->getRequest()->getParam('remove') == 1) {
                 $this->messageManager->addSuccessMessage(__("Coupon code successfully removed."));

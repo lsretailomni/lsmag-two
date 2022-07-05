@@ -16,10 +16,12 @@ define([
                 var method = quote.shippingMethod();
                 if (method && method['carrier_code'] !== undefined) {
                     if (method['carrier_code'] === 'clickandcollect' &&
-                        window.checkoutConfig.shipping.pickup_date_timeslots.store_type == 1) {
+                        window.checkoutConfig.shipping.pickup_date_timeslots.store_type === 1) {
                         return true;
                     }
-                    if (window.checkoutConfig.shipping.pickup_date_timeslots.store_type == 0) {
+                    if (window.checkoutConfig.shipping.pickup_date_timeslots.store_type === 0
+                        && method['carrier_code'] !== 'clickandcollect'
+                    ) {
                         return true;
                     }
                 }
