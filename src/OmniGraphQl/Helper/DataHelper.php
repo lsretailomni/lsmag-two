@@ -296,18 +296,20 @@ class DataHelper extends AbstractHelper
     /**
      * Format store timing
      *
-     * @param $storeId
+     * @param string $storeId
      * @return array
      */
     public function formatStoreTiming($storeId)
     {
         $storeHours = $this->omniDataHelper->getStoreHours($storeId);
         $hours      = [];
-        $i          = 0;
+        $i = 0;
 
-        foreach ($storeHours as $hour) {
-            $hours[$i]['day_of_week'] = $hour['day'];
-            $hours[$i]['hour_types']  = $this->formatHoursAccordingToType($hour);
+        foreach ($storeHours as $storeHour) {
+            foreach ($storeHour as $key => $hour) {
+                $hours[$i]['day_of_week'] = $hour['day'];
+                $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+            }
             $i++;
         }
 
@@ -317,43 +319,21 @@ class DataHelper extends AbstractHelper
     /**
      * Format hours according to their type
      *
-     * @param $hour
+     * @param array $hour
      * @return array
      */
     public function formatHoursAccordingToType($hour)
     {
-        $hours = [];
-        $types = ['normal', 'temporary', 'closed'];
-        $i     = 0;
-        $hoursFormat   = $this->scopeConfig->getValue(
+        $hoursFormat = $this->scopeConfig->getValue(
             LSR::LS_STORES_OPENING_HOURS_FORMAT,
             ScopeInterface::SCOPE_STORE
         );
-        foreach ($types as $type) {
-            if (isset($hour[$type])) {
-                if ($type == 'normal') {
-                    foreach ($hour[$type] as $normal) {
-                        $hours[$i]['type'] = $type;
 
-                        if (isset($normal['open'])) {
-                            $hours[$i]['opening_time'] = date($hoursFormat, strtotime($normal['open']));
-                        }
-
-                        if (isset($normal['close'])) {
-                            $hours[$i]['closing_time'] = date($hoursFormat, strtotime($normal['close']));
-                        }
-                        $i++;
-                    }
-                } else {
-                    $hours[$i]['type']         = $type;
-                    $hours[$i]['opening_time'] = date($hoursFormat, strtotime($hour[$type]['open']));
-                    $hours[$i]['closing_time'] = date($hoursFormat, strtotime($hour[$type]['close']));
-                    $i++;
-                }
-            }
-        }
-
-        return $hours;
+        return [
+            'type'         => $hour['type'],
+            'opening_time' => date($hoursFormat, strtotime($hour['open'])),
+            'closing_time' => date($hoursFormat, strtotime($hour['close']))
+        ];
     }
 
     /**

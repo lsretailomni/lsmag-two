@@ -4,6 +4,7 @@ namespace Ls\Omni\Block\Stores;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
@@ -80,17 +81,21 @@ class Stores extends Template
     }
 
     /**
-     * @param $storeId
+     * Get Store Hours given store_id
+     *
+     * @param string $storeId
      * @return array
      */
     public function getStoreHours($storeId)
     {
+        $storeHours = [];
         try {
             $storeHours = $this->storeHoursHelper->getStoreHours($storeId);
-            return $storeHours;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+
+        return $storeHours;
     }
 
     /**
@@ -109,75 +114,56 @@ class Stores extends Template
     }
 
     /**
-     * @param $hour
+     * Get formatted hours html
+     *
+     * @param array $hour
      * @return string
      */
     public function getFormattedHours($hour)
     {
         $formattedTime = "";
         $hoursFormat   = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
-        if (isset($hour['closed'])) {
-            $formattedTime = "<td class='dayofweek'>" . $hour['day'] . "</td><td class='normal-hour'>
-            <span class='closed'>" . __("Closed") . '</span></td>';
-        } elseif (isset($hour['normal']) && !isset($hour['temporary'])) {
-            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>";
-            foreach ($hour['normal'] as $each) {
+
+        foreach ($hour as $i => $entry) {
+            if ($i === 0) {
+                $formattedTime .= "<td class='dayofweek'>" . $entry["day"] . "</td><td class='normal-hour'>";
+            }
+
+            if ($entry['type'] == StoreHourOpeningType::NORMAL) {
                 $formattedTime .= "<span>" .
                     date(
                         $hoursFormat,
-                        strtotime($each['open'])
+                        strtotime($entry['open'])
                     ) . ' - ' . date(
                         $hoursFormat,
-                        strtotime($each['close'])
+                        strtotime($entry['close'])
                     ) . "</span><br/>";
-            }
-
-            $formattedTime .= "</td>";
-        } elseif (isset($hour['normal']) && isset($hour['temporary'])) {
-            if (strtotime($hour['temporary']['open']) <= strtotime($hour['normal'][0]['open'])) {
-                $formattedTime = "<td class='dayofweek'>" . $hour['day'] . "</td><td><span class='special-hour'>" .
-                    date(
-                        $hoursFormat,
-                        strtotime($hour['temporary']['open'])
-                    ) . ' - ' . date(
-                        $hoursFormat,
-                        strtotime($hour['temporary']['close'])
-                    ) . "<span class='special-label'>" . __('Special') . '</span></span>' .
-                    "<br/>";
-                foreach ($hour['normal'] as $each) {
-                    $formattedTime .= "<span>" .
-                        date(
-                            $hoursFormat,
-                            strtotime($each['open'])
-                        ) . ' - ' . date(
-                            $hoursFormat,
-                            strtotime($each['close'])
-                        ) . "</span><br/>";
-                }
-
-                $formattedTime .= "</td>";
-            } else {
-                $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>";
-                foreach ($hour['normal'] as $each) {
-                    $formattedTime .= "<span>" .
-                        date(
-                            $hoursFormat,
-                            strtotime($each['open'])
-                        ) . ' - ' . date(
-                            $hoursFormat,
-                            strtotime($each['close'])
-                        ) . "</span><br/>";
-                }
+            } elseif ($entry['type'] == StoreHourOpeningType::TEMPORARY) {
                 $formattedTime .= "<span class='special-hour'>" .
                     date(
                         $hoursFormat,
-                        strtotime($hour['temporary']['open'])
+                        strtotime($entry['open'])
                     ) . ' - ' . date(
                         $hoursFormat,
-                        strtotime($hour['temporary']['close'])
-                    ) . "<span class='special-label'>" . __('Special') . '</span></span></td>';
+                        strtotime($entry['close'])
+                    ) . "<span class='special-label'>" . __('Special') . '</span></span>' . "<br/>";
+
+            } else {
+                $formattedTime .= "<span class='closed'>" .
+                    date(
+                        $hoursFormat,
+                        strtotime($entry['open'])
+                    ) . ' - ' . date(
+                        $hoursFormat,
+                        strtotime($entry['close'])
+                    ) . "<span class='closed-label'>" . __('Closed') . '</span></span>' . "<br/>";
+            }
+
+            if ($i == count($hour) - 1) {
+                $formattedTime .= "</td>";
             }
         }
+
         return $formattedTime;
     }
 }
