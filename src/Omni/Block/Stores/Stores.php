@@ -124,7 +124,12 @@ class Stores extends Template
         $formattedTime = "";
         $hoursFormat   = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
 
+        $hour = $this->removeNormalEntryIfSameCloseEntry($hour);
+
         foreach ($hour as $i => $entry) {
+            $entryTimeStampOpen = strtotime($entry['open']);
+            $entryTimeStampClose = strtotime($entry['close']);
+
             if ($i === 0) {
                 $formattedTime .= "<td class='dayofweek'>" . $entry["day"] . "</td><td class='normal-hour'>";
             }
@@ -133,30 +138,35 @@ class Stores extends Template
                 $formattedTime .= "<span>" .
                     date(
                         $hoursFormat,
-                        strtotime($entry['open'])
+                        $entryTimeStampOpen
                     ) . ' - ' . date(
                         $hoursFormat,
-                        strtotime($entry['close'])
+                        $entryTimeStampClose
                     ) . "</span><br/>";
             } elseif ($entry['type'] == StoreHourOpeningType::TEMPORARY) {
                 $formattedTime .= "<span class='special-hour'>" .
                     date(
                         $hoursFormat,
-                        strtotime($entry['open'])
+                        $entryTimeStampOpen
                     ) . ' - ' . date(
                         $hoursFormat,
-                        strtotime($entry['close'])
+                        $entryTimeStampClose
                     ) . "<span class='special-label'>" . __('Special') . '</span></span>' . "<br/>";
 
             } else {
-                $formattedTime .= "<span class='closed'>" .
-                    date(
-                        $hoursFormat,
-                        strtotime($entry['open'])
-                    ) . ' - ' . date(
-                        $hoursFormat,
-                        strtotime($entry['close'])
-                    ) . "<span class='closed-label'>" . __('Closed') . '</span></span>' . "<br/>";
+                if (count($hour) == 1) {
+                    $formattedTime .= "<span class='closed'>".
+                    "<span class='closed-label single'>" . __('Closed') . '</span></span>' . "<br/>";
+                } else {
+                    $formattedTime .= "<span class='closed'>" .
+                        date(
+                            $hoursFormat,
+                            $entryTimeStampOpen
+                        ) . ' - ' . date(
+                            $hoursFormat,
+                            $entryTimeStampClose
+                        ) . "<span class='closed-label'>" . __('Closed') . '</span></span>' . "<br/>";
+                }
             }
 
             if ($i == count($hour) - 1) {
@@ -165,5 +175,41 @@ class Stores extends Template
         }
 
         return $formattedTime;
+    }
+
+    /**
+     * Remove normal entry if same closed entry
+     *
+     * @param array $hour
+     * @return mixed
+     */
+    public function removeNormalEntryIfSameCloseEntry($hour)
+    {
+        $normalIndex = $closedIndex = null;
+
+        foreach ($hour as $i => $entry) {
+            if ($entry['type'] == StoreHourOpeningType::NORMAL) {
+                $normalTimeStampOpen  = strtotime($entry['open']);
+                $normalTimeStampClose = strtotime($entry['close']);
+                $normalIndex = $i;
+            }
+
+            if ($entry['type'] == StoreHourOpeningType::CLOSED) {
+                $closedTimeStampOpen  = strtotime($entry['open']);
+                $closedTimeStampClose = strtotime($entry['close']);
+                $closedIndex = $i;
+            }
+        }
+
+        if (isset($normalIndex) &&
+            isset($closedIndex) &&
+            $normalTimeStampOpen == $closedTimeStampOpen &&
+            $normalTimeStampClose == $closedTimeStampClose
+        ) {
+            unset($hour[$normalIndex]);
+            $hour = array_values($hour);
+        }
+
+        return $hour;
     }
 }

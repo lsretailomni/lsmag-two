@@ -215,8 +215,8 @@ class Data extends AbstractHelper
                         $storeHours[$currentDayOfWeek][] = [
                             'type'  => $r->getType(),
                             'day'   => $r->getNameOfDay(),
-                            'open'  => $r->getOpenFrom(),
-                            'close' => $r->getOpenTo()
+                            'open'  => $r->getOpenFrom() ?? '0001-01-01T00:00:00Z',
+                            'close' => $r->getOpenTo() ?? '0001-01-01T00:00:00Z'
                         ];
 
                         unset($storeResults[$key]);
