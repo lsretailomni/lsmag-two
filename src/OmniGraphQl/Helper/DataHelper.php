@@ -478,6 +478,12 @@ class DataHelper extends AbstractHelper
     public function getAnonymousAddress()
     {
         $storeInformation = $this->getStoreInformation();
+        $streets = [$storeInformation->getData('street_line1')];
+
+        if ($storeInformation->getData('street_line2')) {
+            $streets[] = $storeInformation->getData('street_line2');
+        }
+
         $address = $this->addressFactory->create();
         $address->setFirstname($storeInformation->getName())
             ->setLastname($storeInformation->getName())
@@ -486,7 +492,7 @@ class DataHelper extends AbstractHelper
             ->setRegionId($storeInformation->getRegionId())
             ->setCity($storeInformation->getCity())
             ->setTelephone($storeInformation->getPhone())
-            ->setStreet([$storeInformation->getData('street_line1'), $storeInformation->getData('street_line2')])
+            ->setStreet($streets)
             ->setShippingMethod('flatrate_flatrate');
 
         return $address;
