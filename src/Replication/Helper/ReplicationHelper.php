@@ -2163,8 +2163,8 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Getting all configurable attribute codes
      *
-     * @param $itemId
-     * @param $storeId
+     * @param string $itemId
+     * @param string $storeId
      * @return array
      */
     public function _getAttributesCodes($itemId, $storeId)
@@ -2173,6 +2173,8 @@ class ReplicationHelper extends AbstractHelper
         try {
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
                 ->addFilter('isDeleted', 0, 'eq')
+                ->addFilter('Code', true, 'notnull')
+                ->addFilter('Dimensions', true, 'notnull')
                 ->addFilter('scope_id', $storeId, 'eq')->create();
             $sortOrder      = $this->sortOrder->setField('DimensionLogicalOrder')->setDirection(SortOrder::SORT_ASC);
             $searchCriteria->setSortOrders([$sortOrder]);
