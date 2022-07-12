@@ -253,7 +253,8 @@ class TaxRulesCreateTask
     {
         $filters  = [
             ['field' => 'BusinessTaxGroup', 'value' => $group, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq'],
+            ['field' => 'ProductTaxGroup', 'value' => true, 'condition_type' => 'notnull']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
 
