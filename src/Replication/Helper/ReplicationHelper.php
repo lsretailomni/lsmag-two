@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
@@ -16,6 +17,7 @@ use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
+use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -280,6 +282,11 @@ class ReplicationHelper extends AbstractHelper
     public $ruleCollectionFactory;
 
     /**
+     * @var ReplUnitOfMeasureRepositoryInterface
+     */
+    public $replUnitOfMeasureRepository;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -327,6 +334,7 @@ class ReplicationHelper extends AbstractHelper
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ResourceModelCategory $categoryResourceModel
      * @param RuleCollectionFactory $ruleCollectionFactory
+     * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
      */
     public function __construct(
         Context $context,
@@ -375,7 +383,8 @@ class ReplicationHelper extends AbstractHelper
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         CategoryRepositoryInterface $categoryRepository,
         ResourceModelCategory $categoryResourceModel,
-        RuleCollectionFactory $ruleCollectionFactory
+        RuleCollectionFactory $ruleCollectionFactory,
+        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -423,6 +432,7 @@ class ReplicationHelper extends AbstractHelper
         $this->categoryRepository                        = $categoryRepository;
         $this->categoryResourceModel                     = $categoryResourceModel;
         $this->ruleCollectionFactory                     = $ruleCollectionFactory;
+        $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
         parent::__construct(
             $context
         );
@@ -2032,14 +2042,19 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Getting attribute option id given value
      *
-     * @param $code
-     * @param $value
+     * @param string $code
+     * @param string $value
      * @return null|string
      * @throws LocalizedException
      */
     public function _getOptionIDByCode($code, $value)
     {
+        if (!$value) {
+            return null;
+        }
+
         $attribute = $this->eavConfig->getAttribute('catalog_product', $code);
+
         return $attribute->getSource()->getOptionId($value);
     }
 
@@ -2200,8 +2215,8 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Getting all available uom codes
      *
-     * @param $itemId
-     * @param $storeId
+     * @param string $itemId
+     * @param string $storeId
      * @return array
      */
     public function getUomCodes($itemId, $storeId)
@@ -2220,14 +2235,43 @@ class ReplicationHelper extends AbstractHelper
             $items = $this->replItemUomRepository->getList($searchCriteria)->getItems();
 
             foreach ($items as $item) {
+                $uomDescription = $this->getUomDescription($item);
                 /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
-                $itemUom[$itemId][$item->getDescription()] = $item->getCode();
+                $itemUom[$itemId][$uomDescription] = $item->getCode();
             }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
 
         return $itemUom;
+    }
+
+    /**
+     * Get Uom Description
+     *
+     * @param ReplItemUnitOfMeasureInterface $itemUom
+     * @return string
+     */
+    public function getUomDescription($itemUom)
+    {
+        $uomDescription = null;
+
+        if ($itemUom->getDescription()) {
+            $uomDescription = $itemUom->getDescription();
+        } else {
+            $filters           = [
+                ['field' => 'scope_id', 'value' => $itemUom->getScopeId(), 'condition_type' => 'eq'],
+                ['field' => 'nav_id', 'value' => $itemUom->getCode(), 'condition_type' => 'eq']
+            ];
+            $searchCriteria    = $this->buildCriteriaForDirect($filters, -1);
+            $replUnitOfMeasure = $this->replUnitOfMeasureRepository->getList($searchCriteria);
+
+            if ($replUnitOfMeasure->getTotalCount()) {
+                $uomDescription = current($replUnitOfMeasure->getItems())->getDescription();
+            }
+        }
+
+        return $uomDescription;
     }
 
     /**
