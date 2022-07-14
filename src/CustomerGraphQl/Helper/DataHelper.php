@@ -50,7 +50,6 @@ class DataHelper
     public $currencyHelper;
 
     /**
-     * DataHelper constructor.
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
@@ -72,8 +71,9 @@ class DataHelper
     }
 
     /**
-     * get member contact related data
-     * @param $context
+     * Get member contact related data
+     *
+     * @param mixed $context
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -99,14 +99,13 @@ class DataHelper
                         $schemeArray                  = [];
                         $schemeArray['club_name']     = $scheme->getClub()->getName();
                         $schemeArray['loyalty_level'] = $scheme->getDescription();
-                        $schemeArray['point_balance'] = $this->formatValue($result->getAccount()->getPointBalance());
+                        $schemeArray['point_balance'] = $result->getAccount()->getPointBalance();
                         $nextSchemeLevel              = $scheme->getNextScheme();
                         if (!empty($nextSchemeLevel)) {
                             $schemeArray['next_level']['club_name']     = $nextSchemeLevel->getClub()->getName();
                             $schemeArray['next_level']['loyalty_level'] = $nextSchemeLevel->getDescription();
                             $schemeArray['next_level']['benefits']      = $nextSchemeLevel->getPerks();
-                            $schemeArray['next_level']['points_needed'] =
-                                $this->formatValue($nextSchemeLevel->getPointsNeeded());
+                            $schemeArray['next_level']['points_needed'] = $nextSchemeLevel->getPointsNeeded();
                         }
                         $customerAccount['scheme'] = $schemeArray;
                     }
@@ -118,9 +117,10 @@ class DataHelper
 
     /**
      * Get sales entries information
-     * @param $context
-     * @param $maxNumberOfEntries
-     * @return array|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface
+     *
+     * @param mixed $context
+     * @param int|null $maxNumberOfEntries
+     * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -141,9 +141,10 @@ class DataHelper
 
     /**
      * Get sales entry information by document id
-     * @param $context
-     * @param $documentId
-     * @param $type
+     *
+     * @param mixed $context
+     * @param string $documentId
+     * @param string $type
      * @return array|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface
      * @throws InvalidEnumException
      * @throws LocalizedException
@@ -165,6 +166,7 @@ class DataHelper
 
     /**
      * Get Sales entry info
+     *
      * @param SalesEntry $salesEntry
      * @return array
      */
@@ -177,18 +179,18 @@ class DataHelper
             'document_id'             => $salesEntry->getCustomerOrderNo(),
             'external_id'             => $salesEntry->getExternalId(),
             'id_type'                 => $salesEntry->getIdType(),
-            'line_item_count'         => $this->formatValue($salesEntry->getLineItemCount()),
-            'points_rewarded'         => $this->formatValue($salesEntry->getPointsRewarded()),
-            'points_used'             => $this->formatValue($salesEntry->getPointsUsedInOrder()),
+            'line_item_count'         => $salesEntry->getLineItemCount(),
+            'points_rewarded'         => $salesEntry->getPointsRewarded(),
+            'points_used'             => $salesEntry->getPointsUsedInOrder(),
             'posted'                  => $salesEntry->getPosted(),
             'ship_to_name'            => $salesEntry->getShipToName(),
             'ship_to_email'           => $salesEntry->getShipToEmail(),
             'status'                  => $salesEntry->getStatus(),
             'store_id'                => $salesEntry->getStoreId(),
             'store_name'              => $salesEntry->getStoreName(),
-            'total_amount'            => $this->formatValue($salesEntry->getTotalAmount()),
-            'total_net_amount'        => $this->formatValue($salesEntry->getTotalNetAmount()),
-            'total_discount'          => $this->formatValue($salesEntry->getTotalDiscount()),
+            'total_amount'            => $salesEntry->getTotalAmount(),
+            'total_net_amount'        => $salesEntry->getTotalNetAmount(),
+            'total_discount'          => $salesEntry->getTotalDiscount(),
             'contact_address'         => $this->getAddress($salesEntry->getContactAddress()),
             'ship_to_address'         => $this->getAddress($salesEntry->getShipToAddress()),
             'payments'                => $this->getPayments($salesEntry->getPayments()),
@@ -198,6 +200,7 @@ class DataHelper
 
     /**
      * Get address info
+     *
      * @param Address $address
      * @return array
      */
@@ -218,6 +221,7 @@ class DataHelper
 
     /**
      * Get payments array
+     *
      * @param ArrayOfSalesEntryPayment $payments
      * @return array
      */
@@ -226,10 +230,10 @@ class DataHelper
         $paymentsArray = [];
         foreach ($payments->getSalesEntryPayment() as $payment) {
             $paymentsArray[] = [
-                'amount'          => $this->formatValue($payment->getAmount()),
+                'amount'          => $payment->getAmount(),
                 'card_no'         => $payment->getCardNo(),
                 'currency_code'   => $payment->getCurrencyCode(),
-                'currency_factor' => $this->formatValue($payment->getCurrencyFactor()),
+                'currency_factor' => $payment->getCurrencyFactor(),
                 'line_number'     => $payment->getLineNumber(),
                 'tender_type'     => $payment->getTenderType(),
             ];
@@ -240,6 +244,7 @@ class DataHelper
 
     /**
      * Get items array
+     *
      * @param ArrayOfSalesEntryLine $items
      * @return array
      */
@@ -248,22 +253,22 @@ class DataHelper
         $itemsArray = [];
         foreach ($items->getSalesEntryLine() as $item) {
             $itemsArray[] = [
-                'amount'                 => $this->formatValue($item->getAmount()),
+                'amount'                 => $item->getAmount(),
                 'click_and_collect_line' => $item->getClickAndCollectLine(),
-                'discount_amount'        => $this->formatValue($item->getDiscountAmount()),
-                'discount_percent'       => $this->formatValue($item->getDiscountPercent()),
+                'discount_amount'        => $item->getDiscountAmount(),
+                'discount_percent'       => $item->getDiscountPercent(),
                 'item_description'       => $item->getItemDescription(),
                 'item_id'                => $item->getItemId(),
                 'item_image_id'          => $item->getItemImageId(),
                 'line_number'            => $item->getLineNumber(),
                 'line_type'              => $item->getLineType(),
-                'net_amount'             => $this->formatValue($item->getNetAmount()),
-                'net_price'              => $this->formatValue($item->getNetPrice()),
+                'net_amount'             => $item->getNetAmount(),
+                'net_price'              => $item->getNetPrice(),
                 'parent_line'            => $item->getParentLine(),
-                'price'                  => $this->formatValue($item->getPrice()),
-                'quantity'               => $this->formatValue($item->getQuantity()),
+                'price'                  => $item->getPrice(),
+                'quantity'               => $item->getQuantity(),
                 'store_id'               => $item->getStoreId(),
-                'tax_amount'             => $this->formatValue($item->getTaxAmount()),
+                'tax_amount'             => $item->getTaxAmount(),
                 'uom_id'                 => $item->getUomId(),
                 'variant_description'    => $item->getVariantDescription(),
                 'variant_id'             => $item->getVariantId()
@@ -275,8 +280,9 @@ class DataHelper
 
     /**
      * Format value to two decimal places
-     * @param $value
-     * @return float|string
+     *
+     * @param float $value
+     * @return string
      */
     public function formatValue($value)
     {

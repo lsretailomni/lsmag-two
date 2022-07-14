@@ -30,7 +30,7 @@ type AppliedGiftCard {
 
 input ApplyLsLoyaltyPointsInput {
       cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
-      loyalty_points: String! @doc(description: "Specifies the loyalty points to be redeemed")
+      loyalty_points: Float! @doc(description: "Specifies the loyalty points to be redeemed")
 }
 
 input RemoveLsLoyaltyPointsInput {
@@ -38,10 +38,10 @@ input RemoveLsLoyaltyPointsInput {
 }
 
 type AppliedLoyaltyPoints {
-    points_earn: String
-    points_spent: String
-    points_discount: String
-    point_rate: String
+    points_earn: Float
+    points_spent: Float
+    points_discount: Float
+    point_rate: Float
 }
 
 type Cart {
