@@ -27,6 +27,11 @@ class ReplItemUnitOfMeasure
     protected $Description = null;
 
     /**
+     * @property int $EComSelection
+     */
+    protected $EComSelection = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
@@ -118,6 +123,24 @@ class ReplItemUnitOfMeasure
     public function getDescription()
     {
         return $this->Description;
+    }
+
+    /**
+     * @param int $EComSelection
+     * @return $this
+     */
+    public function setEComSelection($EComSelection)
+    {
+        $this->EComSelection = $EComSelection;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEComSelection()
+    {
+        return $this->EComSelection;
     }
 
     /**

@@ -19,6 +19,11 @@ class ContactGetByCardId implements RequestInterface
     protected $cardId = null;
 
     /**
+     * @property int $numberOfTransReturned
+     */
+    protected $numberOfTransReturned = null;
+
+    /**
      * @param string $cardId
      * @return $this
      */
@@ -34,6 +39,24 @@ class ContactGetByCardId implements RequestInterface
     public function getCardId()
     {
         return $this->cardId;
+    }
+
+    /**
+     * @param int $numberOfTransReturned
+     * @return $this
+     */
+    public function setNumberOfTransReturned($numberOfTransReturned)
+    {
+        $this->numberOfTransReturned = $numberOfTransReturned;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfTransReturned()
+    {
+        return $this->numberOfTransReturned;
     }
 
 

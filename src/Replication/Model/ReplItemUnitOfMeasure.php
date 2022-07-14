@@ -37,6 +37,11 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     protected $Description = null;
 
     /**
+     * @property int $EComSelection
+     */
+    protected $EComSelection = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
@@ -179,6 +184,26 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     public function getDescription()
     {
         return $this->getData( 'Description' );
+    }
+
+    /**
+     * @param int $EComSelection
+     * @return $this
+     */
+    public function setEComSelection($EComSelection)
+    {
+        $this->setData( 'EComSelection', $EComSelection );
+        $this->EComSelection = $EComSelection;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEComSelection()
+    {
+        return $this->getData( 'EComSelection' );
     }
 
     /**
