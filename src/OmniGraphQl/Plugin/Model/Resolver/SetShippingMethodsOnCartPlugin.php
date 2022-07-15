@@ -83,17 +83,17 @@ class SetShippingMethodsOnCartPlugin
         $validForClickAndCollect = false;
 
         if ($shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode()) {
-            if (empty($args['input']['store_id'])) {
-                throw new GraphQlInputException(__('Required parameter "store_id" is missing'));
-            }
 
             if (empty($args['input']['cart_id'])) {
                 throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
             }
 
             $maskedCartId    = $args['input']['cart_id'];
-            $storeId         = $args['input']['store_id'];
-            $pickupDate = $pickupTimeslot = '';
+            $storeId = $pickupDate = $pickupTimeslot = '';
+
+            if (isset($args['input']['store_id']) && !empty($args['input']['store_id'])) {
+                $storeId = $args['input']['store_id'];
+            }
 
             if (isset($args['input']['pickup_date']) && !empty($args['input']['pickup_date'])) {
                 $pickupDate = $args['input']['pickup_date'];
@@ -105,25 +105,35 @@ class SetShippingMethodsOnCartPlugin
 
             $scopeId         = (int)$context->getExtensionAttributes()->getStore()->getId();
             $userId          = $context->getUserId();
-            $stockCollection = $this->dataHelper->fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId);
 
-            if (!$stockCollection) {
-                throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));
-            }
+            if (!empty($storeId)) {
+                $stockCollection = $this->dataHelper->fetchCartAndReturnStock(
+                    $maskedCartId,
+                    $userId,
+                    $scopeId,
+                    $storeId
+                );
 
-            foreach ($stockCollection as $stock) {
-                if (!$stock['status']) {
-                    throw new LocalizedException(
-                        __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.')
-                    );
+                if (!$stockCollection) {
+                    throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));
                 }
+
+                foreach ($stockCollection as $stock) {
+                    if (!$stock['status']) {
+                        throw new LocalizedException(
+                            __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.')
+                        );
+                    }
+                }
+                $validForClickAndCollect = true;
             }
-            $validForClickAndCollect = true;
         }
         $result = $proceed($field, $context, $info, $value, $args);
+
         if (isset($result['cart']) && isset($result['cart']['model'])) {
             $cart = $result['cart']['model'];
             $this->basketHelper->syncBasketWithCentral($cart->getId());
+
             if ($validForClickAndCollect) {
                 $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId, $pickupDate, $pickupTimeslot);
 
