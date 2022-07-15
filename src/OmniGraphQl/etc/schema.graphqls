@@ -58,9 +58,7 @@ type Query {
      parent_sku: String @doc(description: "Parent item sku if applicable.")
      sku: String! @doc(description: "Item Sku whose availability is required.")
     ): ItemAvailabilityOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\Stock\\ItemAvailabilityOutput") @doc(description: "Get list of all the stores where given item is available.")
-    click_and_collect_stores(
-        hospitality_sales_type: String @doc(description: "Sales Type for filtration.")
-    ): ClickAndCollectStoresOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\ClickAndCollectStoresOutput") @doc(description: "Get list of all the stores which support click and collect.")
+    click_and_collect_stores: ClickAndCollectStoresOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\ClickAndCollectStoresOutput") @doc(description: "Get list of all the stores which support click and collect.")
     cart_items_availability_in_store (
      cart_id: String! @doc(description: "Valid cart Id.")
      store_id: String! @doc(description: "Click and collect store where stock needs to be checked.")

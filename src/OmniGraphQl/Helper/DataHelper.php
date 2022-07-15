@@ -340,16 +340,11 @@ class DataHelper extends AbstractHelper
      * Get all click and collect supported stores for given scope_id
      *
      * @param String $scopeId
-     * @param String $salesType
      * @return Collection
      */
-    public function getStores($scopeId, $salesType)
+    public function getStores($scopeId)
     {
         $storeCollection = $this->storeCollectionFactory->create();
-
-        if (!empty($salesType)) {
-            $storeCollection->addFieldToFilter('HospSalesTypes', ['like' => '%'.$salesType.'%']);
-        }
 
         return $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
