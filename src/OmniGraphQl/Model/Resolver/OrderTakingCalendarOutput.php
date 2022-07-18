@@ -2,15 +2,16 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use \Ls\OmniGraphQl\Helper\DataHelper;
+use Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * For returning all click and collect supported stores
+ * Resolver responsible to fetch order taking calendar
  */
-class ClickAndCollectStoresOutput implements ResolverInterface
+class OrderTakingCalendarOutput implements ResolverInterface
 {
     /**
      * @var DataHelper
@@ -31,14 +32,16 @@ class ClickAndCollectStoresOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-        $scopeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-        $stores  = $this->dataHelper->getStores($scopeId);
-        $stores  = $stores->toArray()['items'];
-
-        foreach ($stores as &$store) {
-            $store = $this->dataHelper->formatStoreData($store);
+        if (empty($args['store_id'])) {
+            throw new GraphQlInputException(__('Required parameter "store_id" is missing'));
         }
 
-        return ['stores' => $stores];
+        $storeId = $args['store_id'];
+
+        $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
+
+        $slots = $this->dataHelper->getOrderTakingCalendarGivenStoreId($storeId, $websiteId);
+
+        return ['dates' => $slots];
     }
 }

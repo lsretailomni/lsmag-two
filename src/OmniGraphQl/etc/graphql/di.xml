@@ -67,4 +67,18 @@
         <plugin name="set_one_list_calculate_in_session" type="Ls\OmniGraphQl\Plugin\Model\Resolver\GetCartForUserPlugin"
                 sortOrder="1"/>
     </type>
+
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData">
+                <item name="ls_mag_hospitality_takeaway_sales_type" xsi:type="string">ls_mag/hospitality/takeaway_sales_type</item>
+                <item name="ls_mag_hospitality_delivery_salas_type" xsi:type="string">ls_mag/hospitality/delivery_salas_type</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\SetPaymentMethodOnCart">
+        <plugin name="set_payment_method_without_address" type="Ls\OmniGraphQl\Plugin\Model\Resolver\SetPaymentMethodOnCartPlugin"
+                sortOrder="1"/>
+    </type>
 </config>

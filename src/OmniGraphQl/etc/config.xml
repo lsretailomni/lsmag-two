@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <general>
+            <store_information>
+                <name>Ls Retail</name>
+                <phone>+354 414 5700</phone>
+                <city>Kópavogur</city>
+                <postcode>201</postcode>
+                <region_id>796</region_id>
+                <country_id>IS</country_id>
+                <street_line1>LS Retail ehf.</street_line1>
+                <street_line2>Hagasmári 3</street_line2>
+            </store_information>
+        </general>
+    </default>
+</config>
