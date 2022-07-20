@@ -1351,7 +1351,7 @@ class ReplicationHelper extends AbstractHelper
             []
         )->joinInner(
             ['third' => $thirdTableName],
-            'main_table.ItemId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id',
+            'main_table.CustomItemId' . ' = third.CustomItemId' . ' AND main_table.scope_id' . ' = third.scope_id',
             []
         );
         /** @var For Xdebug only to check the query $query */
