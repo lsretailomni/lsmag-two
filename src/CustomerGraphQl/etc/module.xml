@@ -4,6 +4,7 @@
     <module name="Ls_CustomerGraphQl" setup_version="1.0.0">
         <sequence>
             <module name="Ls_Customer"/>
+            <module name="Ls_Omni"/>
             <module name="Magento_CustomerGraphQl"/>
         </sequence>
     </module>
