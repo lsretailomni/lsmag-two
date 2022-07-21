@@ -2,6 +2,8 @@
 
 namespace Ls\Omni\Helper;
 
+use Carbon\CarbonInterval;
+use Carbon\CarbonPeriod;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
@@ -73,9 +75,9 @@ class StoreHelper extends AbstractHelper
     /**
      * Getting sales type
      *
-     * @param string $websiteId
-     * @param null $webStore
-     * @param null $baseUrl
+     * @param mixed $websiteId
+     * @param mixed $webStore
+     * @param mixed $baseUrl
      * @return array|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
      */
     public function getSalesType($websiteId = '', $webStore = null, $baseUrl = null)
@@ -83,13 +85,12 @@ class StoreHelper extends AbstractHelper
         return $this->getStore($websiteId, $webStore, $baseUrl);
     }
 
-
     /**
      * Getting store by id
      *
-     * @param string $websiteId
-     * @param null $webStore
-     * @param null $baseUrl
+     * @param mixed $websiteId
+     * @param mixed $webStore
+     * @param mixed $baseUrl
      * @return array|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
      */
     public function getStore($websiteId = '', $webStore = null, $baseUrl = null)
@@ -119,7 +120,7 @@ class StoreHelper extends AbstractHelper
     /**
      * Get all stores
      *
-     * @param $webStoreId
+     * @param mixed $webStoreId
      * @return array|Entity\ArrayOfStore|Entity\StoresGetAllResponse|ResponseInterface|null
      */
     public function getAllStores($webStoreId)
@@ -145,6 +146,7 @@ class StoreHelper extends AbstractHelper
      * @return array
      * @throws NoSuchEntityException
      */
+    // @codingStandardsIgnoreStart
     public function getStoreOrderingHours($storeHours)
     {
         if (empty($storeHours)) {
@@ -168,20 +170,38 @@ class StoreHelper extends AbstractHelper
                             if ($storeHour->getType() == StoreHourOpeningType::NORMAL) {
                                 $dateTimSlots[$current][StoreHourOpeningType::NORMAL] =
                                     [
-                                        "open"  => $this->formatTime($storeHour->getOpenFrom()),
-                                        "close" => $this->formatTime($storeHour->getOpenTo())
+                                        "open"  => $this->formatTime(
+                                            $storeHour->getOpenFrom() ??
+                                            '0001-01-01T00:00:00Z'
+                                        ),
+                                        "close" => $this->formatTime(
+                                            $storeHour->getOpenTo() ??
+                                            '0001-01-01T00:00:00Z'
+                                        )
                                     ];
                             } elseif ($storeHour->getType() == StoreHourOpeningType::TEMPORARY) {
                                 $dateTimSlots[$current][StoreHourOpeningType::TEMPORARY] =
                                     [
-                                        "open"  => $this->formatTime($storeHour->getOpenFrom()),
-                                        "close" => $this->formatTime($storeHour->getOpenTo())
+                                        "open"  => $this->formatTime(
+                                            $storeHour->getOpenFrom() ??
+                                            '0001-01-01T00:00:00Z'
+                                        ),
+                                        "close" => $this->formatTime(
+                                            $storeHour->getOpenTo() ??
+                                            '0001-01-01T00:00:00Z'
+                                        )
                                     ];
                             } else {
                                 $dateTimSlots[$current][StoreHourOpeningType::CLOSED] =
                                     [
-                                        "open"  => $this->formatTime($storeHour->getOpenFrom()),
-                                        "close" => $this->formatTime($storeHour->getOpenTo())
+                                        "open"  => $this->formatTime(
+                                            $storeHour->getOpenFrom() ??
+                                            '0001-01-01T00:00:00Z'
+                                        ),
+                                        "close" => $this->formatTime(
+                                            $storeHour->getOpenTo() ??
+                                            '0001-01-01T00:00:00Z'
+                                        )
                                     ];
                             }
                         }
@@ -191,11 +211,12 @@ class StoreHelper extends AbstractHelper
         }
         return $dateTimSlots;
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * For getting date and timeslots option
      *
-     * @param $storeHours
+     * @param array $storeHours
      * @return array
      * @throws NoSuchEntityException
      */
@@ -217,7 +238,7 @@ class StoreHelper extends AbstractHelper
     /**
      * Format time
      *
-     * @param $time
+     * @param string $time
      * @return string
      */
     public function formatTime($time)
@@ -314,20 +335,15 @@ class StoreHelper extends AbstractHelper
     /**
      * Apply pickup time interval
      *
-     * @param String $startTime
-     * @param String $endTime
-     * @param String $interval
+     * @param string $startTime
+     * @param string $endTime
+     * @param string $interval
      * @param int $filterCurrentDate
      * @return array
      * @throws Exception
      */
     public function applyPickupTimeInterval($startTime, $endTime, $interval, $filterCurrentDate)
     {
-        if ($filterCurrentDate) {
-            $currentTime = $this->dateTime->gmtDate($this->pickupTimeFormat);
-            $startTime = $this->timezone->date(new \DateTime($currentTime))->format($this->pickupTimeFormat);
-        }
-
         $startTime = $this->dateTime->date(
             $this->pickupTimeFormat,
             ceil(strtotime($startTime) / ($interval * 60)) * ($interval * 60)
@@ -338,24 +354,27 @@ class StoreHelper extends AbstractHelper
         );
         $startTimeSeconds = strtotime($startTime);
         $endTimeSeconds = strtotime($endTime);
-        $time    = [];
-
-        while ($startTimeSeconds <= $endTimeSeconds) {
-            $time[] = $startTime;
-            $end       = $this->dateTime->date(
-                $this->pickupTimeFormat,
-                strtotime('+' . $interval . ' minutes', $startTimeSeconds)
-            );
-            $startTime = $end;
-
-            if ($startTime == "00:00" || $startTime == "12:00 AM") {
-                $startTime = "24:00";
+        $currentTime = $this->dateTime->date(
+            $this->pickupTimeFormat,
+            ceil(strtotime($this->dateTime->gmtDate($this->pickupTimeFormat)) / ($interval * 60)) * ($interval * 60)
+        );
+        $currentTime = $this->timezone->date(new \DateTime($currentTime))->format($this->pickupTimeFormat);
+        $currentTimeSeconds = strtotime($currentTime);
+        if ($filterCurrentDate) {
+            if ($currentTimeSeconds > $startTimeSeconds && $currentTimeSeconds > $endTimeSeconds) {
+                return [];
             }
 
-            $startTimeSeconds = strtotime($startTime);
+            if ($currentTimeSeconds >= $startTimeSeconds) {
+                $startTime = $currentTime;
+            }
+
+            if ($startTime == $endTime) {
+                return [$startTime];
+            }
         }
 
-        return $time;
+        return $this->getIntervalsGivenPeriodAndInterval($startTime, $endTime, $interval);
     }
 
     /**
@@ -371,5 +390,59 @@ class StoreHelper extends AbstractHelper
         }
 
         return StoreHourCalendarType::REST_ORDER_TAKING;
+    }
+
+    /**
+     * Get intervals given period and
+     *
+     * @param string $startTime
+     * @param string $endTime
+     * @param string $interval
+     * @return array
+     */
+    public function getIntervalsGivenPeriodAndInterval($startTime, $endTime, $interval)
+    {
+        $intervalsCollection = [];
+
+        if (strtotime($endTime) > strtotime($startTime)) {
+            $intervals = $this->getTimeSlicesGivenRangesAndInterval($startTime, $endTime, $interval);
+            $this->loopThroughCollection($intervals, $intervalsCollection);
+
+        } else {
+            $intervals1 = $this->getTimeSlicesGivenRangesAndInterval($startTime, '11:59 PM', $interval);
+            $intervals2 = $this->getTimeSlicesGivenRangesAndInterval('12:00 AM', $endTime, $interval);
+
+            $this->loopThroughCollection($intervals1, $intervalsCollection);
+            $this->loopThroughCollection($intervals2, $intervalsCollection);
+        }
+
+        return $intervalsCollection;
+    }
+
+    /**
+     * Loop through collection
+     *
+     * @param mixed $intervals
+     * @param array $intervalsCollection
+     * @return void
+     */
+    public function loopThroughCollection($intervals, &$intervalsCollection)
+    {
+        foreach ($intervals as $interval) {
+            $intervalsCollection[] = $this->dateTime->date($this->pickupTimeFormat, strtotime($interval));
+        }
+    }
+
+    /**
+     * Get time slices given ranges and interval
+     *
+     * @param string $startTime
+     * @param string $endTime
+     * @param string $interval
+     * @return CarbonPeriod
+     */
+    public function getTimeSlicesGivenRangesAndInterval($startTime, $endTime, $interval)
+    {
+        return CarbonInterval::minutes($interval)->toPeriod($startTime, $endTime);
     }
 }

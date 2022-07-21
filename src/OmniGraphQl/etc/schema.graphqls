@@ -30,7 +30,7 @@ type AppliedGiftCard {
 
 input ApplyLsLoyaltyPointsInput {
       cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
-      loyalty_points: String! @doc(description: "Specifies the loyalty points to be redeemed")
+      loyalty_points: Float! @doc(description: "Specifies the loyalty points to be redeemed")
 }
 
 input RemoveLsLoyaltyPointsInput {
@@ -38,10 +38,10 @@ input RemoveLsLoyaltyPointsInput {
 }
 
 type AppliedLoyaltyPoints {
-    points_earn: String
-    points_spent: String
-    points_discount: String
-    point_rate: String
+    points_earn: Float
+    points_spent: Float
+    points_discount: Float
+    point_rate: Float
 }
 
 type Cart {
@@ -67,7 +67,10 @@ type Query {
          item_id: String @doc(description: "Get return policy of particular item.")
          variant_id: String @doc(description: "Get return policy of particular variant.")
          store_id: String @doc(description: "Get return policy based on store.")
-        ): ReturnPolicyOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\ReturnPolicyOutput") @doc(description: "Get return policy output")
+   ): ReturnPolicyOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\ReturnPolicyOutput") @doc(description: "Get return policy output")
+   order_taking_calendar (
+    store_id: String! @doc(description: "Store ID.")
+   ): OrderTakingCalendarOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\OrderTakingCalendarOutput") @doc(description: "Get Order taking calender.")
 }
 
 type CartItemsAvailabilityInStoreOutput {
@@ -84,6 +87,8 @@ type StockData {
 
 input SetShippingMethodsOnCartInput {
     store_id: String @doc(description: "Pickup Store ID only applicable for click and collect.")
+    pickup_date: String @doc(description: "Pickup Date if applicable.")
+    pickup_time_slot: String @doc(description: "Pickup Time slot if applicable.")
 }
 
 type ItemAvailabilityOutput {
@@ -108,6 +113,7 @@ type StoreData {
     zip_code: String @doc(description: "Zip Code where the store is located.")
     currency_accepted: String @doc(description: "Which currency is accepted in the store.")
     street: String @doc(description: "Street Address of the store.")
+    available_hospitality_sales_types: [String] @doc(description: "Available hospitality sales types")
     store_hours: [StoreHoursData] @doc(description: "Array of all types of store operating hours.")
 }
 
@@ -132,4 +138,22 @@ type CartVat {
 
 type ReturnPolicyOutput {
     text: String @doc(description: "Return policy output text")
+}
+
+type OrderTakingCalendarOutput {
+    dates: [DatesData] @doc(description: "Array of all order taking dates data.")
+}
+
+type DatesData {
+    date: String @doc(description: "Date of order taking slot.")
+    slots: [String] @doc(description: "Available slots of order taking date.")
+}
+
+type StoreConfig {
+    ls_mag_hospitality_takeaway_sales_type: String @doc(description: "To fetch the configured takeaway sales type.")
+    ls_mag_hospitality_delivery_salas_type: String @doc(description: "To fetch the configured delivery sales type.")
+}
+
+input SetPaymentMethodOnCartInput {
+    anonymous: Boolean @doc(description: "Set payment method without shipping and billing address.")
 }

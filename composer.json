@@ -14,7 +14,8 @@
         "myclabs/php-enum": "^1.5",
         "sabre/xml": "^1.5",
         "nabil1337/case-helper": "^0.1.0",
-        "ramsey/uuid": "*"
+        "ramsey/uuid": "*",
+        "nesbot/carbon": "*"
     },
     "suggest": {
         "kiwicommerce/module-cron-scheduler": "^1.0.5"

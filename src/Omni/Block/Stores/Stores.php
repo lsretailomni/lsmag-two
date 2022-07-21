@@ -4,6 +4,7 @@ namespace Ls\Omni\Block\Stores;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
@@ -80,17 +81,21 @@ class Stores extends Template
     }
 
     /**
-     * @param $storeId
+     * Get Store Hours given store_id
+     *
+     * @param string $storeId
      * @return array
      */
     public function getStoreHours($storeId)
     {
+        $storeHours = [];
         try {
             $storeHours = $this->storeHoursHelper->getStoreHours($storeId);
-            return $storeHours;
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
+
+        return $storeHours;
     }
 
     /**
@@ -109,75 +114,102 @@ class Stores extends Template
     }
 
     /**
-     * @param $hour
+     * Get formatted hours html
+     *
+     * @param array $hour
      * @return string
      */
     public function getFormattedHours($hour)
     {
         $formattedTime = "";
         $hoursFormat   = $this->scopeConfig->getValue(LSR::LS_STORES_OPENING_HOURS_FORMAT);
-        if (isset($hour['closed'])) {
-            $formattedTime = "<td class='dayofweek'>" . $hour['day'] . "</td><td class='normal-hour'>
-            <span class='closed'>" . __("Closed") . '</span></td>';
-        } elseif (isset($hour['normal']) && !isset($hour['temporary'])) {
-            $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>";
-            foreach ($hour['normal'] as $each) {
+
+        $hour = $this->removeNormalEntryIfSameCloseEntry($hour);
+
+        foreach ($hour as $i => $entry) {
+            $entryTimeStampOpen = strtotime($entry['open']);
+            $entryTimeStampClose = strtotime($entry['close']);
+
+            if ($i === 0) {
+                $formattedTime .= "<td class='dayofweek'>" . $entry["day"] . "</td><td class='normal-hour'>";
+            }
+
+            if ($entry['type'] == StoreHourOpeningType::NORMAL) {
                 $formattedTime .= "<span>" .
                     date(
                         $hoursFormat,
-                        strtotime($each['open'])
+                        $entryTimeStampOpen
                     ) . ' - ' . date(
                         $hoursFormat,
-                        strtotime($each['close'])
+                        $entryTimeStampClose
                     ) . "</span><br/>";
-            }
-
-            $formattedTime .= "</td>";
-        } elseif (isset($hour['normal']) && isset($hour['temporary'])) {
-            if (strtotime($hour['temporary']['open']) <= strtotime($hour['normal'][0]['open'])) {
-                $formattedTime = "<td class='dayofweek'>" . $hour['day'] . "</td><td><span class='special-hour'>" .
-                    date(
-                        $hoursFormat,
-                        strtotime($hour['temporary']['open'])
-                    ) . ' - ' . date(
-                        $hoursFormat,
-                        strtotime($hour['temporary']['close'])
-                    ) . "<span class='special-label'>" . __('Special') . '</span></span>' .
-                    "<br/>";
-                foreach ($hour['normal'] as $each) {
-                    $formattedTime .= "<span>" .
-                        date(
-                            $hoursFormat,
-                            strtotime($each['open'])
-                        ) . ' - ' . date(
-                            $hoursFormat,
-                            strtotime($each['close'])
-                        ) . "</span><br/>";
-                }
-
-                $formattedTime .= "</td>";
-            } else {
-                $formattedTime = "<td class='dayofweek'>" . $hour["day"] . "</td><td class='normal-hour'>";
-                foreach ($hour['normal'] as $each) {
-                    $formattedTime .= "<span>" .
-                        date(
-                            $hoursFormat,
-                            strtotime($each['open'])
-                        ) . ' - ' . date(
-                            $hoursFormat,
-                            strtotime($each['close'])
-                        ) . "</span><br/>";
-                }
+            } elseif ($entry['type'] == StoreHourOpeningType::TEMPORARY) {
                 $formattedTime .= "<span class='special-hour'>" .
                     date(
                         $hoursFormat,
-                        strtotime($hour['temporary']['open'])
+                        $entryTimeStampOpen
                     ) . ' - ' . date(
                         $hoursFormat,
-                        strtotime($hour['temporary']['close'])
-                    ) . "<span class='special-label'>" . __('Special') . '</span></span></td>';
+                        $entryTimeStampClose
+                    ) . "<span class='special-label'>" . __('Special') . '</span></span>' . "<br/>";
+
+            } else {
+                if (count($hour) == 1) {
+                    $formattedTime .= "<span class='closed'>".
+                    "<span class='closed-label single'>" . __('Closed') . '</span></span>' . "<br/>";
+                } else {
+                    $formattedTime .= "<span class='closed'>" .
+                        date(
+                            $hoursFormat,
+                            $entryTimeStampOpen
+                        ) . ' - ' . date(
+                            $hoursFormat,
+                            $entryTimeStampClose
+                        ) . "<span class='closed-label'>" . __('Closed') . '</span></span>' . "<br/>";
+                }
+            }
+
+            if ($i == count($hour) - 1) {
+                $formattedTime .= "</td>";
             }
         }
+
         return $formattedTime;
+    }
+
+    /**
+     * Remove normal entry if same closed entry
+     *
+     * @param array $hour
+     * @return mixed
+     */
+    public function removeNormalEntryIfSameCloseEntry($hour)
+    {
+        $normalIndex = $closedIndex = null;
+
+        foreach ($hour as $i => $entry) {
+            if ($entry['type'] == StoreHourOpeningType::NORMAL) {
+                $normalTimeStampOpen  = strtotime($entry['open']);
+                $normalTimeStampClose = strtotime($entry['close']);
+                $normalIndex = $i;
+            }
+
+            if ($entry['type'] == StoreHourOpeningType::CLOSED) {
+                $closedTimeStampOpen  = strtotime($entry['open']);
+                $closedTimeStampClose = strtotime($entry['close']);
+                $closedIndex = $i;
+            }
+        }
+
+        if (isset($normalIndex) &&
+            isset($closedIndex) &&
+            $normalTimeStampOpen == $closedTimeStampOpen &&
+            $normalTimeStampClose == $closedTimeStampClose
+        ) {
+            unset($hour[$normalIndex]);
+            $hour = array_values($hour);
+        }
+
+        return $hour;
     }
 }

@@ -381,7 +381,7 @@ class ProductCreateTask
     /**
      * Method responsible for creating items
      *
-     * @param null $storeData
+     * @param mixed $storeData
      * @throws InputException
      * @throws LocalizedException
      */
@@ -989,8 +989,9 @@ class ProductCreateTask
         try {
             if ($collection->getSize() > 0) {
                 foreach ($collection->getItems() as $item) {
+                    $uomDescription = $this->replicationHelper->getUomDescription($item);
                     /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
-                    $itemUom[$itemId][$item->getDescription()]    = $item->getCode();
+                    $itemUom[$itemId][$uomDescription]    = $item->getCode();
                     $itemUom[$itemId . '-' . 'BaseUnitOfMeasure'] = $item->getData('BaseUnitOfMeasure');
                 }
             }
@@ -1295,12 +1296,12 @@ class ProductCreateTask
                     } else {
                         $sku = $value->getItemId() . '-' . $value->getVariantId();
                     }
-
+                    $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
                     try {
                         $productData = $this->saveProductForWebsite($sku);
                         try {
                             $name                   = $this->getNameForVariant($value, $item);
-                            $name                   = $this->getNameForUom($name, $uomCode->getDescription());
+                            $name                   = $this->getNameForUom($name, $uomDescription);
                             $associatedProductIds[] = $this->updateConfigProduct(
                                 $productData,
                                 $item,
@@ -1326,7 +1327,7 @@ class ProductCreateTask
                             $value->setData('is_failed', 1);
                         } else {
                             $name      = $this->getNameForVariant($value, $item);
-                            $name      = $this->getNameForUom($name, $uomCode->getDescription());
+                            $name      = $this->getNameForUom($name, $uomDescription);
                             $productId = $this->createConfigProduct(
                                 $name,
                                 $item,
@@ -1366,9 +1367,10 @@ class ProductCreateTask
         } elseif (!empty($uomCodesNotProcessed) && empty($variants)) {
             /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $uomCode */
             foreach ($uomCodesNotProcessed as $uomCode) {
+                $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
                 $value = null;
                 $sku   = $uomCode->getItemId() . '-' . $uomCode->getCode();
-                $name  = $this->getNameForUom($item->getDescription(), $uomCode->getDescription());
+                $name  = $this->getNameForUom($item->getDescription(), $uomDescription);
                 try {
                     $productData = $this->saveProductForWebsite($sku);
                     try {
@@ -1664,11 +1666,12 @@ class ProductCreateTask
         $productData->setWeight($item->getGrossWeight());
 
         if (!empty($uomCode)) {
+            $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
             $productData->setCustomAttribute("uom", $uomCode->getCode());
             $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
             $optionId = $this->replicationHelper->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
-                $uomCode->getDescription()
+                $uomDescription
             );
             $productData->setData(LSR::LS_UOM_ATTRIBUTE, $optionId);
         } else {
@@ -1784,7 +1787,8 @@ class ProductCreateTask
         }
         foreach ($attributesCode as $keyCode => $valueCode) {
             if ($valueCode == LSR::LS_UOM_ATTRIBUTE) {
-                $optionValue = $uomCode->getDescription();
+                $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
+                $optionValue = $uomDescription;
             } else {
                 $optionValue = ${'d' . $keyCode};
             }
