@@ -190,7 +190,8 @@ abstract class AbstractReplicationTask
     /**
      * Entry point for cron jobs
      *
-     * @param null $storeData
+     * @param mixed $storeData
+     * @return void
      * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
@@ -206,7 +207,9 @@ abstract class AbstractReplicationTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->fetchDataGivenStore($store->getId());
+                if ($this->getLsrModel()->isEnabled($store->getId())) {
+                    $this->fetchDataGivenStore($store->getId());
+                }
             }
         }
     }

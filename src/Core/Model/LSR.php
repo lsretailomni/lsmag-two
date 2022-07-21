@@ -561,6 +561,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Main function to check if service is configured and running properly for given store and scope
+     *
      * @param bool $store_id
      * @param bool $scope
      * @return bool
@@ -568,7 +570,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isLSR($store_id = false, $scope = false)
     {
-        if (!$this->isEnabled()) {
+        if (!$this->isEnabled($store_id)) {
             return false;
         }
 
@@ -832,16 +834,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Config to check if module is enabled or not
+     * Config to check if module is enabled or not for given store
      *
-     * @return string
+     * @param mixed $storeId
+     * @return array|string
      * @throws NoSuchEntityException
      */
-    public function isEnabled()
+    public function isEnabled($storeId = null)
     {
-        return $this->getStoreConfig(
-            LSR::SC_MODULE_ENABLED,
-            $this->storeManager->getStore()->getWebsiteId()
-        );
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+
+        return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
     }
 }
