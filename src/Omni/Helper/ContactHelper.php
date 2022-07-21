@@ -1058,6 +1058,7 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in Omni
      * Process customer login
      * @param MemberContact $result
      * @param $credentials

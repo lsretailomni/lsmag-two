@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\CustomerGraphQl\Plugin\Omni\Helper;
+namespace Ls\OmniGraphQl\Plugin\Omni\Helper;
 
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Helper\ContactHelper;
