@@ -469,6 +469,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $validateBaseUrlResponse = null;
 
+    /**
+     * @var null
+     */
+    public $validateBaseUrlStoreId = null;
+
     /** @var ConfigCollectionFactory */
     public $configDataCollectionFactory;
 
@@ -574,7 +579,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return false;
         }
 
-        if (isset($this->validateBaseUrlResponse)) {
+        if (isset($this->validateBaseUrlResponse) && $this->validateBaseUrlStoreId == $store_id) {
             return $this->validateBaseUrlResponse;
         }
 
@@ -590,6 +595,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         } else {
             $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
         }
+        $this->validateBaseUrlStoreId = $store_id;
 
         return $this->validateBaseUrlResponse;
     }
