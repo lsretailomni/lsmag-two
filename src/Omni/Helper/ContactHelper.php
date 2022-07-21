@@ -348,7 +348,7 @@ class ContactHelper extends AbstractHelper
             $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
 
             try {
-                $response    = $request->execute($search);
+                $response = $request->execute($search);
                 if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
                     $contact_pos = $response->getContactGetResult();
                 } else {
@@ -625,10 +625,8 @@ class ContactHelper extends AbstractHelper
         }
         if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
             if (!empty($response) && !empty($response->getContactGetResult())) {
-                foreach ($response->getContactGetResult() as $contact) {
-                    if ($contact->getUserName() === $username) {
-                        return true;
-                    }
+                if ($response->getContactGetResult()->getUserName() === $username) {
+                    return true;
                 }
             }
         } else {
@@ -669,10 +667,8 @@ class ContactHelper extends AbstractHelper
         }
         if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
             if (!empty($response) && !empty($response->getContactGetResult())) {
-                foreach ($response->getContactGetResult() as $contact) {
-                    if ($contact->getEmail() === $email) {
-                        return true;
-                    }
+                if ($response->getContactGetResult()->getEmail() === $email) {
+                    return true;
                 }
             }
         } else {
@@ -1402,9 +1398,7 @@ class ContactHelper extends AbstractHelper
         }
         if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
             if (!empty($response) && !empty($response->getContactGetResult())) {
-                foreach ($response->getContactGetResult() as $contact) {
-                    return $contact;
-                }
+                return $response->getContactGetResult();
             }
         } else {
             if (!empty($response) && !empty($response->getContactSearchResult())) {
