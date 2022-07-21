@@ -56,11 +56,11 @@ class LoyaltyPointsManagement
         if ($lsPointsSpent > 0) {
             $pointDiscount = -$lsPointsSpent * $pointRate;
         }
-        return $lsPointsArray = [
+        return [
             'points_earn'     => $lsPointsEarn,
             'points_spent'    => $lsPointsSpent,
-            'points_discount' => $this->loyaltyHelper->formatValue($pointDiscount),
-            'point_rate'      => $this->loyaltyHelper->formatValue($pointRate)
+            'points_discount' => $pointDiscount,
+            'point_rate'      => $pointRate
         ];
     }
 

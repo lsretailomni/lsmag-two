@@ -2,15 +2,13 @@
 
 namespace Ls\Omni\Plugin\Checkout\Model;
 
-use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Api\Data\ShippingInformationInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\QuoteRepository;
-use Magento\Framework\Stdlib\DateTime\DateTime;
 
 /**
- * Class ShippingInformationManagement
- * @package Ls\Omni\Plugin\Checkout\Model
+ * Interceptor to intercept methods from ShippingInformationManagement
  */
 class ShippingInformationManagement
 {
@@ -18,33 +16,27 @@ class ShippingInformationManagement
     public $quoteRepository;
 
     /**
-     * @var LSR
+     * @var BasketHelper
      */
-    public $lsr;
-
-    /**
-     * @var DateTime
-     */
-    public $dateTime;
+    public $basketHelper;
 
     /**
      * @param QuoteRepository $quoteRepository
-     * @param DateTime $dateTime
-     * @param LSR $lsr
+     * @param BasketHelper $basketHelper
      */
     public function __construct(
         QuoteRepository $quoteRepository,
-        DateTime $dateTime,
-        LSR $lsr
+        BasketHelper $basketHelper
     ) {
         $this->quoteRepository = $quoteRepository;
-        $this->dateTime        = $dateTime;
-        $this->lsr             = $lsr;
+        $this->basketHelper    = $basketHelper;
     }
 
     /**
+     * Before plugin to persist values in quote
+     *
      * @param \Magento\Checkout\Model\ShippingInformationManagement $subject
-     * @param $cartId
+     * @param mixed $cartId
      * @param ShippingInformationInterface $addressInformation
      * @throws NoSuchEntityException
      */
@@ -61,20 +53,7 @@ class ShippingInformationManagement
         $quote->setPickupStore($pickupStore);
         $pickupDate         = $extAttributes->getPickupDate();
         $pickupTimeslot     = $extAttributes->getPickupTimeslot();
-        $pickupDateTimeslot = '';
-        if (!empty($pickupDate) && !empty($pickupTimeslot)) {
-            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
-            $pickupTimeFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_FORMAT);
-            $pickupDateTimeslot = $pickupDate . ' ' . $pickupTimeslot;
-            $pickupDateTimeslot = $this->dateTime->date(
-                $pickupDateFormat . ' ' . $pickupTimeFormat,
-                strtotime($pickupDateTimeslot));
-        } elseif (!empty($pickupDate)) {
-            $pickupDateFormat   = $this->lsr->getStoreConfig(LSR::PICKUP_DATE_FORMAT);
-            $pickupDateTimeslot = $this->dateTime->date(
-                $pickupDateFormat,
-                strtotime($pickupDate));
-        }
+        $pickupDateTimeslot = $this->basketHelper->getPickupTimeSlot($pickupDate, $pickupTimeslot);
 
         $quote->setPickupDateTimeslot($pickupDateTimeslot);
     }

@@ -4,7 +4,6 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use \Ls\Omni\Client\Ecommerce\Operation\Ping;
@@ -169,7 +168,9 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param $storeId
+     * Get Store hours
+     *
+     * @param string $storeId
      * @return array
      */
     public function getStoreHours($storeId)
@@ -178,6 +179,7 @@ class Data extends AbstractHelper
         try {
             $cacheId        = LSR::STORE . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
+
             if ($cachedResponse) {
                 $storeResults = $cachedResponse;
             } else {
@@ -186,6 +188,7 @@ class Data extends AbstractHelper
                 $request->getOperationInput()->setStoreId($storeId);
                 $response     = $request->execute();
                 $storeResults = [];
+
                 if (!empty($response)) {
                     $storeResults = $response->getResult()->getStoreHours()->getStoreHours();
                     $this->cacheHelper->persistContentInCache(
@@ -196,36 +199,31 @@ class Data extends AbstractHelper
                     );
                 }
             }
-            $counter    = 0;
             $storeHours = [];
             $today      = $this->date->gmtDate("Y-m-d");
+
             for ($i = 0; $i < 7; $i++) {
                 $current          = date("Y-m-d", strtotime($today) + ($i * 86400));
                 $currentDayOfWeek = date('w', strtotime($current));
+
                 foreach ($storeResults as $key => $r) {
-                    if (empty($r->getCalendarType()) || $r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS
-                        || $r->getCalendarType() == StoreHourCalendarType::ALL) {
-                        if ($r->getDayOfWeek() == $currentDayOfWeek) {
-                            if ($this->checkDateValidity($current, $r)) {
-                                if ($r->getType() == StoreHourOpeningType::NORMAL) {
-                                    $storeHours[$currentDayOfWeek]['normal'][] =
-                                        ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
-                                } elseif ($r->getType() == StoreHourOpeningType::TEMPORARY) {
-                                    $storeHours[$currentDayOfWeek]['temporary'] =
-                                        ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
-                                } else {
-                                    $storeHours[$currentDayOfWeek]['closed'] =
-                                        ["open" => $r->getOpenFrom(), "close" => $r->getOpenTo()];
-                                }
-                                $storeHours[$currentDayOfWeek]['day'] = $r->getNameOfDay();
-                                $counter++;
-                            }
-                            unset($storeResults[$key]);
-                        }
+                    if ((empty($r->getCalendarType()) ||
+                            $r->getCalendarType() == StoreHourCalendarType::OPENING_HOURS ||
+                            $r->getCalendarType() == StoreHourCalendarType::ALL) &&
+                        $r->getDayOfWeek() == $currentDayOfWeek &&
+                        $this->checkDateValidity($current, $r)) {
+                        $storeHours[$currentDayOfWeek][] = [
+                            'type'  => $r->getType(),
+                            'day'   => $r->getNameOfDay(),
+                            'open'  => $r->getOpenFrom() ?? '0001-01-01T00:00:00Z',
+                            'close' => $r->getOpenTo() ?? '0001-01-01T00:00:00Z'
+                        ];
+
+                        unset($storeResults[$key]);
                     }
                 }
             }
-            return $storeHours;
+            $storeHours = $this->sortStoreTimeEntries($storeHours);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -234,32 +232,70 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param $current
-     * @param $storeHoursObj StoreHours
+     * Check date validity
+     *
+     * @param mixed $current
+     * @param StoreHours $storeHoursObj
      * @return bool
      */
     public function checkDateValidity($current, $storeHoursObj)
     {
+        $currentTimeStamp                = strtotime($current);
+
         if ($storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
-            if (strtotime($current) >= strtotime($storeHoursObj->getStartDate())
-                && strtotime($current) <= strtotime($storeHoursObj->getEndDate())
-            ) {
-                return true;
-            }
+            $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
+            $storeHoursObjEndDateTimeStamp   = strtotime($storeHoursObj->getEndDate());
+            return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp &&
+                $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
         } else {
             if ($storeHoursObj->getStartDate() && !$storeHoursObj->getEndDate()) {
-                if (strtotime($current) >= strtotime($storeHoursObj->getStartDate())) {
-                    return true;
-                }
+                $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
+                return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
             } else {
+                $storeHoursObjEndDateTimeStamp   = strtotime($storeHoursObj->getEndDate());
                 if (!$storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
-                    if (strtotime($current) <= strtotime($storeHoursObj->getEndDate())) {
-                        return true;
-                    }
+                    return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
                 }
             }
         }
+
         return false;
+    }
+
+    /**
+     * Compare by Time stamp
+     *
+     * @param array $timeOne
+     * @param array $timeTwo
+     * @return int
+     */
+    public function compareByTimeStamp($timeOne, $timeTwo)
+    {
+        $timeOneOpenTimeStamp = strtotime($timeOne['open']);
+        $timeTwoOpenTimeStamp = strtotime($timeTwo['open']);
+
+        if ($timeOneOpenTimeStamp < $timeTwoOpenTimeStamp) {
+            return -1;
+        } elseif ($timeOneOpenTimeStamp > $timeTwoOpenTimeStamp) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Sort store hours in ascending order
+     *
+     * @param array $storeHours
+     * @return array
+     */
+    public function sortStoreTimeEntries($storeHours)
+    {
+        foreach ($storeHours as &$storeHour) {
+            usort($storeHour, [self::class, 'compareByTimeStamp']);
+        }
+
+        return $storeHours;
     }
 
     /**
