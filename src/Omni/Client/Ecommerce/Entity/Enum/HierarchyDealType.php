@@ -18,6 +18,7 @@ use MyCLabs\Enum\Enum;
  * @$method static HierarchyDealType PLU_MENU()
  * @$method static HierarchyDealType MODIFIER()
  * @$method static HierarchyDealType SPECIAL_GROUP()
+ * @$method static HierarchyDealType DEAL()
  */
 class HierarchyDealType extends Enum
 {
@@ -35,6 +36,8 @@ class HierarchyDealType extends Enum
     public const MODIFIER = 'Modifier';
 
     public const SPECIAL_GROUP = 'SpecialGroup';
+
+    public const DEAL = 'Deal';
 
 
 }

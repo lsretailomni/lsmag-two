@@ -129,6 +129,7 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode ORDER_ALREADY_EXIST()
  * @$method static StatusCode ORDER_ID_NOT_FOUND()
  * @$method static StatusCode PAYMENT_ERROR()
+ * @$method static StatusCode PAYMENT_AUTH_ERROR()
  * @$method static StatusCode SERVER_REFUSING_TO_RESPOND()
  * @$method static StatusCode DINING_TABLE_STATUS_NOT_ABLE_TO_CHANGE()
  * @$method static StatusCode CANNOT_CHANGE_NUMBER_OF_COVER_ON_TABLE_NOT_SEATED()
@@ -413,6 +414,8 @@ class StatusCode extends Enum
     public const ORDER_ID_NOT_FOUND = 'OrderIdNotFound';
 
     public const PAYMENT_ERROR = 'PaymentError';
+
+    public const PAYMENT_AUTH_ERROR = 'PaymentAuthError';
 
     public const SERVER_REFUSING_TO_RESPOND = 'ServerRefusingToRespond';
 

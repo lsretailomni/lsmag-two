@@ -45,6 +45,17 @@ interface ReplItemUnitOfMeasureInterface
     public function getDescription();
 
     /**
+     * @param int $EComSelection
+     * @return $this
+     */
+    public function setEComSelection($EComSelection);
+
+    /**
+     * @return int
+     */
+    public function getEComSelection();
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
