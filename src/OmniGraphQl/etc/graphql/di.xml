@@ -73,6 +73,12 @@
             <argument name="extendedConfigData">
                 <item name="ls_mag_hospitality_takeaway_sales_type" xsi:type="string">ls_mag/hospitality/takeaway_sales_type</item>
                 <item name="ls_mag_hospitality_delivery_salas_type" xsi:type="string">ls_mag/hospitality/delivery_salas_type</item>
+                <item name="maps_api_key" xsi:type="string">omni_clickandcollect/general/maps_api_key</item>
+                <item name="default_latitude" xsi:type="string">omni_clickandcollect/general/default_latitude</item>
+                <item name="default_longitude" xsi:type="string">omni_clickandcollect/general/default_longitude</item>
+                <item name="default_zoom" xsi:type="string">omni_clickandcollect/general/default_zoom</item>
+                <item name="items_availability" xsi:type="string">omni_clickandcollect/checkout/items_availability</item>
+                <item name="click_and_collect_payment_methods" xsi:type="string">carriers/clickandcollect/payment_option</item>
             </argument>
         </arguments>
     </type>

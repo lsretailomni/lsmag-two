@@ -35,6 +35,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Ls\Omni\Model\Checkout\DataProvider;
 
 /**
  * Useful helper functions for the module
@@ -124,6 +125,9 @@ class DataHelper extends AbstractHelper
     /** @var AddressInterfaceFactory */
     public $addressFactory;
 
+    /** @var DataProvider */
+    public DataProvider $dataProvider;
+
     /**
      * @param Context $context
      * @param ManagerInterface $eventManager
@@ -144,6 +148,7 @@ class DataHelper extends AbstractHelper
      * @param Information $storeInfo
      * @param StoreManagerInterface $storeManager
      * @param AddressInterfaceFactory $addressFactory
+     * @param DataProvider $dataProvider
      */
     public function __construct(
         Context $context,
@@ -164,7 +169,8 @@ class DataHelper extends AbstractHelper
         StoreHelper $storeHelper,
         Information $storeInfo,
         StoreManagerInterface $storeManager,
-        AddressInterfaceFactory $addressFactory
+        AddressInterfaceFactory $addressFactory,
+        DataProvider $dataProvider
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -185,6 +191,7 @@ class DataHelper extends AbstractHelper
         $this->storeInfo              = $storeInfo;
         $this->storeManager           = $storeManager;
         $this->addressFactory         = $addressFactory;
+        $this->dataProvider          = $dataProvider;
     }
 
     /**
@@ -341,14 +348,39 @@ class DataHelper extends AbstractHelper
      *
      * @param String $scopeId
      * @return Collection
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getStores($scopeId)
     {
         $storeCollection = $this->storeCollectionFactory->create();
 
-        return $storeCollection
+        $storesData = $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
             ->addFieldToFilter('ClickAndCollect', 1);
+
+        if (!$this->dataProvider->availableStoresOnlyEnabled()) {
+            return $storesData;
+        }
+
+        $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
+        list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
+
+        if ($response) {
+            if (is_object($response)) {
+                if (!is_array($response->getInventoryResponse())) {
+                    $response = [$response->getInventoryResponse()];
+                } else {
+                    $response = $response->getInventoryResponse();
+                }
+            }
+
+            $clickNCollectStoresIds = $this->dataProvider->getClickAndCollectStoreIds($storesData);
+            $this->dataProvider->filterClickAndCollectStores($response, $clickNCollectStoresIds);
+
+            return $this->dataProvider->filterStoresOnTheBasisOfQty($response, $items);
+        }
+
+        return null;
     }
 
     /**
