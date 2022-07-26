@@ -29,10 +29,12 @@ use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFacto
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
+use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
@@ -65,9 +67,11 @@ use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
+use Magento\InventoryCatalogApi\Model\GetParentSkusOfChildrenSkusInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
@@ -384,7 +388,10 @@ class ReplicationHelper extends AbstractHelper
         CategoryRepositoryInterface $categoryRepository,
         ResourceModelCategory $categoryResourceModel,
         RuleCollectionFactory $ruleCollectionFactory,
-        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
+        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
+        ParentItemProcessor $parentItemProcessor,
+        ProductRepositoryInterface $productRepository,
+        GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -433,6 +440,9 @@ class ReplicationHelper extends AbstractHelper
         $this->categoryResourceModel                     = $categoryResourceModel;
         $this->ruleCollectionFactory                     = $ruleCollectionFactory;
         $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
+        $this->parentItemProcessor = $parentItemProcessor;
+        $this->productRepository = $productRepository;
+        $this->getParentSkusOfChildrenSkus = $getParentSkusOfChildrenSkus;
         parent::__construct(
             $context
         );
@@ -2434,23 +2444,54 @@ class ReplicationHelper extends AbstractHelper
      *
      * Update inventory
      *
-     * @param $sku
-     * @param $replInvStatus
+     * @param string $sku
+     * @param mixed $replInvStatus
      * @throws NoSuchEntityException
      */
     public function updateInventory($sku, $replInvStatus)
     {
         try {
-            $sourceItem = $this->sourceItemFactory->create();
-            $sourceItem->setSourceCode($this->defaultSourceProviderFactory->create()->getCode());
-            $sourceItem->setSku($sku);
-            $sourceItem->setQuantity($replInvStatus->getQuantity());
-            $sourceItem->setStatus(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-            $this->sourceItemsSaveInterface->execute([$sourceItem]);
+            $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
+            $sourceItems = [];
+
+            foreach ($parentProductsSkus as $parentSku) {
+                $sourceItems[] = $this->getSourceItemGivenData(
+                    array_shift($parentSku),
+                    0,
+                    ($replInvStatus->getQuantity() > 0) ? 1 : 0
+                );
+            }
+
+            $sourceItems[] = $this->getSourceItemGivenData(
+                $sku,
+                $replInvStatus->getQuantity(),
+                ($replInvStatus->getQuantity() > 0) ? 1 : 0
+            );
+            $this->sourceItemsSaveInterface->execute($sourceItems);
+            $this->parentItemProcessor->process($this->productRepository->get($sku));
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Get source item given data
+     *
+     * @param string $sku
+     * @param mixed $inventory
+     * @param int $status
+     * @return SourceItemInterface
+     */
+    public function getSourceItemGivenData($sku, $inventory, $status)
+    {
+        $sourceItem = $this->sourceItemFactory->create();
+        $sourceItem->setSourceCode($this->defaultSourceProviderFactory->create()->getCode());
+        $sourceItem->setSku($sku);
+        $sourceItem->setQuantity($inventory);
+        $sourceItem->setStatus($status);
+
+        return $sourceItem;
     }
 
     /**
