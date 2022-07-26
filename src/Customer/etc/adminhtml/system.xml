@@ -18,7 +18,7 @@
                        showInWebsite="1" showInStore="1">
                     <label>Show Customer Club Information</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment> Information like club name, loyalty points earned, current loyalty level,
+                    <comment>Information like club name, loyalty points earned, current loyalty level,
                         next loyalty level, points needed, benefits of next level.
                     </comment>
                 </field>
@@ -119,6 +119,29 @@
                        showInWebsite="1" showInStore="1">
                     <label>Master Password</label>
                     <comment>Default password for social logins</comment>
+                </field>
+                <field id="username_search_by_api" translate="label" type="select" sortOrder="13" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable search by username API call on customer registration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>API call on customer registration for checking username exist in central or not.
+                        Disable it if you don't want additional checking
+                    </comment>
+                </field>
+                <field id="email_search_by_api" translate="label" type="select" sortOrder="14" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable search by email API on customer registration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>API call on customer registration for validating email exist in central or not.
+                        Disable it if you don't want this
+                    </comment>
+                </field>
+                <field id="get_contact_by_card_id_api" translate="label" type="select" sortOrder="15" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable get contact by card id API call cn customer registration</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>API call for customer dashboard for additional information such as loyalty points.
+                    </comment>
                 </field>
             </group>
         </section>

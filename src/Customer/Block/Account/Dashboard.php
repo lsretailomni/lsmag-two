@@ -42,13 +42,16 @@ class Dashboard extends Template
     }
 
     /**
-     * @return bool|Account
+     * @return false|Account|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-
     public function getMembersInfo()
     {
         $account = false;
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
+                LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_CONTACT_BY_CARD_ID_API_CALL,
+                $this->lsr->getCurrentStoreId()
+            )) {
             $result = $this->loyaltyHelper->getMemberInfo();
             if ($result) {
                 $account = $result->getAccount();

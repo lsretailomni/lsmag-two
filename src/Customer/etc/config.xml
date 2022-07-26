@@ -21,6 +21,9 @@
                 <prefix>mc_</prefix>
                 <allow_order_cancellation>0</allow_order_cancellation>
                 <master_password>@Admin0101</master_password>
+                <username_search_by_api>1</username_search_by_api>
+                <email_search_by_api>1</email_search_by_api>
+                <get_contact_by_card_id_api>1</get_contact_by_card_id_api>
             </loyalty>
         </ls_mag>
     </default>
