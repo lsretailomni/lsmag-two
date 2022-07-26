@@ -17,7 +17,7 @@ use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
-use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -33,6 +33,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
@@ -70,6 +71,7 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 use Magento\InventoryApi\Api\SourceItemsSaveInterface;
+use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\InventoryCatalogApi\Model\GetParentSkusOfChildrenSkusInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -291,6 +293,31 @@ class ReplicationHelper extends AbstractHelper
     public $replUnitOfMeasureRepository;
 
     /**
+     * @var ParentItemProcessor
+     */
+    public $parentItemProcessor;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    public $productRepository;
+
+    /**
+     * @var GetParentSkusOfChildrenSkusInterface
+     */
+    public $getParentSkusOfChildrenSkus;
+
+    /**
+     * @var StockStatusRepository
+     */
+    public $stockStatusRepository;
+
+    /**
+     * @var GetProductIdsBySkus
+     */
+    public $getProductIdsBySkus;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -339,6 +366,11 @@ class ReplicationHelper extends AbstractHelper
      * @param ResourceModelCategory $categoryResourceModel
      * @param RuleCollectionFactory $ruleCollectionFactory
      * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
+     * @param ParentItemProcessor $parentItemProcessor
+     * @param ProductRepositoryInterface $productRepository
+     * @param GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus
+     * @param StockStatusRepository $stockStatusRepository
+     * @param GetProductIdsBySkus $getProductIdsBySkus
      */
     public function __construct(
         Context $context,
@@ -391,7 +423,9 @@ class ReplicationHelper extends AbstractHelper
         ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
         ParentItemProcessor $parentItemProcessor,
         ProductRepositoryInterface $productRepository,
-        GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus
+        GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus,
+        StockStatusRepository $stockStatusRepository,
+        GetProductIdsBySkus $getProductIdsBySkus
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -440,9 +474,11 @@ class ReplicationHelper extends AbstractHelper
         $this->categoryResourceModel                     = $categoryResourceModel;
         $this->ruleCollectionFactory                     = $ruleCollectionFactory;
         $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
-        $this->parentItemProcessor = $parentItemProcessor;
-        $this->productRepository = $productRepository;
-        $this->getParentSkusOfChildrenSkus = $getParentSkusOfChildrenSkus;
+        $this->parentItemProcessor                       = $parentItemProcessor;
+        $this->productRepository                         = $productRepository;
+        $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
+        $this->stockStatusRepository                     = $stockStatusRepository;
+        $this->getProductIdsBySkus                       = $getProductIdsBySkus;
         parent::__construct(
             $context
         );
@@ -2453,15 +2489,16 @@ class ReplicationHelper extends AbstractHelper
         try {
             $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
             $sourceItems = [];
-
+            $skus = [$sku];
             foreach ($parentProductsSkus as $parentSku) {
+                $parentSku = array_shift($parentSku);
+                $skus[] = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
-                    array_shift($parentSku),
+                    $parentSku,
                     0,
                     ($replInvStatus->getQuantity() > 0) ? 1 : 0
                 );
             }
-
             $sourceItems[] = $this->getSourceItemGivenData(
                 $sku,
                 $replInvStatus->getQuantity(),
@@ -2469,6 +2506,12 @@ class ReplicationHelper extends AbstractHelper
             );
             $this->sourceItemsSaveInterface->execute($sourceItems);
             $this->parentItemProcessor->process($this->productRepository->get($sku));
+            $productIds = array_values($this->getProductIdsBySkus->execute($skus));
+
+            foreach ($productIds as $id) {
+                $this->stockStatusRepository->deleteById($id);
+            }
+
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
