@@ -28,9 +28,11 @@ use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as 
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
@@ -81,8 +83,6 @@ use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 
 /**
  * Useful helper functions for replication
@@ -2488,11 +2488,11 @@ class ReplicationHelper extends AbstractHelper
     {
         try {
             $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
-            $sourceItems = [];
-            $skus = [$sku];
+            $sourceItems        = [];
+            $skus               = [$sku];
             foreach ($parentProductsSkus as $parentSku) {
-                $parentSku = array_shift($parentSku);
-                $skus[] = $parentSku;
+                $parentSku     = array_shift($parentSku);
+                $skus[]        = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
                     $parentSku,
                     0,
