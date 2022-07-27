@@ -68,9 +68,9 @@ use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Inventory\Model\SourceItem\Command\SourceItemsSave;
 use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
-use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\InventoryCatalogApi\Model\GetParentSkusOfChildrenSkusInterface;
@@ -254,9 +254,9 @@ class ReplicationHelper extends AbstractHelper
     public $replInvStatusRepository;
 
     /**
-     * @var SourceItemsSaveInterface
+     * @var SourceItemsSave
      */
-    public $sourceItemsSaveInterface;
+    public $sourceItemsSave;
 
     /**
      * @var SourceItemInterfaceFactory
@@ -358,7 +358,7 @@ class ReplicationHelper extends AbstractHelper
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
      * @param ReplInvStatusRepository $replInvStatusRepository
-     * @param SourceItemsSaveInterface $sourceItemsSaveInterface
+     * @param SourceItemsSave $sourceItemsSave
      * @param SourceItemInterfaceFactory $sourceItemFactory
      * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
@@ -413,7 +413,7 @@ class ReplicationHelper extends AbstractHelper
         TaxClassRepositoryInterface $taxClassRepository,
         ClassModelFactory $classModelFactory,
         ReplInvStatusRepository $replInvStatusRepository,
-        SourceItemsSaveInterface $sourceItemsSaveInterface,
+        SourceItemsSave $sourceItemsSave,
         SourceItemInterfaceFactory $sourceItemFactory,
         DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
@@ -466,7 +466,7 @@ class ReplicationHelper extends AbstractHelper
         $this->taxClassRepository                        = $taxClassRepository;
         $this->classModelFactory                         = $classModelFactory;
         $this->replInvStatusRepository                   = $replInvStatusRepository;
-        $this->sourceItemsSaveInterface                  = $sourceItemsSaveInterface;
+        $this->sourceItemsSave                           = $sourceItemsSave;
         $this->sourceItemFactory                         = $sourceItemFactory;
         $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
         $this->productCollectionFactory                  = $productCollectionFactory;
@@ -2478,7 +2478,7 @@ class ReplicationHelper extends AbstractHelper
     /**
      * This function is overriding in hospitality module
      *
-     * Update inventory
+     * Update inventory and status
      *
      * @param string $sku
      * @param mixed $replInvStatus
@@ -2504,10 +2504,14 @@ class ReplicationHelper extends AbstractHelper
                 $replInvStatus->getQuantity(),
                 ($replInvStatus->getQuantity() > 0) ? 1 : 0
             );
-            $this->sourceItemsSaveInterface->execute($sourceItems);
+            $this->sourceItemsSave->execute($sourceItems);
             $this->parentItemProcessor->process($this->productRepository->get($sku));
             $productIds = array_values($this->getProductIdsBySkus->execute($skus));
 
+            /**
+             * Deleting relevant records from cataloginventory_stock_status
+             * in order to get the correct values on next reindex
+             */
             foreach ($productIds as $id) {
                 $this->stockStatusRepository->deleteById($id);
             }
