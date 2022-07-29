@@ -383,6 +383,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
+    //Get store timezone
+    const XML_PATH_GENERAL_LOCALE_TIMEZONE = 'general/locale/timezone';
+
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
 
