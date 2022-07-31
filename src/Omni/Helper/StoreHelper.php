@@ -9,9 +9,11 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -53,24 +55,32 @@ class StoreHelper extends AbstractHelper
     public $timezone;
 
     /**
+     * @var CacheHelper
+     */
+    private CacheHelper $cacheHelper;
+
+    /**
      * @param Context $context
      * @param Data $dataHelper
      * @param DateTime $dateTime
      * @param LSR $lsr
      * @param TimezoneInterface $timezone
+     * @param CacheHelper $cacheHelper
      */
     public function __construct(
         Context $context,
         Data $dataHelper,
         DateTime $dateTime,
         LSR $lsr,
-        TimezoneInterface $timezone
+        TimezoneInterface $timezone,
+        CacheHelper $cacheHelper
     ) {
         parent::__construct($context);
-        $this->lsr        = $lsr;
-        $this->dataHelper = $dataHelper;
-        $this->dateTime   = $dateTime;
-        $this->timezone = $timezone;
+        $this->lsr         = $lsr;
+        $this->dataHelper  = $dataHelper;
+        $this->dateTime    = $dateTime;
+        $this->timezone    = $timezone;
+        $this->cacheHelper = $cacheHelper;
     }
 
     /**
@@ -103,15 +113,34 @@ class StoreHelper extends AbstractHelper
         if ($baseUrl == null) {
             $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
         }
-        // @codingStandardsIgnoreStart
-        $request   = new Entity\StoreGetById();
-        $operation = new Operation\StoreGetById($baseUrl);
-        // @codingStandardsIgnoreEnd
-
-        $request->setStoreId($webStore);
 
         try {
-            $response = $operation->execute($request);
+            $cacheId        = LSR::STORE . $webStore;
+            $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
+
+            if ($cachedResponse) {
+                $response = $cachedResponse;
+            } else {
+
+                // @codingStandardsIgnoreStart
+                $request   = new Entity\StoreGetById();
+                $operation = new Operation\StoreGetById($baseUrl);
+                // @codingStandardsIgnoreEnd
+
+                $request->setStoreId($webStore);
+
+                $response = $operation->execute($request);
+
+                if (!empty($response)) {
+                    $this->cacheHelper->persistContentInCache(
+                        $cacheId,
+                        $response,
+                        [Type::CACHE_TAG],
+                        86400
+                    );
+                }
+            }
+
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }

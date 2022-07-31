@@ -54,7 +54,6 @@ class DataAssignObserver implements ObserverInterface
     private LSR $lsr;
 
     /**
-     * DataAssignObserver constructor.
      * @param Proxy $checkoutSession
      * @param Data $helper
      * @param BasketHelper $basketHelper
@@ -83,6 +82,7 @@ class DataAssignObserver implements ObserverInterface
 
     /**     *
      * For setting quote values
+     *
      * @param Observer $observer
      * @return $this|void
      * @throws LocalizedException
@@ -154,6 +154,7 @@ class DataAssignObserver implements ObserverInterface
     }
 
     /** For click and collect validate cart item inventory in store and pickup date and time
+     *
      * @param $quote
      * @param $maskedCartId
      * @param $userId
@@ -176,6 +177,7 @@ class DataAssignObserver implements ObserverInterface
     }
 
     /** To validate cart item inventory in store
+     *
      * @param $maskedCartId
      * @param $userId
      * @param $scopeId
@@ -223,57 +225,38 @@ class DataAssignObserver implements ObserverInterface
     public function validatePickupDateRange($quote, $storeId)
     {
         $message = null;
+        $validDateTime = false;
         if ($storeId && !empty($quote->getPickupDateTimeslot())) {
-            $storeLocale = $this->lsr->getStoreConfig(LSR::XML_PATH_GENERAL_LOCALE_TIMEZONE);
             $pickupDateTimeArr = explode(" ", $quote->getPickupDateTimeslot());
-            $pickupDateArr = explode("-", $pickupDateTimeArr[0]);
-            $pickupTimeArr = explode(":", $pickupDateTimeArr[1]);
-            $pickupTimeStamp = $this->storeHelper->createTimestamp(
-                $storeLocale,
-                $pickupDateArr[0],
-                $pickupDateArr[1],
-                $pickupDateArr[2],
-                $pickupTimeArr[0],
-                $pickupTimeArr[1]
-            );
+
+            $pickupTimeStamp = Carbon::parse($quote->getPickupDateTimeslot());
             $websiteId = $quote->getStoreId();
             $store = $this->storeHelper->getStore($websiteId, $storeId);
             $storeHoursArray = $this->storeHelper->formatDateTimeSlotsValues(
                 $store->getStoreHours()
             );
+
             foreach ($storeHoursArray as $date => $hoursArr) {
                 $openHoursCnt = count($hoursArr);
+                if ($date == "Today") {
+                    $date = $this->storeHelper->getCurrentDate();
+                }
 
-                if ($openHoursCnt > 0) {
-                    if ($date == "Today") {
-                        $date = $this->storeHelper->getCurrentDate();
-                    }
-                    $storeDateArr = explode("-", $date);
-                    $storeOpeningTimeArr = explode(":", $hoursArr[1]);
-                    $storeClosingTimeArr = explode(":", $hoursArr[$openHoursCnt-1]);
-                    $storeOpeningTimeStamp = $this->storeHelper->createTimestamp(
-                        $storeLocale,
-                        $storeDateArr[0],
-                        $storeDateArr[1],
-                        $storeDateArr[2],
-                        $storeOpeningTimeArr[0],
-                        $storeOpeningTimeArr[1]
-                    );
-
-                    $storeClosingTimeStamp = $this->storeHelper->createTimestamp(
-                        $storeLocale,
-                        $storeDateArr[0],
-                        $storeDateArr[1],
-                        $storeDateArr[2],
-                        $storeClosingTimeArr[0],
-                        $storeClosingTimeArr[1]
-                    );
+                if ($openHoursCnt > 0 && $date == $pickupDateTimeArr[0]) {
+                    $validDateTime = true;
+                    $storeOpeningTimeStamp = Carbon::parse($date." ".$hoursArr[0]);
+                    $storeClosingTimeStamp = Carbon::parse($date." ".$hoursArr[$openHoursCnt-1]);
 
                     if (!$pickupTimeStamp->between($storeOpeningTimeStamp, $storeClosingTimeStamp, true)) {
-                        $message = __('Please select a date & time within store opening hours.');
+                        $validDateTime = false;
                     }
+                    break;
                 }
             }
+        }
+
+        if (!$validDateTime) {
+            $message = __('Please select a date & time within store opening hours.');
         }
 
         return $message;
