@@ -199,6 +199,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
     const SC_LOYALTY_EXPIRY_DATE_FORMAT = 'ls_mag/loyalty/loyalty_expiry_date_format';
     const SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH = 'ls_mag/loyalty/prefix';
+    const SC_LOYALTY_SHOW_CLUB_INFORMATION = 'ls_mag/loyalty/show_club_information';
     const SC_ORDER_CANCELLATION_PATH = 'ls_mag/loyalty/allow_order_cancellation';
     const SC_MASTER_PASSWORD = 'ls_mag/loyalty/master_password';
 
@@ -231,6 +232,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PICKUP_TIME_INTERVAL = 'ls_mag/delivery_pickup_date_time/pickup_time_interval';
     const PICKUP_DATE_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_date_format';
     const PICKUP_TIME_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_time_format';
+
+    //Pay At Store Payment Method
+    const SC_PAYMENT_PAY_AT_STORE_ACTIVE = 'payment/ls_payment_method_pay_at_store/active';
 
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
@@ -341,6 +345,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
 
     //Coupons
+    const SC_ENABLE_COUPON_ELEMENTS = 'ls_mag/ls_coupons/active';
     const LS_COUPONS_SHOW_ON_CART = 'ls_mag/ls_coupons/cart';
     const LS_COUPONS_SHOW_ON_CHECKOUT = 'ls_mag/ls_coupons/checkout';
     const LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_coupons/coupon_recommendations';
@@ -351,6 +356,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_LOYALTYPOINTS_TENDER_TYPE = 'loypoints';
 
     //GiftCard
+    const SC_ENABLE_GIFTCARD_ELEMENTS = 'ls_mag/ls_giftcard/active';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
@@ -394,6 +400,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
     const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
     const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
+    const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
+    const DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
 
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';

@@ -79,6 +79,25 @@
                 <item name="default_zoom" xsi:type="string">omni_clickandcollect/general/default_zoom</item>
                 <item name="items_availability" xsi:type="string">omni_clickandcollect/checkout/items_availability</item>
                 <item name="click_and_collect_payment_methods" xsi:type="string">carriers/clickandcollect/payment_option</item>
+                <item name="show_loyalty_offers" xsi:type="string">ls_mag/loyalty/show_loyalty_offers</item>
+                <item name="use_static_block" xsi:type="string">ls_mag/loyalty/use_static_block</item>
+                <item name="show_point_offers" xsi:type="string">ls_mag/loyalty/show_point_offers</item>
+                <item name="show_member_offers" xsi:type="string">ls_mag/loyalty/show_member_offers</item>
+                <item name="show_general_offers" xsi:type="string">ls_mag/loyalty/show_general_offers</item>
+                <item name="show_coupon_offers" xsi:type="string">ls_mag/loyalty/show_coupon_offers</item>
+                <item name="loyalty_expiry_date_format" xsi:type="string">ls_mag/loyalty/loyalty_expiry_date_format</item>
+                <item name="customer_username_prefix" xsi:type="string">ls_mag/loyalty/prefix</item>
+                <item name="ls_recommend" xsi:type="string">ls_mag/ls_recommend/active</item>
+                <item name="loyalty_points_cart" xsi:type="string">ls_mag/ls_loyaltypoints/cart</item>
+                <item name="loyalty_points_checkout" xsi:type="string">ls_mag/ls_loyaltypoints/checkout</item>
+                <item name="ls_coupons_cart" xsi:type="string">ls_mag/ls_coupons/cart</item>
+                <item name="ls_coupons_checkout" xsi:type="string">ls_mag/ls_coupons/checkout</item>
+                <item name="coupon_recommendations" xsi:type="string">ls_mag/ls_coupons/coupon_recommendations</item>
+                <item name="ls_giftcard_cart" xsi:type="string">ls_mag/ls_giftcard/cart</item>
+                <item name="ls_giftcard_checkout" xsi:type="string">ls_mag/ls_giftcard/checkout</item>
+                <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
+                <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
+                <item name="opening_hours_time_format" xsi:type="string">ls_mag/ls_stores/timeformat</item>
             </argument>
         </arguments>
     </type>
@@ -86,5 +105,10 @@
     <type name="Magento\QuoteGraphQl\Model\Resolver\SetPaymentMethodOnCart">
         <plugin name="set_payment_method_without_address" type="Ls\OmniGraphQl\Plugin\Model\Resolver\SetPaymentMethodOnCartPlugin"
                 sortOrder="1"/>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\AvailablePaymentMethods">
+        <plugin name="clickandcollect_available_payment_methods" type="Ls\OmniGraphQl\Plugin\Model\Resolver\AvailablePaymentMethodsPlugin"
+                sortOrder="2"/>
     </type>
 </config>

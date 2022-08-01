@@ -170,8 +170,11 @@ class DataAssignObserver implements ObserverInterface
      */
     public function validateClickAndCollectOrder($quote, $maskedCartId, $userId, $scopeId, $storeId)
     {
-        $stockInventoryCheckMsg     = $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId);
-        $validatePickupDateRangeMsg = $this->validatePickupDateRange($quote, $storeId);
+
+        $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(LSR::LSR_STOCK_VALIDATION_ACTIVE)) ?
+                                            $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
+        $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(LSR::DATETIME_RANGE_VALIDATION_ACTIVE)) ?
+                                            $this->validatePickupDateRange($quote, $storeId) : '';
 
         return $stockInventoryCheckMsg ??  $validatePickupDateRangeMsg;
     }

@@ -166,6 +166,12 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Coupons</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Coupon Code Elements</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
@@ -194,6 +200,12 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Gift Card</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Giftcard Elements</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
@@ -315,6 +327,10 @@
                     <label>Tender Type Mapping</label>
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                </field>
+                <field id="stock_validation_active" translate="label" sortOrder="6" showInWebsite="1">
+                    <label>Enable Stock Validation Before Order Creation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
             <group id="delivery_pickup_date_time"
