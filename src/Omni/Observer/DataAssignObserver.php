@@ -216,6 +216,8 @@ class DataAssignObserver implements ObserverInterface
     }
 
     /**
+     * Validate pickup date and time range
+     *
      * @param $quote
      * @param $storeId
      * @return \Magento\Framework\Phrase
