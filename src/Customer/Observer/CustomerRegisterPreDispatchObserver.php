@@ -52,6 +52,7 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
      * @param Proxy $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
+     * @param LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
@@ -83,9 +84,9 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
         $isNotValid = false;
         if (!empty($parameters['email']) && $this->contactHelper->isValid($parameters['email'])) {
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
-                    LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL,
-                    $this->lsr->getCurrentStoreId()
-                )) {
+                LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL,
+                $this->lsr->getCurrentStoreId()
+            )) {
                 try {
                     if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
                         $this->messageManager->addErrorMessage(__('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.'));
