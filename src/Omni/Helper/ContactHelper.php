@@ -607,33 +607,38 @@ class ContactHelper extends AbstractHelper
      */
     public function isUsernameExistInLsCentral($username)
     {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            $request       = new Operation\ContactGet();
-            $contactSearch = new Entity\ContactGet();
-        } else {
-            $request       = new Operation\ContactSearch();
-            $contactSearch = new Entity\ContactSearch();
-        }
-        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
-        $contactSearch->setSearch($username);
-        try {
-            $response = $request->execute($contactSearch);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            if (!empty($response) && !empty($response->getContactGetResult())) {
-                if ($response->getContactGetResult()->getUserName() === $username) {
-                    return true;
-                }
+        if ($this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
+            $this->lsr->getCurrentStoreId()
+        )) {
+            $response = null;
+            // @codingStandardsIgnoreStart
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                $request       = new Operation\ContactGet();
+                $contactSearch = new Entity\ContactGet();
+            } else {
+                $request       = new Operation\ContactSearch();
+                $contactSearch = new Entity\ContactSearch();
             }
-        } else {
-            if (!empty($response) && !empty($response->getContactSearchResult())) {
-                foreach ($response->getContactSearchResult() as $contact) {
-                    if ($contact->getUserName() === $username) {
+            $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
+            $contactSearch->setSearch($username);
+            try {
+                $response = $request->execute($contactSearch);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                if (!empty($response) && !empty($response->getContactGetResult())) {
+                    if ($response->getContactGetResult()->getUserName() === $username) {
                         return true;
+                    }
+                }
+            } else {
+                if (!empty($response) && !empty($response->getContactSearchResult())) {
+                    foreach ($response->getContactSearchResult() as $contact) {
+                        if ($contact->getUserName() === $username) {
+                            return true;
+                        }
                     }
                 }
             }

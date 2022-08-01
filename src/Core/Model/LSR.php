@@ -199,6 +199,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
     const SC_LOYALTY_EXPIRY_DATE_FORMAT = 'ls_mag/loyalty/loyalty_expiry_date_format';
     const SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH = 'ls_mag/loyalty/prefix';
+    const SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL = 'ls_mag/loyalty/username_search_by_api';
+    const SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL = 'ls_mag/loyalty/email_search_by_api';
+    const SC_LOYALTY_CUSTOMER_REGISTRATION_CONTACT_BY_CARD_ID_API_CALL = 'ls_mag/loyalty/get_contact_by_card_id_api';
     const SC_ORDER_CANCELLATION_PATH = 'ls_mag/loyalty/allow_order_cancellation';
     const SC_MASTER_PASSWORD = 'ls_mag/loyalty/master_password';
 
