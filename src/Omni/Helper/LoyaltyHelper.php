@@ -168,6 +168,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         // @codingStandardsIgnoreLine
         $entity = new Entity\ContactGetByCardId();
         $entity->setCardId($cardId);
+        $entity->setNumberOfTransReturned(1);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {

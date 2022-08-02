@@ -59,7 +59,7 @@ class SaveAfter implements ObserverInterface
     {
         try {
             /** @var Customer $customer */
-            $customer = $observer->getEvent()->getCustomer();
+            $customer        = $observer->getEvent()->getCustomer();
             if (empty($customer->getData('ls_password'))) {
                 return $this;
             }
@@ -75,12 +75,12 @@ class SaveAfter implements ObserverInterface
                 $customer->setData('lsr_username', $userName);
                 $customer->setData('password', $customer->decryptPassword($customer->getData('ls_password')));
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-                    $contact    = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
+                    $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
                         $customer->getEmail(),
                         Entity\Enum\ContactSearchType::EMAIL
                     );
                     /** @var Entity\MemberContact $contact */
-                    if(empty($contact)) {
+                    if (empty($contact)) {
                         $contact = $this->contactHelper->contact($customer);
                     }
                     if (is_object($contact) && $contact->getId()) {
