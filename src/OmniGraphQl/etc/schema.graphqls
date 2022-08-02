@@ -181,6 +181,17 @@ type StoreConfig {
     ls_discounts_product_page: Boolean @doc(description:"Display discounts on product page.")
     ls_discounts_login_register_notice: Boolean @doc(description:"Display discount notice on cart and checkout.")
     opening_hours_time_format: String @doc(description:"Opening Hours time format.")
+    ls_basket_calculation : String @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\BasketCalculationResolver")
+    magento_order_number_prefix: String @doc(description:"Magento order number prefix.")
+    shipping_item_id: String @doc(description:"Magento order number prefix.")
+    shipping_tax: Float @doc(description:"Shipping tax amount.")
+    pickup_date_time_slot: Boolean @doc(description:"Show delivery pickup date time slot.")
+    pickup_time_interval: Int @doc(description:"Pickup time interval.")
+    pickup_date_format: String @doc(description:"Pickup date format.")
+    pickup_time_format: String @doc(description:"Pickup time format.")
+    notification_pickup: Boolean @doc(description:"Order pickup notification for click and collect.")
+    notification_collected: Boolean @doc(description:"Order collected notification for click and collect.")
+    notification_cancel: Boolean @doc(description:"Order cancellation notification for click and collect.")
 
 }
 

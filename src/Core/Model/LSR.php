@@ -429,7 +429,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Email notification through webhook
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
-    const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_pickup';
+    const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
     const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';

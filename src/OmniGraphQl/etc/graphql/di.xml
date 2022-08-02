@@ -98,6 +98,17 @@
                 <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
                 <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
                 <item name="opening_hours_time_format" xsi:type="string">ls_mag/ls_stores/timeformat</item>
+                <item name="magento_order_number_prefix" xsi:type="string">ls_mag/ls_order_management/prefix</item>
+                <item name="shipping_item_id" xsi:type="string">ls_mag/ls_order_management/shipping_item_id</item>
+                <item name="shipping_tax" xsi:type="string">ls_mag/ls_order_management/shipping_tax</item>
+                <item name="pickup_date_time_slot" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_date_time_slot</item>
+                <item name="pickup_time_interval" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_time_interval</item>
+                <item name="pickup_date_format" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_date_format</item>
+                <item name="pickup_time_format" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_time_format</item>
+                <item name="notification_pickup" xsi:type="string">ls_mag/webhooks/notification_pickup</item>
+                <item name="notification_collected" xsi:type="string">ls_mag/webhooks/notification_collected</item>
+                <item name="notification_cancel" xsi:type="string">ls_mag/webhooks/notification_cancel</item>
+
             </argument>
         </arguments>
     </type>
