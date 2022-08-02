@@ -1104,10 +1104,13 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in OmniGraphQl module
+     *
      * Process customer login
+     *
      * @param MemberContact $result
-     * @param $credentials
-     * @param $is_email
+     * @param array $credentials
+     * @param string $is_email
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws LocalizedException
