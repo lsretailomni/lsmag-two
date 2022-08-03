@@ -177,4 +177,194 @@ class AbstractHelperOmni extends AbstractHelper
         $this->lsr               = $lsr;
         $this->currencyHelper    = $currencyHelper;
     }
+
+    /**
+     * GetCustomerFactory
+     *
+     * @return CustomerFactory
+     */
+    public function getCustomerFactory(): CustomerFactory
+    {
+        return $this->customerFactory;
+    }
+
+    /**
+     * GetCustomerSession
+     *
+     * @return CustomerSession
+     */
+    public function getCustomerSession(): CustomerSession
+    {
+        return $this->customerSession;
+    }
+
+    /**
+     * GetFilesystem
+     *
+     * @return Filesystem
+     */
+    public function getFilesystem(): Filesystem
+    {
+        return $this->filesystem;
+    }
+
+    /**
+     * GetCheckoutSession
+     *
+     * @return CheckoutSession
+     */
+    public function getCheckoutSession(): CheckoutSession
+    {
+        return $this->checkoutSession;
+    }
+
+    /**
+     * GetGroupRepository
+     *
+     * @return GroupRepositoryInterface
+     */
+    public function getGroupRepository(): GroupRepositoryInterface
+    {
+        return $this->groupRepository;
+    }
+
+    /**
+     * GetLsr
+     *
+     * @return LSR
+     */
+    public function getLsr(): LSR
+    {
+        return $this->lsr;
+    }
+
+    /**
+     * GetCurrencyHelper
+     *
+     * @return Currency
+     */
+    public function getCurrencyHelper(): Currency
+    {
+        return $this->currencyHelper;
+    }
+
+    /**
+     * GetBasketHelper
+     *
+     * @return BasketHelper
+     */
+    public function getBasketHelper(): BasketHelper
+    {
+        return $this->basketHelper;
+    }
+
+    /**
+     * GetCacheHelper
+     *
+     * @return CacheHelper
+     */
+    public function getCacheHelper(): CacheHelper
+    {
+        return $this->cacheHelper;
+    }
+
+    /**
+     * GetContactHelper
+     *
+     * @return ContactHelper
+     */
+    public function getContactHelper(): ContactHelper
+    {
+        return $this->contactHelper;
+    }
+
+    /**
+     * GetDataHelper
+     *
+     * @return Data
+     */
+    public function getDataHelper(): Data
+    {
+        return $this->dataHelper;
+    }
+
+    /**
+     * GetGiftCardHelper
+     *
+     * @return GiftCardHelper
+     */
+    public function getGiftCardHelper(): GiftCardHelper
+    {
+        return $this->giftCardHelper;
+    }
+
+    /**
+     * GetItemHelper
+     *
+     * @return ItemHelper
+     */
+    public function getItemHelper(): ItemHelper
+    {
+        return $this->itemHelper;
+    }
+
+    /**
+     * GetLoyaltyHelper
+     *
+     * @return LoyaltyHelper
+     */
+    public function getLoyaltyHelper(): LoyaltyHelper
+    {
+        return $this->loyaltyHelper;
+    }
+
+    /**
+     * GetLsRecommendHelper
+     *
+     * @return LSRecommend
+     */
+    public function getLsRecommendHelper(): LSRecommend
+    {
+        return $this->lsRecommendHelper;
+    }
+
+    /**
+     * GetOrderHelper
+     *
+     * @return OrderHelper
+     */
+    public function getOrderHelper(): OrderHelper
+    {
+        return $this->orderHelper;
+    }
+
+    /**
+     * GetSessionHelper
+     *
+     * @return SessionHelper
+     */
+    public function getSessionHelper(): SessionHelper
+    {
+        return $this->sessionHelper;
+    }
+
+    /**
+     * GetStockHelper
+     *
+     * @return StockHelper
+     */
+    public function getStockHelper(): StockHelper
+    {
+        return $this->stockHelper;
+    }
+
+    /**
+     * GetStoreHelper
+     *
+     * @return StoreHelper
+     */
+    public function getStoreHelper(): StoreHelper
+    {
+        return $this->storeHelper;
+    }
 }
