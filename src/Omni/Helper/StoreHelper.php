@@ -475,27 +475,4 @@ class StoreHelper extends AbstractHelper
     {
         return CarbonInterval::minutes($interval)->toPeriod($startTime, $endTime);
     }
-
-    /**
-     * @param $year
-     * @param $month
-     * @param $date
-     * @param $hour
-     * @param $minutes
-     * @param int $seconds
-     * @param $storeLocale
-     * @return Carbon|false
-     */
-    public function createTimestamp($storeLocale, $year, $month, $date, $hour, $minutes, int $seconds = 0)
-    {
-        return Carbon::create(
-            $year,
-            $month,
-            $date,
-            $hour,
-            $minutes,
-            $seconds,
-            $storeLocale
-        );
-    }
 }

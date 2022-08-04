@@ -354,33 +354,9 @@ class DataHelper extends AbstractHelper
     {
         $storeCollection = $this->storeCollectionFactory->create();
 
-        $storesData = $storeCollection
+        return $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
             ->addFieldToFilter('ClickAndCollect', 1);
-
-        if (!$this->dataProvider->availableStoresOnlyEnabled()) {
-            return $storesData;
-        }
-
-        $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
-        list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
-
-        if ($response) {
-            if (is_object($response)) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
-                }
-            }
-
-            $clickNCollectStoresIds = $this->dataProvider->getClickAndCollectStoreIds($storesData);
-            $this->dataProvider->filterClickAndCollectStores($response, $clickNCollectStoresIds);
-
-            return $this->dataProvider->filterStoresOnTheBasisOfQty($response, $items);
-        }
-
-        return null;
     }
 
     /**
