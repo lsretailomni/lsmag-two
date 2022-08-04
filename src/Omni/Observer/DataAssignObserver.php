@@ -125,6 +125,8 @@ class DataAssignObserver implements ObserverInterface
                 $quote->getStoreId(),
                 $quote->getPickupStore()
             );
+        } elseif ($quote->getPayment()->getMethod() == "ls_payment_method_pay_at_store") {
+            $errorMessage = __('Pay at Store is not supported. Please select a different payment method.');
         }
 
         if ($errorMessage) {
@@ -175,8 +177,9 @@ class DataAssignObserver implements ObserverInterface
                                             $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
         $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(LSR::DATETIME_RANGE_VALIDATION_ACTIVE)) ?
                                             $this->validatePickupDateRange($quote, $storeId) : '';
+        $validatePaymentMethod      = $this->validatePaymentMethod($quote, $storeId);
 
-        return $stockInventoryCheckMsg ??  $validatePickupDateRangeMsg;
+        return ($stockInventoryCheckMsg) ?: ( ($validatePickupDateRangeMsg) ? : $validatePaymentMethod );
     }
 
     /** To validate cart item inventory in store
@@ -262,6 +265,33 @@ class DataAssignObserver implements ObserverInterface
 
         if (!$validDateTime) {
             $message = __('Please select a date & time within store opening hours.');
+        }
+
+        return $message;
+    }
+
+    /**
+     * Validate click and collect payment methods with store configuration values
+     *
+     * @param $quote
+     * @param $storeId
+     * @return \Magento\Framework\Phrase
+     * @throws NoSuchEntityException
+     */
+    public function validatePaymentMethod($quote, $storeId)
+    {
+        $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
+
+        $message = null;
+        if ($shippingMethod == "clickandcollect_clickandcollect") {
+            $paymentOptionArray = explode(
+                ',',
+                $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION, $this->lsr->getCurrentStoreId())
+            );
+
+            if (!in_array($shippingMethod, $paymentOptionArray)) {
+                $message = __('Selected payment method is not supported. Please select from allowed payment methods.');
+            }
         }
 
         return $message;
