@@ -92,4 +92,10 @@
                 type="Ls\OmniGraphQl\Plugin\Model\Resolver\PlaceOrderPlugin"
                 sortOrder="1"/>
     </type>
+
+    <type name="Ls\Omni\Helper\ContactHelper">
+        <plugin name="clear_quote_checkout_session"
+                type="Ls\OmniGraphQl\Plugin\Omni\Helper\ContactHelperPlugin"
+                sortOrder="1"/>
+    </type>
 </config>

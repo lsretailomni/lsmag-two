@@ -45,6 +45,11 @@ class HierarchyNode extends HierarchyPoint
     protected $Indentation = null;
 
     /**
+     * @property int $LineNo
+     */
+    protected $LineNo = null;
+
+    /**
      * @property int $MaxSelection
      */
     protected $MaxSelection = null;
@@ -185,6 +190,24 @@ class HierarchyNode extends HierarchyPoint
     public function getIndentation()
     {
         return $this->Indentation;
+    }
+
+    /**
+     * @param int $LineNo
+     * @return $this
+     */
+    public function setLineNo($LineNo)
+    {
+        $this->LineNo = $LineNo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNo()
+    {
+        return $this->LineNo;
     }
 
     /**
