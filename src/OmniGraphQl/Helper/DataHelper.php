@@ -505,4 +505,15 @@ class DataHelper extends AbstractHelper
             ScopeInterface::SCOPE_STORE
         );
     }
+
+    /**
+     * Get Store Name by Id
+     *
+     * @param string $storeId
+     * @return mixed|string
+     */
+    public function getStoreNameById($storeId)
+    {
+        return $this->omniDataHelper->getStoreNameById($storeId);
+    }
 }
