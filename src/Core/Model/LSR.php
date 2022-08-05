@@ -394,6 +394,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
     const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
     const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
+    const LSR_RESTRICTED_ORDER_STATUSES = 'ls_mag/ls_order_management/sync_order_statuses';
 
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';

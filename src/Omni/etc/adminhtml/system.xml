@@ -316,6 +316,16 @@
                     <frontend_model>Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping</frontend_model>
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                 </field>
+                <field id="sync_order_statuses"
+                       translate="label"
+                       type="multiselect"
+                       sortOrder="6"
+                       showInDefault="1"
+                       showInWebsite="1">
+                    <label>Restricted Order statuses</label>
+                    <source_model>Ls\Omni\Block\Adminhtml\System\Config\RestrictedOrderStatuses</source_model>
+                    <comment>Order syncing will be disabled for selected order statuses.</comment>
+                </field>
             </group>
             <group id="delivery_pickup_date_time"
                    translate="label"
