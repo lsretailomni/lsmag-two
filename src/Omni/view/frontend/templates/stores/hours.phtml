@@ -1,0 +1,25 @@
+<?php
+/**
+ * @var Stores $block
+ */
+
+use \Ls\Omni\Block\Stores\Stores;
+$hours = $block->getData('hours');
+?>
+<?php if (!empty($hours)) :
+    ?>
+    <div class="store-opening-hours">
+        <label><i class="fas fa-business-time"></i><strong><?php echo __('Hours'); ?></strong></label>
+        <table class="table table-borderless">
+            <?php
+            foreach ($hours as $h) :
+                ?>
+                <tr>
+                    <?php echo $block->getFormattedHours($h); ?>
+                </tr>
+            <?php
+            endforeach;
+            ?>
+        </table>
+    </div>
+<?php endif; ?>
