@@ -24,7 +24,7 @@ if ($collection->getSize()) : ?>
         <?php foreach ($collection as $stores) :
             $store = $stores->getData();
             $storeId = $store['nav_id'];
-            $hours = $block->getStoreHours($storeId);
+            $hours = $block->hasData('storeHours') && !$block->getData('storeHours') ? [] : $block->getStoreHours($storeId);
             ?>
             <div class="col-md-4 mb-5 store-map-plus-info-container" id="store-<?php echo $storeId; ?>">
                 <?php if ($show) { ?>
@@ -55,23 +55,10 @@ if ($collection->getSize()) : ?>
                         <a href="tel:<?php echo $store['Phone']; ?>"><span><?php echo $store['Phone']; ?></span></a>
                     </div>
                 <?php endif; ?>
-                <?php if (!empty($hours)) :
-                    ?>
-                    <div class="store-opening-hours">
-                        <label><i class="fas fa-business-time"></i><strong><?php echo __('Hours'); ?></strong></label>
-                        <table class="table table-borderless">
-                            <?php
-                            foreach ($hours as $h) :
-                                ?>
-                                <tr>
-                                    <?php echo $block->getFormattedHours($h); ?>
-                                </tr>
-                            <?php
-                            endforeach;
-                            ?>
-                        </table>
-                    </div>
-                <?php endif; ?>
+                <?= $block->getLayout()->createBlock(Stores::class)
+                    ->setTemplate('Ls_Omni::stores/hours.phtml')
+                    ->setData(['hours' => $hours])
+                    ->toHtml(); ?>
             </div>
             <?php
             $counter++;
