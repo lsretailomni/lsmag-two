@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.18.0] - 2022-08-08
+
+### Added
+
+- Added additional support for the takeaway component on graphQL. [20779](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/20779)
+- Added support for round pickup times based on configurable timeslots for takeaway orders. [20455](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/20455)
+- Added support to optimise the web services call being made to LS Central for customer registration and login. [21639](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/21639)
+- Added support to optimize checkout page load performance by making click and collect requests asynchronous. [23878](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23878)
+
+
+
+
+### Bugs/Fixes
+
+- Fixed issues while creating UoM products by adding additional validations on empty descriptions. [22752](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/22752)
+- Fixed variants creation and started filtering NULL values from Code and Dimension columns in the Extended Variant Value Table. [22752](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/22752)
+- Fixed checkout crash on PWA/graphql due to incorrect quote merge when customer tries to login and merge the quote. [23235](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23235)
+- Fixed issues while setting out of stock parent item back to in-stock once either of its child product becomes in-stock. [23499](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23499)
+- Fixed issues with flat replication cron jobs which were running even though LS Ecommerce configuration was disabled. [23297](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23297)
+
+
+
 ## [1.17.0] - 2022-06-27
 
 ### Added
