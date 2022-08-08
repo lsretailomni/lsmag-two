@@ -3,7 +3,7 @@
 namespace Ls\Omni\Observer;
 
 use Carbon\Carbon;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Ls\Omni\Controller\Stock\Store;
 use Magento\Checkout\Model\Session\Proxy;
 use \Ls\Omni\Helper\Data;

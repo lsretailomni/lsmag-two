@@ -35,7 +35,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Ls\Omni\Model\Checkout\DataProvider;
+use \Ls\Omni\Model\Checkout\DataProvider;
 
 /**
  * Useful helper functions for the module

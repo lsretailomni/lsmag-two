@@ -2,8 +2,8 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation;
-use Ls\Core\Model\LSR;
+use \Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;

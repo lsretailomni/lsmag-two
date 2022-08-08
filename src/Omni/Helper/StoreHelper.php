@@ -9,7 +9,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;

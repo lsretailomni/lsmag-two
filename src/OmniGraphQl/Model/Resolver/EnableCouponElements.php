@@ -2,8 +2,7 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use \Ls\OmniGraphQl\Helper\DataHelper;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;

@@ -153,8 +153,6 @@ type DatesData {
 }
 
 type StoreConfig {
-    ls_mag_hospitality_takeaway_sales_type: String @doc(description: "To fetch the configured takeaway sales type.")
-    ls_mag_hospitality_delivery_salas_type: String @doc(description: "To fetch the configured delivery sales type.")
     maps_api_key: String @doc(description: "To fetch Google Maps API key.")
     default_latitude: Float @doc(description: "To fetch default latitude.")
     default_longitude: Float @doc(description: "To fetch default longitude.")
