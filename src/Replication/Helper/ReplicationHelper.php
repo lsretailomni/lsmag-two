@@ -17,7 +17,7 @@ use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
-use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
@@ -28,11 +28,16 @@ use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as 
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\CategoryInterface;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
+use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
@@ -65,9 +70,12 @@ use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Inventory\Model\SourceItem\Command\SourceItemsSave;
+use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
-use Magento\InventoryApi\Api\SourceItemsSaveInterface;
+use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
+use Magento\InventoryCatalogApi\Model\GetParentSkusOfChildrenSkusInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
@@ -75,8 +83,6 @@ use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
-use Magento\Catalog\Api\CategoryRepositoryInterface;
-use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 
 /**
  * Useful helper functions for replication
@@ -248,9 +254,9 @@ class ReplicationHelper extends AbstractHelper
     public $replInvStatusRepository;
 
     /**
-     * @var SourceItemsSaveInterface
+     * @var SourceItemsSave
      */
-    public $sourceItemsSaveInterface;
+    public $sourceItemsSave;
 
     /**
      * @var SourceItemInterfaceFactory
@@ -285,6 +291,31 @@ class ReplicationHelper extends AbstractHelper
      * @var ReplUnitOfMeasureRepositoryInterface
      */
     public $replUnitOfMeasureRepository;
+
+    /**
+     * @var ParentItemProcessor
+     */
+    public $parentItemProcessor;
+
+    /**
+     * @var ProductRepositoryInterface
+     */
+    public $productRepository;
+
+    /**
+     * @var GetParentSkusOfChildrenSkusInterface
+     */
+    public $getParentSkusOfChildrenSkus;
+
+    /**
+     * @var StockStatusRepository
+     */
+    public $stockStatusRepository;
+
+    /**
+     * @var GetProductIdsBySkus
+     */
+    public $getProductIdsBySkus;
 
     /**
      * @param Context $context
@@ -327,7 +358,7 @@ class ReplicationHelper extends AbstractHelper
      * @param TaxClassRepositoryInterface $taxClassRepository
      * @param ClassModelFactory $classModelFactory
      * @param ReplInvStatusRepository $replInvStatusRepository
-     * @param SourceItemsSaveInterface $sourceItemsSaveInterface
+     * @param SourceItemsSave $sourceItemsSave
      * @param SourceItemInterfaceFactory $sourceItemFactory
      * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory
@@ -335,6 +366,11 @@ class ReplicationHelper extends AbstractHelper
      * @param ResourceModelCategory $categoryResourceModel
      * @param RuleCollectionFactory $ruleCollectionFactory
      * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
+     * @param ParentItemProcessor $parentItemProcessor
+     * @param ProductRepositoryInterface $productRepository
+     * @param GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus
+     * @param StockStatusRepository $stockStatusRepository
+     * @param GetProductIdsBySkus $getProductIdsBySkus
      */
     public function __construct(
         Context $context,
@@ -377,14 +413,19 @@ class ReplicationHelper extends AbstractHelper
         TaxClassRepositoryInterface $taxClassRepository,
         ClassModelFactory $classModelFactory,
         ReplInvStatusRepository $replInvStatusRepository,
-        SourceItemsSaveInterface $sourceItemsSaveInterface,
+        SourceItemsSave $sourceItemsSave,
         SourceItemInterfaceFactory $sourceItemFactory,
         DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         CategoryRepositoryInterface $categoryRepository,
         ResourceModelCategory $categoryResourceModel,
         RuleCollectionFactory $ruleCollectionFactory,
-        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
+        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
+        ParentItemProcessor $parentItemProcessor,
+        ProductRepositoryInterface $productRepository,
+        GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus,
+        StockStatusRepository $stockStatusRepository,
+        GetProductIdsBySkus $getProductIdsBySkus
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -425,7 +466,7 @@ class ReplicationHelper extends AbstractHelper
         $this->taxClassRepository                        = $taxClassRepository;
         $this->classModelFactory                         = $classModelFactory;
         $this->replInvStatusRepository                   = $replInvStatusRepository;
-        $this->sourceItemsSaveInterface                  = $sourceItemsSaveInterface;
+        $this->sourceItemsSave                           = $sourceItemsSave;
         $this->sourceItemFactory                         = $sourceItemFactory;
         $this->defaultSourceProviderFactory              = $defaultSourceProviderFactory;
         $this->productCollectionFactory                  = $productCollectionFactory;
@@ -433,6 +474,11 @@ class ReplicationHelper extends AbstractHelper
         $this->categoryResourceModel                     = $categoryResourceModel;
         $this->ruleCollectionFactory                     = $ruleCollectionFactory;
         $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
+        $this->parentItemProcessor                       = $parentItemProcessor;
+        $this->productRepository                         = $productRepository;
+        $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
+        $this->stockStatusRepository                     = $stockStatusRepository;
+        $this->getProductIdsBySkus                       = $getProductIdsBySkus;
         parent::__construct(
             $context
         );
@@ -2432,25 +2478,67 @@ class ReplicationHelper extends AbstractHelper
     /**
      * This function is overriding in hospitality module
      *
-     * Update inventory
+     * Update inventory and status
      *
-     * @param $sku
-     * @param $replInvStatus
+     * @param string $sku
+     * @param mixed $replInvStatus
      * @throws NoSuchEntityException
      */
     public function updateInventory($sku, $replInvStatus)
     {
         try {
-            $sourceItem = $this->sourceItemFactory->create();
-            $sourceItem->setSourceCode($this->defaultSourceProviderFactory->create()->getCode());
-            $sourceItem->setSku($sku);
-            $sourceItem->setQuantity($replInvStatus->getQuantity());
-            $sourceItem->setStatus(($replInvStatus->getQuantity() > 0) ? 1 : 0);
-            $this->sourceItemsSaveInterface->execute([$sourceItem]);
+            $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
+            $sourceItems        = [];
+            $skus               = [$sku];
+            foreach ($parentProductsSkus as $parentSku) {
+                $parentSku     = array_shift($parentSku);
+                $skus[]        = $parentSku;
+                $sourceItems[] = $this->getSourceItemGivenData(
+                    $parentSku,
+                    0,
+                    ($replInvStatus->getQuantity() > 0) ? 1 : 0
+                );
+            }
+            $sourceItems[] = $this->getSourceItemGivenData(
+                $sku,
+                $replInvStatus->getQuantity(),
+                ($replInvStatus->getQuantity() > 0) ? 1 : 0
+            );
+            $this->sourceItemsSave->execute($sourceItems);
+            $this->parentItemProcessor->process($this->productRepository->get($sku));
+            $productIds = array_values($this->getProductIdsBySkus->execute($skus));
+
+            /**
+             * Deleting relevant records from cataloginventory_stock_status
+             * in order to get the correct values on next reindex
+             */
+            foreach ($productIds as $id) {
+                $this->stockStatusRepository->deleteById($id);
+            }
+
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Get source item given data
+     *
+     * @param string $sku
+     * @param mixed $inventory
+     * @param int $status
+     * @return SourceItemInterface
+     */
+    public function getSourceItemGivenData($sku, $inventory, $status)
+    {
+        $sourceItem = $this->sourceItemFactory->create();
+        $sourceItem->setSourceCode($this->defaultSourceProviderFactory->create()->getCode());
+        $sourceItem->setSku($sku);
+        $sourceItem->setQuantity($inventory);
+        $sourceItem->setStatus($status);
+
+        return $sourceItem;
     }
 
     /**

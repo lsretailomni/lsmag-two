@@ -26,6 +26,7 @@ use Magento\Eav\Model\Entity\Attribute\OptionLabel;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
@@ -173,7 +174,11 @@ class DataTranslationTask
     }
 
     /**
-     * @param null $storeData
+     * Entry point for cron running automatically
+     *
+     * @param mixed $storeData
+     * @return void
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
@@ -186,27 +191,33 @@ class DataTranslationTask
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
-                $langCode    = $this->lsr->getStoreConfig(LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE, $store->getId());
-                $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
-                if ($langCode != "Default") {
-                    $this->updateHierarchyNode($store->getId(), $langCode, $store->getWebsiteId());
-                    $this->updateItem($store->getId(), $langCode);
-                    $this->updateAttributes($store->getId(), $langCode);
-                    $this->updateAttributeOptionValue($store->getId(), $langCode);
-                } else {
-                    $this->cronStatus = true;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $langCode    = $this->lsr->getStoreConfig(
+                        LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                        $store->getId()
+                    );
+                    $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
+                    if ($langCode != "Default") {
+                        $this->updateHierarchyNode($store->getId(), $langCode, $store->getWebsiteId());
+                        $this->updateItem($store->getId(), $langCode);
+                        $this->updateAttributes($store->getId(), $langCode);
+                        $this->updateAttributeOptionValue($store->getId(), $langCode);
+                    } else {
+                        $this->cronStatus = true;
+                    }
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
+                        $store->getId()
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
+                        $store->getId()
+                    );
+                    $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
                 }
-                $this->replicationHelper->updateConfigValue(
-                    $this->replicationHelper->getDateTime(),
-                    LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
-                    $store->getId()
-                );
-                $this->replicationHelper->updateCronStatus(
-                    $this->cronStatus,
-                    LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
-                    $store->getId()
-                );
-                $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
+
                 $this->lsr->setStoreId(null);
             }
         }

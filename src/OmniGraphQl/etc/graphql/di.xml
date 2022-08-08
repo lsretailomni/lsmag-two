@@ -108,7 +108,7 @@
                 <item name="notification_pickup" xsi:type="string">ls_mag/webhooks/notification_pickup</item>
                 <item name="notification_collected" xsi:type="string">ls_mag/webhooks/notification_collected</item>
                 <item name="notification_cancel" xsi:type="string">ls_mag/webhooks/notification_cancel</item>
-
+                <item name="ls_mag_ls_industry_ls_choose_industry" xsi:type="string">ls_mag/ls_industry/ls_choose_industry</item>
             </argument>
         </arguments>
     </type>
@@ -121,5 +121,22 @@
     <type name="Magento\QuoteGraphQl\Model\Resolver\AvailablePaymentMethods">
         <plugin name="clickandcollect_available_payment_methods" type="Ls\OmniGraphQl\Plugin\Model\Resolver\AvailablePaymentMethodsPlugin"
                 sortOrder="2"/>
+    </type>
+    <type name="Magento\QuoteGraphQl\Model\Resolver\PlaceOrder">
+        <plugin name="inject_custom_values_place_order_response"
+                type="Ls\OmniGraphQl\Plugin\Model\Resolver\PlaceOrderPlugin"
+                sortOrder="1"/>
+    </type>
+
+    <type name="Magento\QuoteGraphQl\Model\Resolver\SetPaymentAndPlaceOrder">
+        <plugin name="inject_custom_values_place_order_response"
+                type="Ls\OmniGraphQl\Plugin\Model\Resolver\PlaceOrderPlugin"
+                sortOrder="1"/>
+    </type>
+
+    <type name="Ls\Omni\Helper\ContactHelper">
+        <plugin name="clear_quote_checkout_session"
+                type="Ls\OmniGraphQl\Plugin\Omni\Helper\ContactHelperPlugin"
+                sortOrder="1"/>
     </type>
 </config>

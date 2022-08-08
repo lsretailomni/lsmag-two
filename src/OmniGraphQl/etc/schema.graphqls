@@ -50,7 +50,10 @@ type Cart {
 }
 
 type Order {
-    document_id: String! @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\Order")
+    document_id: String @doc(description: "Ls Central Order Id")
+    pickup_store_id: String @doc(description: "Order Pickup Store ID")
+    pickup_store_name: String @doc(description: "Order Pickup Store Name")
+    pickup_date_timeslot: String @doc(description: "Order Pickup date and time")
 }
 
 type Query {
@@ -196,7 +199,8 @@ type StoreConfig {
 }
 
 type ClickAndCollectPaymentsOutput {
-        payment_option: [StoreData] @doc(description: "Array of all stores Data.")
+    payment_option: [StoreData] @doc(description: "Array of all stores Data.")
+    ls_mag_ls_industry_ls_choose_industry: String @doc(description: "To fetch currently configured industry.")
 }
 
 input SetPaymentMethodOnCartInput {

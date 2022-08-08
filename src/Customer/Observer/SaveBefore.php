@@ -52,19 +52,21 @@ class SaveBefore implements ObserverInterface
     public function execute(Observer $observer)
     {
         $parameters = $observer->getEvent()->getDataObject();
-        $validation = true;
-        if (empty($parameters->getData('password_hash')) && empty($parameters['ls_password'])) {
+        $parameters->setData('ls_validation', true);
+        if (empty($parameters->getData('password_hash')) && empty($parameters['ls_password'])
+            && empty($parameters['lsr_cardid'])) {
             $masterPassword = $this->lsr->getStoreConfig(LSR::SC_MASTER_PASSWORD, $this->lsr->getCurrentStoreId());
             $parameters->setData('ls_password', $this->contactHelper->encryptPassword($masterPassword));
-            $validation = false;
+            $parameters->setData('ls_validation', false);
         }
         if (empty($parameters['ls_password'])) {
             return $this;
         }
 
-        if (!empty($parameters['email']) && $validation) {
+        if (!empty($parameters['email']) && $parameters->getData('ls_validation')) {
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                    $parameters->setData('ls_validation', false);
                     throw new AlreadyExistsException(
                         __(
                             'There is already an account with this email address.
@@ -75,7 +77,7 @@ class SaveBefore implements ObserverInterface
                 }
             }
         } else {
-            if ($validation) {
+            if ($parameters->getData('ls_validation')) {
                 throw new InputException(__('Your email address is invalid.'));
             }
         }

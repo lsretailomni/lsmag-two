@@ -7,16 +7,16 @@ define([
     'Magento_Checkout/js/model/quote',
     'lsomni/map-loader',
     'lsomni/map',
-    'mage/url',
-    'Magento_Checkout/js/model/shipping-service'
-], function (Component, ko, $, $t, modal, quote, MapLoader, map, url, shippingService) {
+    'mage/url'
+], function (Component, ko, $, $t, modal, quote, MapLoader, map, url) {
     'use strict';
 
     var popUp1 = null;
     var popUp2 = null;
     return Component.extend({
         defaults: {
-            template: 'Ls_Omni/checkout/shipping/select-store'
+            template: 'Ls_Omni/checkout/shipping/select-store',
+            body: $('body')
         },
         isClickAndCollect: ko.observable(false),
         isSelectStoreVisible: ko.observable(false),
@@ -25,6 +25,7 @@ define([
         pickStoreName: ko.observable(null),
 
         initialize: function () {
+            this._super();
             var self = this;
             quote.shippingMethod.subscribe(function () {
                 var storeId, storeName;
@@ -80,7 +81,7 @@ define([
                 }
             };
 
-            $('body').on('click', '.apply-store', function () {
+            self.body.on('click', '.apply-store', function () {
                 self.pickStoreId($(this).data('id'));
                 self.pickStoreName($(this).data('name'));
                 self.isMapVisible(false);
@@ -89,25 +90,34 @@ define([
                 }
             });
 
-            $('body').on('click', '.check-store-availability', function () {
-                var selectedStore = $(this).data('id');
-                var controllerUrl = self.getBaseUrl("omni/stock/store" + "?storeid=" + selectedStore);
-                var backUrl = self.getBaseUrl("checkout/cart");
-                var translatedText = $t('cart');
-                var flag = "1";
+            self.body.on('click', '.check-store-availability', function () {
+                var selectedStore = $(this).data('id'),
+                    controllerUrl = self.getBaseUrl("omni/stock/store" + "?storeid=" + selectedStore),
+                    backUrl = self.getBaseUrl("checkout/cart"),
+                    translatedText = $t('cart'),
+                    flag = "1",
+                    stockRemarks = $('.stock-remarks'),
+                    stockRemarksList = stockRemarks.find('ul'),
+                    customLoader = $('.custom-loader'),
+                    storeMapPlusInfoContainer = $('.store-map-plus-info-container'),
+                    storeOpeningHours = storeMapPlusInfoContainer.find('.store-opening-hours'),
+                    applyStoreBtn = $('.apply-store');
                 $.ajax({
                     url: controllerUrl,
                     type: 'POST',
                     dataType: "json",
                     beforeSend: function () {
-                        $('.custom-loader').append('<p>loading...</p>');
+                        customLoader.append('<p>loading...</p>');
                     },
                     complete: function () {
-                        $('.custom-loader').html("");
+                        customLoader.html("");
                     },
                     success: function (data) {
-                        $(".stock-remarks ul").html("");
-                        $(".stock-remarks > strong").remove();
+                        stockRemarksList.html('');
+                        if (data.storeHoursHtml) {
+                            storeOpeningHours.remove();
+                            storeMapPlusInfoContainer.append(data.storeHoursHtml);
+                        }
                         if (data.stocks) {
                             for (var i in data.stocks) {
                                 var o = data.stocks[i];
@@ -115,29 +125,27 @@ define([
                                     flag = "0";
                                 }
                                 if (o.status === "0") {
-                                    $(".stock-remarks ul").append("<br/><li><strong>" + o.name + ":</strong> <span style='color:red'>" + o.display + "</span></li>")
+                                    stockRemarksList.append("<br/><li><strong>" + o.name + ":</strong> <span style='color:red'>" + o.display + "</span></li>")
                                 } else {
-                                    $(".stock-remarks ul").append("<br/><li><strong>" + o.name + ":</strong> <span style='color:green'>" + o.display + "</span></li>")
+                                    stockRemarksList.append("<br/><li><strong>" + o.name + ":</strong> <span style='color:green'>" + o.display + "</span></li>")
                                 }
                             }
                             if (flag === "1") {
-                                $('.apply-store').removeAttr('disabled');
+                                applyStoreBtn.removeAttr('disabled');
                             } else {
-                                $(".stock-remarks").append("<strong>" + data.remarks + " <a href='" + backUrl + "'>" + translatedText + "</a></strong>");
+                                stockRemarks.append("<strong>" + data.remarks + " <a href='" + backUrl + "'>" + translatedText + "</a></strong>");
                             }
                         } else {
-                            $(".stock-remarks").append("<br/><strong>" + data.remarks + "</strong><br/>");
+                            stockRemarks.append("<br/><strong>" + data.remarks + "</strong><br/>");
                         }
                     },
                     error: function (xhr) {
- // if any error occurred
+                        // if any error occurred
                         console.log(xhr.statusText + xhr.responseText);
                     }
                 });
 
             });
-
-            return this._super();
         },
 
         showMap: function () {
@@ -193,12 +201,13 @@ define([
                     innerScroll: true,
                     title: 'Click & Collect Store',
                     buttons: [],
-                };
+                }
                 popUp2 = modal(options, $('#popup-modal'));
             }
             var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores),
                 availableStoresOnly = $.parseJSON(window.checkoutConfig.shipping.select_store.available_store_only),
                 storeInfo = $(stores.storesInfo).find('#store-' + store.nav_id).html(),
+                popupModal = $("#popup-modal"),
                 popUpHtml = '<div class="double-btn-container">';
             if (!availableStoresOnly) {
                 popUpHtml += '<button data-id="'
@@ -212,8 +221,8 @@ define([
             popUpHtml += '</div><div class="stock-remarks"><div class="custom-loader"></div><ul></ul></div></div><br/>'
             + '<div class="omni-stores-index "><div class="stores-maps-container"><div class="store-map-plus-info-container info-window">' + storeInfo + '</div></div></div>';
 
-            $("#popup-modal").html("").append(popUpHtml);
-            $("#popup-modal").modal("openModal");
+            popupModal.html('').append(popUpHtml);
+            popupModal.modal('openModal');
         }
     });
 });

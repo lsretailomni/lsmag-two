@@ -388,6 +388,7 @@
     <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="Code"/>
     <column xsi:type="boolean" name="CountAsOne" default="0" nullable="true" comment="CountAsOne"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
+    <column xsi:type="int" name="EComSelection" padding="11" nullable="true" comment="EComSelection"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
     <column xsi:type="int" name="Order" padding="11" nullable="true" comment="Order"/>

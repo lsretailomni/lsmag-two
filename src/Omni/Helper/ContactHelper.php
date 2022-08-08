@@ -333,18 +333,28 @@ class ContactHelper extends AbstractHelper
         if ($is_email) {
             /** @var Operation\ContactGetById $request */
             // @codingStandardsIgnoreStart
-            $request = new Operation\ContactSearch();
-            $search  = new Entity\ContactSearch();
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                $request = new Operation\ContactGet();
+                $search  = new Entity\ContactGet();
+            } else {
+                $request = new Operation\ContactSearch();
+                $search  = new Entity\ContactSearch();
+                $search->setMaxNumberOfRowsReturned(1);
+            }
             // @codingStandardsIgnoreEnd
             $search->setSearch($email);
-            $search->setMaxNumberOfRowsReturned(1);
 
             // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
             $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
 
             try {
-                $response    = $request->execute($search);
-                $contact_pos = $response->getContactSearchResult();
+                $response = $request->execute($search);
+                if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                    $contact_pos = $response->getContactGetResult();
+                } else {
+                    $contact_pos = $response->getContactSearchResult();
+                }
+
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
@@ -381,11 +391,16 @@ class ContactHelper extends AbstractHelper
             if (!preg_match("/^[a-zA-Z0-9-_@.]*$/", $param)) {
                 return null;
             }
-            $request = new Operation\ContactSearch();
-            $search  = new Entity\ContactSearch();
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                $request = new Operation\ContactGet();
+                $search  = new Entity\ContactGet();
+            } else {
+                $request = new Operation\ContactSearch();
+                $search  = new Entity\ContactSearch();
+                $search->setMaxNumberOfRowsReturned(1);
+            }
             // @codingStandardsIgnoreEnd
             $search->setSearch($param);
-            $search->setMaxNumberOfRowsReturned(1);
             // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
             $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
             try {
@@ -566,7 +581,7 @@ class ContactHelper extends AbstractHelper
         $filters = [
             $this->filterBuilder
                 ->setField('lsr_username')
-                ->setConditionType('like')
+                ->setConditionType('eq')
                 ->setValue($username)
                 ->create()
         ];
@@ -592,21 +607,39 @@ class ContactHelper extends AbstractHelper
      */
     public function isUsernameExistInLsCentral($username)
     {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request       = new Operation\ContactSearch();
-        $contactSearch = new Entity\ContactSearch();
-        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
-        $contactSearch->setSearch($username);
-        try {
-            $response = $request->execute($contactSearch);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) && !empty($response->getContactSearchResult())) {
-            foreach ($response->getContactSearchResult() as $contact) {
-                if ($contact->getUserName() === $username) {
-                    return true;
+        if ($this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
+            $this->lsr->getCurrentStoreId()
+        )) {
+            $response = null;
+            // @codingStandardsIgnoreStart
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                $request       = new Operation\ContactGet();
+                $contactSearch = new Entity\ContactGet();
+            } else {
+                $request       = new Operation\ContactSearch();
+                $contactSearch = new Entity\ContactSearch();
+            }
+            $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
+            $contactSearch->setSearch($username);
+            try {
+                $response = $request->execute($contactSearch);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                if (!empty($response) && !empty($response->getContactGetResult())) {
+                    if ($response->getContactGetResult()->getUserName() === $username) {
+                        return true;
+                    }
+                }
+            } else {
+                if (!empty($response) && !empty($response->getContactSearchResult())) {
+                    foreach ($response->getContactSearchResult() as $contact) {
+                        if ($contact->getUserName() === $username) {
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -623,8 +656,13 @@ class ContactHelper extends AbstractHelper
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $request       = new Operation\ContactSearch();
-        $contactSearch = new Entity\ContactSearch();
+        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+            $request       = new Operation\ContactGet();
+            $contactSearch = new Entity\ContactGet();
+        } else {
+            $request       = new Operation\ContactSearch();
+            $contactSearch = new Entity\ContactSearch();
+        }
         $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
         $contactSearch->setSearch($email);
         try {
@@ -632,10 +670,18 @@ class ContactHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if (!empty($response) && !empty($response->getContactSearchResult())) {
-            foreach ($response->getContactSearchResult() as $contact) {
-                if ($contact->getEmail() === $email) {
+        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+            if (!empty($response) && !empty($response->getContactGetResult())) {
+                if ($response->getContactGetResult()->getEmail() === $email) {
                     return true;
+                }
+            }
+        } else {
+            if (!empty($response) && !empty($response->getContactSearchResult())) {
+                foreach ($response->getContactSearchResult() as $contact) {
+                    if ($contact->getEmail() === $email) {
+                        return true;
+                    }
                 }
             }
         }
@@ -1058,10 +1104,13 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in OmniGraphQl module
+     *
      * Process customer login
+     *
      * @param MemberContact $result
-     * @param $credentials
-     * @param $is_email
+     * @param array $credentials
+     * @param string $is_email
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws LocalizedException
@@ -1340,19 +1389,30 @@ class ContactHelper extends AbstractHelper
         $contact  = null;
 
         // @codingStandardsIgnoreStart
-        $request       = new Operation\ContactSearch();
-        $contactSearch = new Entity\ContactSearch();
+        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+            $request       = new Operation\ContactGet();
+            $contactSearch = new Entity\ContactGet();
+        } else {
+            $request       = new Operation\ContactSearch();
+            $contactSearch = new Entity\ContactSearch();
+            $contactSearch->setMaxNumberOfRowsReturned(1);
+        }
         $contactSearch->setSearchType($type);
         $contactSearch->setSearch($paramValue);
-        $contactSearch->setMaxNumberOfRowsReturned(1);
         try {
             $response = $request->execute($contactSearch);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        if (!empty($response) && !empty($response->getContactSearchResult())) {
-            foreach ($response->getContactSearchResult() as $contact) {
-                return $contact;
+        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+            if (!empty($response) && !empty($response->getContactGetResult())) {
+                return $response->getContactGetResult();
+            }
+        } else {
+            if (!empty($response) && !empty($response->getContactSearchResult())) {
+                foreach ($response->getContactSearchResult() as $contact) {
+                    return $contact;
+                }
             }
         }
 

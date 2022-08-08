@@ -128,6 +128,7 @@ class DataProvider implements ConfigProviderInterface
             $storesData           = $resultPage->getLayout()->createBlock(Stores::class)
                 ->setTemplate('Ls_Omni::stores/stores.phtml')
                 ->setData('data', $storesResponse)
+                ->setData('storeHours', 0)
                 ->toHtml();
             $stores               = $storesResponse ? $storesResponse->toArray() : [];
             $stores['storesInfo'] = $storesData;
