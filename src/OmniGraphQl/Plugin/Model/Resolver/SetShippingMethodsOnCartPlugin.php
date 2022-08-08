@@ -6,6 +6,7 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Model\Carrier\Clickandcollect;
 use \Ls\OmniGraphQl\Helper\DataHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -33,20 +34,27 @@ class SetShippingMethodsOnCartPlugin
      * @var BasketHelper
      */
     public $basketHelper;
+    /**
+     * @var Data
+     */
+    private Data $helper;
 
     /**
      * @param DataHelper $dataHelper
      * @param Clickandcollect $carrierModel
      * @param BasketHelper $basketHelper
+     * @param Data $helper
      */
     public function __construct(
         DataHelper $dataHelper,
         Clickandcollect $carrierModel,
-        BasketHelper $basketHelper
+        BasketHelper $basketHelper,
+        Data $helper
     ) {
         $this->dataHelper   = $dataHelper;
         $this->carrierModel = $carrierModel;
         $this->basketHelper = $basketHelper;
+        $this->helper       = $helper;
     }
 
     /**
@@ -107,7 +115,7 @@ class SetShippingMethodsOnCartPlugin
             $userId          = $context->getUserId();
 
             if (!empty($storeId)) {
-                $stockCollection = $this->dataHelper->fetchCartAndReturnStock(
+                $stockCollection = $this->helper->fetchCartAndReturnStock(
                     $maskedCartId,
                     $userId,
                     $scopeId,

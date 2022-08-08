@@ -157,7 +157,7 @@ type StoreConfig {
     default_latitude: Float @doc(description: "To fetch default latitude.")
     default_longitude: Float @doc(description: "To fetch default longitude.")
     default_zoom: Float @doc(description: "To fetch default zoom value.")
-    items_availability: Int @doc(description: "To enable store filtering based on cart items availability.")
+    items_availability: Boolean @doc(description: "To enable store filtering based on cart items availability.")
     click_and_collect_payment_methods: String @doc(description: "To fetch the configured payment methods for click and collect.")
     show_club_information : Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\ShowClubInformation") @doc(description:"To get infromation like club name, loyality points, earned, currently loyalty level, next loyalty level, points needed benefits of next level. ")
     enable_loyalty_elements : Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableLoyaltyElements") @doc(description:"To enable loyalty elements block. ")
@@ -193,7 +193,6 @@ type StoreConfig {
     notification_pickup: Boolean @doc(description:"Order pickup notification for click and collect.")
     notification_collected: Boolean @doc(description:"Order collected notification for click and collect.")
     notification_cancel: Boolean @doc(description:"Order cancellation notification for click and collect.")
-
 }
 
 type ClickAndCollectPaymentsOutput {

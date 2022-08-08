@@ -4,10 +4,8 @@ namespace Ls\Omni\Observer;
 
 use Carbon\Carbon;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Controller\Stock\Store;
 use Magento\Checkout\Model\Session\Proxy;
 use \Ls\Omni\Helper\Data;
-use \Ls\OmniGraphQl\Helper\DataHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Event\Observer;
@@ -41,10 +39,6 @@ class DataAssignObserver implements ObserverInterface
      */
     private QuoteIdMaskFactory $quoteIdMaskFactory;
     /**
-     * @var DataHelper
-     */
-    private DataHelper $dataHelper;
-    /**
      * @var StoreHelper
      */
     private StoreHelper $storeHelper;
@@ -57,7 +51,6 @@ class DataAssignObserver implements ObserverInterface
      * @param Proxy $checkoutSession
      * @param Data $helper
      * @param BasketHelper $basketHelper
-     * @param DataHelper $dataHelper
      * @param StoreHelper $storeHelper
      * @param QuoteIdMaskFactory $quoteIdMaskFactory
      * @param LSR $lsr
@@ -66,7 +59,6 @@ class DataAssignObserver implements ObserverInterface
         Proxy $checkoutSession,
         Data $helper,
         BasketHelper $basketHelper,
-        DataHelper $dataHelper,
         StoreHelper $storeHelper,
         QuoteIdMaskFactory $quoteIdMaskFactory,
         LSR $lsr
@@ -74,13 +66,12 @@ class DataAssignObserver implements ObserverInterface
         $this->checkoutSession      = $checkoutSession;
         $this->helper               = $helper;
         $this->basketHelper         = $basketHelper;
-        $this->dataHelper           = $dataHelper;
         $this->storeHelper          = $storeHelper;
         $this->quoteIdMaskFactory   = $quoteIdMaskFactory;
         $this->lsr                  = $lsr;
     }
 
-    /**     *
+    /***
      * For setting quote values
      *
      * @param Observer $observer
@@ -202,7 +193,7 @@ class DataAssignObserver implements ObserverInterface
             $message = __('Please select a store to proceed.');
         }
 
-        $stockCollection = $this->dataHelper->fetchCartAndReturnStock(
+        $stockCollection = $this->helper->fetchCartAndReturnStock(
             $maskedCartId,
             $userId,
             $scopeId,
@@ -280,8 +271,8 @@ class DataAssignObserver implements ObserverInterface
      */
     public function validatePaymentMethod($quote, $storeId)
     {
-        $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
-
+        $shippingMethod        = $quote->getShippingAddress()->getShippingMethod();
+        $selectedPaymentMethod = $quote->getPayment()->getMethod();
         $message = null;
         if ($shippingMethod == "clickandcollect_clickandcollect") {
             $paymentOptionArray = explode(
@@ -289,7 +280,7 @@ class DataAssignObserver implements ObserverInterface
                 $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION, $this->lsr->getCurrentStoreId())
             );
 
-            if (!in_array($shippingMethod, $paymentOptionArray)) {
+            if (!in_array($selectedPaymentMethod, $paymentOptionArray)) {
                 $message = __('Selected payment method is not supported. Please select from allowed payment methods.');
             }
         }

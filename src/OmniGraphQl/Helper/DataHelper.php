@@ -360,46 +360,6 @@ class DataHelper extends AbstractHelper
     }
 
     /**
-     * Fetch cart and returns stock
-     *
-     * @param $maskedCartId
-     * @param $userId
-     * @param $scopeId
-     * @param $storeId
-     * @return mixed
-     * @throws GraphQlAuthorizationException
-     * @throws GraphQlInputException
-     * @throws GraphQlNoSuchEntityException
-     * @throws NoSuchEntityException
-     */
-    public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId)
-    {
-        // Shopping Cart validation
-        $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
-
-        $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
-        $cart   = $this->cartRepository->get($cartId);
-
-        $items = $cart->getAllVisibleItems();
-
-        list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
-
-        if ($response) {
-            if (is_object($response)) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
-                }
-            }
-
-            return $this->stockHelper->updateStockCollection($response, $stockCollection);
-        }
-
-        return null;
-    }
-
-    /**
      * Set pickup store given cart
      *
      * @param mixed $cart
