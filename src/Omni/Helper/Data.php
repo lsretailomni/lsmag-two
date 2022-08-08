@@ -13,8 +13,6 @@ use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
-use \Ls\OmniGraphQl\Helper\DataHelper;
-use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
@@ -562,14 +560,22 @@ class Data extends AbstractHelper
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
-                return $this->lsr->getStoreConfig(
+                return ( $this->lsr->getStoreConfig(
+                    LSR::LS_ENABLE_COUPON_ELEMENTS,
+                    $this->lsr->getCurrentStoreId()
+                ) && $this->lsr->getStoreConfig(
                     LSR::LS_COUPONS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
+                )
                 );
             }
-            return $this->lsr->getStoreConfig(
+            return ( $this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
                 LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;

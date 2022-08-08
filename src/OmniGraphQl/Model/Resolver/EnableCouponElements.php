@@ -41,7 +41,7 @@ class EnableCouponElements implements ResolverInterface
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return (bool)$this->lsr->getStoreConfig(
-                LSR::SC_ENABLE_COUPON_ELEMENTS,
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
                 $this->lsr->getCurrentStoreId()
             );
         }

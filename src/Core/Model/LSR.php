@@ -348,7 +348,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
 
     //Coupons
-    const SC_ENABLE_COUPON_ELEMENTS = 'ls_mag/ls_coupons/active';
+    const LS_ENABLE_COUPON_ELEMENTS = 'ls_mag/ls_coupons/active';
     const LS_COUPONS_SHOW_ON_CART = 'ls_mag/ls_coupons/cart';
     const LS_COUPONS_SHOW_ON_CHECKOUT = 'ls_mag/ls_coupons/checkout';
     const LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_coupons/coupon_recommendations';
@@ -391,9 +391,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
-
-    //Get store timezone
-    const XML_PATH_GENERAL_LOCALE_TIMEZONE = 'general/locale/timezone';
 
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
