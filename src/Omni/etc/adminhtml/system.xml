@@ -359,6 +359,10 @@
                     <label>Enable Stock Validation Before Order Creation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="graphql_stock_validation_active" translate="label" type="select"  sortOrder="7" showInWebsite="1">
+                    <label>Enable Stock Validation Before Order Creation via GraphQl</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
             </group>
             <group id="delivery_pickup_date_time"
                    translate="label"

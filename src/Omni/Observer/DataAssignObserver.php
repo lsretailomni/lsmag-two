@@ -14,6 +14,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\ValidatorException;
 use Magento\Quote\Model\QuoteIdMaskFactory;
+use Magento\Framework\App\Request\Http;
 
 /**
  * Class for assigning and validating different extension attribute values
@@ -61,6 +62,7 @@ class DataAssignObserver implements ObserverInterface
         BasketHelper $basketHelper,
         StoreHelper $storeHelper,
         QuoteIdMaskFactory $quoteIdMaskFactory,
+        Http $request,
         LSR $lsr
     ) {
         $this->checkoutSession      = $checkoutSession;
@@ -68,6 +70,7 @@ class DataAssignObserver implements ObserverInterface
         $this->basketHelper         = $basketHelper;
         $this->storeHelper          = $storeHelper;
         $this->quoteIdMaskFactory   = $quoteIdMaskFactory;
+        $this->request              = $request;
         $this->lsr                  = $lsr;
     }
 
@@ -163,15 +166,32 @@ class DataAssignObserver implements ObserverInterface
      */
     public function validateClickAndCollectOrder($quote, $maskedCartId, $userId, $scopeId, $storeId)
     {
+        if ($this->request->getHeader("Content-Type") == "application/json"
+            && strpos($this->request->getOriginalPathInfo(), "graphql") === true) {
+            //Stock and Date range validation in graphql based on store configuration
 
-        $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
-            LSR::LSR_STOCK_VALIDATION_ACTIVE,
-            $this->lsr->getCurrentStoreId()
-        )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
-        $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(
-            LSR::DATETIME_RANGE_VALIDATION_ACTIVE,
-            $this->lsr->getCurrentStoreId()
-        )) ? $this->validatePickupDateRange($quote, $storeId) : '';
+            $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
+                LSR::LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE,
+                $this->lsr->getCurrentStoreId()
+            )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
+
+            $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(
+                LSR::LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE,
+                $this->lsr->getCurrentStoreId()
+            )) ? $this->validatePickupDateRange($quote, $storeId) : '';
+        } else { //Stock and Date range validation in frontend based on store configuration
+
+            $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
+                LSR::LSR_STOCK_VALIDATION_ACTIVE,
+                $this->lsr->getCurrentStoreId()
+            )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
+
+            $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(
+                LSR::LSR_DATETIME_RANGE_VALIDATION_ACTIVE,
+                $this->lsr->getCurrentStoreId()
+            )) ? $this->validatePickupDateRange($quote, $storeId) : '';
+        }
+
         $validatePaymentMethod      = $this->validatePaymentMethod($quote, $storeId);
 
         return ($stockInventoryCheckMsg) ?: ( ($validatePickupDateRangeMsg) ? : $validatePaymentMethod );

@@ -312,10 +312,31 @@ class DataHelper extends AbstractHelper
         $hours      = [];
         $i = 0;
 
+        $hoursFormat = $this->scopeConfig->getValue(
+            LSR::LS_STORES_OPENING_HOURS_FORMAT,
+            ScopeInterface::SCOPE_STORE
+        );
+
         foreach ($storeHours as $storeHour) {
+            $normalTypeOpenHours = $normalTypeCloseHours = $closedTypeOpenHours = $closedTypeCloseHours = null;
             foreach ($storeHour as $key => $hour) {
                 $hours[$i]['day_of_week'] = $hour['day'];
-                $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                if ($hour['type'] == "Normal") {
+                    $normalTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $normalTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
+                } elseif ($hour['type'] == "Closed") {
+                    $closedTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $closedTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
+                }
+
+                if ($normalTypeOpenHours && $closedTypeOpenHours
+                    && ($normalTypeOpenHours == $closedTypeOpenHours)
+                    && ($normalTypeCloseHours == $closedTypeCloseHours)
+                ) {
+                    $hours[$i]['hour_types'][0]  = $this->formatHoursAccordingToType($hour);
+                } else {
+                    $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                }
             }
             $i++;
         }

@@ -402,7 +402,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
     const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
-    const DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
+    const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
+    const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
+    const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
+        = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
 
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';
