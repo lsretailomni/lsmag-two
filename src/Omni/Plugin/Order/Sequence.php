@@ -3,6 +3,7 @@
 namespace Ls\Omni\Plugin\Order;
 
 use \Ls\Core\Model\LSR;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class Sequence
@@ -30,6 +31,7 @@ class Sequence
      * @param \Magento\SalesSequence\Model\Sequence $subject
      * @param callable $proceed
      * @return string
+     * @throws NoSuchEntityException
      */
     public function aroundGetCurrentValue(
         \Magento\SalesSequence\Model\Sequence $subject,
