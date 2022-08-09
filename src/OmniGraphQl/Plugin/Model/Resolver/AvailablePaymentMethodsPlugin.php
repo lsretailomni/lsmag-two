@@ -74,10 +74,13 @@ class AvailablePaymentMethodsPlugin
      */
     public function getPaymentMethodsData(CartInterface $cart): array
     {
-        $paymentInformation = $this->informationManagement->getPaymentInformation($cart->getId());
-        $paymentMethods = $paymentInformation->getPaymentMethods();
+        $paymentInformation                 = $this->informationManagement->getPaymentInformation($cart->getId());
+        $paymentMethods                     = $paymentInformation->getPaymentMethods();
         $clickAndCollectPaymentMethodsArr   = [];
-        $clickAndCollectPaymentMethods      = $this->lsr->getStoreConfig(LSR::SC_CLICKCOLLECT_PAYMENT_OPTION);
+        $clickAndCollectPaymentMethods      = $this->lsr->getStoreConfig(
+            LSR::SC_CLICKCOLLECT_PAYMENT_OPTION,
+            $this->lsr->getStoreId()
+        );
         $shippingMethod                     = $cart->getShippingAddress()->getShippingMethod();
 
         if ($shippingMethod == "clickandcollect_clickandcollect" &&

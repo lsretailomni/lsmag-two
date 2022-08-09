@@ -369,9 +369,18 @@ class DataProvider implements ConfigProviderInterface
      * Is coupons display enabled
      *
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function isCouponsDisplayEnabled()
     {
-        return $this->scopeConfig->getValue(LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT);
+        return ( $this->lsr->getStoreConfig(
+            LSR::LS_ENABLE_COUPON_ELEMENTS,
+            $this->lsr->getCurrentStoreId()
+        ) &&
+            $this->lsr->getStoreConfig(
+                LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            )
+        );
     }
 }

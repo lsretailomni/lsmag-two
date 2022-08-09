@@ -8,7 +8,8 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * For returning document id coming from the Ls Central
+ * For returning Enable/Disable status of Gift card
+ * elements based on system configuration and Omni online/offline mode
  */
 class EnableGiftcardElements implements ResolverInterface
 {
@@ -40,7 +41,7 @@ class EnableGiftcardElements implements ResolverInterface
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return (bool)$this->lsr->getStoreConfig(
-                LSR::SC_ENABLE_GIFTCARD_ELEMENTS,
+                LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                 $this->lsr->getCurrentStoreId()
             );
         }

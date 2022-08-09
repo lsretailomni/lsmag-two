@@ -13,6 +13,7 @@
                 <show_return_policy>0</show_return_policy>
             </return_policy>
             <ls_loyaltypoints>
+                <active>1</active>
                 <cart>1</cart>
                 <checkout>1</checkout>
             </ls_loyaltypoints>

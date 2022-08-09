@@ -354,12 +354,13 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_coupons/coupon_recommendations';
 
     //LoyaltyPoints
+    const LS_ENABLE_LOYALTYPOINTS_ELEMENTS = 'ls_mag/ls_loyaltypoints/active';
     const LS_LOYALTYPOINTS_SHOW_ON_CART = 'ls_mag/ls_loyaltypoints/cart';
     const LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT = 'ls_mag/ls_loyaltypoints/checkout';
     const LS_LOYALTYPOINTS_TENDER_TYPE = 'loypoints';
 
     //GiftCard
-    const SC_ENABLE_GIFTCARD_ELEMENTS = 'ls_mag/ls_giftcard/active';
+    const LS_ENABLE_GIFTCARD_ELEMENTS = 'ls_mag/ls_giftcard/active';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';

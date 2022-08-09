@@ -143,16 +143,28 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Loyalty Points</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enable Loyalty Point Elements</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_coupons"
@@ -177,16 +189,25 @@
                        showInStore="1">
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="coupon_recommendations" translate="label" type="select" sortOrder="4" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show Coupon Recommendations on Cart/Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_giftcard"
@@ -211,11 +232,17 @@
                        showInStore="1">
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_discounts"

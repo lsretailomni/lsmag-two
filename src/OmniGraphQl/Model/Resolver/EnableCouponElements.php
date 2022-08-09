@@ -8,7 +8,8 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * For returning document id coming from the Ls Central
+ * For returning Enable/Disable status of Coupon code
+ * elements based on system configuration and Omni online/offline mode
  */
 class EnableCouponElements implements ResolverInterface
 {

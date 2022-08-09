@@ -103,7 +103,7 @@ class GiftCardHelper extends AbstractHelper
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == 'cart') {
                 return ( $this->lsr->getStoreConfig(
-                    LSR::SC_ENABLE_GIFTCARD_ELEMENTS,
+                    LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
                     LSR::LS_GIFTCARD_SHOW_ON_CART,
@@ -112,7 +112,7 @@ class GiftCardHelper extends AbstractHelper
                 );
             }
             return ( $this->lsr->getStoreConfig(
-                LSR::SC_ENABLE_GIFTCARD_ELEMENTS,
+                LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                 $this->lsr->getCurrentStoreId()
             ) && $this->lsr->getStoreConfig(
                 LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,

@@ -8,7 +8,8 @@ use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
 /**
- * For returning document id coming from the Ls Central
+ * For returning Enable/Disable status of Loyalty
+ * elements based on system configuration and Omni online/offline mode
  */
 class EnableLoyaltyElements implements ResolverInterface
 {
@@ -40,7 +41,7 @@ class EnableLoyaltyElements implements ResolverInterface
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             return (bool)$this->lsr->getStoreConfig(
-                LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS,
+                LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
                 $this->lsr->getCurrentStoreId()
             );
         }
