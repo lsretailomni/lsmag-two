@@ -324,7 +324,7 @@
                        showInWebsite="1">
                     <label>Restricted Order statuses</label>
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\RestrictedOrderStatuses</source_model>
-                    <comment>Order syncing will be disabled for selected order statuses.</comment>
+                    <comment>Order will not be synced to LS Central based on the selected order status, please leave it empty if you want to sync all orders to LS Central independent of the order status</comment>
                 </field>
             </group>
             <group id="delivery_pickup_date_time"
