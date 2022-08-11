@@ -12,6 +12,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
@@ -707,12 +708,13 @@ class OrderHelper extends AbstractHelper
     /**
      * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
-     * @param null $storeId
+     * @param int $storeId
      * @param int $pageSize
-     * @param bool $filterOptions
+     * @param boolean $filterOptions
      * @param int $customerId
-     * @param null $sortOrder
+     * @param SortOrder $sortOrder
      * @return OrderInterface[]|null
+     * @throws NoSuchEntityException
      */
     public function getOrders(
         $storeId = null,
@@ -723,10 +725,17 @@ class OrderHelper extends AbstractHelper
     ) {
         $orders = null;
         try {
+            $orderStatuses = $this->lsr->getStoreConfig(
+                LSR::LSR_RESTRICTED_ORDER_STATUSES,
+                $this->lsr->getCurrentStoreId()
+            );
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
             if ($filterOptions) {
-                $criteriaBuilder->addFilter('status', ['canceled', 'payment_review'], 'nin');
+                if (!empty($orderStatuses)) {
+                    $criteriaBuilder->addFilter('status', explode(',', $orderStatuses), 'nin');
+                }
+
                 $criteriaBuilder->addFilter('document_id', null, 'null');
             }
 
