@@ -407,6 +407,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
         = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
 
+    const LSR_RESTRICTED_ORDER_STATUSES = 'ls_mag/ls_order_management/sync_order_statuses';
+
     //Disaster Recovery Enabled/Disabled For Notification
     const LS_DISASTER_RECOVERY_STATUS = 'ls_mag/ls_disaster_recovery/notification';
 
