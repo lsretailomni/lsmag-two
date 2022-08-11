@@ -172,7 +172,7 @@ type StoreConfig {
     show_club_information : Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\ShowClubInformation") @doc(description:"To get infromation like club name, loyality points, earned, currently loyalty level, next loyalty level, points needed benefits of next level. ")
     enable_loyalty_elements : Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableLoyaltyElements") @doc(description:"To enable loyalty elements block. ")
     show_loyalty_offers : Boolean @doc(description:"To show loyalty offers. ")
-    use_static_block : Boolean @doc(description:"To enable loyalty elements block. ")
+    use_static_block : Boolean @doc(description:"Use static block. ")
     show_point_offers: Boolean @doc(description:"To show point offers. ")
     show_member_offers: Boolean @doc(description:"To show members offers. ")
     show_general_offers: Boolean @doc(description:"To show general offers. ")
@@ -184,11 +184,11 @@ type StoreConfig {
     loyalty_points_cart: Boolean @doc(description:"Display loyalty points on cart.")
     loyalty_points_checkout: Boolean @doc(description:"Display loyalty points on checkout.")
     ls_coupons_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableCouponElements")
-    ls_coupons_cart: Boolean @doc(description:"Display loyalty points on checkout.")
-    ls_coupons_checkout: Boolean @doc(description:"Display loyalty points on checkout.")
+    ls_coupons_cart: Boolean @doc(description:"Display coupons on checkout.")
+    ls_coupons_checkout: Boolean @doc(description:"Display coupons on checkout.")
     ls_giftcard_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableGiftcardElements")
-    ls_giftcard_cart: Boolean @doc(description:"Display loyalty points on checkout.")
-    ls_giftcard_checkout: Boolean @doc(description:"Display loyalty points on checkout.")
+    ls_giftcard_cart: Boolean @doc(description:"Display giftcard on checkout.")
+    ls_giftcard_checkout: Boolean @doc(description:"Display gift card on checkout.")
     coupon_recommendations: Boolean @doc(description:"Display coupon recommendations in cart and checkout.")
     ls_discounts_product_page: Boolean @doc(description:"Display discounts on product page.")
     ls_discounts_login_register_notice: Boolean @doc(description:"Display discount notice on cart and checkout.")
@@ -204,10 +204,6 @@ type StoreConfig {
     notification_pickup: Boolean @doc(description:"Order pickup notification for click and collect.")
     notification_collected: Boolean @doc(description:"Order collected notification for click and collect.")
     notification_cancel: Boolean @doc(description:"Order cancellation notification for click and collect.")
-}
-
-type ClickAndCollectPaymentsOutput {
-    payment_option: [StoreData] @doc(description: "Array of all stores Data.")
     ls_mag_ls_industry_ls_choose_industry: String @doc(description: "To fetch currently configured industry.")
 }
 
