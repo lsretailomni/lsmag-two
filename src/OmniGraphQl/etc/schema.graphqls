@@ -180,7 +180,7 @@ type StoreConfig {
     loyalty_expiry_date_format: String @doc(description:"To fetch loyalty expiry date format. ")
     customer_username_prefix: String @doc(description:"To show coupon offers. ")
     ls_recommend: Boolean @doc(description:"Enable LS Recommend.")
-    loyalty_points_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableLoyaltyPointsElements")
+    loyalty_points_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableLoyaltyElements")
     loyalty_points_cart: Boolean @doc(description:"Display loyalty points on cart.")
     loyalty_points_checkout: Boolean @doc(description:"Display loyalty points on checkout.")
     ls_coupons_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\EnableCouponElements")
