@@ -203,7 +203,7 @@ class Data extends AbstractHelper
     {
         $storeHours = null;
         try {
-            $cacheId        = LSR::STORE . $storeId;
+            $cacheId        = LSR::STORE_HOURS . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($cachedResponse) {
