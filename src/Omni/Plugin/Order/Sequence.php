@@ -28,6 +28,8 @@ class Sequence
     }
 
     /**
+     * Fetch magento order number prefix based on current store id
+     *
      * @param \Magento\SalesSequence\Model\Sequence $subject
      * @param callable $proceed
      * @return string
