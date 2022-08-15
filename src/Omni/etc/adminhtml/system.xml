@@ -146,7 +146,7 @@
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
-                    <label>Enable Loyalty Point Elements</label>
+                    <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -181,7 +181,7 @@
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
-                    <label>Enable Coupon Code Elements</label>
+                    <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -224,7 +224,7 @@
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
-                    <label>Enable Giftcard Elements</label>
+                    <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"

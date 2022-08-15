@@ -32,7 +32,8 @@ class BasketCalculationResolver implements ResolverInterface
     }
 
     /**
-     * Show club information
+     * Show basket calculation resolver
+     *
      * @param Field $field
      * @param $context
      * @param ResolveInfo $info

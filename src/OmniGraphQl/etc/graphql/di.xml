@@ -77,6 +77,7 @@
                 <item name="default_zoom" xsi:type="string">omni_clickandcollect/general/default_zoom</item>
                 <item name="items_availability" xsi:type="string">omni_clickandcollect/checkout/items_availability</item>
                 <item name="click_and_collect_payment_methods" xsi:type="string">carriers/clickandcollect/payment_option</item>
+                <item name="enable_loyalty_elements" xsi:type="string">ls_mag/loyalty/enable_loyalty_elements</item>
                 <item name="show_loyalty_offers" xsi:type="string">ls_mag/loyalty/show_loyalty_offers</item>
                 <item name="use_static_block" xsi:type="string">ls_mag/loyalty/use_static_block</item>
                 <item name="show_point_offers" xsi:type="string">ls_mag/loyalty/show_point_offers</item>
@@ -84,8 +85,6 @@
                 <item name="show_general_offers" xsi:type="string">ls_mag/loyalty/show_general_offers</item>
                 <item name="show_coupon_offers" xsi:type="string">ls_mag/loyalty/show_coupon_offers</item>
                 <item name="loyalty_expiry_date_format" xsi:type="string">ls_mag/loyalty/loyalty_expiry_date_format</item>
-                <item name="customer_username_prefix" xsi:type="string">ls_mag/loyalty/prefix</item>
-                <item name="ls_recommend" xsi:type="string">ls_mag/ls_recommend/active</item>
                 <item name="loyalty_points_cart" xsi:type="string">ls_mag/ls_loyaltypoints/cart</item>
                 <item name="loyalty_points_checkout" xsi:type="string">ls_mag/ls_loyaltypoints/checkout</item>
                 <item name="ls_coupons_cart" xsi:type="string">ls_mag/ls_coupons/cart</item>
@@ -93,20 +92,17 @@
                 <item name="coupon_recommendations" xsi:type="string">ls_mag/ls_coupons/coupon_recommendations</item>
                 <item name="ls_giftcard_cart" xsi:type="string">ls_mag/ls_giftcard/cart</item>
                 <item name="ls_giftcard_checkout" xsi:type="string">ls_mag/ls_giftcard/checkout</item>
+                <item name="ls_discount_mixandmatch_limit" xsi:type="string">ls_mag/ls_discounts/discount_mixandmatch_limit</item>
                 <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
                 <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
                 <item name="opening_hours_time_format" xsi:type="string">ls_mag/ls_stores/timeformat</item>
-                <item name="magento_order_number_prefix" xsi:type="string">ls_mag/ls_order_management/prefix</item>
-                <item name="shipping_item_id" xsi:type="string">ls_mag/ls_order_management/shipping_item_id</item>
-                <item name="shipping_tax" xsi:type="string">ls_mag/ls_order_management/shipping_tax</item>
                 <item name="pickup_date_time_slot" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_date_time_slot</item>
                 <item name="pickup_time_interval" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_time_interval</item>
                 <item name="pickup_date_format" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_date_format</item>
                 <item name="pickup_time_format" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_time_format</item>
-                <item name="notification_pickup" xsi:type="string">ls_mag/webhooks/notification_pickup</item>
-                <item name="notification_collected" xsi:type="string">ls_mag/webhooks/notification_collected</item>
-                <item name="notification_cancel" xsi:type="string">ls_mag/webhooks/notification_cancel</item>
                 <item name="ls_mag_ls_industry_ls_choose_industry" xsi:type="string">ls_mag/ls_industry/ls_choose_industry</item>
+                <item name="ls_mag_product_availability" xsi:type="string">ls_mag/one_list/product_availability</item>
+                <item name="ls_mag_display_stores" xsi:type="string">ls_mag/one_list/display_stores</item>
             </argument>
         </arguments>
     </type>
