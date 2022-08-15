@@ -33,8 +33,10 @@ class IsServiceUpResolver implements ResolverInterface
     ) {
         $this->lsr = $lsr;
     }
+    
     /**
-     * Show club information
+     * Fetch store configuration value based on omni online/offline status.
+     *
      * @param Field $field
      * @param $context
      * @param ResolveInfo $info
