@@ -22,7 +22,7 @@ class IsServiceUpResolver implements ResolverInterface
         'ls_giftcard_active'      => LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
         'loyalty_points_active'   => LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
         'ls_recommend'            => LSR::LS_RECOMMEND_ACTIVE,
-        'item_availability_check' => LSR::SC_CART_CHECK_INVENTORY
+        'ls_mag_product_availability' => LSR::SC_CART_PRODUCT_AVAILABILITY
     ];
 
     /**
