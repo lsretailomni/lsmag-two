@@ -44,6 +44,10 @@ class DataAssignObserver implements ObserverInterface
      */
     private StoreHelper $storeHelper;
     /**
+     * @var Http
+     */
+    private Http $request;
+    /**
      * @var LSR
      */
     private LSR $lsr;
@@ -54,6 +58,7 @@ class DataAssignObserver implements ObserverInterface
      * @param BasketHelper $basketHelper
      * @param StoreHelper $storeHelper
      * @param QuoteIdMaskFactory $quoteIdMaskFactory
+     * @param Http $request
      * @param LSR $lsr
      */
     public function __construct(
@@ -106,8 +111,8 @@ class DataAssignObserver implements ObserverInterface
         if (!$errorMessage &&
             $quote->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect"
         ) {
-            $quoteIdMask = $this->quoteIdMaskFactory->create();
-            $maskedCartId      = $quoteIdMask->load(
+            $quoteIdMask        = $this->quoteIdMaskFactory->create();
+            $maskedCartId       = $quoteIdMask->load(
                 $quote->getId(),
                 'quote_id'
             )->getMaskedId();
@@ -192,7 +197,7 @@ class DataAssignObserver implements ObserverInterface
             )) ? $this->validatePickupDateRange($quote, $storeId) : '';
         }
 
-        $validatePaymentMethod      = $this->validatePaymentMethod($quote, $storeId);
+        $validatePaymentMethod = $this->validatePaymentMethod($quote);
 
         return ($stockInventoryCheckMsg) ?: ( ($validatePickupDateRangeMsg) ? : $validatePaymentMethod );
     }
@@ -289,11 +294,10 @@ class DataAssignObserver implements ObserverInterface
      * Validate click and collect payment methods with store configuration values
      *
      * @param $quote
-     * @param $storeId
      * @return \Magento\Framework\Phrase
      * @throws NoSuchEntityException
      */
-    public function validatePaymentMethod($quote, $storeId)
+    public function validatePaymentMethod($quote)
     {
         $shippingMethod        = $quote->getShippingAddress()->getShippingMethod();
         $selectedPaymentMethod = $quote->getPayment()->getMethod();
