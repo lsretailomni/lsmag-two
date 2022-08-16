@@ -165,6 +165,7 @@ abstract class AbstractReplicationTask
     public $recordsRemaining = 0;
     /** @var bool */
     public $cronStatus = false;
+
     /**
      * AbstractReplicationTask constructor.
      * @param ScopeConfigInterface $scope_config
@@ -715,7 +716,7 @@ abstract class AbstractReplicationTask
                 $appId
             );
 
-            $this->processResponseGivenRequest($request, $storeId);
+            $this->processResponseGivenRequest($request, $storeId, $isFirstTime);
         } else {
             $this->logger->debug('LS Retail validation failed for store id ' . $storeId);
         }
@@ -726,12 +727,13 @@ abstract class AbstractReplicationTask
      *
      * @param $request
      * @param $storeId
+     * @param $isFirstTime
      */
-    public function processResponseGivenRequest($request, $storeId)
+    public function processResponseGivenRequest($request, $storeId, $isFirstTime = 1)
     {
         try {
             $properties = $this->getProperties();
-            $response = $request->execute();
+            $response   = $request->execute();
 
             if (method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();
@@ -760,12 +762,14 @@ abstract class AbstractReplicationTask
                 }
                 $this->persistLastKey($lastKey, $storeId);
                 $this->persistMaxKey($maxKey, $storeId);
-                $this->rep_helper->updateCronStatus(
-                    $this->cronStatus,
-                    $this->getConfigPathStatus(),
-                    $storeId,
-                    false
-                );
+                if (!isset($isFirstTime) || $isFirstTime == 0) {
+                    $this->rep_helper->updateCronStatus(
+                        $this->cronStatus,
+                        $this->getConfigPathStatus(),
+                        $storeId,
+                        false
+                    );
+                }
             } else {
                 $this->logger->debug(
                     'No result found for ' .
