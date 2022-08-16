@@ -1068,10 +1068,10 @@ class ProductCreateTask
         $items   = $this->getDeletedItemsOnly($filters);
         if (!empty($items->getItems())) {
             foreach ($items->getItems() as $value) {
-                $sku         = $value->getNavId();
-                $productData = $this->productRepository->get($sku, true, $this->store->getId());
-                $productData = $this->setProductStatus($productData, 1);
+                $sku = $value->getNavId();
                 try {
+                    $productData = $this->productRepository->get($sku, true, $this->store->getId());
+                    $productData = $this->setProductStatus($productData, 1);
                     $this->productRepository->save($productData);
                 } catch (Exception $e) {
                     $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
