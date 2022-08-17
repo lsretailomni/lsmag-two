@@ -101,7 +101,7 @@ class GiftCardManagement
             $cartQuote = $this->quoteRepository->get($cartId);
         } catch (NoSuchEntityException $e) {
             throw new NoSuchEntityException(
-                __('Could not find a cart with ID %1', $cartId)
+                __('Could not find a cart with ID 1 %1', $cartId)
             );
         }
 
@@ -186,7 +186,7 @@ class GiftCardManagement
             $cartQuote = $this->quoteRepository->get($cartId);
         } catch (NoSuchEntityException $e) {
             throw new NoSuchEntityException(
-                __('Could not find a cart with ID %1', $cartId)
+                __('Could not find a cart with ID 2 %1', $cartId)
             );
         }
         if ($cartQuote->getLsGiftCardNo()) {

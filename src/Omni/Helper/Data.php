@@ -36,6 +36,7 @@ use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Sales\Model\Order\Creditmemo;
+use function PHPUnit\Framework\throwException;
 
 /**
  * Helper class that is used on multiple areas
@@ -781,34 +782,47 @@ class Data extends AbstractHelper
      * @param $userId
      * @param $scopeId
      * @param $storeId
+     * @param null $quote
      * @return mixed
      * @throws GraphQlAuthorizationException
      * @throws GraphQlInputException
      * @throws GraphQlNoSuchEntityException
      * @throws NoSuchEntityException
      */
-    public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId)
+    public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId, $quote = null)
     {
-        // Shopping Cart validation
-        $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
+        // Shopping Cart validation for graphql
+        if ($maskedCartId !== "") {
+            $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
 
-        $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
-        $cart   = $this->cartRepository->get($cartId);
+            $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
+            $quote  = $this->cartRepository->get($cartId);
+        }
 
-        $items = $cart->getAllVisibleItems();
+        if ($quote === "") {
+            throw new NoSuchEntityException(
+                __("Could not find a valid cart for current user session.")
+            );
+        }
 
-        list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
+        try {
+            $items = $quote->getAllVisibleItems();
 
-        if ($response) {
-            if (is_object($response)) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
+            list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
+
+            if ($response) {
+                if (is_object($response)) {
+                    if (!is_array($response->getInventoryResponse())) {
+                        $response = [$response->getInventoryResponse()];
+                    } else {
+                        $response = $response->getInventoryResponse();
+                    }
                 }
-            }
 
-            return $this->stockHelper->updateStockCollection($response, $stockCollection);
+                return $this->stockHelper->updateStockCollection($response, $stockCollection);
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
         }
 
         return null;

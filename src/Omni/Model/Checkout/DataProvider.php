@@ -71,6 +71,7 @@ class DataProvider implements ConfigProviderInterface
      * @param LSR $lsr
      * @param Session $checkoutSession
      * @param StockHelper $stockHelper
+     * @param StoreHelper $storeHelper
      */
     public function __construct(
         StoreManagerInterface $storeManager,

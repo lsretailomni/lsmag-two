@@ -107,4 +107,5 @@ type StoreConfig {
     show_general_offers: Boolean @doc(description:"Indicates whether general offers display is enabled (true) or disabled (false).")
     show_coupon_offers: Boolean @doc(description:"Indicates whether coupon offers display is enabled (true) or disabled (false).")
     loyalty_expiry_date_format: String @doc(description:"To fetch loyalty expiry date format.")
+    show_club_information : Boolean @resolver(class: "\\Ls\\CustomerGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether information like club name, loyality points earned, current loyalty level, next loyalty level, and points needed benefits of next level display is enabled (true) or disabled (false).")
 }

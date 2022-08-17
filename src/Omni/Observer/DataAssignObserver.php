@@ -13,8 +13,12 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\ValidatorException;
-use Magento\Quote\Model\QuoteIdMaskFactory;
+use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
+use Magento\Framework\Phrase;
 use Magento\Framework\App\Request\Http;
+use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 
 /**
  * Class for assigning and validating different extension attribute values
@@ -36,10 +40,6 @@ class DataAssignObserver implements ObserverInterface
      */
     private $basketHelper;
     /**
-     * @var QuoteIdMaskFactory
-     */
-    private QuoteIdMaskFactory $quoteIdMaskFactory;
-    /**
      * @var StoreHelper
      */
     private StoreHelper $storeHelper;
@@ -51,32 +51,36 @@ class DataAssignObserver implements ObserverInterface
      * @var LSR
      */
     private LSR $lsr;
+    /**
+     * @var QuoteIdToMaskedQuoteIdInterface
+     */
+    private $quoteIdToMaskedQuoteId;
 
     /**
      * @param Proxy $checkoutSession
      * @param Data $helper
      * @param BasketHelper $basketHelper
      * @param StoreHelper $storeHelper
-     * @param QuoteIdMaskFactory $quoteIdMaskFactory
      * @param Http $request
      * @param LSR $lsr
+     * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
      */
     public function __construct(
         Proxy $checkoutSession,
         Data $helper,
         BasketHelper $basketHelper,
         StoreHelper $storeHelper,
-        QuoteIdMaskFactory $quoteIdMaskFactory,
         Http $request,
-        LSR $lsr
+        LSR $lsr,
+        QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
     ) {
         $this->checkoutSession      = $checkoutSession;
         $this->helper               = $helper;
         $this->basketHelper         = $basketHelper;
         $this->storeHelper          = $storeHelper;
-        $this->quoteIdMaskFactory   = $quoteIdMaskFactory;
         $this->request              = $request;
         $this->lsr                  = $lsr;
+        $this->quoteIdToMaskedQuoteId = $quoteIdToMaskedQuoteId;
     }
 
     /***
@@ -111,11 +115,7 @@ class DataAssignObserver implements ObserverInterface
         if (!$errorMessage &&
             $quote->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect"
         ) {
-            $quoteIdMask        = $this->quoteIdMaskFactory->create();
-            $maskedCartId       = $quoteIdMask->load(
-                $quote->getId(),
-                'quote_id'
-            )->getMaskedId();
+            $maskedCartId = $this->quoteIdToMaskedQuoteId->execute($quote->getId());
 
             $errorMessage = $this->validateClickAndCollectOrder(
                 $quote,
@@ -171,8 +171,7 @@ class DataAssignObserver implements ObserverInterface
      */
     public function validateClickAndCollectOrder($quote, $maskedCartId, $userId, $scopeId, $storeId)
     {
-        if ($this->request->getHeader("Content-Type") == "application/json"
-            && strpos($this->request->getOriginalPathInfo(), "graphql") === true) {
+        if (str_contains($this->request->getOriginalPathInfo(), "graphql")) {
             //Stock and Date range validation in graphql based on store configuration
 
             $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
@@ -189,7 +188,7 @@ class DataAssignObserver implements ObserverInterface
             $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
                 LSR::LSR_STOCK_VALIDATION_ACTIVE,
                 $this->lsr->getCurrentStoreId()
-            )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
+            )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId, $quote) : '';
 
             $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(
                 LSR::LSR_DATETIME_RANGE_VALIDATION_ACTIVE,
@@ -208,14 +207,14 @@ class DataAssignObserver implements ObserverInterface
      * @param $userId
      * @param $scopeId
      * @param $storeId
-     * @return \Magento\Framework\Phrase
-     * @throws LocalizedException
+     * @param null $quote
+     * @return Phrase
      * @throws NoSuchEntityException
-     * @throws \Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException
-     * @throws \Magento\Framework\GraphQl\Exception\GraphQlInputException
-     * @throws \Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException
+     * @throws GraphQlAuthorizationException
+     * @throws GraphQlInputException
+     * @throws GraphQlNoSuchEntityException
      */
-    public function storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId)
+    public function storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId, $quote = null)
     {
         $message = null;
         if (empty($storeId)) {
@@ -226,7 +225,8 @@ class DataAssignObserver implements ObserverInterface
             $maskedCartId,
             $userId,
             $scopeId,
-            $storeId
+            $storeId,
+            $quote
         );
 
         if (!$stockCollection) {
