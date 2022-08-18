@@ -127,7 +127,8 @@ type SelectedShippingMethod {
 type StoreInfo @doc(description: "Defines the pick up store id and store name.") {
     store_id: String @doc(description: "To fetch store id")
     store_name: String @doc(description: "To fetch store name")
-    pickup_date_timeslot: String @doc(description: "To fetch pickup date and time")
+    pickup_date: String @doc(description: "To fetch pickup date ")
+    pickup_time: String @doc(description: "To fetch pickup time")
 }
 
 type StoreHoursData {

@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Observer;
 
-use Carbon\Carbon;
 use \Ls\Core\Model\LSR;
 use Magento\Checkout\Model\Session\Proxy;
 use \Ls\Omni\Helper\Data;
@@ -161,7 +160,7 @@ class DataAssignObserver implements ObserverInterface
      * @param $userId
      * @param $scopeId
      * @param $storeId
-     * @return \Magento\Framework\Phrase|null
+     * @return Phrase
      * @throws LocalizedException
      * @throws NoSuchEntityException
      * @throws \Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException
@@ -172,33 +171,24 @@ class DataAssignObserver implements ObserverInterface
     public function validateClickAndCollectOrder($quote, $maskedCartId, $userId, $scopeId, $storeId)
     {
         if (str_contains($this->request->getOriginalPathInfo(), "graphql")) {
-            //Stock and Date range validation in graphql based on store configuration
+            //Stock validation in graphql based on store configuration
 
             $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
                 LSR::LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE,
                 $this->lsr->getCurrentStoreId()
             )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
 
-            $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(
-                LSR::LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE,
-                $this->lsr->getCurrentStoreId()
-            )) ? $this->validatePickupDateRange($quote, $storeId) : '';
-        } else { //Stock and Date range validation in frontend based on store configuration
+        } else { //Stock validation in frontend based on store configuration
 
             $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
                 LSR::LSR_STOCK_VALIDATION_ACTIVE,
                 $this->lsr->getCurrentStoreId()
             )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId, $quote) : '';
-
-            $validatePickupDateRangeMsg = ($this->lsr->getStoreConfig(
-                LSR::LSR_DATETIME_RANGE_VALIDATION_ACTIVE,
-                $this->lsr->getCurrentStoreId()
-            )) ? $this->validatePickupDateRange($quote, $storeId) : '';
         }
 
         $validatePaymentMethod = $this->validatePaymentMethod($quote);
 
-        return ($stockInventoryCheckMsg) ?: ( ($validatePickupDateRangeMsg) ? : $validatePaymentMethod );
+        return $stockInventoryCheckMsg ?? $validatePaymentMethod ;
     }
 
     /** To validate cart item inventory in store
@@ -238,55 +228,6 @@ class DataAssignObserver implements ObserverInterface
                 $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
             }
         }
-        return $message;
-    }
-
-    /**
-     * Validate pickup date and time range
-     *
-     * @param $quote
-     * @param $storeId
-     * @return \Magento\Framework\Phrase
-     * @throws \Zend_Log_Exception
-     * @throws NoSuchEntityException
-     */
-    public function validatePickupDateRange($quote, $storeId)
-    {
-        $message = null;
-        $validDateTime = false;
-        if ($storeId && !empty($quote->getPickupDateTimeslot())) {
-            $pickupDateTimeArr = explode(" ", $quote->getPickupDateTimeslot());
-
-            $pickupTimeStamp = Carbon::parse($quote->getPickupDateTimeslot());
-            $websiteId = $quote->getStoreId();
-            $store = $this->storeHelper->getStore($websiteId, $storeId);
-            $storeHoursArray = $this->storeHelper->formatDateTimeSlotsValues(
-                $store->getStoreHours()
-            );
-
-            foreach ($storeHoursArray as $date => $hoursArr) {
-                $openHoursCnt = count($hoursArr);
-                if ($date == "Today") {
-                    $date = $this->storeHelper->getCurrentDate();
-                }
-
-                if ($openHoursCnt > 0 && $date == $pickupDateTimeArr[0]) {
-                    $validDateTime = true;
-                    $storeOpeningTimeStamp = Carbon::parse($date." ".$hoursArr[0]);
-                    $storeClosingTimeStamp = Carbon::parse($date." ".$hoursArr[$openHoursCnt-1]);
-
-                    if (!$pickupTimeStamp->between($storeOpeningTimeStamp, $storeClosingTimeStamp, true)) {
-                        $validDateTime = false;
-                    }
-                    break;
-                }
-            }
-        }
-
-        if (!$validDateTime) {
-            $message = __('Please select a date & time within store opening hours.');
-        }
-
         return $message;
     }
 
