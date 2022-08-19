@@ -247,10 +247,11 @@ class DataProvider implements ConfigProviderInterface
      * Available Stores only enabled
      *
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function availableStoresOnlyEnabled()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CHECKOUT_ITEM_AVAILABILITY);
+        return $this->scopeConfig->getValue(self::XPATH_CHECKOUT_ITEM_AVAILABILITY, $this->lsr->getCurrentStoreId());
     }
 
     /**

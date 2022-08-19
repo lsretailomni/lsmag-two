@@ -530,7 +530,9 @@
         </section>
         <section id="omni_clickandcollect"
                  sortOrder="2"
-                 showInDefault="1">
+                 showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="0">
             <tab>ls_retail</tab>
             <label>Click And Collect</label>
             <resource>Ls_Core::config</resource>
