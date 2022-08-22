@@ -208,7 +208,7 @@ class DataAssignObserver implements ObserverInterface
     {
         $message = null;
         if (empty($storeId)) {
-            $message = __('Please select a store to proceed.');
+            return __('Please select a store to proceed.');
         }
 
         $stockCollection = $this->helper->fetchCartAndReturnStock(
