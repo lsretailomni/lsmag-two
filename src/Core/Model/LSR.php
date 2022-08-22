@@ -657,52 +657,56 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get default google map api key from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getGoogleMapsApiKey()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_GOOGLE_API_KEY,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
     /**
      * Get default latitude from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultLatitude()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
     /**
      * Get default longitude from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultLongitude()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
     /**
      * Get default default zoom from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultZoom()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 

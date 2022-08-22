@@ -251,7 +251,11 @@ class DataProvider implements ConfigProviderInterface
      */
     public function availableStoresOnlyEnabled()
     {
-        return $this->scopeConfig->getValue(self::XPATH_CHECKOUT_ITEM_AVAILABILITY, $this->lsr->getCurrentStoreId());
+        return $this->scopeConfig->getValue(
+            self::XPATH_CHECKOUT_ITEM_AVAILABILITY,
+            ScopeInterface::SCOPE_STORE,
+            $this->lsr->getCurrentStoreId()
+        );
     }
 
     /**
