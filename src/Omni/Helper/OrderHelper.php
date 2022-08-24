@@ -311,7 +311,7 @@ class OrderHelper extends AbstractHelper
             $method = 'setAddress' . strval($i + 1);
             $omniAddress->$method($street);
         }
-        $region = substr($magentoAddress->getRegion(), 0, 30);
+        $region = $magentoAddress->getRegion() ? substr($magentoAddress->getRegion(), 0, 30) : null;
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
