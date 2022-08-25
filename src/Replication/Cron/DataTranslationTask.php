@@ -350,8 +350,10 @@ class DataTranslationTask
     }
 
     /**
-     * @param $storeId
-     * @param $langCode
+     * Data translation for attribute labels
+     *
+     * @param int $storeId
+     * @param string $langCode
      */
     public function updateAttributes($storeId, $langCode)
     {
@@ -376,7 +378,7 @@ class DataTranslationTask
                 $attribute       = $this->eavAttributeFactory->create();
                 $attributeObject = $attribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
                 if (!empty($attributeObject->getId())) {
-                    $flag = false;
+                    $flag           = false;
                     $frontendLabels = $attributeObject->getFrontendLabels();
 
                     foreach ($frontendLabels as &$frontendLabel) {
