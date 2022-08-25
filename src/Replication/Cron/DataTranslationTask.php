@@ -21,6 +21,7 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCo
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
+use Magento\Eav\Api\Data\AttributeFrontendLabelInterfaceFactory;
 use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
 use Magento\Eav\Model\Entity\Attribute\OptionLabel;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
@@ -120,11 +121,12 @@ class DataTranslationTask
      */
     public $replAttributeOptionValueRepositoryInterface;
 
-    /** @var ReplImageLinkCollectionFactory */
-    public $replImageLinkCollectionFactory;
+    /**
+     * @var AttributeFrontendLabelInterfaceFactory
+     */
+    public $frontendLabelInterfaceFactory;
 
     /**
-     * DataTranslationTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
      * @param CategoryCollectionFactory $categoryCollectionFactory
@@ -140,6 +142,7 @@ class DataTranslationTask
      * @param AttributeOptionManagementInterface $attributeOptionManagement
      * @param AttributeOptionLabelInterfaceFactory $optionLabelFactory
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+     * @param AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -156,7 +159,8 @@ class DataTranslationTask
         AttributeFactory $eavAttributeFactory,
         AttributeOptionManagementInterface $attributeOptionManagement,
         AttributeOptionLabelInterfaceFactory $optionLabelFactory,
-        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
+        AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory
     ) {
         $this->replicationHelper                           = $replicationHelper;
         $this->dataTranslationRepository                   = $dataTranslationRepository;
@@ -173,6 +177,7 @@ class DataTranslationTask
         $this->attributeOptionManagement                   = $attributeOptionManagement;
         $this->optionLabelFactory                          = $optionLabelFactory;
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
+        $this->frontendLabelInterfaceFactory               = $frontendLabelInterfaceFactory;
     }
 
     /**
@@ -371,8 +376,23 @@ class DataTranslationTask
                 $attribute       = $this->eavAttributeFactory->create();
                 $attributeObject = $attribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
                 if (!empty($attributeObject->getId())) {
-                    $labels[$storeId] = $dataTranslation->getText();
-                    $attributeObject->setData('store_labels', $labels);
+                    $flag = false;
+                    $frontendLabels = $attributeObject->getFrontendLabels();
+
+                    foreach ($frontendLabels as &$frontendLabel) {
+                        if ($frontendLabel->getStoreId() == $storeId) {
+                            $frontendLabel->setLabel($dataTranslation->getText());
+                            $flag = true;
+                            break;
+                        }
+                    }
+
+                    if (!$flag) {
+                        $frontendLabels[] = $this->frontendLabelInterfaceFactory->create()
+                            ->setStoreId($storeId)
+                            ->setLabel($dataTranslation->getText());
+                    }
+                    $attributeObject->setData('frontend_labels', $frontendLabels);
                     $this->productAttributeRepository->save($attributeObject);
                 }
             } catch (Exception $e) {
