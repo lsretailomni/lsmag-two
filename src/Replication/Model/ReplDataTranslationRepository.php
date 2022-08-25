@@ -80,6 +80,7 @@ class ReplDataTranslationRepository implements ReplDataTranslationRepositoryInte
         }
         $collection->setCurPage( $criteria->getCurrentPage() );
         $collection->setPageSize( $criteria->getPageSize() );
+        $sql = $collection->getSelect()->__toString();
         $objects = [ ];
         foreach ( $collection as $object_model ) {
             $objects[] = $object_model;

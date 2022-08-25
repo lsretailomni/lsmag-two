@@ -32,6 +32,7 @@ use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity;
 use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
@@ -372,7 +373,7 @@ class AttributesCreateTask
                 if (!$attribute || !$attribute->getAttributeId()) {
                     $attributeData = [
                         'attribute_code'                => $formattedCode,
-                        'is_global'                     => 1,
+                        'is_global'                     => ScopedAttributeInterface::SCOPE_STORE,
                         'frontend_label'                => ucwords(strtolower($code)),
                         'frontend_input'                => 'multiselect',
                         'source_model'                  => Table::class,
@@ -503,7 +504,7 @@ class AttributesCreateTask
             $frontendInput  = $valueTypeArray[$replAttribute->getValueType()];
             $attributeData  = [
                 'attribute_code'                => $formattedCode,
-                'is_global'                     => 1,
+                'is_global'                     => ScopedAttributeInterface::SCOPE_STORE,
                 'frontend_label'                => $replAttribute->getDescription() ?: $replAttribute->getCode(),
                 'frontend_input'                => $frontendInput,
                 'is_unique'                     => 0,

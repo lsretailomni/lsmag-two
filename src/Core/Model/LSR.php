@@ -167,6 +167,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_TRANSLATION_ID_HIERARCHY_NODE = 'T0010000921-F0000000004';
     const SC_TRANSLATION_ID_ATTRIBUTE = 'T0010000784-F0000000005';
     const SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE = 'T0010000785-F0000000003';
+    const SC_TRANSLATION_ID_PRODUCT_ATTRIBUTE_VALUE = 'T0010000786-F0000000003';
     const SC_ITEM_HTML_JOB_CODE = 'repl_html_translation';
 
     const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
