@@ -97,3 +97,15 @@ input SalesEntryFilterInput @doc(description: "Identifies the filter to use for 
     id: String @doc(description: "Filter by Document Id")
     type: String @doc(description: "Order type such as receipt e.t.c")
 }
+
+type StoreConfig {
+    enable_loyalty_elements : Boolean @doc(description:"Indicates whether loyalty elements block display is enabled (true) or disabled (false).")
+    show_loyalty_offers : Boolean @doc(description:"Indicates whether loyalty offers display is enabled (true) or disabled (false).")
+    use_static_block : Boolean @doc(description:"Indicates static block display is enabled (true) or disabled (false).")
+    show_point_offers: Boolean @doc(description:"Indicates whether point offers display is enabled (true) or disabled (false).")
+    show_member_offers: Boolean @doc(description:"Indicates whether member offers display is enabled (true) or disabled (false).")
+    show_general_offers: Boolean @doc(description:"Indicates whether general offers display is enabled (true) or disabled (false).")
+    show_coupon_offers: Boolean @doc(description:"Indicates whether coupon offers display is enabled (true) or disabled (false).")
+    loyalty_expiry_date_format: String @doc(description:"To fetch loyalty expiry date format.")
+    show_club_information : Boolean @resolver(class: "\\Ls\\CustomerGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether information like club name, loyality points earned, current loyalty level, next loyalty level, and points needed benefits of next level display is enabled (true) or disabled (false).")
+}

@@ -75,8 +75,10 @@ class HidePaymentMethods implements ObserverInterface
             $quote              = $this->basketHelper->checkoutSession->getQuote();
             $shippingAmount     = $quote->getShippingAddress()->getShippingAmount();
             $shippingMethod     = $quote->getShippingAddress()->getShippingMethod();
-            $paymentOptionArray = explode(',',
-                $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION, $this->lsr->getCurrentStoreId()));
+            $paymentOptionArray = explode(
+                ',',
+                $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION, $this->lsr->getCurrentStoreId())
+            );
             if (!empty($basketData)) {
                 $orderTotal      = $this->data->getOrderBalance(
                     $quote->getLsGiftCardAmountUsed(),

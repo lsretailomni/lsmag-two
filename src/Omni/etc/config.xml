@@ -13,15 +13,18 @@
                 <show_return_policy>0</show_return_policy>
             </return_policy>
             <ls_loyaltypoints>
+                <active>1</active>
                 <cart>1</cart>
                 <checkout>1</checkout>
             </ls_loyaltypoints>
             <ls_coupons>
+                <active>1</active>
                 <cart>1</cart>
                 <checkout>1</checkout>
                 <coupon_recommendations>1</coupon_recommendations>
             </ls_coupons>
             <ls_giftcard>
+                <active>1</active>
                 <cart>1</cart>
                 <checkout>1</checkout>
             </ls_giftcard>
@@ -39,7 +42,10 @@
             <ls_order_management>
                 <shipping_item_id>66010</shipping_item_id>
                 <shipping_tax>0.00</shipping_tax>
+                <stock_validation_active>0</stock_validation_active>
                 <sync_order_statuses>canceled,fraud,payment_review</sync_order_statuses>
+                <stock_validation_active>0</stock_validation_active>
+                <graphql_stock_validation_active>1</graphql_stock_validation_active>
             </ls_order_management>
             <delivery_pickup_date_time>
                 <pickup_date_time_slot>0</pickup_date_time_slot>

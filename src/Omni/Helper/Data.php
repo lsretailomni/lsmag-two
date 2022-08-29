@@ -25,12 +25,18 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\DirectoryList;
+use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
+use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Sales\Model\Order\Creditmemo;
+use function PHPUnit\Framework\throwException;
 
 /**
  * Helper class that is used on multiple areas
@@ -100,6 +106,18 @@ class Data extends AbstractHelper
      * @var ReplStoreTenderTypeRepositoryInterface
      */
     public $replStoreTenderTypeRepository;
+    /**
+     * @var GetCartForUser
+     */
+    private GetCartForUser $getCartForUser;
+    /**
+     * @var MaskedQuoteIdToQuoteIdInterface
+     */
+    private MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
+    /**
+     * @var StockHelper
+     */
+    private StockHelper $stockHelper;
 
     /**
      * Data constructor.
@@ -117,6 +135,9 @@ class Data extends AbstractHelper
      * @param DateTime $date
      * @param WriterInterface $configWriter
      * @param DirectoryList $directoryList
+     * @param StockHelper $stockHelper
+     * @param GetCartForUser $getCartForUser
+     * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
      * @param ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
      */
     public function __construct(
@@ -134,6 +155,9 @@ class Data extends AbstractHelper
         DateTime $date,
         WriterInterface $configWriter,
         DirectoryList $directoryList,
+        StockHelper $stockHelper,
+        GetCartForUser $getCartForUser,
+        MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
         ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
     ) {
         $this->storeRepository               = $storeRepository;
@@ -149,6 +173,9 @@ class Data extends AbstractHelper
         $this->date                          = $date;
         $this->configWriter                  = $configWriter;
         $this->directoryList                 = $directoryList;
+        $this->maskedQuoteIdToQuoteId        = $maskedQuoteIdToQuoteId;
+        $this->getCartForUser                = $getCartForUser;
+        $this->stockHelper                   = $stockHelper;
         $this->replStoreTenderTypeRepository = $storeTenderTypeRepository;
         parent::__construct($context);
     }
@@ -177,7 +204,7 @@ class Data extends AbstractHelper
     {
         $storeHours = null;
         try {
-            $cacheId        = LSR::STORE . $storeId;
+            $cacheId        = LSR::STORE_HOURS . $storeId;
             $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($cachedResponse) {
@@ -558,14 +585,22 @@ class Data extends AbstractHelper
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
-                return $this->lsr->getStoreConfig(
+                return ( $this->lsr->getStoreConfig(
+                    LSR::LS_ENABLE_COUPON_ELEMENTS,
+                    $this->lsr->getCurrentStoreId()
+                ) && $this->lsr->getStoreConfig(
                     LSR::LS_COUPONS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
+                )
                 );
             }
-            return $this->lsr->getStoreConfig(
+            return ( $this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
                 LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;
@@ -738,5 +773,58 @@ class Data extends AbstractHelper
         //@codingStandardsIgnoreEnd
 
         return $request;
+    }
+
+    /**
+     * Fetch cart and returns stock
+     *
+     * @param $maskedCartId
+     * @param $userId
+     * @param $scopeId
+     * @param $storeId
+     * @param null $quote
+     * @return mixed
+     * @throws GraphQlAuthorizationException
+     * @throws GraphQlInputException
+     * @throws GraphQlNoSuchEntityException
+     * @throws NoSuchEntityException
+     */
+    public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId, $quote = null)
+    {
+        // Shopping Cart validation for graphql
+        if ($maskedCartId !== "") {
+            $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
+
+            $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
+            $quote  = $this->cartRepository->get($cartId);
+        }
+
+        if ($quote === "") {
+            throw new NoSuchEntityException(
+                __("Could not find a valid cart for current user session.")
+            );
+        }
+
+        try {
+            $items = $quote->getAllVisibleItems();
+
+            list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
+
+            if ($response) {
+                if (is_object($response)) {
+                    if (!is_array($response->getInventoryResponse())) {
+                        $response = [$response->getInventoryResponse()];
+                    } else {
+                        $response = $response->getInventoryResponse();
+                    }
+                }
+
+                return $this->stockHelper->updateStockCollection($response, $stockCollection);
+            }
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return null;
     }
 }

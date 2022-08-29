@@ -120,6 +120,17 @@ type StoreData {
     store_hours: [StoreHoursData] @doc(description: "Array of all types of store operating hours.")
 }
 
+type SelectedShippingMethod {
+    pickup_store: StoreInfo @resolver(class: "Ls\\Hospitality\\Model\\Resolver\\Cart\\StoreInfoOutput") @doc(description: "Fetch Pickup StoreId from Quote.")
+}
+
+type StoreInfo @doc(description: "Defines the pick up store id and store name.") {
+    store_id: String @doc(description: "To fetch store id")
+    store_name: String @doc(description: "To fetch store name")
+    pickup_date: String @doc(description: "To fetch pickup date ")
+    pickup_time: String @doc(description: "To fetch pickup time")
+}
+
 type StoreHoursData {
     day_of_week: String @doc(description: "Day of week.")
     hour_types: [HourType] @doc(description: "Array of different store hour types.")
@@ -153,9 +164,39 @@ type DatesData {
 }
 
 type StoreConfig {
+    maps_api_key: String @doc(description: "To fetch Google Maps API key.")
+    default_latitude: Float @doc(description: "To fetch default latitude.")
+    default_longitude: Float @doc(description: "To fetch default longitude.")
+    default_zoom: Float @doc(description: "To fetch default zoom value.")
+    items_availability: Boolean @doc(description: "Indicates whether to show only those stores where all the cart items are in stock (true) or all the stores (false) for click and collect on checkout.")
+    click_and_collect_payment_methods: String @doc(description: "To fetch the configured payment methods for click and collect.")
+    ls_recommend: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether LS Recommend display is enabled (true) or disabled (false).")
+    ls_recommend_product: Boolean @doc(description:"Indicates whether LS Recommend display on product page is enabled (true) or disabled (false).")
+    ls_recommend_cart: Boolean @doc(description:"Indicates whether LS Recommend display on cart is enabled (true) or disabled (false).")
+    ls_recommend_checkout: Boolean @doc(description:"Indicates whether LS Recommend display on checkout is enabled (true) or disabled (false).")
+    loyalty_points_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether loyalty elements display is enabled (true) or disabled (false) in cart and checkout based on omni connection online/offline mode.")
+    loyalty_points_cart: Boolean @doc(description:"Indicates whether loyalty points display on cart is enabled (true) or disabled (false).")
+    loyalty_points_checkout: Boolean @doc(description:"Indicates whether loyalty points display on checkout is enabled (true) or disabled (false).")
+    ls_coupons_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether coupon code elements display is enabled (true) or disabled (false) in cart and checkout based on omni connection online/offline mode.")
+    ls_coupons_cart: Boolean @doc(description:"Indicates whether coupons display on cart is enabled (true) or disabled (false).")
+    ls_coupons_checkout: Boolean @doc(description:"Indicates whether coupons display on checkout is enabled (true) or disabled (false).")
+    ls_giftcard_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether gift card elements display is enabled (true) or disabled (false) in cart and checkout based on omni connection online/offline mode.")
+    ls_giftcard_cart: Boolean @doc(description:"Indicates whether giftcard display on cart is enabled (true) or disabled (false).")
+    ls_giftcard_checkout: Boolean @doc(description:"Indicates whether giftcard display on checkout is enabled (true) or disabled (false).")
+    coupon_recommendations: Boolean @doc(description:"Indicates whether coupon recommendations display in cart and checkout is enabled (true) or disabled (false).")
+    ls_discount_mixandmatch_limit: Int @doc(description:"Discounted products display limit on PDP.")
+    ls_discounts_product_page: Boolean @doc(description:"Indicates whether discounts on product page display is enabled (true) or disabled (false).")
+    ls_discounts_login_register_notice: Boolean @doc(description:"Indicates whether Login/Register display is enabled (true) or disabled (false).")
+    opening_hours_time_format: String @doc(description:"Opening Hours time format.")
+    pickup_date_time_slot: Boolean @doc(description:"Indicates whether delivery pickup date time slot display is enabled (true) or disabled (false).")
+    pickup_time_interval: Int @doc(description:"Pickup time interval.")
+    pickup_date_format: String @doc(description:"Pickup date format.")
+    pickup_time_format: String @doc(description:"Pickup time format.")
     ls_mag_ls_industry_ls_choose_industry: String @doc(description: "To fetch currently configured industry.")
+    ls_mag_product_availability: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether to show a link in product detail page for product availability (true) or not (false) based on omni connection online/offline mode.")
+    ls_mag_display_stores: Boolean @doc(description:"Indicates whether to show all the stores (true) or only click and collect stores for product availability (false).")
 }
 
 input SetPaymentMethodOnCartInput {
-    anonymous: Boolean @doc(description: "Set payment method without shipping and billing address.")
+    anonymous: Boolean @doc(description: "Indicates whether set payment method without shipping and billing address is enabled (true) or disabled (false).")
 }

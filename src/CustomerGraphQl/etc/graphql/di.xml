@@ -16,4 +16,19 @@
                 type="Ls\Customer\Plugin\CustomerTokenServicePlugin"
                 sortOrder="1"/>
     </type>
+
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData">
+                <item name="enable_loyalty_elements" xsi:type="string">ls_mag/loyalty/enable_loyalty_elements</item>
+                <item name="show_loyalty_offers" xsi:type="string">ls_mag/loyalty/show_loyalty_offers</item>
+                <item name="use_static_block" xsi:type="string">ls_mag/loyalty/use_static_block</item>
+                <item name="show_point_offers" xsi:type="string">ls_mag/loyalty/show_point_offers</item>
+                <item name="show_member_offers" xsi:type="string">ls_mag/loyalty/show_member_offers</item>
+                <item name="show_general_offers" xsi:type="string">ls_mag/loyalty/show_general_offers</item>
+                <item name="show_coupon_offers" xsi:type="string">ls_mag/loyalty/show_coupon_offers</item>
+                <item name="loyalty_expiry_date_format" xsi:type="string">ls_mag/loyalty/loyalty_expiry_date_format</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
