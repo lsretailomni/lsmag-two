@@ -21,6 +21,7 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory as CategoryCo
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
+use Magento\Eav\Api\Data\AttributeFrontendLabelInterfaceFactory;
 use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
 use Magento\Eav\Model\Entity\Attribute\OptionLabel;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
@@ -35,7 +36,6 @@ use Magento\Store\Api\Data\StoreInterface;
  */
 class DataTranslationTask
 {
-
     /**
      * @var ReplicationHelper
      */
@@ -122,7 +122,11 @@ class DataTranslationTask
     public $replAttributeOptionValueRepositoryInterface;
 
     /**
-     * DataTranslationTask constructor.
+     * @var AttributeFrontendLabelInterfaceFactory
+     */
+    public $frontendLabelInterfaceFactory;
+
+    /**
      * @param ReplicationHelper $replicationHelper
      * @param ReplDataTranslationRepositoryInterface $dataTranslationRepository
      * @param CategoryCollectionFactory $categoryCollectionFactory
@@ -138,6 +142,7 @@ class DataTranslationTask
      * @param AttributeOptionManagementInterface $attributeOptionManagement
      * @param AttributeOptionLabelInterfaceFactory $optionLabelFactory
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+     * @param AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -154,7 +159,8 @@ class DataTranslationTask
         AttributeFactory $eavAttributeFactory,
         AttributeOptionManagementInterface $attributeOptionManagement,
         AttributeOptionLabelInterfaceFactory $optionLabelFactory,
-        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
+        ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
+        AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory
     ) {
         $this->replicationHelper                           = $replicationHelper;
         $this->dataTranslationRepository                   = $dataTranslationRepository;
@@ -171,6 +177,7 @@ class DataTranslationTask
         $this->attributeOptionManagement                   = $attributeOptionManagement;
         $this->optionLabelFactory                          = $optionLabelFactory;
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
+        $this->frontendLabelInterfaceFactory               = $frontendLabelInterfaceFactory;
     }
 
     /**
@@ -202,6 +209,7 @@ class DataTranslationTask
                         $this->updateItem($store->getId(), $langCode);
                         $this->updateAttributes($store->getId(), $langCode);
                         $this->updateAttributeOptionValue($store->getId(), $langCode);
+                        $this->updateProductAttributesValues($store->getId(), $langCode);
                     } else {
                         $this->cronStatus = true;
                     }
@@ -291,8 +299,61 @@ class DataTranslationTask
     }
 
     /**
-     * @param $storeId
-     * @param $langCode
+     * Update Product attribute values
+     *
+     * @param int $storeId
+     * @param string $langCode
+     */
+    public function updateProductAttributesValues($storeId, $langCode)
+    {
+        $filters    = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'LanguageCode', 'value' => $langCode, 'condition_type' => 'eq'],
+            [
+                'field'          => 'main_table.TranslationId',
+                'value'          => LSR::SC_TRANSLATION_ID_PRODUCT_ATTRIBUTE_VALUE,
+                'condition_type' => 'eq'
+            ],
+            ['field' => 'text', 'value' => true, 'condition_type' => 'notnull'],
+            ['field' => 'key', 'value' => true, 'condition_type' => 'notnull']
+        ];
+        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        $collection = $this->replDataTranslationCollectionFactory->create();
+        $this->replicationHelper->setCollectionPropertiesPlusJoinsForProductAttributeValuesDataTranslation(
+            $collection,
+            $criteria
+        );
+        /** @var ReplDataTranslation $dataTranslation */
+        foreach ($collection as $dataTranslation) {
+            try {
+                $keys          = explode(';', $dataTranslation->getKey());
+                $sku           = $keys[0] == 'Item' ? $keys[1] : $keys[1] . '-' . $keys[2];
+                $productData   = $this->productRepository->get($sku, true, $storeId);
+                $formattedCode = $this->replicationHelper->formatAttributeCode($keys[4]);
+                if (isset($productData)) {
+                    $productData->addAttributeUpdate($formattedCode, $dataTranslation->getText(), $storeId);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
+                $dataTranslation->setData('is_failed', 1);
+            }
+            $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
+            $dataTranslation->setData('processed', 1);
+            $dataTranslation->setData('is_updated', 0);
+            $this->dataTranslationRepository->save($dataTranslation);
+        }
+
+        if ($collection->getSize() == 0) {
+            $this->cronStatus = true;
+        }
+    }
+
+    /**
+     * Data translation for attribute labels
+     *
+     * @param int $storeId
+     * @param string $langCode
      */
     public function updateAttributes($storeId, $langCode)
     {
@@ -317,8 +378,23 @@ class DataTranslationTask
                 $attribute       = $this->eavAttributeFactory->create();
                 $attributeObject = $attribute->loadByCode(\Magento\Catalog\Model\Product::ENTITY, $formattedCode);
                 if (!empty($attributeObject->getId())) {
-                    $labels[$storeId] = $dataTranslation->getText();
-                    $attributeObject->setData('store_labels', $labels);
+                    $flag           = false;
+                    $frontendLabels = $attributeObject->getFrontendLabels();
+
+                    foreach ($frontendLabels as &$frontendLabel) {
+                        if ($frontendLabel->getStoreId() == $storeId) {
+                            $frontendLabel->setLabel($dataTranslation->getText());
+                            $flag = true;
+                            break;
+                        }
+                    }
+
+                    if (!$flag) {
+                        $frontendLabels[] = $this->frontendLabelInterfaceFactory->create()
+                            ->setStoreId($storeId)
+                            ->setLabel($dataTranslation->getText());
+                    }
+                    $attributeObject->setData('frontend_labels', $frontendLabels);
                     $this->productAttributeRepository->save($attributeObject);
                 }
             } catch (Exception $e) {
