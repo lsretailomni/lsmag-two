@@ -330,7 +330,7 @@ class OrderHelper extends AbstractHelper
      */
     public function getParameterValues($orderObj, $param)
     {
-        $getParam = 'get'.$param;
+        $getParam = 'get' . $param;
         if (!property_exists($orderObj, $param)) {
             foreach ($orderObj as $order) {
                 $value = $order->$getParam();
@@ -559,7 +559,7 @@ class OrderHelper extends AbstractHelper
     public function isAuthorizedForOrder($order)
     {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
-        $order = $this->getOrder();
+        $order       = $this->getOrder();
         $orderCardId = $order->getCardId();
         if ($cardId == $orderCardId) {
             return true;
@@ -605,6 +605,9 @@ class OrderHelper extends AbstractHelper
             $type == DocumentIdType::RECEIPT
         ) {
             $response = $this->getSalesOrderByOrderId($docId);
+            if (empty($response)) {
+                $response = $this->getOrderDetailsAgainstId($docId, $type);
+            }
         } else {
             $response = $this->getOrderDetailsAgainstId($docId, $type);
         }
@@ -725,7 +728,7 @@ class OrderHelper extends AbstractHelper
     ) {
         $orders = null;
         try {
-            $orderStatuses = $this->lsr->getStoreConfig(
+            $orderStatuses   = $this->lsr->getStoreConfig(
                 LSR::LSR_RESTRICTED_ORDER_STATUSES,
                 $this->lsr->getCurrentStoreId()
             );
@@ -756,7 +759,7 @@ class OrderHelper extends AbstractHelper
             }
 
             $searchCriteria = $criteriaBuilder->create();
-            $orders = $this->orderRepository->getList($searchCriteria)->getItems();
+            $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
 
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
