@@ -155,6 +155,11 @@ class AbstractOrderController
             }
         }
 
+        if (empty($transactions)) {
+            $this->orderHelper->registerGivenValueInRegistry('has_return_sales', false);
+            return;
+        }
+
         if (!is_array($transactions)) {
             $transactions = [$transactions];
         }
