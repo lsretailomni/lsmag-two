@@ -143,16 +143,28 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Loyalty Points</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_coupons"
@@ -166,21 +178,36 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Coupons</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="coupon_recommendations" translate="label" type="select" sortOrder="4" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show Coupon Recommendations on Cart/Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_giftcard"
@@ -194,16 +221,28 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Gift Card</label>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="cart" translate="label" type="select" sortOrder="2" showInDefault="1"
                        showInWebsite="1"
                        showInStore="1">
                     <label>Show on Cart Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
                 <field id="checkout" translate="label" type="select" sortOrder="3" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Show on Checkout Page</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="*/*/active">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="ls_discounts"
@@ -325,6 +364,14 @@
                     <label>Restricted Order statuses</label>
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\RestrictedOrderStatuses</source_model>
                     <comment>Order will not be synced to LS Central based on the selected order status, please leave it empty if you want to sync all orders to LS Central independent of the order status</comment>
+                </field>
+                <field id="stock_validation_active" translate="label" type="select"  sortOrder="7" showInWebsite="1">
+                    <label>Enable Stock Validation Before Order Creation</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="graphql_stock_validation_active" translate="label" type="select"  sortOrder="8" showInWebsite="1">
+                    <label>Enable Stock Validation Before Order Creation via GraphQl</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
             <group id="delivery_pickup_date_time"
@@ -483,12 +530,14 @@
         </section>
         <section id="omni_clickandcollect"
                  sortOrder="2"
-                 showInDefault="1">
+                 showInDefault="1"
+                 showInWebsite="1"
+                 showInStore="1">
             <tab>ls_retail</tab>
             <label>Click And Collect</label>
             <resource>Ls_Core::config</resource>
             <group id="general"
-                   showInDefault="1">
+                   showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Default Maps Settings</label>
                 <field id="maps_api_key" translate="label" type="text" sortOrder="10" showInDefault="1"
                        showInWebsite="1" showInStore="1">

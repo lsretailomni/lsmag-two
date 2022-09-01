@@ -10,6 +10,7 @@ use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\View\Element\Template;
+use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -106,7 +107,8 @@ class Stores extends Template
         try {
             return $this->scopeConfig->getValue(
                 LSR::SC_CLICKCOLLECT_GOOGLE_API_KEY,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+                ScopeInterface::SCOPE_STORE,
+                $this->lsr->getCurrentStoreId()
             );
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

@@ -3,6 +3,7 @@
 namespace Ls\OmniGraphQl\Model\Resolver\Stock;
 
 use \Ls\OmniGraphQl\Helper\DataHelper;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
@@ -18,11 +19,21 @@ class CartItemsAvailabilityInStoreOutput implements ResolverInterface
      * @var DataHelper
      */
     public $dataHelper;
+    /**
+     * @var Data
+     */
+    private Data $helper;
 
+    /**
+     * @param DataHelper $dataHelper
+     * @param Data $helper
+     */
     public function __construct(
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        Data $helper
     ) {
         $this->dataHelper = $dataHelper;
+        $this->helper     = $helper;
     }
 
     /**
@@ -42,7 +53,7 @@ class CartItemsAvailabilityInStoreOutput implements ResolverInterface
         $storeId         = $args['store_id'];
         $scopeId         = (int)$context->getExtensionAttributes()->getStore()->getId();
         $userId          = $context->getUserId();
-        $stockCollection = $this->dataHelper->fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId);
+        $stockCollection = $this->helper->fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId);
 
         if (!$stockCollection) {
             throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));

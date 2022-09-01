@@ -71,7 +71,29 @@
     <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
         <arguments>
             <argument name="extendedConfigData">
+                <item name="maps_api_key" xsi:type="string">omni_clickandcollect/general/maps_api_key</item>
+                <item name="default_latitude" xsi:type="string">omni_clickandcollect/general/default_latitude</item>
+                <item name="default_longitude" xsi:type="string">omni_clickandcollect/general/default_longitude</item>
+                <item name="default_zoom" xsi:type="string">omni_clickandcollect/general/default_zoom</item>
+                <item name="items_availability" xsi:type="string">omni_clickandcollect/checkout/items_availability</item>
+                <item name="click_and_collect_payment_methods" xsi:type="string">carriers/clickandcollect/payment_option</item>
+                <item name="loyalty_points_cart" xsi:type="string">ls_mag/ls_loyaltypoints/cart</item>
+                <item name="loyalty_points_checkout" xsi:type="string">ls_mag/ls_loyaltypoints/checkout</item>
+                <item name="ls_coupons_cart" xsi:type="string">ls_mag/ls_coupons/cart</item>
+                <item name="ls_coupons_checkout" xsi:type="string">ls_mag/ls_coupons/checkout</item>
+                <item name="coupon_recommendations" xsi:type="string">ls_mag/ls_coupons/coupon_recommendations</item>
+                <item name="ls_giftcard_cart" xsi:type="string">ls_mag/ls_giftcard/cart</item>
+                <item name="ls_giftcard_checkout" xsi:type="string">ls_mag/ls_giftcard/checkout</item>
+                <item name="ls_discount_mixandmatch_limit" xsi:type="string">ls_mag/ls_discounts/discount_mixandmatch_limit</item>
+                <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
+                <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
+                <item name="opening_hours_time_format" xsi:type="string">ls_mag/ls_stores/timeformat</item>
+                <item name="pickup_date_time_slot" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_date_time_slot</item>
+                <item name="pickup_time_interval" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_time_interval</item>
+                <item name="pickup_date_format" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_date_format</item>
+                <item name="pickup_time_format" xsi:type="string">ls_mag/delivery_pickup_date_time/pickup_time_format</item>
                 <item name="ls_mag_ls_industry_ls_choose_industry" xsi:type="string">ls_mag/ls_industry/ls_choose_industry</item>
+                <item name="ls_mag_display_stores" xsi:type="string">ls_mag/one_list/display_stores</item>
             </argument>
         </arguments>
     </type>
@@ -81,6 +103,10 @@
                 sortOrder="1"/>
     </type>
 
+    <type name="Magento\QuoteGraphQl\Model\Resolver\AvailablePaymentMethods">
+        <plugin name="clickandcollect_available_payment_methods" type="Ls\OmniGraphQl\Plugin\Model\Resolver\AvailablePaymentMethodsPlugin"
+                sortOrder="2"/>
+    </type>
     <type name="Magento\QuoteGraphQl\Model\Resolver\PlaceOrder">
         <plugin name="inject_custom_values_place_order_response"
                 type="Ls\OmniGraphQl\Plugin\Model\Resolver\PlaceOrderPlugin"

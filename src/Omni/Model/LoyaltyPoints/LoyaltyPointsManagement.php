@@ -80,7 +80,7 @@ class LoyaltyPointsManagement
             $cartQuote = $this->quoteRepository->get($cartId);
         } catch (NoSuchEntityException $e) {
             throw new NoSuchEntityException(
-                __("Could not find a cart with ID %1", $cartId)
+                __("Could not find a cart with ID 3 %1", $cartId)
             );
         }
 
@@ -132,7 +132,7 @@ class LoyaltyPointsManagement
             $cartQuote = $this->quoteRepository->get($cartId);
         } catch (NoSuchEntityException $e) {
             throw new NoSuchEntityException(
-                __('Could not find a cart with ID %1', $cartId)
+                __('Could not find a cart with ID 4 %1', $cartId)
             );
         }
         if ($cartQuote->getLsPointsSpent()) {

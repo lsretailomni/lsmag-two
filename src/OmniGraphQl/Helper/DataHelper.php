@@ -35,6 +35,7 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use \Ls\Omni\Model\Checkout\DataProvider;
 
 /**
  * Useful helper functions for the module
@@ -124,6 +125,9 @@ class DataHelper extends AbstractHelper
     /** @var AddressInterfaceFactory */
     public $addressFactory;
 
+    /** @var DataProvider */
+    public DataProvider $dataProvider;
+
     /**
      * @param Context $context
      * @param ManagerInterface $eventManager
@@ -144,6 +148,7 @@ class DataHelper extends AbstractHelper
      * @param Information $storeInfo
      * @param StoreManagerInterface $storeManager
      * @param AddressInterfaceFactory $addressFactory
+     * @param DataProvider $dataProvider
      */
     public function __construct(
         Context $context,
@@ -164,7 +169,8 @@ class DataHelper extends AbstractHelper
         StoreHelper $storeHelper,
         Information $storeInfo,
         StoreManagerInterface $storeManager,
-        AddressInterfaceFactory $addressFactory
+        AddressInterfaceFactory $addressFactory,
+        DataProvider $dataProvider
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -185,6 +191,7 @@ class DataHelper extends AbstractHelper
         $this->storeInfo              = $storeInfo;
         $this->storeManager           = $storeManager;
         $this->addressFactory         = $addressFactory;
+        $this->dataProvider          = $dataProvider;
     }
 
     /**
@@ -305,10 +312,31 @@ class DataHelper extends AbstractHelper
         $hours      = [];
         $i = 0;
 
+        $hoursFormat = $this->scopeConfig->getValue(
+            LSR::LS_STORES_OPENING_HOURS_FORMAT,
+            ScopeInterface::SCOPE_STORE
+        );
+
         foreach ($storeHours as $storeHour) {
+            $normalTypeOpenHours = $normalTypeCloseHours = $closedTypeOpenHours = $closedTypeCloseHours = null;
             foreach ($storeHour as $key => $hour) {
                 $hours[$i]['day_of_week'] = $hour['day'];
-                $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                if ($hour['type'] == "Normal") {
+                    $normalTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $normalTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
+                } elseif ($hour['type'] == "Closed") {
+                    $closedTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $closedTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
+                }
+
+                if ($normalTypeOpenHours && $closedTypeOpenHours
+                    && ($normalTypeOpenHours == $closedTypeOpenHours)
+                    && ($normalTypeCloseHours == $closedTypeCloseHours)
+                ) {
+                    $hours[$i]['hour_types'][0]  = $this->formatHoursAccordingToType($hour);
+                } else {
+                    $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                }
             }
             $i++;
         }
@@ -341,54 +369,42 @@ class DataHelper extends AbstractHelper
      *
      * @param String $scopeId
      * @return Collection
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function getStores($scopeId)
     {
         $storeCollection = $this->storeCollectionFactory->create();
 
-        return $storeCollection
+        $storesData = $storeCollection
             ->addFieldToFilter('scope_id', $scopeId)
             ->addFieldToFilter('ClickAndCollect', 1);
-    }
 
-    /**
-     * Fetch cart and returns stock
-     *
-     * @param $maskedCartId
-     * @param $userId
-     * @param $scopeId
-     * @param $storeId
-     * @return mixed
-     * @throws GraphQlAuthorizationException
-     * @throws GraphQlInputException
-     * @throws GraphQlNoSuchEntityException
-     * @throws NoSuchEntityException
-     */
-    public function fetchCartAndReturnStock($maskedCartId, $userId, $scopeId, $storeId)
-    {
-        // Shopping Cart validation
-        $this->getCartForUser->execute($maskedCartId, $userId, $scopeId);
-
-        $cartId = $this->maskedQuoteIdToQuoteId->execute($maskedCartId);
-        $cart   = $this->cartRepository->get($cartId);
-
-        $items = $cart->getAllVisibleItems();
-
-        list($response, $stockCollection) = $this->stockHelper->getGivenItemsStockInGivenStore($items, $storeId);
-
-        if ($response) {
-            if (is_object($response)) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
-                }
-            }
-
-            return $this->stockHelper->updateStockCollection($response, $stockCollection);
+        if (!$this->dataProvider->availableStoresOnlyEnabled()) {
+            return $storesData;
         }
 
-        return null;
+        $itemsCount = $this->checkoutSession->getQuote()->getItemsCount();
+        if ($itemsCount > 0) {
+            $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
+            list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
+
+            if ($response) {
+                if (is_object($response)) {
+                    if (!is_array($response->getInventoryResponse())) {
+                        $response = [$response->getInventoryResponse()];
+                    } else {
+                        $response = $response->getInventoryResponse();
+                    }
+                }
+
+                $clickNCollectStoresIds = $this->dataProvider->getClickAndCollectStoreIds($storesData);
+                $this->dataProvider->filterClickAndCollectStores($response, $clickNCollectStoresIds);
+
+                return $this->dataProvider->filterStoresOnTheBasisOfQty($response, $items);
+            }
+        }
+
+        return $storesData;
     }
 
     /**

@@ -199,6 +199,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_PAGE_IMAGE_HEIGHT = 'ls_mag/loyalty/set_image_size_height_for_loyalty_page';
     const SC_LOYALTY_EXPIRY_DATE_FORMAT = 'ls_mag/loyalty/loyalty_expiry_date_format';
     const SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH = 'ls_mag/loyalty/prefix';
+    const SC_LOYALTY_SHOW_CLUB_INFORMATION = 'ls_mag/loyalty/show_club_information';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL = 'ls_mag/loyalty/username_search_by_api';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL = 'ls_mag/loyalty/email_search_by_api';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_CONTACT_BY_CARD_ID_API_CALL = 'ls_mag/loyalty/get_contact_by_card_id_api';
@@ -234,6 +235,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PICKUP_TIME_INTERVAL = 'ls_mag/delivery_pickup_date_time/pickup_time_interval';
     const PICKUP_DATE_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_date_format';
     const PICKUP_TIME_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_time_format';
+
+    //Pay At Store Payment Method
+    const SC_PAYMENT_PAY_AT_STORE_ACTIVE = 'payment/ls_payment_method_pay_at_store/active';
 
     // CUSTOM CONFIGURATION PATHS
     const CONFIG_REPLICATION_JOBS = 'ls_mag/replication/jobs';
@@ -344,16 +348,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
 
     //Coupons
+    const LS_ENABLE_COUPON_ELEMENTS = 'ls_mag/ls_coupons/active';
     const LS_COUPONS_SHOW_ON_CART = 'ls_mag/ls_coupons/cart';
     const LS_COUPONS_SHOW_ON_CHECKOUT = 'ls_mag/ls_coupons/checkout';
     const LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT = 'ls_mag/ls_coupons/coupon_recommendations';
 
     //LoyaltyPoints
+    const LS_ENABLE_LOYALTYPOINTS_ELEMENTS = 'ls_mag/ls_loyaltypoints/active';
     const LS_LOYALTYPOINTS_SHOW_ON_CART = 'ls_mag/ls_loyaltypoints/cart';
     const LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT = 'ls_mag/ls_loyaltypoints/checkout';
     const LS_LOYALTYPOINTS_TENDER_TYPE = 'loypoints';
 
     //GiftCard
+    const LS_ENABLE_GIFTCARD_ELEMENTS = 'ls_mag/ls_giftcard/active';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
@@ -378,6 +385,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
+    const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
 
     // Date format to be used in fetching the data.
@@ -394,6 +402,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
     const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
     const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
+    const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
+    const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
+    const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
+    const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
+        = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
+
     const LSR_RESTRICTED_ORDER_STATUSES = 'ls_mag/ls_order_management/sync_order_statuses';
 
     //Disaster Recovery Enabled/Disabled For Notification
@@ -422,7 +436,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Email notification through webhook
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
-    const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_pickup';
+    const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
     const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';
@@ -643,52 +657,56 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get default google map api key from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getGoogleMapsApiKey()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_GOOGLE_API_KEY,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
     /**
      * Get default latitude from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultLatitude()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LATITUDE,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
     /**
      * Get default longitude from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultLongitude()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_LONGITUDE,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
     /**
      * Get default default zoom from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultZoom()
     {
         return $this->scopeConfig->getValue(
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
-            ScopeConfigInterface::
-            SCOPE_TYPE_DEFAULT
+            ScopeInterface::SCOPE_STORE,
+            $this->getCurrentStoreId()
         );
     }
 
