@@ -145,7 +145,7 @@ $_fax = $block->getLayout()->createBlock(Fax::class);
                        value="<?= $block->escapeHtmlAttr($block->getAddress()->getPostcode()) ?>"
                        title="<?= /* @noEscape */
                        $block->getAttributeData()->getFrontendLabel('postcode') ?>"
-                       id="zip" maxlength="20" data-validate='{"required":true,"maxlength":20,"validate-number":true}'
+                       id="zip" maxlength="20" data-validate='{"required":true,"maxlength":20}'
                        class="input-text validate-zip-international <?= $block->escapeHtmlAttr($this->helper(Address::class)->getAttributeValidationClass('postcode')) ?>">
             </div>
         </div>

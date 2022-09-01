@@ -1411,6 +1411,35 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Set collection properties and join for product attribute values data translation
+     *
+     * In order to select only processed entries
+     *
+     * @param mixed $collection
+     * @param SearchCriteriaInterface $criteria
+     */
+    public function setCollectionPropertiesPlusJoinsForProductAttributeValuesDataTranslation(
+        &$collection,
+        SearchCriteriaInterface $criteria
+    ) {
+        $secondTableName = $this->resource->getTableName('catalog_product_entity');
+
+        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        // @codingStandardsIgnoreStart
+        $collection->getSelect()->joinInner(
+            ['second' => $secondTableName],
+            'second.sku = REPLACE(TRIM(TRAILING ";" FROM REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ";", 3), "Variant;", ""), "Item;","")), ";","-")',
+            []
+        );
+        // @codingStandardsIgnoreEnd
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      */
