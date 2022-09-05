@@ -2,7 +2,10 @@
 
 namespace Ls\Replication\Setup\Patch\Data;
 
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -31,21 +34,35 @@ class UpdateProductAttributesValueScope implements DataPatchInterface
     private $searchCriteriaBuilder;
 
     /**
+     * @var ReplExtendedVariantValueRepository
+     */
+    private $replExtendedVariantValueRepository;
+
+    /** @var ReplicationHelper */
+    private $replicationHelper;
+
+    /**
      * @param ModuleDataSetupInterface $moduleDataSetup
      * @param Logger $logger
      * @param AttributeRepositoryInterface $attributeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         ModuleDataSetupInterface $moduleDataSetup,
         Logger $logger,
         AttributeRepositoryInterface $attributeRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
+        ReplicationHelper $replicationHelper
     ) {
-        $this->moduleDataSetup     = $moduleDataSetup;
-        $this->logger              = $logger;
-        $this->attributeRepository = $attributeRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->moduleDataSetup                    = $moduleDataSetup;
+        $this->logger                             = $logger;
+        $this->attributeRepository                = $attributeRepository;
+        $this->searchCriteriaBuilder              = $searchCriteriaBuilder;
+        $this->replExtendedVariantValueRepository = $replExtendedVariantValueRepository;
+        $this->replicationHelper                  = $replicationHelper;
     }
 
     /**
@@ -91,12 +108,38 @@ class UpdateProductAttributesValueScope implements DataPatchInterface
                 ->getList('catalog_product', $searchCriteria)
                 ->getItems();
 
+            $attributesToExclude = array_unique($this->getAllConfigurableAttributes());
+
             foreach ($items as $item) {
+                if (in_array($item->getAttributeCode(), $attributesToExclude)) {
+                    continue;
+                }
                 $item->setData('is_global', ScopedAttributeInterface::SCOPE_STORE);
                 $this->attributeRepository->save($item);
             }
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Get all configurable Attributes
+     *
+     * @return array
+     */
+    public function getAllConfigurableAttributes()
+    {
+        $criteria = $this->replicationHelper->buildCriteriaForDirect([], -1);
+        /** @var ReplExtendedVariantValueSearchResults $variants */
+        $variantAttributes          = $this->replExtendedVariantValueRepository->getList($criteria);
+        $configurableAttributeCodes = [];
+
+        foreach ($variantAttributes->getItems() as $variantAttribute) {
+            $configurableAttributeCodes[] = $this->replicationHelper->formatAttributeCode(
+                $variantAttribute->getCode()
+            );
+        }
+
+        return $configurableAttributeCodes;
     }
 }
