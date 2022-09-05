@@ -6,9 +6,9 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Model\Order;
-use Magento\Sales\Model\Order\Item;
+use Magento\Sales\Api\Data\OrderInterface;
 
 /**
  * class to process status through webhook
@@ -89,11 +89,11 @@ class Status
     /**
      * Check and process order status
      *
-     * @param $status
-     * @param $itemsInfo
-     * @param $magOrder
-     * @param $data
-     * @throws NoSuchEntityException
+     * @param string $status
+     * @param array $itemsInfo
+     * @param OrderInterface $magOrder
+     * @param array $data
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
@@ -103,22 +103,7 @@ class Status
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
 
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
-            if ($magOrder->canCancel()) {
-                $cancelItems = [];
-
-                foreach ($items as $itemId => $item) {
-                    if ($item['itemStatus'] == Item::STATUS_PENDING ||
-                        $item['itemStatus'] == Item::STATUS_PARTIAL) {
-                        $cancelItems [] = $item;
-                        unset($items[$itemId]);
-                    }
-                }
-                $this->orderCancel->cancelItems($magOrder, $cancelItems);
-            }
-
-            if (!empty($items)) {
-                $this->cancel($magOrder, $itemsInfo, $items, $storeId);
-            }
+            $this->cancel($magOrder, $itemsInfo, $items, $storeId);
         }
 
         if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
@@ -149,25 +134,31 @@ class Status
     /**
      * Handling operation regarding cancelling the order
      *
-     * @param $magOrder
-     * @param $itemsInfo
-     * @param $items
-     * @param $storeId
+     * @param OrderInterface $magOrder
+     * @param array $itemsInfo
+     * @param array $items
+     * @param int $storeId
      */
     public function cancel($magOrder, $itemsInfo, $items, $storeId)
     {
-        $sendEmail = false;
-        /** @var Order $magOrder */
+        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+        $magentoOrderTotalItemsQty = (int) $magOrder->getTotalQtyOrdered();
+        $shipmentLineCount = (int) $isClickAndCollectOrder ? 0 : 1;
+        $magentoOrderTotalItemsQty = $magentoOrderTotalItemsQty + $shipmentLineCount;
+
+        if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
+            $this->orderCancel->cancelOrder($magOrder->getEntityId());
+        } else {
+            $this->orderCancel->cancelItems($magOrder, $items);
+        }
+
         if ($magOrder->hasInvoices()) {
             $shippingItemId = $this->helper->getShippingItemId();
             $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
             $this->creditMemo->refund($magOrder, $items, $creditMemoData);
-        } elseif (count($magOrder->getAllVisibleItems()) == count($itemsInfo)) {
-            $this->orderCancel->cancelOrder($magOrder->getEntityId());
-            $sendEmail = true;
         }
 
-        if ($sendEmail && $this->helper->isCancelNotifyEnabled($storeId)) {
+        if ($this->helper->isCancelNotifyEnabled($storeId)) {
             $templateId = $this->helper->getCancelTemplate($storeId);
             $this->processSendEmail($magOrder, $items, $templateId);
         }
