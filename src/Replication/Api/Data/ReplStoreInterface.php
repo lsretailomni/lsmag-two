@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplStoreInterface
 {
-
     /**
      * @param string $City
      * @return $this
@@ -351,7 +350,5 @@ interface ReplStoreInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

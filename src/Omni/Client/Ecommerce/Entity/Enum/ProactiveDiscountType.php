@@ -20,7 +20,6 @@ use MyCLabs\Enum\Enum;
  */
 class ProactiveDiscountType extends Enum
 {
-
     public const UNKNOWN = 'Unknown';
 
     public const MULTIBUY = 'Multibuy';
@@ -32,7 +31,5 @@ class ProactiveDiscountType extends Enum
     public const ITEM_POINT = 'ItemPoint';
 
     public const LINE_DISCOUNT = 'LineDiscount';
-
-
 }
 

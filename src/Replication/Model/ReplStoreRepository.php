@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplStoreSearchResultsFactory;
 
 class ReplStoreRepository implements ReplStoreRepositoryInterface
 {
-
     /**
      * @property ReplStoreFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplStoreRepository implements ReplStoreRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

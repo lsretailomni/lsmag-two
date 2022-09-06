@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class SearchRs extends Entity
 {
-
     /**
      * @property ArrayOfItemCategory $ItemCategories
      */
@@ -194,7 +193,5 @@ class SearchRs extends Entity
     {
         return $this->Stores;
     }
-
-
 }
 

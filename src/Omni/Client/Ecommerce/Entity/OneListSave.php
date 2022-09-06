@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListSave implements RequestInterface
 {
-
     /**
      * @property OneList $oneList
      */
@@ -58,7 +57,5 @@ class OneListSave implements RequestInterface
     {
         return $this->calculate;
     }
-
-
 }
 

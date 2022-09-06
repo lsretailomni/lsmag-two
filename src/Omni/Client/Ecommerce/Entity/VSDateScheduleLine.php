@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class VSDateScheduleLine
 {
-
     /**
      * @property string $EndingDate
      */
@@ -102,7 +101,5 @@ class VSDateScheduleLine
     {
         return $this->StartingDate;
     }
-
-
 }
 

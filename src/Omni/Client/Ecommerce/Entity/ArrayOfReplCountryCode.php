@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplCountryCode implements IteratorAggregate
 {
-
     /**
      * @property ReplCountryCode[] $ReplCountryCode
      */
@@ -46,7 +45,5 @@ class ArrayOfReplCountryCode implements IteratorAggregate
     {
         return $this->ReplCountryCode;
     }
-
-
 }
 

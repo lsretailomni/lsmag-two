@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class PaymentClientTokenGetResponse implements ResponseInterface
 {
-
     /**
      * @property ClientToken $PaymentClientTokenGetResult
      */
@@ -43,7 +42,5 @@ class PaymentClientTokenGetResponse implements ResponseInterface
     {
         return $this->PaymentClientTokenGetResult;
     }
-
-
 }
 

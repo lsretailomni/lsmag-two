@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ForgotPasswordResponse as ForgotPasswordResp
 
 class ForgotPassword extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'FORGOT_PASSWORD';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ForgotPassword extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

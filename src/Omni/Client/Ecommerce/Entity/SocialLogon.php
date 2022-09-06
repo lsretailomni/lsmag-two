@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class SocialLogon implements RequestInterface
 {
-
     /**
      * @property string $authenticator
      */
@@ -127,7 +126,5 @@ class SocialLogon implements RequestInterface
     {
         return $this->includeDetails;
     }
-
-
 }
 

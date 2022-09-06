@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityType extends Entity
 {
-
     /**
      * @property string $Description
      */
@@ -33,7 +32,5 @@ class ActivityType extends Entity
     {
         return $this->Description;
     }
-
-
 }
 

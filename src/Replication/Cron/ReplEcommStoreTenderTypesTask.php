@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplStoreTenderTypeInterface;
 
 class ReplEcommStoreTenderTypesTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_store_tender_type';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_store_tender_type';
@@ -153,7 +152,5 @@ class ReplEcommStoreTenderTypesTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

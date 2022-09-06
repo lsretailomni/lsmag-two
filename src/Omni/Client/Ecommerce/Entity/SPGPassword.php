@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class SPGPassword implements RequestInterface
 {
-
     /**
      * @property string $email
      */
@@ -81,7 +80,5 @@ class SPGPassword implements RequestInterface
     {
         return $this->newPassword;
     }
-
-
 }
 

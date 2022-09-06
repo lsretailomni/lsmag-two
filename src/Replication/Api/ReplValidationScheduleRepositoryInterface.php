@@ -12,7 +12,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplValidationScheduleRepositoryInterface
 {
-
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplValidationScheduleInterface $page);
@@ -22,7 +21,5 @@ interface ReplValidationScheduleRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
-
-
 }
 

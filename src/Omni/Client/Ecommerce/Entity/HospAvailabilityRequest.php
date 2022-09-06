@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class HospAvailabilityRequest
 {
-
     /**
      * @property string $ItemId
      */
@@ -56,7 +55,5 @@ class HospAvailabilityRequest
     {
         return $this->UnitOfMeasure;
     }
-
-
 }
 

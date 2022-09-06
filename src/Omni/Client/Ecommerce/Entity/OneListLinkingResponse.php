@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OneListLinkingResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $OneListLinkingResult
      */
@@ -43,7 +42,5 @@ class OneListLinkingResponse implements ResponseInterface
     {
         return $this->OneListLinkingResult;
     }
-
-
 }
 

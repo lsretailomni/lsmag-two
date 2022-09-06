@@ -10,7 +10,5 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class UnknownVariantRegistration extends VariantRegistration
 {
-
-
 }
 

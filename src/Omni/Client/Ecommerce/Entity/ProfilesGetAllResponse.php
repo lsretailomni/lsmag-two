@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ProfilesGetAllResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfProfile $ProfilesGetAllResult
      */
@@ -43,7 +42,5 @@ class ProfilesGetAllResponse implements ResponseInterface
     {
         return $this->ProfilesGetAllResult;
     }
-
-
 }
 

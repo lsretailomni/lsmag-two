@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfItemCategory implements IteratorAggregate
 {
-
     /**
      * @property ItemCategory[] $ItemCategory
      */
@@ -46,7 +45,5 @@ class ArrayOfItemCategory implements IteratorAggregate
     {
         return $this->ItemCategory;
     }
-
-
 }
 

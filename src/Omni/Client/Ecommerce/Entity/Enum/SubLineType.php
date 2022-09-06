@@ -17,13 +17,10 @@ use MyCLabs\Enum\Enum;
  */
 class SubLineType extends Enum
 {
-
     public const MODIFIER = 'Modifier';
 
     public const DEAL = 'Deal';
 
     public const TEXT = 'Text';
-
-
 }
 

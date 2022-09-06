@@ -23,7 +23,6 @@ use MyCLabs\Enum\Enum;
  */
 class LineType extends Enum
 {
-
     public const ITEM = 'Item';
 
     public const PAYMENT = 'Payment';
@@ -41,7 +40,5 @@ class LineType extends Enum
     public const SHIPPING = 'Shipping';
 
     public const UNKNOWN = 'Unknown';
-
-
 }
 

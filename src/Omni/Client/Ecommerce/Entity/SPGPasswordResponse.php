@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SPGPasswordResponse implements ResponseInterface
 {
-
     /**
      * @property string $SPGPasswordResult
      */
@@ -43,7 +42,5 @@ class SPGPasswordResponse implements ResponseInterface
     {
         return $this->SPGPasswordResult;
     }
-
-
 }
 

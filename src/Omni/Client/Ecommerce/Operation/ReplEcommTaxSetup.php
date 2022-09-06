@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommTaxSetupResponse as ReplEcommTaxSet
 
 class ReplEcommTaxSetup extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_TAX_SETUP';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommTaxSetup extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

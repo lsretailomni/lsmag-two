@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class DiscountsGet implements RequestInterface
 {
-
     /**
      * @property ArrayOfstring $itemiIds
      */
@@ -81,7 +80,5 @@ class DiscountsGet implements RequestInterface
     {
         return $this->loyaltySchemeCode;
     }
-
-
 }
 

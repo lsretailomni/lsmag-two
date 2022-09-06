@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListGetById implements RequestInterface
 {
-
     /**
      * @property string $id
      */
@@ -58,7 +57,5 @@ class OneListGetById implements RequestInterface
     {
         return $this->includeLines;
     }
-
-
 }
 

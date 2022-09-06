@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplCountryCodeSearchResultsFactory;
 
 class ReplCountryCodeRepository implements ReplCountryCodeRepositoryInterface
 {
-
     /**
      * @property ReplCountryCodeFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplCountryCodeRepository implements ReplCountryCodeRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplBarcodeSearchResultsFactory;
 
 class ReplBarcodeRepository implements ReplBarcodeRepositoryInterface
 {
-
     /**
      * @property ReplBarcodeFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplBarcodeRepository implements ReplBarcodeRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

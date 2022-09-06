@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class VariantRegistration extends Entity
 {
-
     /**
      * @property ArrayOfImageView $Images
      */
@@ -217,7 +216,5 @@ class VariantRegistration extends Entity
     {
         return $this->ItemId;
     }
-
-
 }
 

@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplAttributeValueSearchResultsFactory;
 
 class ReplAttributeValueRepository implements ReplAttributeValueRepositoryInterface
 {
-
     /**
      * @property ReplAttributeValueFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplAttributeValueRepository implements ReplAttributeValueRepositoryInterf
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

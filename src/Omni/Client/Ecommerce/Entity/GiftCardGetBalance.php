@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class GiftCardGetBalance implements RequestInterface
 {
-
     /**
      * @property string $cardNo
      */
@@ -35,7 +34,5 @@ class GiftCardGetBalance implements RequestInterface
     {
         return $this->cardNo;
     }
-
-
 }
 

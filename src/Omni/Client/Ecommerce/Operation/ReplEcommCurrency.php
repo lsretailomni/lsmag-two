@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommCurrencyResponse as ReplEcommCurren
 
 class ReplEcommCurrency extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_CURRENCY';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommCurrency extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

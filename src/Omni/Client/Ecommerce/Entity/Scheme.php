@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Scheme extends Entity
 {
-
     /**
      * @property Club $Club
      */
@@ -125,7 +124,5 @@ class Scheme extends Entity
     {
         return $this->PointsNeeded;
     }
-
-
 }
 

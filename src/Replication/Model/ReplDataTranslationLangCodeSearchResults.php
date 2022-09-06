@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplDataTranslationLangCodeSearchResults extends SearchResults implements ReplDataTranslationLangCodeSearchResultsInterface
 {
-
-
 }
 

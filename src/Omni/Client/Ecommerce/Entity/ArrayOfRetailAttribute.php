@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfRetailAttribute implements IteratorAggregate
 {
-
     /**
      * @property RetailAttribute[] $RetailAttribute
      */
@@ -46,7 +45,5 @@ class ArrayOfRetailAttribute implements IteratorAggregate
     {
         return $this->RetailAttribute;
     }
-
-
 }
 

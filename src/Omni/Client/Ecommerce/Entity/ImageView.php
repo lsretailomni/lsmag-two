@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ImageView extends Entity
 {
-
     /**
      * @property string $AvgColor
      */
@@ -230,7 +229,5 @@ class ImageView extends Entity
     {
         return $this->StreamURL;
     }
-
-
 }
 

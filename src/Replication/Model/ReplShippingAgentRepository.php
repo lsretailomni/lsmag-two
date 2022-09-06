@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplShippingAgentSearchResultsFactory;
 
 class ReplShippingAgentRepository implements ReplShippingAgentRepositoryInterface
 {
-
     /**
      * @property ReplShippingAgentFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplShippingAgentRepository implements ReplShippingAgentRepositoryInterfac
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

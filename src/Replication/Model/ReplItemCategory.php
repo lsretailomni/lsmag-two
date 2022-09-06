@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplItemCategoryInterface;
 
 class ReplItemCategory extends AbstractModel implements ReplItemCategoryInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_item_category';
 
     protected $_cacheTag = 'ls_replication_repl_item_category';
@@ -330,7 +329,5 @@ class ReplItemCategory extends AbstractModel implements ReplItemCategoryInterfac
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 
