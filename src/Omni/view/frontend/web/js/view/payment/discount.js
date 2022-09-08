@@ -78,7 +78,7 @@ define([
         },
 
         isDisplay: function () {
-            return window.checkoutConfig.coupons_display === "1" && (this.getCoupons())().length > 0 && !(this.isApplied()) && this.checkCustomerLoggedIn();
+            return window.checkoutConfig.coupons_display === true && (this.getCoupons())().length > 0 && !(this.isApplied()) && this.checkCustomerLoggedIn();
         }
     });
 });
