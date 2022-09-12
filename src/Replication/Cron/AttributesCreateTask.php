@@ -373,7 +373,7 @@ class AttributesCreateTask
                 if (!$attribute || !$attribute->getAttributeId()) {
                     $attributeData = [
                         'attribute_code'                => $formattedCode,
-                        'is_global'                     => ScopedAttributeInterface::SCOPE_STORE,
+                        'is_global'                     => ScopedAttributeInterface::SCOPE_GLOBAL,
                         'frontend_label'                => ucwords(strtolower($code)),
                         'frontend_input'                => 'multiselect',
                         'source_model'                  => Table::class,
