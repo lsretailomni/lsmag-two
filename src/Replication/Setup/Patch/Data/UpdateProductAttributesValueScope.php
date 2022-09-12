@@ -99,7 +99,7 @@ class UpdateProductAttributesValueScope implements DataPatchInterface
     private function updateAttributes()
     {
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('attribute_code', 'ls_%', 'like')
+            ->addFilter('attribute_code', 'ls\_%', 'like')
             ->addFilter('is_global', ScopedAttributeInterface::SCOPE_GLOBAL)
             ->create();
 
