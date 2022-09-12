@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use \Ls\Hospitality\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\GraphQl\Config\Element\Field;
