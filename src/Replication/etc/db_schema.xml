@@ -319,6 +319,7 @@
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="Blocked"/>
     <column xsi:type="int" name="BlockedOnECom" padding="11" nullable="true" comment="BlockedOnECom"/>
     <column xsi:type="int" name="BlockedOnPos" padding="11" nullable="true" comment="BlockedOnPos"/>
+    <column xsi:type="text" name="CountryOfOrigin" nullable="true" comment="CountryOfOrigin"/>
     <column xsi:type="int" name="CrossSellingExists" padding="11" nullable="true" comment="CrossSellingExists"/>
     <column xsi:type="text" name="DateBlocked" nullable="true" comment="DateBlocked"/>
     <column xsi:type="text" name="DateToActivateItem" nullable="true" comment="DateToActivateItem"/>

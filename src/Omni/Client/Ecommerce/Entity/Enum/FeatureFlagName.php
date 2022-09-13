@@ -44,6 +44,7 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName ADD_CARD_BEFORE_SHOPPING()
  * @$method static FeatureFlagName SHOW_CUSTOMER_QR_CODE()
  * @$method static FeatureFlagName SHOW_POINT_STATUS()
+ * @$method static FeatureFlagName USE_SECURITY_CHECK()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_CURRENCY_CODE()
  * @$method static FeatureFlagName PLATFORM_PAYMENT_COUNTRY_CODE()
@@ -134,6 +135,8 @@ class FeatureFlagName extends Enum
     public const SHOW_CUSTOMER_QR_CODE = 'ShowCustomerQrCode';
 
     public const SHOW_POINT_STATUS = 'ShowPointStatus';
+
+    public const USE_SECURITY_CHECK = 'UseSecurityCheck';
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 

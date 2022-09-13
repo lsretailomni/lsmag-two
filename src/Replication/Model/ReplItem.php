@@ -72,6 +72,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $BlockedOnPos = null;
 
     /**
+     * @property string $CountryOfOrigin
+     */
+    protected $CountryOfOrigin = null;
+
+    /**
      * @property int $CrossSellingExists
      */
     protected $CrossSellingExists = null;
@@ -454,6 +459,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getBlockedOnPos()
     {
         return $this->getData( 'BlockedOnPos' );
+    }
+
+    /**
+     * @param string $CountryOfOrigin
+     * @return $this
+     */
+    public function setCountryOfOrigin($CountryOfOrigin)
+    {
+        $this->setData( 'CountryOfOrigin', $CountryOfOrigin );
+        $this->CountryOfOrigin = $CountryOfOrigin;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryOfOrigin()
+    {
+        return $this->getData( 'CountryOfOrigin' );
     }
 
     /**

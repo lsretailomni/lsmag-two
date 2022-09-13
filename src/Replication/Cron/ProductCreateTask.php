@@ -991,7 +991,7 @@ class ProductCreateTask
                 foreach ($collection->getItems() as $item) {
                     $uomDescription = $this->replicationHelper->getUomDescription($item);
                     /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
-                    $itemUom[$itemId][$uomDescription]    = $item->getCode();
+                    $itemUom[$itemId][$uomDescription]            = $item->getCode();
                     $itemUom[$itemId . '-' . 'BaseUnitOfMeasure'] = $item->getData('BaseUnitOfMeasure');
                 }
             }
@@ -1368,9 +1368,9 @@ class ProductCreateTask
             /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $uomCode */
             foreach ($uomCodesNotProcessed as $uomCode) {
                 $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
-                $value = null;
-                $sku   = $uomCode->getItemId() . '-' . $uomCode->getCode();
-                $name  = $this->getNameForUom($item->getDescription(), $uomDescription);
+                $value          = null;
+                $sku            = $uomCode->getItemId() . '-' . $uomCode->getCode();
+                $name           = $this->getNameForUom($item->getDescription(), $uomDescription);
                 try {
                     $productData = $this->saveProductForWebsite($sku);
                     try {
@@ -1544,10 +1544,10 @@ class ProductCreateTask
             );
             $value->addData(
                 [
-                    'is_updated' => 0,
+                    'is_updated'   => 0,
                     'processed_at' => $this->replicationHelper->getDateTime(),
-                    'processed' => 1,
-                    'is_failed' => 1
+                    'processed'    => 1,
+                    'is_failed'    => 1
                 ]
             );
             $this->replItemVariantRegistrationRepository->save($value);
@@ -1574,10 +1574,10 @@ class ProductCreateTask
                 );
                 $uomCode->addData(
                     [
-                        'is_updated' => 0,
+                        'is_updated'   => 0,
                         'processed_at' => $this->replicationHelper->getDateTime(),
-                        'processed' => 1,
-                        'is_failed' => 1
+                        'processed'    => 1,
+                        'is_failed'    => 1
                     ]
                 );
                 $this->replItemUomRepository->save($uomCode);
@@ -1674,6 +1674,12 @@ class ProductCreateTask
                 $uomDescription
             );
             $productData->setData(LSR::LS_UOM_ATTRIBUTE, $optionId);
+            //Set blocked on eCommerce for unit of measure product
+            if ($uomCode && $uomCode->getEComSelection() != null) {
+                $productData = $this->setProductStatus($productData, $uomCode->getEComSelection());
+            } else {
+                $productData = $this->setProductStatus($productData, 0);
+            }
         } else {
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
         }
@@ -1769,6 +1775,11 @@ class ProductCreateTask
             $productV = $this->setProductStatus($productV, 0);
         }
 
+        //Set blocked on eCommerce for unit of measure product
+        if ($uomCode && $uomCode->getEComSelection() != null) {
+            $productV = $this->setProductStatus($productV, $uomCode->getEComSelection());
+        }
+
         $productV->setTypeId(Type::TYPE_SIMPLE);
         if ($value) {
             $variantDimension1 = $value->getVariantDimension1();
@@ -1788,7 +1799,7 @@ class ProductCreateTask
         foreach ($attributesCode as $keyCode => $valueCode) {
             if ($valueCode == LSR::LS_UOM_ATTRIBUTE) {
                 $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
-                $optionValue = $uomDescription;
+                $optionValue    = $uomDescription;
             } else {
                 $optionValue = ${'d' . $keyCode};
             }

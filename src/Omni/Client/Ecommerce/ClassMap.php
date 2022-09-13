@@ -533,7 +533,7 @@ class ClassMap
         		'OrderCheck' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderCheck',
         		'ArrayOfOrderCheckLines' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfOrderCheckLines',
         		'OrderCheckLines' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\OrderCheckLines',
-        		'ClientTokenResult' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ClientTokenResult',
+        		'ArrayOfClientToken' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfClientToken',
         		'FeatureFlags' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\FeatureFlags',
         		'ArrayOfFeatureFlag' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\ArrayOfFeatureFlag',
         		'FeatureFlag' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\FeatureFlag',

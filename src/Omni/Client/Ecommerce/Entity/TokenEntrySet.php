@@ -19,6 +19,11 @@ class TokenEntrySet implements RequestInterface
     protected $token = null;
 
     /**
+     * @property boolean $deleteToken
+     */
+    protected $deleteToken = null;
+
+    /**
      * @param ClientToken $token
      * @return $this
      */
@@ -34,6 +39,24 @@ class TokenEntrySet implements RequestInterface
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @param boolean $deleteToken
+     * @return $this
+     */
+    public function setDeleteToken($deleteToken)
+    {
+        $this->deleteToken = $deleteToken;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDeleteToken()
+    {
+        return $this->deleteToken;
     }
 
 

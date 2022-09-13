@@ -81,22 +81,6 @@ class UpdateProductAttributesValueScope implements DataPatchInterface
      */
     private function updateAttributes()
     {
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('attribute_code', 'ls_%', 'like')
-            ->addFilter('is_global', ScopedAttributeInterface::SCOPE_GLOBAL)
-            ->create();
 
-        try {
-            $items = $this->attributeRepository
-                ->getList('catalog_product', $searchCriteria)
-                ->getItems();
-
-            foreach ($items as $item) {
-                $item->setData('is_global', ScopedAttributeInterface::SCOPE_STORE);
-                $this->attributeRepository->save($item);
-            }
-        } catch (\Exception $e) {
-            $this->logger->debug($e->getMessage());
-        }
     }
 }

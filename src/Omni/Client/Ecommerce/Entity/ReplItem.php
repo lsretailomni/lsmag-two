@@ -62,6 +62,11 @@ class ReplItem
     protected $BlockedOnPos = null;
 
     /**
+     * @property string $CountryOfOrigin
+     */
+    protected $CountryOfOrigin = null;
+
+    /**
      * @property int $CrossSellingExists
      */
     protected $CrossSellingExists = null;
@@ -379,6 +384,24 @@ class ReplItem
     public function getBlockedOnPos()
     {
         return $this->BlockedOnPos;
+    }
+
+    /**
+     * @param string $CountryOfOrigin
+     * @return $this
+     */
+    public function setCountryOfOrigin($CountryOfOrigin)
+    {
+        $this->CountryOfOrigin = $CountryOfOrigin;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryOfOrigin()
+    {
+        return $this->CountryOfOrigin;
     }
 
     /**
