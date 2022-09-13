@@ -1517,6 +1517,10 @@ class ProductCreateTask
         $configProduct->setConfigurableProductsData($configurableProductsData);
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
+
+        if ($configProduct->getExtensionAttributes()->getStockItem()) {
+            $configProduct->getExtensionAttributes()->getStockItem()->setStockStatusChangedAutomaticallyFlag(true);
+        }
         try {
             $this->productRepository->save($configProduct);
         } catch (Exception $e) {
