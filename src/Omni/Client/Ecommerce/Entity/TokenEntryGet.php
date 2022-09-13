@@ -12,30 +12,50 @@ use Ls\Omni\Client\RequestInterface;
 
 class TokenEntryGet implements RequestInterface
 {
-
     /**
-     * @property string $cardNo
+     * @property string $accountNo
      */
-    protected $cardNo = null;
+    protected $accountNo = null;
 
     /**
-     * @param string $cardNo
+     * @property boolean $hotelToken
+     */
+    protected $hotelToken = null;
+
+    /**
+     * @param string $accountNo
      * @return $this
      */
-    public function setCardNo($cardNo)
+    public function setAccountNo($accountNo)
     {
-        $this->cardNo = $cardNo;
+        $this->accountNo = $accountNo;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getCardNo()
+    public function getAccountNo()
     {
-        return $this->cardNo;
+        return $this->accountNo;
     }
 
+    /**
+     * @param boolean $hotelToken
+     * @return $this
+     */
+    public function setHotelToken($hotelToken)
+    {
+        $this->hotelToken = $hotelToken;
+        return $this;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function getHotelToken()
+    {
+        return $this->hotelToken;
+    }
 }
 

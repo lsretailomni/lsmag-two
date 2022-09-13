@@ -12,14 +12,13 @@ use Ls\Omni\Client\ResponseInterface;
 
 class TokenEntryGetResponse implements ResponseInterface
 {
-
     /**
-     * @property ClientTokenResult $TokenEntryGetResult
+     * @property ArrayOfClientToken $TokenEntryGetResult
      */
     protected $TokenEntryGetResult = null;
 
     /**
-     * @param ClientTokenResult $TokenEntryGetResult
+     * @param ArrayOfClientToken $TokenEntryGetResult
      * @return $this
      */
     public function setTokenEntryGetResult($TokenEntryGetResult)
@@ -29,7 +28,7 @@ class TokenEntryGetResponse implements ResponseInterface
     }
 
     /**
-     * @return ClientTokenResult
+     * @return ArrayOfClientToken
      */
     public function getTokenEntryGetResult()
     {
@@ -37,13 +36,11 @@ class TokenEntryGetResponse implements ResponseInterface
     }
 
     /**
-     * @return ClientTokenResult
+     * @return ArrayOfClientToken
      */
     public function getResult()
     {
         return $this->TokenEntryGetResult;
     }
-
-
 }
 

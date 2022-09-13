@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplItemVariantRegistrationInterface;
 
 class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_item_variant_registration';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_item_variant_registration';
@@ -153,7 +152,5 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplAttributeOptionValueResponse
 {
-
     /**
      * @property ArrayOfReplAttributeOptionValue $OptionValues
      */
@@ -102,7 +101,5 @@ class ReplAttributeOptionValueResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

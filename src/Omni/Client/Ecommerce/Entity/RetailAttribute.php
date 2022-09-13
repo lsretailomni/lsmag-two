@@ -14,7 +14,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class RetailAttribute
 {
-
     /**
      * @property ArrayOfAttributeOptionValue $OptionValues
      */
@@ -310,7 +309,5 @@ class RetailAttribute
     {
         return $this->ValueType;
     }
-
-
 }
 

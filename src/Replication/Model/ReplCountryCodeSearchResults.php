@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplCountryCodeSearchResults extends SearchResults implements ReplCountryCodeSearchResultsInterface
 {
-
-
 }
 

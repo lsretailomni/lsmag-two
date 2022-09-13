@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHosp extends Entity
 {
-
     /**
      * @property ArrayOfOrderDiscountLine $OrderDiscountLines
      */
@@ -552,7 +551,5 @@ class OrderHosp extends Entity
     {
         return $this->TotalNetAmount;
     }
-
-
 }
 

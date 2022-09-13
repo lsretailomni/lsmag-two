@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityReservationsHeaderGetResponse as Act
 
 class ActivityReservationsHeaderGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_RESERVATIONS_HEADER_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityReservationsHeaderGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

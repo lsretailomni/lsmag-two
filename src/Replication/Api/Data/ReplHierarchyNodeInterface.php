@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplHierarchyNodeInterface
 {
-
     /**
      * @param int $ChildrenOrder
      * @return $this
@@ -208,7 +207,5 @@ interface ReplHierarchyNodeInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

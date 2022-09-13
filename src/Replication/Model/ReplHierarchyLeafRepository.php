@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplHierarchyLeafSearchResultsFactory;
 
 class ReplHierarchyLeafRepository implements ReplHierarchyLeafRepositoryInterface
 {
-
     /**
      * @property ReplHierarchyLeafFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplHierarchyLeafRepository implements ReplHierarchyLeafRepositoryInterfac
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

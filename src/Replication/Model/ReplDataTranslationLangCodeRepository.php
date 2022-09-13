@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplDataTranslationLangCodeSearchResultsFactory;
 
 class ReplDataTranslationLangCodeRepository implements ReplDataTranslationLangCodeRepositoryInterface
 {
-
     /**
      * @property ReplDataTranslationLangCodeFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplDataTranslationLangCodeRepository implements ReplDataTranslationLangCo
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

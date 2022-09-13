@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommDataTranslationLangCodeResponse as 
 
 class ReplEcommDataTranslationLangCode extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_DATA_TRANSLATION_LANG_CODE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommDataTranslationLangCode extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

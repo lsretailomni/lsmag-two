@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class StoresGetAllResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfStore $StoresGetAllResult
      */
@@ -43,7 +42,5 @@ class StoresGetAllResponse implements ResponseInterface
     {
         return $this->StoresGetAllResult;
     }
-
-
 }
 

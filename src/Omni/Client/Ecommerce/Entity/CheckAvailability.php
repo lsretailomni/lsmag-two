@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class CheckAvailability implements RequestInterface
 {
-
     /**
      * @property ArrayOfHospAvailabilityRequest $request
      */
@@ -58,7 +57,5 @@ class CheckAvailability implements RequestInterface
     {
         return $this->storeId;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplStoreTenderType implements IteratorAggregate
 {
-
     /**
      * @property ReplStoreTenderType[] $ReplStoreTenderType
      */
@@ -46,7 +45,5 @@ class ArrayOfReplStoreTenderType implements IteratorAggregate
     {
         return $this->ReplStoreTenderType;
     }
-
-
 }
 

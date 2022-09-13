@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\HospOrderCancelResponse as HospOrderCancelRe
 
 class HospOrderCancel extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'HOSP_ORDER_CANCEL';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class HospOrderCancel extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

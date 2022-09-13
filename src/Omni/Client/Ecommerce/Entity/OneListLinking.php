@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListLinking implements RequestInterface
 {
-
     /**
      * @property string $oneListId
      */
@@ -139,7 +138,5 @@ class OneListLinking implements RequestInterface
     {
         return $this->status;
     }
-
-
 }
 

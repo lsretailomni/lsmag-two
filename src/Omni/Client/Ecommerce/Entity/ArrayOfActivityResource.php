@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfActivityResource implements IteratorAggregate
 {
-
     /**
      * @property ActivityResource[] $ActivityResource
      */
@@ -46,7 +45,5 @@ class ArrayOfActivityResource implements IteratorAggregate
     {
         return $this->ActivityResource;
     }
-
-
 }
 

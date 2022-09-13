@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OrderHospCreateResponse implements ResponseInterface
 {
-
     /**
      * @property SalesEntry $OrderHospCreateResult
      */
@@ -43,7 +42,5 @@ class OrderHospCreateResponse implements ResponseInterface
     {
         return $this->OrderHospCreateResult;
     }
-
-
 }
 

@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class RecommendedItemsGetResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfRecommendedItem $RecommendedItemsGetResult
      */
@@ -43,7 +42,5 @@ class RecommendedItemsGetResponse implements ResponseInterface
     {
         return $this->RecommendedItemsGetResult;
     }
-
-
 }
 

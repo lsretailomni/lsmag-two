@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplInvStatusInterface;
 
 class ReplEcommInventoryStatusTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_inv_status';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_inv_status';
@@ -153,7 +152,5 @@ class ReplEcommInventoryStatusTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

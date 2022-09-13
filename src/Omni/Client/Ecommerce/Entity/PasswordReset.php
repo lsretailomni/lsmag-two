@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class PasswordReset implements RequestInterface
 {
-
     /**
      * @property string $userName
      */
@@ -58,7 +57,5 @@ class PasswordReset implements RequestInterface
     {
         return $this->email;
     }
-
-
 }
 

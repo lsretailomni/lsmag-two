@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemCategoriesGetById implements RequestInterface
 {
-
     /**
      * @property string $itemCategoryId
      */
@@ -35,7 +34,5 @@ class ItemCategoriesGetById implements RequestInterface
     {
         return $this->itemCategoryId;
     }
-
-
 }
 

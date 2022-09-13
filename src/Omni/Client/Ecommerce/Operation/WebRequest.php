@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\WebRequestResponse as WebRequestResponse;
 
 class WebRequest extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'WEB_REQUEST';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class WebRequest extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

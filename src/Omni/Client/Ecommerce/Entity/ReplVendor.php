@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplVendor
 {
-
     /**
      * @property boolean $AllowCustomersToSelectPageSize
      */
@@ -332,7 +331,5 @@ class ReplVendor
     {
         return $this->scope_id;
     }
-
-
 }
 

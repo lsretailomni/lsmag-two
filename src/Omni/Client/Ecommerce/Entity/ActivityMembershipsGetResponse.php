@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityMembershipsGetResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfMembership $ActivityMembershipsGetResult
      */
@@ -43,7 +42,5 @@ class ActivityMembershipsGetResponse implements ResponseInterface
     {
         return $this->ActivityMembershipsGetResult;
     }
-
-
 }
 

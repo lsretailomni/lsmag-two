@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplValidationScheduleResponse
 {
-
     /**
      * @property ArrayOfReplValidationSchedule $Schedules
      */
@@ -102,7 +101,5 @@ class ReplValidationScheduleResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

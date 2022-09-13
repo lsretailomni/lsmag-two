@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfVariantExt implements IteratorAggregate
 {
-
     /**
      * @property VariantExt[] $VariantExt
      */
@@ -46,7 +45,5 @@ class ArrayOfVariantExt implements IteratorAggregate
     {
         return $this->VariantExt;
     }
-
-
 }
 

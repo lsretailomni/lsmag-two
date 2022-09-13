@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplAttributeValueInterface;
 
 class ReplEcommAttributeValueTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_attribute_value';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_attribute_value';
@@ -153,7 +152,5 @@ class ReplEcommAttributeValueTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

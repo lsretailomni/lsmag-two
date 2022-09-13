@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OrderCancel implements RequestInterface
 {
-
     /**
      * @property ArrayOfint $lineNo
      */
@@ -104,7 +103,5 @@ class OrderCancel implements RequestInterface
     {
         return $this->userId;
     }
-
-
 }
 

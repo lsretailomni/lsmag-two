@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplDataTranslationLangCode extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_data_translation_lang_code', 'repl_data_translation_lang_code_id' );
     }
-
-
 }
 

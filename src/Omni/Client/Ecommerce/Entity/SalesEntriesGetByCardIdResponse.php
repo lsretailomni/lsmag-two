@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SalesEntriesGetByCardIdResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfSalesEntry $SalesEntriesGetByCardIdResult
      */
@@ -43,7 +42,5 @@ class SalesEntriesGetByCardIdResponse implements ResponseInterface
     {
         return $this->SalesEntriesGetByCardIdResult;
     }
-
-
 }
 

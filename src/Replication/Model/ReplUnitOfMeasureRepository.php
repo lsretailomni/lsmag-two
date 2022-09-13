@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplUnitOfMeasureSearchResultsFactory;
 
 class ReplUnitOfMeasureRepository implements ReplUnitOfMeasureRepositoryInterface
 {
-
     /**
      * @property ReplUnitOfMeasureFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplUnitOfMeasureRepository implements ReplUnitOfMeasureRepositoryInterfac
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfVSTimeScheduleLine implements IteratorAggregate
 {
-
     /**
      * @property VSTimeScheduleLine[] $VSTimeScheduleLine
      */
@@ -46,7 +45,5 @@ class ArrayOfVSTimeScheduleLine implements IteratorAggregate
     {
         return $this->VSTimeScheduleLine;
     }
-
-
 }
 

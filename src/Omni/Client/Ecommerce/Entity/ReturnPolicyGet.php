@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReturnPolicyGet implements RequestInterface
 {
-
     /**
      * @property string $storeId
      */
@@ -173,7 +172,5 @@ class ReturnPolicyGet implements RequestInterface
     {
         return $this->variantDim1;
     }
-
-
 }
 

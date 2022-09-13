@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class CardGetPointEnties implements RequestInterface
 {
-
     /**
      * @property string $cardId
      */
@@ -58,7 +57,5 @@ class CardGetPointEnties implements RequestInterface
     {
         return $this->dateFrom;
     }
-
-
 }
 

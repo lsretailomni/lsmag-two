@@ -15,7 +15,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class PointEntry extends Entity
 {
-
     /**
      * @property string $Date
      */
@@ -275,7 +274,5 @@ class PointEntry extends Entity
     {
         return $this->StoreNo;
     }
-
-
 }
 

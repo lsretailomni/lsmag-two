@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItem
 {
-
     /**
      * @property string $BaseUnitOfMeasure
      */
@@ -60,6 +59,11 @@ class ReplItem
      * @property int $BlockedOnPos
      */
     protected $BlockedOnPos = null;
+
+    /**
+     * @property string $CountryOfOrigin
+     */
+    protected $CountryOfOrigin = null;
 
     /**
      * @property int $CrossSellingExists
@@ -379,6 +383,24 @@ class ReplItem
     public function getBlockedOnPos()
     {
         return $this->BlockedOnPos;
+    }
+
+    /**
+     * @param string $CountryOfOrigin
+     * @return $this
+     */
+    public function setCountryOfOrigin($CountryOfOrigin)
+    {
+        $this->CountryOfOrigin = $CountryOfOrigin;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryOfOrigin()
+    {
+        return $this->CountryOfOrigin;
     }
 
     /**

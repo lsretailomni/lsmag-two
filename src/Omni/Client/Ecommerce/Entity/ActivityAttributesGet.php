@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityAttributesGet implements RequestInterface
 {
-
     /**
      * @property AttributeType $type
      */
@@ -70,7 +69,5 @@ class ActivityAttributesGet implements RequestInterface
     {
         return $this->linkNo;
     }
-
-
 }
 

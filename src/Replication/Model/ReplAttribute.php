@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplAttributeInterface;
 
 class ReplAttribute extends AbstractModel implements ReplAttributeInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_attribute';
 
     protected $_cacheTag = 'ls_replication_repl_attribute';
@@ -380,7 +379,5 @@ class ReplAttribute extends AbstractModel implements ReplAttributeInterface, Ide
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

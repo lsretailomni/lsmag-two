@@ -19,7 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class SalesEntryStatus extends Enum
 {
-
     public const CREATED = 'Created';
 
     public const PENDING = 'Pending';
@@ -29,7 +28,5 @@ class SalesEntryStatus extends Enum
     public const COMPLETE = 'Complete';
 
     public const CANCELED = 'Canceled';
-
-
 }
 

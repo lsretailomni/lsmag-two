@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListLinkingResponse as OneListLinkingResp
 
 class OneListLinking extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ONE_LIST_LINKING';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class OneListLinking extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

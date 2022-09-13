@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ClientToken
 {
-
     /**
      * @property string $AccountNo
      */
@@ -57,14 +56,29 @@ class ClientToken
     protected $EntryNo = null;
 
     /**
+     * @property string $ExpiryDate
+     */
+    protected $ExpiryDate = null;
+
+    /**
+     * @property boolean $HotelToken
+     */
+    protected $HotelToken = null;
+
+    /**
+     * @property string $Result
+     */
+    protected $Result = null;
+
+    /**
      * @property string $Token
      */
     protected $Token = null;
 
     /**
-     * @property string $Token1
+     * @property string $TokenId
      */
-    protected $Token1 = null;
+    protected $TokenId = null;
 
     /**
      * @property string $Type
@@ -239,6 +253,60 @@ class ClientToken
     }
 
     /**
+     * @param string $ExpiryDate
+     * @return $this
+     */
+    public function setExpiryDate($ExpiryDate)
+    {
+        $this->ExpiryDate = $ExpiryDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpiryDate()
+    {
+        return $this->ExpiryDate;
+    }
+
+    /**
+     * @param boolean $HotelToken
+     * @return $this
+     */
+    public function setHotelToken($HotelToken)
+    {
+        $this->HotelToken = $HotelToken;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHotelToken()
+    {
+        return $this->HotelToken;
+    }
+
+    /**
+     * @param string $Result
+     * @return $this
+     */
+    public function setResult($Result)
+    {
+        $this->Result = $Result;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getResult()
+    {
+        return $this->Result;
+    }
+
+    /**
      * @param string $Token
      * @return $this
      */
@@ -257,21 +325,21 @@ class ClientToken
     }
 
     /**
-     * @param string $Token1
+     * @param string $TokenId
      * @return $this
      */
-    public function setToken1($Token1)
+    public function setTokenId($TokenId)
     {
-        $this->Token1 = $Token1;
+        $this->TokenId = $TokenId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getToken1()
+    public function getTokenId()
     {
-        return $this->Token1;
+        return $this->TokenId;
     }
 
     /**
@@ -309,7 +377,5 @@ class ClientToken
     {
         return $this->pSPID;
     }
-
-
 }
 

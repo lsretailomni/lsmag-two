@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class WebRequestResponse implements ResponseInterface
 {
-
     /**
      * @property string $WebRequestResult
      */
@@ -43,7 +42,5 @@ class WebRequestResponse implements ResponseInterface
     {
         return $this->WebRequestResult;
     }
-
-
 }
 
