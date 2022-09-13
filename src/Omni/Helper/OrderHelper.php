@@ -709,6 +709,27 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get magento order given document_id
+     *
+     * @param string $documentId
+     * @return false|mixed|null
+     */
+    public function getMagentoOrderGivenDocumentId($documentId)
+    {
+        $order = null;
+        $orderList  = $this->orderRepository->getList(
+            $this->basketHelper->getSearchCriteriaBuilder()->
+            addFilter('document_id', $documentId)->create()
+        )->getItems();
+
+        if (!empty($orderList)) {
+            $order = reset($orderList);
+        }
+
+        return $order;
+    }
+
+    /**
      * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
      * @param int $storeId

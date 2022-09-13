@@ -53,7 +53,6 @@ type Order {
     document_id: String @doc(description: "Ls Central Order Id")
     pickup_store_id: String @doc(description: "Order Pickup Store ID")
     pickup_store_name: String @doc(description: "Order Pickup Store Name")
-    pickup_date_timeslot: String @doc(description: "Order Pickup date and time")
 }
 
 type Query {
@@ -90,8 +89,6 @@ type StockData {
 
 input SetShippingMethodsOnCartInput {
     store_id: String @doc(description: "Pickup Store ID only applicable for click and collect.")
-    pickup_date: String @doc(description: "Pickup Date if applicable.")
-    pickup_time_slot: String @doc(description: "Pickup Time slot if applicable.")
 }
 
 type ItemAvailabilityOutput {
