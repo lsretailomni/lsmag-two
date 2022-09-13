@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommExtendedVariantsResponse implements ResponseInterface
 {
-
     /**
      * @property ReplExtendedVariantValuesResponse $ReplEcommExtendedVariantsResult
      */
@@ -43,7 +42,5 @@ class ReplEcommExtendedVariantsResponse implements ResponseInterface
     {
         return $this->ReplEcommExtendedVariantsResult;
     }
-
-
 }
 

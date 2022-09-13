@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ItemLocation
 {
-
     /**
      * @property string $SectionCode
      */
@@ -125,7 +124,5 @@ class ItemLocation
     {
         return $this->StoreId;
     }
-
-
 }
 

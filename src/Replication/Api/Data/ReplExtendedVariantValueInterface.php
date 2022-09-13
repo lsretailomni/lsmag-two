@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplExtendedVariantValueInterface
 {
-
     /**
      * @param string $Code
      * @return $this
@@ -208,7 +207,5 @@ interface ReplExtendedVariantValueInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

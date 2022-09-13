@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class TaxItemGroup
 {
-
     /**
      * @property string $Code
      */
@@ -56,7 +55,5 @@ class TaxItemGroup
     {
         return $this->TaxPercent;
     }
-
-
 }
 

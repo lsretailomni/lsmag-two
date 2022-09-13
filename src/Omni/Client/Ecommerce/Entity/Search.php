@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class Search implements RequestInterface
 {
-
     /**
      * @property string $cardId
      */
@@ -93,7 +92,5 @@ class Search implements RequestInterface
     {
         return $this->searchTypes;
     }
-
-
 }
 

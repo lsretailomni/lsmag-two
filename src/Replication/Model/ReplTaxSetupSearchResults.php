@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplTaxSetupSearchResults extends SearchResults implements ReplTaxSetupSearchResultsInterface
 {
-
-
 }
 

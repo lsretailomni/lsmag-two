@@ -12,7 +12,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplDataTranslationLangCodeRepositoryInterface
 {
-
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplDataTranslationLangCodeInterface $page);
@@ -22,7 +21,5 @@ interface ReplDataTranslationLangCodeRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
-
-
 }
 

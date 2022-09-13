@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommCurrencyRateResponse implements ResponseInterface
 {
-
     /**
      * @property ReplCurrencyExchRateResponse $ReplEcommCurrencyRateResult
      */
@@ -43,7 +42,5 @@ class ReplEcommCurrencyRateResponse implements ResponseInterface
     {
         return $this->ReplEcommCurrencyRateResult;
     }
-
-
 }
 

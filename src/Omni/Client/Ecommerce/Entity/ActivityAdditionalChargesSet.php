@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityAdditionalChargesSet implements RequestInterface
 {
-
     /**
      * @property AdditionalCharge $request
      */
@@ -35,7 +34,5 @@ class ActivityAdditionalChargesSet implements RequestInterface
     {
         return $this->request;
     }
-
-
 }
 

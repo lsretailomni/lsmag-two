@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OneListDeleteByIdResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $OneListDeleteByIdResult
      */
@@ -43,7 +42,5 @@ class OneListDeleteByIdResponse implements ResponseInterface
     {
         return $this->OneListDeleteByIdResult;
     }
-
-
 }
 

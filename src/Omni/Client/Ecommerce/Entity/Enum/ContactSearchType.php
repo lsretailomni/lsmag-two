@@ -20,7 +20,6 @@ use MyCLabs\Enum\Enum;
  */
 class ContactSearchType extends Enum
 {
-
     public const CARD_ID = 'CardId';
 
     public const CONTACT_NUMBER = 'ContactNumber';
@@ -32,7 +31,5 @@ class ContactSearchType extends Enum
     public const NAME = 'Name';
 
     public const USER_NAME = 'UserName';
-
-
 }
 

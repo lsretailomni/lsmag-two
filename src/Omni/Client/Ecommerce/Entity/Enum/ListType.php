@@ -16,11 +16,8 @@ use MyCLabs\Enum\Enum;
  */
 class ListType extends Enum
 {
-
     public const BASKET = 'Basket';
 
     public const WISH = 'Wish';
-
-
 }
 

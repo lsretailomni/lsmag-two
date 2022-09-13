@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBarcodesResponse as ReplEcommBarcod
 
 class ReplEcommBarcodes extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_BARCODES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommBarcodes extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

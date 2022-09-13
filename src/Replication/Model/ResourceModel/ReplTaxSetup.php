@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplTaxSetup extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_tax_setup', 'repl_tax_setup_id' );
     }
-
-
 }
 

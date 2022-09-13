@@ -21,7 +21,6 @@ use MyCLabs\Enum\Enum;
  */
 class AttributeLinkType extends Enum
 {
-
     public const ITEM = 'Item';
 
     public const VARIANT = 'Variant';
@@ -35,7 +34,5 @@ class AttributeLinkType extends Enum
     public const DEAL = 'Deal';
 
     public const UNKNOWN = 'Unknown';
-
-
 }
 

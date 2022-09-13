@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplCurrencyInterface;
 
 class ReplEcommCurrencyTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_currency';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_currency';
@@ -153,7 +152,5 @@ class ReplEcommCurrencyTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

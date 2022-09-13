@@ -240,6 +240,7 @@
             "Blocked": true,
             "BlockedOnECom": true,
             "BlockedOnPos": true,
+            "CountryOfOrigin": true,
             "CrossSellingExists": true,
             "DateBlocked": true,
             "DateToActivateItem": true,

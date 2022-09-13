@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplStoreTenderTypeResponse
 {
-
     /**
      * @property ArrayOfReplStoreTenderType $StoreTenderTypes
      */
@@ -102,7 +101,5 @@ class ReplStoreTenderTypeResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

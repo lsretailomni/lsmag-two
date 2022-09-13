@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplHierarchyNodeResponse
 {
-
     /**
      * @property ArrayOfReplHierarchyNode $Nodes
      */
@@ -102,7 +101,5 @@ class ReplHierarchyNodeResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplInvStatus extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_inv_status', 'repl_inv_status_id' );
     }
-
-
 }
 

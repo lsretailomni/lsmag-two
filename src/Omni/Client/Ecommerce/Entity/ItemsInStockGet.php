@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemsInStockGet implements RequestInterface
 {
-
     /**
      * @property string $storeId
      */
@@ -104,7 +103,5 @@ class ItemsInStockGet implements RequestInterface
     {
         return $this->arrivingInStockInDays;
     }
-
-
 }
 

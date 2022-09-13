@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class HospOrderStatusResponse implements ResponseInterface
 {
-
     /**
      * @property OrderHospStatus $HospOrderStatusResult
      */
@@ -43,7 +42,5 @@ class HospOrderStatusResponse implements ResponseInterface
     {
         return $this->HospOrderStatusResult;
     }
-
-
 }
 

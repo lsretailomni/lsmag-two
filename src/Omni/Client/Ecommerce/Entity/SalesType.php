@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class SalesType
 {
-
     /**
      * @property string $Code
      */
@@ -56,7 +55,5 @@ class SalesType
     {
         return $this->Description;
     }
-
-
 }
 

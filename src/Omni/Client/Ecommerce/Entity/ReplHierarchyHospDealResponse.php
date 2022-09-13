@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplHierarchyHospDealResponse
 {
-
     /**
      * @property ArrayOfReplHierarchyHospDeal $Items
      */
@@ -102,7 +101,5 @@ class ReplHierarchyHospDealResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

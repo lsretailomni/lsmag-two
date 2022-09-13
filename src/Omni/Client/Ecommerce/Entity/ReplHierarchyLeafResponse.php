@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplHierarchyLeafResponse
 {
-
     /**
      * @property ArrayOfReplHierarchyLeaf $Leafs
      */
@@ -102,7 +101,5 @@ class ReplHierarchyLeafResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

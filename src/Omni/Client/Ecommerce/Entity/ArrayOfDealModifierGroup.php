@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfDealModifierGroup implements IteratorAggregate
 {
-
     /**
      * @property DealModifierGroup[] $DealModifierGroup
      */
@@ -46,7 +45,5 @@ class ArrayOfDealModifierGroup implements IteratorAggregate
     {
         return $this->DealModifierGroup;
     }
-
-
 }
 

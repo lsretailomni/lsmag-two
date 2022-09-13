@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactUpdateResponse as ContactUpdateRespon
 
 class ContactUpdate extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'CONTACT_UPDATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ContactUpdate extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

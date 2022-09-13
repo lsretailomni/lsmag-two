@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfRecommendedItem implements IteratorAggregate
 {
-
     /**
      * @property RecommendedItem[] $RecommendedItem
      */
@@ -46,7 +45,5 @@ class ArrayOfRecommendedItem implements IteratorAggregate
     {
         return $this->RecommendedItem;
     }
-
-
 }
 

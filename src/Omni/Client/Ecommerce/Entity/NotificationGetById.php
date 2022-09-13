@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class NotificationGetById implements RequestInterface
 {
-
     /**
      * @property string $notificationId
      */
@@ -35,7 +34,5 @@ class NotificationGetById implements RequestInterface
     {
         return $this->notificationId;
     }
-
-
 }
 

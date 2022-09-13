@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SearchResponse implements ResponseInterface
 {
-
     /**
      * @property SearchRs $SearchResult
      */
@@ -43,7 +42,5 @@ class SearchResponse implements ResponseInterface
     {
         return $this->SearchResult;
     }
-
-
 }
 

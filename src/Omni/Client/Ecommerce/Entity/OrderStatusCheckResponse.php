@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OrderStatusCheckResponse implements ResponseInterface
 {
-
     /**
      * @property OrderStatusResponse $OrderStatusCheckResult
      */
@@ -43,7 +42,5 @@ class OrderStatusCheckResponse implements ResponseInterface
     {
         return $this->OrderStatusCheckResult;
     }
-
-
 }
 

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactCreateResponse as ContactCreateRespon
 
 class ContactCreate extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'CONTACT_CREATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ContactCreate extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplDiscountValidationSearchResultsFactory;
 
 class ReplDiscountValidationRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplDiscountValidationFactory $objectFactory
      */
@@ -137,7 +136,5 @@ class ReplDiscountValidationRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

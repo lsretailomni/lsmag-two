@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplBarcodeInterface;
 
 class ReplEcommBarcodesTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_barcode';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_barcode';
@@ -153,7 +152,5 @@ class ReplEcommBarcodesTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

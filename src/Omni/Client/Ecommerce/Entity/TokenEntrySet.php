@@ -12,11 +12,15 @@ use Ls\Omni\Client\RequestInterface;
 
 class TokenEntrySet implements RequestInterface
 {
-
     /**
      * @property ClientToken $token
      */
     protected $token = null;
+
+    /**
+     * @property boolean $deleteToken
+     */
+    protected $deleteToken = null;
 
     /**
      * @param ClientToken $token
@@ -36,6 +40,22 @@ class TokenEntrySet implements RequestInterface
         return $this->token;
     }
 
+    /**
+     * @param boolean $deleteToken
+     * @return $this
+     */
+    public function setDeleteToken($deleteToken)
+    {
+        $this->deleteToken = $deleteToken;
+        return $this;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function getDeleteToken()
+    {
+        return $this->deleteToken;
+    }
 }
 

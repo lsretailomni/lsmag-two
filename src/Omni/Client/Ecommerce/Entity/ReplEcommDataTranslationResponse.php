@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommDataTranslationResponse implements ResponseInterface
 {
-
     /**
      * @property ReplDataTranslationResponse $ReplEcommDataTranslationResult
      */
@@ -43,7 +42,5 @@ class ReplEcommDataTranslationResponse implements ResponseInterface
     {
         return $this->ReplEcommDataTranslationResult;
     }
-
-
 }
 

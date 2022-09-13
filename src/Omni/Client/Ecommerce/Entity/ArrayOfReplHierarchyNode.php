@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplHierarchyNode implements IteratorAggregate
 {
-
     /**
      * @property ReplHierarchyNode[] $ReplHierarchyNode
      */
@@ -46,7 +45,5 @@ class ArrayOfReplHierarchyNode implements IteratorAggregate
     {
         return $this->ReplHierarchyNode;
     }
-
-
 }
 

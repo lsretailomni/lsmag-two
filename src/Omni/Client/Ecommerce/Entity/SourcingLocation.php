@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class SourcingLocation extends Entity
 {
-
     /**
      * @property boolean $CanCollect
      */
@@ -102,7 +101,5 @@ class SourcingLocation extends Entity
     {
         return $this->Priority;
     }
-
-
 }
 

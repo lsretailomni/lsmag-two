@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplTaxSetupInterface;
 
 class ReplEcommTaxSetupTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_tax_setup';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_tax_setup';
@@ -153,7 +152,5 @@ class ReplEcommTaxSetupTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

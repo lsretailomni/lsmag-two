@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ShippingAgentService extends Entity
 {
-
     /**
      * @property string $Description
      */
@@ -56,7 +55,5 @@ class ShippingAgentService extends Entity
     {
         return $this->ShippingTime;
     }
-
-
 }
 

@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListGetByCardId implements RequestInterface
 {
-
     /**
      * @property string $cardId
      */
@@ -93,7 +92,5 @@ class OneListGetByCardId implements RequestInterface
     {
         return $this->includeLines;
     }
-
-
 }
 

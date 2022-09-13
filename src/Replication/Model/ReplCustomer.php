@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplCustomerInterface;
 
 class ReplCustomer extends AbstractModel implements ReplCustomerInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_customer';
 
     protected $_cacheTag = 'ls_replication_repl_customer';
@@ -980,7 +979,5 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

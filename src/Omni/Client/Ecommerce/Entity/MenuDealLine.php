@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MenuDealLine
 {
-
     /**
      * @property ArrayOfMenuDealLineItem $DealLineItems
      */
@@ -286,7 +285,5 @@ class MenuDealLine
     {
         return $this->UnitOfMeasure;
     }
-
-
 }
 

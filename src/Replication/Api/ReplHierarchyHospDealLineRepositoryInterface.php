@@ -12,7 +12,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplHierarchyHospDealLineRepositoryInterface
 {
-
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplHierarchyHospDealLineInterface $page);
@@ -22,7 +21,5 @@ interface ReplHierarchyHospDealLineRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
-
-
 }
 

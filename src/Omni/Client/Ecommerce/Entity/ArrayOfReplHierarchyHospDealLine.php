@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplHierarchyHospDealLine implements IteratorAggregate
 {
-
     /**
      * @property ReplHierarchyHospDealLine[] $ReplHierarchyHospDealLine
      */
@@ -46,7 +45,5 @@ class ArrayOfReplHierarchyHospDealLine implements IteratorAggregate
     {
         return $this->ReplHierarchyHospDealLine;
     }
-
-
 }
 

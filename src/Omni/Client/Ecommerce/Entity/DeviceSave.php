@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class DeviceSave implements RequestInterface
 {
-
     /**
      * @property string $deviceId
      */
@@ -150,7 +149,5 @@ class DeviceSave implements RequestInterface
     {
         return $this->model;
     }
-
-
 }
 

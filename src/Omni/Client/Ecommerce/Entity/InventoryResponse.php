@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class InventoryResponse
 {
-
     /**
      * @property string $BaseUnitOfMeasure
      */
@@ -125,7 +124,5 @@ class InventoryResponse
     {
         return $this->VariantId;
     }
-
-
 }
 

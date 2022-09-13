@@ -28,7 +28,6 @@ use \Ls\Replication\Model\LoyItemSearchResultsFactory;
 
 class LoyItemRepositoryTest extends TestCase
 {
-
     /**
      * @property LoyItemFactory $objectFactory
      */
@@ -136,7 +135,5 @@ class LoyItemRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

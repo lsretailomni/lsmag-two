@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfFeatureFlag implements IteratorAggregate
 {
-
     /**
      * @property FeatureFlag[] $FeatureFlag
      */
@@ -46,7 +45,5 @@ class ArrayOfFeatureFlag implements IteratorAggregate
     {
         return $this->FeatureFlag;
     }
-
-
 }
 

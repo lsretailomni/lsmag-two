@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MenuDeal extends MenuItem
 {
-
     /**
      * @property ArrayOfMenuDealLine $DealLines
      */
@@ -33,7 +32,5 @@ class MenuDeal extends MenuItem
     {
         return $this->DealLines;
     }
-
-
 }
 

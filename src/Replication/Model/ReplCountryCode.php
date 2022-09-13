@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplCountryCodeInterface;
 
 class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_country_code';
 
     protected $_cacheTag = 'ls_replication_repl_country_code';
@@ -405,7 +404,5 @@ class ReplCountryCode extends AbstractModel implements ReplCountryCodeInterface,
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

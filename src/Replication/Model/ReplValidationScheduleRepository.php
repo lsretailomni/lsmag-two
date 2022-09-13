@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplValidationScheduleSearchResultsFactory;
 
 class ReplValidationScheduleRepository implements ReplValidationScheduleRepositoryInterface
 {
-
     /**
      * @property ReplValidationScheduleFactory $object_factory
      */
@@ -127,7 +126,5 @@ class ReplValidationScheduleRepository implements ReplValidationScheduleReposito
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

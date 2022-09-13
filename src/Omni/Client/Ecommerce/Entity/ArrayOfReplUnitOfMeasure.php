@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplUnitOfMeasure implements IteratorAggregate
 {
-
     /**
      * @property ReplUnitOfMeasure[] $ReplUnitOfMeasure
      */
@@ -46,7 +45,5 @@ class ArrayOfReplUnitOfMeasure implements IteratorAggregate
     {
         return $this->ReplUnitOfMeasure;
     }
-
-
 }
 

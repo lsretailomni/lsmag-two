@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplImageResponse
 {
-
     /**
      * @property ArrayOfReplImage $Images
      */
@@ -102,7 +101,5 @@ class ReplImageResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

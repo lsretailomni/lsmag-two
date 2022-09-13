@@ -15,7 +15,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class PushNotificationRequest
 {
-
     /**
      * @property PushApplication $Application
      */
@@ -206,7 +205,5 @@ class PushNotificationRequest
     {
         return $this->Title;
     }
-
-
 }
 

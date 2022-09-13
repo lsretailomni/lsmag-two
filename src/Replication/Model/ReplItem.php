@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplItemInterface;
 
 class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_item';
 
     protected $_cacheTag = 'ls_replication_repl_item';
@@ -70,6 +69,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
      * @property int $BlockedOnPos
      */
     protected $BlockedOnPos = null;
+
+    /**
+     * @property string $CountryOfOrigin
+     */
+    protected $CountryOfOrigin = null;
 
     /**
      * @property int $CrossSellingExists
@@ -454,6 +458,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getBlockedOnPos()
     {
         return $this->getData( 'BlockedOnPos' );
+    }
+
+    /**
+     * @param string $CountryOfOrigin
+     * @return $this
+     */
+    public function setCountryOfOrigin($CountryOfOrigin)
+    {
+        $this->setData( 'CountryOfOrigin', $CountryOfOrigin );
+        $this->CountryOfOrigin = $CountryOfOrigin;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryOfOrigin()
+    {
+        return $this->getData( 'CountryOfOrigin' );
     }
 
     /**
@@ -1155,7 +1179,5 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

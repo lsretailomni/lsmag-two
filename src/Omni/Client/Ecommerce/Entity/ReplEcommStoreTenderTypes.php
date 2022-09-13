@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReplEcommStoreTenderTypes implements RequestInterface
 {
-
     /**
      * @property ReplRequest $replRequest
      */
@@ -35,7 +34,5 @@ class ReplEcommStoreTenderTypes implements RequestInterface
     {
         return $this->replRequest;
     }
-
-
 }
 

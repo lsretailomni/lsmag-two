@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MenuDealLineItem extends Entity
 {
-
     /**
      * @property string $Description
      */
@@ -102,7 +101,5 @@ class MenuDealLineItem extends Entity
     {
         return $this->Quantity;
     }
-
-
 }
 

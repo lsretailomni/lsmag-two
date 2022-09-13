@@ -122,6 +122,17 @@ interface ReplItemInterface
     public function getBlockedOnPos();
 
     /**
+     * @param string $CountryOfOrigin
+     * @return $this
+     */
+    public function setCountryOfOrigin($CountryOfOrigin);
+
+    /**
+     * @return string
+     */
+    public function getCountryOfOrigin();
+
+    /**
      * @param int $CrossSellingExists
      * @return $this
      */

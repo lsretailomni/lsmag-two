@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplStoreTenderTypeInterface;
 
 class ReplStoreTenderType extends AbstractModel implements ReplStoreTenderTypeInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_store_tender_type';
 
     protected $_cacheTag = 'ls_replication_repl_store_tender_type';
@@ -755,7 +754,5 @@ class ReplStoreTenderType extends AbstractModel implements ReplStoreTenderTypeIn
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

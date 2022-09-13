@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityReservationsHeaderGetResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfResHeader $ActivityReservationsHeaderGetResult
      */
@@ -43,7 +42,5 @@ class ActivityReservationsHeaderGetResponse implements ResponseInterface
     {
         return $this->ActivityReservationsHeaderGetResult;
     }
-
-
 }
 
