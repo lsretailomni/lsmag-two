@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use \Ls\Hospitality\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\GraphQl\Config\Element\Field;
@@ -78,7 +78,7 @@ class AvailablePaymentMethodsPlugin
         $paymentMethods                     = $paymentInformation->getPaymentMethods();
         $clickAndCollectPaymentMethodsArr   = [];
         $clickAndCollectPaymentMethods      = $this->lsr->getStoreConfig(
-            LSR::SC_CLICKCOLLECT_PAYMENT_OPTION,
+            LSR::SC_PAYMENT_OPTION,
             $this->lsr->getStoreId()
         );
         $shippingMethod                     = $cart->getShippingAddress()->getShippingMethod();

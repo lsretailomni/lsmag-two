@@ -26,6 +26,7 @@ use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
+use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -75,7 +76,6 @@ use Magento\InventoryApi\Api\Data\SourceItemInterface;
 use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
-use Magento\InventoryCatalogApi\Model\GetParentSkusOfChildrenSkusInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
@@ -303,7 +303,7 @@ class ReplicationHelper extends AbstractHelper
     public $productRepository;
 
     /**
-     * @var GetParentSkusOfChildrenSkusInterface
+     * @var GetParentSkusOfChildrenSkus
      */
     public $getParentSkusOfChildrenSkus;
 
@@ -368,7 +368,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
      * @param ParentItemProcessor $parentItemProcessor
      * @param ProductRepositoryInterface $productRepository
-     * @param GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus
+     * @param GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus
      * @param StockStatusRepository $stockStatusRepository
      * @param GetProductIdsBySkus $getProductIdsBySkus
      */
@@ -423,7 +423,7 @@ class ReplicationHelper extends AbstractHelper
         ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
         ParentItemProcessor $parentItemProcessor,
         ProductRepositoryInterface $productRepository,
-        GetParentSkusOfChildrenSkusInterface $getParentSkusOfChildrenSkus,
+        GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
         StockStatusRepository $stockStatusRepository,
         GetProductIdsBySkus $getProductIdsBySkus
     ) {
