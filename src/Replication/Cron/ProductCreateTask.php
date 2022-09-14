@@ -1659,6 +1659,7 @@ class ProductCreateTask
      */
     private function updateConfigProduct($productData, $item, $name, $uomCode = null, $value = null)
     {
+        $productStatus = true;
         $productData->setStoreId($this->store->getId());
         $productData->setName($name);
         $productData->setMetaTitle($name);
@@ -1675,10 +1676,9 @@ class ProductCreateTask
             );
             $productData->setData(LSR::LS_UOM_ATTRIBUTE, $optionId);
             //Set blocked on eCommerce for unit of measure product
-            if ($uomCode && $uomCode->getEComSelection() != null) {
-                $productData = $this->setProductStatus($productData, $uomCode->getEComSelection());
-            } else {
-                $productData = $this->setProductStatus($productData, 0);
+            if ($uomCode->getEComSelection() == 1) {
+                $productData   = $this->setProductStatus($productData, $uomCode->getEComSelection());
+                $productStatus = false;
             }
         } else {
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
@@ -1686,13 +1686,15 @@ class ProductCreateTask
 
         if ($value) {
             $productData->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
-
             //Set variant status as per BlockedOnEcom status of each variant
-            if ($value && $value->getBlockedOnECom() != null) {
-                $productData = $this->setProductStatus($productData, $value->getBlockedOnECom());
-            } else {
-                $productData = $this->setProductStatus($productData, 0);
+            if ($value->getBlockedOnECom() == 1) {
+                $productData   = $this->setProductStatus($productData, $value->getBlockedOnECom());
+                $productStatus = false;
             }
+        }
+
+        if ($productStatus) {
+            $productData = $this->setProductStatus($productData, 0);
         }
 
         try {
@@ -1728,7 +1730,8 @@ class ProductCreateTask
         $attributesCode,
         $itemBarcodes
     ) {
-        $productV = $this->productFactory->create();
+        $productStatus = true;
+        $productV      = $this->productFactory->create();
         $productV->setName($name);
         $productV->setStoreId($this->store->getId());
         $productV->setWebsiteIds([$this->store->getWebsiteId()]);
@@ -1769,15 +1772,19 @@ class ProductCreateTask
         $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
 
         //Set variant status as per BlockedOnEcom status of each variant
-        if ($value && $value->getBlockedOnECom() != null) {
-            $productV = $this->setProductStatus($productV, $value->getBlockedOnECom());
-        } else {
-            $productV = $this->setProductStatus($productV, 0);
+        if ($value && $value->getBlockedOnECom() == 1) {
+            $productV      = $this->setProductStatus($productV, $value->getBlockedOnECom());
+            $productStatus = false;
         }
 
         //Set blocked on eCommerce for unit of measure product
-        if ($uomCode && $uomCode->getEComSelection() != null) {
-            $productV = $this->setProductStatus($productV, $uomCode->getEComSelection());
+        if ($uomCode && $uomCode->getEComSelection() == 1) {
+            $productV      = $this->setProductStatus($productV, $uomCode->getEComSelection());
+            $productStatus = false;
+        }
+
+        if ($productStatus) {
+            $productV = $this->setProductStatus($productV, 0);
         }
 
         $productV->setTypeId(Type::TYPE_SIMPLE);
