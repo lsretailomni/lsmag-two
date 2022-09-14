@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class PingResponse implements ResponseInterface
 {
-
     /**
      * @property string $PingResult
      */
@@ -43,7 +42,5 @@ class PingResponse implements ResponseInterface
     {
         return $this->PingResult;
     }
-
-
 }
 

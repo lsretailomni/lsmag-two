@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityResponse extends Entity
 {
-
     /**
      * @property string $BookingRef
      */
@@ -240,7 +239,5 @@ class ActivityResponse extends Entity
     {
         return $this->UnitPrice;
     }
-
-
 }
 

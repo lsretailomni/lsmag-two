@@ -12,11 +12,8 @@ use Magento\Framework\Api\SearchResultsInterface;
 
 interface ReplCurrencySearchResultsInterface extends SearchResultsInterface
 {
-
     public function getItems();
 
     public function setItems(array $items);
-
-
 }
 

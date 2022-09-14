@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OpenGateResponse implements ResponseInterface
 {
-
     /**
      * @property string $OpenGateResult
      */
@@ -43,7 +42,5 @@ class OpenGateResponse implements ResponseInterface
     {
         return $this->OpenGateResult;
     }
-
-
 }
 

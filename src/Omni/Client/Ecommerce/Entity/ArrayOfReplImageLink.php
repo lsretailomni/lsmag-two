@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplImageLink implements IteratorAggregate
 {
-
     /**
      * @property ReplImageLink[] $ReplImageLink
      */
@@ -46,7 +45,5 @@ class ArrayOfReplImageLink implements IteratorAggregate
     {
         return $this->ReplImageLink;
     }
-
-
 }
 

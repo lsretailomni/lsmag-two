@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfClientToken implements IteratorAggregate
 {
-
     /**
      * @property ClientToken[] $ClientToken
      */
@@ -46,7 +45,5 @@ class ArrayOfClientToken implements IteratorAggregate
     {
         return $this->ClientToken;
     }
-
-
 }
 

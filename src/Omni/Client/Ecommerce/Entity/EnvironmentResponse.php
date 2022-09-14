@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class EnvironmentResponse implements ResponseInterface
 {
-
     /**
      * @property OmniEnvironment $EnvironmentResult
      */
@@ -43,7 +42,5 @@ class EnvironmentResponse implements ResponseInterface
     {
         return $this->EnvironmentResult;
     }
-
-
 }
 

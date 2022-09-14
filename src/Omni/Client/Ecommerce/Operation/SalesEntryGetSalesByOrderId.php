@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse as Sales
 
 class SalesEntryGetSalesByOrderId extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'SALES_ENTRY_GET_SALES_BY_ORDER_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class SalesEntryGetSalesByOrderId extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

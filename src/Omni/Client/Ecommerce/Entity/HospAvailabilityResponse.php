@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class HospAvailabilityResponse
 {
-
     /**
      * @property boolean $IsDeal
      */
@@ -125,7 +124,5 @@ class HospAvailabilityResponse
     {
         return $this->UnitOfMeasure;
     }
-
-
 }
 

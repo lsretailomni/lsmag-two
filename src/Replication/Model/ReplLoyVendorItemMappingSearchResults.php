@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplLoyVendorItemMappingSearchResults extends SearchResults implements ReplLoyVendorItemMappingSearchResultsInterface
 {
-
-
 }
 

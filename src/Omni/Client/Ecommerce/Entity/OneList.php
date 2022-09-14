@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneList extends Entity
 {
-
     /**
      * @property ArrayOfOneListLink $CardLinks
      */
@@ -460,7 +459,5 @@ class OneList extends Entity
     {
         return $this->TotalTaxAmount;
     }
-
-
 }
 

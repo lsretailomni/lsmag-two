@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplCustomerInterface
 {
-
     /**
      * @param ArrayOfCard $Cards
      * @return $this
@@ -428,7 +427,5 @@ interface ReplCustomerInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

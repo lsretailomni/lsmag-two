@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReturnPolicy
 {
-
     /**
      * @property string $ItemCategory
      */
@@ -309,7 +308,5 @@ class ReturnPolicy
     {
         return $this->VariantDimension1;
     }
-
-
 }
 

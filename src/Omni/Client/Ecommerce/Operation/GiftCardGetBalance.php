@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\GiftCardGetBalanceResponse as GiftCardGetBal
 
 class GiftCardGetBalance extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'GIFT_CARD_GET_BALANCE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class GiftCardGetBalance extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplImageLinkResponse
 {
-
     /**
      * @property ArrayOfReplImageLink $ImageLinks
      */
@@ -102,7 +101,5 @@ class ReplImageLinkResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

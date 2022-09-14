@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfStoreHours implements IteratorAggregate
 {
-
     /**
      * @property StoreHours[] $StoreHours
      */
@@ -46,7 +45,5 @@ class ArrayOfStoreHours implements IteratorAggregate
     {
         return $this->StoreHours;
     }
-
-
 }
 

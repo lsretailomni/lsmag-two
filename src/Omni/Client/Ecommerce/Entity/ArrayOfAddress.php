@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfAddress implements IteratorAggregate
 {
-
     /**
      * @property Address[] $Address
      */
@@ -46,7 +45,5 @@ class ArrayOfAddress implements IteratorAggregate
     {
         return $this->Address;
     }
-
-
 }
 

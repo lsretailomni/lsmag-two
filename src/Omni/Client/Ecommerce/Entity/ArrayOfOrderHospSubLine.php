@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfOrderHospSubLine implements IteratorAggregate
 {
-
     /**
      * @property OrderHospSubLine[] $OrderHospSubLine
      */
@@ -46,7 +45,5 @@ class ArrayOfOrderHospSubLine implements IteratorAggregate
     {
         return $this->OrderHospSubLine;
     }
-
-
 }
 

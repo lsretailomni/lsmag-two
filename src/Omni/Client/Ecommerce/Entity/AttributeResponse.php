@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class AttributeResponse
 {
-
     /**
      * @property string $AttributeCode
      */
@@ -125,7 +124,5 @@ class AttributeResponse
     {
         return $this->Sequence;
     }
-
-
 }
 

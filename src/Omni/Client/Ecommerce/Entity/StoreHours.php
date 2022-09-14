@@ -14,7 +14,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class StoreHours
 {
-
     /**
      * @property StoreHourCalendarType $CalendarType
      */
@@ -264,7 +263,5 @@ class StoreHours
     {
         return $this->Type;
     }
-
-
 }
 

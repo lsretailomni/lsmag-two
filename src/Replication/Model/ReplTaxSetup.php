@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplTaxSetupInterface;
 
 class ReplTaxSetup extends AbstractModel implements ReplTaxSetupInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_tax_setup';
 
     protected $_cacheTag = 'ls_replication_repl_tax_setup';
@@ -355,7 +354,5 @@ class ReplTaxSetup extends AbstractModel implements ReplTaxSetupInterface, Ident
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

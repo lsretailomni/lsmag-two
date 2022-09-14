@@ -78,7 +78,7 @@ class AvailablePaymentMethodsPlugin
         $paymentMethods                     = $paymentInformation->getPaymentMethods();
         $clickAndCollectPaymentMethodsArr   = [];
         $clickAndCollectPaymentMethods      = $this->lsr->getStoreConfig(
-            LSR::SC_CLICKCOLLECT_PAYMENT_OPTION,
+            LSR::SC_PAYMENT_OPTION,
             $this->lsr->getStoreId()
         );
         $shippingMethod                     = $cart->getShippingAddress()->getShippingMethod();

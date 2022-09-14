@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplShippingAgentInterface
 {
-
     /**
      * @param ArrayOfShippingAgentService $Services
      * @return $this
@@ -175,7 +174,5 @@ interface ReplShippingAgentInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

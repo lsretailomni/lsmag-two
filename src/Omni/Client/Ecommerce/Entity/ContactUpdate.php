@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactUpdate implements RequestInterface
 {
-
     /**
      * @property MemberContact $contact
      */
@@ -35,7 +34,5 @@ class ContactUpdate implements RequestInterface
     {
         return $this->contact;
     }
-
-
 }
 

@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplShippingAgentInterface;
 
 class ReplShippingAgent extends AbstractModel implements ReplShippingAgentInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_shipping_agent';
 
     protected $_cacheTag = 'ls_replication_repl_shipping_agent';
@@ -405,7 +404,5 @@ class ReplShippingAgent extends AbstractModel implements ReplShippingAgentInterf
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

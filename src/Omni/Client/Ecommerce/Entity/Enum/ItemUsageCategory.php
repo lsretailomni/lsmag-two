@@ -17,13 +17,10 @@ use MyCLabs\Enum\Enum;
  */
 class ItemUsageCategory extends Enum
 {
-
     public const DEFAULT = 'Default';
 
     public const CROSS_SELLING = 'CrossSelling';
 
     public const ITEM_MODIFIER = 'ItemModifier';
-
-
 }
 

@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplCurrencyExchRateSearchResultsFactory;
 
 class ReplCurrencyExchRateRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplCurrencyExchRateFactory $objectFactory
      */
@@ -137,7 +136,5 @@ class ReplCurrencyExchRateRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

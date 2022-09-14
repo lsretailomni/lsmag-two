@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplHierarchyInterface;
 
 class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_hierarchy';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy';
@@ -455,7 +454,5 @@ class ReplHierarchy extends AbstractModel implements ReplHierarchyInterface, Ide
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OpenGate implements RequestInterface
 {
-
     /**
      * @property string $qrCode
      */
@@ -150,7 +149,5 @@ class OpenGate implements RequestInterface
     {
         return $this->isEntering;
     }
-
-
 }
 

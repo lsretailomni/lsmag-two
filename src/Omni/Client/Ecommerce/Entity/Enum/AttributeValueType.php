@@ -23,7 +23,6 @@ use MyCLabs\Enum\Enum;
  */
 class AttributeValueType extends Enum
 {
-
     public const TEXT = 'Text';
 
     public const NUMERIC = 'Numeric';
@@ -41,7 +40,5 @@ class AttributeValueType extends Enum
     public const WEIGHTED_OPTION = 'WeightedOption';
 
     public const UNKNOWN = 'Unknown';
-
-
 }
 

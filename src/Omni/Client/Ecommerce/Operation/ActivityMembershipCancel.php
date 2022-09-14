@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityMembershipCancelResponse as Activity
 
 class ActivityMembershipCancel extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_MEMBERSHIP_CANCEL';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityMembershipCancel extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

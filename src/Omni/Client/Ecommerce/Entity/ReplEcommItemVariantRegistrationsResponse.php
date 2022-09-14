@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommItemVariantRegistrationsResponse implements ResponseInterface
 {
-
     /**
      * @property ReplItemVariantRegistrationResponse
      * $ReplEcommItemVariantRegistrationsResult
@@ -45,7 +44,5 @@ class ReplEcommItemVariantRegistrationsResponse implements ResponseInterface
     {
         return $this->ReplEcommItemVariantRegistrationsResult;
     }
-
-
 }
 

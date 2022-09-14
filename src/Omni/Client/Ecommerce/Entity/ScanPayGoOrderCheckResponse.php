@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ScanPayGoOrderCheckResponse implements ResponseInterface
 {
-
     /**
      * @property OrderCheck $ScanPayGoOrderCheckResult
      */
@@ -43,7 +42,5 @@ class ScanPayGoOrderCheckResponse implements ResponseInterface
     {
         return $this->ScanPayGoOrderCheckResult;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class StoreServices
 {
-
     /**
      * @property string $Description
      */
@@ -92,7 +91,5 @@ class StoreServices
     {
         return $this->StoreServiceType;
     }
-
-
 }
 

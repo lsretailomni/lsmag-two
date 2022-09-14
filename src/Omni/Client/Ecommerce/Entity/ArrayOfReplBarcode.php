@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplBarcode implements IteratorAggregate
 {
-
     /**
      * @property ReplBarcode[] $ReplBarcode
      */
@@ -46,7 +45,5 @@ class ArrayOfReplBarcode implements IteratorAggregate
     {
         return $this->ReplBarcode;
     }
-
-
 }
 

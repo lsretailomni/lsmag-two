@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Customer extends Entity
 {
-
     /**
      * @property Address $Address
      */
@@ -355,7 +354,5 @@ class Customer extends Entity
     {
         return $this->Url;
     }
-
-
 }
 

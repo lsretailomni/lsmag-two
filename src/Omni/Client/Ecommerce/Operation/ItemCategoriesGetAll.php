@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemCategoriesGetAllResponse as ItemCategori
 
 class ItemCategoriesGetAll extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ITEM_CATEGORIES_GET_ALL';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ItemCategoriesGetAll extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

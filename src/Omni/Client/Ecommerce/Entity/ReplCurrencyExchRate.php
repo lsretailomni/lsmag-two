@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCurrencyExchRate
 {
-
     /**
      * @property string $CurrencyCode
      */
@@ -171,7 +170,5 @@ class ReplCurrencyExchRate
     {
         return $this->scope_id;
     }
-
-
 }
 

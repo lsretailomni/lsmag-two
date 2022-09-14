@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplTaxSetup implements IteratorAggregate
 {
-
     /**
      * @property ReplTaxSetup[] $ReplTaxSetup
      */
@@ -46,7 +45,5 @@ class ArrayOfReplTaxSetup implements IteratorAggregate
     {
         return $this->ReplTaxSetup;
     }
-
-
 }
 

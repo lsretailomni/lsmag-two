@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class NotificationsGetByCardIdResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfNotification $NotificationsGetByCardIdResult
      */
@@ -43,7 +42,5 @@ class NotificationsGetByCardIdResponse implements ResponseInterface
     {
         return $this->NotificationsGetByCardIdResult;
     }
-
-
 }
 

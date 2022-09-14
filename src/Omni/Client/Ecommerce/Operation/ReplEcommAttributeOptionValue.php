@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommAttributeOptionValueResponse as Rep
 
 class ReplEcommAttributeOptionValue extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_ATTRIBUTE_OPTION_VALUE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommAttributeOptionValue extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class SalesEntryGetReturnSales implements RequestInterface
 {
-
     /**
      * @property string $receiptNo
      */
@@ -35,7 +34,5 @@ class SalesEntryGetReturnSales implements RequestInterface
     {
         return $this->receiptNo;
     }
-
-
 }
 

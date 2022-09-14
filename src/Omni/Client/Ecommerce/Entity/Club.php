@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Club extends Entity
 {
-
     /**
      * @property string $Name
      */
@@ -33,7 +32,5 @@ class Club extends Entity
     {
         return $this->Name;
     }
-
-
 }
 

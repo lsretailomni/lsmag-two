@@ -19,7 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class PushApplication extends Enum
 {
-
     public const UNKNOWN = 'Unknown';
 
     public const LOYALTY = 'Loyalty';
@@ -29,7 +28,5 @@ class PushApplication extends Enum
     public const M_P_O_S = 'MPOS';
 
     public const INVENTORY = 'Inventory';
-
-
 }
 

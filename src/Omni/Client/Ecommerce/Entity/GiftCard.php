@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class GiftCard extends Entity
 {
-
     /**
      * @property float $Balance
      */
@@ -56,7 +55,5 @@ class GiftCard extends Entity
     {
         return $this->ExpireDate;
     }
-
-
 }
 

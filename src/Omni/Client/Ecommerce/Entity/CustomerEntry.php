@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class CustomerEntry extends Entity
 {
-
     /**
      * @property float $Amount
      */
@@ -240,7 +239,5 @@ class CustomerEntry extends Entity
     {
         return $this->PostingDate;
     }
-
-
 }
 

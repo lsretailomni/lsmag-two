@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplImage
 {
-
     /**
      * @property string $Description
      */
@@ -253,7 +252,5 @@ class ReplImage
     {
         return $this->scope_id;
     }
-
-
 }
 

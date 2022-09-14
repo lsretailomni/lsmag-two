@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfVariantRegistration implements IteratorAggregate
 {
-
     /**
      * @property VariantRegistration[] $VariantRegistration
      */
@@ -46,7 +45,5 @@ class ArrayOfVariantRegistration implements IteratorAggregate
     {
         return $this->VariantRegistration;
     }
-
-
 }
 

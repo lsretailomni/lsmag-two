@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\LoyItemInterface;
 
 class ReplEcommFullItemTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_loy_item';
 
     public const CONFIG_PATH = 'ls_mag/replication/loy_item';
@@ -153,7 +152,5 @@ class ReplEcommFullItemTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

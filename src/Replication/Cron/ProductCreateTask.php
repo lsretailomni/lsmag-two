@@ -501,6 +501,7 @@ class ProductCreateTask
                                     $productData->setTaxClassId($taxClass->getClassId());
                                 }
                                 $productData->setAttributeSetId($productData->getAttributeSetId());
+                                $productData->setCountryOfManufacture($item->getCountryOfOrigin());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
                                 try {
@@ -534,6 +535,7 @@ class ProductCreateTask
                                 $product->setVisibility(Visibility::VISIBILITY_BOTH);
                                 $product->setWeight($item->getGrossWeight());
                                 $product->setDescription($item->getDetails());
+                                $product->setCountryOfManufacture($item->getCountryOfOrigin());
                                 if (!empty($taxClass)) {
                                     $product->setTaxClassId($taxClass->getClassId());
                                 }
@@ -1515,6 +1517,10 @@ class ProductCreateTask
         $configProduct->setConfigurableProductsData($configurableProductsData);
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
+
+        if ($configProduct->getExtensionAttributes()->getStockItem()) {
+            $configProduct->getExtensionAttributes()->getStockItem()->setStockStatusChangedAutomaticallyFlag(true);
+        }
         try {
             $this->productRepository->save($configProduct);
         } catch (Exception $e) {

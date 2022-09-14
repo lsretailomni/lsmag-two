@@ -19,7 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class MemberPointSourceType extends Enum
 {
-
     public const P_O_S_TRANSACTION = 'POSTransaction';
 
     public const SALES_INVOICE = 'SalesInvoice';
@@ -29,7 +28,5 @@ class MemberPointSourceType extends Enum
     public const CREDIT_MEMO = 'CreditMemo';
 
     public const CUSTOMER_ORDER = 'CustomerOrder';
-
-
 }
 

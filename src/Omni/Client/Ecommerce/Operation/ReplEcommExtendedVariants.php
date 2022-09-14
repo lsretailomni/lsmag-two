@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommExtendedVariantsResponse as ReplEco
 
 class ReplEcommExtendedVariants extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_EXTENDED_VARIANTS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommExtendedVariants extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

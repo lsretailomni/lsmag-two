@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderLineStatus
 {
-
     /**
      * @property boolean $AllowCancel
      */
@@ -240,7 +239,5 @@ class OrderLineStatus
     {
         return $this->VariantId;
     }
-
-
 }
 

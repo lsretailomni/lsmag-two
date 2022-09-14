@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplShippingAgentSearchResults extends SearchResults implements ReplShippingAgentSearchResultsInterface
 {
-
-
 }
 

@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class NotificationsUpdateStatusResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $NotificationsUpdateStatusResult
      */
@@ -43,7 +42,5 @@ class NotificationsUpdateStatusResponse implements ResponseInterface
     {
         return $this->NotificationsUpdateStatusResult;
     }
-
-
 }
 

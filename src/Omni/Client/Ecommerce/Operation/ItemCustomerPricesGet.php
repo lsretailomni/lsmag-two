@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemCustomerPricesGetResponse as ItemCustome
 
 class ItemCustomerPricesGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ITEM_CUSTOMER_PRICES_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ItemCustomerPricesGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

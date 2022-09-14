@@ -25,7 +25,6 @@ use MyCLabs\Enum\Enum;
  */
 class SearchType extends Enum
 {
-
     public const ITEM = 'Item';
 
     public const PRODUCT_GROUP = 'ProductGroup';
@@ -47,7 +46,5 @@ class SearchType extends Enum
     public const ONE_LIST = 'OneList';
 
     public const ALL = 'All';
-
-
 }
 

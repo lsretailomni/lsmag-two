@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactAddCard implements RequestInterface
 {
-
     /**
      * @property string $contactId
      */
@@ -81,7 +80,5 @@ class ContactAddCard implements RequestInterface
     {
         return $this->accountId;
     }
-
-
 }
 

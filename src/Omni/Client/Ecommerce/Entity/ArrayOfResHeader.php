@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfResHeader implements IteratorAggregate
 {
-
     /**
      * @property ResHeader[] $ResHeader
      */
@@ -46,7 +45,5 @@ class ArrayOfResHeader implements IteratorAggregate
     {
         return $this->ResHeader;
     }
-
-
 }
 

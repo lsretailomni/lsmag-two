@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplCustomerInterface;
 
 class ReplEcommMemberTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_customer';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_customer';
@@ -153,7 +152,5 @@ class ReplEcommMemberTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

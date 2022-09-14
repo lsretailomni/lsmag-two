@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemRecipeInterface
 {
-
     /**
      * @param string $Description
      * @return $this
@@ -219,7 +218,5 @@ interface ReplItemRecipeInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

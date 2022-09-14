@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplHierarchyHospDealLineInterface;
 
 class ReplEcommHierarchyHospDealLineTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_hierarchy_hosp_deal_line';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_hierarchy_hosp_deal_line';
@@ -153,7 +152,5 @@ class ReplEcommHierarchyHospDealLineTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

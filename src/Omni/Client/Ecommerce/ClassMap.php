@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce;
 
 class ClassMap
 {
-
     final public static function getClassMap()
     {
         return [		'Entity' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Entity',
@@ -755,7 +754,5 @@ class ClassMap
         		'VSTimeScheduleType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\VSTimeScheduleType',
         ];
     }
-
-
 }
 

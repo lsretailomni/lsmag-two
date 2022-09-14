@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse as GetPointRateResponse
 
 class GetPointRate extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'GET_POINT_RATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class GetPointRate extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

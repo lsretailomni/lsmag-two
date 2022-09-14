@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplExtendedVariantValue
 {
-
     /**
      * @property string $Code
      */
@@ -263,7 +262,5 @@ class ReplExtendedVariantValue
     {
         return $this->scope_id;
     }
-
-
 }
 
