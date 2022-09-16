@@ -150,10 +150,12 @@ class LSRecommend extends AbstractHelper
 
         $entity = new Entity\RecommendedItemsGet();
 
+        if(!is_array($product_ids)) {
+            $product_ids = [$product_ids];
+        }
+
         //TODO work with UserID.
-        $entity->setItems($product_ids)
-            ->setStoreId($webStore)
-            ->setUserId('');
+        $entity->setItems($product_ids);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {
@@ -192,7 +194,7 @@ class LSRecommend extends AbstractHelper
         $productIds = [];
         /** @var  Entity\RecommendedItem $recommendedItem */
         foreach ($recommendedProducts as $recommendedItem) {
-            $productIds[] = $recommendedItem->getId();
+            $productIds[] = $recommendedItem->getItemNo();
         }
         return $productIds;
     }
