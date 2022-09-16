@@ -74,15 +74,19 @@ class AttributeData
         $storeId = $this->lsr->getCurrentStoreId();
 
         foreach ($result['attributes'] as $attributeId => $value) {
-            $formattedCode                = $this->replicationHelper->formatAttributeCode($value['label']);
             $defaultScopedAttributeObject = $this->replicationHelper->getProductAttributeGivenCodeAndScope(
-                $formattedCode
+                $value['code']
             );
+
             $newOptionData                = [];
             $filters                      = [
                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
                 ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-                ['field' => 'Code', 'value' => $value['label'], 'condition_type' => 'eq']
+                [
+                    'field' => 'Code',
+                    'value' => $defaultScopedAttributeObject->getDefaultFrontendLabel(),
+                    'condition_type' => 'eq'
+                ]
             ];
             $criteria                     = $this->replicationHelper->buildCriteriaForArrayFrontEnd($filters, -1);
             $sortOrder                    = $this
@@ -102,6 +106,7 @@ class AttributeData
                         foreach ($value['options'] as $optionData) {
                             if ($optionId == $optionData['id']) {
                                 $newOptionData[] = $optionData;
+                                break;
                             }
                         }
                     }
