@@ -239,11 +239,11 @@ class LSRecommend extends AbstractHelper
                     $quoteItem->getProductId(),
                     $quoteItem->getSku()
                 );
-                $itemsSkus .= $sku . ',';
+                $itemsSkusArray[] = $sku;
             }
-            $itemsSkus = implode(',', $itemsSkusArray);
+            //$itemsSkus = implode(',', $itemsSkusArray);
         }
 
-        return $itemsSkus;
+        return $itemsSkusArray;
     }
 }
