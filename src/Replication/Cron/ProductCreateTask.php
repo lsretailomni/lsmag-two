@@ -993,7 +993,7 @@ class ProductCreateTask
                 foreach ($collection->getItems() as $item) {
                     $uomDescription = $this->replicationHelper->getUomDescription($item);
                     /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
-                    $itemUom[$itemId][$uomDescription]    = $item->getCode();
+                    $itemUom[$itemId][$uomDescription]            = $item->getCode();
                     $itemUom[$itemId . '-' . 'BaseUnitOfMeasure'] = $item->getData('BaseUnitOfMeasure');
                 }
             }
@@ -1370,9 +1370,9 @@ class ProductCreateTask
             /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $uomCode */
             foreach ($uomCodesNotProcessed as $uomCode) {
                 $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
-                $value = null;
-                $sku   = $uomCode->getItemId() . '-' . $uomCode->getCode();
-                $name  = $this->getNameForUom($item->getDescription(), $uomDescription);
+                $value          = null;
+                $sku            = $uomCode->getItemId() . '-' . $uomCode->getCode();
+                $name           = $this->getNameForUom($item->getDescription(), $uomDescription);
                 try {
                     $productData = $this->saveProductForWebsite($sku);
                     try {
@@ -1550,10 +1550,10 @@ class ProductCreateTask
             );
             $value->addData(
                 [
-                    'is_updated' => 0,
+                    'is_updated'   => 0,
                     'processed_at' => $this->replicationHelper->getDateTime(),
-                    'processed' => 1,
-                    'is_failed' => 1
+                    'processed'    => 1,
+                    'is_failed'    => 1
                 ]
             );
             $this->replItemVariantRegistrationRepository->save($value);
@@ -1580,10 +1580,10 @@ class ProductCreateTask
                 );
                 $uomCode->addData(
                     [
-                        'is_updated' => 0,
+                        'is_updated'   => 0,
                         'processed_at' => $this->replicationHelper->getDateTime(),
-                        'processed' => 1,
-                        'is_failed' => 1
+                        'processed'    => 1,
+                        'is_failed'    => 1
                     ]
                 );
                 $this->replItemUomRepository->save($uomCode);
@@ -1665,6 +1665,7 @@ class ProductCreateTask
      */
     private function updateConfigProduct($productData, $item, $name, $uomCode = null, $value = null)
     {
+        $productStatus = true;
         $productData->setStoreId($this->store->getId());
         $productData->setName($name);
         $productData->setMetaTitle($name);
@@ -1680,19 +1681,26 @@ class ProductCreateTask
                 $uomDescription
             );
             $productData->setData(LSR::LS_UOM_ATTRIBUTE, $optionId);
+            //Set blocked on eCommerce for unit of measure product
+            if ($uomCode->getEComSelection() == 1) {
+                $productData   = $this->setProductStatus($productData, $uomCode->getEComSelection());
+                $productStatus = false;
+            }
         } else {
             $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
         }
 
         if ($value) {
             $productData->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
-
             //Set variant status as per BlockedOnEcom status of each variant
-            if ($value && $value->getBlockedOnECom() != null) {
-                $productData = $this->setProductStatus($productData, $value->getBlockedOnECom());
-            } else {
-                $productData = $this->setProductStatus($productData, 0);
+            if ($value->getBlockedOnECom() == 1) {
+                $productData   = $this->setProductStatus($productData, $value->getBlockedOnECom());
+                $productStatus = false;
             }
+        }
+
+        if ($productStatus) {
+            $productData = $this->setProductStatus($productData, 0);
         }
 
         try {
@@ -1728,7 +1736,8 @@ class ProductCreateTask
         $attributesCode,
         $itemBarcodes
     ) {
-        $productV = $this->productFactory->create();
+        $productStatus = true;
+        $productV      = $this->productFactory->create();
         $productV->setName($name);
         $productV->setStoreId($this->store->getId());
         $productV->setWebsiteIds([$this->store->getWebsiteId()]);
@@ -1769,9 +1778,18 @@ class ProductCreateTask
         $productV->setVisibility(Visibility::VISIBILITY_NOT_VISIBLE);
 
         //Set variant status as per BlockedOnEcom status of each variant
-        if ($value && $value->getBlockedOnECom() != null) {
-            $productV = $this->setProductStatus($productV, $value->getBlockedOnECom());
-        } else {
+        if ($value && $value->getBlockedOnECom() == 1) {
+            $productV      = $this->setProductStatus($productV, $value->getBlockedOnECom());
+            $productStatus = false;
+        }
+
+        //Set blocked on eCommerce for unit of measure product
+        if ($uomCode && $uomCode->getEComSelection() == 1) {
+            $productV      = $this->setProductStatus($productV, $uomCode->getEComSelection());
+            $productStatus = false;
+        }
+
+        if ($productStatus) {
             $productV = $this->setProductStatus($productV, 0);
         }
 
@@ -1794,7 +1812,7 @@ class ProductCreateTask
         foreach ($attributesCode as $keyCode => $valueCode) {
             if ($valueCode == LSR::LS_UOM_ATTRIBUTE) {
                 $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
-                $optionValue = $uomDescription;
+                $optionValue    = $uomDescription;
             } else {
                 $optionValue = ${'d' . $keyCode};
             }
