@@ -150,10 +150,12 @@ class LSRecommend extends AbstractHelper
 
         $entity = new Entity\RecommendedItemsGet();
 
+        if(!is_array($product_ids)) {
+            $product_ids = [$product_ids];
+        }
+
         //TODO work with UserID.
-        $entity->setItems($product_ids)
-            ->setStoreId($webStore)
-            ->setUserId('');
+        $entity->setItems($product_ids);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {
@@ -192,7 +194,7 @@ class LSRecommend extends AbstractHelper
         $productIds = [];
         /** @var  Entity\RecommendedItem $recommendedItem */
         foreach ($recommendedProducts as $recommendedItem) {
-            $productIds[] = $recommendedItem->getId();
+            $productIds[] = $recommendedItem->getItemNo();
         }
         return $productIds;
     }
@@ -216,32 +218,29 @@ class LSRecommend extends AbstractHelper
     /**
      * Get entire collection of product skus in quote
      *
-     * @return string|null
-     * @throws NoSuchEntityException
+     * @return array
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getProductSkusFromQuote()
     {
         /** @var Quote $quote */
-        $itemsSkus = null;
-        $quote     = $this->checkoutSession->getQuote();
+        $itemsSkusArray = [];
+        $quote          = $this->checkoutSession->getQuote();
 
         if ($quote->hasItems()) {
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var Item $quoteItem */
-            //resetting back to null.
-            $itemsSkusArray = [];
 
             foreach ($quoteItems as $quoteItem) {
                 list($sku) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getProductId(),
                     $quoteItem->getSku()
                 );
-                $itemsSkus .= $sku . ',';
+                $itemsSkusArray[] = $sku;
             }
-            $itemsSkus = implode(',', $itemsSkusArray);
         }
 
-        return $itemsSkus;
+        return array_unique($itemsSkusArray);
     }
 }
