@@ -218,21 +218,19 @@ class LSRecommend extends AbstractHelper
     /**
      * Get entire collection of product skus in quote
      *
-     * @return string|null
-     * @throws NoSuchEntityException
+     * @return array
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function getProductSkusFromQuote()
     {
         /** @var Quote $quote */
-        $itemsSkus = null;
-        $quote     = $this->checkoutSession->getQuote();
+        $itemsSkusArray = [];
+        $quote          = $this->checkoutSession->getQuote();
 
         if ($quote->hasItems()) {
             $quoteItems = $this->checkoutSession->getQuote()->getAllVisibleItems();
             /** @var Item $quoteItem */
-            //resetting back to null.
-            $itemsSkusArray = [];
 
             foreach ($quoteItems as $quoteItem) {
                 list($sku) = $this->itemHelper->getComparisonValues(
@@ -241,9 +239,8 @@ class LSRecommend extends AbstractHelper
                 );
                 $itemsSkusArray[] = $sku;
             }
-            //$itemsSkus = implode(',', $itemsSkusArray);
         }
 
-        return $itemsSkusArray;
+        return array_unique($itemsSkusArray);
     }
 }
