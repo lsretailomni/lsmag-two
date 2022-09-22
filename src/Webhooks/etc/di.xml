@@ -22,4 +22,7 @@
     <type name="Magento\Sales\Model\Order\Shipment\Notifier">
         <plugin name="ls_webhooks_set_document_id" type="Ls\Webhooks\Plugin\Shipment\Notifier" sortOrder="1"/>
     </type>
+
+    <preference for="Ls\Webhooks\Api\Data\ReceiverInterface" type="Ls\Webhooks\Model\Notification\Receiver"/>
+    <preference for="Ls\Webhooks\Api\Data\SenderInterface" type="Ls\Webhooks\Model\Notification\Sender"/>
 </config>
