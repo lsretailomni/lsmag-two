@@ -2,7 +2,7 @@
 
 namespace Ls\Webhooks\Model\Notification;
 
-use Ls\Webhooks\Api\Data\ReceiverInterface;
+use \Ls\Webhooks\Api\Data\ReceiverInterface;
 use Magento\Framework\DataObject;
 
 class Receiver extends DataObject implements ReceiverInterface
@@ -22,7 +22,7 @@ class Receiver extends DataObject implements ReceiverInterface
      */
     public function getReceiverName()
     {
-        return $this->setData(self::RECEIVER_NAME);
+        return $this->getData(self::RECEIVER_NAME);
     }
 
     /**
@@ -40,7 +40,7 @@ class Receiver extends DataObject implements ReceiverInterface
      */
     public function getReceiverEmail()
     {
-        return $this->setData(self::RECEIVER_EMAIL);
+        return $this->getData(self::RECEIVER_EMAIL);
     }
 
     /**
@@ -58,7 +58,7 @@ class Receiver extends DataObject implements ReceiverInterface
      */
     public function getReceiverPhone()
     {
-        return $this->setData(self::RECEIVER_PHONE);
+        return $this->getData(self::RECEIVER_PHONE);
     }
 
     /**
@@ -76,7 +76,7 @@ class Receiver extends DataObject implements ReceiverInterface
      */
     public function getReceiverRole()
     {
-        return $this->setData(self::RECEIVER_ROLE);
+        return $this->getData(self::RECEIVER_ROLE);
     }
 
     /**
@@ -94,6 +94,6 @@ class Receiver extends DataObject implements ReceiverInterface
      */
     public function getReceiverAddress()
     {
-        return $this->setData(self::RECEIVER_ADDRESS);
+        return $this->getData(self::RECEIVER_ADDRESS);
     }
 }

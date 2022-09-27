@@ -2,7 +2,7 @@
 
 namespace Ls\Webhooks\Model\Notification;
 
-use Ls\Webhooks\Api\Data\SenderInterface;
+use \Ls\Webhooks\Api\Data\SenderInterface;
 use Magento\Framework\DataObject;
 
 class Sender extends DataObject implements SenderInterface
@@ -22,7 +22,7 @@ class Sender extends DataObject implements SenderInterface
      */
     public function getSenderName()
     {
-        return $this->setData(self::SENDER_NAME);
+        return $this->getData(self::SENDER_NAME);
     }
 
     /**
@@ -40,7 +40,7 @@ class Sender extends DataObject implements SenderInterface
      */
     public function getSenderEmail()
     {
-        return $this->setData(self::SENDER_EMAIL);
+        return $this->getData(self::SENDER_EMAIL);
     }
 
     /**
@@ -58,7 +58,7 @@ class Sender extends DataObject implements SenderInterface
      */
     public function getSenderPhone()
     {
-        return $this->setData(self::SENDER_PHONE);
+        return $this->getData(self::SENDER_PHONE);
     }
 
     /**
@@ -76,7 +76,7 @@ class Sender extends DataObject implements SenderInterface
      */
     public function getSenderRole()
     {
-        return $this->setData(self::SENDER_ROLE);
+        return $this->getData(self::SENDER_ROLE);
     }
 
     /**
@@ -94,6 +94,6 @@ class Sender extends DataObject implements SenderInterface
      */
     public function getSenderAddress()
     {
-        return $this->setData(self::SENDER_ADDRESS);
+        return $this->getData(self::SENDER_ADDRESS);
     }
 }

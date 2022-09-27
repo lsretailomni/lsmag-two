@@ -5,6 +5,7 @@ namespace Ls\Webhooks\Model\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
+use \Ls\Webhooks\Model\Notification\EmailNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -15,7 +16,6 @@ use Magento\Sales\Api\Data\OrderInterface;
  */
 class Status
 {
-
     /**
      * @var Data
      */
@@ -42,32 +42,42 @@ class Status
     private $payment;
 
     /**
+     * @var EmailNotification
+     */
+    private $emailNotification;
+
+    /**
      * Status constructor.
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
      * @param Notify $notify
      * @param Payment $payment
+     * @param EmailNotification $emailNotification
      */
     public function __construct(
         Data $helper,
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
         Notify $notify,
-        Payment $payment
+        Payment $payment,
+        EmailNotification $emailNotification
     ) {
         $this->helper      = $helper;
         $this->orderCancel = $orderCancel;
         $this->creditMemo  = $creditMemo;
         $this->notify      = $notify;
         $this->payment     = $payment;
+        $this->emailNotification = $emailNotification;
     }
 
     /**
      * Process order status based on webhook call from Ls Central
      *
-     * @param $data
-     * @throws InvalidEnumException|NoSuchEntityException
+     * @param array $data
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function process($data)
     {
@@ -101,23 +111,22 @@ class Status
         $items                  = $this->helper->getItems($magOrder, $itemsInfo);
         $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+        $this->emailNotification->setOrder($magOrder)->setItems($items);
 
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
             $this->cancel($magOrder, $itemsInfo, $items, $storeId);
         }
 
         if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
-            if ($this->helper->isPickupNotifyEnabled($storeId)) {
-                $templateId = $this->helper->getPickupTemplate($storeId);
-                $this->processSendEmail($magOrder, $items, $templateId);
-            }
+            $this->emailNotification
+                ->setNotificationType(0)
+                ->prepareAndSendNotification();
         }
 
         if ($status == LSR::LS_STATE_COLLECTED && $isClickAndCollectOrder) {
-            if ($this->helper->isCollectedNotifyEnabled($storeId)) {
-                $templateId = $this->helper->getCollectedTemplate($storeId);
-                $this->processSendEmail($magOrder, $items, $templateId);
-            }
+            $this->emailNotification
+                ->setNotificationType(1)
+                ->prepareAndSendNotification();
 
             if ($isOffline) {
                 $this->payment->generateInvoice($data);
