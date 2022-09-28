@@ -94,8 +94,8 @@ class EmailNotification extends AbstractNotification
      */
     public function getEmailTemplateId()
     {
-        $type = $this->getNotificationType();
-        $storeId = $this->getStoreId();
+        $type            = $this->getNotificationType();
+        $storeId         = $this->getStoreId();
         $emailTemplateId = null;
 
         switch ($type) {
@@ -147,19 +147,19 @@ class EmailNotification extends AbstractNotification
      */
     public function isEnabled()
     {
-        $type = $this->getNotificationType();
-        $storeId = $this->getStoreId();
+        $type      = $this->getNotificationType();
+        $storeId   = $this->getStoreId();
         $isEnabled = false;
 
         switch ($type) {
             case 0:
-                $isEnabled = (bool) $this->helper->isPickupNotifyEnabled($storeId);
+                $isEnabled = (bool)$this->helper->isPickupNotifyEnabled($storeId);
                 break;
             case 1:
-                $isEnabled = (bool) $this->helper->isCollectedNotifyEnabled($storeId);
+                $isEnabled = (bool)$this->helper->isCollectedNotifyEnabled($storeId);
                 break;
             case 2:
-                $isEnabled = (bool) $this->helper->isCancelNotifyEnabled($storeId);
+                $isEnabled = (bool)$this->helper->isCancelNotifyEnabled($storeId);
                 break;
         }
 

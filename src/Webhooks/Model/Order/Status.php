@@ -3,7 +3,6 @@
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Notification\EmailNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
@@ -32,11 +31,6 @@ class Status
     private $creditMemo;
 
     /**
-     * @var Notify
-     */
-    private $notify;
-
-    /**
      * @var Payment
      */
     private $payment;
@@ -47,11 +41,9 @@ class Status
     private $emailNotification;
 
     /**
-     * Status constructor.
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
-     * @param Notify $notify
      * @param Payment $payment
      * @param EmailNotification $emailNotification
      */
@@ -59,14 +51,12 @@ class Status
         Data $helper,
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
-        Notify $notify,
         Payment $payment,
         EmailNotification $emailNotification
     ) {
         $this->helper      = $helper;
         $this->orderCancel = $orderCancel;
         $this->creditMemo  = $creditMemo;
-        $this->notify      = $notify;
         $this->payment     = $payment;
         $this->emailNotification = $emailNotification;
     }
@@ -107,26 +97,21 @@ class Status
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $storeId                = $magOrder->getStoreId();
         $items                  = $this->helper->getItems($magOrder, $itemsInfo);
         $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
         $this->emailNotification->setOrder($magOrder)->setItems($items);
 
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
-            $this->cancel($magOrder, $itemsInfo, $items, $storeId);
+            $this->cancel($magOrder, $itemsInfo, $items);
         }
 
         if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
-            $this->emailNotification
-                ->setNotificationType(0)
-                ->prepareAndSendNotification();
+            $this->emailNotification->setNotificationType(0);
         }
 
         if ($status == LSR::LS_STATE_COLLECTED && $isClickAndCollectOrder) {
-            $this->emailNotification
-                ->setNotificationType(1)
-                ->prepareAndSendNotification();
+            $this->emailNotification->setNotificationType(1);
 
             if ($isOffline) {
                 $this->payment->generateInvoice($data);
@@ -138,6 +123,8 @@ class Status
                 $this->payment->generateInvoice($data);
             }
         }
+
+        $this->emailNotification->prepareAndSendNotification();
     }
 
     /**
@@ -146,9 +133,8 @@ class Status
      * @param OrderInterface $magOrder
      * @param array $itemsInfo
      * @param array $items
-     * @param int $storeId
      */
-    public function cancel($magOrder, $itemsInfo, $items, $storeId)
+    public function cancel($magOrder, $itemsInfo, $items)
     {
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
         $magentoOrderTotalItemsQty = (int) $magOrder->getTotalQtyOrdered();
@@ -167,23 +153,6 @@ class Status
             $this->creditMemo->refund($magOrder, $items, $creditMemoData);
         }
 
-        if ($this->helper->isCancelNotifyEnabled($storeId)) {
-            $templateId = $this->helper->getCancelTemplate($storeId);
-            $this->processSendEmail($magOrder, $items, $templateId);
-        }
-    }
-
-    /** Process click and collect order
-     *
-     * @param $magOrder
-     * @param $items
-     * @param $templateId
-     */
-    public function processSendEmail($magOrder, $items, $templateId)
-    {
-        $templateVars = $this->notify->setTemplateVars($magOrder, $items);
-        if (!empty($templateVars['items'])) {
-            $this->notify->sendEmail($templateId, $templateVars, $magOrder);
-        }
+        $this->emailNotification->setNotificationType(2);
     }
 }
