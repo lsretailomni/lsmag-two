@@ -29,7 +29,9 @@ define([
             var self = this;
             quote.shippingMethod.subscribe(function () {
                 var storeId, storeName;
-                if (quote.shippingMethod().carrier_code == 'clickandcollect') {
+                if (quote.shippingMethod() &&
+                    quote.shippingMethod().carrier_code !== undefined &&
+                    quote.shippingMethod().carrier_code === 'clickandcollect') {
                     self.isClickAndCollect(true);
                     var stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
                     if (stores.totalRecords > 0) {
