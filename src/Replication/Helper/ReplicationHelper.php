@@ -1405,7 +1405,7 @@ class ReplicationHelper extends AbstractHelper
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
             ['second' => $secondTableName],
-            'main_table.KeyValue = REPLACE(second.sku,"-",",")',
+            'second.sku = REPLACE(main_table.KeyValue,",","-")',
             []
         )->joinInner(
             ['third' => $thirdTableName],
