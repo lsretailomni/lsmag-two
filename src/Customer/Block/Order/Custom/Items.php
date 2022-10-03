@@ -56,7 +56,8 @@ class Items extends AbstractItems
      */
     public function getItems()
     {
-        if ($this->getMagOrder()) {
+        $type    = $this->_request->getParam('type');
+        if ($this->getMagOrder() && $type != 'Receipt') {
             return $this->itemCollection->getItems();
         }
 
