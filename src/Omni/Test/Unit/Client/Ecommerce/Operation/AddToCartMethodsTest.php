@@ -19,8 +19,6 @@ use \Ls\Omni\Exception\InvalidEnumException;
 /**
  * It will cover all the methods for Add to cart - Basket Calculation
  *
- * Class AddToCartMethodsTest
- * @package Ls\Omni\Test\Unit\Client\Ecommerce\Operation
  */
 class AddToCartMethodsTest extends OmniClientSetupTest
 {
@@ -64,8 +62,7 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $this->assertEquals($_ENV['CARD_ID'], $result->getCardId());
         $this->assertNotNull($result->getTotalAmount());
         $this->assertNotNull($result->getTotalNetAmount());
-        $this->assertInternalType('boolean', $result->getPosted());
-        $this->assertInternalType('string', $result->getOrderType());
+        $this->assertEquals('string', getType($result->getOrderType()));
         $this->assertEquals(OrderType::SALE, $result->getOrderType());
         $this->assertInstanceOf(ArrayOfOrderLine::class, $result->getOrderLines());
     }
@@ -93,12 +90,10 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $this->assertEquals($_ENV['STORE_ID'], $result->getStoreId());
         $this->assertNotNull($result->getTotalAmount());
         $this->assertNotNull($result->getTotalNetAmount());
-        $this->assertInternalType('boolean', $result->getPosted());
-        $this->assertInternalType('string', $result->getOrderType());
+        $this->assertEquals('string', getType($result->getOrderType()));
         $this->assertEquals(OrderType::SALE, $result->getOrderType());
         $this->assertInstanceOf(ArrayOfOrderLine::class, $result->getOrderLines());
     }
-
 
     /**
      * Save Basket type one list
@@ -192,46 +187,6 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('PublishedOffers', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
-    }
-
-    /**
-     * Apply Coupon as Published Offer for Guest
-     * @throws InvalidEnumException
-     */
-    public function testApplyCouponGuest()
-    {
-        $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest = new OneList();
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
-        $oneListRequest->setListType(ListType::BASKET);
-        $offer  = new OneListPublishedOffer();
-        $offers = new ArrayOfOneListPublishedOffer();
-        $offers->setOneListPublishedOffer($offer);
-        $offer->setId($_ENV['COUPON_CODE']);
-        $offer->setType('Coupon');
-        $oneListRequest->setPublishedOffers($offers);
-        $param    = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
-        $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertObjectHasAttribute('Id', $oneList);
         $this->assertObjectHasAttribute('ListType', $oneList);
         $this->assertObjectHasAttribute('PublishedOffers', $oneList);

@@ -31,6 +31,31 @@ use \Ls\Omni\Exception\InvalidEnumException;
 class OrderCreationMethodsTest extends OmniClientSetupTest
 {
     /**
+     * Get One List
+     *
+     * @return mixed
+     * @throws InvalidEnumException
+     */
+    public function getOneList()
+    {
+        $listItems = new OneListItem();
+        $listItems->setItemId($_ENV['ITEM_ID']);
+        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setQuantity(1);
+        $itemsArray = new ArrayOfOneListItem();
+        $itemsArray->setOneListItem($listItems);
+        $oneListRequest = new OneList();
+        $oneListRequest->setItems($itemsArray);
+        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setListType(ListType::BASKET);
+        $param    = [
+            'oneList'   => $oneListRequest,
+            'calculate' => true
+        ];
+
+        return $this->client->OneListSave($param);
+    }
+    /**
      * Lookup Item
      */
     public function testItemGetbyId()
@@ -62,7 +87,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
             $this->assertEquals($_ENV['STORE_ID'], $inventoryResponse->getStoreId());
             $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertInternalType('string', $inventoryResponse->getQtyInventory());
+            $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -86,7 +111,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
             $this->assertNotNull($inventoryResponse->getStoreId());
             $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertInternalType('string', $inventoryResponse->getQtyInventory());
+            $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -112,7 +137,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
             $this->assertEquals($_ENV['STORE_ID'], $inventoryResponse->getStoreId());
             $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertInternalType('string', $inventoryResponse->getQtyInventory());
+            $this->assertEquals('string', gettype($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -138,7 +163,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
             $this->assertNotNull($inventoryResponse->getStoreId());
             $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertInternalType('string', $inventoryResponse->getQtyInventory());
+            $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -168,8 +193,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertEquals($_ENV['CARD_ID'], $result->getCardId());
         $this->assertNotNull($result->getTotalAmount());
         $this->assertNotNull($result->getTotalNetAmount());
-        $this->assertInternalType('boolean', $result->getPosted());
-        $this->assertInternalType('string', $result->getOrderType());
+        $this->assertEquals('string', getType($result->getOrderType()));
         $this->assertEquals(OrderType::SALE, $result->getOrderType());
         $this->assertInstanceOf(ArrayOfOrderLine::class, $result->getOrderLines());
     }
@@ -350,7 +374,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ];
             $response    = $this->client->OneListDeleteById($paramDelete);
             $result      = $response->getResult();
-            $this->assertInternalType('boolean', $result);
+            $this->assertEquals('boolean', getType($result));
         }
     }
 
@@ -375,7 +399,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ];
             $response    = $this->client->OneListDeleteById($paramDelete);
             $result      = $response->getResult();
-            $this->assertInternalType('boolean', $result);
+            $this->assertEquals('boolean', getType($result));
         }
     }
 
@@ -388,18 +412,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreate()
     {
-        $param = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::BASKET,
-            'includeLines' => true
-        ];
-        // Get one list by cardId
-        $response       = $this->client->OneListGetByCardId($param);
-        $oneListRequest = $response->getResult();
-        $this->assertInstanceOf(ArrayOfOneList::class, $oneListRequest);
-        // Basket calculation
+        $response = $this->getOneList();
+        $oneListRequest   = $response->getResult();
         $entity = new OneListCalculate();
-        $entity->setOneList($oneListRequest->getOneList()[0]);
+        $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);

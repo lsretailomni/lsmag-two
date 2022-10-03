@@ -59,7 +59,7 @@ class ReplItemVariantRegistrationRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->objectFactory = $this->createPartialMock(ReplItemVariantRegistrationFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);

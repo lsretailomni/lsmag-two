@@ -58,7 +58,7 @@ class ReplImageRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->objectFactory = $this->createPartialMock(ReplImageFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);

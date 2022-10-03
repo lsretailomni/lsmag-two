@@ -24,7 +24,7 @@ class LoginWebTest extends TestCase
 
     public $password;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl        = $_ENV['BASE_URL'];
         $this->username = $_ENV['USERNAME'];

@@ -58,7 +58,7 @@ class ReplUnitOfMeasureRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->objectFactory = $this->createPartialMock(ReplUnitOfMeasureFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);

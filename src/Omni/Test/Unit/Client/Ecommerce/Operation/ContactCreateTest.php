@@ -19,7 +19,7 @@ use Laminas\Uri\UriFactory;
 
 class ContactCreate extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl      = $_ENV['BASE_URL'];
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);

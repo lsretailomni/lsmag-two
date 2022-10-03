@@ -58,7 +58,7 @@ class ReplShippingAgentRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->objectFactory = $this->createPartialMock(ReplShippingAgentFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);
