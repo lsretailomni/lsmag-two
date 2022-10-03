@@ -14,9 +14,6 @@ $transactions = is_array($order) ? $order : [$order];
 ?>
 <div class="table-wrapper order-items">
     <?php foreach($transactions as $trans):?>
-        <div class="order-title">
-            <strong><?= /* @noEscape */ $block->getIdBasedOnDetail($trans);?></strong>
-        </div>
         <table class="data table table-order-items"
                id="my-orders-table"
                summary="<?= /* @noEscape */ __('Items Ordered') ?>">
