@@ -101,6 +101,7 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
+        $config = [];
 
         if ($this->isValid()) {
             $store                = $this->getStoreId();
@@ -159,11 +160,11 @@ class DataProvider implements ConfigProviderInterface
                 ]
             ];
             $config['coupons_display'] = $this->isCouponsDisplayEnabled();
-
-            return $config;
         }
 
-        return [];
+        $config['ls_enabled']  = (bool) $this->lsr->isEnabled();
+
+        return $config;
     }
 
     /**

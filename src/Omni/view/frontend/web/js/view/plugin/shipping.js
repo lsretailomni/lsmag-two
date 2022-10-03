@@ -8,6 +8,10 @@ define([
     return function (Component) {
         return Component.extend({
             validateShippingInformation: function () {
+                if (!window.checkoutConfig.ls_enabled) {
+                    return this._super();
+                }
+
                 let isEnabledTimeSlots = window.checkoutConfig.shipping.pickup_date_timeslots.enabled;
 
                 if (quote.shippingMethod().carrier_code === 'clickandcollect' && $('#pickup-store').val() === '') {

@@ -73,8 +73,24 @@ class LayoutProcessorPlugin
     ) {
         $shippingStep       = &$jsLayout['components']['checkout']['children']['steps']['children']['shipping-step'];
         $billingStep        = &$jsLayout['components']['checkout']['children']['steps']['children']['billing-step'];
+        $payment            = &$billingStep['children']['payment'];
         $sideBar            = &$jsLayout['components']['checkout']['children']['sidebar'];
         $shippingAdditional = &$shippingStep['children']['shippingAddress']['children']['shippingAdditional'];
+
+        if (!$this->lsr->isEnabled()) {
+            unset($shippingAdditional['children']['ls-pickup-additional-options-wrapper']);
+            unset($sideBar['children']['summary']['children']['totals']['children']['ls_gift_card_amount_used']);
+            unset($sideBar['children']['summary']['children']['totals']['children']['ls_points_discount']);
+            unset($sideBar['children']['summary']['children']['totals']['children']['loyalty_points_label']);
+            unset($payment['children']['renders']['children']['payatstore']);
+            unset($payment['children']['payments-list']['children']['ls_payment_method_pay_at_store-form']);
+            unset($payment['children']['afterMethods']['children']['loyalty-points']);
+            unset($payment['children']['afterMethods']['children']['gift-card']);
+            $sideBar['children']['summary']['children']['cart_items']['children']['details']['component'] =
+                'Magento_Checkout/js/view/summary/item/details';
+
+            return $jsLayout;
+        }
 
         if ($this->lsr->isEnabled()) {
             $billingStep['children']['payment']['children']['afterMethods']['children']['discount']['component'] =
