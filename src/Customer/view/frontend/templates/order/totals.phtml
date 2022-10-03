@@ -1,73 +1,87 @@
 <?php
-
 // @codingStandardsIgnoreFile
-
+use Magento\Framework\Escaper;
+use \Ls\Customer\Block\Order\Totals;
 /**
- * @var $block Totals
+ * @var Totals $block
+ * @var Escaper $escaper
  */
-
-use \Ls\Customer\Block\Order\Totals; ?>
+?>
 <tr class="subtotal">
     <th colspan="4" class="mark" scope="row">
-        <?= $block->escapeHtml('Subtotal (Inc.Tax)') ?>
+        <?= $escaper->escapeHtml(__('Subtotal (Inc.Tax)')) ?>
     </th>
-    <td class="amount" data-th="<?= $block->escapeHtml('Subtotal (Inc.Tax)') ?>">
-        <span class="price"><?= $block->getFormattedPrice($block->getSubtotal()); ?></span>
+    <td class="amount" data-th="<?= $escaper->escapeHtml(__('Subtotal (Inc.Tax)')) ?>">
+        <span class="price">
+            <?= $escaper->escapeHtml($block->getFormattedPrice($block->getSubtotal())); ?>
+        </span>
     </td>
 </tr>
-<?php if (!empty($block->giftCardAmount > 0)) { ?>
+<?php if (!empty($block->giftCardAmount > 0)): ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
-            <?= $block->escapeHtml('Gift Card Redeemed') ?>
+            <?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>
         </th>
-        <td class="amount" data-th="<?= $block->escapeHtml('Gift Card Redeemed') ?>">
-            <span class="price">-<?= $block->getFormattedPrice($block->giftCardAmount); ?></span>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>">
+            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($block->giftCardAmount)); ?></span>
         </td>
     </tr>
-<?php } ?>
+<?php endif; ?>
 
-<?php if (!empty($block->loyaltyPointAmount > 0)) { ?>
+<?php if (!empty($block->loyaltyPointAmount > 0)): ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
-            <?= $block->escapeHtml('Loyalty Points Redeemed') ?>
+            <?= $escaper->escapeHtml(__('Loyalty Points Redeemed')) ?>
         </th>
-        <td class="amount" data-th="<?= $block->escapeHtml('Loyalty Points Redeemed') ?>">
-            <span class="price">-<?= $block->getFormattedPrice($block->loyaltyPointAmount); ?></span>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Loyalty Points Redeemed')) ?>">
+            <span class="price">
+                -<?= $escaper->escapeHtml($block->getFormattedPrice($block->loyaltyPointAmount)); ?>
+            </span>
         </td>
     </tr>
-<?php } ?>
+<?php endif; ?>
 
-<?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0) { ?>
+<?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0): ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
-            <?= $block->escapeHtml('Total Discount') ?>
+            <?= $escaper->escapeHtml(__('Total Discount')) ?>
         </th>
-        <td class="amount" data-th="<?= $block->escapeHtml('Total Discount') ?>">
-            <span class="price">-<?= $block->getFormattedPrice($block->getTotalDiscount()); ?></span>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Total Discount')) ?>">
+            <span class="price">
+                -<?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalDiscount())); ?>
+            </span>
         </td>
     </tr>
-<?php } ?>
+<?php endif; ?>
 <tr class="shipping">
     <th colspan="4" class="mark" scope="row">
-        <?= $block->escapeHtml('Shipment & Handling') ?>
+        <?= $escaper->escapeHtml(__('Shipment & Handling')) ?>
     </th>
-    <td class="amount" data-th="<?= $block->escapeHtml('Shipment & Handling') ?>">
-        <span class="price"><?= $block->getFormattedPrice($block->getShipmentChargeLineFee()); ?></span>
+    <td class="amount" data-th="<?= $escaper->escapeHtml(__('Shipment & Handling')) ?>">
+        <span class="price">
+            <?= $escaper->escapeHtml($block->getFormattedPrice($block->getShipmentChargeLineFee())); ?>
+        </span>
     </td>
 </tr>
 <tr class="totals-tax">
     <th colspan="4" class="mark" scope="row">
-        <?= $block->escapeHtml('Tax') ?>
+        <?= $escaper->escapeHtml(__('Tax')) ?>
     </th>
-    <td class="amount" data-th="<?= $block->escapeHtml('Tax') ?>">
-        <span class="price"><?= $block->getFormattedPrice($block->getTotalTax()); ?></span>
+    <td class="amount" data-th="<?= $escaper->escapeHtml(__('Tax')) ?>">
+        <span class="price">
+            <?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalTax())); ?>
+        </span>
     </td>
 </tr>
 <tr class="grand_total">
     <th colspan="4" class="mark" scope="row">
-        <strong><?= $block->escapeHtml('Total') ?> </strong>
+        <strong><?= $escaper->escapeHtml(__('Total')) ?> </strong>
     </th>
-    <td class="amount" data-th="<?= $block->escapeHtml('Total') ?>">
-        <strong><span class="price"><?= $block->getFormattedPrice($block->getTotalAmount()); ?></span></strong>
+    <td class="amount" data-th="<?= $escaper->escapeHtml(__('Total')) ?>">
+        <strong>
+            <span class="price">
+                <?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalAmount())); ?>
+            </span>
+        </strong>
     </td>
 </tr>
