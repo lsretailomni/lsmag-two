@@ -32,7 +32,7 @@ class ContactCreate extends TestCase
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $append      = "test" . chr(rand(97, 122));
+        $append      = 'test' . substr(md5(uniqid(rand(), true)), 0, 5);
         $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $_ENV['USERNAME']), 8, '0', STR_PAD_LEFT);
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);

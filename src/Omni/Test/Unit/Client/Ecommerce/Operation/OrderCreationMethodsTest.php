@@ -24,9 +24,6 @@ use \Ls\Omni\Exception\InvalidEnumException;
 
 /**
  * It will cover all the methods used for Order Creation Cycle
- *
- * Class OrderCreationMethodsTest
- * @package Ls\Omni\Test\Unit\Client\Ecommerce\Operation
  */
 class OrderCreationMethodsTest extends OmniClientSetupTest
 {
@@ -36,32 +33,36 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      * @return mixed
      * @throws InvalidEnumException
      */
-    public function getOneList()
+    public function getOneList($cardId = '')
     {
         $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
-        $listItems->setQuantity(1);
+        $listItems
+            ->setItemId($_ENV['ITEM_ID'])
+            ->setVariantId($_ENV['VARIANT_ID'])
+            ->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
         $oneListRequest = new OneList();
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
-        $oneListRequest->setListType(ListType::BASKET);
-        $param    = [
-            'oneList'   => $oneListRequest,
+        $oneListRequest
+            ->setItems($itemsArray)
+            ->setCardId($cardId)
+            ->setStoreId($_ENV['STORE_ID'])
+            ->setListType(ListType::BASKET);
+        $param = [
+            'oneList' => $oneListRequest,
             'calculate' => true
         ];
 
         return $this->client->OneListSave($param);
     }
+
     /**
      * Lookup Item
      */
     public function testItemGetbyId()
     {
         $param    = [
-            'itemId'  => $_ENV['ITEM_ID'],
+            'itemId' => $_ENV['ITEM_ID'],
             'storeId' => $_ENV['STORE_ID'],
         ];
         $response = $this->client->ItemGetbyId($param);
@@ -75,9 +76,9 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemsInStockGet()
     {
         $param    = [
-            'itemId'    => $_ENV['ITEM_ID'],
+            'itemId' => $_ENV['ITEM_ID'],
             'variantId' => $_ENV['VARIANT_ID'],
-            'storeId'   => $_ENV['STORE_ID'],
+            'storeId' => $_ENV['STORE_ID'],
         ];
         $response = $this->client->ItemsInStockGet($param);
         $result   = $response->getResult();
@@ -99,9 +100,9 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemsInStockGetAllStores()
     {
         $param    = [
-            'itemId'    => $_ENV['ITEM_ID'],
+            'itemId' => $_ENV['ITEM_ID'],
             'variantId' => $_ENV['VARIANT_ID'],
-            'storeId'   => '',
+            'storeId' => '',
         ];
         $response = $this->client->ItemsInStockGet($param);
         $result   = $response->getResult();
@@ -127,7 +128,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $inventoryArrayRequest->setInventoryRequest([$inventoryRequest]);
         $param    = [
             'storeId' => $_ENV['STORE_ID'],
-            'items'   => $inventoryArrayRequest
+            'items' => $inventoryArrayRequest
         ];
         $response = $this->client->ItemsInStoreGet($param);
         $result   = $response->getResult();
@@ -153,7 +154,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $inventoryArrayRequest->setInventoryRequest([$inventoryRequest]);
         $param    = [
             'storeId' => '',
-            'items'   => $inventoryArrayRequest
+            'items' => $inventoryArrayRequest
         ];
         $response = $this->client->ItemsInStoreGet($param);
         $result   = $response->getResult();
@@ -216,7 +217,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneListRequest->setStoreId($_ENV['STORE_ID']);
         $oneListRequest->setListType(ListType::BASKET);
         $param    = [
-            'oneList'   => $oneListRequest,
+            'oneList' => $oneListRequest,
             'calculate' => true
         ];
         $response = $this->client->OneListSave($param);
@@ -250,7 +251,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneListRequest->setStoreId($_ENV['STORE_ID']);
         $oneListRequest->setListType(ListType::BASKET);
         $param    = [
-            'oneList'   => $oneListRequest,
+            'oneList' => $oneListRequest,
             'calculate' => true
         ];
         $response = $this->client->OneListSave($param);
@@ -284,7 +285,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneListRequest->setStoreId($_ENV['STORE_ID']);
         $oneListRequest->setListType(ListType::WISH);
         $param    = [
-            'oneList'   => $oneListRequest,
+            'oneList' => $oneListRequest,
             'calculate' => false
         ];
         $response = $this->client->OneListSave($param);
@@ -308,8 +309,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListGetByCardIdBasket()
     {
         $param    = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::BASKET,
+            'cardId' => $_ENV['CARD_ID'],
+            'listType' => ListType::BASKET,
             'includeLines' => true
         ];
         $response = $this->client->OneListGetByCardId($param);
@@ -334,8 +335,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListGetByCardIdWish()
     {
         $param    = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::WISH,
+            'cardId' => $_ENV['CARD_ID'],
+            'listType' => ListType::WISH,
             'includeLines' => true
         ];
         $response = $this->client->OneListGetByCardId($param);
@@ -360,8 +361,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListDeleteByIdBasket()
     {
         $param    = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::BASKET,
+            'cardId' => $_ENV['CARD_ID'],
+            'listType' => ListType::BASKET,
             'includeLines' => false
         ];
         $response = $this->client->OneListGetByCardId($param);
@@ -385,8 +386,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListDeleteByIdWish()
     {
         $param    = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::WISH,
+            'cardId' => $_ENV['CARD_ID'],
+            'listType' => ListType::WISH,
             'includeLines' => false
         ];
         $response = $this->client->OneListGetByCardId($param);
@@ -412,9 +413,9 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreate()
     {
-        $response = $this->getOneList();
-        $oneListRequest   = $response->getResult();
-        $entity = new OneListCalculate();
+        $response       = $this->getOneList($_ENV['CARD_ID']);
+        $oneListRequest = $response->getResult();
+        $entity         = new OneListCalculate();
         $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
@@ -429,6 +430,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
             'request' => $result
@@ -444,7 +446,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
         $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
         $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
     }
 
@@ -457,18 +459,11 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreateOnlinePayment()
     {
-        $param = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::BASKET,
-            'includeLines' => true
-        ];
-        // Get one list by cardId
-        $response       = $this->client->OneListGetByCardId($param);
+        $response       = $this->getOneList($_ENV['CARD_ID']);
         $oneListRequest = $response->getResult();
-        $this->assertInstanceOf(ArrayOfOneList::class, $oneListRequest);
         // Basket calculation
         $entity = new OneListCalculate();
-        $entity->setOneList($oneListRequest->getOneList()[0]);
+        $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
@@ -486,6 +481,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setId('test1' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
             'request' => $result
@@ -501,7 +497,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
         $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
         $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
     }
 
@@ -513,28 +509,19 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreateGuest()
     {
-        $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest = new OneList();
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
-        $oneListRequest->setListType(ListType::BASKET);
-        $param    = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
+        $response       = $this->getOneList();
+        $oneListRequest = $response->getResult();
         // Basket calculation
         $entity = new OneListCalculate();
-        $entity->setOneList($oneList);
+        $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
+        $result
+            ->setEmail($_ENV['EMAIL'])
+            ->setShipToEmail($_ENV['EMAIL'])
+            ->setContactName('test')
+            ->setShipToName('test');
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
             ->setAmount('72')
@@ -545,6 +532,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
             'request' => $result
@@ -559,7 +547,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
         $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
         $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
     }
 
@@ -571,36 +559,12 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreateWithGiftCardAndLoyalty()
     {
-        $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest = new OneList();
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setCardId($_ENV['CARD_ID']);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
-        $oneListRequest->setListType(ListType::BASKET);
-        $paramOneList = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response     = $this->client->OneListSave($paramOneList);
-        $oneList      = $response->getResult();
-        $this->assertInstanceOf(OneList::class, $oneList);
-        $param = [
-            'cardId'       => $_ENV['CARD_ID'],
-            'listType'     => ListType::BASKET,
-            'includeLines' => true
-        ];
-        // Get one list by cardId
-        $response       = $this->client->OneListGetByCardId($param);
+        $response       = $this->getOneList($_ENV['CARD_ID']);
         $oneListRequest = $response->getResult();
-        $this->assertInstanceOf(ArrayOfOneList::class, $oneListRequest);
+        $this->assertInstanceOf(OneList::class, $oneListRequest);
         // Basket calculation
         $entity = new OneListCalculate();
-        $entity->setOneList($oneListRequest->getOneList()[0]);
+        $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
@@ -613,18 +577,9 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setExternalReference('TEST0012345')
             ->setTenderType('0');
         $orderPaymentArray[] = $orderPayment;
-        $orderPaymentGift    = new OrderPayment();
-        $orderPaymentGift->setCurrencyFactor(1)
-            ->setAmount('20')
-            ->setLineNumber('3')
-            ->setCardNumber($_ENV['GIFTCARDCODE'])
-            ->setExternalReference('TEST0012345')
-            ->setPreApprovedValidDate($preApprovedDate)
-            ->setTenderType('4');
-        $orderPaymentArray[] = $orderPaymentGift;
         $orderPaymentLoyalty = new OrderPayment();
         $orderPaymentLoyalty->setCurrencyCode('LOY')
-            ->setCurrencyFactor('0.10')
+            ->setCurrencyFactor('0.10000000000000000000')
             ->setLineNumber('2')
             ->setCardNumber($_ENV['CARD_ID'])
             ->setExternalReference('TEST0012345')
@@ -632,15 +587,27 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setPreApprovedValidDate($preApprovedDate)
             ->setTenderType('3');
         $orderPaymentArray[] = $orderPaymentLoyalty;
+        $orderPaymentGift    = new OrderPayment();
+        $orderPaymentGift->setCurrencyFactor(1)
+            ->setAmount('15')
+            ->setLineNumber('3')
+            ->setCardNumber($_ENV['GIFTCARDCODE'])
+            ->setExternalReference('TEST0012345')
+            ->setPreApprovedValidDate($preApprovedDate)
+            ->setTenderType('4');
+        $orderPaymentArray[] = $orderPaymentGift;
         $orderPayments       = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment($orderPaymentArray);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setPointBalance('8668');
+        $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
-        $paramOrderCreate  = [
+        $paramOrderCreate = [
             'request' => $result
         ];
-        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
+        $responseOrder = $this->client->OrderCreate($paramOrderCreate);
+
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertObjectHasAttribute('Id', $resultOrderCreate);
@@ -651,7 +618,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
         $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
         $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
     }
 
@@ -663,25 +630,11 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreateOnlinePaymentSaleGuest()
     {
-        $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
-        $listItems->setQuantity(1);
-        $itemsArray = new ArrayOfOneListItem();
-        $itemsArray->setOneListItem($listItems);
-        $oneListRequest = new OneList();
-        $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
-        $oneListRequest->setListType(ListType::BASKET);
-        $param    = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
+        $response       = $this->getOneList();
+        $oneListRequest = $response->getResult();
         // Basket calculation
         $entity = new OneListCalculate();
-        $entity->setOneList($oneList);
+        $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
@@ -706,20 +659,18 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setCountry('MY')
             ->setStateProvinceRegion('Kuala Lumpur')
             ->setPostCode('47301');
-        $result->setId('TEST0012345')
+        $result
             ->setContactId('')
             ->setCardId('')
             ->setEmail('testingorder@lsretail.com')
             ->setShipToEmail('testingorder@lsretail.com')
             ->setContactName('Testing')
             ->setShipToName('Testing')
-            ->setMobileNumber('9999999999')
-            ->setShipToPhoneNumber('9999999999')
             ->setContactAddress($omniAddress)
             ->setShipToAddress($omniAddress)
             ->setShippingStatus('NotYetShipped')
             ->setStoreId('S0013');
-        $orderLines = $result->getOrderLines()->getOrderLine();
+        $orderLines        = $result->getOrderLines()->getOrderLine();
         $shipmentOrderLine = new OrderLine();
         $shipmentOrderLine->setPrice('5')
             ->setNetPrice('5')
@@ -730,6 +681,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setQuantity(1);
         array_push($orderLines, $shipmentOrderLine);
         $result->setOrderLines($orderLines);
+        $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
             'request' => $result
@@ -744,7 +696,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
         $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
         $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('PaymentStatus', $resultOrderCreate);
+        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
         $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
     }
 }
