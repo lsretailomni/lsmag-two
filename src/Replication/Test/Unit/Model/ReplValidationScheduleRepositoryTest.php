@@ -59,7 +59,7 @@ class ReplValidationScheduleRepositoryTest extends TestCase
      */
     private $entitySearchResultsInterface = null;
 
-    protected function setUp(): void
+    public function setUp() : void
     {
         $this->objectFactory = $this->createPartialMock(ReplValidationScheduleFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);
@@ -83,12 +83,10 @@ class ReplValidationScheduleRepositoryTest extends TestCase
         $this->assertEquals($entityId, $entityMock->getById($entityId));
     }
 
-    /**
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
-     * @expectedExceptionMessage Object with id 1 does not exist.
-     */
     public function testGetWithNoSuchEntityException()
     {
+        $this->expectExceptionMessage("Object with id 1 does not exist.");
+        $this->expectException(\Magento\Framework\Exception\NoSuchEntityException::class);
         $entityId = 1;
         $entityMock = $this->createMock(ReplValidationScheduleRepository::class);
         $entityMock->method('getById')
@@ -120,12 +118,10 @@ class ReplValidationScheduleRepositoryTest extends TestCase
         $this->assertEquals($this->entityInterface, $entityMock->save($this->entityInterface));
     }
 
-    /**
-     * @expectedException \Magento\Framework\Exception\CouldNotSaveException
-     * @expectedExceptionMessage Could not save entity
-     */
     public function testSaveWithCouldNotSaveException()
     {
+        $this->expectExceptionMessage("Could not save entity");
+        $this->expectException(\Magento\Framework\Exception\CouldNotSaveException::class);
         $entityMock = $this->createMock(ReplValidationScheduleRepository::class);
         $entityMock->method('save')
              ->with($this->entityInterface)
