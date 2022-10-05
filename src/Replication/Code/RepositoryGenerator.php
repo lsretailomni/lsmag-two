@@ -220,7 +220,6 @@ foreach ( \$collection as \$object_model ) {
     \$objects[] = \$object_model;
 }
 \$results->setItems( \$objects );
-\$results->setItems( \$objects );
 
 return \$results;
 CODE

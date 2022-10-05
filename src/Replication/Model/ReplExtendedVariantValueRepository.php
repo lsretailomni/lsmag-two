@@ -84,7 +84,6 @@ class ReplExtendedVariantValueRepository implements ReplExtendedVariantValueRepo
             $objects[] = $object_model;
         }
         $results->setItems( $objects );
-        $results->setItems( $objects );
 
         return $results;
     }
