@@ -374,7 +374,7 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="delivery_pickup_date_time"
+            <group id="ls_delivery_pickup_date_time"
                    translate="label"
                    type="text"
                    sortOrder="140"
@@ -410,7 +410,7 @@
                        showInWebsite="1"
                        showInStore="1">
                     <depends>
-                        <field id="ls_mag/hospitality/pickup_date_time_slot">1</field>
+                        <field id="ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot">1</field>
                     </depends>
                     <label>Pickup/Delivery Time Format</label>
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>
