@@ -19,7 +19,7 @@ use Laminas\Uri\UriFactory;
 
 class ContactGetByCardIdTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl      = $_ENV['BASE_URL'];
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
@@ -47,7 +47,6 @@ class ContactGetByCardIdTest extends TestCase
         $this->assertInstanceOf(ArrayOfSalesEntry::class, $result->getSalesEntries());
         $this->assertInstanceOf(Account::class, $result->getAccount());
         $this->assertNotNull($result->getUserName());
-        $this->assertNotNull($result->getPhone());
         $this->assertNotNull($result->getEmail());
     }
 }
