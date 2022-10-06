@@ -41,8 +41,6 @@ class PlaceOrderPlugin
                 $order->getPickupStore() : '';
             $result['order']['pickup_store_name'] = !empty($order) && $order->getPickupStore() ?
                 $this->dataHelper->getStoreNameById($order->getPickupStore()) : '';
-            $result['order']['pickup_date_timeslot'] = !empty($order) && $order->getPickupDateTimeslot() ?
-                $order->getPickupDateTimeslot() : '';
         }
 
         return $result;
