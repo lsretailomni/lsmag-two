@@ -206,7 +206,7 @@ abstract class AbstractNotification extends DataObject
     /**
      * Get notification type
      *
-     * @return int
+     * @return string
      */
     public function getNotificationType()
     {
@@ -216,10 +216,10 @@ abstract class AbstractNotification extends DataObject
     /**
      * Set notification type
      *
-     * @param int $notificationType
+     * @param string $notificationType
      * @return $this
      */
-    public function setNotificationType(int $notificationType)
+    public function setNotificationType(string $notificationType)
     {
         $this->setData(self::NOTIFICATION_TYPE, $notificationType);
 

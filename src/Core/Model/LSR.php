@@ -434,7 +434,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_SHIPPED = 'SHIPPED';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
 
+    const LS_NOTIFICATION_EMAIL = 'email';
+    const LS_NOTIFICATION_SMS = 'sms';
+
     //Email notification through webhook
+    const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';
+    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/webhooks_email_notification_order_status';
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
     const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';

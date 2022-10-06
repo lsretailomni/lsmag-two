@@ -2,6 +2,7 @@
 
 namespace Ls\Webhooks\Model\Notification;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\App\Area;
@@ -94,23 +95,14 @@ class EmailNotification extends AbstractNotification
      */
     public function getEmailTemplateId()
     {
-        $type            = $this->getNotificationType();
-        $storeId         = $this->getStoreId();
-        $emailTemplateId = null;
+        $type    = $this->getNotificationType();
+        $storeId = $this->getStoreId();
 
-        switch ($type) {
-            case 0:
-                $emailTemplateId = $this->helper->getPickupTemplate($storeId);
-                break;
-            case 1:
-                $emailTemplateId = $this->helper->getCollectedTemplate($storeId);
-                break;
-            case 2:
-                $emailTemplateId = $this->helper->getCancelTemplate($storeId);
-                break;
-        }
-
-        return $emailTemplateId;
+        return $this->helper->getNotificationTemplate(
+            LSR::LS_NOTIFICATION_EMAIL,
+            $type,
+            $storeId
+        );
     }
 
     /**
@@ -152,14 +144,26 @@ class EmailNotification extends AbstractNotification
         $isEnabled = false;
 
         switch ($type) {
-            case 0:
-                $isEnabled = (bool)$this->helper->isPickupNotifyEnabled($storeId);
+            case LSR::LS_STATE_PICKED:
+                $isEnabled = (bool)$this->helper->isNotifyEnabled(
+                    LSR::LS_NOTIFICATION_EMAIL,
+                    LSR::LS_STATE_PICKED,
+                    $storeId
+                );
                 break;
-            case 1:
-                $isEnabled = (bool)$this->helper->isCollectedNotifyEnabled($storeId);
+            case LSR::LS_STATE_COLLECTED:
+                $isEnabled = (bool)$this->helper->isNotifyEnabled(
+                    LSR::LS_NOTIFICATION_EMAIL,
+                    LSR::LS_STATE_COLLECTED,
+                    $storeId
+                );
                 break;
-            case 2:
-                $isEnabled = (bool)$this->helper->isCancelNotifyEnabled($storeId);
+            case LSR::LS_STATE_CANCELED:
+                $isEnabled = (bool)$this->helper->isNotifyEnabled(
+                    LSR::LS_NOTIFICATION_EMAIL,
+                    LSR::LS_STATE_CANCELED,
+                    $storeId
+                );
                 break;
         }
 
