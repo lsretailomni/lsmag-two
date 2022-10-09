@@ -84,7 +84,6 @@ class ReplPriceRepository implements ReplPriceRepositoryInterface
             $objects[] = $object_model;
         }
         $results->setItems( $objects );
-        $results->setItems( $objects );
 
         return $results;
     }

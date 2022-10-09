@@ -152,6 +152,7 @@ class RepositoryTestGenerator extends AbstractGenerator
         $entityInterface              = $this->operation->getInterfaceName();
         $entityRepository             = $this->operation->getRepositoryName();
         $entitySearchResultsInterface = $this->operation->getSearchInterfaceName();
+        $method->setReturnType('void');
         $method->setName('setUp');
         $method->setBody(
             <<<CODE
@@ -199,10 +200,10 @@ CODE
         $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
         $method->setName('testGetWithNoSuchEntityException');
-        $method->setDocBlock('@expectedException \Magento\Framework\Exception\NoSuchEntityException
-@expectedExceptionMessage Object with id 1 does not exist.');
         $method->setBody(
             <<<CODE
+\$this->expectExceptionMessage("Object with id 1 does not exist.");
+\$this->expectException(\Magento\Framework\Exception\NoSuchEntityException::class);
 \$entityId = 1;
 \$entityMock = \$this->createMock($entityRepository::class);
 \$entityMock->method('getById')
@@ -267,10 +268,10 @@ CODE
         $method           = new MethodGenerator();
         $entityRepository = $this->operation->getRepositoryName();
         $method->setName('testSaveWithCouldNotSaveException');
-        $method->setDocBlock('@expectedException \Magento\Framework\Exception\CouldNotSaveException
-@expectedExceptionMessage Could not save entity');
         $method->setBody(
             <<<CODE
+\$this->expectExceptionMessage("Could not save entity");
+\$this->expectException(\Magento\Framework\Exception\CouldNotSaveException::class);
 \$entityMock = \$this->createMock($entityRepository::class);
 \$entityMock->method('save')
      ->with(\$this->entityInterface)

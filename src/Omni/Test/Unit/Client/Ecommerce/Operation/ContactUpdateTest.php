@@ -24,7 +24,7 @@ class ContactUpdateTest extends TestCase
     protected $contact;
     protected $contactCreate;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl      = $_ENV['BASE_URL'];
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);

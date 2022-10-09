@@ -81,7 +81,7 @@ class CacheHelper extends AbstractHelper
      */
     public function getWsdlOptions()
     {
-        if ($this->state->getMode() == State::MODE_DEVELOPER) {
+        if (!$this->state || $this->state->getMode() == State::MODE_DEVELOPER) {
             $this->soapOptions['cache_wsdl'] = WSDL_CACHE_NONE;
         }
         return $this->soapOptions;

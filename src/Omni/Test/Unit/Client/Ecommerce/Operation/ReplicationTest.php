@@ -16,7 +16,7 @@ class ReplicationTest extends TestCase
     /** @var array */
     public $params;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl      = $_ENV['BASE_URL'];
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
