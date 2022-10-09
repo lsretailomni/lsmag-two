@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2022-10-07
+
+### Added
+
+- Added support for compatibility of Magento 2.4.5. [24183](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/24183)
+- Added support to restrict syncing orders with LS Central based on configured multi-select order statuses in the Magento admin. [23444](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23444)
+- Added support to enable/disable unit of measure from LS Central. This is helpful for merchants who want to enable/disable specific units of measure from selling on eCommerce. [19132](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/19132)
+- Added support to translate text-based attributes in Magento. [25189](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25189)
+- Added support to translate option labels of variant type attributes from LS Central. [25678](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25678)
+- Added support to translate non variant attributes of items from LS Central. [25739](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25739)
+- Added support for anonymous ordering on GraphQl by prefilling address attributes based on the configuration from Magento admin. [23296](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23296)
+- Added support for QR Code ordering on GraphQl by setting encoded QR-code values into session to sync with LS Central while placing order. [23296](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23296)
+- Added support to expose all LS eCommerce configurations on GraohQl. [22856](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/22856)
+- Added support to fetch real time information related to kitchen status and preparation time on success page for PWA. [24301](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/24301)
+- Added support to map Item CountryOfOrigin from LS Central to be mapped with product CountryofManufacturer in Magento. [25680](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25680)
+
+
+
+
+### Bugs/Fixes
+
+- Fixed issue with using different order prefix's on website level. [23374](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/23374)
+- Fixed validation for UK based zip codes by allowing alphanumeric characters. [25189](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25189)
+- Fixed exception while loading hierarchy code on Magento admin due to incorrect scope. [25089](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25089)
+- Fixed issues with creating refund including shipment amount when cancelling orders from LS Central. [24955](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/24955)
+- Fixed issue in displaying POS created orders in my account section. [25412](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25412)
+- Fixed issue with rendering order pickup and collected email templates. [25326](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25326)
+- Fixed issue in displaying available coupons for existing basket on checkout page. [25757](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25757)
+- Fixed compatibility issue with Magento 2.4.2 and older versions. [26075](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26075)
+- Fixed issue with parent configurable product showing as out-of-stock even if either of the child simple product is back in-stock. [25821](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25821)
+- Fix issue in displaying recommended products from LS Recommend on PDP and shopping cart page. [26085](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26085)
+- Fixed Issue with unprocessed item images having hyphens in the ItemID. [26966](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26966)
+- Fixed issue with unloading JS files on shopping cart and checkout page when LS eCommerce integration is disabled from admin panel. [26801](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26801)
+- Github issue [#38](https://github.com/lsretailomni/lsmag-two/issues/38)
+- Github issue [#39](https://github.com/lsretailomni/lsmag-two/issues/39)
+- Github issue [#40](https://github.com/lsretailomni/lsmag-two/issues/40)
+
+
+
+
 ## [1.18.0] - 2022-08-08
 
 ### Added
