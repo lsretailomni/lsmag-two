@@ -54,10 +54,10 @@ class Status
         Payment $payment,
         EmailNotification $emailNotification
     ) {
-        $this->helper      = $helper;
-        $this->orderCancel = $orderCancel;
-        $this->creditMemo  = $creditMemo;
-        $this->payment     = $payment;
+        $this->helper            = $helper;
+        $this->orderCancel       = $orderCancel;
+        $this->creditMemo        = $creditMemo;
+        $this->payment           = $payment;
         $this->emailNotification = $emailNotification;
     }
 
