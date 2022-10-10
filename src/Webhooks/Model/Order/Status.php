@@ -62,6 +62,8 @@ class Status
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Process order status based on webhook call from Ls Central
      *
      * @param array $data
