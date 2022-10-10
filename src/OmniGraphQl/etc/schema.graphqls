@@ -118,7 +118,7 @@ type StoreData {
 }
 
 type SelectedShippingMethod {
-    pickup_store: StoreInfo @resolver(class: "Ls\\Hospitality\\Model\\Resolver\\Cart\\StoreInfoOutput") @doc(description: "Fetch Pickup StoreId from Quote.")
+    pickup_store: StoreInfo @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\Cart\\StoreInfoOutput") @doc(description: "Fetch Pickup StoreId from Quote.")
 }
 
 type StoreInfo @doc(description: "Defines the pick up store id and store name.") {

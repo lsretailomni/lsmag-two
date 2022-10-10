@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemInterface
 {
-
     /**
      * @param string $BaseUnitOfMeasure
      * @return $this
@@ -516,7 +515,5 @@ interface ReplItemInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

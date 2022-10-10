@@ -35,6 +35,8 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Category as ResourceModelCategory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
+use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
@@ -318,6 +320,11 @@ class ReplicationHelper extends AbstractHelper
     public $getProductIdsBySkus;
 
     /**
+     * @var AttributeFactory
+     */
+    public $eavAttributeFactory;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -425,7 +432,8 @@ class ReplicationHelper extends AbstractHelper
         ProductRepositoryInterface $productRepository,
         GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
         StockStatusRepository $stockStatusRepository,
-        GetProductIdsBySkus $getProductIdsBySkus
+        GetProductIdsBySkus $getProductIdsBySkus,
+        AttributeFactory $eavAttributeFactory
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -479,6 +487,7 @@ class ReplicationHelper extends AbstractHelper
         $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
         $this->stockStatusRepository                     = $stockStatusRepository;
         $this->getProductIdsBySkus                       = $getProductIdsBySkus;
+        $this->eavAttributeFactory = $eavAttributeFactory;
         parent::__construct(
             $context
         );
@@ -1396,7 +1405,7 @@ class ReplicationHelper extends AbstractHelper
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
             ['second' => $secondTableName],
-            'main_table.KeyValue = REPLACE(second.sku,"-",",")',
+            'second.sku = REPLACE(main_table.KeyValue,",","-")',
             []
         )->joinInner(
             ['third' => $thirdTableName],
@@ -2772,5 +2781,23 @@ class ReplicationHelper extends AbstractHelper
         $collection->addFieldToFilter('website_ids', $websiteIds);
 
         return $collection;
+    }
+
+    /**
+     * Get product attribute given code and scope
+     *
+     * @param string $formattedCode
+     * @param mixed $scopeId
+     * @return Attribute
+     * @throws LocalizedException
+     */
+    public function getProductAttributeGivenCodeAndScope($formattedCode, $scopeId = 0)
+    {
+        $defaultAttribute = $this->eavAttributeFactory->create();
+
+        return $defaultAttribute->loadByCode(
+            Product::ENTITY,
+            $formattedCode
+        )->setData('store_id', $scopeId);
     }
 }

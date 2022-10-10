@@ -28,7 +28,7 @@ class ServiceTest extends \PHPUnit\Framework\TestCase
 
     protected $baseUrl;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->baseUrl = $_ENV['BASE_URL'];
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);

@@ -5,15 +5,18 @@ namespace Ls\Omni\Plugin\Product;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplExtendedVariantValue;
+use Magento\Catalog\Model\Product;
+use Magento\ConfigurableProduct\Model\ConfigurableAttributeData;
 use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Class AttributeData
- * @package Ls\Omni\Plugin\Product
+ * Interceptor to intercept ConfigurableAttributeData methods
  */
 class AttributeData
 {
-
     /**
      * @var ReplExtendedVariantValueRepository
      */
@@ -34,9 +37,7 @@ class AttributeData
      */
     public $sortOrderBuilder;
 
-
     /**
-     * AttributeData constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $lsr
@@ -54,34 +55,66 @@ class AttributeData
         $this->sortOrderBuilder                   = $sortOrderBuilder;
     }
 
-    public function afterGetAttributesData($subject, $optionsData, $product, $array)
-    {
+    /**
+     * After plugin to change the order of options available for a configurable attribute
+     *
+     * @param ConfigurableAttributeData $subject
+     * @param array $result
+     * @param Product $product
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function afterGetAttributesData(
+        ConfigurableAttributeData $subject,
+        array $result,
+        Product $product
+    ) {
         $itemId  = $product->getSku();
         $storeId = $this->lsr->getCurrentStoreId();
-        foreach ($optionsData['attributes'] as $attributeId => $value) {
-            $newOptionData = [];
-            $filters       = [
+
+        foreach ($result['attributes'] as $attributeId => $value) {
+            $defaultScopedAttributeObject = $this->replicationHelper->getProductAttributeGivenCodeAndScope(
+                $value['code']
+            );
+
+            $newOptionData                = [];
+            $filters                      = [
                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
                 ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-                ['field' => 'Code', 'value' => $value['label'], 'condition_type' => 'eq']
+                [
+                    'field' => 'Code',
+                    'value' => $defaultScopedAttributeObject->getDefaultFrontendLabel(),
+                    'condition_type' => 'eq'
+                ]
             ];
-            $criteria      = $this->replicationHelper->buildCriteriaForArrayFrontEnd($filters, -1);
-            $sortOrder     = $this->sortOrderBuilder->setField('LogicalOrder')->setDirection('ASC')->create();
+            $criteria                     = $this->replicationHelper->buildCriteriaForArrayFrontEnd($filters, -1);
+            $sortOrder                    = $this
+                ->sortOrderBuilder
+                ->setField('LogicalOrder')
+                ->setDirection('ASC')
+                ->create();
             $criteria->setSortOrders([$sortOrder]);
-            /** @var ReplExtendedVariantValueSearchResults $variants */
             $variants = $this->replExtendedVariantValueRepository->getList($criteria);
+
             if ($variants->getTotalCount() > 0) {
                 /** @var ReplExtendedVariantValue $variant */
                 foreach ($variants->getItems() as $variant) {
-                    foreach ($value['options'] as $optionData) {
-                        if ($variant->getValue() == $optionData['label']) {
-                            $newOptionData[] = $optionData;
+                    if (!empty($defaultScopedAttributeObject->getId())) {
+                        $optionId = $defaultScopedAttributeObject->getSource()->getOptionId($variant->getValue());
+
+                        foreach ($value['options'] as $optionData) {
+                            if ($optionId == $optionData['id']) {
+                                $newOptionData[] = $optionData;
+                                break;
+                            }
                         }
                     }
                 }
-                $optionsData['attributes'][$attributeId]['options'] = $newOptionData;
+                $result['attributes'][$attributeId]['options'] = $newOptionData;
             }
         }
-        return $optionsData;
+
+        return $result;
     }
 }

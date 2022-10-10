@@ -17,7 +17,7 @@ class OmniClientSetupTest extends TestCase
     /** @var OmniClient */
     public $client;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl      = $_ENV['BASE_URL'];
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
@@ -31,6 +31,9 @@ class OmniClientSetupTest extends TestCase
     public function testExecute()
     {
         $pong = $this->client->Ping();
-        $this->assertContains('PONG OK> Successfully connected to [LSOmni DB] & [LSCentral DB]', $pong->getResult());
+        $this->assertStringContainsString(
+            'PONG OK> Successfully connected to [LS Commerce Service DB] & [LS Central DB] & [LS Central WS]',
+            $pong->getResult()
+        );
     }
 }

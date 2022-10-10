@@ -14,7 +14,7 @@ define([
          * @return {*}
          */
         getMailingAddress: function () {
-            if (typeof window.checkoutConfig.payment.checkmo === 'undefined') {
+            if (typeof window.checkoutConfig.payment.checkmo === 'undefined' && window.checkoutConfig.ls_enabled) {
                 return "";
             } else {
                 return window.checkoutConfig.payment.checkmo.mailingAddress;
@@ -27,7 +27,7 @@ define([
          * @return {*}
          */
         getPayableTo: function () {
-            if (typeof window.checkoutConfig.payment.checkmo === 'undefined') {
+            if (typeof window.checkoutConfig.payment.checkmo === 'undefined' && window.checkoutConfig.ls_enabled) {
                 return null;
             } else {
                 return window.checkoutConfig.payment.checkmo.payableTo;
