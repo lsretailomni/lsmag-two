@@ -437,7 +437,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
 
     const LS_NOTIFICATION_EMAIL = 'email';
-    const LS_NOTIFICATION_SMS = 'sms';
 
     //Email notification through webhook
     const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';

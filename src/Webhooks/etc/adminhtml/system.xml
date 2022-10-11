@@ -39,19 +39,6 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                     <comment>Please select all the required order status you want to send the notification for</comment>
                 </field>
-                <field id="webhooks_sms_notification_order_status"
-                       translate="label"
-                       sortOrder="30"
-                       showInDefault="1"
-                       showInWebsite="1">
-                    <label>Order Status SMS Notification</label>
-                    <depends>
-                        <field id="webhooks_notification_type">sms</field>
-                    </depends>
-                    <frontend_model>Ls\Webhooks\Block\Adminhtml\System\Config\OrderStatusSms</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>Please select all the required order status you want to send the notification for</comment>
-                </field>
             </group>
         </section>
     </system>

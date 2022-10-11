@@ -20,17 +20,6 @@
                         <email_template>ls_mag_webhooks_template_cancel</email_template>
                     </item3>
                 </webhooks_email_notification_order_status>
-                <webhooks_sms_notification_order_status>
-                    <item1>
-                        <order_status_sms>PICKED</order_status_sms>
-                    </item1>
-                    <item2>
-                        <order_status_sms>COLLECTED</order_status_sms>
-                    </item2>
-                    <item3>
-                        <order_status_sms>CANCELED</order_status_sms>
-                    </item3>
-                </webhooks_sms_notification_order_status>
                 <notification_pickup>1</notification_pickup>
                 <template_pickup>ls_mag_webhooks_template_pickup</template_pickup>
                 <notification_collected>1</notification_collected>
