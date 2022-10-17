@@ -5,6 +5,21 @@
     <default>
         <ls_mag>
             <webhooks>
+                <webhooks_notification_type>email</webhooks_notification_type>
+                <webhooks_email_notification_order_status>
+                    <item1>
+                        <order_status>PICKED</order_status>
+                        <email_template>ls_mag_webhooks_template_pickup</email_template>
+                    </item1>
+                    <item2>
+                        <order_status>COLLECTED</order_status>
+                        <email_template>ls_mag_webhooks_template_collected</email_template>
+                    </item2>
+                    <item3>
+                        <order_status>CANCELED</order_status>
+                        <email_template>ls_mag_webhooks_template_cancel</email_template>
+                    </item3>
+                </webhooks_email_notification_order_status>
                 <notification_pickup>1</notification_pickup>
                 <template_pickup>ls_mag_webhooks_template_pickup</template_pickup>
                 <notification_collected>1</notification_collected>
