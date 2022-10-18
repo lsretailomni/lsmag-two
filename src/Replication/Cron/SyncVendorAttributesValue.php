@@ -11,8 +11,7 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Sync Vendor
- * attributes values
+ * Cron responsible to update vendor attribute values in products
  */
 class SyncVendorAttributesValue extends ProductCreateTask
 {
@@ -24,7 +23,10 @@ class SyncVendorAttributesValue extends ProductCreateTask
     public $remainingRecords;
 
     /**
-     * @param null $storeData
+     * Entry point for cron
+     *
+     * @param mixed $storeData
+     * @return void
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -74,8 +76,10 @@ class SyncVendorAttributesValue extends ProductCreateTask
     }
 
     /**
-     * @param null $storeData
-     * @return array
+     * Execute manually
+     *
+     * @param mixed $storeData
+     * @return int[]
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -87,13 +91,18 @@ class SyncVendorAttributesValue extends ProductCreateTask
     }
 
     /**
+     * Process vendor attributes value
+     *
+     * @return void
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function processVendorAttributesValue()
     {
         /** Get list of only those Attribute Value whose items are already processed */
-        $filters            = [];
+        $filters = [
+            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+        ];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
@@ -107,55 +116,56 @@ class SyncVendorAttributesValue extends ProductCreateTask
             $criteria
         );
 
-        if ($collection->getSize() > 0) {
-            /** @var ReplLoyVendorItemMapping $attributeValue */
-            foreach ($collection as $attributeValue) {
-                $itemId = $attributeValue->getCustomItemId();
-                try {
-                    $vendorName = $attributeValue->getData('name');
-                    $product    = $this->productRepository->get($itemId);
-                    $value      = $this->replicationHelper->_getOptionIDByCode(
-                        LSR::LS_VENDOR_ATTRIBUTE,
-                        $vendorName
-                    );
-                    $product->setData(LSR::LS_VENDOR_ATTRIBUTE, $value);
-                    $product->getResource()->saveAttribute($product, LSR::LS_VENDOR_ATTRIBUTE);
-                    $product->setData(LSR::LS_ITEM_VENDOR_ATTRIBUTE, $attributeValue->getNavManufacturerItemId());
-                    $product->getResource()->saveAttribute($product, LSR::LS_ITEM_VENDOR_ATTRIBUTE);
-                } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
-                    $this->logger->debug($e->getMessage());
-                    $attributeValue->setData('is_failed', 1);
-                }
-                $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
-                $attributeValue->setData('processed', 1);
-                $attributeValue->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->replVendorItemMappingRepositoryInterface->save($attributeValue);
+        /** @var ReplLoyVendorItemMapping $attributeValue */
+        foreach ($collection as $attributeValue) {
+            $itemId = $attributeValue->getNavProductId();
+            try {
+                $vendorName = $attributeValue->getData('name');
+                $product = $this->replicationHelper->getProductDataByItemId(
+                    $itemId
+                );
+                $value      = $this->replicationHelper->_getOptionIDByCode(
+                    LSR::LS_VENDOR_ATTRIBUTE,
+                    $vendorName
+                );
+                $product->setData(LSR::LS_VENDOR_ATTRIBUTE, $value);
+                $product->getResource()->saveAttribute($product, LSR::LS_VENDOR_ATTRIBUTE);
+                $product->setData(LSR::LS_ITEM_VENDOR_ATTRIBUTE, $attributeValue->getNavManufacturerItemId());
+                $product->getResource()->saveAttribute($product, LSR::LS_ITEM_VENDOR_ATTRIBUTE);
+            } catch (Exception $e) {
+                $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                $this->logger->debug($e->getMessage());
+                $attributeValue->setData('is_failed', 1);
             }
+            $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
+            $attributeValue->setData('processed', 1);
+            $attributeValue->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replVendorItemMappingRepositoryInterface->save($attributeValue);
         }
     }
 
     /**
-     * @param $storeData
+     * Get remaining records
+     *
+     * @param mixed $storeData
      * @return int
+     * @throws LocalizedException
      */
     public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
-            $filters    = [];
+            $filters = [
+                ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters
             );
             $collection = $this->replItemVendorCollectionFactory->create();
-            $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
+            $this->replicationHelper->setCollectionPropertiesPlusJoinsForVendor(
                 $collection,
-                $criteria,
-                'NavProductId',
-                null,
-                'catalog_product_entity',
-                'sku'
+                $criteria
             );
             $this->remainingRecords = $collection->getSize();
         }

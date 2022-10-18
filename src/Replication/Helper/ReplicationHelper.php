@@ -1285,7 +1285,7 @@ class ReplicationHelper extends AbstractHelper
         if ($group) {
             $collection->getSelect()->group('main_table.' . $primaryTableColumnName);
         }
-        /** @var For Xdebug only to check the query $query */
+        /** For Xdebug only to check the query */
         $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
@@ -1293,42 +1293,39 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @param $collection
+     * Set collection properties plus join sku
+     *
+     * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
-     * @param $primaryTableColumnName
-     * @param $primaryTableColumnName2
-     * @param $secondaryTableName
-     * @param $secondaryTableColumnName
-     * @param bool $isReplaceJoin
+     * @param string $primaryTableColumnName
+     * @param string $primaryTableColumnName2
+     * @param array $groupColumns
+     * @return void
+     * @throws LocalizedException
      */
     public function setCollectionPropertiesPlusJoinSku(
         &$collection,
         SearchCriteriaInterface $criteria,
         $primaryTableColumnName,
         $primaryTableColumnName2,
-        $secondaryTableName,
-        $secondaryTableColumnName,
-        $isReplaceJoin = false
+        $groupColumns = []
     ) {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
-        $second_table_name = $this->resource->getTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
-        if ($isReplaceJoin) {
-            $collection->getSelect()->joinInner(
-                ['second' => $second_table_name],
-                'CONCAT_WS("-",main_table.' . $primaryTableColumnName . ',main_table.' . $primaryTableColumnName2 . ') = second.' . $secondaryTableColumnName,
-                []
+        if (!empty($primaryTableColumnName2)) {
+            $this->applyItemIdAndVariantIdJoins(
+                $collection,
+                'main_table',
+                $primaryTableColumnName,
+                $primaryTableColumnName2,
+                $groupColumns
             );
         } else {
-            $collection->getSelect()->joinInner(
-                ['second' => $second_table_name],
-                'main_table.' . $primaryTableColumnName . ' = second.' . $secondaryTableColumnName,
-                []
-            );
+            $this->applyItemIdJoin($collection, 'main_table', $primaryTableColumnName, $groupColumns);
         }
-        /** @var For Xdebug only to check the query $query */
+        /** For Xdebug only to check the query */
         $query = $collection->getSelect()->__toString();
         // @codingStandardsIgnoreEnd
         $collection->setCurPage($criteria->getCurrentPage());
@@ -1336,65 +1333,162 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @param $collection
+     * Set collection joins for inventory
+     *
+     * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
+     * @return void
+     * @throws LocalizedException
      */
     public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
     {
-        $secondTableName = $this->resource->getTableName('catalog_product_entity');
         $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
-            ['second' => $secondTableName],
-            'CONCAT_WS("-",main_table.ItemId' . ',main_table.VariantId' . ') = second.sku',
-            []
-        )->joinInner(
             ['third' => $thirdTableName],
-            'main_table.CustomItemId' . ' = third.CustomItemId' . ' AND main_table.scope_id' . ' = third.scope_id',
+            'main_table.ItemId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id',
             []
         );
-        /** @var For Xdebug only to check the query $query */
+
+        $this->applyItemIdAndVariantIdJoins(
+            $collection,
+            'main_table',
+            'ItemId',
+            'VariantId',
+            ['repl_inv_status_id']
+        );
+        /** For Xdebug only to check the query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
     }
 
     /**
-     * @param $collection
+     * Apply joins for lsr_item_id, lsr_variant_id custom attributes
+     *
+     * @param mixed $collection
+     * @param string $mainTableAlias
+     * @param string $mainTableItemIdColumn
+     * @param string $mainTableVariantIdColumn
+     * @param array $groupColumns
+     * @return void
+     * @throws LocalizedException
+     */
+    public function applyItemIdAndVariantIdJoins(
+        &$collection,
+        $mainTableAlias,
+        $mainTableItemIdColumn,
+        $mainTableVariantIdColumn,
+        $groupColumns = []
+    ) {
+        $this->applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn);
+        $this->applyVariantdJoin($collection, $mainTableAlias, $mainTableVariantIdColumn);
+        /**
+         * @codingStandardsIgnoreStart
+         */
+        $collection->getSelect()->where("IF (main_table.$mainTableVariantIdColumn IS NOT NULL AND (variantId_table.value IS NULL OR variantId_table.value = ''),0,1)");
+        /**
+         * @codingStandardsIgnoreEnd
+         */
+        foreach ($groupColumns as $groupColumn) {
+            $collection->getSelect()->group("$mainTableAlias.$groupColumn");
+        }
+    }
+
+    /**
+     * Apply join for lsr_item_id custom attribute
+     *
+     * @param mixed $collection
+     * @param mixed $mainTableAlias
+     * @param mixed $mainTableItemIdColumn
+     * @param array $groupColumns
+     * @return void
+     * @throws LocalizedException
+     */
+    public function applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn, $groupColumns = [])
+    {
+        $itemAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_ITEM_ID_ATTRIBUTE_CODE
+        )->getId();
+
+        $collection->getSelect()->joinInner(
+            ['itemId_table' => 'catalog_product_entity_varchar'],
+            "$mainTableAlias.$mainTableItemIdColumn = itemId_table.value" .
+            " AND itemId_table.attribute_id = $itemAttributeId",
+            []
+        );
+
+        foreach ($groupColumns as $groupColumn) {
+            $collection->getSelect()->group("$mainTableAlias.$groupColumn");
+        }
+    }
+
+    /**
+     * Apply join for lsr_variant_id custom attribute
+     *
+     * @param mixed $collection
+     * @param mixed $mainTableAlias
+     * @param mixed $mainTableVariantIdColumn
+     * @return void
+     * @throws LocalizedException
+     */
+    public function applyVariantdJoin($collection, $mainTableAlias, $mainTableVariantIdColumn)
+    {
+        $variantAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_VARIANT_ID_ATTRIBUTE_CODE
+        )->getId();
+
+        $collection->getSelect()->joinLeft(
+            ['variantId_table' => 'catalog_product_entity_varchar'],
+            "$mainTableAlias.$mainTableVariantIdColumn = variantId_table.value" .
+            " AND itemId_table.entity_id = variantId_table.entity_id".
+            " AND variantId_table.attribute_id = $variantAttributeId",
+            []
+        );
+    }
+
+    /**
+     * Fetch required records to update for vendor attributes
+     *
+     * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
+     * @return void
+     * @throws LocalizedException
      */
     public function setCollectionPropertiesPlusJoinsForVendor(&$collection, SearchCriteriaInterface $criteria)
     {
-        $secondTableName = $this->resource->getTableName('catalog_product_entity');
         $thirdTableName  = $this->resource->getTableName('ls_replication_repl_vendor');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
-            ['second' => $secondTableName],
-            'main_table.NavProductId' . '= second.sku',
-            []
-        )->joinInner(
             ['third' => $thirdTableName],
             'main_table.NavManufacturerId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id' .
             ' AND third.processed' . ' = 1',
             []
         );
+
+        $this->applyItemIdJoin($collection, 'main_table', 'NavProductId', ['repl_loy_vendor_item_mapping_id']);
         $collection->getSelect()->columns('third.name');
-        /** @var For Xdebug only to check the query $query */
+        /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
     }
 
     /**
+     * Fetch all required image records
+     *
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      * @param $type
+     * @return void
+     * @throws LocalizedException
      */
     public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria, $type)
     {
-        $secondTableName = $this->resource->getTableName('catalog_product_entity');
         if ($type == 'Item') {
             $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
         } else {
@@ -1403,17 +1497,45 @@ class ReplicationHelper extends AbstractHelper
 
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        $itemAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_ITEM_ID_ATTRIBUTE_CODE
+        )->getId();
+        $variantAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_VARIANT_ID_ATTRIBUTE_CODE
+        )->getId();
+
         $collection->getSelect()->joinInner(
-            ['second' => $secondTableName],
-            'second.sku = REPLACE(main_table.KeyValue,",","-")',
+            ['itemId_table' => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = itemId_table.value" .
+            " AND itemId_table.attribute_id = $itemAttributeId",
             []
-        )->joinInner(
+        );
+
+        $collection->getSelect()->joinLeft(
+            ['variantId_table' => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = variantId_table.value" .
+            " AND itemId_table.entity_id = variantId_table.entity_id".
+            " AND variantId_table.attribute_id = $variantAttributeId",
+            []
+        );
+
+        $collection->getSelect()->joinInner(
             ['third' => $thirdTableName],
             'third.nav_id' . ' = SUBSTRING_INDEX(main_table.KeyValue,",",1)' . '
             AND main_table.scope_id' . ' = third.scope_id',
             []
         );
-        /** @var For Xdebug only to check the query $query */
+        /**
+         * @codingStandardsIgnoreStart
+         */
+        $collection->getSelect()->where("IF (main_table.TableName = 'Item Variant' AND variantId_table.value IS NOT NULL,1,0) OR IF (main_table.TableName = 'Item' AND variantId_table.value IS NULL,1,0)");
+        /**
+         * @codingStandardsIgnoreEnd
+         */
+        $collection->getSelect()->group("main_table.repl_image_link_id");
+        /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());
@@ -1426,22 +1548,46 @@ class ReplicationHelper extends AbstractHelper
      *
      * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
+     * @throws LocalizedException
      */
     public function setCollectionPropertiesPlusJoinsForProductAttributeValuesDataTranslation(
         &$collection,
         SearchCriteriaInterface $criteria
     ) {
-        $secondTableName = $this->resource->getTableName('catalog_product_entity');
-
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
-        // @codingStandardsIgnoreStart
+        $itemAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_ITEM_ID_ATTRIBUTE_CODE
+        )->getId();
+        $variantAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_VARIANT_ID_ATTRIBUTE_CODE
+        )->getId();
+
+        /**
+         * @codingStandardsIgnoreStart
+         */
         $collection->getSelect()->joinInner(
-            ['second' => $secondTableName],
-            'second.sku = REPLACE(TRIM(TRAILING ";" FROM REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ";", 3), "Variant;", ""), "Item;","")), ";","-")',
+            ['itemId_table' => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = itemId_table.value" .
+            " AND itemId_table.attribute_id = $itemAttributeId",
             []
         );
-        // @codingStandardsIgnoreEnd
+
+        $collection->getSelect()->joinLeft(
+            ['variantId_table' => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = variantId_table.value" .
+            " AND itemId_table.entity_id = variantId_table.entity_id".
+            " AND variantId_table.attribute_id = $variantAttributeId",
+            []
+        );
+
+        $collection->getSelect()->where("IF (SUBSTRING_INDEX (main_table.Key, ';', 1) = 'Variant' AND variantId_table.value IS NOT NULL,1,0) OR IF (SUBSTRING_INDEX (main_table.Key, ';', 1)  = 'Item' AND variantId_table.value IS NULL,1,0)");
+        /**
+         * @codingStandardsIgnoreEnd
+         */
+        $collection->getSelect()->group("main_table.repl_data_translation_id");
         /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
@@ -1746,15 +1892,17 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getBaseUnitOfMeasure($itemId)
     {
-        $filters  = [
-            ['field' => 'CustomItemId', 'value' => $itemId, 'condition_type' => 'eq']
+        $baseUnitOfMeasure = null;
+        $filters           = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']
         ];
-        $criteria = $this->buildCriteriaForDirect($filters, 1);
-        $items    = $this->itemRepository->getList($criteria)->getItems();
+        $criteria          = $this->buildCriteriaForDirect($filters, 1);
+        $items             = $this->itemRepository->getList($criteria)->getItems();
         foreach ($items as $item) {
             return $item->getBaseUnitOfMeasure();
         }
-        return null;
+
+        return $baseUnitOfMeasure;
     }
 
     /**
@@ -1775,7 +1923,10 @@ class ReplicationHelper extends AbstractHelper
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
-            ['field' => 'CustomItemId', 'value' => $product->getSku(), 'condition_type' => 'eq']
+            [
+                'field' => 'nav_id',
+                'value' => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), 'condition_type' => 'eq'
+            ]
         ];
         $criteria             = $this->buildCriteriaForDirect($filters);
         $hierarchyLeafs       = $this->replHierarchyLeafRepository->getList($criteria);
@@ -1997,7 +2148,7 @@ class ReplicationHelper extends AbstractHelper
             foreach ($types as $attribute) {
                 $formattedCode = $this->formatAttributeCode($attribute);
 
-                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
                 if (!$attribute->getId()) {
                     continue;
@@ -2277,7 +2428,6 @@ class ReplicationHelper extends AbstractHelper
         $finalCodes = [];
         try {
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-                ->addFilter('Dimensions', '1', 'neq') // This is to ignore Dimension 1
                 ->addFilter('isDeleted', 0, 'eq')
                 ->addFilter('Code', true, 'notnull')
                 ->addFilter('Dimensions', true, 'notnull')
@@ -2313,7 +2463,7 @@ class ReplicationHelper extends AbstractHelper
     public function getUomCodes($itemId, $storeId)
     {
         $filters = [
-            ['field' => 'CustomItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
         ];
 
@@ -2808,5 +2958,63 @@ class ReplicationHelper extends AbstractHelper
             Product::ENTITY,
             $formattedCode
         )->setData('store_id', $scopeId);
+    }
+
+    /**
+     * Get product data by item id
+     *
+     * @param string $itemId
+     * @param string $variantId
+     * @param string $uom
+     * @param string $storeId
+     * @return mixed|null
+     * @throws NoSuchEntityException
+     */
+    public function getProductDataByItemId($itemId, $variantId = '', $uom = '', $storeId = '')
+    {
+        $searchCriteria = clone $this->searchCriteriaBuilder;
+
+        if (!empty($itemId)) {
+            $searchCriteria->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId);
+        } else {
+            return null;
+        }
+
+        if (!empty($variantId)) {
+            $searchCriteria->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId);
+        } else {
+            $searchCriteria->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, true, 'null');
+        }
+
+        if (!empty($uom)) {
+            $searchCriteria->addFilter('uom', $uom);
+        } else {
+            $searchCriteriaTmp = clone $searchCriteria;
+            $baseUom = $this->getBaseUnitOfMeasure($itemId);
+
+            if (!empty($baseUom)) {
+                $searchCriteria = clone $searchCriteriaTmp;
+                $searchCriteria->addFilter('uom', $baseUom);
+            }
+        }
+
+        if (!empty($storeId)) {
+            $searchCriteria = $searchCriteria->addFilter(
+                'store_id',
+                $storeId
+            )->create();
+        } else {
+            $searchCriteria = $searchCriteria->addFilter(
+                'store_id',
+                $this->storeManager->getStore()->getId()
+            )->create();
+        }
+
+        $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        if (!empty($productList)) {
+            return array_pop($productList);
+        } else {
+            throw new NoSuchEntityException();
+        }
     }
 }

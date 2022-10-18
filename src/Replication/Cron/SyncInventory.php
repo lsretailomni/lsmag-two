@@ -5,11 +5,12 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplInvStatus;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Sync items Inventory
+ * Cron responsible to update inventory for item and variants
  */
 class SyncInventory extends ProductCreateTask
 {
@@ -20,7 +21,11 @@ class SyncInventory extends ProductCreateTask
     public $remainingRecords;
 
     /**
-     * @param null $storeData
+     * Entry point for cron
+     *
+     * @param mixed $storeData
+     * @return void
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
@@ -53,48 +58,52 @@ class SyncInventory extends ProductCreateTask
                     );
                     $collection                = $this->replInvStatusCollectionFactory->create();
                     $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
-                    if ($collection->getSize() > 0) {
-                        /** @var ReplInvStatus $replInvStatus */
-                        foreach ($collection as $replInvStatus) {
-                            try {
-                                $variants = null;
-                                $checkIsNotVariant = true;
-                                if (!$replInvStatus->getVariantId()) {
-                                    $sku = $replInvStatus->getCustomItemId();
-                                } else {
-                                    $sku               = $replInvStatus->getItemId() . '-' . $replInvStatus->getVariantId();
-                                    $checkIsNotVariant = false;
-                                }
-                                $this->replicationHelper->updateInventory($sku, $replInvStatus);
-                                $uomCodes = $this->getUomCodesProcessed($replInvStatus->getCustomItemId());
-                                if (!empty($uomCodes)) {
-                                    if (count($uomCodes[$replInvStatus->getCustomItemId()]) > 1) {
-                                        // @codingStandardsIgnoreLine
-                                        $baseUnitOfMeasure = $uomCodes[$replInvStatus->getCustomItemId() . '-' . 'BaseUnitOfMeasure'];
-                                        $variants          = $this->getProductVariants($sku);
-                                        foreach ($uomCodes[$replInvStatus->getCustomItemId()] as $uomCode) {
-                                            if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) && empty($variants)) {
-                                                $skuUom = $sku . "-" . $uomCode;
-                                                $this->replicationHelper->updateInventory($skuUom, $replInvStatus);
-                                            }
+                    /** @var ReplInvStatus $replInvStatus */
+                    foreach ($collection as $replInvStatus) {
+                        try {
+                            $variants          = null;
+                            $checkIsNotVariant = true;
+                            $sku               = $this->replicationHelper->getProductDataByItemId(
+                                $replInvStatus->getItemId(),
+                                $replInvStatus->getVariantId()
+                            )->getSku();
+
+                            if ($replInvStatus->getVariantId()) {
+                                $checkIsNotVariant = false;
+                            }
+                            $this->replicationHelper->updateInventory($sku, $replInvStatus);
+                            $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
+                            if (!empty($uomCodes)) {
+                                if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                                    // @codingStandardsIgnoreLine
+                                    $baseUnitOfMeasure = $uomCodes[$replInvStatus->getItemId() . '-' . 'BaseUnitOfMeasure'];
+                                    $variants          = $this->getProductVariants($replInvStatus->getItemId());
+                                    foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                                        if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) &&
+                                            empty($variants)
+                                        ) {
+                                            $skuUom = $this->replicationHelper->getProductDataByItemId(
+                                                $replInvStatus->getItemId(),
+                                                $replInvStatus->getVariantId(),
+                                                $uomCode
+                                            )->getSku();
+                                            $this->replicationHelper->updateInventory($skuUom, $replInvStatus);
                                         }
                                     }
                                 }
-                            } catch (Exception $e) {
-                                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
-                                $this->logger->debug($e->getMessage());
-                                $replInvStatus->setData('is_failed', 1);
                             }
-                            $replInvStatus->setData('is_updated', 0);
-                            $replInvStatus->setData('processed', 1);
-                            $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
-                            $this->replInvStatusRepository->save($replInvStatus);
+                        } catch (Exception $e) {
+                            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                            $this->logger->debug($e->getMessage());
+                            $replInvStatus->setData('is_failed', 1);
                         }
-                        $remainingItems = (int)$this->getRemainingRecords($this->store);
-                        if ($remainingItems == 0) {
-                            $this->cronStatus = true;
-                        }
-                    } else {
+                        $replInvStatus->setData('is_updated', 0);
+                        $replInvStatus->setData('processed', 1);
+                        $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
+                        $this->replInvStatusRepository->save($replInvStatus);
+                    }
+                    $remainingItems = (int)$this->getRemainingRecords($this->store);
+                    if ($remainingItems == 0) {
                         $this->cronStatus = true;
                     }
 
@@ -111,8 +120,11 @@ class SyncInventory extends ProductCreateTask
     }
 
     /**
-     * @param null $storeData
-     * @return array|int[]
+     * Execute manually
+     *
+     * @param mixed $storeData
+     * @return int[]
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
@@ -123,8 +135,11 @@ class SyncInventory extends ProductCreateTask
     }
 
     /**
-     * @param $storeData
+     * Get remaining records
+     *
+     * @param mixed $storeData
      * @return int
+     * @throws LocalizedException
      */
     public function getRemainingRecords($storeData)
     {
