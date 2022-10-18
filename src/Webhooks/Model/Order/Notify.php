@@ -37,6 +37,7 @@ class Notify
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
      * @param Data $helper
+     * @param Logger $logger
      */
     public function __construct(
         TransportBuilder $transportBuilder,

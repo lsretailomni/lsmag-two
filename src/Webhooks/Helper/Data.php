@@ -140,7 +140,7 @@ class Data
     }
 
     /**
-     * Getting store email
+     * Getting sender name
      * @param $storeId
      * @return string
      */
