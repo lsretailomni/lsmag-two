@@ -886,7 +886,7 @@ class ProductCreateTask
      */
     public function _getItem($itemId)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->addFilter('CustomItemId', $itemId)->addFilter(
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $itemId)->addFilter(
             'scope_id',
             $this->store->getId(),
             'eq'

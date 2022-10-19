@@ -50,7 +50,7 @@ class SyncImages extends ProductCreateTask
                         $this->store->getId()
                     );
                     $this->replicationHelper->setEnvVariables();
-                    $this->logger->debug('Running SyncImages Task for store ' . $this->store->getName());
+                    $this->logger->debug(sprintf('Running SyncImages Task for store %s', $this->store->getName()));
                     $this->syncItemImages();
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
@@ -109,7 +109,7 @@ class SyncImages extends ProductCreateTask
                     if (count($uomCodesTotal[$itemId]) > 1) {
                         $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
                         if (count($uomCodesNotProcessed) == 0) {
-                            $this->processImages($itemImage, $sortOrder, $itemId);
+                            $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                             $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
                             foreach ($uomCodesTotal[$itemId] as $uomCode) {
                                 if ($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) {
@@ -118,14 +118,14 @@ class SyncImages extends ProductCreateTask
                             }
                         }
                     } else {
-                        $this->processImages($itemImage, $sortOrder, $itemId);
+                        $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                     }
                 } else {
-                    $this->processImages($itemImage, $sortOrder, $itemId);
+                    $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                 }
             } catch (Exception $e) {
                 $this->logger->debug(
-                    'Problem with Image Synchronization : ' . $itemImage->getKeyValue() . ' in ' . __METHOD__
+                    sprintf('Problem with Image Synchronization : %s in %s', $itemImage->getKeyValue(), __METHOD__)
                 );
                 $this->logger->debug($e->getMessage());
                 $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -175,7 +175,7 @@ class SyncImages extends ProductCreateTask
             );
         } catch (Exception $e) {
             $this->logger->debug(
-                'Problem getting encoded Images in : ' . __METHOD__
+                sprintf('Problem getting encoded Images in : %s', __METHOD__)
             );
             $this->logger->debug($e->getMessage());
         }
@@ -192,7 +192,7 @@ class SyncImages extends ProductCreateTask
                 $this->removeNoSelection($productData);
             } catch (Exception $e) {
                 $this->logger->debug(
-                    'Problem while converting the images or Gallery CreateHandler in : ' . __METHOD__
+                    sprintf('Problem while converting the images or Gallery CreateHandler in : %s', __METHOD__)
                 );
                 $this->logger->debug($e->getMessage());
             }
@@ -212,7 +212,8 @@ class SyncImages extends ProductCreateTask
     public function processImages($itemImage, $sortOrder, $itemId, $variantId = null, $uomCode = null)
     {
         try {
-            $productData = $this->replicationHelper->getProductDataByItemId($itemId, $variantId, $uomCode);
+            $product     = $this->replicationHelper->getProductDataByItemId($itemId, $variantId, $uomCode, 0);
+            $productData = $this->productRepository->get($product->getSku(), true, 0, true);
         } catch (NoSuchEntityException $e) {
             return;
         }
@@ -276,7 +277,7 @@ class SyncImages extends ProductCreateTask
 
         if ($saveMe) {
             $this->logger->debug(
-                'Fixed no_selection issue for images of product : ' . $customProduct->getSku()
+                sprintf('Fixed no_selection issue for images of product : %s', $customProduct->getSku())
             );
             $this->updateHandlerFactory->create()->execute($customProduct);
         }
