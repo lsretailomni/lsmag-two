@@ -1512,7 +1512,7 @@ class ProductCreateTask
                 }
             } catch (Exception $e) {
                 // @codingStandardsIgnoreLine
-                $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s' . $attribute->getId(), $productId, $e->getMessage()));
+                $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s', $attribute->getId(), $productId, $e->getMessage()));
             }
             $position++;
         }

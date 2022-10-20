@@ -1481,9 +1481,9 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Fetch all required image records
      *
-     * @param $collection
+     * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
-     * @param $type
+     * @param string $type
      * @return void
      * @throws LocalizedException
      */
@@ -1527,13 +1527,11 @@ class ReplicationHelper extends AbstractHelper
             AND main_table.scope_id' . ' = third.scope_id',
             []
         );
-        /**
-         * @codingStandardsIgnoreStart
-         */
-        $collection->getSelect()->where("IF (main_table.TableName = 'Item Variant' AND variantId_table.value IS NOT NULL,1,0) OR IF (main_table.TableName = 'Item' AND variantId_table.value IS NULL,1,0)");
-        /**
-         * @codingStandardsIgnoreEnd
-         */
+
+        if ($type == 'Item') {
+            //@codingStandardsIgnoreLine
+            $collection->getSelect()->where("IF (main_table.TableName = 'Item Variant' AND variantId_table.value IS NOT NULL,1,0) OR IF (main_table.TableName = 'Item' AND variantId_table.value IS NULL,1,0)");
+        }
         $collection->getSelect()->group("main_table.repl_image_link_id");
         /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
@@ -2974,31 +2972,32 @@ class ReplicationHelper extends AbstractHelper
     {
         $searchCriteria = clone $this->searchCriteriaBuilder;
 
-        if (!empty($itemId)) {
+        if (!empty($itemId) || $itemId == '0') {
             $searchCriteria->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId);
         } else {
             return null;
         }
 
-        if (!empty($variantId)) {
+        if ($variantId != '') {
             $searchCriteria->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId);
         } else {
             $searchCriteria->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, true, 'null');
         }
 
-        if (!empty($uom)) {
-            $searchCriteria->addFilter('uom', $uom);
-        } else {
-            $searchCriteriaTmp = clone $searchCriteria;
-            $baseUom = $this->getBaseUnitOfMeasure($itemId);
+        if ($uom != '') {
+            $optionId = $this->_getOptionIDByCode(
+                LSR::LS_UOM_ATTRIBUTE,
+                $uom
+            );
 
-            if (!empty($baseUom)) {
-                $searchCriteria = clone $searchCriteriaTmp;
-                $searchCriteria->addFilter('uom', $baseUom);
+            if (isset($optionId)) {
+                $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, $optionId);
             }
+        } else {
+            $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
-        if (!empty($storeId)) {
+        if ($storeId != '') {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
                 $storeId

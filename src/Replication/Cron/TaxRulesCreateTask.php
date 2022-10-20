@@ -17,14 +17,13 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Tax\Api\Data\TaxRateInterface;
 use Magento\Tax\Api\Data\TaxRateInterfaceFactory;
 use Magento\Tax\Api\Data\TaxRuleInterface;
-use Magento\Tax\Api\Data\TaxRuleInterfaceFactory;
 use Magento\Tax\Api\TaxRateRepositoryInterface;
 use Magento\Tax\Api\TaxRuleRepositoryInterface;
 use Magento\Tax\Model\Calculation\Rate;
 use Magento\Tax\Model\Calculation\Rule;
 
 /**
- * Create tax_rules and tax_rates cron
+ * Cron responsible to create tax rules in magento
  */
 class TaxRulesCreateTask
 {
@@ -118,9 +117,9 @@ class TaxRulesCreateTask
     }
 
     /**
-     * Execute method to run the cron manually
+     * Execute manually
      *
-     * @param null $storeData
+     * @param mixed $storeData
      * @return int[]
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -133,11 +132,12 @@ class TaxRulesCreateTask
     }
 
     /**
-     * Execute method to run the cron automatically
+     * Entry point for cron
      *
-     * @param null $storeData
-     * @throws NoSuchEntityException
+     * @param mixed $storeData
+     * @return void
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
@@ -163,34 +163,38 @@ class TaxRulesCreateTask
                     );
                     $countryCodes        = $this->getCountryCodes($this->store->getId());
                     $defaultTaxPostGroup = current($this->getDefaultTaxPostGroup($this->store->getId()));
-                    foreach ($countryCodes->getItems() as $countryCode) {
-                        try {
-                            $taxPostGroup = $countryCode->getTaxPostGroup();
 
-                            if (!$taxPostGroup) {
-                                $taxPostGroup = $defaultTaxPostGroup->getTaxGroup();
-                            }
-                            $rates = $this->getRatesGivenBusinessTaxGroup(
-                                $taxPostGroup,
-                                $this->store->getId()
-                            )->getItems();
+                    if ($defaultTaxPostGroup) {
+                        foreach ($countryCodes->getItems() as $countryCode) {
+                            try {
+                                $taxPostGroup = $countryCode->getTaxPostGroup();
 
-                            foreach ($rates as $rate) {
-                                $taxClass = $this->replicationHelper->getTaxClassGivenName($rate->getProductTaxGroup());
-                                $taxRate  = $this->createTaxCalculationRateGivenInfo($countryCode, $rate);
-                                $this->createTaxCalculationRuleGivenInfo($taxRate, $taxClass);
+                                if (!$taxPostGroup) {
+                                    $taxPostGroup = $defaultTaxPostGroup->getTaxGroup();
+                                }
+                                $rates = $this->getRatesGivenBusinessTaxGroup(
+                                    $taxPostGroup,
+                                    $this->store->getId()
+                                )->getItems();
+
+                                foreach ($rates as $rate) {
+                                    $taxClass = $this->replicationHelper->getTaxClassGivenName(
+                                        $rate->getProductTaxGroup()
+                                    );
+                                    $taxRate  = $this->createTaxCalculationRateGivenInfo($countryCode, $rate);
+                                    $this->createTaxCalculationRuleGivenInfo($taxRate, $taxClass);
+                                }
+                            } catch (Exception $e) {
+                                $this->logger->debug($e->getMessage());
+                                $countryCode->setData('is_failed', 1);
                             }
-                        } catch (Exception $e) {
-                            $this->logger->debug($e->getMessage());
-                            $countryCode->setData('is_failed', 1);
+                            $countryCode->setData('processed_at', $this->replicationHelper->getDateTime())
+                                ->setData('processed', 1)
+                                ->setData('is_updated', 0);
+                            // @codingStandardsIgnoreLine
+                            $this->replCountryCodeRepository->save($countryCode);
                         }
-                        $countryCode->setData('processed_at', $this->replicationHelper->getDateTime())
-                            ->setData('processed', 1)
-                            ->setData('is_updated', 0);
-                        // @codingStandardsIgnoreLine
-                        $this->replCountryCodeRepository->save($countryCode);
                     }
-
                     if ($this->getRemainingRecords() == 0) {
                         $this->cronStatus = true;
                     }
@@ -210,7 +214,7 @@ class TaxRulesCreateTask
     /**
      * Get all country records based on the scopeId
      *
-     * @param $scopeId
+     * @param int $scopeId
      * @return SearchResultInterface
      */
     public function getCountryCodes($scopeId)
@@ -227,7 +231,7 @@ class TaxRulesCreateTask
     /**
      * Get default tax post group
      *
-     * @param $scopeId
+     * @param int $scopeId
      * @return mixed
      */
     public function getDefaultTaxPostGroup($scopeId)
@@ -245,8 +249,8 @@ class TaxRulesCreateTask
     /**
      * Get all the available tax rates given tax group
      *
-     * @param $group
-     * @param $scopeId
+     * @param mixed $group
+     * @param int $scopeId
      * @return SearchResultInterface
      */
     public function getRatesGivenBusinessTaxGroup($group, $scopeId)
@@ -264,8 +268,8 @@ class TaxRulesCreateTask
     /**
      * Get tax calculation rate given information
      *
-     * @param $countryCode
-     * @param $rate
+     * @param mixed $countryCode
+     * @param mixed $rate
      * @return TaxRateInterface
      * @throws InputException
      */
@@ -286,8 +290,8 @@ class TaxRulesCreateTask
     /**
      * Get tax calculation rule given information
      *
-     * @param $taxRate
-     * @param $taxClass
+     * @param mixed $taxRate
+     * @param mixed $taxClass
      * @return TaxRuleInterface
      * @throws InputException
      */
