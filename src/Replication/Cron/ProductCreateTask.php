@@ -699,33 +699,45 @@ class ProductCreateTask
                 'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
-            $result          = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
-            if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
-                $mimeType = $this->getMimeType($result['image']);
-                if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
-                    $imageContent = $this->imageContent->create()
-                        ->setBase64EncodedData($result['image'])
-                        ->setName($this->replicationHelper->oSlug($image->getImageId()))
-                        ->setType($mimeType);
-                    $this->attributeMediaGalleryEntry->setMediaType('image')
-                        ->setLabel(($image->getDescription()) ?: __('Product Image'))
-                        ->setPosition($image->getDisplayOrder())
-                        ->setDisabled(false)
-                        ->setContent($imageContent);
-                    if ($i == 0) {
-                        $types = ['image', 'small_image', 'thumbnail'];
+            if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
+                $result          = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+                if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
+                    $mimeType = $this->getMimeType($result['image']);
+                    if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
+                        $imageContent = $this->imageContent->create()
+                            ->setBase64EncodedData($result['image'])
+                            ->setName($this->replicationHelper->oSlug($image->getImageId()))
+                            ->setType($mimeType);
+                        $this->attributeMediaGalleryEntry->setMediaType('image')
+                            ->setLabel(($image->getDescription()) ?: __('Product Image'))
+                            ->setPosition($image->getDisplayOrder())
+                            ->setDisabled(false)
+                            ->setContent($imageContent);
+                        if ($i == 0) {
+                            $types = ['image', 'small_image', 'thumbnail'];
+                        }
+                        $this->attributeMediaGalleryEntry->setTypes($types);
+                        $galleryArray[] = clone $this->attributeMediaGalleryEntry;
+                        $this->imagesFetched[$image->getImageId()] = $galleryArray[0];
+                        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+                        $logger = new \Zend_Log();
+                        $logger->addWriter($writer);
+                        $logger->info('Images Fetched');
+                        $logger->info($image->getImageId());
+                        $i++;
+                    } else {
+                        $image->setData('is_failed', 1);
+                        $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
                     }
-                    $this->attributeMediaGalleryEntry->setTypes($types);
-                    $galleryArray[] = clone $this->attributeMediaGalleryEntry;
-                    $i++;
                 } else {
                     $image->setData('is_failed', 1);
-                    $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
+                    $this->logger->debug('Response is empty or format empty for Image Id : ' . $image->getImageId());
                 }
             } else {
-                $image->setData('is_failed', 1);
-                $this->logger->debug('Response is empty or format empty for Image Id : ' . $image->getImageId());
+                $galleryArray[] = $this->imagesFetched[$image->getImageId()];
+                $this->logger->debug('Image corresponding to Image Id is already fetched: ' . $image->getImageId());
             }
+
             $image->setData('processed_at', $this->replicationHelper->getDateTime());
             $image->setData('processed', 1);
             $image->setData('is_updated', 0);

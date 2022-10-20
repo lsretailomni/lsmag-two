@@ -26,6 +26,11 @@ class SyncImages extends ProductCreateTask
     public $remainingRecords;
 
     /**
+     * @var array
+     */
+    public array $imagesFetched;
+
+    /**
      * @param null $storeData
      * @throws InputException
      * @throws NoSuchEntityException
@@ -83,6 +88,7 @@ class SyncImages extends ProductCreateTask
     {
         $sortOrder  = $this->replicationHelper->getSortOrderObject();
         $collection = $this->getRecordsForImagesToProcess();
+        $this->imagesFetched = [];
         if ($collection->getSize() > 0) {
             // Right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
