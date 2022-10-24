@@ -3,8 +3,8 @@
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
+use \Ls\Webhooks\Model\Notification\EmailNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -15,7 +15,6 @@ use Magento\Sales\Api\Data\OrderInterface;
  */
 class Status
 {
-
     /**
      * @var Data
      */
@@ -32,42 +31,45 @@ class Status
     private $creditMemo;
 
     /**
-     * @var Notify
-     */
-    private $notify;
-
-    /**
      * @var Payment
      */
     private $payment;
 
     /**
-     * Status constructor.
+     * @var EmailNotification
+     */
+    private $emailNotification;
+
+    /**
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
-     * @param Notify $notify
      * @param Payment $payment
+     * @param EmailNotification $emailNotification
      */
     public function __construct(
         Data $helper,
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
-        Notify $notify,
-        Payment $payment
+        Payment $payment,
+        EmailNotification $emailNotification
     ) {
-        $this->helper      = $helper;
-        $this->orderCancel = $orderCancel;
-        $this->creditMemo  = $creditMemo;
-        $this->notify      = $notify;
-        $this->payment     = $payment;
+        $this->helper            = $helper;
+        $this->orderCancel       = $orderCancel;
+        $this->creditMemo        = $creditMemo;
+        $this->payment           = $payment;
+        $this->emailNotification = $emailNotification;
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Process order status based on webhook call from Ls Central
      *
-     * @param $data
-     * @throws InvalidEnumException|NoSuchEntityException
+     * @param array $data
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function process($data)
     {
@@ -97,27 +99,24 @@ class Status
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $storeId                = $magOrder->getStoreId();
-        $items                  = $this->helper->getItems($magOrder, $itemsInfo);
-        $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
-        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+        $items                      = $this->helper->getItems($magOrder, $itemsInfo);
+        $isOffline                  = $magOrder->getPayment()->getMethodInstance()->isOffline();
+        $isClickAndCollectOrder     = $this->helper->isClickAndcollectOrder($magOrder);
+        $storeId                    = $magOrder->getStoreId();
+        $configuredNotificationType = explode(',', $this->helper->getNotificationType($storeId));
+        $orderStatus                = null;
 
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
-            $this->cancel($magOrder, $itemsInfo, $items, $storeId);
+            $this->cancel($magOrder, $itemsInfo, $items);
+            $orderStatus = LSR::LS_STATE_CANCELED;
         }
 
         if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
-            if ($this->helper->isPickupNotifyEnabled($storeId)) {
-                $templateId = $this->helper->getPickupTemplate($storeId);
-                $this->processSendEmail($magOrder, $items, $templateId);
-            }
+            $orderStatus = LSR::LS_STATE_PICKED;
         }
 
         if ($status == LSR::LS_STATE_COLLECTED && $isClickAndCollectOrder) {
-            if ($this->helper->isCollectedNotifyEnabled($storeId)) {
-                $templateId = $this->helper->getCollectedTemplate($storeId);
-                $this->processSendEmail($magOrder, $items, $templateId);
-            }
+            $orderStatus = LSR::LS_STATE_COLLECTED;
 
             if ($isOffline) {
                 $this->payment->generateInvoice($data);
@@ -129,6 +128,16 @@ class Status
                 $this->payment->generateInvoice($data);
             }
         }
+
+        if ($orderStatus !== null) {
+            foreach ($configuredNotificationType as $type) {
+                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
+                    $this->emailNotification->setNotificationType($orderStatus);
+                    $this->emailNotification->setOrder($magOrder)->setItems($items);
+                    $this->emailNotification->prepareAndSendNotification();
+                }
+            }
+        }
     }
 
     /**
@@ -137,9 +146,8 @@ class Status
      * @param OrderInterface $magOrder
      * @param array $itemsInfo
      * @param array $items
-     * @param int $storeId
      */
-    public function cancel($magOrder, $itemsInfo, $items, $storeId)
+    public function cancel($magOrder, $itemsInfo, $items)
     {
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
         $magentoOrderTotalItemsQty = (int) $magOrder->getTotalQtyOrdered();
@@ -156,25 +164,6 @@ class Status
             $shippingItemId = $this->helper->getShippingItemId();
             $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
             $this->creditMemo->refund($magOrder, $items, $creditMemoData);
-        }
-
-        if ($this->helper->isCancelNotifyEnabled($storeId)) {
-            $templateId = $this->helper->getCancelTemplate($storeId);
-            $this->processSendEmail($magOrder, $items, $templateId);
-        }
-    }
-
-    /** Process click and collect order
-     *
-     * @param $magOrder
-     * @param $items
-     * @param $templateId
-     */
-    public function processSendEmail($magOrder, $items, $templateId)
-    {
-        $templateVars = $this->notify->setTemplateVars($magOrder, $items);
-        if (!empty($templateVars['items'])) {
-            $this->notify->sendEmail($templateId, $templateVars, $magOrder);
         }
     }
 }
