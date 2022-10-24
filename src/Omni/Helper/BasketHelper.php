@@ -306,10 +306,10 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * Get Order Lines Quote
+     * Get Order Lines and Discount Lines
      *
      * @param Quote $quote
-     * @return Entity\ArrayOfOrderLine
+     * @return array
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
@@ -317,52 +317,70 @@ class BasketHelper extends AbstractHelper
     {
         // @codingStandardsIgnoreLine
         $orderLinesArray = new Entity\ArrayOfOrderLine();
-        $quoteItems      = $quote->getAllVisibleItems();
-
-        $itemsArray = [];
-
-        foreach ($quoteItems as $quoteItem) {
-
-            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                $quoteItem->getSku()
-            );
-            $priceIncTax = $discount = $discountPercentage = null;
-            $product = $this->productRepository->get($quoteItem->getSku());
-            $displayRegularPrice = $product->getPriceInfo()->getPrice(
-                RegularPrice::PRICE_CODE
-            )->getAmount()->getValue();
-            $displayFinalPrice = $product->getPriceInfo()->getPrice(
-                FinalPrice::PRICE_CODE
-            )->getAmount()->getValue();
-
-            if ($displayFinalPrice < $displayRegularPrice) {
-                $priceIncTax = $displayRegularPrice;
-                $discount = $displayRegularPrice - $displayFinalPrice;
-                $discountPercentage = ($discount / $priceIncTax) * 100;
-            }
-
-            // @codingStandardsIgnoreLine
-            $list_item = (new Entity\OrderLine())
-                ->setValidateTax(1)
-                ->setQuantity($quoteItem->getData('qty'))
-                ->setItemId($itemId)
-                ->setId('')
-                ->setVariantId($variantId)
-                ->setUomId($uom)
-                ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setAmount($quoteItem->getRowTotalInclTax())
-                ->setNetAmount($quoteItem->getRowTotal())
-                ->setPrice($priceIncTax ?? $quoteItem->getPriceInclTax())
-                ->setNetPrice($quoteItem->getPrice())
-                ->setTaxAmount($quoteItem->getTaxAmount())
-                ->setDiscountAmount($quoteItem->getDiscountAmount())
-                ->setDiscountPercent($discountPercentage);
-
-            $itemsArray[] = $list_item;
+        $basketResponse  = $quote->getBasketResponse();
+        $discountsArray  = [];
+        $itemsArray      = [];
+        if (!empty($basketResponse)) {
+            $basketData     = unserialize($basketResponse);
+            $discountsArray = $basketData->getOrderDiscountLines();
+            $itemsArray     = $basketData->getOrderLines();
         }
-        $orderLinesArray->setOrderLine($itemsArray);
 
-        return $orderLinesArray;
+        $quoteItems = $quote->getAllVisibleItems();
+
+        if (empty($itemsArray)) {
+            foreach ($quoteItems as $quoteItem) {
+                list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                    $quoteItem->getSku()
+                );
+                $priceIncTax         = $discount = $discountPercentage = null;
+                $product             = $this->productRepository->get($quoteItem->getSku());
+                $displayRegularPrice = $product->getPriceInfo()->getPrice(
+                    RegularPrice::PRICE_CODE
+                )->getAmount()->getValue();
+                $displayFinalPrice   = $product->getPriceInfo()->getPrice(
+                    FinalPrice::PRICE_CODE
+                )->getAmount()->getValue();
+
+                if ($displayFinalPrice < $displayRegularPrice) {
+                    $priceIncTax        = $displayRegularPrice;
+                    $discount           = $displayRegularPrice - $displayFinalPrice;
+                    $discountPercentage = ($discount / $priceIncTax) * 100;
+                }
+
+                // @codingStandardsIgnoreLine
+                $list_item = (new Entity\OrderLine())
+                    ->setValidateTax(1)
+                    ->setQuantity($quoteItem->getData('qty'))
+                    ->setItemId($itemId)
+                    ->setId('')
+                    ->setVariantId($variantId)
+                    ->setUomId($uom)
+                    ->setLineType(Entity\Enum\LineType::ITEM)
+                    ->setAmount($quoteItem->getRowTotalInclTax())
+                    ->setNetAmount($quoteItem->getRowTotal())
+                    ->setPrice($priceIncTax ?? $quoteItem->getPriceInclTax())
+                    ->setNetPrice($quoteItem->getPrice())
+                    ->setTaxAmount($quoteItem->getTaxAmount())
+                    ->setDiscountAmount($quoteItem->getDiscountAmount())
+                    ->setDiscountPercent($discountPercentage);
+
+                $itemsArray[] = $list_item;
+                if (empty($discountsArray) && $quoteItem->getDiscountAmount() > 0) {
+                    $orderDiscountLine = new Entity\OrderDiscountLine();
+                    $orderDiscountLine->setDiscountAmount($quoteItem->getDiscountAmount());
+                    $orderDiscountLine->setDiscountPercent($discountPercentage);
+                    $orderDiscountLine->setDiscountType(Entity\Enum\DiscountType::PERIODIC_DISC);
+                    $discountsArray[] = $orderDiscountLine;
+                }
+            }
+            $orderLinesArray->setOrderLine($itemsArray);
+        }
+
+        return [
+            'orderLinesArray'         => ($basketResponse) ? $itemsArray : $orderLinesArray,
+            'orderDiscountLinesArray' => $discountsArray
+        ];
     }
 
     /**
@@ -1045,9 +1063,11 @@ class BasketHelper extends AbstractHelper
                 $orderEntity->setCardId($customer->getData('lsr_cardid'));
             }
         }
-        $orderLinesArray = $this->getOrderLinesQuote($quote);
+        $orderDetails            = $this->getOrderLinesQuote($quote);
+        $orderLinesArray         = $orderDetails['orderLinesArray'];
+        $orderDiscountLinesArray = $orderDetails['orderDiscountLinesArray'];
         $orderEntity->setOrderLines($orderLinesArray);
-
+        $orderEntity->setOrderDiscountLines($orderDiscountLinesArray);
         return $orderEntity;
     }
 
@@ -1114,8 +1134,8 @@ class BasketHelper extends AbstractHelper
             $cartQuote->getLsPointsSpent(),
             $basketData
         );
-        $loyaltyPoints = $cartQuote->getLsPointsSpent();
-        $orderBalance = $this->data->getOrderBalance(
+        $loyaltyPoints      = $cartQuote->getLsPointsSpent();
+        $orderBalance       = $this->data->getOrderBalance(
             $cartQuote->getLsGiftCardAmountUsed(),
             0,
             $this->getBasketSessionValue()
