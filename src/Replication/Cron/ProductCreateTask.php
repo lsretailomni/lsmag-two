@@ -478,7 +478,10 @@ class ProductCreateTask
                             try {
                                 $taxClass    = null;
                                 $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                    $item->getNavId()
+                                    $item->getNavId(),
+                                    '',
+                                    '',
+                                    $store->getId()
                                 );
 
                                 if (!empty($item->getTaxItemGroupId())) {
@@ -1027,7 +1030,12 @@ class ProductCreateTask
         $items = array_unique($items);
         foreach ($items as $item) {
             try {
-                $productData = $this->productRepository->get($item, true, $this->store->getId());
+                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $item,
+                    '',
+                    '',
+                    $this->store->getId()
+                );
                 /** @var ReplBarcodeRepository $itemBarcodes */
                 $itemBarcodes = $this->_getBarcode($item);
                 /** @var ReplItemRepository $itemData */
@@ -1074,7 +1082,12 @@ class ProductCreateTask
             foreach ($items->getItems() as $value) {
                 $sku = $value->getNavId();
                 try {
-                    $productData = $this->productRepository->get($sku, true, $this->store->getId());
+                    $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $sku,
+                        '',
+                        '',
+                        $this->store->getId()
+                    );
                     $productData = $this->setProductStatus($productData, 1);
                     $this->productRepository->save($productData);
                 } catch (Exception $e) {
@@ -1108,7 +1121,12 @@ class ProductCreateTask
             foreach ($variants as $value) {
                 $itemId = $value->getItemId();
                 try {
-                    $productData             = $this->productRepository->get($itemId, true, $this->store->getId());
+                    $productData             = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $itemId,
+                        '',
+                        '',
+                        $this->store->getId()
+                    );
                     $associatedSimpleProduct = $this->replicationHelper->getRelatedVariantGivenConfAttributesValues(
                         $productData,
                         $value,
@@ -1151,7 +1169,12 @@ class ProductCreateTask
             foreach ($uoms as $uom) {
                 $itemId = $uom->getItemId();
                 try {
-                    $productData = $this->productRepository->get($itemId, true, $this->store->getId());
+                    $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $itemId,
+                        '',
+                        '',
+                        $this->store->getId()
+                    );
                     if ($productData->getTypeId() == 'configurable') {
                         $children = $productData->getTypeInstance()->getUsedProducts($productData);
                         foreach ($children as $child) {
@@ -1183,6 +1206,7 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
+        $itemId = $variantId = $uom = '';
         $cronProductCheck = $this->lsr->getConfigValueFromDb(
             LSR::SC_SUCCESS_CRON_PRODUCT,
             ScopeInterface::SCOPE_STORES,
@@ -1202,26 +1226,30 @@ class ProductCreateTask
                 /** @var ReplBarcode $replBarcode */
                 foreach ($replBarcodes->getItems() as $replBarcode) {
                     try {
-                        if (!$replBarcode->getVariantId()) {
-                            $sku = $replBarcode->getItemId();
-                        } else {
-                            $sku = $replBarcode->getItemId() . '-' . $replBarcode->getVariantId();
+                        $itemId = $replBarcode->getItemId();
+                        if ($replBarcode->getVariantId()) {
+                            $variantId = $replBarcode->getVariantId();
                         }
                         if (!empty($replBarcode->getUnitOfMeasure())) {
                             // @codingStandardsIgnoreLine
                             $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replBarcode->getItemId());
                             if ($replBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
-                                $sku = $sku . '-' . $replBarcode->getUnitOfMeasure();
+                                $uom = $replBarcode->getUnitOfMeasure();
                             }
                         }
-                        $productData = $this->productRepository->get($sku, true, $this->store->getId());
+                        $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                            $itemId,
+                            $variantId,
+                            $uom,
+                            $this->store->getId()
+                        );
                         if (isset($productData)) {
                             $productData->setBarcode($replBarcode->getNavId());
                             // @codingStandardsIgnoreLine
                             $this->productResourceModel->saveAttribute($productData, 'barcode');
                         }
                     } catch (Exception $e) {
-                        $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                        $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
                         $this->logger->debug($e->getMessage());
                         $replBarcode->setData('is_failed', 1);
                     }
@@ -1297,21 +1325,13 @@ class ProductCreateTask
                 foreach ($variants as $value) {
                     try {
                         $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
-                        if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {
-                            $sku = $value->getItemId() . '-' . $value->getVariantId() . '-' . $uomCode->getCode();
-                            $productData = $this->saveProductForWebsite(
-                                $value->getItemId(),
-                                $value->getVariantId(),
-                                $uomCode->getCode(),
-                                $this->store->getId()
-                            );
-                        } else {
-                            $sku = $value->getItemId() . '-' . $value->getVariantId();
-                            $productData = $this->saveProductForWebsite(
-                                $value->getItemId(),
-                                $value->getVariantId()
-                            );
-                        }
+                        $sku = $value->getItemId() . '-' . $value->getVariantId() . '-' . $uomCode->getCode();
+                        $productData = $this->saveProductForWebsite(
+                            $value->getItemId(),
+                            $value->getVariantId(),
+                            $uomCode->getCode(),
+                            $this->store->getId()
+                        );
                         try {
                             $name                   = $this->getNameForVariant($value, $item);
                             $name                   = $this->getNameForUom($name, $uomDescription);

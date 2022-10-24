@@ -61,35 +61,24 @@ class SyncInventory extends ProductCreateTask
                     /** @var ReplInvStatus $replInvStatus */
                     foreach ($collection as $replInvStatus) {
                         try {
-                            $variants          = null;
-                            $checkIsNotVariant = true;
-                            $sku               = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                $replInvStatus->getItemId(),
-                                $replInvStatus->getVariantId()
-                            )->getSku();
-
-                            if ($replInvStatus->getVariantId()) {
-                                $checkIsNotVariant = false;
+                            if (!$replInvStatus->getVariantId()) {
+                                $sku = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                    $replInvStatus->getItemId()
+                                )->getSku();
+                                $this->replicationHelper->updateInventory($sku, $replInvStatus);
                             }
-                            $this->replicationHelper->updateInventory($sku, $replInvStatus);
+
                             $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
                             if (!empty($uomCodes)) {
                                 if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
-                                    // @codingStandardsIgnoreLine
-                                    $baseUnitOfMeasure = $uomCodes[$replInvStatus->getItemId() . '-' . 'BaseUnitOfMeasure'];
-                                    $variants          = $this->getProductVariants($replInvStatus->getItemId());
                                     foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
-                                        if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) &&
-                                            empty($variants)
-                                        ) {
-                                            $skuUom = $this->replicationHelper->
-                                            getProductDataByIdentificationAttributes(
-                                                $replInvStatus->getItemId(),
-                                                $replInvStatus->getVariantId(),
-                                                $uomCode
-                                            )->getSku();
-                                            $this->replicationHelper->updateInventory($skuUom, $replInvStatus);
-                                        }
+                                        $sku = $this->replicationHelper->
+                                        getProductDataByIdentificationAttributes(
+                                            $replInvStatus->getItemId(),
+                                            $replInvStatus->getVariantId(),
+                                            $uomCode
+                                        )->getSku();
+                                        $this->replicationHelper->updateInventory($sku, $replInvStatus);
                                     }
                                 }
                             }
