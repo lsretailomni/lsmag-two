@@ -477,7 +477,9 @@ class ProductCreateTask
                         foreach ($items->getItems() as $item) {
                             try {
                                 $taxClass    = null;
-                                $productData = $this->replicationHelper->getProductDataByItemId($item->getNavId());
+                                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                    $item->getNavId()
+                                );
 
                                 if (!empty($item->getTaxItemGroupId())) {
                                     $taxClass = $this->replicationHelper->getTaxClassGivenName(
@@ -1300,7 +1302,8 @@ class ProductCreateTask
                             $productData = $this->saveProductForWebsite(
                                 $value->getItemId(),
                                 $value->getVariantId(),
-                                $uomCode->getCode()
+                                $uomCode->getCode(),
+                                $this->store->getId()
                             );
                         } else {
                             $sku = $value->getItemId() . '-' . $value->getVariantId();
@@ -1382,7 +1385,12 @@ class ProductCreateTask
                 $sku            = $uomCode->getItemId() . '-' . $uomCode->getCode();
                 $name           = $this->getNameForUom($item->getDescription(), $uomDescription);
                 try {
-                    $productData = $this->saveProductForWebsite($uomCode->getItemId(), '', $uomCode->getCode());
+                    $productData = $this->saveProductForWebsite(
+                        $uomCode->getItemId(),
+                        '',
+                        $uomCode->getCode(),
+                        $this->store->getId()
+                    );
                     try {
                         $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode);
                         $associatedProductIds   = array_unique($associatedProductIds);
@@ -1642,15 +1650,22 @@ class ProductCreateTask
     /**
      * Setting website id for the item
      *
-     * @param mixed $itemId
-     * @param mixed $variantId
-     * @param mixed $uomCode
+     * @param string $itemId
+     * @param string $variantId
+     * @param string $uomCode
+     * @param string $storeId
      * @return mixed|null
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    private function saveProductForWebsite($itemId, $variantId = '', $uomCode = '')
+    private function saveProductForWebsite($itemId, $variantId = '', $uomCode = '', $storeId = '')
     {
-        $productData     = $this->replicationHelper->getProductDataByItemId($itemId, $variantId, $uomCode);
+        $productData     = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            $itemId,
+            $variantId,
+            $uomCode,
+            $storeId
+        );
         $websitesProduct = $productData->getWebsiteIds();
         /** Check if Item exist in the website and assign it if it does not exist*/
         if (!in_array($this->store->getWebsiteId(), $websitesProduct)) {
@@ -2095,7 +2110,7 @@ class ProductCreateTask
     {
         try {
             try {
-                $product = $this->replicationHelper->getProductDataByItemId($itemId, $variantId);
+                $product = $this->replicationHelper->getProductDataByIdentificationAttributes($itemId, $variantId);
             } catch (NoSuchEntityException $e) {
                 return;
             }

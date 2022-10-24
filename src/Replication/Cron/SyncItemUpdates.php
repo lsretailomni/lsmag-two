@@ -130,7 +130,9 @@ class SyncItemUpdates extends ProductCreateTask
         foreach ($collection as $hierarchyLeaf) {
             try {
                 $sku     = $hierarchyLeaf->getNavId();
-                $product = $this->replicationHelper->getProductDataByItemId($hierarchyLeaf->getNavId());
+                $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $hierarchyLeaf->getNavId()
+                );
                 $this->replicationHelper->assignProductToCategories($product, $this->store);
             } catch (Exception $e) {
                 $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);

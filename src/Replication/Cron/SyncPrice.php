@@ -78,7 +78,7 @@ class SyncPrice extends ProductCreateTask
                             } else {
                                 $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
                             }
-                            $productData = $this->replicationHelper->getProductDataByItemId(
+                            $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                 $replPrice->getItemId(),
                                 $replPrice->getVariantId(),
                                 '',

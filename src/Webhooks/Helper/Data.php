@@ -231,7 +231,6 @@ class Data
         $items = [];
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                $orderItem->getProductId(),
                 $orderItem->getSku()
             );
             $totalAmount = 0;

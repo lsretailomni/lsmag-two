@@ -67,7 +67,6 @@ class ItemRenderer implements ArgumentInterface
         if ($currentOrder) {
             $orderLines = $currentOrder->getLines();
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                $orderItem->getProductId(),
                 $orderItem->getSku()
             );
             $baseUnitOfMeasure = $orderItem->getProduct()->getData('uom');

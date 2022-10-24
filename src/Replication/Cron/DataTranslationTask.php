@@ -422,12 +422,18 @@ class DataTranslationTask
         foreach ($collection as $dataTranslation) {
             try {
                 $keys          = explode(';', $dataTranslation->getKey());
-                $productData   = $keys[0] == 'Item' ? $this->replicationHelper->getProductDataByItemId(
-                    $keys[1],
-                    '',
-                    '',
-                    $storeId
-                ) : $this->replicationHelper->getProductDataByItemId($keys[1], $keys[2], '', $storeId);
+                $productData   = $keys[0] == 'Item' ?
+                    $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $keys[1],
+                        '',
+                        '',
+                        $storeId
+                    ) : $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $keys[1],
+                        $keys[2],
+                        '',
+                        $storeId
+                    );
                 $formattedCode = $this->replicationHelper->formatAttributeCode($keys[4]);
 
                 if (isset($productData)) {
@@ -508,7 +514,12 @@ class DataTranslationTask
         foreach ($collection as $dataTranslation) {
             try {
                 $sku         = $dataTranslation->getKey();
-                $productData = $this->replicationHelper->getProductDataByItemId($sku, '', '', $storeId);
+                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $sku,
+                    '',
+                    '',
+                    $storeId
+                );
 
                 if (isset($productData)) {
                     if ($dataTranslation->getTranslationId() == LSR::SC_TRANSLATION_ID_ITEM_HTML) {

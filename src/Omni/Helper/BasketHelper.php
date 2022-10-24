@@ -281,7 +281,6 @@ class BasketHelper extends AbstractHelper
         foreach ($quoteItems as $quoteItem) {
 
             list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                $quoteItem->getProductId(),
                 $quoteItem->getSku()
             );
 
@@ -325,7 +324,6 @@ class BasketHelper extends AbstractHelper
         foreach ($quoteItems as $quoteItem) {
 
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                $quoteItem->getProductId(),
                 $quoteItem->getSku()
             );
             $priceIncTax = $discount = $discountPercentage = null;
@@ -396,7 +394,6 @@ class BasketHelper extends AbstractHelper
                 $product = $item->getProduct();
             }
             list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                $product->getId(),
                 $product->getSku()
             );
             $qty = $item->getData('qty');
@@ -959,7 +956,6 @@ class BasketHelper extends AbstractHelper
     {
         $baseUnitOfMeasure = $item->getProduct()->getData('uom');
         list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-            $item->getProductId(),
             $item->getSku()
         );
         $rowTotal   = $item->getRowTotal();

@@ -96,11 +96,9 @@ class SyncImages extends ProductCreateTask
         foreach ($collection->getItems() as $itemImage) {
             try {
                 $variantId         = '';
-                $checkIsNotVariant = true;
                 $keyValue          = $itemImage->getKeyValue();
                 $explodeSku        = explode(",", $keyValue);
                 if (count($explodeSku) > 1) {
-                    $checkIsNotVariant = false;
                     $variantId         = $explodeSku[1];
                 }
                 $itemId        = $explodeSku[0];
@@ -110,11 +108,8 @@ class SyncImages extends ProductCreateTask
                         $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
                         if (count($uomCodesNotProcessed) == 0) {
                             $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
-                            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
                             foreach ($uomCodesTotal[$itemId] as $uomCode) {
-                                if ($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) {
-                                    $this->processImages($itemImage, $sortOrder, $itemId, $variantId, $uomCode);
-                                }
+                                $this->processImages($itemImage, $sortOrder, $itemId, $variantId, $uomCode);
                             }
                         }
                     } else {
@@ -208,11 +203,17 @@ class SyncImages extends ProductCreateTask
      * @param mixed $variantId
      * @param mixed $uomCode
      * @return void
+     * @throws LocalizedException
      */
     public function processImages($itemImage, $sortOrder, $itemId, $variantId = null, $uomCode = null)
     {
         try {
-            $product     = $this->replicationHelper->getProductDataByItemId($itemId, $variantId, $uomCode, 0);
+            $product     = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                $itemId,
+                $variantId,
+                $uomCode,
+                $this->store->getId()
+            );
             $productData = $this->productRepository->get($product->getSku(), true, 0, true);
         } catch (NoSuchEntityException $e) {
             return;

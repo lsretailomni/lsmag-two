@@ -1038,8 +1038,10 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Update wishlist after login
+     *
      * @param Entity\OneList $oneListWishlist
-     * @throws Exception
+     * @return void
      */
     public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
     {
@@ -1057,26 +1059,34 @@ class ContactHelper extends AbstractHelper
             foreach ($itemsCollection as $item) {
                 $buyRequest        = [];
                 $sku               = $item->getItemId();
-                $product           = $this->productRepository->get($sku);
-                $qty               = $item->getQuantity();
-                $buyRequest['qty'] = $qty;
-                if ($item->getVariantId()) {
-                    $simSku                        = $sku . '-' . $item->getVariantId();
-                    $simProduct                    = $this->productRepository->get($simSku);
-                    $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
-                    $buyRequest['super_attribute'] = [];
-                    foreach ($optionsData as $key => $option) {
-                        $code                                = $option['attribute_code'];
-                        $value                               = $simProduct->getData($code);
-                        $buyRequest['super_attribute'][$key] = $value;
+                $product           = $this->itemHelper->getProductByIdentificationAttributes($sku);
+
+                if ($product) {
+                    $qty               = $item->getQuantity();
+                    $buyRequest['qty'] = $qty;
+                    if ($item->getVariantId()) {
+                        $simProduct                    = $this->itemHelper->getProductByIdentificationAttributes(
+                            $item->getItemId(),
+                            $item->getVariantId()
+                        );
+
+                        if ($simProduct) {
+                            $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+                            $buyRequest['super_attribute'] = [];
+                            foreach ($optionsData as $key => $option) {
+                                $code                                = $option['attribute_code'];
+                                $value                               = $simProduct->getData($code);
+                                $buyRequest['super_attribute'][$key] = $value;
+                            }
+                        }
                     }
+                    $result = $wishlist->addNewItem($product, $buyRequest);
+                    $this->wishlistResourceModel->save($wishlist);
+                    $this->_eventManager->dispatch(
+                        'wishlist_add_product',
+                        ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
+                    );
                 }
-                $result = $wishlist->addNewItem($product, $buyRequest);
-                $this->wishlistResourceModel->save($wishlist);
-                $this->_eventManager->dispatch(
-                    'wishlist_add_product',
-                    ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
-                );
             }
 
             if (!is_array($oneListWishlist) &&

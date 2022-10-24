@@ -2514,6 +2514,30 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Get uom description given code and scope_id
+     *
+     * @param string $code
+     * @param string $scopeId
+     * @return string
+     */
+    public function getUomDescriptionGivenCodeAndScopeId($code, $scopeId)
+    {
+        $uomDescription    = '';
+        $filters           = [
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq'],
+            ['field' => 'nav_id', 'value' => $code, 'condition_type' => 'eq']
+        ];
+        $searchCriteria    = $this->buildCriteriaForDirect($filters, -1);
+        $replUnitOfMeasure = $this->replUnitOfMeasureRepository->getList($searchCriteria);
+
+        if ($replUnitOfMeasure->getTotalCount()) {
+            $uomDescription = current($replUnitOfMeasure->getItems())->getDescription();
+        }
+
+        return $uomDescription;
+    }
+
+    /**
      * Get all available replicated values for given multiSelect attribute
      *
      * @param $itemId
@@ -2966,9 +2990,10 @@ class ReplicationHelper extends AbstractHelper
      * @param string $uom
      * @param string $storeId
      * @return mixed|null
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProductDataByItemId($itemId, $variantId = '', $uom = '', $storeId = '')
+    public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '')
     {
         $searchCriteria = clone $this->searchCriteriaBuilder;
 
@@ -2985,9 +3010,11 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
+            $storeId = $storeId == '' ? $this->storeManager->getStore()->getId() : $storeId;
+            $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $storeId);
             $optionId = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
-                $uom
+                $uomDescription
             );
 
             if (isset($optionId)) {

@@ -121,7 +121,7 @@ class SyncVendorAttributesValue extends ProductCreateTask
             $itemId = $attributeValue->getNavProductId();
             try {
                 $vendorName = $attributeValue->getData('name');
-                $product = $this->replicationHelper->getProductDataByItemId(
+                $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
                     $itemId
                 );
                 $value      = $this->replicationHelper->_getOptionIDByCode(

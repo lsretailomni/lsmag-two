@@ -138,14 +138,15 @@ class Proactive extends View
     }
 
     /**
-     * @param $sku
-     * @return array|DiscountsGetResponse|ProactiveDiscount[]|ResponseInterface|null
+     * Get proactive discounts
+     *
+     * @param string $itemId
+     * @return array|bool|DiscountsGetResponse|ProactiveDiscount[]|ResponseInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProactiveDiscounts($sku)
+    public function getProactiveDiscounts($itemId)
     {
-        $itemId   = $this->itemHelper->getLsCentralItemIdBySku($sku);
         $webStore = $this->lsr->getActiveWebStore();
         if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             if (!is_array($response)) {
@@ -237,7 +238,7 @@ class Proactive extends View
             $productsData = [];
             $productHtml  = '';
             if (!empty($itemIds)) {
-                $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
+                $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
             }
             foreach ($productsData as $productInfo) {
                 if ($this->getMixandMatchProductLimit() == $counter) {
@@ -399,5 +400,17 @@ class Proactive extends View
     public function isValid()
     {
         return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+    }
+
+    /**
+     * Get Ls Central Item Id by sku
+     *
+     * @param string $sku
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getLsCentralItemIdBySku($sku)
+    {
+        return $this->itemHelper->getLsCentralItemIdBySku($sku);
     }
 }

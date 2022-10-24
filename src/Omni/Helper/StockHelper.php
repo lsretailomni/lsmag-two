@@ -40,8 +40,6 @@ class StockHelper extends AbstractHelper
     public $itemHelper;
 
     /**
-     * StockHelper constructor.
-     *
      * @param Context $context
      * @param ProductRepositoryInterface $productRepository
      * @param CollectionFactory $storeCollectionFactory
@@ -116,16 +114,19 @@ class StockHelper extends AbstractHelper
         foreach ($items as &$item) {
             $itemQty = $item->getQty();
             list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues(
-                $item->getProductId(),
                 $item->getSku()
             );
 
             if (!empty($uomQty)) {
                 $itemQty = $itemQty * $uomQty;
             }
-            $sku = $item->getSku();
 
-            $stockCollection[] = ['sku' => $sku, 'name' => $item->getName(), 'qty' => $itemQty];
+            $stockCollection[] = [
+                'item_id' => $parentProductSku,
+                'variant_id' => $childProductSku,
+                'name' => $item->getName(),
+                'qty' => $itemQty
+            ];
 
             $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
         }
@@ -220,12 +221,12 @@ class StockHelper extends AbstractHelper
     /**
      * Call ItemsInStockGet method to check Items in stock or not
      *
-     * @param $simpleProductId
-     * @param $parentProductSku
-     * @return Entity\ArrayOfInventoryResponse|Entity\ItemsInStockGetResponse|ResponseInterface|null|InventoryResponse[]
+     * @param string $simpleProductId
+     * @param string $itemId
+     * @return InventoryResponse[]
      * @throws NoSuchEntityException
      */
-    public function getAllStoresItemInStock($simpleProductId, $parentProductSku)
+    public function getAllStoresItemInStock($simpleProductId, $itemId)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
 
@@ -237,7 +238,7 @@ class StockHelper extends AbstractHelper
             }
 
             if ($this->checkVersion()) {
-                $items[] = ['parent' => $parentProductSku, 'child' => $simpleProductSku];
+                $items[] = ['parent' => $itemId, 'child' => $simpleProductSku];
                 return $this->getItemsStockInStoreFromSourcingLocation('', $items);
             }
 
@@ -247,7 +248,7 @@ class StockHelper extends AbstractHelper
             $itemStock = new Entity\ItemsInStockGet();
             // @codingStandardsIgnoreEnd
 
-            $itemStock->setItemId($parentProductSku)->setVariantId($simpleProductSku);
+            $itemStock->setItemId($itemId)->setVariantId($simpleProductSku);
             try {
                 $response = $request->execute($itemStock);
             } catch (Exception $e) {
@@ -285,17 +286,18 @@ class StockHelper extends AbstractHelper
     /**
      * Fetch all stores where given item is in stock and get all store data from stores repl table
      *
-     * @param $simpleProductId
-     * @param $productSku
+     * @param string $simpleProductId
+     * @param string $productSku
      * @return Collection
      * @throws NoSuchEntityException
      */
     public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
     {
+        $itemId      = $this->itemHelper->getLsCentralItemIdBySku($productSku);
         $storesNavId = [];
         $response    = $this->getAllStoresItemInStock(
             $simpleProductId,
-            $productSku
+            $itemId
         );
 
         if ($response !== null) {
@@ -395,7 +397,6 @@ class StockHelper extends AbstractHelper
                     $qty = $qty * $uomQty;
                 }
                 [$itemId, $variantId] = $this->itemHelper->getComparisonValues(
-                    $item->getProductId(),
                     $item->getSku()
                 );
 
@@ -451,19 +452,17 @@ class StockHelper extends AbstractHelper
     /**
      * Update Stock Collection
      *
-     * @param $response
-     * @param $stockCollection
+     * @param array $response
+     * @param array $stockCollection
      * @return mixed
      */
     public function updateStockCollection($response, $stockCollection)
     {
         foreach ($response as $item) {
             $actualQty = ceil($item->getQtyInventory());
-            $sku       = $item->getItemId() .
-                (($item->getVariantId()) ? '-' . $item->getVariantId() : '');
 
             foreach ($stockCollection as &$values) {
-                if (strpos($values['sku'], $sku) === 0) {
+                if ($values['item_id'] == $item->getItemId() && $values['variant_id'] == $item->getVariantId()) {
                     if ($actualQty > 0) {
                         $values['status']  = '1';
                         $values['display'] = __('This item is available');

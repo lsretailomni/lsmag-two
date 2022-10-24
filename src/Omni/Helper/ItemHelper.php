@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ReplBarcodeRepository;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
@@ -25,6 +26,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
+use Psr\Log\NullLogger;
 
 /**
  * Useful helper functions for item
@@ -32,7 +34,6 @@ use Magento\Quote\Model\ResourceModel\Quote\Item;
  */
 class ItemHelper extends AbstractHelper
 {
-
     /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
 
@@ -259,7 +260,6 @@ class ItemHelper extends AbstractHelper
             } else {
                 $baseUnitOfMeasure = $item->getProduct()->getData('uom');
                 list($itemId, $variantId, $uom) = $this->getComparisonValues(
-                    $item->getProductId(),
                     $item->getSku()
                 );
                 $customPrice = $item->getCustomPrice();
@@ -339,7 +339,6 @@ class ItemHelper extends AbstractHelper
         foreach ($quoteItemList as $quoteItem) {
             $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
             list($itemId, $variantId, $uom) = $this->getComparisonValues(
-                $quoteItem->getProductId(),
                 $quoteItem->getSku()
             );
 
@@ -427,31 +426,72 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
-     * @param $items
-     * @return array|ProductSearchResultsInterface
+     * Get products by Item Ids
+     *
+     * @param array $itemIds
+     * @return array|ProductInterface[]
      */
-    public function getProductsInfoBySku($items)
+    public function getProductsInfoByItemIds($itemIds)
     {
         $productData = [];
         try {
-            $criteria = $this->searchCriteriaBuilder->addFilter('sku', implode(",", $items), 'in')->create();
-            $product  = $this->productRepository->getList($criteria);
-            return $product->getItems();
+            $criteria    = $this->searchCriteriaBuilder
+                ->addFilter(
+                    LSR::LS_ITEM_ID_ATTRIBUTE_CODE,
+                    implode(",", $itemIds),
+                    'in'
+                )->addFilter(
+                    LSR::LS_VARIANT_ID_ATTRIBUTE_CODE,
+                    true,
+                    'null'
+                )
+                ->create();
+            $product     = $this->productRepository->getList($criteria);
+            $productData = $product->getItems();
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
+
         return $productData;
     }
 
     /**
-     * Get comparison values
+     * Get product by itemId and variantId
      *
-     * @param $productId
-     * @param $sku
+     * @param string $itemId
+     * @param string $variantId
+     * @return false|mixed
+     */
+    public function getProductByIdentificationAttributes($itemId, $variantId = '')
+    {
+        $searchCriteria = clone $this->searchCriteriaBuilder;
+        $productData = null;
+        try {
+            $searchCriteria->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId);
+
+            if ($variantId != '') {
+                $searchCriteria->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId);
+            } else {
+                $searchCriteria->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, true, 'null');
+            }
+
+            $productData = $this->productRepository->getList($searchCriteria->create())->getItems();
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
+        }
+
+        return current($productData);
+    }
+
+    /**
+     * Get relevant attributes values of item for sending to Central or for comparison purposes
+     *
+     * @param string $sku
+     * @param string $parentId
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getComparisonValues($productId, $sku)
+    public function getComparisonValues($sku, $parentId = '')
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
         $productList    = $this->productRepository->getList($searchCriteria)->getItems();
@@ -462,13 +502,20 @@ class ItemHelper extends AbstractHelper
         $uom       = $product->getData('uom');
         $barCode   = $product->getData('barcode');
         $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+        $baseUom = null;
 
-        return [$itemId, $variantId, $uom, $barCode, $uomQty];
+        if ($parentId != '') {
+            $parentProduct = $this->productRepository->getById($parentId);
+            $baseUom = $parentProduct->getData('uom');
+        }
+
+        return [$itemId, $variantId, $uom, $barCode, $uomQty, $baseUom];
     }
 
-
     /**
-     * @param $sku
+     * Get Ls Central Item Id by sku
+     *
+     * @param string $sku
      * @return mixed
      * @throws NoSuchEntityException
      */
@@ -476,10 +523,8 @@ class ItemHelper extends AbstractHelper
     {
         $product = $this->productRepository->get($sku);
         $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-        if ($itemId)
-            return $itemId;
-        else
-            return $sku;
+
+        return $itemId ?: $sku;
     }
 
     /**

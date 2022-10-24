@@ -63,7 +63,7 @@ class SyncInventory extends ProductCreateTask
                         try {
                             $variants          = null;
                             $checkIsNotVariant = true;
-                            $sku               = $this->replicationHelper->getProductDataByItemId(
+                            $sku               = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                 $replInvStatus->getItemId(),
                                 $replInvStatus->getVariantId()
                             )->getSku();
@@ -82,7 +82,8 @@ class SyncInventory extends ProductCreateTask
                                         if (($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) &&
                                             empty($variants)
                                         ) {
-                                            $skuUom = $this->replicationHelper->getProductDataByItemId(
+                                            $skuUom = $this->replicationHelper->
+                                            getProductDataByIdentificationAttributes(
                                                 $replInvStatus->getItemId(),
                                                 $replInvStatus->getVariantId(),
                                                 $uomCode

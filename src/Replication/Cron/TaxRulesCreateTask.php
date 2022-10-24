@@ -17,6 +17,7 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Tax\Api\Data\TaxRateInterface;
 use Magento\Tax\Api\Data\TaxRateInterfaceFactory;
 use Magento\Tax\Api\Data\TaxRuleInterface;
+use Magento\Tax\Api\Data\TaxRuleInterfaceFactory;
 use Magento\Tax\Api\TaxRateRepositoryInterface;
 use Magento\Tax\Api\TaxRuleRepositoryInterface;
 use Magento\Tax\Model\Calculation\Rate;

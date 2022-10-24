@@ -125,7 +125,12 @@ class SyncAttributesValue extends ProductCreateTask
                 $checkIsException = false;
                 $itemId           = $attributeValue->getLinkField1();
                 $variantId        = $attributeValue->getLinkField2();
-                $product          = $this->replicationHelper->getProductDataByItemId($itemId, $variantId, '', 0);
+                $product          = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $itemId,
+                    $variantId,
+                    '',
+                    0
+                );
                 $formattedCode    = $this->replicationHelper->formatAttributeCode(
                     $attributeValue->getCode()
                 );
