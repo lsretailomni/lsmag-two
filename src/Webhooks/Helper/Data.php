@@ -149,6 +149,16 @@ class Data
     }
 
     /**
+     * Getting sender name
+     * @param $storeId
+     * @return string
+     */
+    public function getSenderName($storeId)
+    {
+        return $this->lsr->getStoreConfig('trans_email/ident_general/name', $storeId);
+    }
+
+    /**
      * Getting store email
      * @param $storeId
      * @return string
