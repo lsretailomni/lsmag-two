@@ -3,9 +3,9 @@
 namespace Ls\OmniGraphQl\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Block\Product\View\View;
+use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
@@ -14,12 +14,9 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
-use Magento\Catalog\Api\ProductRepositoryInterface;
-use \Magento\Catalog\Block\Product\Context as ProductContext;
-use Magento\Catalog\Helper\Product;
-use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\App\Request\Http;
@@ -29,16 +26,12 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Magento\Framework\Json\EncoderInterface;
-use Magento\Framework\Locale\FormatInterface;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Framework\Stdlib\StringUtils;
-use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Helper\Image;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+use Magento\Store\Model\App\Emulation;
 
 /**
  * To get discounts in product view page in graphql
@@ -49,56 +42,67 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @var LSR
      */
     public $lsr;
+
     /**
      * @var LoyaltyHelper
      */
+
     private $loyaltyHelper;
     /**
      * @var PageFactory
      */
+
     private PageFactory $resultPageFactory;
     /**
      * @var HttpContext
      */
+
     private HttpContext $httpContext;
     /**
      * @var CustomerFactory
      */
+
     private CustomerFactory $customerFactory;
     /**
      * @var StoreManagerInterface
      */
+
     private StoreManagerInterface $storeManager;
 
     /**
      * @var ItemHelper
      */
     private $itemHelper;
-    /**
-     * @var ProductContext
-     */
-    private ProductContext $productContext;
+
     /**
      * @var Image
      */
     private Image $imageHelper;
+
     /**
      * @var PriceHelper
      */
     private PriceHelper $priceHelper;
+
     /**
      * @var TimezoneInterface
      */
     private TimezoneInterface $timeZoneInterface;
+
     /**
      * @var ScopeConfigInterface
      */
     private ScopeConfigInterface $scopeConfig;
+
     /**
      * @var Http
      */
     private Http $request;
 
+    /**
+     * @var \Magento\Store\Model\App\Emulation
+     */
+    protected $appEmulation;
 
     /**
      * @param LSR $lsr
@@ -114,6 +118,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param Proxy $customerSession
      * @param Http $request
+     * @param Emulation $appEmulation
      */
     public function __construct(
         LSR $lsr,
@@ -127,8 +132,9 @@ class GetDiscountsOutput extends View implements ResolverInterface
         PriceHelper $priceHelper,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
-        Proxy $customerSession,
+        Session $customerSession,
         Http $request,
+        Emulation $appEmulation
     ) {
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -142,7 +148,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->customerSession   = $customerSession;
-        $this->request              = $request;
+        $this->request           = $request;
+        $this->appEmulation      = $appEmulation;
     }
 
     /**
@@ -155,13 +162,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "item_id" is missing'));
         }
 
-        $itemId    = '';
-
-        //$storeId = $args['store_id'];
-        if (!empty($args['item_id'])) {
-            $itemId = $args['item_id'];
-        }
-
+        $itemId = $args['item_id'];
         $couponsObj   = $this->getCoupons($itemId);
 
         $discountsArr = $couponsArr = [];
@@ -190,14 +191,13 @@ class GetDiscountsOutput extends View implements ResolverInterface
     }
 
     /**
-     * @param $sku
-     * @return array|DiscountsGetResponse|ProactiveDiscount[]|ResponseInterface|null
+     * @param $itemId
+     * @return array|DiscountsGetResponse|ProactiveDiscount|ResponseInterface|null
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProactiveDiscounts($sku)
+    public function getProactiveDiscounts($itemId)
     {
-        $itemId   = $sku;
         $webStore = $this->lsr->getActiveWebStore();
         if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             if (!is_array($response)) {
@@ -232,10 +232,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $itemId = $sku;
         try {
             $storeId = $this->lsr->getActiveWebStore();
-            if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID) ||
-                ($this->customerSession->getCustomerId()
+            if ($this->customerSession->getCustomerId()
                     && str_contains($this->request->getOriginalPathInfo(), 'graphql')
-                )
             ) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                 $email     = ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL)) ?
@@ -255,6 +253,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
     }
 
     /**
+     * Get formatted discount description
+     *
      * @param $itemId
      * @param ProactiveDiscount $discount
      * @return array|string
@@ -266,11 +266,9 @@ class GetDiscountsOutput extends View implements ResolverInterface
         ProactiveDiscount $discount
     ) {
         $responseArr  = [];
-        $description  = [];
         $discountText = '';
         $productData  = [];
         if ($discount->getDescription()) {
-//            $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
             $responseArr['discount_description_title'] = $discount->getDescription();
         }
         if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
@@ -307,7 +305,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
 
                 $productPrice = '';
                 if (!empty($productInfo)) {
-                    $imageUrl = $this->imageHelper->init($productInfo, 'product_base_image')->getUrl();
+                    $imageUrl = $this->getImageUrl($productInfo);
                     if (!empty($productInfo->getFinalPrice())) {
                         $productPrice = $productInfo->getFinalPrice();
                     }
@@ -348,6 +346,27 @@ class GetDiscountsOutput extends View implements ResolverInterface
     }
 
     /**
+     * Get product image url by emulating frontend area (for graphql)
+     *
+     * @param $product
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getImageUrl($product)
+    {
+        $this->appEmulation->startEnvironmentEmulation(
+            $this->lsr->getCurrentStoreId(),
+            Area::AREA_FRONTEND,
+            true
+        );
+        $imageUrl = $this->imageHelper->init($product, 'product_base_image')->getUrl();
+        $this->appEmulation->stopEnvironmentEmulation();
+        return $imageUrl;
+    }
+
+    /**
+     * Get mix and match product limit
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -357,6 +376,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
     }
 
     /**
+     * Format coupon code response
+     *
      * @param PublishedOffer $coupon
      * @return array|string
      * @throws NoSuchEntityException
@@ -383,6 +404,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
     }
 
     /**
+     * Get formatted expiry date
+     *
      * @param $date
      * @return string
      * @throws NoSuchEntityException
