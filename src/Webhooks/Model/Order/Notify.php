@@ -37,6 +37,7 @@ class Notify
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
      * @param Data $helper
+     * @param Logger $logger
      */
     public function __construct(
         TransportBuilder $transportBuilder,
@@ -61,7 +62,7 @@ class Notify
         $storeId      = $order->getStoreId();
         $toEmail      = $order->getCustomerEmail();
         $storeEmail   = $this->helper->getStoreEmail($storeId);
-        $magStoreName = $order->getStore()->getFrontEndName();
+        $storeName    = $this->helper->getSenderName($storeId);
         try {
             $this->inlineTranslation->suspend();
 
@@ -70,7 +71,7 @@ class Notify
                 'store' => $storeId
             ];
             $sender          = [
-                'name'  => $magStoreName,
+                'name'  => $storeName,
                 'email' => $storeEmail,
             ];
             $transport       = $this->transportBuilder->setTemplateIdentifier($templateId)
