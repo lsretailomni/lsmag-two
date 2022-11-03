@@ -115,16 +115,16 @@ class Recent extends Template
     }
 
     /**
-     * Function getFormatedPrice
+     * Get formatted price
      *
      * @param $amount
-     *
-     * @return string
+     * @param $currency
+     * @param $storeId
+     * @return float
      */
-    public function getFormattedPrice($amount)
+    public function getFormattedPrice($amount, $currency = null, $storeId = null)
     {
-        $price = $this->priceCurrency->format($amount, false, 2);
-        return $price;
+        return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId);
     }
 
     /**

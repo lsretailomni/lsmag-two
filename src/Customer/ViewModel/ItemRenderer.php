@@ -60,8 +60,8 @@ class ItemRenderer implements ArgumentInterface
      */
     public function getDiscountInfoGivenOrderItem($orderItem)
     {
-        $discount = [];
-        $line = null;
+        $discount     = [];
+        $line         = null;
         $currentOrder = $this->getOrder();
 
         if ($currentOrder) {
@@ -74,7 +74,7 @@ class ItemRenderer implements ArgumentInterface
 
             foreach ($orderLines as $index => $line) {
                 if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $discount    = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $discount = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
                     break;
                 } else {
                     $line = null;
@@ -93,6 +93,12 @@ class ItemRenderer implements ArgumentInterface
      */
     public function getFormattedPrice($amount)
     {
-        return $this->priceCurrency->format($amount, false, 2);
+        $order = $this->getOrder();
+        return $this->orderHelper->getPriceWithCurrency(
+            $this->priceCurrency,
+            $amount,
+            $order->getStoreCurrency(),
+            $order->getStoreId()
+        );
     }
 }

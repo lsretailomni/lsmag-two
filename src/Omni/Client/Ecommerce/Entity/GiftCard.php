@@ -16,6 +16,16 @@ class GiftCard extends Entity
     protected $Balance = null;
 
     /**
+     * @property string $CurrencyCode
+     */
+    protected $CurrencyCode = null;
+
+    /**
+     * @property string $EntryType
+     */
+    protected $EntryType = null;
+
+    /**
      * @property string $ExpireDate
      */
     protected $ExpireDate = null;
@@ -36,6 +46,42 @@ class GiftCard extends Entity
     public function getBalance()
     {
         return $this->Balance;
+    }
+
+    /**
+     * @param string $CurrencyCode
+     * @return $this
+     */
+    public function setCurrencyCode($CurrencyCode)
+    {
+        $this->CurrencyCode = $CurrencyCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->CurrencyCode;
+    }
+
+    /**
+     * @param string $EntryType
+     * @return $this
+     */
+    public function setEntryType($EntryType)
+    {
+        $this->EntryType = $EntryType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntryType()
+    {
+        return $this->EntryType;
     }
 
     /**

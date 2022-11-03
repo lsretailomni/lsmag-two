@@ -107,13 +107,16 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * Get formatted price
+     *
      * @param $amount
+     * @param $currency
+     * @param $storeId
      * @return float
      */
-    public function getFormattedPrice($amount)
+    public function getFormattedPrice($amount, $currency = null, $storeId = null)
     {
-        $price = $this->priceCurrency->format($amount, false, 2);
-        return $price;
+        return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId);
     }
 
     /**

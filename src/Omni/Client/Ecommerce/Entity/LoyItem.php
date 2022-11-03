@@ -106,6 +106,11 @@ class LoyItem extends Entity
     protected $ItemFamilyCode = null;
 
     /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
+
+    /**
      * @property string $Price
      */
     protected $Price = null;
@@ -490,6 +495,24 @@ class LoyItem extends Entity
     public function getItemFamilyCode()
     {
         return $this->ItemFamilyCode;
+    }
+
+    /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->ItemTrackingCode;
     }
 
     /**

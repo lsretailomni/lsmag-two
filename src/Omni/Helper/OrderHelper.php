@@ -25,6 +25,7 @@ use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
 use Magento\Sales\Model\ResourceModel\Order;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Directory\Model\CurrencyFactory;
 
 /**
  * Useful helper functions for order
@@ -43,6 +44,11 @@ class OrderHelper extends AbstractHelper
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
+
+    /**
+     * @var StoreHelper
+     */
+    public $storeHelper;
 
     /**
      * @var CustomerSessionProxy
@@ -88,6 +94,21 @@ class OrderHelper extends AbstractHelper
     public Registry $registry;
 
     /**
+     * @var CurrencyFactory
+     */
+    public $currencyFactory;
+
+    /**
+     * @var mixed
+     */
+    private $currentOrder;
+
+    /**
+     * @var mixed
+     */
+    private $storeData;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
@@ -100,6 +121,8 @@ class OrderHelper extends AbstractHelper
      * @param Json $json
      * @param Registry $registry
      * @param DateTime $dateTime
+     * @param StoreHelper $storeHelper
+     * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
         Context $context,
@@ -113,7 +136,9 @@ class OrderHelper extends AbstractHelper
         Order $orderResourceModel,
         Json $json,
         Registry $registry,
-        DateTime $dateTime
+        DateTime $dateTime,
+        StoreHelper $storeHelper,
+        CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -127,6 +152,8 @@ class OrderHelper extends AbstractHelper
         $this->json               = $json;
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
+        $this->storeHelper        = $storeHelper;
+        $this->currencyFactory    = $currencyFactory;
     }
 
     /**
@@ -716,8 +743,8 @@ class OrderHelper extends AbstractHelper
      */
     public function getMagentoOrderGivenDocumentId($documentId)
     {
-        $order = null;
-        $orderList  = $this->orderRepository->getList(
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
             addFilter('document_id', $documentId)->create()
         )->getItems();
@@ -945,5 +972,39 @@ class OrderHelper extends AbstractHelper
     public function getDateTimeObject()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * Getting price with currency from store
+     *
+     * @param $priceCurrency
+     * @param $amount
+     * @param $currency
+     * @param $storeId
+     * @return mixed
+     */
+    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId)
+    {
+        if (empty($currency) && empty($storeId) && !$this->currentOrder) {
+            $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
+        }
+        if (!empty($this->currentOrder)) {
+            $currency = $this->currentOrder->getStoreCurrency();
+            $storeId  = $this->currentOrder->getStoreId();
+        }
+        if (empty($currency)) {
+            try {
+                if (!$this->storeData) {
+                    $this->storeData = $this->storeHelper->getStoreDataByStoreId($storeId);
+                }
+            } catch (\Exception $e) {
+                $this->_logger->info($e->getMessage());
+            }
+            if (!empty($this->storeData)) {
+                $currency = $this->storeData->getCurrency();
+            }
+        }
+        $currencyObject = $this->currencyFactory->create()->load($currency);
+        return $priceCurrency->format($amount, false, 2, null, $currencyObject);
     }
 }

@@ -94,7 +94,7 @@ class Renderer extends DefaultRenderer
      */
     public function getItemOptions()
     {
-        $result  = [];
+        $result    = [];
         $orderItem = $this->getOrderItem();
 
         if ($orderItem) {
@@ -173,12 +173,16 @@ class Renderer extends DefaultRenderer
     }
 
     /**
+     * Get formatted price
+     *
      * @param $amount
+     * @param $currency
+     * @param $storeId
      * @return float
      */
-    public function getFormattedPrice($amount)
+    public function getFormattedPrice($amount, $currency = null, $storeId = null)
     {
-        return $this->priceCurrency->format($amount, false, 2);
+        return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId);
     }
 
     /**
