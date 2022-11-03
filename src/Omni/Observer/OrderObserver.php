@@ -94,6 +94,11 @@ class OrderObserver implements ObserverInterface
         $check              = false;
         $response           = null;
         $order              = $observer->getEvent()->getData('order');
+
+        if (!$this->orderHelper->isAllowed($order)) {
+            return null;
+        }
+
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
         if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
