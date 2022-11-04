@@ -712,18 +712,14 @@ class ProductCreateTask
                             ->setLabel(($image->getDescription()) ?: __('Product Image'))
                             ->setPosition($image->getDisplayOrder())
                             ->setDisabled(false)
-                            ->setContent($imageContent);
+                            ->setContent($imageContent)
+                            ->setImageId($image->getImageId());
                         if ($i == 0) {
                             $types = ['image', 'small_image', 'thumbnail'];
                         }
                         $this->attributeMediaGalleryEntry->setTypes($types);
                         $galleryArray[] = clone $this->attributeMediaGalleryEntry;
                         $this->imagesFetched[$image->getImageId()] = $galleryArray[0];
-                        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
-                        $logger = new \Zend_Log();
-                        $logger->addWriter($writer);
-                        $logger->info('Images Fetched');
-                        $logger->info($image->getImageId());
                         $i++;
                     } else {
                         $image->setData('is_failed', 1);

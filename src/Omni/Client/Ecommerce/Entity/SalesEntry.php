@@ -71,6 +71,11 @@ class SalesEntry extends Entity
     protected $CreateAtStoreId = null;
 
     /**
+     * @property string $CreateTime
+     */
+    protected $CreateTime = null;
+
+    /**
      * @property string $CustomerId
      */
     protected $CustomerId = null;
@@ -169,6 +174,11 @@ class SalesEntry extends Entity
      * @property SalesEntryStatus $Status
      */
     protected $Status = null;
+
+    /**
+     * @property string $StoreCurrency
+     */
+    protected $StoreCurrency = null;
 
     /**
      * @property string $StoreId
@@ -396,6 +406,24 @@ class SalesEntry extends Entity
     public function getCreateAtStoreId()
     {
         return $this->CreateAtStoreId;
+    }
+
+    /**
+     * @param string $CreateTime
+     * @return $this
+     */
+    public function setCreateTime($CreateTime)
+    {
+        $this->CreateTime = $CreateTime;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateTime()
+    {
+        return $this->CreateTime;
     }
 
     /**
@@ -786,6 +814,24 @@ class SalesEntry extends Entity
     public function getStatus()
     {
         return $this->Status;
+    }
+
+    /**
+     * @param string $StoreCurrency
+     * @return $this
+     */
+    public function setStoreCurrency($StoreCurrency)
+    {
+        $this->StoreCurrency = $StoreCurrency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreCurrency()
+    {
+        return $this->StoreCurrency;
     }
 
     /**
