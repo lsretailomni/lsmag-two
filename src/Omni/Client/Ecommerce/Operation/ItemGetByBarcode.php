@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemGetByBarcodeResponse as ItemGetByBarcode
 
 class ItemGetByBarcode extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ITEM_GET_BY_BARCODE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ItemGetByBarcode extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

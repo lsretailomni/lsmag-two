@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItem
 {
+
     /**
      * @property string $BaseUnitOfMeasure
      */
@@ -114,6 +115,11 @@ class ReplItem
      * @property string $ItemFamilyCode
      */
     protected $ItemFamilyCode = null;
+
+    /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
 
     /**
      * @property int $KeyingInPrice
@@ -581,6 +587,24 @@ class ReplItem
     public function getItemFamilyCode()
     {
         return $this->ItemFamilyCode;
+    }
+
+    /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->ItemTrackingCode;
     }
 
     /**

@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplValidationScheduleSearchResults extends SearchResults implements ReplValidationScheduleSearchResultsInterface
 {
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Modifier extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -239,5 +240,7 @@ class Modifier extends Entity
     {
         return $this->UnitOfMeasure;
     }
+
+
 }
 

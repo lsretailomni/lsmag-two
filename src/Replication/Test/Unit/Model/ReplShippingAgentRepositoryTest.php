@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplShippingAgentSearchResultsFactory;
 
 class ReplShippingAgentRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplShippingAgentFactory $objectFactory
      */
@@ -131,5 +132,7 @@ class ReplShippingAgentRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

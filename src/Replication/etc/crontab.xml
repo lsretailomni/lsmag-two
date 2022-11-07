@@ -26,6 +26,10 @@
              method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
+        <job name="repl_item_variant" instance="Ls\Replication\Cron\ReplEcommItemVariantTask"
+             method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
         <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask"
              method="execute">
             <schedule>*/2 * * * *</schedule>

@@ -12,10 +12,16 @@ use Ls\Omni\Client\RequestInterface;
 
 class GiftCardGetBalance implements RequestInterface
 {
+
     /**
      * @property string $cardNo
      */
     protected $cardNo = null;
+
+    /**
+     * @property string $entryType
+     */
+    protected $entryType = null;
 
     /**
      * @param string $cardNo
@@ -34,5 +40,25 @@ class GiftCardGetBalance implements RequestInterface
     {
         return $this->cardNo;
     }
+
+    /**
+     * @param string $entryType
+     * @return $this
+     */
+    public function setEntryType($entryType)
+    {
+        $this->entryType = $entryType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntryType()
+    {
+        return $this->entryType;
+    }
+
+
 }
 

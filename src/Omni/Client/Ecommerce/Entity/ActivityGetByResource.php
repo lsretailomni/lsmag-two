@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityGetByResource implements RequestInterface
 {
+
     /**
      * @property string $locationNo
      */
@@ -103,5 +104,7 @@ class ActivityGetByResource implements RequestInterface
     {
         return $this->toDate;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplValidationScheduleInterface
 {
+
     /**
      * @param ArrayOfValidationScheduleLine $Lines
      * @return $this
@@ -152,5 +153,7 @@ interface ReplValidationScheduleInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

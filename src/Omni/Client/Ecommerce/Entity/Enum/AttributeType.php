@@ -18,6 +18,7 @@ use MyCLabs\Enum\Enum;
  */
 class AttributeType extends Enum
 {
+
     public const RESERVATION = 'Reservation';
 
     public const ACTIVITY = 'Activity';
@@ -25,5 +26,7 @@ class AttributeType extends Enum
     public const ACTIVITY_PRODUCT = 'ActivityProduct';
 
     public const RESOURCE = 'Resource';
+
+
 }
 

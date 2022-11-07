@@ -15,6 +15,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class SalesEntry extends Entity
 {
+
     /**
      * @property ArrayOfSalesEntryDiscountLine $DiscountLines
      */
@@ -69,6 +70,11 @@ class SalesEntry extends Entity
      * @property string $CreateAtStoreId
      */
     protected $CreateAtStoreId = null;
+
+    /**
+     * @property string $CreateTime
+     */
+    protected $CreateTime = null;
 
     /**
      * @property string $CustomerId
@@ -169,6 +175,11 @@ class SalesEntry extends Entity
      * @property SalesEntryStatus $Status
      */
     protected $Status = null;
+
+    /**
+     * @property string $StoreCurrency
+     */
+    protected $StoreCurrency = null;
 
     /**
      * @property string $StoreId
@@ -396,6 +407,24 @@ class SalesEntry extends Entity
     public function getCreateAtStoreId()
     {
         return $this->CreateAtStoreId;
+    }
+
+    /**
+     * @param string $CreateTime
+     * @return $this
+     */
+    public function setCreateTime($CreateTime)
+    {
+        $this->CreateTime = $CreateTime;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreateTime()
+    {
+        return $this->CreateTime;
     }
 
     /**
@@ -789,6 +818,24 @@ class SalesEntry extends Entity
     }
 
     /**
+     * @param string $StoreCurrency
+     * @return $this
+     */
+    public function setStoreCurrency($StoreCurrency)
+    {
+        $this->StoreCurrency = $StoreCurrency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreCurrency()
+    {
+        return $this->StoreCurrency;
+    }
+
+    /**
      * @param string $StoreId
      * @return $this
      */
@@ -895,5 +942,7 @@ class SalesEntry extends Entity
     {
         return $this->TotalNetAmount;
     }
+
+
 }
 

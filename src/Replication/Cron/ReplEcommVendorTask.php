@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplVendorInterface;
 
 class ReplEcommVendorTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_vendor';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_vendor';
@@ -152,5 +153,7 @@ class ReplEcommVendorTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyHospDealResponse as ReplEc
 
 class ReplEcommHierarchyHospDeal extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_HOSP_DEAL';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommHierarchyHospDeal extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

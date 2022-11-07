@@ -18,6 +18,7 @@ use MyCLabs\Enum\Enum;
  */
 class CardStatus extends Enum
 {
+
     public const FREE = 'Free';
 
     public const ALLOCATED = 'Allocated';
@@ -25,5 +26,7 @@ class CardStatus extends Enum
     public const ACTIVE = 'Active';
 
     public const BLOCKED = 'Blocked';
+
+
 }
 

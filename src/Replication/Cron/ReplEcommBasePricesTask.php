@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplPriceInterface;
 
 class ReplEcommBasePricesTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_price';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_price';
@@ -152,5 +153,7 @@ class ReplEcommBasePricesTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

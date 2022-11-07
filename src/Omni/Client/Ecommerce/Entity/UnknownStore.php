@@ -10,5 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class UnknownStore extends Store
 {
+
+
 }
 

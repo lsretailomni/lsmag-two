@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\CardGetPointEntiesResponse as CardGetPointEn
 
 class CardGetPointEnties extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'CARD_GET_POINT_ENTIES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class CardGetPointEnties extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

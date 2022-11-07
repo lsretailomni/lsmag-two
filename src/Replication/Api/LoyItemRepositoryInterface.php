@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface LoyItemRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(LoyItemInterface $page);
@@ -21,5 +22,7 @@ interface LoyItemRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemsGetByPublishedOfferId implements RequestInterface
 {
+
     /**
      * @property string $pubOfferId
      */
@@ -57,5 +58,7 @@ class ItemsGetByPublishedOfferId implements RequestInterface
     {
         return $this->numberOfItems;
     }
+
+
 }
 

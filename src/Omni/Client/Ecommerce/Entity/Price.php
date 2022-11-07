@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Price
 {
+
     /**
      * @property string $Amount
      */
@@ -170,5 +171,7 @@ class Price
     {
         return $this->VariantId;
     }
+
+
 }
 

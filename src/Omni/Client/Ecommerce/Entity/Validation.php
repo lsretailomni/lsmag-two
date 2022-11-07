@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Validation extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -101,5 +102,7 @@ class Validation extends Entity
     {
         return $this->ValidTo;
     }
+
+
 }
 

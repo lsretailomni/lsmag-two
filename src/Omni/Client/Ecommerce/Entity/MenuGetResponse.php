@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class MenuGetResponse implements ResponseInterface
 {
+
     /**
      * @property MobileMenu $MenuGetResult
      */
@@ -42,5 +43,7 @@ class MenuGetResponse implements ResponseInterface
     {
         return $this->MenuGetResult;
     }
+
+
 }
 

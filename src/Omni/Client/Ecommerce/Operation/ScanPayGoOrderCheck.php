@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ScanPayGoOrderCheckResponse as ScanPayGoOrde
 
 class ScanPayGoOrderCheck extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SCAN_PAY_GO_ORDER_CHECK';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ScanPayGoOrderCheck extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

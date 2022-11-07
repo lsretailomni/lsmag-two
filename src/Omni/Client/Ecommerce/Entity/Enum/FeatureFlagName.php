@@ -46,16 +46,12 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName SHOW_POINT_STATUS()
  * @$method static FeatureFlagName USE_SECURITY_CHECK()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
- * @$method static FeatureFlagName PLATFORM_PAYMENT_CURRENCY_CODE()
- * @$method static FeatureFlagName PLATFORM_PAYMENT_COUNTRY_CODE()
- * @$method static FeatureFlagName GOOGLE_PAY_GATEWAY_JSON()
- * @$method static FeatureFlagName GOOGLE_PAY_ALLOWED_AUTH_METHODS_JSON()
- * @$method static FeatureFlagName GOOGLE_PAY_ALLOWED_CARD_NETWORKS_JSON()
- * @$method static FeatureFlagName GOOGLE_PAY_MERCHANT_NAME()
  * @$method static FeatureFlagName CARD_PAYMENT_METHOD()
  * @$method static FeatureFlagName LS_PAY_SERVICE_IP_ADDRESS()
  * @$method static FeatureFlagName LS_PAY_SERVICE_PORT()
  * @$method static FeatureFlagName LS_PAY_PLUGIN_ID()
+ * @$method static FeatureFlagName LS_PAY_APPLE_PLUGIN_ID()
+ * @$method static FeatureFlagName LS_PAY_GOOGLE_PLUGIN_ID()
  * @$method static FeatureFlagName AUDKENNI_BASE_U_R_L()
  * @$method static FeatureFlagName AUDKENNI_CLIENT_ID()
  * @$method static FeatureFlagName AUDKENNI_REDIRECT_U_R_L()
@@ -69,6 +65,7 @@ use MyCLabs\Enum\Enum;
  */
 class FeatureFlagName extends Enum
 {
+
     public const NONE = 'None';
 
     public const ALLOW_AUTO_LOGOFF = 'AllowAutoLogoff';
@@ -139,18 +136,6 @@ class FeatureFlagName extends Enum
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 
-    public const PLATFORM_PAYMENT_CURRENCY_CODE = 'PlatformPaymentCurrencyCode';
-
-    public const PLATFORM_PAYMENT_COUNTRY_CODE = 'PlatformPaymentCountryCode';
-
-    public const GOOGLE_PAY_GATEWAY_JSON = 'GooglePayGatewayJson';
-
-    public const GOOGLE_PAY_ALLOWED_AUTH_METHODS_JSON = 'GooglePayAllowedAuthMethodsJson';
-
-    public const GOOGLE_PAY_ALLOWED_CARD_NETWORKS_JSON = 'GooglePayAllowedCardNetworksJson';
-
-    public const GOOGLE_PAY_MERCHANT_NAME = 'GooglePayMerchantName';
-
     public const CARD_PAYMENT_METHOD = 'CardPaymentMethod';
 
     public const LS_PAY_SERVICE_IP_ADDRESS = 'LsPayServiceIpAddress';
@@ -158,6 +143,10 @@ class FeatureFlagName extends Enum
     public const LS_PAY_SERVICE_PORT = 'LsPayServicePort';
 
     public const LS_PAY_PLUGIN_ID = 'LsPayPluginId';
+
+    public const LS_PAY_APPLE_PLUGIN_ID = 'LsPayApplePluginId';
+
+    public const LS_PAY_GOOGLE_PLUGIN_ID = 'LsPayGooglePluginId';
 
     public const AUDKENNI_BASE_U_R_L = 'AudkenniBaseURL';
 
@@ -178,5 +167,7 @@ class FeatureFlagName extends Enum
     public const FACEBOOK_LOGIN_ENABLED = 'FacebookLoginEnabled';
 
     public const APPLE_LOGIN_ENABLED = 'AppleLoginEnabled';
+
+
 }
 

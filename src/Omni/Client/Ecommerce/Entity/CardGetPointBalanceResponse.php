@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class CardGetPointBalanceResponse implements ResponseInterface
 {
+
     /**
      * @property int $CardGetPointBalanceResult
      */
@@ -42,5 +43,7 @@ class CardGetPointBalanceResponse implements ResponseInterface
     {
         return $this->CardGetPointBalanceResult;
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemsPage implements RequestInterface
 {
+
     /**
      * @property string $storeId
      */
@@ -172,5 +173,7 @@ class ItemsPage implements RequestInterface
     {
         return $this->includeDetails;
     }
+
+
 }
 

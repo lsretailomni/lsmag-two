@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplHierarchyHospDeal extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_hierarchy_hosp_deal', 'repl_hierarchy_hosp_deal_id' );
     }
+
+
 }
 

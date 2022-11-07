@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplInvStatus
 {
+
     /**
      * @property boolean $IsDeleted
      */
@@ -170,5 +171,7 @@ class ReplInvStatus
     {
         return $this->scope_id;
     }
+
+
 }
 

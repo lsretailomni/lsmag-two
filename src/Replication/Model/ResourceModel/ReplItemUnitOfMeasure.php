@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplItemUnitOfMeasure extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_item_unit_of_measure', 'repl_item_unit_of_measure_id' );
     }
+
+
 }
 

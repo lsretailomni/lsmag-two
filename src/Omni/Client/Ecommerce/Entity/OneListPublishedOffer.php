@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneListPublishedOffer extends Entity
 {
+
     /**
      * @property string $CreateDate
      */
@@ -91,5 +92,7 @@ class OneListPublishedOffer extends Entity
     {
         return $this->Type;
     }
+
+
 }
 

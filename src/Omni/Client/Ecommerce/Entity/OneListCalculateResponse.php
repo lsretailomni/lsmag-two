@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OneListCalculateResponse implements ResponseInterface
 {
+
     /**
      * @property Order $OneListCalculateResult
      */
@@ -42,5 +43,7 @@ class OneListCalculateResponse implements ResponseInterface
     {
         return $this->OneListCalculateResult;
     }
+
+
 }
 

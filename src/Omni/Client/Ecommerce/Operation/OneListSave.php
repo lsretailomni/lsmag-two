@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListSaveResponse as OneListSaveResponse;
 
 class OneListSave extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ONE_LIST_SAVE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class OneListSave extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

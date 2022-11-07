@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplItemInterface;
 
 class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_item';
 
     protected $_cacheTag = 'ls_replication_repl_item';
@@ -124,6 +125,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
      * @property string $ItemFamilyCode
      */
     protected $ItemFamilyCode = null;
+
+    /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
 
     /**
      * @property int $KeyingInPrice
@@ -681,6 +687,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     }
 
     /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->setData( 'ItemTrackingCode', $ItemTrackingCode );
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->getData( 'ItemTrackingCode' );
+    }
+
+    /**
      * @param int $KeyingInPrice
      * @return $this
      */
@@ -1179,5 +1205,7 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

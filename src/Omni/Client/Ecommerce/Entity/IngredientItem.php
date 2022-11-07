@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class IngredientItem extends Entity
 {
+
     /**
      * @property ArrayOfImageView $Images
      */
@@ -124,5 +125,7 @@ class IngredientItem extends Entity
     {
         return $this->UnitOfMeasure;
     }
+
+
 }
 

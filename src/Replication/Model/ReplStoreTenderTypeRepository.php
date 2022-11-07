@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplStoreTenderTypeSearchResultsFactory;
 
 class ReplStoreTenderTypeRepository implements ReplStoreTenderTypeRepositoryInterface
 {
+
     /**
      * @property ReplStoreTenderTypeFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplStoreTenderTypeRepository implements ReplStoreTenderTypeRepositoryInte
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

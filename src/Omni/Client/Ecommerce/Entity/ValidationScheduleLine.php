@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ValidationScheduleLine
 {
+
     /**
      * @property string $Comment
      */
@@ -147,5 +148,7 @@ class ValidationScheduleLine
     {
         return $this->TimeSchedule;
     }
+
+
 }
 

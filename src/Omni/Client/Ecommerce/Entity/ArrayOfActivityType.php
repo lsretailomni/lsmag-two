@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfActivityType implements IteratorAggregate
 {
+
     /**
      * @property ActivityType[] $ActivityType
      */
@@ -45,5 +46,7 @@ class ArrayOfActivityType implements IteratorAggregate
     {
         return $this->ActivityType;
     }
+
+
 }
 

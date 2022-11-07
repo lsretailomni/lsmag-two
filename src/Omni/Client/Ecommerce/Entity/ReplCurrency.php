@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCurrency
 {
+
     /**
      * @property string $CurrencyCode
      */
@@ -285,5 +286,7 @@ class ReplCurrency
     {
         return $this->scope_id;
     }
+
+
 }
 

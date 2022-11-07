@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplHierarchyHospDealSearchResultsFactory;
 
 class ReplHierarchyHospDealRepository implements ReplHierarchyHospDealRepositoryInterface
 {
+
     /**
      * @property ReplHierarchyHospDealFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplHierarchyHospDealRepository implements ReplHierarchyHospDealRepository
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

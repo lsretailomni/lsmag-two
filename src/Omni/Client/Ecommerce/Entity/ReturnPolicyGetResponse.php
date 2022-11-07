@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReturnPolicyGetResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfReturnPolicy $ReturnPolicyGetResult
      */
@@ -42,5 +43,7 @@ class ReturnPolicyGetResponse implements ResponseInterface
     {
         return $this->ReturnPolicyGetResult;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfMemberContact implements IteratorAggregate
 {
+
     /**
      * @property MemberContact[] $MemberContact
      */
@@ -45,5 +46,7 @@ class ArrayOfMemberContact implements IteratorAggregate
     {
         return $this->MemberContact;
     }
+
+
 }
 

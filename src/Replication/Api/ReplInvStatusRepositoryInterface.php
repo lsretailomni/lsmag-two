@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplInvStatusRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplInvStatusInterface $page);
@@ -21,5 +22,7 @@ interface ReplInvStatusRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

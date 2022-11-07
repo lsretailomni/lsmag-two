@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ResetPasswordResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $ResetPasswordResult
      */
@@ -42,5 +43,7 @@ class ResetPasswordResponse implements ResponseInterface
     {
         return $this->ResetPasswordResult;
     }
+
+
 }
 

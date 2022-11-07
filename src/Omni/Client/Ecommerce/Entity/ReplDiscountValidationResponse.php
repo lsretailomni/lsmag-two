@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplDiscountValidationResponse
 {
+
     /**
      * @property ArrayOfReplDiscountValidation $DiscountValidations
      */
@@ -101,5 +102,7 @@ class ReplDiscountValidationResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

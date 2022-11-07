@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface LoyItemInterface
 {
+
     /**
      * @param ArrayOfImageView $Images
      * @return $this
@@ -220,6 +221,17 @@ interface LoyItemInterface
     public function getItemFamilyCode();
 
     /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode);
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode();
+
+    /**
      * @param string $Price
      * @return $this
      */
@@ -405,5 +417,7 @@ interface LoyItemInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

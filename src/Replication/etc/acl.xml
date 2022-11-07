@@ -58,6 +58,9 @@
                         <resource id="Ls_Replication::itemvariantregistration_grid"
                                   title="Item Variant Registration Replication" translate="title"
                                   sortOrder="10"/>
+                        <resource id="Ls_Replication::itemvariant_grid"
+                                  title="Item Variant Replication" translate="title"
+                                  sortOrder="10"/>
                         <resource id="Ls_Replication::hierarchy_grid" title="Hierarchy Replication"
                                   translate="title"
                                   sortOrder="10"/>

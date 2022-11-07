@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class CardGetPointBalance implements RequestInterface
 {
+
     /**
      * @property string $cardId
      */
@@ -34,5 +35,7 @@ class CardGetPointBalance implements RequestInterface
     {
         return $this->cardId;
     }
+
+
 }
 

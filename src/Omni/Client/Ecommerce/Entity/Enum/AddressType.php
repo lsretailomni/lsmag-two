@@ -20,6 +20,7 @@ use MyCLabs\Enum\Enum;
  */
 class AddressType extends Enum
 {
+
     public const RESIDENTIAL = 'Residential';
 
     public const COMMERCIAL = 'Commercial';
@@ -31,5 +32,7 @@ class AddressType extends Enum
     public const BILLING = 'Billing';
 
     public const WORK = 'Work';
+
+
 }
 

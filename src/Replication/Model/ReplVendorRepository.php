@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplVendorSearchResultsFactory;
 
 class ReplVendorRepository implements ReplVendorRepositoryInterface
 {
+
     /**
      * @property ReplVendorFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplVendorRepository implements ReplVendorRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

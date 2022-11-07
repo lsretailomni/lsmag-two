@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class AdvertisementsGetByIdResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfAdvertisement $AdvertisementsGetByIdResult
      */
@@ -42,5 +43,7 @@ class AdvertisementsGetByIdResponse implements ResponseInterface
     {
         return $this->AdvertisementsGetByIdResult;
     }
+
+
 }
 

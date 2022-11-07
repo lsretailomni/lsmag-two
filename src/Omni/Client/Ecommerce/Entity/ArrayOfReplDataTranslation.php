@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplDataTranslation implements IteratorAggregate
 {
+
     /**
      * @property ReplDataTranslation[] $ReplDataTranslation
      */
@@ -45,5 +46,7 @@ class ArrayOfReplDataTranslation implements IteratorAggregate
     {
         return $this->ReplDataTranslation;
     }
+
+
 }
 

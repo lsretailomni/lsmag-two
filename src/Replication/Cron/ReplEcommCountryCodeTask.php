@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplCountryCodeInterface;
 
 class ReplEcommCountryCodeTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_country_code';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_country_code';
@@ -152,5 +153,7 @@ class ReplEcommCountryCodeTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

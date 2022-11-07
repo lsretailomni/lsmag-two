@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplShippingAgentResponse
 {
+
     /**
      * @property ArrayOfReplShippingAgent $ShippingAgent
      */
@@ -101,5 +102,7 @@ class ReplShippingAgentResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

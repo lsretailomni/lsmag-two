@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ImageGetById implements RequestInterface
 {
+
     /**
      * @property string $id
      */
@@ -57,5 +58,7 @@ class ImageGetById implements RequestInterface
     {
         return $this->imageSize;
     }
+
+
 }
 

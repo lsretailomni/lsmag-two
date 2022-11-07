@@ -10,10 +10,21 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class GiftCard extends Entity
 {
+
     /**
      * @property float $Balance
      */
     protected $Balance = null;
+
+    /**
+     * @property string $CurrencyCode
+     */
+    protected $CurrencyCode = null;
+
+    /**
+     * @property string $EntryType
+     */
+    protected $EntryType = null;
 
     /**
      * @property string $ExpireDate
@@ -39,6 +50,42 @@ class GiftCard extends Entity
     }
 
     /**
+     * @param string $CurrencyCode
+     * @return $this
+     */
+    public function setCurrencyCode($CurrencyCode)
+    {
+        $this->CurrencyCode = $CurrencyCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->CurrencyCode;
+    }
+
+    /**
+     * @param string $EntryType
+     * @return $this
+     */
+    public function setEntryType($EntryType)
+    {
+        $this->EntryType = $EntryType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEntryType()
+    {
+        return $this->EntryType;
+    }
+
+    /**
      * @param string $ExpireDate
      * @return $this
      */
@@ -55,5 +102,7 @@ class GiftCard extends Entity
     {
         return $this->ExpireDate;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ScanPayGoProfileGetResponse as ScanPayGoProf
 
 class ScanPayGoProfileGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SCAN_PAY_GO_PROFILE_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ScanPayGoProfileGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

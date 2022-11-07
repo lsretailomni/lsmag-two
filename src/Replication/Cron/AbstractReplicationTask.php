@@ -110,6 +110,11 @@ abstract class AbstractReplicationTask
             "VariantId",
             "scope_id"
         ],
+        "ls_mag/replication/repl_item_variant"               => [
+            "ItemId",
+            "VariantId",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
         "ls_mag/replication/repl_price"                      => [
             "ItemId",

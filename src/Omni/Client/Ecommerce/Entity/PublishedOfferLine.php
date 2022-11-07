@@ -15,6 +15,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class PublishedOfferLine extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -274,5 +275,7 @@ class PublishedOfferLine extends Entity
     {
         return $this->VariantType;
     }
+
+
 }
 

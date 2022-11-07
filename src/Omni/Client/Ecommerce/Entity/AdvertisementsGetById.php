@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class AdvertisementsGetById implements RequestInterface
 {
+
     /**
      * @property string $id
      */
@@ -57,5 +58,7 @@ class AdvertisementsGetById implements RequestInterface
     {
         return $this->contactId;
     }
+
+
 }
 

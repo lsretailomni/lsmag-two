@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\LoyItemInterface;
 
 class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_loy_item';
 
     protected $_cacheTag = 'ls_replication_loy_item';
@@ -114,6 +115,11 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
      * @property string $ItemFamilyCode
      */
     protected $ItemFamilyCode = null;
+
+    /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
 
     /**
      * @property string $Price
@@ -591,6 +597,26 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     }
 
     /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->setData( 'ItemTrackingCode', $ItemTrackingCode );
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->getData( 'ItemTrackingCode' );
+    }
+
+    /**
      * @param string $Price
      * @return $this
      */
@@ -929,5 +955,7 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

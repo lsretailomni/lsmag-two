@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\PaymentClientTokenGetResponse as PaymentClie
 
 class PaymentClientTokenGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'PAYMENT_CLIENT_TOKEN_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class PaymentClientTokenGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

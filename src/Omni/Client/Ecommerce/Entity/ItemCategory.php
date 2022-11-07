@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ItemCategory extends Entity
 {
+
     /**
      * @property ArrayOfImageView $Images
      */
@@ -78,5 +79,7 @@ class ItemCategory extends Entity
     {
         return $this->Description;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse as SalesEntryGetRespon
 
 class SalesEntryGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SALES_ENTRY_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class SalesEntryGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

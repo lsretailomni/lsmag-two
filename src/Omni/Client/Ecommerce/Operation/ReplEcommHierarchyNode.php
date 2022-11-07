@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommHierarchyNodeResponse as ReplEcommH
 
 class ReplEcommHierarchyNode extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_HIERARCHY_NODE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommHierarchyNode extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplInvStatusResponse
 {
+
     /**
      * @property ArrayOfReplInvStatus $Items
      */
@@ -101,5 +102,7 @@ class ReplInvStatusResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

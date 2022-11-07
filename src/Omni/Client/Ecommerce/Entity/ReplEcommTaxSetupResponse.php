@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommTaxSetupResponse implements ResponseInterface
 {
+
     /**
      * @property ReplTaxSetupResponse $ReplEcommTaxSetupResult
      */
@@ -42,5 +43,7 @@ class ReplEcommTaxSetupResponse implements ResponseInterface
     {
         return $this->ReplEcommTaxSetupResult;
     }
+
+
 }
 

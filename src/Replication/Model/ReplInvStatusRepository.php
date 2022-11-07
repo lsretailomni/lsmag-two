@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplInvStatusSearchResultsFactory;
 
 class ReplInvStatusRepository implements ReplInvStatusRepositoryInterface
 {
+
     /**
      * @property ReplInvStatusFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplInvStatusRepository implements ReplInvStatusRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityMembershipProductsGetResponse as Act
 
 class ActivityMembershipProductsGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_MEMBERSHIP_PRODUCTS_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivityMembershipProductsGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

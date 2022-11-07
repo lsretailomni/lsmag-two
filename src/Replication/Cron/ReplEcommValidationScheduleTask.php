@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplValidationScheduleInterface;
 
 class ReplEcommValidationScheduleTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_validation_schedule';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_validation_schedule';
@@ -152,5 +153,7 @@ class ReplEcommValidationScheduleTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

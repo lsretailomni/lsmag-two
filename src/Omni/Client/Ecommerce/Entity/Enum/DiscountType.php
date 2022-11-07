@@ -28,6 +28,7 @@ use MyCLabs\Enum\Enum;
  */
 class DiscountType extends Enum
 {
+
     public const PERIODIC_DISC = 'PeriodicDisc';
 
     public const CUSTOMER = 'Customer';
@@ -55,5 +56,7 @@ class DiscountType extends Enum
     public const COUPON = 'Coupon';
 
     public const UNKNOWN = 'Unknown';
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfSubscriptionEntry implements IteratorAggregate
 {
+
     /**
      * @property SubscriptionEntry[] $SubscriptionEntry
      */
@@ -45,5 +46,7 @@ class ArrayOfSubscriptionEntry implements IteratorAggregate
     {
         return $this->SubscriptionEntry;
     }
+
+
 }
 

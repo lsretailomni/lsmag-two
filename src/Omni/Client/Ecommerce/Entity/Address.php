@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Address
 {
+
     /**
      * @property string $Address1
      */
@@ -275,5 +276,7 @@ class Address
     {
         return $this->Type;
     }
+
+
 }
 

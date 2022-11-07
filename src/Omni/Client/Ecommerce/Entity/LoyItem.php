@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class LoyItem extends Entity
 {
+
     /**
      * @property ArrayOfImageView $Images
      */
@@ -104,6 +105,11 @@ class LoyItem extends Entity
      * @property string $ItemFamilyCode
      */
     protected $ItemFamilyCode = null;
+
+    /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
 
     /**
      * @property string $Price
@@ -493,6 +499,24 @@ class LoyItem extends Entity
     }
 
     /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->ItemTrackingCode;
+    }
+
+    /**
      * @param string $Price
      * @return $this
      */
@@ -653,5 +677,7 @@ class LoyItem extends Entity
     {
         return $this->UnitsPerParcel;
     }
+
+
 }
 
