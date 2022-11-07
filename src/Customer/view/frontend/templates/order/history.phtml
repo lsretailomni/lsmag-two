@@ -60,7 +60,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                                 class="col store-name"><?= $_order->getStoreName() ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Total')) ?>"
                                 class="col total"><?= /* @escapeNotVerified */
-                                $block->getFormattedPrice($_order->getTotalAmount()) ?></td>
+                                $block->getFormattedPrice($_order->getTotalAmount(), $_order->getStoreCurrency(), $_order->getStoreId()) ?></td>
                             <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                 class="col status"><?= /* @escapeNotVerified */
                                 $_order->getStatus() ?></td>

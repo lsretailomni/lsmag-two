@@ -126,6 +126,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $ItemFamilyCode = null;
 
     /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
+
+    /**
      * @property int $KeyingInPrice
      */
     protected $KeyingInPrice = null;
@@ -678,6 +683,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getItemFamilyCode()
     {
         return $this->getData( 'ItemFamilyCode' );
+    }
+
+    /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->setData( 'ItemTrackingCode', $ItemTrackingCode );
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->getData( 'ItemTrackingCode' );
     }
 
     /**
