@@ -44,6 +44,7 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Gallery\UpdateHandlerFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
+use Magento\CatalogImportExport\Model\Import\Product\MediaGalleryProcessor as MediaProcessor;
 use Magento\Catalog\Model\ProductRepository\MediaGalleryProcessor;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute\Interceptor;
@@ -62,11 +63,16 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAtt
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Filesystem;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Filesystem\Driver\File;
 
 /**
  * Create Items in magento replicated from omni
@@ -239,6 +245,26 @@ class ProductCreateTask
      * @var Product\Media\Config
      */
     public $mediaConfig;
+    /**
+     * @var Filesystem
+     */
+    protected Filesystem $filesystem;
+    /**
+     * @var Filesystem\Directory\WriteInterface
+     */
+    protected Filesystem\Directory\WriteInterface $_mediaDirectory;
+    /**
+     * @var ResourceConnection
+     */
+    protected ResourceConnection $resourceConnection;
+    /**
+     * @var File
+     */
+    protected File $file;
+    /**
+     * @var MediaProcessor
+     */
+    protected MediaProcessor $mediaProcessor;
 
     /**
      * @param Config $eavConfig
@@ -285,6 +311,10 @@ class ProductCreateTask
      * @param ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
      * @param GroupFactory $attributeSetGroupFactory
      * @param Product\Media\Config $mediaConfig
+     * @param Filesystem $filesystem
+     * @param ResourceConnection $resourceConnection
+     * @param File $file
+     * @throws FileSystemException
      */
     public function __construct(
         Config $eavConfig,
@@ -320,6 +350,7 @@ class ProductCreateTask
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
         ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
+        MediaProcessor $mediaProcessor,
         MediaGalleryProcessor $mediaGalleryProcessor,
         UpdateHandlerFactory $updateHandlerFactory,
         EntryConverterPool $entryConverterPool,
@@ -330,7 +361,10 @@ class ProductCreateTask
         EavAttributeCollectionFactory $eavAttributeCollectionFactory,
         ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
         GroupFactory $attributeSetGroupFactory,
-        Product\Media\Config $mediaConfig
+        Product\Media\Config $mediaConfig,
+        Filesystem $filesystem,
+        ResourceConnection $resourceConnection,
+        File $file,
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -365,6 +399,7 @@ class ProductCreateTask
         $this->collectionFactory                         = $collectionFactory;
         $this->categoryRepository                        = $categoryRepository;
         $this->replImageLinkCollectionFactory            = $replImageLinkCollectionFactory;
+        $this->mediaProcessor                            = $mediaProcessor;
         $this->mediaGalleryProcessor                     = $mediaGalleryProcessor;
         $this->updateHandlerFactory                      = $updateHandlerFactory;
         $this->entryConverterPool                        = $entryConverterPool;
@@ -376,6 +411,10 @@ class ProductCreateTask
         $this->replItemVendorCollectionFactory           = $replItemVendorCollectionFactory;
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
         $this->mediaConfig                               = $mediaConfig;
+        $this->filesystem                                = $filesystem;
+        $this->_mediaDirectory                           = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $this->resourceConnection                        = $resourceConnection;
+        $this->file                                      = $file;
     }
 
     /**
@@ -712,8 +751,8 @@ class ProductCreateTask
                             ->setLabel(($image->getDescription()) ?: __('Product Image'))
                             ->setPosition($image->getDisplayOrder())
                             ->setDisabled(false)
-                            ->setContent($imageContent)
-                            ->setImageId($image->getImageId());
+                            ->setContent($imageContent);
+
                         if ($i == 0) {
                             $types = ['image', 'small_image', 'thumbnail'];
                         }
