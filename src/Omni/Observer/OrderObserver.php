@@ -96,6 +96,7 @@ class OrderObserver implements ObserverInterface
         $order              = $observer->getEvent()->getData('order');
 
         if (!$this->orderHelper->isAllowed($order)) {
+            $this->basketHelper->unSetLastDocumentId();
             return null;
         }
 
