@@ -92,7 +92,6 @@ class OrderObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         $check              = false;
-        $response           = null;
         $order              = $observer->getEvent()->getData('order');
 
         if (!$this->orderHelper->isAllowed($order)) {
