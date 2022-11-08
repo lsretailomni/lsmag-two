@@ -134,7 +134,6 @@ class Renderer extends DefaultRenderer
             foreach ($this->itemCollection->getItems() as $orderItem) {
                 if (!$orderItem->getParentItemId()) {
                     list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                        $orderItem->getProductId(),
                         $orderItem->getSku()
                     );
                     if ($itemId == $centralItem->getItemId() &&
