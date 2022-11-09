@@ -319,10 +319,13 @@ class SyncImages extends ProductCreateTask
             } else {
                 $existingFilePath    = array_search($hash, $this->imageHashes);
 
-                $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
-                $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
+                if ($filePath != $existingFilePath) {
+                    $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
+                    $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
 
-                $this->deleteDuplicateCatalogImage($filePath);
+                    $this->deleteDuplicateCatalogImage($filePath);
+                }
+
             }
         }
     }
