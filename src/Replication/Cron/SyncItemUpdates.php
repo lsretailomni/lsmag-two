@@ -6,13 +6,13 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyLeaf;
 use Magento\Framework\DataObject;
-use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Cron class to work on Hierarchy leaf changes
+ * Cron responsible to add products in categories
  */
 class SyncItemUpdates extends ProductCreateTask
 {
@@ -23,7 +23,11 @@ class SyncItemUpdates extends ProductCreateTask
     public $remainingRecords;
 
     /**
-     * @inheritDoc
+     * Entry point for cron
+     *
+     * @param mixed $storeData
+     * @return void
+     * @throws LocalizedException
      */
     public function execute($storeData = null)
     {
@@ -79,12 +83,12 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Execute Manually
+     * Execute manually
      *
-     * @param null $storeData
-     * @return array|int[]
-     * @throws InputException
+     * @param mixed $storeData
+     * @return int[]
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
@@ -94,9 +98,10 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Cater Item assignment to Categories
+     * Cater Item assignment to categories
      *
      * @return int
+     * @throws LocalizedException
      */
     public function caterItemAssignmentToCategories()
     {
@@ -118,33 +123,31 @@ class SyncItemUpdates extends ProductCreateTask
             $criteria,
             'nav_id',
             null,
-            'catalog_product_entity',
-            'sku'
+            ['repl_hierarchy_leaf_id']
         );
+
         $sku = '';
-        $query = $collection->getSelect()->__toString();
-        if ($collection->getSize() > 0) {
-            foreach ($collection as $hierarchyLeaf) {
-                try {
-                    $sku     = $hierarchyLeaf->getNavId();
-                    $product = $this->productRepository->get($hierarchyLeaf->getNavId());
-                    $this->replicationHelper->assignProductToCategories($product, $this->store);
-                } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
-                    $this->logger->debug($e->getMessage());
-                }
+        foreach ($collection as $hierarchyLeaf) {
+            try {
+                $sku     = $hierarchyLeaf->getNavId();
+                $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $hierarchyLeaf->getNavId()
+                );
+                $this->replicationHelper->assignProductToCategories($product, $this->store);
+            } catch (Exception $e) {
+                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                $this->logger->debug($e->getMessage());
             }
-            return (int)$this->getRemainingRecords($this->store);
-        } else {
-            return (int)$collection->getSize();
         }
+        return (int)$this->getRemainingRecords($this->store);
     }
 
     /**
      * Cater hierarchy leaf removal
      *
-     * @param $hierarchyCode
-     * @return mixed
+     * @param string $hierarchyCode
+     * @return int
+     * @throws LocalizedException
      */
     public function caterHierarchyLeafRemoval($hierarchyCode)
     {
@@ -154,13 +157,12 @@ class SyncItemUpdates extends ProductCreateTask
         ];
         $criteria   = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection = $this->replHierarchyLeafCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
             'nav_id',
-            'catalog_product_entity',
-            'sku',
-            true
+            null,
+            ['repl_hierarchy_leaf_id']
         );
         $sku = '';
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
@@ -205,7 +207,7 @@ class SyncItemUpdates extends ProductCreateTask
     /**
      * Is category exist
      *
-     * @param $nav_id
+     * @param string $nav_id
      * @return false|DataObject
      * @throws LocalizedException
      */
@@ -225,8 +227,9 @@ class SyncItemUpdates extends ProductCreateTask
     /**
      * Get remaining records
      *
-     * @param $storeData
+     * @param mixed $storeData
      * @return int
+     * @throws LocalizedException
      */
     public function getRemainingRecords($storeData)
     {
@@ -246,8 +249,7 @@ class SyncItemUpdates extends ProductCreateTask
                 $criteria,
                 'nav_id',
                 null,
-                'catalog_product_entity',
-                'sku'
+                ['repl_hierarchy_leaf_id']
             );
             $this->remainingRecords = $collection->getSize();
         }
