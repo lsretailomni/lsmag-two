@@ -254,6 +254,11 @@ class AttributesCreateTask
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
                         $store->getId()
                     );
+                    $this->replicationHelper->updateCronStatus(
+                        $this->successCronAttributeStandardVariant,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
+                        $store->getId()
+                    );
                 }
                 $this->lsr->setStoreId(null);
             }
@@ -494,7 +499,7 @@ class AttributesCreateTask
     {
         $variantBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $this->logger->debug('Running standard variants create task for store ' . $store->getName());
-        $criteria = $this->replicationHelper->buildCriteriaForNewItems(
+        $criteria = $this->replicationHelper->buildCriteriaForVariantAttributesNewItems(
             'scope_id',
             $store->getId(),
             'eq',
@@ -507,6 +512,15 @@ class AttributesCreateTask
 
         foreach ($collection as $item) {
             $standardVariantValues[] = $item->getDescription2();
+            $item->addData(
+                [
+                    'is_updated'   => 0,
+                    'processed_at' => $this->replicationHelper->getDateTime(),
+                    'ready_to_process'    => 1,
+                    'is_failed'    => 0
+                ]
+            );
+            $this->replItemVariantRepository->save($item);
         }
 
         $standardVariantValues = array_unique($standardVariantValues);
@@ -586,9 +600,11 @@ class AttributesCreateTask
                     }
                 }
             }
+        } else {
+            $this->successCronAttributeStandardVariant = true;
         }
 
-        $this->logger->debug('Finished variants create task for store ' . $store->getName());
+        $this->logger->debug('Finished standard variants create task for store ' . $store->getName());
     }
 
     /**

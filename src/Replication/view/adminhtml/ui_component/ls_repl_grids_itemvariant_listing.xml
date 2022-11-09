@@ -144,7 +144,7 @@
                 </item>
             </argument>
         </column>
-        <column name="processed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
+        <column name="ready_to_process" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ls\Replication\Model\ProcessedStatus</item>
                 <item name="config" xsi:type="array">
@@ -152,6 +152,18 @@
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
                     <item name="sortOrder" xsi:type="number">6</item>
+                    <item name="label" xsi:type="string" translate="true">Ready To Process</item>
+                </item>
+            </argument>
+        </column>
+        <column name="processed" class="Ls\Replication\Ui\Component\Listing\Column\ColorStatus">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Ls\Replication\Model\ProcessedStatus</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+                    <item name="sortOrder" xsi:type="number">7</item>
                     <item name="label" xsi:type="string" translate="true">Flat to Magento</item>
                 </item>
             </argument>
@@ -163,7 +175,7 @@
                     <item name="filter" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortOrder" xsi:type="number">7</item>
+                    <item name="sortOrder" xsi:type="number">8</item>
                     <item name="label" xsi:type="string" translate="true">Omni to Flat</item>
                 </item>
             </argument>
@@ -175,7 +187,7 @@
                     <item name="filter" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
                     <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
-                    <item name="sortOrder" xsi:type="number">8</item>
+                    <item name="sortOrder" xsi:type="number">9</item>
                     <item name="label" xsi:type="string" translate="true">Failed Status</item>
                 </item>
             </argument>
@@ -186,7 +198,7 @@
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">select</item>
                     <item name="dataType" xsi:type="string">select</item>
-                    <item name="sortOrder" xsi:type="number">9</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
                     <item name="label" xsi:type="string" translate="true">Deleted Status</item>
                 </item>
             </argument>

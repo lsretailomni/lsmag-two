@@ -543,6 +543,54 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param string $filtername
+     * @param string $filtervalue
+     * @param string $conditionType
+     * @param int $pagesize
+     * @param bool $excludeDeleted
+     * @return SearchCriteria
+     */
+    public function buildCriteriaForVariantAttributesNewItems(
+        $filtername = '',
+        $filtervalue = '',
+        $conditionType = 'eq',
+        $pagesize = 100,
+        $excludeDeleted = true
+    ) {
+        // creating search criteria for two fields
+        // processed = 0 which means not yet processed
+        $attr_processed = $this->filterBuilder->setField('ready_to_process')
+            ->setValue('0')
+            ->setConditionType('eq')
+            ->create();
+        // is_updated = 1 which means may be processed already but is updated on omni end
+        $attr_is_updated = $this->filterBuilder->setField('is_updated')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+        // building OR condition between the above two criteria
+        $filterOr = $this->filterGroupBuilder
+            ->addFilter($attr_processed)
+            ->addFilter($attr_is_updated)
+            ->create();
+        // adding criteria into where clause.
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if ($filtername != '' && $filtervalue != '') {
+            $criteria->addFilter(
+                $filtername,
+                $filtervalue,
+                $conditionType
+            );
+        }
+        if ($excludeDeleted) {
+            $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
+        return $criteria->create();
+    }
+    /**
      * @param string $item_id
      * @param int $pagesize
      * @param bool $excludeDeleted

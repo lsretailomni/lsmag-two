@@ -116,6 +116,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //check for Attribute Variant
     const SC_SUCCESS_CRON_ATTRIBUTE_VARIANT = 'ls_mag/replication/success_repl_attribute_variant';
 
+    //check for Attribute Variant
+    const SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT = 'ls_mag/replication/success_repl_attribute_standard_variant';
+
     //check for Category
     const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
     const SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
