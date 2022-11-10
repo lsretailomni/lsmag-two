@@ -1800,6 +1800,18 @@ class ReplicationHelper extends AbstractHelper
                     $product->getSku(),
                     $resultantCategoryIds
                 );
+
+                if ($product->getTypeId() == Configurable::TYPE_CODE) {
+                    $children = $product->getTypeInstance()->getUsedProducts($product);
+
+                    foreach ($children as $child) {
+                        $this->categoryLinkManagement->assignProductToCategories(
+                            $child->getSku(),
+                            $resultantCategoryIds
+                        );
+                    }
+                }
+
             } catch (Exception $e) {
                 $this->_logger->info("Product deleted from admin configuration. Things will re-run again");
             }
