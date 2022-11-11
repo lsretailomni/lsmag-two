@@ -981,30 +981,31 @@ class OrderHelper extends AbstractHelper
      * @param $amount
      * @param $currency
      * @param $storeId
+     * @param $orderType
      * @return mixed
      */
-    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId)
+    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
     {
+        $currencyObject = null;
+
         if (empty($currency) && empty($storeId) && !$this->currentOrder) {
             $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
         }
-        if (!empty($this->currentOrder)) {
-            $currency = $this->currentOrder->getStoreCurrency();
-            $storeId  = $this->currentOrder->getStoreId();
+
+        if (empty($currency) && empty($storeId) && empty($orderType)) {
+            $currency  = $this->currentOrder->getStoreCurrency();
+            $storeId   = $this->currentOrder->getStoreId();
+            $orderType = $this->currentOrder->getIdType();
         }
-        if (empty($currency)) {
-            try {
-                if (!$this->storeData) {
-                    $this->storeData = $this->storeHelper->getStoreDataByStoreId($storeId);
-                }
-            } catch (\Exception $e) {
-                $this->_logger->info($e->getMessage());
-            }
-            if (!empty($this->storeData)) {
-                $currency = $this->storeData->getCurrency();
-            }
+
+        if ($orderType != DocumentIdType::RECEIPT) {
+            $currency = null;
         }
-        $currencyObject = $this->currencyFactory->create()->load($currency);
+
+        if (!empty($currency)) {
+            $currencyObject = $this->currencyFactory->create()->load($currency);
+        }
+
         return $priceCurrency->format($amount, false, 2, null, $currencyObject);
     }
 }
