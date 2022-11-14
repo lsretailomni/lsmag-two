@@ -1531,16 +1531,18 @@ class ReplicationHelper extends AbstractHelper
      *
      * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
+     * @throws LocalizedException
      */
     public function setCollectionForStandardVariants(&$collection, SearchCriteriaInterface $criteria)
     {
+        $this->setCollectionPropertiesPlusJoinSku($collection, $criteria, 'ItemId', null, ['repl_item_variant_id']);
         $secondTableName = $this->resource->getTableName('ls_replication_repl_item_variant_registration');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection
             ->getSelect()
             ->where('ItemId NOT IN (?)',  new \Zend_Db_Expr("select ItemId From $secondTableName"));
-        /** @var For Xdebug only to check the query $query */
+        /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
         $collection->setPageSize($criteria->getPageSize());

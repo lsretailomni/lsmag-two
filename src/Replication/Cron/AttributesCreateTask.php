@@ -22,7 +22,7 @@ use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Model\ReplVendor;
 use \Ls\Replication\Model\ReplVendorSearchResults;
 use \Ls\Replication\Model\ReplItemVariantRepository;
-use Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
@@ -201,8 +201,8 @@ class AttributesCreateTask
         $this->optionLabelFactory                          = $optionLabelFactory;
         $this->optionFactory                               = $optionFactory;
         $this->attributeOptionManagement                   = $attributeOptionManagement;
-        $this->replItemVariantRepository = $replItemVariantRepository;
-        $this->replItemVariantCollectionFactory = $replItemVariantCollectionFactory;
+        $this->replItemVariantRepository                   = $replItemVariantRepository;
+        $this->replItemVariantCollectionFactory            = $replItemVariantCollectionFactory;
     }
 
     /**
@@ -511,6 +511,9 @@ class AttributesCreateTask
         $standardVariantValues = [];
 
         foreach ($collection as $item) {
+            if (empty($item->getDescription2())) {
+                continue;
+            }
             $standardVariantValues[] = $item->getDescription2();
             $item->addData(
                 [
@@ -526,14 +529,14 @@ class AttributesCreateTask
         $standardVariantValues = array_unique($standardVariantValues);
 
         if (!empty($standardVariantValues)) {
-            $code = 'Standard Variant';
+            $code = LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE;
             $formattedCode = $this->replicationHelper->formatAttributeCode($code);
             $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
             if (!$attribute || !$attribute->getAttributeId()) {
                 $attributeData = [
                     'attribute_code'                => $formattedCode,
                     'is_global'                     => ScopedAttributeInterface::SCOPE_GLOBAL,
-                    'frontend_label'                => ucwords(strtolower($code)),
+                    'frontend_label'                => ucwords(strtolower(LSR::LS_STANDARD_VARIANT_ATTRIBUTE_LABEL)),
                     'frontend_input'                => 'multiselect',
                     'source_model'                  => Table::class,
                     'default_value_text'            => '',

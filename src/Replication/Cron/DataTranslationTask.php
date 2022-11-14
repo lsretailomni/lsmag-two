@@ -12,6 +12,8 @@ use \Ls\Replication\Api\ReplDataTranslationRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplDataTranslationSearchResults;
+use \Ls\Replication\Api\ReplItemVariantRepositoryInterface;
+use \Ls\Replication\Model\ReplItemVariant;
 use \Ls\Replication\Model\ResourceModel\ReplDataTranslation\CollectionFactory as ReplDataTranslationCollectionFactory;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
@@ -124,6 +126,11 @@ class DataTranslationTask
     public $replAttributeOptionValueRepositoryInterface;
 
     /**
+     * @var ReplItemVariantRepositoryInterface
+     */
+    public $replItemVariantRepository;
+
+    /**
      * @var AttributeFrontendLabelInterfaceFactory
      */
     public $frontendLabelInterfaceFactory;
@@ -151,6 +158,7 @@ class DataTranslationTask
      * @param ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface
      * @param AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory
      * @param CollectionFactory $_attrOptionCollectionFactory
+     * @param ReplItemVariantRepositoryInterface $replItemVariantRepository
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -169,7 +177,8 @@ class DataTranslationTask
         AttributeOptionLabelInterfaceFactory $optionLabelFactory,
         ReplAttributeOptionValueRepositoryInterface $replAttributeOptionValueRepositoryInterface,
         AttributeFrontendLabelInterfaceFactory $frontendLabelInterfaceFactory,
-        CollectionFactory $_attrOptionCollectionFactory
+        CollectionFactory $_attrOptionCollectionFactory,
+        ReplItemVariantRepositoryInterface $replItemVariantRepository
     ) {
         $this->replicationHelper                           = $replicationHelper;
         $this->dataTranslationRepository                   = $dataTranslationRepository;
@@ -188,6 +197,7 @@ class DataTranslationTask
         $this->replAttributeOptionValueRepositoryInterface = $replAttributeOptionValueRepositoryInterface;
         $this->frontendLabelInterfaceFactory               = $frontendLabelInterfaceFactory;
         $this->attrOptionCollectionFactory                 = $_attrOptionCollectionFactory;
+        $this->replItemVariantRepository                   = $replItemVariantRepository;
     }
 
     /**
@@ -215,13 +225,19 @@ class DataTranslationTask
                         ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
+                    $cronAttributeStandardVariantCheck = $this->lsr->getConfigValueFromDb(
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
+                        ScopeInterface::SCOPE_STORES,
+                        $store->getId()
+                    );
                     $langCode                  = $this->lsr->getStoreConfig(
                         LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
                         $store->getId()
                     );
                     $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
                     if ($langCode != "Default") {
-                        $configurableAttributesValuesStatus    = $configurableAttributesStatus = false;
+                        $configurableAttributesValuesStatus    =
+                        $configurableAttributesStatus = $standardConfigurableAttributesValuesStatus = false;
                         $hierarchyNodesStatus                  = $this->updateHierarchyNode(
                             $store->getId(),
                             $langCode,
@@ -249,13 +265,19 @@ class DataTranslationTask
                             );
                         }
 
+                        if ($cronAttributeStandardVariantCheck) {
+                            $standardConfigurableAttributesValuesStatus =
+                                $this->updateStandardVariantAttributeOptionValue($store->getId(), $langCode);
+                        }
+
                         $this->cronStatus = $hierarchyNodesStatus &&
                             $itemsStatus &&
                             $attributesStatus &&
                             $nonConfigurableAttributesValuesStatus &&
                             $textBasedAttributesValuesStatus &&
                             $configurableAttributesStatus &&
-                            $configurableAttributesValuesStatus;
+                            $configurableAttributesValuesStatus &&
+                            $standardConfigurableAttributesValuesStatus;
 
                     } else {
                         $this->cronStatus = true;
@@ -303,6 +325,56 @@ class DataTranslationTask
                 if (count($keyArray) == 2 && !empty($keyArray[0]) && !empty($keyArray[1])) {
                     $originalOptionValue = $this->getOriginalOptionLabel($keyArray, $storeId);
                     $this->searchAndSetAttributeValueLabel($keyArray[0], $originalOptionValue, $dataTranslation);
+                } else {
+                    $this->logger->debug('Translation Key is not valid for ' . $dataTranslation->getKey());
+                    $dataTranslation->setData('is_failed', 1);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug($e->getMessage());
+                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
+                $dataTranslation->setData('is_failed', 1);
+            }
+            // @codingStandardsIgnoreLine
+            $this->dataTranslationRepository->save($dataTranslation);
+        }
+
+        return count($dataTranslationItems) == 0;
+    }
+
+    /**
+     * Cater translation of standard variant configurable attribute
+     *
+     * @param int $storeId
+     * @param string $langCode
+     * @return bool
+     */
+    public function updateStandardVariantAttributeOptionValue($storeId, $langCode)
+    {
+        $filters = $this->getFiltersGivenValues(
+            $storeId,
+            $langCode,
+            LSR::SC_TRANSLATION_ID_STANDARD_VARIANT_ATTRIBUTE_OPTION_VALUE,
+        );
+        $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        /** @var ReplDataTranslationSearchResults $dataTranslationItems */
+        $dataTranslationItems = $this->dataTranslationRepository->getList($criteria)->getItems();
+        /** @var ReplDataTranslation $dataTranslation */
+        foreach ($dataTranslationItems as $dataTranslation) {
+            try {
+                $keyArray = explode(';', $dataTranslation->getKey());
+
+                if (count($keyArray) == 2 && !empty($keyArray[0]) && !empty($keyArray[1])) {
+                    $originalOptionValue = $this->getStandardVariantOriginalOptionLabel($keyArray, $storeId);
+
+                    if ($originalOptionValue) {
+                        $this->searchAndSetAttributeValueLabel(
+                            LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE,
+                            $originalOptionValue,
+                            $dataTranslation
+                        );
+                    } else {
+                        $dataTranslation->setData('is_failed', 1);
+                    }
                 } else {
                     $this->logger->debug('Translation Key is not valid for ' . $dataTranslation->getKey());
                     $dataTranslation->setData('is_failed', 1);
@@ -668,6 +740,32 @@ class DataTranslationTask
 
         if (isset($item)) {
             return $item->getValue();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Get original option label
+     *
+     * @param array $keyArray
+     * @param string $storeId
+     * @return false|string
+     */
+    public function getStandardVariantOriginalOptionLabel($keyArray, $storeId)
+    {
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'ItemId', 'value' => $keyArray[0], 'condition_type' => 'eq'],
+            ['field' => 'VariantId', 'value' => $keyArray[1], 'condition_type' => 'eq']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
+        $replItemVariantValues = $this->replItemVariantRepository->getList($criteria);
+        /** @var ReplItemVariant $item */
+        $item = current($replItemVariantValues->getItems());
+
+        if ($item) {
+            return $item->getDescription2();
         } else {
             return false;
         }

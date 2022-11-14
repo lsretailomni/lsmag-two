@@ -173,6 +173,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_TRANSLATION_ID_PRODUCT_ATTRIBUTE_VALUE = 'T0010000786-F0000000003';
     const SC_TRANSLATION_ID_EXTENDED_VARIANT_VALUE = 'T0010001413-F0000000011';
     const SC_TRANSLATION_ID_EXTENDED_VARIANT = 'T0010001412-F0000000011';
+    const SC_TRANSLATION_ID_STANDARD_VARIANT_ATTRIBUTE_OPTION_VALUE = 'T0000005401-F0000000004';
     const SC_ITEM_HTML_JOB_CODE = 'repl_html_translation';
 
     const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
@@ -471,6 +472,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
+
+    const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
+    const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
 
     /**
      * @var ScopeConfigInterface
