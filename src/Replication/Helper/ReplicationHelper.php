@@ -1746,7 +1746,6 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getBaseUnitOfMeasure($itemId)
     {
-        $baseUnitOfMeasure = null;
         $filters           = [
             ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']
         ];
@@ -1756,11 +1755,36 @@ class ReplicationHelper extends AbstractHelper
             return $item->getBaseUnitOfMeasure();
         }
 
-        return $baseUnitOfMeasure;
+        return null;
     }
 
     /**
-     * Assigning product to categories
+     * @param $product
+     * @param $taxClass
+     * @param $storeId
+     * @return void
+     */
+    public function assignTaxClassToChildren($product, $taxClass, $storeId)
+    {
+
+        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+            $children = $product->getTypeInstance(true)->getUsedProducts($product);
+            try {
+                foreach ($children as $child) {
+                    $childObj  = $this->productRepository->get($child->getSku(), true, $storeId);
+                    $childObj->setData('tax_class_id', $taxClass->getClassId());
+                    $childObj->getResource()->saveAttribute($childObj, 'tax_class_id');
+                }
+
+            } catch (Exception $e) {
+                $this->_logger->info("Product tax class update failed for ".$product->getSku());
+                $this->_logger->info($e->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Assigning product to category
      *
      * @param $product
      * @param $store
@@ -1770,7 +1794,8 @@ class ReplicationHelper extends AbstractHelper
     {
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
         if (empty($hierarchyCode)) {
-            $this->_logger->debug('Hierarchy Code not defined in the configuration for store ' . $this->store->getName());
+            $this->_logger->debug('Hierarchy Code not defined in the configuration for store '
+                . $store->getName());
             return;
         }
         $filters              = [
