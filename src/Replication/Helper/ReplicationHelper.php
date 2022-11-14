@@ -1780,7 +1780,6 @@ class ReplicationHelper extends AbstractHelper
 
             } catch (Exception $e) {
                 $this->_logger->info("Product tax class update failed for ".$product->getSku());
-                $this->_logger->info($e->getMessage());
             }
         }
     }
