@@ -1759,12 +1759,14 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Assigning configurable product tax class to associated products
+     *
      * @param $product
      * @param $taxClass
      * @param $storeId
      * @return void
      */
-    public function assignTaxClassToChildren($product, $taxClass, $storeId)
+    public function assignTaxClassToChildren($product, $taxClass, $storeId): void
     {
 
         if ($product->getTypeId() == Configurable::TYPE_CODE) {
