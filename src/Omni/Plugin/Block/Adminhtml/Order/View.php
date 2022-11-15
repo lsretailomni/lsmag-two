@@ -3,20 +3,20 @@
 namespace Ls\Omni\Plugin\Block\Adminhtml\Order;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\Order;
 
 class View
 {
-    /** @var  LSR $lsr */
-    public $lsr;
-
     /**
-     * @param LSR $lsr
+     * @var OrderHelper
      */
-    public function __construct(LSR $lsr)
+    public $orderHelper;
+
+    public function __construct(OrderHelper $orderHelper)
     {
-        $this->lsr = $lsr;
+        $this->orderHelper = $orderHelper;
     }
 
     /**
@@ -31,7 +31,7 @@ class View
         $message = __('Send order to LS Central?');
         $url     = $view->getUrl('omni/order/request/id', ['order_id' => $view->getOrderId()]);
 
-        if (!$view->getOrder()->getDocumentId() && $this->isAllowed($view->getOrder())) {
+        if (!$view->getOrder()->getDocumentId() && $this->orderHelper->isAllowed($view->getOrder())) {
             $view->addButton(
                 'send-order-request',
                 [
@@ -41,23 +41,5 @@ class View
                 ]
             );
         }
-    }
-
-    /**
-     * Order status is not one of restricted order statuses
-     *
-     * @param Order $order
-     * @return bool
-     */
-    public function isAllowed($order)
-    {
-        $orderStatuses = $this->lsr->getStoreConfig(
-            LSR::LSR_RESTRICTED_ORDER_STATUSES,
-            $order->getStore()->getWebsiteId()
-        );
-
-        $status = $order->getStatus();
-
-        return !empty($orderStatuses) && !(in_array($status, explode(',', $orderStatuses)));
     }
 }
