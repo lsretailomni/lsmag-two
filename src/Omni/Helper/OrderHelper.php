@@ -992,10 +992,16 @@ class OrderHelper extends AbstractHelper
             $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
         }
 
-        if (empty($currency) && empty($storeId) && empty($orderType)) {
-            $currency  = $this->currentOrder->getStoreCurrency();
-            $storeId   = $this->currentOrder->getStoreId();
-            $orderType = $this->currentOrder->getIdType();
+        if (empty($currency) && empty($storeId) && empty($orderType) && !$this->currentOrder) {
+            if (is_array($this->currentOrder)) {
+                foreach ($this->currentOrder as $order) {
+                    $currency  = $order->getStoreCurrency();
+                    $orderType = $order->getIdType();
+                }
+            } else {
+                $currency  = $this->currentOrder->getStoreCurrency();
+                $orderType = $this->currentOrder->getIdType();
+            }
         }
 
         if ($orderType != DocumentIdType::RECEIPT) {
