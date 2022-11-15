@@ -992,7 +992,7 @@ class OrderHelper extends AbstractHelper
             $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
         }
 
-        if (empty($currency) && empty($storeId) && empty($orderType) && !$this->currentOrder) {
+        if (empty($currency) && empty($storeId) && empty($orderType) && $this->currentOrder) {
             if (is_array($this->currentOrder)) {
                 foreach ($this->currentOrder as $order) {
                     $currency  = $order->getStoreCurrency();
