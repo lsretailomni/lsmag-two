@@ -138,13 +138,6 @@ class OrderHelper extends AbstractHelper
         BasketHelper          $basketHelper,
         LoyaltyHelper         $loyaltyHelper,
         Model\OrderRepository $orderRepository,
-        CustomerSessionProxy  $customerSession,
-        CheckoutSessionProxy  $checkoutSession,
-        LSR                   $lsr,
-        Order                 $orderResourceModel,
-        Json                  $json,
-        Registry              $registry,
-        DateTime              $dateTime,
         StoreManagerInterface $storeManager
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
