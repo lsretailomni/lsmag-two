@@ -138,7 +138,6 @@ class OrderHelper extends AbstractHelper
         BasketHelper          $basketHelper,
         LoyaltyHelper         $loyaltyHelper,
         Model\OrderRepository $orderRepository,
-        StoreManagerInterface $storeManager
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
         LSR $lsr,
@@ -146,6 +145,7 @@ class OrderHelper extends AbstractHelper
         Json $json,
         Registry $registry,
         DateTime $dateTime,
+		StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
         CurrencyFactory $currencyFactory
     ) {
