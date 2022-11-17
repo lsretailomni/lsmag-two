@@ -23,8 +23,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
+use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\StoreManagerInterface;
 use Magento\Directory\Model\CurrencyFactory;
 
 /**
@@ -94,6 +96,11 @@ class OrderHelper extends AbstractHelper
     public Registry $registry;
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
      * @var CurrencyFactory
      */
     public $currencyFactory;
@@ -113,7 +120,7 @@ class OrderHelper extends AbstractHelper
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Model\OrderRepository $orderRepository
+     * @param OrderRepository $orderRepository
      * @param CustomerSessionProxy $customerSession
      * @param CheckoutSessionProxy $checkoutSession
      * @param LSR $lsr
@@ -121,15 +128,24 @@ class OrderHelper extends AbstractHelper
      * @param Json $json
      * @param Registry $registry
      * @param DateTime $dateTime
+     * @param StoreManagerInterface $storeManager
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
-        Context $context,
-        Model\Order $order,
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper,
+        Context               $context,
+        Model\Order           $order,
+        BasketHelper          $basketHelper,
+        LoyaltyHelper         $loyaltyHelper,
         Model\OrderRepository $orderRepository,
+        CustomerSessionProxy  $customerSession,
+        CheckoutSessionProxy  $checkoutSession,
+        LSR                   $lsr,
+        Order                 $orderResourceModel,
+        Json                  $json,
+        Registry              $registry,
+        DateTime              $dateTime,
+        StoreManagerInterface $storeManager
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
         LSR $lsr,
@@ -152,6 +168,7 @@ class OrderHelper extends AbstractHelper
         $this->json               = $json;
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
+        $this->storeManager       = $storeManager;
         $this->storeHelper        = $storeHelper;
         $this->currencyFactory    = $currencyFactory;
     }
@@ -775,10 +792,11 @@ class OrderHelper extends AbstractHelper
         $sortOrder = null
     ) {
         $orders = null;
+        $websiteId = $this->storeManager->getStore($this->lsr->getCurrentStoreId());
         try {
-            $orderStatuses   = $this->lsr->getStoreConfig(
+            $orderStatuses   = $this->lsr->getWebsiteConfig(
                 LSR::LSR_RESTRICTED_ORDER_STATUSES,
-                $this->lsr->getCurrentStoreId()
+                $websiteId
             );
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
@@ -972,6 +990,26 @@ class OrderHelper extends AbstractHelper
     public function getDateTimeObject()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * Order status is not one of restricted order statuses
+     *
+     * @param Model\Order $order
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isAllowed($order)
+    {
+        $websiteId = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
+        $orderStatuses = $this->lsr->getWebsiteConfig(
+            LSR::LSR_RESTRICTED_ORDER_STATUSES,
+            $websiteId
+        );
+
+        $status = $order->getStatus();
+
+        return empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
     }
 
     /**
