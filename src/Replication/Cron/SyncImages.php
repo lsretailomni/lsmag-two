@@ -35,11 +35,6 @@ class SyncImages extends ProductCreateTask
     public array $imageHashes = [];
 
     /**
-     * @var array
-     */
-    public array $imagesFetched;
-
-    /**
      * @param null $storeData
      * @throws InputException
      * @throws NoSuchEntityException
@@ -357,14 +352,14 @@ class SyncImages extends ProductCreateTask
             ];
 
             $connection->update(
-                $tableName,
+                $catalogEntityVarcharTable,
                 $updateData,
                 $whereCondition
             );
             $connection->endSetup();
         } catch (Exception $e) {
             $this->logger->debug(
-                'Problem with Media path update in : ' . $tableName .
+                'Problem with Media path update in : ' . $catalogEntityVarcharTable .
                 ' for ' . $newFilePath . ' with '.$existingFilePath
             );
         }

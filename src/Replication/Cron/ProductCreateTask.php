@@ -242,6 +242,11 @@ class ProductCreateTask
     public $attributeSetGroupFactory;
 
     /**
+     * @var array
+     */
+    public array $imagesFetched;
+
+    /**
      * @var Product\Media\Config
      */
     public $mediaConfig;
@@ -252,7 +257,7 @@ class ProductCreateTask
     /**
      * @var Filesystem\Directory\WriteInterface
      */
-    protected Filesystem\Directory\WriteInterface $_mediaDirectory;
+    protected Filesystem\Directory\WriteInterface $mediaDirectory;
     /**
      * @var ResourceConnection
      */
@@ -300,6 +305,7 @@ class ProductCreateTask
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
      * @param ReplImageLinkCollectionFactory $replImageLinkCollectionFactory
+     * @param MediaProcessor $mediaProcessor
      * @param MediaGalleryProcessor $mediaGalleryProcessor
      * @param UpdateHandlerFactory $updateHandlerFactory
      * @param EntryConverterPool $entryConverterPool
@@ -364,7 +370,7 @@ class ProductCreateTask
         Product\Media\Config $mediaConfig,
         Filesystem $filesystem,
         ResourceConnection $resourceConnection,
-        File $file,
+        File $file
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -412,7 +418,7 @@ class ProductCreateTask
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
         $this->mediaConfig                               = $mediaConfig;
         $this->filesystem                                = $filesystem;
-        $this->_mediaDirectory                           = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $this->mediaDirectory                           = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
     }
