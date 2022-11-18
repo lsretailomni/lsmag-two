@@ -1,9 +1,9 @@
 <?php
 
-namespace Ls\Omni\Block\Product\View\Discount;
+namespace Ls\OmniGraphQl\Model\Resolver;
 
-use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
@@ -14,147 +14,201 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
-use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Block\Product\Context as ProductContext;
-use Magento\Catalog\Block\Product\View;
-use Magento\Catalog\Helper\Product;
-use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Json\EncoderInterface;
-use Magento\Framework\Locale\FormatInterface;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
+use Magento\Framework\GraphQl\Config\Element\Field;
+use Magento\Framework\GraphQl\Exception\GraphQlInputException;
+use Magento\Framework\GraphQl\Query\ResolverInterface;
+use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Framework\Stdlib\StringUtils;
-use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
+use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Catalog\Helper\Image;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+use Magento\Store\Model\App\Emulation;
 
-class Proactive extends View
+/**
+ * To get discounts in product view page in graphql
+ */
+class GetDiscountsOutput extends View implements ResolverInterface
 {
-    /** @var LSR */
+    /**
+     * @var LSR
+     */
     public $lsr;
 
     /**
      * @var LoyaltyHelper
      */
-    public $loyaltyHelper;
+
+    private $loyaltyHelper;
+    /**
+     * @var PageFactory
+     */
+
+    private PageFactory $resultPageFactory;
+    /**
+     * @var HttpContext
+     */
+
+    private HttpContext $httpContext;
+    /**
+     * @var CustomerFactory
+     */
+
+    private CustomerFactory $customerFactory;
+    /**
+     * @var StoreManagerInterface
+     */
+
+    private StoreManagerInterface $storeManager;
 
     /**
      * @var ItemHelper
      */
-    public $itemHelper;
+    private $itemHelper;
 
     /**
-     * @var
+     * @var Image
      */
-    public $httpContext;
+    private Image $imageHelper;
 
     /**
-     * @var CustomerFactory
+     * @var PriceHelper
      */
-    public $customerFactory;
-
-    /** @var StoreManagerInterface */
-    public $storeManager;
+    private PriceHelper $priceHelper;
 
     /**
      * @var TimezoneInterface
      */
-    public $timeZoneInterface;
+    private TimezoneInterface $timeZoneInterface;
 
     /**
      * @var ScopeConfigInterface
      */
-    public $scopeConfig;
+    private ScopeConfigInterface $scopeConfig;
 
     /**
-     * Proactive constructor.
-     * @param ProductContext $context
-     * @param UrlEncoderInterface $urlEncoder
-     * @param EncoderInterface $jsonEncoder
-     * @param StringUtils $string
-     * @param Product $productHelper
-     * @param ConfigInterface $productTypeConfig
-     * @param FormatInterface $localeFormat
-     * @param Proxy $customerSession
-     * @param ProductRepositoryInterface $productRepository
-     * @param PriceCurrencyInterface $priceCurrency
+     * @var Http
+     */
+    private Http $request;
+
+    /**
+     * @var \Magento\Store\Model\App\Emulation
+     */
+    protected $appEmulation;
+
+    /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
-     * @param ItemHelper $itemHelper
+     * @param PageFactory $resultPageFactory
      * @param HttpContext $httpContext
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
+     * @param ItemHelper $itemHelper
+     * @param Image $imageHelper
+     * @param PriceHelper $priceHelper
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
-     * @param array $data
+     * @param Proxy $customerSession
+     * @param Http $request
+     * @param Emulation $appEmulation
      */
     public function __construct(
-        ProductContext $context,
-        UrlEncoderInterface $urlEncoder,
-        EncoderInterface $jsonEncoder,
-        StringUtils $string,
-        Product $productHelper,
-        ConfigInterface $productTypeConfig,
-        FormatInterface $localeFormat,
-        Proxy $customerSession,
-        ProductRepositoryInterface $productRepository,
-        PriceCurrencyInterface $priceCurrency,
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
-        ItemHelper $itemHelper,
+        PageFactory $resultPageFactory,
         HttpContext $httpContext,
         CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,
+        ItemHelper $itemHelper,
+        Image $imageHelper,
+        PriceHelper $priceHelper,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
-        array $data = []
+        Session $customerSession,
+        Http $request,
+        Emulation $appEmulation
     ) {
-        parent::__construct(
-            $context,
-            $urlEncoder,
-            $jsonEncoder,
-            $string,
-            $productHelper,
-            $productTypeConfig,
-            $localeFormat,
-            $customerSession,
-            $productRepository,
-            $priceCurrency,
-            $data
-        );
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
-        $this->itemHelper        = $itemHelper;
+        $this->resultPageFactory = $resultPageFactory;
         $this->httpContext       = $httpContext;
         $this->customerFactory   = $customerFactory;
         $this->storeManager      = $storeManager;
+        $this->itemHelper        = $itemHelper;
+        $this->imageHelper       = $imageHelper;
+        $this->priceHelper       = $priceHelper;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
+        $this->customerSession   = $customerSession;
+        $this->request           = $request;
+        $this->appEmulation      = $appEmulation;
     }
 
     /**
-     * @param $sku
-     * @return array|DiscountsGetResponse|ProactiveDiscount[]|ResponseInterface|null
+     * @inheritdoc
+     */
+    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    {
+
+        if (empty($args['item_id'])) {
+            throw new GraphQlInputException(__('Required parameter "item_id" is missing'));
+        }
+
+        $itemId = $args['item_id'];
+        $couponsObj   = $this->getCoupons($itemId);
+
+        $discountsArr = $couponsArr = [];
+        $discountsObj = $this->getProactiveDiscounts($itemId);
+
+        if (!empty($discountsObj)) {
+            foreach ($discountsObj as $discount) {
+                $discountsArr[] = $this->getFormattedDescriptionDiscount($itemId, $discount);
+            }
+        }
+        if (!empty($couponsObj != '')) {
+            foreach ($couponsObj as $coupon) {
+                if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
+                    $couponsArr[] = $this->getFormattedDescriptionCoupon($coupon);
+                }
+
+            }
+        }
+
+        return ['output' =>
+                    [
+                        'coupons' =>  $couponsArr,
+                        'discounts' => $discountsArr
+                    ]
+        ];
+    }
+
+    /**
+     * @param $itemId
+     * @return array|DiscountsGetResponse|ProactiveDiscount|ResponseInterface|null
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProactiveDiscounts($sku)
+    public function getProactiveDiscounts($itemId)
     {
-        $itemId   = $sku;
         $webStore = $this->lsr->getActiveWebStore();
         if ($response = $this->loyaltyHelper->getProactiveDiscounts($itemId, $webStore)) {
             if (!is_array($response)) {
                 $response = [$response];
             }
+
             $tempArray = [];
             foreach ($response as $key => $responseData) {
                 $uniqueKey = $responseData->getPercentage() . '|' . $responseData->getItemId() . '|'
                     . $responseData->getPopUpLine1() . '|' . $responseData->getType();
+
                 if (!in_array($uniqueKey, $tempArray, true)) {
                     $tempArray[] = $uniqueKey;
                     continue;
@@ -171,15 +225,20 @@ class Proactive extends View
      *
      * @param $sku
      * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
+     * @throws NoSuchEntityException
      */
     public function getCoupons($sku)
     {
         $itemId = $sku;
         try {
             $storeId = $this->lsr->getActiveWebStore();
-            if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID)) {
+            if ($this->customerSession->getCustomerId()
+                    && str_contains($this->request->getOriginalPathInfo(), 'graphql')
+            ) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                $email     = $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL);
+                $email     = ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL)) ?
+                    $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL) :
+                    $this->customerSession->getCustomerData()->getEmail();
                 $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
                 $cardId    = $customer->getData('lsr_cardid');
                 if ($response = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $itemId)) {
@@ -194,30 +253,31 @@ class Proactive extends View
     }
 
     /**
+     * Get formatted discount description
+     *
      * @param $itemId
      * @param ProactiveDiscount $discount
      * @return array|string
+     * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
     public function getFormattedDescriptionDiscount(
         $itemId,
         ProactiveDiscount $discount
     ) {
-        $description  = [];
+        $responseArr  = [];
         $discountText = '';
+        $productData  = [];
         if ($discount->getDescription()) {
-            $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
+            $responseArr['discount_description_title'] = $discount->getDescription();
         }
         if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
-            $description[] = "
-                <span class='discount-min-qty-label discount-label'>" . __('Minimum Qty :') . "</span>
-                <span class='discount-min-qty-value discount-value'>" .
-                number_format(
-                    (float)$discount->getMinimumQuantity(),
-                    2,
-                    '.',
-                    ''
-                ) . '</span>';
+            $responseArr['discount_min_qty'] = number_format(
+                (float)$discount->getMinimumQuantity(),
+                2,
+                '.',
+                ''
+            );
         }
 
         if (floatval($discount->getPercentage()) > 0) {
@@ -232,10 +292,9 @@ class Proactive extends View
             $itemIds      = array_unique($itemIds);
             $itemIds      = array_diff($itemIds, [$itemId]);
             $counter      = 0;
-            $popupLink    = '';
-            $popupHtml    = '';
             $productsData = [];
-            $productHtml  = '';
+            $productName  = '';
+
             if (!empty($itemIds)) {
                 $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
             }
@@ -243,67 +302,73 @@ class Proactive extends View
                 if ($this->getMixandMatchProductLimit() == $counter) {
                     break;
                 }
-                $priceHtml = '';
-                if ($counter == 0) {
-                    $popupLink = "<a style='cursor:pointer' class='ls-click-product-promotion'
-                     data-id='" . $discount->getId() . "'>"
-                        . __('Click Here to see the items') . "</a>";
-                    $popupHtml = "<div class='ls-discounts-popup-model'
-                    id='ls-popup-model-" . $discount->getId() . "' style='display:none;'>";
-                }
-                $productHtml = '';
+
+                $productPrice = '';
                 if (!empty($productInfo)) {
-                    $imageHtml = parent::getImage(
-                        $productInfo,
-                        'product_base_image'
-                    )
-                        ->toHtml();
+                    $imageUrl = $this->getImageUrl($productInfo);
                     if (!empty($productInfo->getFinalPrice())) {
-                        $priceHtml = parent::getProductPrice($productInfo);
+                        $productPrice = $productInfo->getFinalPrice();
                     }
                     if (!empty($productInfo->getProductUrl())) {
                         if (!empty($productInfo->getName())) {
                             $productName = $productInfo->getName();
-                            if ($counter == 0) {
-                                $productHtml = $popupHtml;
-                            }
-                            $productHtml   .= "<div class='item-popup'>";
-                            $productHtml   .= "<a  href = '" . $productInfo->getProductUrl() . "' class='product-link'
-                             target='_blank'>" . $imageHtml .
-                                "<div class='title'>" . $productName . '</div>';
-                            $productHtml   .= '</a>';
-                            $productHtml   .= $priceHtml . '</div>';
-                            $productData[] = $productHtml;
                         }
                     }
+
+                    $productData[] = [
+                        'product_name' => $productName,
+                        'image_url'    => $imageUrl,
+                        'product_url'  => $productInfo->getProductUrl(),
+                        'sku'          => $productInfo->getSku(),
+                        'price'        => $this->priceHelper->currency($productPrice, true, false)
+                    ];
                 }
                 $counter++;
             }
             if (!empty($discountText)) {
-                $discountText .= __('if Buy with any of these items: ') . $popupLink;
-            } else {
-                $discountText .= $popupLink;
+                $discountText .= __('if Buy with any of these items: ');
             }
+
+            $responseArr['discount_description_text'] = $discountText;
+
             if ($this->getMixandMatchProductLimit() != 0) {
-                $description[] = $discountText;
                 if (!empty($productsData)) {
-                    $description[] = implode(' ', $productData);
-                    $description[] = '</div>';
+                    $responseArr['discount_products_data']    = $productData;
                 }
             }
         } else {
             if (!empty($discountText)) {
-                $description[] = $discountText . "</span>";
+                $responseArr['discount_description_text'] = $discountText;
             }
         }
-        $description = implode('<br/>', $description);
-        return $description;
+
+        return $responseArr;
+    }
+
+    /**
+     * Get product image url by emulating frontend area (for graphql)
+     *
+     * @param $product
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getImageUrl($product)
+    {
+        $this->appEmulation->startEnvironmentEmulation(
+            $this->lsr->getCurrentStoreId(),
+            Area::AREA_FRONTEND,
+            true
+        );
+        $imageUrl = $this->imageHelper->init($product, 'product_base_image')->getUrl();
+        $this->appEmulation->stopEnvironmentEmulation();
+        return $imageUrl;
     }
 
     /**
      * Get mix and match product limit
      *
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getMixandMatchProductLimit()
     {
@@ -311,38 +376,39 @@ class Proactive extends View
     }
 
     /**
+     * Format coupon code response
+     *
      * @param PublishedOffer $coupon
      * @return array|string
+     * @throws NoSuchEntityException
      */
     public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
-        $description = [];
+        $responseArr = [];
         if ($coupon->getDescription()) {
-            $description[] = "<span class='coupon-description'>" . $coupon->getDescription() . '</span>';
+            $responseArr['coupon_description'] = $coupon->getDescription();
         }
         if ($coupon->getDetails()) {
-            $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . '</span>';
+            $responseArr['coupon_details'] = $coupon->getDetails();
         }
         if ($coupon->getCode() != DiscountType::PROMOTION) {
             if ($coupon->getExpirationDate()) {
-                $description[] = "
-        <span class='coupon-expiration-date-label discount-label'>" . __('Expiry :') . "</span>
-        <span class='coupon-expiration-date-value discount-value'>" .
-                    $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . '</span>';
+                $responseArr['coupon_expire_date'] = $this->getFormattedOfferExpiryDate($coupon->getExpirationDate());
             }
             if ($coupon->getOfferId()) {
-                $description[] = "
-        <span class='coupon-offer-id-label discount-label'>" . __('Coupon Code :') . "</span>
-        <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';
+                $responseArr['offer_id'] = $coupon->getOfferId();
             }
         }
-        $description = implode('<br/>', $description);
-        return $description;
+
+        return $responseArr;
     }
 
     /**
+     * Get formatted expiry date
+     *
      * @param $date
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getFormattedOfferExpiryDate($date)
     {
@@ -359,46 +425,5 @@ class Proactive extends View
         }
 
         return null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAjaxUrl()
-    {
-        return $this->getUrl('omni/ajax/ProactiveDiscountsAndCoupons');
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getProductSku()
-    {
-        $currentProduct = $this->getProduct();
-        if (empty($currentProduct) || !$currentProduct->getId()) {
-            return null;
-        }
-        return $currentProduct->getSku();
-    }
-
-    /**
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function isDiscountEnable()
-    {
-        return $this->lsr->getStoreConfig(
-            LSR::LS_DISCOUNT_SHOW_ON_PRODUCT,
-            $this->lsr->getCurrentStoreId()
-        );
-    }
-
-    /**
-     * @return bool|null
-     * @throws NoSuchEntityException
-     */
-    public function isValid()
-    {
-        return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
     }
 }
