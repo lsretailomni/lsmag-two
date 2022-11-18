@@ -79,7 +79,7 @@ use Magento\Framework\Escaper;
                                         class="col store-name"><?= $_order->getStoreName() ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Total')) ?>"
                                         class="col total"><?= /* @escapeNotVerified */
-                                        $block->getFormattedPrice($_order->getTotalAmount(), $_order->getStoreCurrency(), $_order->getStoreId()) ?></td>
+                                        $block->getFormattedPrice($_order->getTotalAmount(), $_order->getStoreCurrency(), $_order->getStoreId(), $_order->getIdType()) ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */
                                         $_order->getStatus() ?></td>

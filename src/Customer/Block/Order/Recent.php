@@ -120,11 +120,12 @@ class Recent extends Template
      * @param $amount
      * @param $currency
      * @param $storeId
-     * @return float
+     * @param $orderType
+     * @return mixed
      */
-    public function getFormattedPrice($amount, $currency = null, $storeId = null)
+    public function getFormattedPrice($amount, $currency = null, $storeId = null, $orderType = null)
     {
-        return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId);
+        return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId, $orderType);
     }
 
     /**
@@ -158,6 +159,12 @@ class Recent extends Template
                             'order_id' => $order->getId()
                         ]
                     );
+                }
+            }
+
+            if (!empty($magOrder) && !empty($order->getStoreCurrency())) {
+                if ($order->getStoreCurrency() != $magOrder->getOrderCurrencyCode()) {
+                    $order->setCustomerOrderNo(null);
                 }
             }
 
