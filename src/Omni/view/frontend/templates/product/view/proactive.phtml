@@ -4,12 +4,12 @@
 use \Ls\Omni\Block\Product\View\Discount\Proactive;
 
 $productData = $block->getData();
-$productSku  = $productData['data']['productSku'];
-$coupons     = $productData['data']['coupons'];
+$itemId  = $block->getLsCentralItemIdBySku($productData['data']['productSku']);
+$coupons = $productData['data']['coupons'];
 ?>
 <div class="proactive-discounts-container">
     <?php
-    $discounts = $block->getProactiveDiscounts($productSku);
+    $discounts = $block->getProactiveDiscounts($itemId);
     if (!empty($discounts) || !(trim($coupons) == '')) {
         ?>
         <div class="discount-dropdown-label">
@@ -39,9 +39,8 @@ $coupons     = $productData['data']['coupons'];
                 <?php
                 echo $coupons;
                 foreach ($discounts as $discount) {
-
                     echo "<div class='dropdown-content-wrapper content-discount'>
-                " . $block->getFormattedDescriptionDiscount($productSku, $discount) . "
+                " . $block->getFormattedDescriptionDiscount($itemId, $discount) . "
             </div>";
                 }
                 ?>
