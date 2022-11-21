@@ -116,6 +116,7 @@ class SyncImages extends ProductCreateTask
                         $variantId = $explodeSku[1];
                     }
                     $itemId        = $explodeSku[0];
+                    $this->getExistingImageswithHash($itemId);
                     $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->store->getId());
                     if (!empty($uomCodesTotal)) {
                         if (count($uomCodesTotal[$itemId]) > 1) {
@@ -156,15 +157,15 @@ class SyncImages extends ProductCreateTask
     /**
      * Fetch existing images based on sku and add image hashes.
      *
-     * @param $itemSku
+     * @param $itemId
      * @return void
      * @throws FileSystemException
      */
-    public function getExistingImageswithHash($itemSku)
+    public function getExistingImageswithHash($itemId)
     {
         $filterArr = [];
         $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('sku', "%".$itemSku."%", 'like')
+            ->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, "%".$itemId."%", 'like')
             ->create();
 
         $productObjs = $this->productRepository->getList($searchCriteria);
@@ -406,10 +407,10 @@ class SyncImages extends ProductCreateTask
     private function getFileHash(string $path): string
     {
         $content = '';
-        if ($this->_mediaDirectory->isFile($path)
-            && $this->_mediaDirectory->isReadable($path)
+        if ($this->mediaDirectory->isFile($path)
+            && $this->mediaDirectory->isReadable($path)
         ) {
-            $content = $this->_mediaDirectory->readFile($path);
+            $content = $this->mediaDirectory->readFile($path);
         }
         return $content ? hash(self::HASH_ALGORITHM, $content) : '';
     }
@@ -431,12 +432,12 @@ class SyncImages extends ProductCreateTask
      */
     private function getMediaBasePath(): string
     {
-        $mediaDir = !is_a($this->_mediaDirectory->getDriver(), File::class)
+        $mediaDir = !is_a($this->mediaDirectory->getDriver(), File::class)
             // make media folder a primary folder for media in external storages
             ? $this->filesystem->getDirectoryReadByPath(DirectoryList::MEDIA)
             : $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
 
-        return $this->_mediaDirectory->getRelativePath($mediaDir->getAbsolutePath());
+        return $this->mediaDirectory->getRelativePath($mediaDir->getAbsolutePath());
     }
 
     /**
