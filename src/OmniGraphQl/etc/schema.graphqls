@@ -73,6 +73,9 @@ type Query {
    order_taking_calendar (
     store_id: String! @doc(description: "Store ID.")
    ): OrderTakingCalendarOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\OrderTakingCalendarOutput") @doc(description: "Get Order taking calender.")
+   get_discounts (
+    item_id: String! @doc(description: "Item Sku whose availability is required.")
+   ): GetDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetDiscountsOutput") @doc(description: "Get list of discounts based on Item Id and customer group.")
 }
 
 type CartItemsAvailabilityInStoreOutput {
@@ -196,4 +199,35 @@ type StoreConfig {
 
 input SetPaymentMethodOnCartInput {
     anonymous: Boolean @doc(description: "Indicates whether set payment method without shipping and billing address is enabled (true) or disabled (false).")
+}
+
+type GetDiscountsOutput {
+    output: discountsData @doc(description: "Pro active discounts output")
+}
+
+type discountsData {
+    discounts: [discountsDataArray] @doc(description: "Pro active discounts output")
+    coupons: [couponsDataArray] @doc(description: "Coupons output")
+}
+
+type couponsDataArray {
+    coupon_description : String @doc(description: "Coupon Name")
+    coupon_details : String @doc(description: "Coupon details")
+    coupon_expire_date : String @doc(description: "Coupon expiry date")
+    offer_id : String @doc(description: "Offer Id")
+}
+
+type discountsDataArray {
+    discount_description_title: String @doc(description: "Pro active discounts title")
+    discount_description_text: String @doc(description: "Pro active discounts description text")
+    discount_min_qty: Int @doc(description: "Minimum quantity")
+    discount_products_data: [discountProductArray] @doc(description: "Mix and match product list")
+}
+
+type discountProductArray {
+    product_name: String @doc(description: "Mix and match product name")
+    image_url: String @doc(description: "Mix and match product image url")
+    product_url : String @doc(description: "Mix and match product url")
+    sku : String @doc(description: "Mix and match product sku")
+    price: String @doc(description: "Mix and match product name")
 }
