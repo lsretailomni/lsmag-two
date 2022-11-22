@@ -67,7 +67,7 @@ if (!empty($discountInfo)) {
                 <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($line->getDiscountAmount()) . ')'; ?>
             </div>
         <?php else: ?>
-            <?= $block->getItemPriceHtml() ?>
+            <?= $viewModel->getFormattedPrice($block->getItem()->getPrice()) ?>
         <?php endif; ?>
     </td>
     <td class="col qty" data-th="<?= $escaper->escapeHtml(__('Qty')) ?>">
@@ -81,6 +81,6 @@ if (!empty($discountInfo)) {
         </ul>
     </td>
     <td class="col subtotal" data-th="<?= $escaper->escapeHtml(__('Subtotal')) ?>">
-        <?= $block->getItemRowTotalHtml() ?>
+        <?= $viewModel->getFormattedPrice($block->getItem()->getRowTotal()) ?>
     </td>
 </tr>

@@ -27,6 +27,7 @@ use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Directory\Model\CurrencyFactory;
 
 /**
  * Useful helper functions for order
@@ -45,6 +46,11 @@ class OrderHelper extends AbstractHelper
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
+
+    /**
+     * @var StoreHelper
+     */
+    public $storeHelper;
 
     /**
      * @var CustomerSessionProxy
@@ -95,6 +101,21 @@ class OrderHelper extends AbstractHelper
     public $storeManager;
 
     /**
+     * @var CurrencyFactory
+     */
+    public $currencyFactory;
+
+    /**
+     * @var mixed
+     */
+    private $currentOrder;
+
+    /**
+     * @var mixed
+     */
+    private $storeData;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
@@ -108,6 +129,8 @@ class OrderHelper extends AbstractHelper
      * @param Registry $registry
      * @param DateTime $dateTime
      * @param StoreManagerInterface $storeManager
+     * @param StoreHelper $storeHelper
+     * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
         Context               $context,
@@ -115,14 +138,16 @@ class OrderHelper extends AbstractHelper
         BasketHelper          $basketHelper,
         LoyaltyHelper         $loyaltyHelper,
         Model\OrderRepository $orderRepository,
-        CustomerSessionProxy  $customerSession,
-        CheckoutSessionProxy  $checkoutSession,
-        LSR                   $lsr,
-        Order                 $orderResourceModel,
-        Json                  $json,
-        Registry              $registry,
-        DateTime              $dateTime,
-        StoreManagerInterface $storeManager
+        CustomerSessionProxy $customerSession,
+        CheckoutSessionProxy $checkoutSession,
+        LSR $lsr,
+        Order $orderResourceModel,
+        Json $json,
+        Registry $registry,
+        DateTime $dateTime,
+		StoreManagerInterface $storeManager,
+        StoreHelper $storeHelper,
+        CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -137,6 +162,8 @@ class OrderHelper extends AbstractHelper
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
         $this->storeManager       = $storeManager;
+        $this->storeHelper        = $storeHelper;
+        $this->currencyFactory    = $currencyFactory;
     }
 
     /**
@@ -726,8 +753,8 @@ class OrderHelper extends AbstractHelper
      */
     public function getMagentoOrderGivenDocumentId($documentId)
     {
-        $order = null;
-        $orderList  = $this->orderRepository->getList(
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
             addFilter('document_id', $documentId)->create()
         )->getItems();
@@ -976,5 +1003,46 @@ class OrderHelper extends AbstractHelper
         $status = $order->getStatus();
 
         return empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+    }
+
+    /**
+     * Getting price with currency from store
+     *
+     * @param $priceCurrency
+     * @param $amount
+     * @param $currency
+     * @param $storeId
+     * @param $orderType
+     * @return mixed
+     */
+    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
+    {
+        $currencyObject = null;
+
+        if (empty($currency) && empty($storeId) && !$this->currentOrder) {
+            $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
+        }
+
+        if (empty($currency) && empty($storeId) && empty($orderType) && $this->currentOrder) {
+            if (is_array($this->currentOrder)) {
+                foreach ($this->currentOrder as $order) {
+                    $currency  = $order->getStoreCurrency();
+                    $orderType = $order->getIdType();
+                }
+            } else {
+                $currency  = $this->currentOrder->getStoreCurrency();
+                $orderType = $this->currentOrder->getIdType();
+            }
+        }
+
+        if ($orderType != DocumentIdType::RECEIPT) {
+            $currency = null;
+        }
+
+        if (!empty($currency)) {
+            $currencyObject = $this->currencyFactory->create()->load($currency);
+        }
+
+        return $priceCurrency->format($amount, false, 2, null, $currencyObject);
     }
 }

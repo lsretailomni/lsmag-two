@@ -116,6 +116,11 @@ class ReplItem
     protected $ItemFamilyCode = null;
 
     /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
+
+    /**
      * @property int $KeyingInPrice
      */
     protected $KeyingInPrice = null;
@@ -584,6 +589,24 @@ class ReplItem
     }
 
     /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->ItemTrackingCode;
+    }
+
+    /**
      * @param int $KeyingInPrice
      * @return $this
      */
@@ -906,7 +929,5 @@ class ReplItem
     {
         return $this->scope_id;
     }
-
-
 }
 
