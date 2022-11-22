@@ -4,6 +4,7 @@ namespace Ls\Omni\Block\Product\View;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem;
+use Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -17,10 +18,6 @@ use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\StringUtils;
 
-/**
- * Class Recommend
- * @package Ls\Omni\Block\Product\View
- */
 class Recommend extends \Magento\Catalog\Block\Product\View
 {
     /** @var LSR */
@@ -30,7 +27,11 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     public $LSRecommend;
 
     /**
-     * Recommend constructor.
+     * @var ItemHelper
+     */
+    public $itemHelper;
+
+    /**
      * @param LSR $lsr
      * @param Context $context
      * @param \Magento\Framework\Url\EncoderInterface $urlEncoder
@@ -43,6 +44,7 @@ class Recommend extends \Magento\Catalog\Block\Product\View
      * @param ProductRepositoryInterface $productRepository
      * @param PriceCurrencyInterface $priceCurrency
      * @param LSRecommendHelper $LS_RecommendHelper
+     * @param ItemHelper $itemHelper
      * @param array $data
      */
     public function __construct(
@@ -58,10 +60,12 @@ class Recommend extends \Magento\Catalog\Block\Product\View
         ProductRepositoryInterface $productRepository,
         PriceCurrencyInterface $priceCurrency,
         LSRecommendHelper $LS_RecommendHelper,
+        ItemHelper $itemHelper,
         array $data = []
     ) {
         $this->lsr         = $lsr;
         $this->LSRecommend = $LS_RecommendHelper;
+        $this->itemHelper  = $itemHelper;
         parent::__construct(
             $context,
             $urlEncoder,
@@ -111,16 +115,18 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     }
 
     /**
-     * @param $productId
+     * Get recommendation given itemId
+     *
+     * @param string $itemId
      * @return ProductInterface[]|null
      * @throws NoSuchEntityException
      */
-    public function getProductRecommendation($productId)
+    public function getProductRecommendation($itemId)
     {
-        if (empty($productId)) {
+        if (empty($itemId)) {
             return null;
         }
-        $recommendedProducts = $this->LSRecommend->getProductRecommendationFromOmni($productId);
+        $recommendedProducts = $this->LSRecommend->getProductRecommendationFromOmni($itemId);
         if ($recommendedProducts instanceof ArrayOfRecommendedItem) {
             return $this->LSRecommend->parseProductRecommendation($recommendedProducts);
         }
@@ -134,5 +140,17 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     public function isValid()
     {
         return $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+    }
+
+    /**
+     * Get Ls Central Item Id by sku
+     *
+     * @param string $sku
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function getLsCentralItemIdBySku($sku)
+    {
+        return $this->itemHelper->getLsCentralItemIdBySku($sku);
     }
 }

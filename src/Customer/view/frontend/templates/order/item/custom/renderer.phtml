@@ -34,7 +34,7 @@ use \Ls\Customer\Block\Order\Item\Custom\Renderer; ?>
                     <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()); ?>
                 </strike></div>
             <div class="lsdiscountamount">
-                <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->priceCurrency->format($_item->getDiscountAmount()) . ')'; ?>
+                <?= /* @noEscape */ '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()) . ')'; ?>
             </div>
         <?php else: ?>
             <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice()); ?>

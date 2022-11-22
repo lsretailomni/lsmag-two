@@ -200,19 +200,14 @@ class LSRecommend extends AbstractHelper
     }
 
     /**
-     * @param $productIds
-     * @return ProductInterface[]|null
+     * Get Product collection
+     *
+     * @param array $itemIds
+     * @return array|ProductInterface[]
      */
-    public function getProductCollection($productIds)
+    public function getProductCollection($itemIds)
     {
-        $searchCriteria = $this->searchCriteriaBuilder
-            ->addFilter('sku', $productIds, 'in')
-            ->create();
-        $products = $this->productRepository->getList($searchCriteria);
-        if ($products->getTotalCount() > 0) {
-            return $products->getItems();
-        }
-        return null;
+        return $this->itemHelper->getProductsInfoByItemIds($itemIds);
     }
 
     /**
@@ -234,7 +229,6 @@ class LSRecommend extends AbstractHelper
 
             foreach ($quoteItems as $quoteItem) {
                 list($sku) = $this->itemHelper->getComparisonValues(
-                    $quoteItem->getProductId(),
                     $quoteItem->getSku()
                 );
                 $itemsSkusArray[] = $sku;

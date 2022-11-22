@@ -9,10 +9,12 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use \Ls\Omni\Client\Ecommerce\Entity\ImageView;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Helper\Category as CategoryHelper;
 use Magento\Catalog\Model\CategoryRepository;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\ValidatorException;
 use Magento\Framework\Filesystem\Io\File;
@@ -68,8 +70,10 @@ class Offers extends Template
      */
     public $lsr;
 
+    /** @var ReplicationHelper */
+    public $replicationHelper;
+
     /**
-     * Offers constructor.
      * @param Context $context
      * @param LoyaltyHelper $loyaltyHelper
      * @param File $file
@@ -80,6 +84,7 @@ class Offers extends Template
      * @param CategoryRepository $categoryRepository
      * @param CategoryHelper $categoryHelper
      * @param LSR $lsr
+     * @param ReplicationHelper $replicationHelper
      * @param array $data
      */
     public function __construct(
@@ -93,6 +98,7 @@ class Offers extends Template
         CategoryRepository $categoryRepository,
         CategoryHelper $categoryHelper,
         LSR $lsr,
+        ReplicationHelper $replicationHelper,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -105,6 +111,7 @@ class Offers extends Template
         $this->categoryRepository = $categoryRepository;
         $this->categoryHelper     = $categoryHelper;
         $this->lsr                = $lsr;
+        $this->replicationHelper  = $replicationHelper;
     }
 
     /**
@@ -231,9 +238,12 @@ class Offers extends Template
     }
 
     /**
+     * Get offer product category links
+     *
      * @param $offerLines
-     * @return array|null
+     * @return array|string[]|null
      * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function getOfferProductCategoryLink($offerLines)
     {
@@ -242,7 +252,7 @@ class Offers extends Template
         if (count($offerLines) == 1) {
             try {
                 if ($offerLines[0]->getLineType() == OfferDiscountLineType::ITEM) {
-                    $product = $this->productRepository->get($offerLines[0]->getId());
+                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes($offerLines[0]->getId());
                     $url     = $product->getProductUrl();
                     $text    = __("Go To Product");
                 }
@@ -261,7 +271,7 @@ class Offers extends Template
             foreach ($offerLines as $offerLine) {
                 if ($offerLine->getLineType() == LineType::ITEM) {
                     try {
-                        $catIds = $this->productRepository->get($offerLine->getId())->getCategoryIds();
+                        $catIds = $this->replicationHelper->getProductDataByIdentificationAttributes($offerLine->getId())->getCategoryIds();
                     } catch (Exception $e) {
                         return null;
                     }
@@ -287,7 +297,7 @@ class Offers extends Template
                 $text        = __('Go To Category');
             } else {
                 try {
-                    $product = $this->productRepository->get($offerLines[0]->getId());
+                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes($offerLines[0]->getId());
                     $url     = $product->getProductUrl();
                     $text    = __('Go To Product');
                 } catch (NoSuchEntityException $e) {

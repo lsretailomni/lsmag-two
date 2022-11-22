@@ -3,6 +3,7 @@
 namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Block\Product\View\Recommend;
 use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Helper\SessionHelper;
 use \Ls\Omni\Model\Cache\Type;
@@ -17,10 +18,6 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 
-/**
- * Class Recommendation
- * @package Ls\Omni\Controller\Ajax
- */
 class Recommendation extends Action
 {
 
@@ -50,7 +47,6 @@ class Recommendation extends Action
     public $sessionHelper;
 
     /**
-     * Recommendation constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
@@ -75,6 +71,8 @@ class Recommendation extends Action
     }
 
     /**
+     * Entry point for controller
+     *
      * @return ResponseInterface|Json|Redirect|ResultInterface
      * @throws FileSystemException
      */
@@ -94,7 +92,7 @@ class Recommendation extends Action
         $block             = $this->cacheHelper->getCachedContent($cacheKey);
         if ($block === false) {
             $block = $resultPage->getLayout()
-                ->createBlock('Ls\Omni\Block\Product\View\Recommend')
+                ->createBlock(Recommend::class)
                 ->setTemplate('Ls_Omni::product/view/recommendation.phtml')
                 ->setData('data', $data)
                 ->toHtml();

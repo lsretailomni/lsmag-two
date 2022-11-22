@@ -134,7 +134,6 @@ class Renderer extends DefaultRenderer
             foreach ($this->itemCollection->getItems() as $orderItem) {
                 if (!$orderItem->getParentItemId()) {
                     list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                        $orderItem->getProductId(),
                         $orderItem->getSku()
                     );
                     if ($itemId == $centralItem->getItemId() &&
@@ -173,12 +172,16 @@ class Renderer extends DefaultRenderer
     }
 
     /**
+     * Get formatted price
+     *
      * @param $amount
+     * @param $currency
+     * @param $storeId
      * @return float
      */
-    public function getFormattedPrice($amount)
+    public function getFormattedPrice($amount, $currency = null, $storeId = null)
     {
-        return $this->priceCurrency->format($amount, false, 2);
+        return $this->orderHelper->getPriceWithCurrency($this->priceCurrency, $amount, $currency, $storeId);
     }
 
     /**
