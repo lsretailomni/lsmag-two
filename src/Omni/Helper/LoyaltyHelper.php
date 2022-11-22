@@ -92,11 +92,21 @@ class LoyaltyHelper extends AbstractHelperOmni
         if (!empty($response) && !empty($response->getResult())) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
-                ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()],
+                [
+                    "image" => $response->getResult()->getImage(),
+                    "format" => $response->getResult()->getFormat(),
+                    "location" => $response->getResult()->getLocation(),
+                    "locationType" => $response->getResult()->getLocationType()
+                ],
                 [Type::CACHE_TAG],
                 604800
             );
-            return ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()];
+            return [
+                "image" => $response->getResult()->getImage(),
+                "format" => $response->getResult()->getFormat(),
+                "location" => $response->getResult()->getLocation(),
+                "locationType" => $response->getResult()->getLocationType()
+            ];
         }
         return [];
     }
