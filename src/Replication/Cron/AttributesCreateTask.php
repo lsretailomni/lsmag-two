@@ -135,6 +135,11 @@ class AttributesCreateTask
     public $attrOptionCollectionFactory;
 
     /**
+     * @var array
+     */
+    public $optionCollection;
+
+    /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
