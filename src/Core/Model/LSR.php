@@ -328,6 +328,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const ATTRIBUTE_TAX_REFUNDED = 'lsr_tax_refunded';
     const ATTRIBUTE_BASE_TAX_REFUNDED = 'lsr_base_tax_refunded';
     const ATTRIBUTE_COUPON_CODE = 'lsr_coupon_code';
+    const CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH = 'ls_mag/replication/convert_attribute_to_visual_swatch';
+    const VISUAL_TYPE_ATTRIBUTES = 'ls_mag/replication/visual_type_attributes';
 
     // ORDER STATES
     const ORDER_STATE_NA = 'NOT_AVAILABLE';
@@ -886,5 +888,45 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
 
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
+    }
+
+    /**
+     * Function for getting colour codes based on variant value
+     *
+     * @return string[]
+     */
+    public function getColorCodes()
+    {
+        $colorCodes = [
+            'ORANGE'    => '#FFA500',
+            'GREEN'     => '#00FF00',
+            'BLACK'     => '#000000',
+            'GRAY'      => '#808080',
+            'GREY'      => '#808080',
+            'BLUE'      => '#0000FF',
+            'BROWN'     => '#964B00',
+            'WHITE'     => '#FFFFFF',
+            'FAIR'      => '#F3CFBB',
+            'LIGHT'     => '#eedd82',
+            'NUDE'      => '#E3BC9A',
+            'TAN'       => '#D2B48C',
+            'YELLOW'    => '#FFFF00',
+            'PEACH'     => '#FFE5B4',
+            'PINK'      => '#FFC0CB',
+            'BRONZE'    => '#CD7F32',
+            'LIGHTRED'  => '#FFCCCB',
+            'RED'       => '#FF0000',
+            'DARKRED'   => '#8B0000',
+            'RUST'      => ' #b7410e',
+            'BLUEBERRY' => '#4f86f7',
+            'DIMRED'    => '#4d3c45',
+            'PURPLE'    => '#A020F0',
+            'DEEP'      => '#361313',
+            'NAVY'      => '#000080',
+            'METALLIC'  => '#aaa9ad',
+            'CREAM'     => '#FFFDD0'
+        ];
+
+        return $colorCodes;
     }
 }

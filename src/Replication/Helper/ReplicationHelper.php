@@ -3,30 +3,30 @@
 namespace Ls\Replication\Helper;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
-use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
-use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
-use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
-use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
-use \Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
-use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
-use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use \Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
-use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
-use \Ls\Replication\Logger\Logger;
-use \Ls\Replication\Model\ReplAttributeValue;
-use \Ls\Replication\Model\ReplAttributeValueSearchResults;
-use \Ls\Replication\Model\ReplExtendedVariantValue;
-use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use \Ls\Replication\Model\ReplInvStatus;
-use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
-use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
-use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
+use Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
+use Ls\Replication\Api\ReplImageLinkRepositoryInterface;
+use Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
+use Ls\Replication\Api\ReplItemRepositoryInterface as ReplItemRepository;
+use Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface as ReplItemUnitOfMeasure;
+use Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
+use Ls\Replication\Api\ReplTaxSetupRepositoryInterface;
+use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
+use Ls\Replication\Logger\Logger;
+use Ls\Replication\Model\ReplAttributeValue;
+use Ls\Replication\Model\ReplAttributeValueSearchResults;
+use Ls\Replication\Model\ReplExtendedVariantValue;
+use Ls\Replication\Model\ReplImageLinkSearchResults;
+use Ls\Replication\Model\ReplInvStatus;
+use Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
+use Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -487,7 +487,7 @@ class ReplicationHelper extends AbstractHelper
         $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
         $this->stockStatusRepository                     = $stockStatusRepository;
         $this->getProductIdsBySkus                       = $getProductIdsBySkus;
-        $this->eavAttributeFactory = $eavAttributeFactory;
+        $this->eavAttributeFactory                       = $eavAttributeFactory;
         parent::__construct(
             $context
         );
@@ -1200,7 +1200,6 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replTaxSetupRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -1225,7 +1224,6 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -1999,7 +1997,7 @@ class ReplicationHelper extends AbstractHelper
             foreach ($types as $attribute) {
                 $formattedCode = $this->formatAttributeCode($attribute);
 
-                $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
                 if (!$attribute->getId()) {
                     continue;
@@ -2553,7 +2551,6 @@ class ReplicationHelper extends AbstractHelper
             foreach ($productIds as $id) {
                 $this->stockStatusRepository->deleteById($id);
             }
-
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
@@ -2799,5 +2796,27 @@ class ReplicationHelper extends AbstractHelper
             Product::ENTITY,
             $formattedCode
         )->setData('store_id', $scopeId);
+    }
+
+    /**
+     * To get comma seperated visual swatch type attributes
+     *
+     * @param $storeId
+     * @return array|string
+     */
+    public function getVisualSwatchAttributes($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::VISUAL_TYPE_ATTRIBUTES, $storeId);
+    }
+
+    /**
+     * Check if convert to visual swatch attribute type is enabled.
+     *
+     * @param $storeId
+     * @return array|string
+     */
+    public function isVisualSwatchAttributes($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
     }
 }
