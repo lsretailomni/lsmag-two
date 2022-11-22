@@ -459,6 +459,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_VENDOR_ATTRIBUTE = 'lsr_vendor';
     const LS_ITEM_VENDOR_ATTRIBUTE = 'lsr_item_vendor';
 
+    const LS_ITEM_ID_ATTRIBUTE_CODE = 'lsr_item_id';
+    const LS_ITEM_ID_ATTRIBUTE_LABEL = 'Item ID';
+
     const LS_VARIANT_ID_ATTRIBUTE_CODE = 'lsr_variant_id';
     const LS_VARIANT_ID_ATTRIBUTE_LABEL = 'Variant ID';
 

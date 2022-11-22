@@ -225,7 +225,6 @@ class DataProvider implements ConfigProviderInterface
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
-
         if ($response) {
             if (is_object($response)) {
                 if (!is_array($response->getInventoryResponse())) {
@@ -304,7 +303,7 @@ class DataProvider implements ConfigProviderInterface
         foreach ($items as $item) {
             $itemQty = $item->getQty();
             list($parentProductSku, $childProductSku, , , $uomQty) =
-                $this->stockHelper->itemHelper->getComparisonValues($item->getProductId(), $item->getSku());
+                $this->stockHelper->itemHelper->getComparisonValues($item->getSku());
 
             if (!empty($uomQty)) {
                 $itemQty = $itemQty * $uomQty;

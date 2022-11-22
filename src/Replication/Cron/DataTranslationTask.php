@@ -34,8 +34,7 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Class DataTranslationTask
- * Data Translation Job for language localization
+ * Cron responsible to update translations for attributes, hierarchy nodes, items
  */
 class DataTranslationTask
 {
@@ -197,6 +196,7 @@ class DataTranslationTask
      * @param mixed $storeData
      * @return void
      * @throws NoSuchEntityException
+     * @throws LocalizedException
      */
     public function execute($storeData = null)
     {
@@ -403,6 +403,7 @@ class DataTranslationTask
      * @param int $storeId
      * @param string $langCode
      * @return bool
+     * @throws LocalizedException
      */
     public function updateProductAttributesValues($storeId, $langCode)
     {
@@ -421,8 +422,18 @@ class DataTranslationTask
         foreach ($collection as $dataTranslation) {
             try {
                 $keys          = explode(';', $dataTranslation->getKey());
-                $sku           = $keys[0] == 'Item' ? $keys[1] : $keys[1] . '-' . $keys[2];
-                $productData   = $this->productRepository->get($sku, true, $storeId);
+                $productData   = $keys[0] == 'Item' ?
+                    $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $keys[1],
+                        '',
+                        '',
+                        $storeId
+                    ) : $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $keys[1],
+                        $keys[2],
+                        '',
+                        $storeId
+                    );
                 $formattedCode = $this->replicationHelper->formatAttributeCode($keys[4]);
 
                 if (isset($productData)) {
@@ -481,6 +492,7 @@ class DataTranslationTask
      * @param int $storeId
      * @param string $langCode
      * @return bool
+     * @throws LocalizedException
      */
     public function updateItem($storeId, $langCode)
     {
@@ -491,19 +503,23 @@ class DataTranslationTask
         );
         $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
         $collection = $this->replDataTranslationCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
             $criteria,
             'key',
-            'catalog_product_entity',
-            'sku',
-            true
+            null,
+            ['repl_data_translation_id']
         );
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {
             try {
                 $sku         = $dataTranslation->getKey();
-                $productData = $this->productRepository->get($sku, true, $storeId);
+                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $sku,
+                    '',
+                    '',
+                    $storeId
+                );
 
                 if (isset($productData)) {
                     if ($dataTranslation->getTranslationId() == LSR::SC_TRANSLATION_ID_ITEM_HTML) {
@@ -597,7 +613,7 @@ class DataTranslationTask
      *
      * @param mixed $storeData
      * @return int[]
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|LocalizedException
      */
     public function executeManually($storeData = null)
     {
