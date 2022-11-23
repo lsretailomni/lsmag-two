@@ -777,7 +777,6 @@ class ProductCreateTask
                     }
                     $this->attributeMediaGalleryEntry->setTypes($types);
                     $galleryArray[] = clone $this->attributeMediaGalleryEntry;
-                    //$this->imagesFetched[$image->getImageId()] = $galleryArray[0];
                     $i++;
                 } else {
                     $image->setData('is_failed', 1);
