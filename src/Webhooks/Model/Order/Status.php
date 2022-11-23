@@ -9,6 +9,9 @@ use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order\CreditmemoFactory;
+use Magento\Sales\Model\Order\Invoice;
+use Magento\Sales\Model\Service\CreditmemoService;
 
 /**
  * class to process status through webhook
@@ -41,24 +44,48 @@ class Status
     private $emailNotification;
 
     /**
+     * @var Invoice
+     */
+    private $invoice;
+
+    /**
+     * @var CreditmemoFactory
+     */
+    private $creditMemoFactory;
+
+    /**
+     * @var CreditmemoService
+     */
+    private $creditMemoService;
+
+    /**
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
      * @param Payment $payment
      * @param EmailNotification $emailNotification
+     * @param Invoice $invoice
+     * @param CreditmemoFactory $creditMemoFactory
+     * @param CreditmemoService $creditMemoService
      */
     public function __construct(
         Data $helper,
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
         Payment $payment,
-        EmailNotification $emailNotification
+        EmailNotification $emailNotification,
+        Invoice $invoice,
+        CreditmemoFactory $creditMemoFactory,
+        CreditmemoService $creditMemoService
     ) {
         $this->helper            = $helper;
         $this->orderCancel       = $orderCancel;
         $this->creditMemo        = $creditMemo;
         $this->payment           = $payment;
         $this->emailNotification = $emailNotification;
+        $this->invoice           = $invoice;
+        $this->creditMemoFactory = $creditMemoFactory;
+        $this->creditMemoService = $creditMemoService;
     }
 
     /**
@@ -146,13 +173,15 @@ class Status
      * @param OrderInterface $magOrder
      * @param array $itemsInfo
      * @param array $items
+     * @throws LocalizedException
      */
     public function cancel($magOrder, $itemsInfo, $items)
     {
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
         $magentoOrderTotalItemsQty = (int) $magOrder->getTotalQtyOrdered();
         $shipmentLineCount = (int) $isClickAndCollectOrder ? 0 : 1;
-        $magentoOrderTotalItemsQty = $magentoOrderTotalItemsQty + $shipmentLineCount;
+        $magentoOrderTotalItemsQty = $magentoOrderTotalItemsQty +
+        ($shipmentLineCount == 1 && $magOrder->getShippingAmount()) ? $shipmentLineCount : 0;
 
         if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
@@ -161,9 +190,24 @@ class Status
         }
 
         if ($magOrder->hasInvoices()) {
-            $shippingItemId = $this->helper->getShippingItemId();
-            $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
-            $this->creditMemo->refund($magOrder, $items, $creditMemoData);
+            if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
+                $invoices = $magOrder->getInvoiceCollection();
+
+                foreach ($invoices as $invoice) {
+                    $invoiceIncrementId = $invoice->getIncrementId();
+                    $invoiceObj = $this->invoice->loadByIncrementId($invoiceIncrementId);
+                    $creditMemo = $this->creditMemoFactory->createByOrder($magOrder);
+
+                    // Don't set invoice if you want to do offline refund
+                    $creditMemo->setInvoice($invoiceObj);
+
+                    $this->creditMemoService->refund($creditMemo);
+                }
+            } else {
+                $shippingItemId = $this->helper->getShippingItemId();
+                $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
+                $this->creditMemo->refund($magOrder, $items, $creditMemoData);
+            }
         }
     }
 }
