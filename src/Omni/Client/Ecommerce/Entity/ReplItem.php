@@ -930,7 +930,5 @@ class ReplItem
     {
         return $this->scope_id;
     }
-
-
 }
 

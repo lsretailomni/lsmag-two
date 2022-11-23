@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityPreSellProductResponse implements ResponseInterface
 {
-
     /**
      * @property ActivityResponse $ActivityPreSellProductResult
      */
@@ -43,7 +42,5 @@ class ActivityPreSellProductResponse implements ResponseInterface
     {
         return $this->ActivityPreSellProductResult;
     }
-
-
 }
 

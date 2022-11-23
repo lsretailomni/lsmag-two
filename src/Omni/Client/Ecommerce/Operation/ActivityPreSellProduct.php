@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityPreSellProductResponse as ActivityPr
 
 class ActivityPreSellProduct extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_PRE_SELL_PRODUCT';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityPreSellProduct extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

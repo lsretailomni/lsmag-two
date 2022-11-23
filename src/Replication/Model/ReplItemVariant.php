@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplItemVariantInterface;
 
 class ReplItemVariant extends AbstractModel implements ReplItemVariantInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_item_variant';
 
     protected $_cacheTag = 'ls_replication_repl_item_variant';
@@ -380,7 +379,5 @@ class ReplItemVariant extends AbstractModel implements ReplItemVariantInterface,
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

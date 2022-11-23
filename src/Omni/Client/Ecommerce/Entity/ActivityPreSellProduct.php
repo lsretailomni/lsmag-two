@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityPreSellProduct implements RequestInterface
 {
-
     /**
      * @property string $locationNo
      */
@@ -127,7 +126,5 @@ class ActivityPreSellProduct implements RequestInterface
     {
         return $this->quantity;
     }
-
-
 }
 

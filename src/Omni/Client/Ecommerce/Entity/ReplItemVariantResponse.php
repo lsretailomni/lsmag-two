@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemVariantResponse
 {
-
     /**
      * @property ArrayOfReplItemVariant $ItemVariants
      */
@@ -102,7 +101,5 @@ class ReplItemVariantResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

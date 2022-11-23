@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityUpdateGroupHeaderStatusResponse implements ResponseInterface
 {
-
     /**
      * @property string $ActivityUpdateGroupHeaderStatusResult
      */
@@ -43,7 +42,5 @@ class ActivityUpdateGroupHeaderStatusResponse implements ResponseInterface
     {
         return $this->ActivityUpdateGroupHeaderStatusResult;
     }
-
-
 }
 

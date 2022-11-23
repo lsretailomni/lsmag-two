@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityUpdateGroupHeaderStatus implements RequestInterface
 {
-
     /**
      * @property string $groupNo
      */
@@ -58,7 +57,5 @@ class ActivityUpdateGroupHeaderStatus implements RequestInterface
     {
         return $this->statusCode;
     }
-
-
 }
 

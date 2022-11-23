@@ -302,6 +302,8 @@ class Proactive extends View
     }
 
     /**
+     * Get mix and match product limit
+     *
      * @return string
      */
     public function getMixandMatchProductLimit()
@@ -345,7 +347,6 @@ class Proactive extends View
      */
     public function getFormattedOfferExpiryDate($date)
     {
-        $offerExpiryDate = null;
         try {
             $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,

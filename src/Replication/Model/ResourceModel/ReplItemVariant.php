@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplItemVariant extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_item_variant', 'repl_item_variant_id' );
     }
-
-
 }
 

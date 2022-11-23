@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemVariant
 {
-
     /**
      * @property string $Description
      */
@@ -171,7 +170,5 @@ class ReplItemVariant
     {
         return $this->scope_id;
     }
-
-
 }
 

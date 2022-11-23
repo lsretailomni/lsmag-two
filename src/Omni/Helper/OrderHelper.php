@@ -23,8 +23,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
+use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Directory\Model\CurrencyFactory;
 
 /**
  * Useful helper functions for order
@@ -43,6 +46,11 @@ class OrderHelper extends AbstractHelper
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
+
+    /**
+     * @var StoreHelper
+     */
+    public $storeHelper;
 
     /**
      * @var CustomerSessionProxy
@@ -88,11 +96,31 @@ class OrderHelper extends AbstractHelper
     public Registry $registry;
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
+     * @var CurrencyFactory
+     */
+    public $currencyFactory;
+
+    /**
+     * @var mixed
+     */
+    private $currentOrder;
+
+    /**
+     * @var mixed
+     */
+    private $storeData;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Model\OrderRepository $orderRepository
+     * @param OrderRepository $orderRepository
      * @param CustomerSessionProxy $customerSession
      * @param CheckoutSessionProxy $checkoutSession
      * @param LSR $lsr
@@ -100,12 +128,15 @@ class OrderHelper extends AbstractHelper
      * @param Json $json
      * @param Registry $registry
      * @param DateTime $dateTime
+     * @param StoreManagerInterface $storeManager
+     * @param StoreHelper $storeHelper
+     * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
-        Context $context,
-        Model\Order $order,
-        BasketHelper $basketHelper,
-        LoyaltyHelper $loyaltyHelper,
+        Context               $context,
+        Model\Order           $order,
+        BasketHelper          $basketHelper,
+        LoyaltyHelper         $loyaltyHelper,
         Model\OrderRepository $orderRepository,
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
@@ -113,7 +144,10 @@ class OrderHelper extends AbstractHelper
         Order $orderResourceModel,
         Json $json,
         Registry $registry,
-        DateTime $dateTime
+        DateTime $dateTime,
+		StoreManagerInterface $storeManager,
+        StoreHelper $storeHelper,
+        CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -127,6 +161,9 @@ class OrderHelper extends AbstractHelper
         $this->json               = $json;
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
+        $this->storeManager       = $storeManager;
+        $this->storeHelper        = $storeHelper;
+        $this->currencyFactory    = $currencyFactory;
     }
 
     /**
@@ -716,8 +753,8 @@ class OrderHelper extends AbstractHelper
      */
     public function getMagentoOrderGivenDocumentId($documentId)
     {
-        $order = null;
-        $orderList  = $this->orderRepository->getList(
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
             addFilter('document_id', $documentId)->create()
         )->getItems();
@@ -748,10 +785,11 @@ class OrderHelper extends AbstractHelper
         $sortOrder = null
     ) {
         $orders = null;
+        $websiteId = $this->storeManager->getStore($this->lsr->getCurrentStoreId());
         try {
-            $orderStatuses   = $this->lsr->getStoreConfig(
+            $orderStatuses   = $this->lsr->getWebsiteConfig(
                 LSR::LSR_RESTRICTED_ORDER_STATUSES,
-                $this->lsr->getCurrentStoreId()
+                $websiteId
             );
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
@@ -945,5 +983,66 @@ class OrderHelper extends AbstractHelper
     public function getDateTimeObject()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * Order status is not one of restricted order statuses
+     *
+     * @param Model\Order $order
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isAllowed($order)
+    {
+        $websiteId = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
+        $orderStatuses = $this->lsr->getWebsiteConfig(
+            LSR::LSR_RESTRICTED_ORDER_STATUSES,
+            $websiteId
+        );
+
+        $status = $order->getStatus();
+
+        return empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+    }
+
+    /**
+     * Getting price with currency from store
+     *
+     * @param $priceCurrency
+     * @param $amount
+     * @param $currency
+     * @param $storeId
+     * @param $orderType
+     * @return mixed
+     */
+    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
+    {
+        $currencyObject = null;
+
+        if (empty($currency) && empty($storeId) && !$this->currentOrder) {
+            $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
+        }
+
+        if (empty($currency) && empty($storeId) && empty($orderType) && $this->currentOrder) {
+            if (is_array($this->currentOrder)) {
+                foreach ($this->currentOrder as $order) {
+                    $currency  = $order->getStoreCurrency();
+                    $orderType = $order->getIdType();
+                }
+            } else {
+                $currency  = $this->currentOrder->getStoreCurrency();
+                $orderType = $this->currentOrder->getIdType();
+            }
+        }
+
+        if ($orderType != DocumentIdType::RECEIPT) {
+            $currency = null;
+        }
+
+        if (!empty($currency)) {
+            $currencyObject = $this->currencyFactory->create()->load($currency);
+        }
+
+        return $priceCurrency->format($amount, false, 2, null, $currencyObject);
     }
 }

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemVariantsResponse as ReplEcommIt
 
 class ReplEcommItemVariants extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_ITEM_VARIANTS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommItemVariants extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplItemVariantSearchResults extends SearchResults implements ReplItemVariantSearchResultsInterface
 {
-
-
 }
 

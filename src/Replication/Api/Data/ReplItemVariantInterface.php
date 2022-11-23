@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemVariantInterface
 {
-
     /**
      * @param string $Description
      * @return $this
@@ -164,7 +163,5 @@ interface ReplItemVariantInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

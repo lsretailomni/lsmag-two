@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityUpdateGroupHeaderStatusResponse as A
 
 class ActivityUpdateGroupHeaderStatus extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_UPDATE_GROUP_HEADER_STATUS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityUpdateGroupHeaderStatus extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 
