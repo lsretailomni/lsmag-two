@@ -659,6 +659,11 @@ class ProductCreateTask
                                         $uomCodes
                                     );
                                     $this->replicationHelper->assignProductToCategories($productSaved, $this->store);
+                                    $this->replicationHelper->assignTaxClassToChildren(
+                                        $productSaved,
+                                        $taxClass,
+                                        $this->store->getId()
+                                    );
                                 } catch (Exception $e) {
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
