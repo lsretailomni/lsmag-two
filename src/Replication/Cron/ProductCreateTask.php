@@ -253,23 +253,23 @@ class ProductCreateTask
     /**
      * @var Filesystem
      */
-    protected Filesystem $filesystem;
+    public Filesystem $filesystem;
     /**
      * @var Filesystem\Directory\WriteInterface
      */
-    protected Filesystem\Directory\WriteInterface $mediaDirectory;
+    public Filesystem\Directory\WriteInterface $mediaDirectory;
     /**
      * @var ResourceConnection
      */
-    protected ResourceConnection $resourceConnection;
+    public ResourceConnection $resourceConnection;
     /**
      * @var File
      */
-    protected File $file;
+    public File $file;
     /**
      * @var MediaProcessor
      */
-    protected MediaProcessor $mediaProcessor;
+    public MediaProcessor $mediaProcessor;
 
     /**
      * @param Config $eavConfig
