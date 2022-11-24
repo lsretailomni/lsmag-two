@@ -300,7 +300,7 @@ class SyncImages extends ProductCreateTask
         }
 
         //To remove duplicated images
-        //$this->removeDuplicatedImages($productData);
+        $this->removeDuplicatedImages($productData);
     }
 
     /**
@@ -323,7 +323,7 @@ class SyncImages extends ProductCreateTask
             } else {
                 $existingFilePath    = array_search($hash, $this->imageHashes);
 
-                if ($filePath != $existingFilePath) {
+                if ($filePath != $existingFilePath && $this->imageExists($existingFilePath)) {
                     $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
                     $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
 
@@ -372,6 +372,21 @@ class SyncImages extends ProductCreateTask
                 ' for ' . $newFilePath . ' with '.$existingFilePath
             );
         }
+    }
+
+    /**
+     * Check if image file exists
+     *
+     * @param $fileName
+     * @return bool
+     * @throws FileSystemException
+     */
+    public function imageExists($fileName): bool
+    {
+        $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+        $mediaRootDir = $this->joinFilePaths($mediaDirectory->getAbsolutePath(), 'catalog', 'product');
+
+        return $this->file->isExists($this->joinFilePaths($mediaRootDir, $fileName));
     }
 
     /**
