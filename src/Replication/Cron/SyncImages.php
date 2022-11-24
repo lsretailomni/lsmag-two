@@ -13,7 +13,6 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Store\Api\Data\StoreInterface;
 
@@ -301,7 +300,7 @@ class SyncImages extends ProductCreateTask
         }
 
         //To remove duplicated images
-        $this->removeDuplicatedImages($productData);
+        //$this->removeDuplicatedImages($productData);
     }
 
     /**

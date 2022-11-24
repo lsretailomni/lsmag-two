@@ -418,7 +418,7 @@ class ProductCreateTask
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
         $this->mediaConfig                               = $mediaConfig;
         $this->filesystem                                = $filesystem;
-        $this->mediaDirectory                           = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
     }
@@ -755,7 +755,13 @@ class ProductCreateTask
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
                 $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
-                $this->imagesFetched[$image->getImageId()] = $result;
+                if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
+                    $mimeType = $this->getMimeType($result['image']);
+                    if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
+                        $this->imagesFetched[$image->getImageId()] = $result;
+                    }
+                }
+
             } else {
                 $result = $this->imagesFetched[$image->getImageId()];
             }
