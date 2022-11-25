@@ -44,6 +44,7 @@ use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Gallery\UpdateHandlerFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
+use Magento\CatalogImportExport\Model\Import\Product\MediaGalleryProcessor as MediaProcessor;
 use Magento\Catalog\Model\ProductRepository\MediaGalleryProcessor;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute\Interceptor;
@@ -62,11 +63,16 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAtt
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Filesystem;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Filesystem\Driver\File;
 
 /**
  * Create Items in magento replicated from omni
@@ -236,9 +242,34 @@ class ProductCreateTask
     public $attributeSetGroupFactory;
 
     /**
+     * @var array
+     */
+    public array $imagesFetched;
+
+    /**
      * @var Product\Media\Config
      */
     public $mediaConfig;
+    /**
+     * @var Filesystem
+     */
+    public Filesystem $filesystem;
+    /**
+     * @var Filesystem\Directory\WriteInterface
+     */
+    public Filesystem\Directory\WriteInterface $mediaDirectory;
+    /**
+     * @var ResourceConnection
+     */
+    public ResourceConnection $resourceConnection;
+    /**
+     * @var File
+     */
+    public File $file;
+    /**
+     * @var MediaProcessor
+     */
+    public MediaProcessor $mediaProcessor;
 
     /**
      * @param Config $eavConfig
@@ -274,6 +305,7 @@ class ProductCreateTask
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
      * @param ReplImageLinkCollectionFactory $replImageLinkCollectionFactory
+     * @param MediaProcessor $mediaProcessor
      * @param MediaGalleryProcessor $mediaGalleryProcessor
      * @param UpdateHandlerFactory $updateHandlerFactory
      * @param EntryConverterPool $entryConverterPool
@@ -285,6 +317,10 @@ class ProductCreateTask
      * @param ReplItemVendorCollectionFactory $replItemVendorCollectionFactory
      * @param GroupFactory $attributeSetGroupFactory
      * @param Product\Media\Config $mediaConfig
+     * @param Filesystem $filesystem
+     * @param ResourceConnection $resourceConnection
+     * @param File $file
+     * @throws FileSystemException
      */
     public function __construct(
         Config $eavConfig,
@@ -320,6 +356,7 @@ class ProductCreateTask
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
         ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
+        MediaProcessor $mediaProcessor,
         MediaGalleryProcessor $mediaGalleryProcessor,
         UpdateHandlerFactory $updateHandlerFactory,
         EntryConverterPool $entryConverterPool,
@@ -330,7 +367,10 @@ class ProductCreateTask
         EavAttributeCollectionFactory $eavAttributeCollectionFactory,
         ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
         GroupFactory $attributeSetGroupFactory,
-        Product\Media\Config $mediaConfig
+        Product\Media\Config $mediaConfig,
+        Filesystem $filesystem,
+        ResourceConnection $resourceConnection,
+        File $file
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -365,6 +405,7 @@ class ProductCreateTask
         $this->collectionFactory                         = $collectionFactory;
         $this->categoryRepository                        = $categoryRepository;
         $this->replImageLinkCollectionFactory            = $replImageLinkCollectionFactory;
+        $this->mediaProcessor                            = $mediaProcessor;
         $this->mediaGalleryProcessor                     = $mediaGalleryProcessor;
         $this->updateHandlerFactory                      = $updateHandlerFactory;
         $this->entryConverterPool                        = $entryConverterPool;
@@ -376,6 +417,10 @@ class ProductCreateTask
         $this->replItemVendorCollectionFactory           = $replItemVendorCollectionFactory;
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
         $this->mediaConfig                               = $mediaConfig;
+        $this->filesystem                                = $filesystem;
+        $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $this->resourceConnection                        = $resourceConnection;
+        $this->file                                      = $file;
     }
 
     /**
@@ -708,7 +753,18 @@ class ProductCreateTask
                 'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
-            $result          = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+            if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
+                $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+                if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
+                    $mimeType = $this->getMimeType($result['image']);
+                    if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
+                        $this->imagesFetched[$image->getImageId()] = $result;
+                    }
+                }
+
+            } else {
+                $result = $this->imagesFetched[$image->getImageId()];
+            }
             if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                 $mimeType = $this->getMimeType($result['image']);
                 if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
@@ -721,6 +777,7 @@ class ProductCreateTask
                         ->setPosition($image->getDisplayOrder())
                         ->setDisabled(false)
                         ->setContent($imageContent);
+
                     if ($i == 0) {
                         $types = ['image', 'small_image', 'thumbnail'];
                     }
@@ -735,6 +792,7 @@ class ProductCreateTask
                 $image->setData('is_failed', 1);
                 $this->logger->debug('Response is empty or format empty for Image Id : ' . $image->getImageId());
             }
+
             $image->setData('processed_at', $this->replicationHelper->getDateTime());
             $image->setData('processed', 1);
             $image->setData('is_updated', 0);
