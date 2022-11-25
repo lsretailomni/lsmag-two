@@ -28,7 +28,9 @@ class RestrictedOrderStatuses implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        return [['value' => '', 'label' => __('-- Please Select --')]] +
-            $this->statusCollectionFactory->create()->toOptionArray();
+        return array_merge(
+            [['value' => '', 'label' => __('-- Please Select --')]],
+            $this->statusCollectionFactory->create()->toOptionArray()
+        );
     }
 }
