@@ -177,11 +177,11 @@ class Status
      */
     public function cancel($magOrder, $itemsInfo, $items)
     {
-        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
-        $magentoOrderTotalItemsQty = (int) $magOrder->getTotalQtyOrdered();
-        $shipmentLineCount = (int) $isClickAndCollectOrder ? 0 : 1;
+        $isClickAndCollectOrder    = $this->helper->isClickAndcollectOrder($magOrder);
+        $magentoOrderTotalItemsQty = (int)$magOrder->getTotalQtyOrdered();
+        $shipmentLineCount         = (int)$isClickAndCollectOrder ? 0 : 1;
         $magentoOrderTotalItemsQty = $magentoOrderTotalItemsQty +
-        ($shipmentLineCount == 1 && $magOrder->getShippingAmount()) ? $shipmentLineCount : 0;
+            (($shipmentLineCount == 1 && $magOrder->getShippingAmount()) ? $shipmentLineCount : 0);
 
         if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
@@ -195,12 +195,9 @@ class Status
 
                 foreach ($invoices as $invoice) {
                     $invoiceIncrementId = $invoice->getIncrementId();
-                    $invoiceObj = $this->invoice->loadByIncrementId($invoiceIncrementId);
-                    $creditMemo = $this->creditMemoFactory->createByOrder($magOrder);
-
-                    // Don't set invoice if you want to do offline refund
+                    $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+                    $creditMemo         = $this->creditMemoFactory->createByOrder($magOrder);
                     $creditMemo->setInvoice($invoiceObj);
-
                     $this->creditMemoService->refund($creditMemo);
                 }
             } else {
