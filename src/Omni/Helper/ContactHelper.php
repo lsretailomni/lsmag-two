@@ -905,16 +905,6 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param $countryCode
-     * @return string
-     */
-    private function getCountryname($countryCode)
-    {
-        $country = $this->countryFactory->create()->loadByCode($countryCode);
-        return $country->getName();
-    }
-
-    /**
      * @return array
      */
     public function getAllCustomerGroupIds()
