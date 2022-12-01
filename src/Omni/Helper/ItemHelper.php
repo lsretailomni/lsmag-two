@@ -12,7 +12,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ReplBarcodeRepository;
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Api\Data\ProductSearchResultsInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
@@ -26,7 +25,6 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
-use Psr\Log\NullLogger;
 
 /**
  * Useful helper functions for item

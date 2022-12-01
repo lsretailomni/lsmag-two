@@ -14,6 +14,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
+use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Area;
@@ -26,7 +27,6 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Catalog\Helper\Image;
@@ -85,11 +85,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
     private PriceHelper $priceHelper;
 
     /**
-     * @var TimezoneInterface
-     */
-    private TimezoneInterface $timeZoneInterface;
-
-    /**
      * @var ScopeConfigInterface
      */
     private ScopeConfigInterface $scopeConfig;
@@ -105,6 +100,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
     protected $appEmulation;
 
     /**
+     * @var DataHelper
+     */
+    private DataHelper $dataHelper;
+
+    /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param PageFactory $resultPageFactory
@@ -114,11 +114,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param ItemHelper $itemHelper
      * @param Image $imageHelper
      * @param PriceHelper $priceHelper
-     * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
-     * @param Proxy $customerSession
+     * @param Session $customerSession
      * @param Http $request
      * @param Emulation $appEmulation
+     * @param DataHelper $dataHelper
      */
     public function __construct(
         LSR $lsr,
@@ -130,11 +130,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
         ItemHelper $itemHelper,
         Image $imageHelper,
         PriceHelper $priceHelper,
-        TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         Session $customerSession,
         Http $request,
-        Emulation $appEmulation
+        Emulation $appEmulation,
+        DataHelper $dataHelper
     ) {
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -145,11 +145,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->itemHelper        = $itemHelper;
         $this->imageHelper       = $imageHelper;
         $this->priceHelper       = $priceHelper;
-        $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->customerSession   = $customerSession;
         $this->request           = $request;
         $this->appEmulation      = $appEmulation;
+        $this->dataHelper        = $dataHelper;
     }
 
     /**
@@ -176,7 +176,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
         if (!empty($couponsObj != '')) {
             foreach ($couponsObj as $coupon) {
                 if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
-                    $couponsArr[] = $this->getFormattedDescriptionCoupon($coupon);
+                    $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
                 }
 
             }
@@ -296,7 +296,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
             $productName  = '';
 
             if (!empty($itemIds)) {
-                $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
+                $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
             }
             foreach ($productsData as $productInfo) {
                 if ($this->getMixandMatchProductLimit() == $counter) {
@@ -373,57 +373,5 @@ class GetDiscountsOutput extends View implements ResolverInterface
     public function getMixandMatchProductLimit()
     {
         return $this->lsr->getStoreConfig(LSR::LS_DISCOUNT_MIXANDMATCH_LIMIT, $this->lsr->getCurrentStoreId());
-    }
-
-    /**
-     * Format coupon code response
-     *
-     * @param PublishedOffer $coupon
-     * @return array|string
-     * @throws NoSuchEntityException
-     */
-    public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
-    {
-        $responseArr = [];
-        if ($coupon->getDescription()) {
-            $responseArr['coupon_description'] = $coupon->getDescription();
-        }
-        if ($coupon->getDetails()) {
-            $responseArr['coupon_details'] = $coupon->getDetails();
-        }
-        if ($coupon->getCode() != DiscountType::PROMOTION) {
-            if ($coupon->getExpirationDate()) {
-                $responseArr['coupon_expire_date'] = $this->getFormattedOfferExpiryDate($coupon->getExpirationDate());
-            }
-            if ($coupon->getOfferId()) {
-                $responseArr['offer_id'] = $coupon->getOfferId();
-            }
-        }
-
-        return $responseArr;
-    }
-
-    /**
-     * Get formatted expiry date
-     *
-     * @param $date
-     * @return string
-     * @throws NoSuchEntityException
-     */
-    public function getFormattedOfferExpiryDate($date)
-    {
-        try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
-                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                $this->lsr->getActiveWebStore()
-            ));
-
-            return $offerExpiryDate;
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return null;
     }
 }

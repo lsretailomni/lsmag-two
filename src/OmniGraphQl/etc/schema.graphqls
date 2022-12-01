@@ -73,6 +73,7 @@ type Query {
    order_taking_calendar (
     store_id: String! @doc(description: "Store ID.")
    ): OrderTakingCalendarOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\OrderTakingCalendarOutput") @doc(description: "Get Order taking calender.")
+   get_customer_cart_discounts : GetCustomerCartDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetCustomerCartDiscountsOutput") @doc(description: "Get list of discounts based on customer cart id.")
    get_discounts (
     item_id: String! @doc(description: "Item Sku whose availability is required.")
    ): GetDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetDiscountsOutput") @doc(description: "Get list of discounts based on Item Id and customer group.")
@@ -205,8 +206,16 @@ type GetDiscountsOutput {
     output: discountsData @doc(description: "Pro active discounts output")
 }
 
+type GetCustomerCartDiscountsOutput {
+    output: cartDiscountsData @doc(description: "Pro active discounts output in cart")
+}
+
 type discountsData {
     discounts: [discountsDataArray] @doc(description: "Pro active discounts output")
+    coupons: [couponsDataArray] @doc(description: "Coupons output")
+}
+
+type cartDiscountsData {
     coupons: [couponsDataArray] @doc(description: "Coupons output")
 }
 
