@@ -189,7 +189,7 @@ class Status
             $this->orderCancel->cancelItems($magOrder, $items);
         }
 
-        if ($magOrder->hasInvoices()) {
+        if ($magOrder->hasInvoices() && $this->itemExistsInInvoice($magOrder, $itemsInfo)) {
             if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
                 $invoices = $magOrder->getInvoiceCollection();
 
@@ -201,10 +201,70 @@ class Status
                     $this->creditMemoService->refund($creditMemo);
                 }
             } else {
+                $invoice = null;
+
+                foreach ($itemsInfo as $item) {
+                    $itemId    = $item['ItemId'];
+                    $variantId = $item['VariantId'];
+                    $invoice   = $this->getItemInvoice($magOrder, $itemId, $variantId);
+                }
                 $shippingItemId = $this->helper->getShippingItemId();
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
-                $this->creditMemo->refund($magOrder, $items, $creditMemoData);
+                $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
         }
+    }
+
+    /**
+     * Item exists in invoice
+     *
+     * @param $magOrder
+     * @param $itemsInfo
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function itemExistsInInvoice($magOrder, $itemsInfo)
+    {
+        $exists1 = true;
+
+        foreach ($itemsInfo as $item) {
+            $itemId    = $item['ItemId'];
+            $variantId = $item['VariantId'];
+            $exists2   = $this->getItemInvoice($magOrder, $itemId, $variantId);
+            $exists1   = $exists1 && $exists2;
+        }
+
+        return $exists1;
+    }
+
+    /**
+     * Get item invoice
+     *
+     * @param $magOrder
+     * @param $itemId
+     * @param $variantId
+     * @return false|Invoice
+     * @throws NoSuchEntityException
+     */
+    public function getItemInvoice($magOrder, $itemId, $variantId)
+    {
+        $invoices  = $magOrder->getInvoiceCollection();
+        $requiredInvoice = false;
+
+        foreach ($invoices as $invoice) {
+            $invoiceIncrementId = $invoice->getIncrementId();
+            $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+
+            foreach ($invoiceObj->getItems() as $invoiceItem) {
+                $product = $this->helper->getProductById($invoiceItem->getProductId());
+
+                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                    $requiredInvoice = $invoiceObj;
+                    break;
+                }
+            }
+        }
+
+        return $requiredInvoice;
     }
 }
