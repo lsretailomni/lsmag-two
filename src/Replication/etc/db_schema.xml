@@ -498,7 +498,7 @@
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
-    <column si:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <column xsi:type="boolean" name="ready_to_process" default="0" nullable="true" comment="Flag to check if data is ready to be processed. 0 means not yet ready &amp; 1 means already ready"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_item_variant_id"/>
