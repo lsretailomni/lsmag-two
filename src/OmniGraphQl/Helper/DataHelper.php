@@ -36,8 +36,6 @@ use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use \Ls\Omni\Model\Checkout\DataProvider;
-use Magento\Catalog\Model\Product\ImageFactory;
-use Magento\CatalogGraphQl\Model\Resolver\Products\DataProvider\Image\Placeholder as PlaceholderProvider;
 
 /**
  * Useful helper functions for the module
@@ -131,21 +129,6 @@ class DataHelper extends AbstractHelper
     public DataProvider $dataProvider;
 
     /**
-     * @var ImageFactory
-     */
-    public $productImageFactory;
-
-    /**
-     * @var PlaceholderProvider
-     */
-    public $placeholderProvider;
-
-    /**
-     * @var string[]
-     */
-    private $placeholderCache = [];
-
-    /**
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -187,8 +170,7 @@ class DataHelper extends AbstractHelper
         Information $storeInfo,
         StoreManagerInterface $storeManager,
         AddressInterfaceFactory $addressFactory,
-        DataProvider $dataProvider,
-        ImageFactory $productImageFactory
+        DataProvider $dataProvider
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -210,7 +192,6 @@ class DataHelper extends AbstractHelper
         $this->storeManager           = $storeManager;
         $this->addressFactory         = $addressFactory;
         $this->dataProvider           = $dataProvider;
-        $this->productImageFactory    = $productImageFactory;
     }
 
     /**
@@ -550,30 +531,5 @@ class DataHelper extends AbstractHelper
     public function getStoreNameById($storeId)
     {
         return $this->omniDataHelper->getStoreNameById($storeId);
-    }
-
-    /**
-     * Get image URL
-     *
-     * @param string $imageType
-     * @param string|null $imagePath
-     * @return string
-     * @throws \Exception
-     */
-    public function getImageUrl(string $imageType, string $imagePath)
-    {
-        if (empty($imagePath) && !empty($this->placeholderCache[$imageType])) {
-            return $this->placeholderCache[$imageType];
-        }
-        $image = $this->productImageFactory->create();
-        $image->setDestinationSubdir($imageType)
-            ->setBaseFile($imagePath);
-
-        if ($image->isBaseFilePlaceholder()) {
-            $this->placeholderCache[$imageType] = $this->placeholderProvider->getPlaceholder($imageType);
-            return $this->placeholderCache[$imageType];
-        }
-
-        return $image->getUrl();
     }
 }

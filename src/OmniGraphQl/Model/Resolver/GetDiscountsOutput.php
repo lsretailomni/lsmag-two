@@ -14,7 +14,6 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
-use \Ls\OmniGraphql\Helper\DataHelper;
 use Magento\Catalog\Helper\Image;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
@@ -76,11 +75,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
     private $itemHelper;
 
     /**
-     * @var DataHelper
-     */
-    private $dataHelper;
-
-    /**
      * @var Image
      */
     private Image $imageHelper;
@@ -118,7 +112,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param ItemHelper $itemHelper
-     * @param DataHelper $dataHelper
      * @param Image $imageHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param TimezoneInterface $timeZoneInterface
@@ -135,7 +128,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
         CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,
         ItemHelper $itemHelper,
-        DataHelper $dataHelper,
         Image $imageHelper,
         PriceCurrencyInterface $priceCurrency,
         TimezoneInterface $timeZoneInterface,
@@ -151,7 +143,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->customerFactory   = $customerFactory;
         $this->storeManager      = $storeManager;
         $this->itemHelper        = $itemHelper;
-        $this->dataHelper        = $dataHelper;
         $this->imageHelper       = $imageHelper;
         $this->priceCurrency     = $priceCurrency;
         $this->timeZoneInterface = $timeZoneInterface;
