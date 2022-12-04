@@ -36,6 +36,8 @@ use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use \Ls\Omni\Model\Checkout\DataProvider;
+use Magento\Catalog\Model\Product\ImageFactory;
+use Magento\CatalogGraphQl\Model\Resolver\Products\DataProvider\Image\Placeholder as PlaceholderProvider;
 
 /**
  * Useful helper functions for the module
@@ -129,6 +131,21 @@ class DataHelper extends AbstractHelper
     public DataProvider $dataProvider;
 
     /**
+     * @var ImageFactory
+     */
+    public $productImageFactory;
+
+    /**
+     * @var PlaceholderProvider
+     */
+    public $placeholderProvider;
+
+    /**
+     * @var string[]
+     */
+    private $placeholderCache = [];
+
+    /**
      * @param Context $context
      * @param ManagerInterface $eventManager
      * @param BasketHelper $basketHelper
@@ -170,7 +187,8 @@ class DataHelper extends AbstractHelper
         Information $storeInfo,
         StoreManagerInterface $storeManager,
         AddressInterfaceFactory $addressFactory,
-        DataProvider $dataProvider
+        DataProvider $dataProvider,
+        ImageFactory $productImageFactory
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -191,7 +209,8 @@ class DataHelper extends AbstractHelper
         $this->storeInfo              = $storeInfo;
         $this->storeManager           = $storeManager;
         $this->addressFactory         = $addressFactory;
-        $this->dataProvider          = $dataProvider;
+        $this->dataProvider           = $dataProvider;
+        $this->productImageFactory    = $productImageFactory;
     }
 
     /**
@@ -310,7 +329,7 @@ class DataHelper extends AbstractHelper
     {
         $storeHours = $this->omniDataHelper->getStoreHours($storeId);
         $hours      = [];
-        $i = 0;
+        $i          = 0;
 
         $hoursFormat = $this->scopeConfig->getValue(
             LSR::LS_STORES_OPENING_HOURS_FORMAT,
@@ -322,10 +341,10 @@ class DataHelper extends AbstractHelper
             foreach ($storeHour as $key => $hour) {
                 $hours[$i]['day_of_week'] = $hour['day'];
                 if ($hour['type'] == "Normal") {
-                    $normalTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $normalTypeOpenHours  = date($hoursFormat, strtotime($hour['open']));
                     $normalTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
                 } elseif ($hour['type'] == "Closed") {
-                    $closedTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $closedTypeOpenHours  = date($hoursFormat, strtotime($hour['open']));
                     $closedTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
                 }
 
@@ -333,9 +352,9 @@ class DataHelper extends AbstractHelper
                     && ($normalTypeOpenHours == $closedTypeOpenHours)
                     && ($normalTypeCloseHours == $closedTypeCloseHours)
                 ) {
-                    $hours[$i]['hour_types'][0]  = $this->formatHoursAccordingToType($hour);
+                    $hours[$i]['hour_types'][0] = $this->formatHoursAccordingToType($hour);
                 } else {
-                    $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                    $hours[$i]['hour_types'][$key] = $this->formatHoursAccordingToType($hour);
                 }
             }
             $i++;
@@ -439,8 +458,8 @@ class DataHelper extends AbstractHelper
      */
     public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId)
     {
-        $store = $this->storeHelper->getStore($websiteId, $storeId);
-        $slots = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
+        $store         = $this->storeHelper->getStore($websiteId, $storeId);
+        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
         $formattedData = [];
 
         foreach ($slots as $index => $slot) {
@@ -489,7 +508,7 @@ class DataHelper extends AbstractHelper
     public function getAnonymousAddress()
     {
         $storeInformation = $this->getStoreInformation();
-        $streets = [$storeInformation->getData('street_line1')];
+        $streets          = [$storeInformation->getData('street_line1')];
 
         if ($storeInformation->getData('street_line2')) {
             $streets[] = $storeInformation->getData('street_line2');
@@ -531,5 +550,30 @@ class DataHelper extends AbstractHelper
     public function getStoreNameById($storeId)
     {
         return $this->omniDataHelper->getStoreNameById($storeId);
+    }
+
+    /**
+     * Get image URL
+     *
+     * @param string $imageType
+     * @param string|null $imagePath
+     * @return string
+     * @throws \Exception
+     */
+    public function getImageUrl(string $imageType, string $imagePath)
+    {
+        if (empty($imagePath) && !empty($this->placeholderCache[$imageType])) {
+            return $this->placeholderCache[$imageType];
+        }
+        $image = $this->productImageFactory->create();
+        $image->setDestinationSubdir($imageType)
+            ->setBaseFile($imagePath);
+
+        if ($image->isBaseFilePlaceholder()) {
+            $this->placeholderCache[$imageType] = $this->placeholderProvider->getPlaceholder($imageType);
+            return $this->placeholderCache[$imageType];
+        }
+
+        return $image->getUrl();
     }
 }

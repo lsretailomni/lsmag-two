@@ -229,5 +229,6 @@ type discountProductArray {
     image_url: String @doc(description: "Mix and match product image url")
     product_url : String @doc(description: "Mix and match product url")
     sku : String @doc(description: "Mix and match product sku")
-    price: String @doc(description: "Mix and match product name")
+    price: Money @doc(description: "Product original price")
+    final_price: Money @doc(description: "Product final price")
 }
