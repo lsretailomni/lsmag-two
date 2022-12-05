@@ -187,9 +187,11 @@ class DataHelper
      * Get Sales entry info
      *
      * @param SalesEntry $salesEntry
+     * @param $magOrder
      * @return array
+     * @throws NoSuchEntityException
      */
-    public function getSaleEntry(SalesEntry $salesEntry): array
+    public function getSaleEntry(SalesEntry $salesEntry, $magOrder): array
     {
         $externalId = '';
         if (!empty($magOrder)) {
@@ -281,7 +283,7 @@ class DataHelper
     {
         $itemsArray = [];
         foreach ($items->getSalesEntryLine() as $item) {
-            $itemsArray[$item->getParentLine()][$item->getLineNumber()] = [
+            $itemsArray = [
                 'amount'                 => $item->getAmount(),
                 'click_and_collect_line' => $item->getClickAndCollectLine(),
                 'discount_amount'        => $item->getDiscountAmount(),
