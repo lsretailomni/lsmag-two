@@ -49,7 +49,7 @@ class DataHelper
     /**
      * @var ItemHelper
      */
-    private $itemHelper;
+    public $itemHelper;
 
     /**
      * @var LSR
@@ -175,9 +175,11 @@ class DataHelper
             $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
             $userId    = $context->getUserId();
             $this->helper->setCustomerValuesInSession($userId, $websiteId);
-            $salesEntry           = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
-            $magOrder             = $this->orderHelper->getMagentoOrderGivenDocumentId($documentId);
-            $salesEntriesArray [] = $this->getSaleEntry($salesEntry, $magOrder);
+            $salesEntry = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
+            $magOrder   = $this->orderHelper->getMagentoOrderGivenDocumentId($documentId);
+            if (!empty($salesEntry)) {
+                $salesEntriesArray [] = $this->getSaleEntry($salesEntry, $magOrder);
+            }
         }
 
         return $salesEntriesArray;
@@ -219,7 +221,7 @@ class DataHelper
             'contact_address'         => $this->getAddress($salesEntry->getContactAddress()),
             'ship_to_address'         => $this->getAddress($salesEntry->getShipToAddress()),
             'payments'                => $this->getPayments($salesEntry->getPayments()),
-            'items'                   => $this->getItems($salesEntry->getLines())
+            'items'                   => $this->getItems($salesEntry->getLines(), $magOrder)
         ];
     }
 
@@ -276,10 +278,10 @@ class DataHelper
      * Get items array
      *
      * @param ArrayOfSalesEntryLine $items
+     * @param $magOrder
      * @return array
-     * @throws NoSuchEntityException
      */
-    public function getItems(ArrayOfSalesEntryLine $items): array
+    public function getItems(ArrayOfSalesEntryLine $items, $magOrder): array
     {
         $itemsArray = [];
         foreach ($items->getSalesEntryLine() as $item) {
