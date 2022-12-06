@@ -57,8 +57,9 @@ class CreditMemo
      * @param $magOrder
      * @param $items
      * @param $creditMemoData
+     * @param $invoice
      */
-    public function refund($magOrder, $items, $creditMemoData)
+    public function refund($magOrder, $items, $creditMemoData, $invoice)
     {
         $orderId = $magOrder->getEntityId();
         foreach ($items as $itemData) {
@@ -88,6 +89,10 @@ class CreditMemo
 
                     $creditMemo->setCustomerNote($creditMemoData['comment_text']);
                     $creditMemo->setCustomerNoteNotify(isset($creditMemoData['comment_customer_notify']));
+                }
+
+                if ($invoice) {
+                    $creditMemo->setInvoice($invoice);
                 }
 
                 $creditMemo->getOrder()->setCustomerNoteNotify(!empty($creditMemoData['send_email']));

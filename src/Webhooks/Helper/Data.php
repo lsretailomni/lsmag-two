@@ -11,6 +11,7 @@ use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -88,7 +89,8 @@ class Data
         OmniHelper $omniHelper,
         ItemHelper $itemHelper,
         LoyaltyHelper $loyaltyHelper,
-        SerializerJson $jsonSerializer
+        SerializerJson $jsonSerializer,
+        \Magento\Catalog\Model\ProductRepository $productRepository
     ) {
 
         $this->logger                = $logger;
@@ -100,6 +102,7 @@ class Data
         $this->itemHelper            = $itemHelper;
         $this->loyaltyHelper         = $loyaltyHelper;
         $this->jsonSerializer        = $jsonSerializer;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -371,5 +374,17 @@ class Data
     public function getPointRate()
     {
         return $this->loyaltyHelper->getPointRate();
+    }
+
+    /**
+     * Get product by id
+     *
+     * @param $id
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getProductById($id)
+    {
+        return $this->productRepository->getById($id);
     }
 }
