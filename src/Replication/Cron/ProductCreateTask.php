@@ -1141,7 +1141,7 @@ class ProductCreateTask
             1
         );
         $collection = $this->replItemVariantCollectionFactory->create();
-        $this->replicationHelper->setCollectionForStandardVariants($collection, $criteria);
+        $this->replicationHelper->setCollectionForStandardVariants($collection, $criteria, true);
 
         $items = [];
 

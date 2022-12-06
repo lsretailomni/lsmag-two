@@ -248,6 +248,13 @@ abstract class AbstractReplicationTask
                 ($storeId) ?: false,
                 false
             );
+        } elseif ($confPath == "ls_mag/replication/repl_item_variant") {
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
+                ($storeId) ?: false,
+                false
+            );
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
             $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY, ($storeId) ?: false, false);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {

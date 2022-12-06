@@ -1536,21 +1536,28 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Fetch all required image records
+     * Fetch all required standard variant records
      *
      * @param mixed $collection
      * @param SearchCriteriaInterface $criteria
+     * @param bool $joinCatalogTable
      * @throws LocalizedException
      */
-    public function setCollectionForStandardVariants(&$collection, SearchCriteriaInterface $criteria)
-    {
-        $this->setCollectionPropertiesPlusJoinSku($collection, $criteria, 'ItemId', null, ['repl_item_variant_id']);
+    public function setCollectionForStandardVariants(
+        &$collection,
+        SearchCriteriaInterface $criteria,
+        $joinCatalogTable = false
+    ) {
+        if ($joinCatalogTable) {
+            $this->setCollectionPropertiesPlusJoinSku($collection, $criteria, 'ItemId', null, ['repl_item_variant_id']);
+        } else {
+            $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+            $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        }
+
         $secondTableName = $this->resource->getTableName('ls_replication_repl_item_variant_registration');
-        $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
-        $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection
-            ->getSelect()
-            ->where('ItemId NOT IN (?)',  new \Zend_Db_Expr("select ItemId From $secondTableName"));
+            ->getSelect()->where('ItemId NOT IN (?)', new \Zend_Db_Expr("select ItemId From $secondTableName"));
         /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
@@ -2406,8 +2413,12 @@ class ReplicationHelper extends AbstractHelper
         if (!$value) {
             return null;
         }
+        $defaultAttribute = $this->eavAttributeFactory->create();
 
-        $attribute = $this->eavConfig->getAttribute('catalog_product', $code);
+        $attribute = $defaultAttribute->loadByCode(
+            Product::ENTITY,
+            $code
+        )->setData('store_id', 0);
 
         return $attribute->getSource()->getOptionId($value);
     }
