@@ -92,6 +92,8 @@ use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
  */
 class ReplicationHelper extends AbstractHelper
 {
+    public const LS_TRANSLATION_TABLE = 'ls_replication_repl_data_translation';
+
     /**
      * @var array
      */
@@ -3108,5 +3110,28 @@ class ReplicationHelper extends AbstractHelper
     public function isVisualSwatchAttributes($storeId)
     {
         return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
+    }
+
+    /**
+     * Update data translation tables
+     *
+     * @param $where
+     * @return void
+     */
+    public function updateDataTranslationTables($where)
+    {
+        $lsTableName = $this->getGivenTableName(
+            self::LS_TRANSLATION_TABLE
+        );
+        $this->updateGivenTableDataGivenConditions(
+            $lsTableName,
+            [
+                'processed' => 0,
+                'is_updated' => 0,
+                'is_failed' => 0,
+                'processed_at' => null
+            ],
+            $where
+        );
     }
 }
