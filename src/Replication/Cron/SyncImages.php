@@ -7,9 +7,13 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Filesystem\Driver\File;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
@@ -22,6 +26,11 @@ class SyncImages extends ProductCreateTask
 
     /** @var int */
     public $remainingRecords;
+
+    private const HASH_ALGORITHM = 'sha256';
+
+    /** @var array  */
+    public array $imageHashes = [];
 
     /**
      * Entry point for cron
@@ -57,6 +66,7 @@ class SyncImages extends ProductCreateTask
                         LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
                         $this->store->getId()
                     );
+
                     $this->logger->debug(
                         sprintf('End SyncImages Task with remaining : %s', $this->getRemainingRecords($this->store))
                     );
@@ -91,51 +101,104 @@ class SyncImages extends ProductCreateTask
     {
         $sortOrder  = $this->replicationHelper->getSortOrderObject();
         $collection = $this->getRecordsForImagesToProcess();
-        // Right now the only thing we have to do is flush all the images and do it again.
-        /** @var ReplImageLink $itemImage */
-        foreach ($collection->getItems() as $itemImage) {
-            try {
-                $variantId         = '';
-                $keyValue          = $itemImage->getKeyValue();
-                $explodeSku        = explode(",", $keyValue);
-                if (count($explodeSku) > 1) {
-                    $variantId         = $explodeSku[1];
-                }
-                $itemId        = $explodeSku[0];
-                $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->store->getId());
-                if (!empty($uomCodesTotal)) {
-                    if (count($uomCodesTotal[$itemId]) > 1) {
-                        $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
-                        if (count($uomCodesNotProcessed) == 0) {
-                            $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
-                            foreach ($uomCodesTotal[$itemId] as $uomCode) {
-                                $this->processImages($itemImage, $sortOrder, $itemId, $variantId, $uomCode);
+
+        $this->imagesFetched = [];
+        if ($collection->getSize() > 0) {
+            // Right now the only thing we have to do is flush all the images and do it again.
+            /** @var ReplImageLink $itemImage */
+            foreach ($collection->getItems() as $itemImage) {
+                try {
+                    $variantId  = '';
+                    $keyValue   = $itemImage->getKeyValue();
+                    $explodeSku = explode(",", $keyValue);
+                    if (count($explodeSku) > 1) {
+                        $variantId = $explodeSku[1];
+                    }
+                    $itemId        = $explodeSku[0];
+                    $this->getExistingImageswithHash($itemId);
+                    $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->store->getId());
+                    if (!empty($uomCodesTotal)) {
+                        if (count($uomCodesTotal[$itemId]) > 1) {
+                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
+                            if (count($uomCodesNotProcessed) == 0) {
+                                $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
+                                foreach ($uomCodesTotal[$itemId] as $uomCode) {
+                                    $this->processImages($itemImage, $sortOrder, $itemId, $variantId, $uomCode);
+                                }
                             }
+                        } else {
+                            $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                         }
                     } else {
                         $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                     }
-                } else {
-                    $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
+                } catch (Exception $e) {
+                    $this->logger->debug(
+                        sprintf('Problem with Image Synchronization : %s in %s', $itemImage->getKeyValue(), __METHOD__)
+                    );
+                    $this->logger->debug($e->getMessage());
+                    $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
+                    $itemImage->setData('is_failed', 1);
+                    $itemImage->setData('processed', 1);
+                    $itemImage->setData('is_updated', 0);
+                    // @codingStandardsIgnoreLine
+                    $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
-            } catch (Exception $e) {
-                $this->logger->debug(
-                    sprintf('Problem with Image Synchronization : %s in %s', $itemImage->getKeyValue(), __METHOD__)
-                );
-                $this->logger->debug($e->getMessage());
-                $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
-                $itemImage->setData('is_failed', 1);
-                $itemImage->setData('processed', 1);
-                $itemImage->setData('is_updated', 0);
-                // @codingStandardsIgnoreLine
-                $this->replImageLinkRepositoryInterface->save($itemImage);
+            }
+            $remainingItems = (int)$this->getRemainingRecords($this->store);
+            if ($remainingItems == 0) {
+                $this->cronStatus = true;
+            }
+            $this->replicationHelper->flushByTypeCode('full_page');
+        }
+    }
+
+    /**
+     * Fetch existing images based on sku and add image hashes.
+     *
+     * @param $itemId
+     * @return void
+     * @throws FileSystemException
+     */
+    public function getExistingImageswithHash($itemId)
+    {
+        $filterArr = [];
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, "%".$itemId."%", 'like')
+            ->create();
+
+        $productObjs = $this->productRepository->getList($searchCriteria);
+
+        foreach ($productObjs->getItems() as $productObj) {
+            $filterArr[]['sku'] = $productObj->getSku();
+        }
+
+        if (count($filterArr) >0) {
+            $existingImages = $this->mediaProcessor->getExistingImages($filterArr);
+            $this->addImageHashes($existingImages);
+        }
+    }
+
+    /**
+     * Add image hashes.
+     *
+     * @param $existingImages
+     * @return void
+     * @throws FileSystemException
+     */
+    public function addImageHashes($existingImages)
+    {
+        $productMediaPath = $this->getProductMediaPath();
+        foreach ($existingImages as $storeId => $skus) {
+            foreach ($skus as $sku => $files) {
+                foreach ($files as $path => $file) {
+                    $hash = $this->getFileHash($this->joinFilePaths($productMediaPath, $file['value']));
+                    if ($hash) {
+                        $this->imageHashes[$file['value']] = $hash;
+                    }
+                }
             }
         }
-        $remainingItems = (int)$this->getRemainingRecords($this->store);
-        if ($remainingItems == 0) {
-            $this->cronStatus = true;
-        }
-        $this->replicationHelper->flushByTypeCode('full_page');
     }
 
     /**
@@ -235,6 +298,178 @@ class SyncImages extends ProductCreateTask
         if ($newImagesToProcess->getTotalCount() > 0) {
             $this->processMediaGalleryImages($newImagesToProcess, $productData);
         }
+
+        //To remove duplicated images
+        $this->removeDuplicatedImages($productData);
+    }
+
+    /**
+     * Custom function to remove duplicated images for the sku and its variants.
+     *
+     * @throws FileSystemException
+     * @throws FileSystemException
+     */
+    public function removeDuplicatedImages($productData)
+    {
+        $mediaGalleryImages = $productData->getMediaGalleryImages();
+
+        $productMediaPath = $this->getProductMediaPath();
+
+        foreach ($mediaGalleryImages as $galleryImage) {
+            $filePath = $galleryImage->getFile();
+            $hash     = $this->getFileHash($this->joinFilePaths($productMediaPath, $filePath));
+            if ($hash && !in_array($hash, $this->imageHashes)) {
+                $this->imageHashes[$filePath] = $hash;
+            } else {
+                $existingFilePath    = array_search($hash, $this->imageHashes);
+
+                if ($filePath != $existingFilePath && $this->imageExists($existingFilePath)) {
+                    $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
+                    $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
+
+                    $this->deleteDuplicateCatalogImage($filePath);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Update duplicated catalog image paths with already existing image file
+     *
+     * @param $tableName
+     * @param $existingFilePath
+     * @param $newFilePath
+     * @return void
+     */
+    public function updateMediaPaths($tableName, $existingFilePath, $newFilePath): void
+    {
+        try {
+            $connection          = $this->resourceConnection->getConnection(
+                ResourceConnection::DEFAULT_CONNECTION
+            );
+            $catalogEntityVarcharTable = $this->resourceConnection
+                ->getTableName($tableName);
+
+            $connection->startSetup();
+
+            $updateData = [
+                'value' => $existingFilePath
+            ];
+            $whereCondition = [
+                'value = ?' => (string)$newFilePath
+            ];
+
+            $connection->update(
+                $catalogEntityVarcharTable,
+                $updateData,
+                $whereCondition
+            );
+            $connection->endSetup();
+        } catch (Exception $e) {
+            $this->logger->debug(
+                'Problem with Media path update in : ' . $catalogEntityVarcharTable .
+                ' for ' . $newFilePath . ' with '.$existingFilePath
+            );
+        }
+    }
+
+    /**
+     * Check if image file exists
+     *
+     * @param $fileName
+     * @return bool
+     * @throws FileSystemException
+     */
+    public function imageExists($fileName): bool
+    {
+        $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+        $mediaRootDir = $this->joinFilePaths($mediaDirectory->getAbsolutePath(), 'catalog', 'product');
+
+        return $this->file->isExists($this->joinFilePaths($mediaRootDir, $fileName));
+    }
+
+    /**
+     * Delete duplicated image files
+     *
+     * @param $fileName
+     * @return void
+     */
+    public function deleteDuplicateCatalogImage($fileName): void
+    {
+        $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+        $mediaRootDir = $this->joinFilePaths($mediaDirectory->getAbsolutePath(), 'catalog', 'product');
+
+        try {
+            if ($this->file->isExists($this->joinFilePaths($mediaRootDir, $fileName))) {
+                $this->file->deleteFile($mediaRootDir . $fileName);
+            }
+        } catch (Exception $e) {
+            $this->logger->debug(
+                'Problem with deleting file : ' . $fileName
+            );
+        }
+    }
+
+    /**
+     * Returns image hash by path
+     *
+     * @param string $path
+     * @return string
+     * @throws \Magento\Framework\Exception\FileSystemException
+     */
+    private function getFileHash(string $path): string
+    {
+        $content = '';
+        if ($this->mediaDirectory->isFile($path)
+            && $this->mediaDirectory->isReadable($path)
+        ) {
+            $content = $this->mediaDirectory->readFile($path);
+        }
+        return $content ? hash(self::HASH_ALGORITHM, $content) : '';
+    }
+
+    /**
+     * Returns product media
+     *
+     * @return string relative path to root folder
+     */
+    private function getProductMediaPath(): string
+    {
+        return $this->joinFilePaths($this->getMediaBasePath(), 'catalog', 'product');
+    }
+
+    /**
+     * Returns media base path
+     *
+     * @return string relative path to root folder
+     */
+    private function getMediaBasePath(): string
+    {
+        $mediaDir = !is_a($this->mediaDirectory->getDriver(), File::class)
+            // make media folder a primary folder for media in external storages
+            ? $this->filesystem->getDirectoryReadByPath(DirectoryList::MEDIA)
+            : $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+
+        return $this->mediaDirectory->getRelativePath($mediaDir->getAbsolutePath());
+    }
+
+    /**
+     * Joins two paths and remove redundant directory separator
+     *
+     * @param array $paths
+     * @return string
+     */
+    private function joinFilePaths(...$paths): string
+    {
+        $result = '';
+        if ($paths) {
+            $result = rtrim(array_shift($paths), DIRECTORY_SEPARATOR);
+            foreach ($paths as $path) {
+                $result .= DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+            }
+        }
+        return $result;
     }
 
     /**

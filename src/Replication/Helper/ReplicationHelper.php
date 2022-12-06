@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use \Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
@@ -26,7 +27,6 @@ use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
-use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -1257,7 +1257,6 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replTaxSetupRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -1282,7 +1281,6 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -2268,7 +2266,7 @@ class ReplicationHelper extends AbstractHelper
             foreach ($types as $attribute) {
                 $formattedCode = $this->formatAttributeCode($attribute);
 
-                $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
                 if (!$attribute->getId()) {
                     continue;
@@ -2860,7 +2858,6 @@ class ReplicationHelper extends AbstractHelper
             foreach ($productIds as $id) {
                 $this->stockStatusRepository->deleteById($id);
             }
-
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
@@ -3168,5 +3165,27 @@ class ReplicationHelper extends AbstractHelper
         } else {
             throw new NoSuchEntityException();
         }
+    }
+
+    /**
+     * To get comma seperated visual swatch type attributes
+     *
+     * @param $storeId
+     * @return array|string
+     */
+    public function getVisualSwatchAttributes($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::VISUAL_TYPE_ATTRIBUTES, $storeId);
+    }
+
+    /**
+     * Check if convert to visual swatch attribute type is enabled.
+     *
+     * @param $storeId
+     * @return array|string
+     */
+    public function isVisualSwatchAttributes($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
     }
 }
