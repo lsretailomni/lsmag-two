@@ -240,8 +240,10 @@ class OrderHelper extends AbstractHelper
             } else {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
-                $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode, 0, 10));
-                $oneListCalculateResponse->setShippingAgentServiceCode(substr($method, 0, 10));
+                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
+                $method      = ($method) ? substr($method, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentServiceCode($method);
                 $oneListCalculateResponse->setShippingStatus(Entity\Enum\ShippingStatus::NOT_YET_SHIPPED);
             }
             $pickupDateTimeslot = $order->getPickupDateTimeslot();
