@@ -84,13 +84,12 @@ class OrderManagement
                     $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
                     $response = $this->orderHelper->orderCancel($documentId, $webStore);
 
-                    if ($response == null) {
+                    if (!$response) {
                         $this->formulateException($order);
                     }
                     $this->basketHelper->unSetCorrectStoreId();
                 }
             }
-            $this->formulateException($order);
         }
 
         return $proceed($id);
