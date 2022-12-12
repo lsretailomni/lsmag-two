@@ -482,6 +482,7 @@ class CategoryCreateTask
 
     /**
      * @param $string
+     * @param bool $parent
      * @return string]
      */
     public function oSlug($string, $parent = false)

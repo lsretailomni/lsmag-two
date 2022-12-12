@@ -1003,7 +1003,7 @@ class AttributesCreateTask
     {
         $optionSwatch = ['value' => []];
         foreach ($attributeData['option'] as $optionKey => $optionValue) {
-            $optionValue = strtoupper($optionValue);
+            $optionValue = $optionValue ? strtoupper($optionValue) : '';
             if (substr($optionValue, 0, 1) == '#' && strlen($optionValue) == 7) {
                 $optionSwatch['value'][$optionKey] = $optionValue;
             } elseif (!empty($this->lsr->getColorCodes()[$optionValue])) {
