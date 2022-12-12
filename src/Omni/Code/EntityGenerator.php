@@ -93,7 +93,7 @@ class EntityGenerator extends AbstractOmniGenerator
          * and bypass un-necessary functions in there.
          */
         $lowerString = strtolower($this->entity->getName());
-        if (!$is_array &&
+        if (!$is_array && $lowerString &&
             substr($lowerString, 0, 4) == 'repl' &&
             strpos($lowerString, 'replecom') === false &&
             strpos($lowerString, 'response') === false &&

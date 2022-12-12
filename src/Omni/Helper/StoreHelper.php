@@ -8,10 +8,12 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use Ls\Omni\Client\Ecommerce\Entity\Store;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Model\Cache\Type;
+use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -58,12 +60,18 @@ class StoreHelper extends AbstractHelper
     private CacheHelper $cacheHelper;
 
     /**
+     * @var CollectionFactory
+     */
+    public $storeCollectionFactory;
+
+    /**
      * @param Context $context
      * @param Data $dataHelper
      * @param DateTime $dateTime
      * @param LSR $lsr
      * @param TimezoneInterface $timezone
      * @param CacheHelper $cacheHelper
+     * @param CollectionFactory $storeCollectionFactory
      */
     public function __construct(
         Context $context,
@@ -71,14 +79,16 @@ class StoreHelper extends AbstractHelper
         DateTime $dateTime,
         LSR $lsr,
         TimezoneInterface $timezone,
-        CacheHelper $cacheHelper
+        CacheHelper $cacheHelper,
+        CollectionFactory $storeCollectionFactory
     ) {
         parent::__construct($context);
-        $this->lsr         = $lsr;
-        $this->dataHelper  = $dataHelper;
-        $this->dateTime    = $dateTime;
-        $this->timezone    = $timezone;
-        $this->cacheHelper = $cacheHelper;
+        $this->lsr                    = $lsr;
+        $this->dataHelper             = $dataHelper;
+        $this->dateTime               = $dateTime;
+        $this->timezone               = $timezone;
+        $this->cacheHelper            = $cacheHelper;
+        $this->storeCollectionFactory = $storeCollectionFactory;
     }
 
     /**
@@ -87,7 +97,7 @@ class StoreHelper extends AbstractHelper
      * @param mixed $websiteId
      * @param mixed $webStore
      * @param mixed $baseUrl
-     * @return array|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
+     * @return array|Store|Entity\StoreGetByIdResponse|ResponseInterface|null
      */
     public function getSalesType($websiteId = '', $webStore = null, $baseUrl = null)
     {
@@ -100,7 +110,7 @@ class StoreHelper extends AbstractHelper
      * @param mixed $websiteId
      * @param mixed $webStore
      * @param mixed $baseUrl
-     * @return array|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
+     * @return array|Store|Entity\StoreGetByIdResponse|ResponseInterface|null
      */
     public function getStore($websiteId = '', $webStore = null, $baseUrl = null)
     {
@@ -342,7 +352,7 @@ class StoreHelper extends AbstractHelper
     public function replaceKey($orginalArray, $oldKey, $newKey)
     {
         if (array_key_exists($oldKey, $orginalArray)) {
-            $keys = array_keys($orginalArray);
+            $keys                               = array_keys($orginalArray);
             $keys[array_search($oldKey, $keys)] = $newKey;
             return array_combine($keys, $orginalArray);
         }
@@ -372,21 +382,21 @@ class StoreHelper extends AbstractHelper
      */
     public function applyPickupTimeInterval($startTime, $endTime, $interval, $filterCurrentDate)
     {
-        $startTime = $this->dateTime->date(
+        $startTime          = $this->dateTime->date(
             $this->pickupTimeFormat,
             ceil(strtotime($startTime) / ($interval * 60)) * ($interval * 60)
         );
-        $endTime = $this->dateTime->date(
+        $endTime            = $this->dateTime->date(
             $this->pickupTimeFormat,
             floor(strtotime($endTime) / ($interval * 60)) * ($interval * 60)
         );
-        $startTimeSeconds = strtotime($startTime);
-        $endTimeSeconds = strtotime($endTime);
-        $currentTime = $this->dateTime->date(
+        $startTimeSeconds   = strtotime($startTime);
+        $endTimeSeconds     = strtotime($endTime);
+        $currentTime        = $this->dateTime->date(
             $this->pickupTimeFormat,
             ceil(strtotime($this->dateTime->gmtDate($this->pickupTimeFormat)) / ($interval * 60)) * ($interval * 60)
         );
-        $currentTime = $this->timezone->date(new \DateTime($currentTime))->format($this->pickupTimeFormat);
+        $currentTime        = $this->timezone->date(new \DateTime($currentTime))->format($this->pickupTimeFormat);
         $currentTimeSeconds = strtotime($currentTime);
         if ($filterCurrentDate) {
             if ($currentTimeSeconds > $startTimeSeconds && $currentTimeSeconds > $endTimeSeconds) {
@@ -472,5 +482,21 @@ class StoreHelper extends AbstractHelper
     public function getTimeSlicesGivenRangesAndInterval($startTime, $endTime, $interval)
     {
         return CarbonInterval::minutes($interval)->toPeriod($startTime, $endTime);
+    }
+
+    /**
+     * Get store data by store id
+     *
+     * @param $storeId
+     * @return Store
+     * @throws NoSuchEntityException
+     */
+    public function getStoreDataByStoreId($storeId)
+    {
+        return $this->storeCollectionFactory
+            ->create()
+            ->addFieldToFilter('scope_id', $this->lsr->getCurrentStoreId())
+            ->addFieldToFilter('nav_id', $storeId)
+            ->getFirstItem();
     }
 }

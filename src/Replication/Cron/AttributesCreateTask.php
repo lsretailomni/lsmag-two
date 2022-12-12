@@ -9,6 +9,7 @@ use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
 use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
 use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplAttribute;
@@ -18,7 +19,6 @@ use \Ls\Replication\Model\ReplAttributeSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
-use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Model\ReplVendor;
 use \Ls\Replication\Model\ReplVendorSearchResults;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
@@ -34,6 +34,7 @@ use Magento\Eav\Model\Entity;
 use Magento\Eav\Model\Entity\Attribute\Backend\ArrayBackend;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
+use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -129,6 +130,16 @@ class AttributesCreateTask
     public $replVendorRepositoryInterface;
 
     /**
+     * @var CollectionFactory
+     */
+    public $attrOptionCollectionFactory;
+
+    /**
+     * @var array
+     */
+    public $optionCollection;
+
+    /**
      * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
@@ -146,6 +157,7 @@ class AttributesCreateTask
      * @param AttributeOptionInterfaceFactory $optionFactory
      * @param OptionManagement $attributeOptionManagement
      * @param LSR $LSR
+     * @param CollectionFactory $attrOptionCollectionFactory
      */
     public function __construct(
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
@@ -163,7 +175,8 @@ class AttributesCreateTask
         AttributeOptionLabelInterfaceFactory $optionLabelFactory,
         AttributeOptionInterfaceFactory $optionFactory,
         OptionManagement $attributeOptionManagement,
-        LSR $LSR
+        LSR $LSR,
+        CollectionFactory $attrOptionCollectionFactory
     ) {
         $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
         $this->productAttributeRepository                  = $productAttributeRepository;
@@ -181,9 +194,12 @@ class AttributesCreateTask
         $this->optionLabelFactory                          = $optionLabelFactory;
         $this->optionFactory                               = $optionFactory;
         $this->attributeOptionManagement                   = $attributeOptionManagement;
+        $this->attrOptionCollectionFactory                 = $attrOptionCollectionFactory;
     }
 
     /**
+     * Function for executing attribute replication
+     *
      * @param null $storeData
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -219,6 +235,8 @@ class AttributesCreateTask
                     $this->addUomAttributeOptions($store);
                     //Process Vendor Options
                     $this->addVendorAttributeOptions($store);
+                    //Convert Attribute to Visual Swatch
+                    $this->convertAttributeToVisualSwatch($store);
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttribute,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE,
@@ -367,6 +385,7 @@ class AttributesCreateTask
                 // @codingStandardsIgnoreLine
                 $this->replExtendedVariantValueRepository->save($variant);
             }
+
             foreach ($variantCodes as $code => $value) {
                 $formattedCode = $this->replicationHelper->formatAttributeCode($code);
                 $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
@@ -892,5 +911,139 @@ class AttributesCreateTask
                 ->getTotalCount();
         }
         return $this->remainingVariantsCount;
+    }
+
+    /**
+     * Add visual swatch type options
+     *
+     * @param $formattedCode
+     * @return void
+     * @throws LocalizedException
+     */
+    public function addVisualSwatchTypeOptions($formattedCode)
+    {
+        $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+        if (!$attribute) {
+            return;
+        }
+        $attributeData['option']                       = $this->addExistingOptions($attribute);
+        $attributeData['frontend_input']               = 'select';
+        $attributeData['swatch_input_type']            = 'visual';
+        $attributeData['update_product_preview_image'] = 1;
+        $attributeData['use_product_image_for_swatch'] = 0;
+        $attributeData['optionvisual']                 = $this->getOptionSwatch($attributeData);
+        $attributeData['defaultvisual']                = $this->getOptionDefaultVisual($attributeData);
+        $attributeData['swatchvisual']                 = $this->getOptionSwatchVisual($attributeData);
+        $attribute->addData($attributeData);
+        // @codingStandardsIgnoreLine
+        $attribute->save();
+    }
+
+    /**
+     * Arrange the option value
+     *
+     * @param array $attributeData
+     * @return array
+     */
+    public function getOptionSwatch(array $attributeData)
+    {
+        $optionSwatch = ['order' => [], 'value' => [], 'delete' => []];
+        $count        = 0;
+        foreach ($attributeData['option'] as $optionKey => $optionValue) {
+            $optionSwatch['delete'][$optionKey] = '';
+            $optionSwatch['order'][$optionKey]  = (string)$count++;
+            $optionSwatch['value'][$optionKey]  = [$optionValue, ''];
+        }
+        return $optionSwatch;
+    }
+
+    /**
+     * Add exisitng option value
+     *
+     * @param $attribute
+     * @return array
+     */
+    public function addExistingOptions($attribute)
+    {
+        $options     = [];
+        $attributeId = $attribute->getId();
+        if ($attributeId) {
+            $this->loadOptionCollection($attributeId);
+            /** @var \Magento\Eav\Model\Entity\Attribute\Option $option */
+            foreach ($this->optionCollection[$attributeId] as $option) {
+                $options[$option->getId()] = $option->getValue();
+            }
+        }
+        return $options;
+    }
+
+    /**
+     * Load option collection
+     *
+     * @param $attributeId
+     * @return void
+     */
+    public function loadOptionCollection($attributeId)
+    {
+        if (empty($this->optionCollection[$attributeId])) {
+            $this->optionCollection[$attributeId] = $this->attrOptionCollectionFactory->create()
+                ->setAttributeFilter($attributeId)
+                ->setPositionOrder('asc', true)
+                ->load();
+        }
+    }
+
+    /**
+     * Get the option value from the color mapping
+     *
+     * @param array $attributeData
+     * @return array
+     */
+    public function getOptionSwatchVisual(array $attributeData)
+    {
+        $optionSwatch = ['value' => []];
+        foreach ($attributeData['option'] as $optionKey => $optionValue) {
+            $optionValue = $optionValue ? strtoupper($optionValue) : '';
+            if (substr($optionValue, 0, 1) == '#' && strlen($optionValue) == 7) {
+                $optionSwatch['value'][$optionKey] = $optionValue;
+            } elseif (!empty($this->lsr->getColorCodes()[$optionValue])) {
+                $optionSwatch['value'][$optionKey] = $this->lsr->getColorCodes()[$optionValue];
+            } else {
+                $optionSwatch['value'][$optionKey] = $this->lsr->getColorCodes()['WHITE'];
+            }
+        }
+
+        return $optionSwatch;
+    }
+
+    /**
+     * Get the default value for swatch
+     *
+     * @param array $attributeData
+     * @return array
+     */
+    public function getOptionDefaultVisual(array $attributeData)
+    {
+        $optionSwatch = $this->getOptionSwatchVisual($attributeData);
+        return [array_keys($optionSwatch['value'])[0]];
+    }
+
+    /**
+     * Function to convert attribute to visual swatch
+     *
+     * @param $store
+     * @return void
+     * @throws LocalizedException
+     */
+    public function convertAttributeToVisualSwatch($store)
+    {
+        $swatchTypeAttributes     = $this->replicationHelper->getVisualSwatchAttributes($store->getId());
+        $isVisualSwatchAttributes = $this->replicationHelper->isVisualSwatchAttributes($store->getId());
+        if ($isVisualSwatchAttributes) {
+            $swatchTypeAttributes = explode(",", $swatchTypeAttributes);
+            foreach ($swatchTypeAttributes as $swatchTypeAttribute) {
+                $this->addVisualSwatchTypeOptions($swatchTypeAttribute);
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use \Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
@@ -26,7 +27,6 @@ use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
-use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
 use Magento\Catalog\Api\CategoryLinkManagementInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
@@ -325,6 +325,11 @@ class ReplicationHelper extends AbstractHelper
     public $eavAttributeFactory;
 
     /**
+     * @var \Magento\Catalog\Model\ResourceModel\Product
+     */
+    public $productResourceModel;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -378,6 +383,8 @@ class ReplicationHelper extends AbstractHelper
      * @param GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus
      * @param StockStatusRepository $stockStatusRepository
      * @param GetProductIdsBySkus $getProductIdsBySkus
+     * @param AttributeFactory $eavAttributeFactory
+     * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
      */
     public function __construct(
         Context $context,
@@ -433,7 +440,8 @@ class ReplicationHelper extends AbstractHelper
         GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
         StockStatusRepository $stockStatusRepository,
         GetProductIdsBySkus $getProductIdsBySkus,
-        AttributeFactory $eavAttributeFactory
+        AttributeFactory $eavAttributeFactory,
+        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -487,7 +495,8 @@ class ReplicationHelper extends AbstractHelper
         $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
         $this->stockStatusRepository                     = $stockStatusRepository;
         $this->getProductIdsBySkus                       = $getProductIdsBySkus;
-        $this->eavAttributeFactory = $eavAttributeFactory;
+        $this->eavAttributeFactory                       = $eavAttributeFactory;
+        $this->productResourceModel                      = $productResourceModel;
         parent::__construct(
             $context
         );
@@ -1200,7 +1209,6 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replTaxSetupRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -1225,7 +1233,6 @@ class ReplicationHelper extends AbstractHelper
 
         try {
             $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
@@ -1890,7 +1897,6 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getBaseUnitOfMeasure($itemId)
     {
-        $baseUnitOfMeasure = null;
         $filters           = [
             ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq']
         ];
@@ -1900,11 +1906,36 @@ class ReplicationHelper extends AbstractHelper
             return $item->getBaseUnitOfMeasure();
         }
 
-        return $baseUnitOfMeasure;
+        return null;
     }
 
     /**
-     * Assigning product to categories
+     * Assigning configurable product tax class to associated products
+     *
+     * @param $product
+     * @param $taxClass
+     * @param $storeId
+     * @return void
+     */
+    public function assignTaxClassToChildren($product, $taxClass, $storeId): void
+    {
+        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+            $children = $product->getTypeInstance(true)->getUsedProducts($product);
+            try {
+                foreach ($children as $child) {
+                    $childObj  = $this->productRepository->get($child->getSku(), true, 0);
+                    $childObj->setData('tax_class_id', $taxClass->getClassId());
+                    $this->productResourceModel->saveAttribute($childObj, 'tax_class_id');
+                }
+
+            } catch (Exception $e) {
+                $this->_logger->info("Product tax class update failed for ".$product->getSku());
+            }
+        }
+    }
+
+    /**
+     * Assigning product to category
      *
      * @param $product
      * @param $store
@@ -1914,7 +1945,8 @@ class ReplicationHelper extends AbstractHelper
     {
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
         if (empty($hierarchyCode)) {
-            $this->_logger->debug('Hierarchy Code not defined in the configuration for store ' . $this->store->getName());
+            $this->_logger->debug('Hierarchy Code not defined in the configuration for store '
+                . $store->getName());
             return;
         }
         $filters              = [
@@ -1932,6 +1964,7 @@ class ReplicationHelper extends AbstractHelper
         foreach ($hierarchyLeafs->getItems() as $hierarchyLeaf) {
             $categoryIds = $this->findCategoryIdFromFactory($hierarchyLeaf->getNodeId(), $store);
             if (!empty($categoryIds)) {
+                // @codingStandardsIgnoreLine
                 $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $categoryIds));
             } else {
                 $hierarchyLeaf->setData('is_failed', 1);
@@ -1947,6 +1980,18 @@ class ReplicationHelper extends AbstractHelper
                     $product->getSku(),
                     $resultantCategoryIds
                 );
+
+                if ($product->getTypeId() == Configurable::TYPE_CODE) {
+                    $children = $product->getTypeInstance()->getUsedProducts($product);
+
+                    foreach ($children as $child) {
+                        $this->categoryLinkManagement->assignProductToCategories(
+                            $child->getSku(),
+                            $resultantCategoryIds
+                        );
+                    }
+                }
+
             } catch (Exception $e) {
                 $this->_logger->info("Product deleted from admin configuration. Things will re-run again");
             }
@@ -2146,7 +2191,7 @@ class ReplicationHelper extends AbstractHelper
             foreach ($types as $attribute) {
                 $formattedCode = $this->formatAttributeCode($attribute);
 
-                $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
                 if (!$attribute->getId()) {
                     continue;
@@ -2734,7 +2779,6 @@ class ReplicationHelper extends AbstractHelper
             foreach ($productIds as $id) {
                 $this->stockStatusRepository->deleteById($id);
             }
-
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
@@ -3042,5 +3086,27 @@ class ReplicationHelper extends AbstractHelper
         } else {
             throw new NoSuchEntityException();
         }
+    }
+
+    /**
+     * To get comma seperated visual swatch type attributes
+     *
+     * @param $storeId
+     * @return array|string
+     */
+    public function getVisualSwatchAttributes($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::VISUAL_TYPE_ATTRIBUTES, $storeId);
+    }
+
+    /**
+     * Check if convert to visual swatch attribute type is enabled.
+     *
+     * @param $storeId
+     * @return array|string
+     */
+    public function isVisualSwatchAttributes($storeId)
+    {
+        return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
     }
 }

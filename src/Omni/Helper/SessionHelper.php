@@ -60,7 +60,7 @@ class SessionHelper extends AbstractHelper
     {
         $sessionType = $this->deploymentConfig->get(Config::PARAM_SESSION_SAVE_METHOD);
         //only needed for session save method files as redis and db method dont have this problem
-        if (strtolower($sessionType) == "files") {
+        if ($sessionType && strtolower($sessionType) == "files") {
             $tmpSessionDir = $this->deploymentConfig->get(Config::PARAM_SESSION_SAVE_PATH);
             if (empty($tmpSessionDir)) {
                 $tmpSessionDir = ini_get("session.save_path");

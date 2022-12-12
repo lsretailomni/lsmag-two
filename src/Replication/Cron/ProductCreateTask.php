@@ -243,29 +243,34 @@ class ProductCreateTask
     public $attributeSetGroupFactory;
 
     /**
+     * @var array
+     */
+    public array $imagesFetched;
+
+    /**
      * @var Product\Media\Config
      */
     public $mediaConfig;
     /**
      * @var Filesystem
      */
-    protected Filesystem $filesystem;
+    public Filesystem $filesystem;
     /**
      * @var Filesystem\Directory\WriteInterface
      */
-    protected Filesystem\Directory\WriteInterface $_mediaDirectory;
+    public Filesystem\Directory\WriteInterface $mediaDirectory;
     /**
      * @var ResourceConnection
      */
-    protected ResourceConnection $resourceConnection;
+    public ResourceConnection $resourceConnection;
     /**
      * @var File
      */
-    protected File $file;
+    public File $file;
     /**
      * @var MediaProcessor
      */
-    protected MediaProcessor $mediaProcessor;
+    public MediaProcessor $mediaProcessor;
 
     /**
      * @var ImportImageService
@@ -306,6 +311,7 @@ class ProductCreateTask
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
      * @param ReplImageLinkCollectionFactory $replImageLinkCollectionFactory
+     * @param MediaProcessor $mediaProcessor
      * @param MediaGalleryProcessor $mediaGalleryProcessor
      * @param UpdateHandlerFactory $updateHandlerFactory
      * @param EntryConverterPool $entryConverterPool
@@ -320,6 +326,7 @@ class ProductCreateTask
      * @param Filesystem $filesystem
      * @param ResourceConnection $resourceConnection
      * @param File $file
+     * @param ImportImageService $imageService
      * @throws FileSystemException
      */
     public function __construct(
@@ -419,7 +426,7 @@ class ProductCreateTask
         $this->attributeSetGroupFactory                  = $attributeSetGroupFactory;
         $this->mediaConfig                               = $mediaConfig;
         $this->filesystem                                = $filesystem;
-        $this->_mediaDirectory                           = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
+        $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
         $this->imageService = $imageService;
@@ -661,6 +668,11 @@ class ProductCreateTask
                                         $uomCodes
                                     );
                                     $this->replicationHelper->assignProductToCategories($productSaved, $this->store);
+                                    $this->replicationHelper->assignTaxClassToChildren(
+                                        $productSaved,
+                                        $taxClass,
+                                        $this->store->getId()
+                                    );
                                 } catch (Exception $e) {
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
@@ -751,7 +763,7 @@ class ProductCreateTask
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
-                $result          = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+                $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
                 if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                     $mimeType = $this->getMimeType($result['image']);
                     if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
@@ -787,7 +799,7 @@ class ProductCreateTask
                     $i++;
                 } else {
                     $image->setData('is_failed', 1);
-                    $this->logger->debug('Response is empty or format empty for Image Id : ' . $image->getImageId());
+                    $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
                 }
             } else {
                 $galleryArray[] = $this->imagesFetched[$image->getImageId()];
