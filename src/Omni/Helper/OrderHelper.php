@@ -133,10 +133,10 @@ class OrderHelper extends AbstractHelper
      * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
-        Context               $context,
-        Model\Order           $order,
-        BasketHelper          $basketHelper,
-        LoyaltyHelper         $loyaltyHelper,
+        Context $context,
+        Model\Order $order,
+        BasketHelper $basketHelper,
+        LoyaltyHelper $loyaltyHelper,
         Model\OrderRepository $orderRepository,
         CustomerSessionProxy $customerSession,
         CheckoutSessionProxy $checkoutSession,
@@ -145,7 +145,7 @@ class OrderHelper extends AbstractHelper
         Json $json,
         Registry $registry,
         DateTime $dateTime,
-		StoreManagerInterface $storeManager,
+        StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
         CurrencyFactory $currencyFactory
     ) {
@@ -410,7 +410,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor($order->getBaseToGlobalRate())
+                ->setCurrencyFactor($order->getBaseToOrderRate())
                 ->setLineNumber('1')
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getGrandTotal());
@@ -784,7 +784,7 @@ class OrderHelper extends AbstractHelper
         $customerId = 0,
         $sortOrder = null
     ) {
-        $orders = null;
+        $orders    = null;
         $websiteId = $this->storeManager->getStore($this->lsr->getCurrentStoreId());
         try {
             $orderStatuses   = $this->lsr->getWebsiteConfig(
@@ -994,7 +994,7 @@ class OrderHelper extends AbstractHelper
      */
     public function isAllowed($order)
     {
-        $websiteId = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
+        $websiteId     = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
         $orderStatuses = $this->lsr->getWebsiteConfig(
             LSR::LSR_RESTRICTED_ORDER_STATUSES,
             $websiteId
