@@ -191,7 +191,7 @@ class DataHelper extends AbstractHelper
         $this->storeInfo              = $storeInfo;
         $this->storeManager           = $storeManager;
         $this->addressFactory         = $addressFactory;
-        $this->dataProvider          = $dataProvider;
+        $this->dataProvider           = $dataProvider;
     }
 
     /**
@@ -310,7 +310,7 @@ class DataHelper extends AbstractHelper
     {
         $storeHours = $this->omniDataHelper->getStoreHours($storeId);
         $hours      = [];
-        $i = 0;
+        $i          = 0;
 
         $hoursFormat = $this->scopeConfig->getValue(
             LSR::LS_STORES_OPENING_HOURS_FORMAT,
@@ -322,10 +322,10 @@ class DataHelper extends AbstractHelper
             foreach ($storeHour as $key => $hour) {
                 $hours[$i]['day_of_week'] = $hour['day'];
                 if ($hour['type'] == "Normal") {
-                    $normalTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $normalTypeOpenHours  = date($hoursFormat, strtotime($hour['open']));
                     $normalTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
                 } elseif ($hour['type'] == "Closed") {
-                    $closedTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $closedTypeOpenHours  = date($hoursFormat, strtotime($hour['open']));
                     $closedTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
                 }
 
@@ -333,9 +333,9 @@ class DataHelper extends AbstractHelper
                     && ($normalTypeOpenHours == $closedTypeOpenHours)
                     && ($normalTypeCloseHours == $closedTypeCloseHours)
                 ) {
-                    $hours[$i]['hour_types'][0]  = $this->formatHoursAccordingToType($hour);
+                    $hours[$i]['hour_types'][0] = $this->formatHoursAccordingToType($hour);
                 } else {
-                    $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                    $hours[$i]['hour_types'][$key] = $this->formatHoursAccordingToType($hour);
                 }
             }
             $i++;
@@ -439,8 +439,8 @@ class DataHelper extends AbstractHelper
      */
     public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId)
     {
-        $store = $this->storeHelper->getStore($websiteId, $storeId);
-        $slots = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
+        $store         = $this->storeHelper->getStore($websiteId, $storeId);
+        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
         $formattedData = [];
 
         foreach ($slots as $index => $slot) {
@@ -489,7 +489,7 @@ class DataHelper extends AbstractHelper
     public function getAnonymousAddress()
     {
         $storeInformation = $this->getStoreInformation();
-        $streets = [$storeInformation->getData('street_line1')];
+        $streets          = [$storeInformation->getData('street_line1')];
 
         if ($storeInformation->getData('street_line2')) {
             $streets[] = $storeInformation->getData('street_line2');
