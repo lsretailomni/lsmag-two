@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use Ls\Omni\Client\Ecommerce\Entity\OrderCancelResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
