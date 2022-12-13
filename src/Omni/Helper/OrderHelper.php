@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
@@ -13,6 +14,8 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
@@ -892,7 +895,7 @@ class OrderHelper extends AbstractHelper
      * For cancelling the order in LS central
      * @param $documentId
      * @param $storeId
-     * @return string
+     * @return OrderCancelResponse|ResponseInterface|string|null
      */
     public function orderCancel($documentId, $storeId)
     {
@@ -907,7 +910,51 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response;
+
+        return $response ? $response->getOrderCancelResult() : $response;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Formulate order cancel response
+     *
+     * @param $response
+     * @param $order
+     * @return void
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function formulateOrderCancelResponse($response, $order)
+    {
+        if (version_compare($this->lsr->getOmniVersion(), '2022.12.0', '>')) {
+            if (!$response) {
+                $this->formulateException($order);
+            }
+        } else {
+            if ($response !== "") {
+                $this->formulateException($order);
+            }
+        }
+    }
+
+    /**
+     * Formulate Exception in case of error
+     *
+     * @param $order
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function formulateException($order)
+    {
+        $message = __('Order could not be canceled from LS Central. Try again later.');
+        $order->addCommentToStatusHistory($message);
+        $this->orderRepository->save($order);
+        throw new LocalizedException(__($message));
     }
 
     /**
