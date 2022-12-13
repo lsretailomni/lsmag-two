@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplVendorSearchResults extends SearchResults implements ReplVendorSearchResultsInterface
 {
+
+
 }
 

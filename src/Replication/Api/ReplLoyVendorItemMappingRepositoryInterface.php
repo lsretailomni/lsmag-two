@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplLoyVendorItemMappingRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplLoyVendorItemMappingInterface $page);
@@ -21,5 +22,7 @@ interface ReplLoyVendorItemMappingRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

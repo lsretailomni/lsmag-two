@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplCurrencySearchResultsFactory;
 
 class ReplCurrencyRepository implements ReplCurrencyRepositoryInterface
 {
+
     /**
      * @property ReplCurrencyFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplCurrencyRepository implements ReplCurrencyRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

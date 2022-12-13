@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ContactCreateResponse implements ResponseInterface
 {
+
     /**
      * @property MemberContact $ContactCreateResult
      */
@@ -42,5 +43,7 @@ class ContactCreateResponse implements ResponseInterface
     {
         return $this->ContactCreateResult;
     }
+
+
 }
 

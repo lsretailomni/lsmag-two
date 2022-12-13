@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityResourceAvailabilityGetResponse as A
 
 class ActivityResourceAvailabilityGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_RESOURCE_AVAILABILITY_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivityResourceAvailabilityGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

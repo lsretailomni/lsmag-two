@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityReservationsHeaderGet implements RequestInterface
 {
+
     /**
      * @property string $reservationNo
      */
@@ -126,5 +127,7 @@ class ActivityReservationsHeaderGet implements RequestInterface
     {
         return $this->fromDate;
     }
+
+
 }
 

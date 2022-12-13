@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplStoreTenderTypeSearchResultsFactory;
 
 class ReplStoreTenderTypeRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplStoreTenderTypeFactory $objectFactory
      */
@@ -132,5 +133,7 @@ class ReplStoreTenderTypeRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

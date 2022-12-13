@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommCountryCodeResponse implements ResponseInterface
 {
+
     /**
      * @property ReplCountryCodeResponse $ReplEcommCountryCodeResult
      */
@@ -42,5 +43,7 @@ class ReplEcommCountryCodeResponse implements ResponseInterface
     {
         return $this->ReplEcommCountryCodeResult;
     }
+
+
 }
 

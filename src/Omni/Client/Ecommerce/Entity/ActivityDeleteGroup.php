@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityDeleteGroup implements RequestInterface
 {
+
     /**
      * @property string $groupNo
      */
@@ -57,5 +58,7 @@ class ActivityDeleteGroup implements RequestInterface
     {
         return $this->lineNo;
     }
+
+
 }
 

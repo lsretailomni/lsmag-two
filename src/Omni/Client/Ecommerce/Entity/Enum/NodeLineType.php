@@ -19,6 +19,7 @@ use MyCLabs\Enum\Enum;
  */
 class NodeLineType extends Enum
 {
+
     public const UNKNOWN = 'Unknown';
 
     public const RECIPE = 'Recipe';
@@ -28,5 +29,7 @@ class NodeLineType extends Enum
     public const DEAL = 'Deal';
 
     public const PRODUCT_OR_RECIPE = 'ProductOrRecipe';
+
+
 }
 

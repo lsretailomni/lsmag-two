@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplTaxSetup
 {
+
     /**
      * @property string $BusinessTaxGroup
      */
@@ -147,5 +148,7 @@ class ReplTaxSetup
     {
         return $this->scope_id;
     }
+
+
 }
 

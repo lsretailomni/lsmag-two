@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplBarcodeSearchResults extends SearchResults implements ReplBarcodeSearchResultsInterface
 {
+
+
 }
 

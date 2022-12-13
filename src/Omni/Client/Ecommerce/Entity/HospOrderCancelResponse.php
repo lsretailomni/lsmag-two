@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class HospOrderCancelResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $HospOrderCancelResult
      */
@@ -42,5 +43,7 @@ class HospOrderCancelResponse implements ResponseInterface
     {
         return $this->HospOrderCancelResult;
     }
+
+
 }
 

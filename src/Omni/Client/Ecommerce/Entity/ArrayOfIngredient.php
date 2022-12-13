@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfIngredient implements IteratorAggregate
 {
+
     /**
      * @property Ingredient[] $Ingredient
      */
@@ -45,5 +46,7 @@ class ArrayOfIngredient implements IteratorAggregate
     {
         return $this->Ingredient;
     }
+
+
 }
 

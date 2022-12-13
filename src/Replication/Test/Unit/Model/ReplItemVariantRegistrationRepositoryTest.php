@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplItemVariantRegistrationSearchResultsFactory;
 
 class ReplItemVariantRegistrationRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplItemVariantRegistrationFactory $objectFactory
      */
@@ -132,5 +133,7 @@ class ReplItemVariantRegistrationRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

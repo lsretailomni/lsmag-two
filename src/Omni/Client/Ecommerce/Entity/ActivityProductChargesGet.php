@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityProductChargesGet implements RequestInterface
 {
+
     /**
      * @property string $locationNo
      */
@@ -80,5 +81,7 @@ class ActivityProductChargesGet implements RequestInterface
     {
         return $this->dateOfBooking;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplHierarchyHospDeal
 {
+
     /**
      * @property float $AddedAmount
      */
@@ -413,5 +414,7 @@ class ReplHierarchyHospDeal
     {
         return $this->scope_id;
     }
+
+
 }
 

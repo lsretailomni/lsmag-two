@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfNotification implements IteratorAggregate
 {
+
     /**
      * @property Notification[] $Notification
      */
@@ -45,5 +46,7 @@ class ArrayOfNotification implements IteratorAggregate
     {
         return $this->Notification;
     }
+
+
 }
 

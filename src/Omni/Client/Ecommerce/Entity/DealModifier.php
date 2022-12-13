@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class DealModifier extends Modifier
 {
+
     /**
      * @property string $DealModifierGroupId
      */
@@ -32,5 +33,7 @@ class DealModifier extends Modifier
     {
         return $this->DealModifierGroupId;
     }
+
+
 }
 

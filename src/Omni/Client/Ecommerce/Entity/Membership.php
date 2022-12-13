@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Membership extends Entity
 {
+
     /**
      * @property string $AccessFrom
      */
@@ -653,5 +654,7 @@ class Membership extends Entity
     {
         return $this->UnitPrice;
     }
+
+
 }
 

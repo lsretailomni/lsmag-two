@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplHierarchy
 {
+
     /**
      * @property string $Description
      */
@@ -252,5 +253,7 @@ class ReplHierarchy
     {
         return $this->scope_id;
     }
+
+
 }
 

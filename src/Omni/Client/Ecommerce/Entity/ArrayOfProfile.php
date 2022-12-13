@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfProfile implements IteratorAggregate
 {
+
     /**
      * @property Profile[] $Profile
      */
@@ -45,5 +46,7 @@ class ArrayOfProfile implements IteratorAggregate
     {
         return $this->Profile;
     }
+
+
 }
 

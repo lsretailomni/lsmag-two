@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemsInStoreGetEx implements RequestInterface
 {
+
     /**
      * @property ArrayOfInventoryRequest $items
      */
@@ -103,5 +104,7 @@ class ItemsInStoreGetEx implements RequestInterface
     {
         return $this->useSourcingLocation;
     }
+
+
 }
 

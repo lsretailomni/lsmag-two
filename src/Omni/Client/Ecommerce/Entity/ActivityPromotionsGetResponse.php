@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityPromotionsGetResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfPromotion $ActivityPromotionsGetResult
      */
@@ -42,5 +43,7 @@ class ActivityPromotionsGetResponse implements ResponseInterface
     {
         return $this->ActivityPromotionsGetResult;
     }
+
+
 }
 

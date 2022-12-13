@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class LoginChange implements RequestInterface
 {
+
     /**
      * @property string $oldUserName
      */
@@ -80,5 +81,7 @@ class LoginChange implements RequestInterface
     {
         return $this->password;
     }
+
+
 }
 

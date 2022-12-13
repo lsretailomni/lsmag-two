@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplInvStatusSearchResults extends SearchResults implements ReplInvStatusSearchResultsInterface
 {
+
+
 }
 

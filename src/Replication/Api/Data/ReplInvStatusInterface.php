@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplInvStatusInterface
 {
+
     /**
      * @param boolean $IsDeleted
      * @return $this
@@ -163,5 +164,7 @@ interface ReplInvStatusInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

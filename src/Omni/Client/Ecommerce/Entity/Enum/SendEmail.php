@@ -17,10 +17,13 @@ use MyCLabs\Enum\Enum;
  */
 class SendEmail extends Enum
 {
+
     public const DEFAULT = 'Default';
 
     public const YES = 'Yes';
 
     public const NO = 'No';
+
+
 }
 

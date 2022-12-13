@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplStoreTenderType
 {
+
     /**
      * @property string $AboveMinimumTenderId
      */
@@ -515,5 +516,7 @@ class ReplStoreTenderType
     {
         return $this->scope_id;
     }
+
+
 }
 

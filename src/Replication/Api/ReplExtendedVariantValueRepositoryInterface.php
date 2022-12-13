@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplExtendedVariantValueRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplExtendedVariantValueInterface $page);
@@ -21,5 +22,7 @@ interface ReplExtendedVariantValueRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

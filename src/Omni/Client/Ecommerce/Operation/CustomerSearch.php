@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\CustomerSearchResponse as CustomerSearchResp
 
 class CustomerSearch extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'CUSTOMER_SEARCH';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class CustomerSearch extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

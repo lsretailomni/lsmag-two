@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListGetByCardIdResponse as OneListGetByCa
 
 class OneListGetByCardId extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ONE_LIST_GET_BY_CARD_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class OneListGetByCardId extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

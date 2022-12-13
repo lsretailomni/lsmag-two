@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\SocialLogonResponse as SocialLogonResponse;
 
 class SocialLogon extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SOCIAL_LOGON';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class SocialLogon extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

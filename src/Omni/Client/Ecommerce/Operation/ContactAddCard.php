@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactAddCardResponse as ContactAddCardResp
 
 class ContactAddCard extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'CONTACT_ADD_CARD';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ContactAddCard extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

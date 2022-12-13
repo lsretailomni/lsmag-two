@@ -14,6 +14,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactGet implements RequestInterface
 {
+
     /**
      * @property ContactSearchType $searchType
      */
@@ -69,5 +70,7 @@ class ContactGet implements RequestInterface
     {
         return $this->search;
     }
+
+
 }
 

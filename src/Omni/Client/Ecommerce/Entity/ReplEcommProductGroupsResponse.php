@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommProductGroupsResponse implements ResponseInterface
 {
+
     /**
      * @property ReplProductGroupResponse $ReplEcommProductGroupsResult
      */
@@ -42,5 +43,7 @@ class ReplEcommProductGroupsResponse implements ResponseInterface
     {
         return $this->ReplEcommProductGroupsResult;
     }
+
+
 }
 

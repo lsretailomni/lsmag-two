@@ -15,6 +15,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class SalesEntry extends Entity
 {
+
     /**
      * @property ArrayOfSalesEntryDiscountLine $DiscountLines
      */
@@ -941,5 +942,7 @@ class SalesEntry extends Entity
     {
         return $this->TotalNetAmount;
     }
+
+
 }
 

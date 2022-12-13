@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemCategory
 {
+
     /**
      * @property string $Description
      */
@@ -124,5 +125,7 @@ class ReplItemCategory
     {
         return $this->scope_id;
     }
+
+
 }
 

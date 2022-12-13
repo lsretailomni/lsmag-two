@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemUnitOfMeasureResponse
 {
+
     /**
      * @property ArrayOfReplItemUnitOfMeasure $ItemUnitOfMeasures
      */
@@ -101,5 +102,7 @@ class ReplItemUnitOfMeasureResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

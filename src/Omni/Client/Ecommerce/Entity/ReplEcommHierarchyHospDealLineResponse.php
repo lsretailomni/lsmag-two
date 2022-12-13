@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommHierarchyHospDealLineResponse implements ResponseInterface
 {
+
     /**
      * @property ReplHierarchyHospDealLineResponse
      * $ReplEcommHierarchyHospDealLineResult
@@ -43,5 +44,7 @@ class ReplEcommHierarchyHospDealLineResponse implements ResponseInterface
     {
         return $this->ReplEcommHierarchyHospDealLineResult;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityResource extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -124,5 +125,7 @@ class ActivityResource extends Entity
     {
         return $this->Phone;
     }
+
+
 }
 

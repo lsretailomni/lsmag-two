@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplImageLink
 {
+
     /**
      * @property string $Description
      */
@@ -193,5 +194,7 @@ class ReplImageLink
     {
         return $this->scope_id;
     }
+
+
 }
 

@@ -14,6 +14,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class PublishedOffer extends Entity
 {
+
     /**
      * @property ArrayOfImageView $Images
      */
@@ -286,5 +287,7 @@ class PublishedOffer extends Entity
     {
         return $this->ValidationText;
     }
+
+
 }
 

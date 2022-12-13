@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplHierarchyLeafInterface
 {
+
     /**
      * @param float $DealPrice
      * @return $this
@@ -284,5 +285,7 @@ interface ReplHierarchyLeafInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

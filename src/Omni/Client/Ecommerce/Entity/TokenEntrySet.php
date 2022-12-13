@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class TokenEntrySet implements RequestInterface
 {
+
     /**
      * @property ClientToken $token
      */
@@ -57,5 +58,7 @@ class TokenEntrySet implements RequestInterface
     {
         return $this->deleteToken;
     }
+
+
 }
 

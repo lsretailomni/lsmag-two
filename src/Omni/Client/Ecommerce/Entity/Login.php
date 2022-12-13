@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class Login implements RequestInterface
 {
+
     /**
      * @property string $userName
      */
@@ -80,5 +81,7 @@ class Login implements RequestInterface
     {
         return $this->deviceId;
     }
+
+
 }
 

@@ -22,6 +22,7 @@ use MyCLabs\Enum\Enum;
  */
 class ReplDiscountType extends Enum
 {
+
     public const MULTIBUY = 'Multibuy';
 
     public const MIX_AND_MATCH = 'MixAndMatch';
@@ -37,5 +38,7 @@ class ReplDiscountType extends Enum
     public const LINE_DISCOUNT = 'LineDiscount';
 
     public const UNKNOWN = 'Unknown';
+
+
 }
 

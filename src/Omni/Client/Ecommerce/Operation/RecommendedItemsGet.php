@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\RecommendedItemsGetResponse as RecommendedIt
 
 class RecommendedItemsGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'RECOMMENDED_ITEMS_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class RecommendedItemsGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

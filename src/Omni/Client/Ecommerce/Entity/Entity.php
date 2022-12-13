@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Entity
 {
+
     /**
      * @property string $Id
      */
@@ -32,5 +33,7 @@ class Entity
     {
         return $this->Id;
     }
+
+
 }
 
