@@ -84,31 +84,12 @@ class OrderManagement
                     $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
                     $response = $this->orderHelper->orderCancel($documentId, $webStore);
 
-                    if (!$response) {
-                        $this->formulateException($order);
-                    }
+                    $this->orderHelper->formulateOrderCancelResponse($response, $order);
                     $this->basketHelper->unSetCorrectStoreId();
                 }
             }
         }
 
         return $proceed($id);
-    }
-
-    /**
-     * Formulate Exception in case of error
-     *
-     * @param $order
-     * @throws AlreadyExistsException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     */
-    public function formulateException($order)
-    {
-        $message = __('Order could not be canceled from LS Central. Try again later.');
-        $order->addCommentToStatusHistory($message);
-        $this->orderRepository->save($order);
-        throw new LocalizedException(__($message));
     }
 }
