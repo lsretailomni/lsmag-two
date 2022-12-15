@@ -193,9 +193,13 @@ class DataHelper
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getSaleEntry(SalesEntry $salesEntry, $magOrder): array
+    public function getSaleEntry(SalesEntry $salesEntry, $magOrder = null): array
     {
         $externalId = '';
+        if (!$magOrder) {
+            $magOrder = $this->orderHelper->getOrderByDocumentId($salesEntry);
+        }
+
         if (!empty($magOrder)) {
             $externalId = $magOrder->getIncrementId();
         }
