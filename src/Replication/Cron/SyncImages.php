@@ -245,6 +245,7 @@ class SyncImages extends ProductCreateTask
                             $this->imageService->execute(
                                 $productData,
                                 $encodedImage['location'],
+                                $encodedImage['repl_image_link_id'],
                                 false,
                                 $encodedImage['types']
                             );
@@ -261,10 +262,10 @@ class SyncImages extends ProductCreateTask
                 }
 
                 $updatedMediaGallery['images'] = [];
-                $encodedImages = $this->convertToRequiredFormat($base64Images);
+                $formattedImages = $this->convertToRequiredFormat($base64Images);
                 foreach ($productData->getMediaGallery()['images'] as $i => $image) {
                     if (!isset($image['value_id'])) {
-                        $encodedImages[] = $image;
+                        $formattedImages[] = $image;
                     } else {
                         $updatedMediaGallery['images'][$i] = $image;
                     }
@@ -274,7 +275,7 @@ class SyncImages extends ProductCreateTask
 
                 $this->mediaGalleryProcessor->processMediaGallery(
                     $productData,
-                    $encodedImages
+                    $formattedImages
                 );
                 $this->updateHandlerFactory->create()->execute($productData);
 

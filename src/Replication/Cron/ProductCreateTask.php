@@ -42,6 +42,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\Backend\Media\EntryConverterPool;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Catalog\Model\Product\Gallery\Entry;
 use Magento\Catalog\Model\Product\Gallery\UpdateHandlerFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
@@ -429,7 +430,7 @@ class ProductCreateTask
         $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
-        $this->imageService = $imageService;
+        $this->imageService                              = $imageService;
     }
 
     /**
@@ -793,7 +794,7 @@ class ProductCreateTask
                         $types = ['image', 'small_image', 'thumbnail'];
                     }
                     $galleryArray[] = [
-                        'location' => $result['location'], 'types' => $types
+                        'location' => $result['location'], 'types' => $types, 'repl_image_link_id' => $image->getId()
                     ];
                     $this->imagesFetched[$image->getImageId()] = $galleryArray[$i];
                     $i++;
@@ -802,7 +803,18 @@ class ProductCreateTask
                     $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
                 }
             } else {
-                $galleryArray[] = $this->imagesFetched[$image->getImageId()];
+                $existentImage = $this->imagesFetched[$image->getImageId()];
+
+                if ($i == 0) {
+                    $types = ['image', 'small_image', 'thumbnail'];
+                    if (!($existentImage instanceof Entry)) {
+                        $existentImage['types'] = $types;
+                    } else {
+                        $existentImage->setTypes($types);
+                    }
+                }
+
+                $galleryArray[] = $existentImage;
                 $this->logger->debug('Image corresponding to Image Id is already fetched: ' . $image->getImageId());
                 $i++;
             }
