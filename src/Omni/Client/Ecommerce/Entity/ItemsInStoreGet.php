@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemsInStoreGet implements RequestInterface
 {
+
     /**
      * @property ArrayOfInventoryRequest $items
      */
@@ -57,5 +58,7 @@ class ItemsInStoreGet implements RequestInterface
     {
         return $this->storeId;
     }
+
+
 }
 

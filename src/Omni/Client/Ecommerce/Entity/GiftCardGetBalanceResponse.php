@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class GiftCardGetBalanceResponse implements ResponseInterface
 {
+
     /**
      * @property GiftCard $GiftCardGetBalanceResult
      */
@@ -42,5 +43,7 @@ class GiftCardGetBalanceResponse implements ResponseInterface
     {
         return $this->GiftCardGetBalanceResult;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class VSDateSchedule
 {
+
     /**
      * @property ArrayOfVSDateScheduleLine $Lines
      */
@@ -262,5 +263,7 @@ class VSDateSchedule
     {
         return $this->Wednesdays;
     }
+
+
 }
 

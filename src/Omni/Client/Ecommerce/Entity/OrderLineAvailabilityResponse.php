@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderLineAvailabilityResponse
 {
+
     /**
      * @property string $ItemId
      */
@@ -147,5 +148,7 @@ class OrderLineAvailabilityResponse
     {
         return $this->VariantId;
     }
+
+
 }
 

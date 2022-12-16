@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplExtendedVariantValue implements IteratorAggregate
 {
+
     /**
      * @property ReplExtendedVariantValue[] $ReplExtendedVariantValue
      */
@@ -45,5 +46,7 @@ class ArrayOfReplExtendedVariantValue implements IteratorAggregate
     {
         return $this->ReplExtendedVariantValue;
     }
+
+
 }
 

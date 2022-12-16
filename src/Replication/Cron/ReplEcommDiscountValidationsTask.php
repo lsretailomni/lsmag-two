@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplDiscountValidationInterface;
 
 class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_discount_validation';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_discount_validation';
@@ -152,5 +153,7 @@ class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

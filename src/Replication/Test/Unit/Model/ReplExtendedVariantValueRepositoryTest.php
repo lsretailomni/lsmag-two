@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplExtendedVariantValueSearchResultsFactory;
 
 class ReplExtendedVariantValueRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplExtendedVariantValueFactory $objectFactory
      */
@@ -132,5 +133,7 @@ class ReplExtendedVariantValueRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

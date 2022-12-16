@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplCurrencyExchRateInterface;
 
 class ReplEcommCurrencyRateTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_currency_exch_rate';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_currency_exch_rate';
@@ -152,5 +153,7 @@ class ReplEcommCurrencyRateTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

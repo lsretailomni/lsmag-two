@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommValidationScheduleResponse as ReplE
 
 class ReplEcommValidationSchedule extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_VALIDATION_SCHEDULE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommValidationSchedule extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

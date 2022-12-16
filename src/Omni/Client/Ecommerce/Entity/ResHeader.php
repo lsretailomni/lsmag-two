@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ResHeader extends Entity
 {
+
     /**
      * @property string $Balance
      */
@@ -607,5 +608,7 @@ class ResHeader extends Entity
     {
         return $this->TotalAdditionalCharges;
     }
+
+
 }
 

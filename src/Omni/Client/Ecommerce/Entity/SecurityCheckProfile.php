@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class SecurityCheckProfile implements RequestInterface
 {
+
     /**
      * @property string $orderNo
      */
@@ -57,5 +58,7 @@ class SecurityCheckProfile implements RequestInterface
     {
         return $this->storeNo;
     }
+
+
 }
 

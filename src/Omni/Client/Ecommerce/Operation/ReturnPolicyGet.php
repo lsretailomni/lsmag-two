@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReturnPolicyGetResponse as ReturnPolicyGetRe
 
 class ReturnPolicyGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'RETURN_POLICY_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReturnPolicyGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

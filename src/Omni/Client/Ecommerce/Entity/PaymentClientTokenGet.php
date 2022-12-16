@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class PaymentClientTokenGet implements RequestInterface
 {
+
     /**
      * @property string $customerId
      */
@@ -34,5 +35,7 @@ class PaymentClientTokenGet implements RequestInterface
     {
         return $this->customerId;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfTaxItemGroup implements IteratorAggregate
 {
+
     /**
      * @property TaxItemGroup[] $TaxItemGroup
      */
@@ -45,5 +46,7 @@ class ArrayOfTaxItemGroup implements IteratorAggregate
     {
         return $this->TaxItemGroup;
     }
+
+
 }
 

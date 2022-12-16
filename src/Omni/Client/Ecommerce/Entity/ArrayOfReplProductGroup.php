@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplProductGroup implements IteratorAggregate
 {
+
     /**
      * @property ReplProductGroup[] $ReplProductGroup
      */
@@ -45,5 +46,7 @@ class ArrayOfReplProductGroup implements IteratorAggregate
     {
         return $this->ReplProductGroup;
     }
+
+
 }
 

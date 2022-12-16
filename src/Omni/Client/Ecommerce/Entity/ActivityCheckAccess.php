@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityCheckAccess implements RequestInterface
 {
+
     /**
      * @property string $searchReference
      */
@@ -126,5 +127,7 @@ class ActivityCheckAccess implements RequestInterface
     {
         return $this->checkType;
     }
+
+
 }
 

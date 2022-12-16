@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplDiscountInterface;
 
 class ReplDiscount extends AbstractModel implements ReplDiscountInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_discount';
 
     protected $_cacheTag = 'ls_replication_repl_discount';
@@ -754,5 +755,7 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

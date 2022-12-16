@@ -552,6 +552,54 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param string $filtername
+     * @param string $filtervalue
+     * @param string $conditionType
+     * @param int $pagesize
+     * @param bool $excludeDeleted
+     * @return SearchCriteria
+     */
+    public function buildCriteriaForVariantAttributesNewItems(
+        $filtername = '',
+        $filtervalue = '',
+        $conditionType = 'eq',
+        $pagesize = 100,
+        $excludeDeleted = true
+    ) {
+        // creating search criteria for two fields
+        // processed = 0 which means not yet processed
+        $attr_processed = $this->filterBuilder->setField('ready_to_process')
+            ->setValue('0')
+            ->setConditionType('eq')
+            ->create();
+        // is_updated = 1 which means may be processed already but is updated on omni end
+        $attr_is_updated = $this->filterBuilder->setField('is_updated')
+            ->setValue('1')
+            ->setConditionType('eq')
+            ->create();
+        // building OR condition between the above two criteria
+        $filterOr = $this->filterGroupBuilder
+            ->addFilter($attr_processed)
+            ->addFilter($attr_is_updated)
+            ->create();
+        // adding criteria into where clause.
+        $criteria = $this->searchCriteriaBuilder->setFilterGroups([$filterOr]);
+        if ($filtername != '' && $filtervalue != '') {
+            $criteria->addFilter(
+                $filtername,
+                $filtervalue,
+                $conditionType
+            );
+        }
+        if ($excludeDeleted) {
+            $criteria->addFilter('IsDeleted', 0, 'eq');
+        }
+        if ($pagesize != -1) {
+            $criteria->setPageSize($pagesize);
+        }
+        return $criteria->create();
+    }
+    /**
      * @param string $item_id
      * @param int $pagesize
      * @param bool $excludeDeleted
@@ -1486,9 +1534,36 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Fetch all required image records
+     * Fetch all required standard variant records
      *
      * @param mixed $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param bool $joinCatalogTable
+     * @throws LocalizedException
+     */
+    public function setCollectionForStandardVariants(
+        &$collection,
+        SearchCriteriaInterface $criteria,
+        $joinCatalogTable = false
+    ) {
+        if ($joinCatalogTable) {
+            $this->setCollectionPropertiesPlusJoinSku($collection, $criteria, 'ItemId', null, ['repl_item_variant_id']);
+        } else {
+            $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
+            $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
+        }
+
+        $secondTableName = $this->resource->getTableName('ls_replication_repl_item_variant_registration');
+        $collection
+            ->getSelect()->where('ItemId NOT IN (?)', new \Zend_Db_Expr("select ItemId From $secondTableName"));
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * @param $collection
      * @param SearchCriteriaInterface $criteria
      * @param string $type
      * @return void
@@ -2336,8 +2411,12 @@ class ReplicationHelper extends AbstractHelper
         if (!$value) {
             return null;
         }
+        $defaultAttribute = $this->eavAttributeFactory->create();
 
-        $attribute = $this->eavConfig->getAttribute('catalog_product', $code);
+        $attribute = $defaultAttribute->loadByCode(
+            Product::ENTITY,
+            $code
+        )->setData('store_id', 0);
 
         return $attribute->getSource()->getOptionId($value);
     }

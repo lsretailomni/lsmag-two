@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommCountryCodeResponse as ReplEcommCou
 
 class ReplEcommCountryCode extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_COUNTRY_CODE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommCountryCode extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

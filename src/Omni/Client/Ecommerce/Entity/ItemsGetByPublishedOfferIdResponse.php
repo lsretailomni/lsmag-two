@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ItemsGetByPublishedOfferIdResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfLoyItem $ItemsGetByPublishedOfferIdResult
      */
@@ -42,5 +43,7 @@ class ItemsGetByPublishedOfferIdResponse implements ResponseInterface
     {
         return $this->ItemsGetByPublishedOfferIdResult;
     }
+
+
 }
 

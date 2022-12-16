@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplHierarchyNode extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_hierarchy_node', 'repl_hierarchy_node_id' );
     }
+
+
 }
 

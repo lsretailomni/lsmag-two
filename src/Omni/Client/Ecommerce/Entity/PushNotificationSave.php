@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class PushNotificationSave implements RequestInterface
 {
+
     /**
      * @property PushNotificationRequest $pushNotificationRequest
      */
@@ -34,5 +35,7 @@ class PushNotificationSave implements RequestInterface
     {
         return $this->pushNotificationRequest;
     }
+
+
 }
 

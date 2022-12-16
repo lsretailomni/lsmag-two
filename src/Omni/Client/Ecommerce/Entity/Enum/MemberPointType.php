@@ -16,8 +16,11 @@ use MyCLabs\Enum\Enum;
  */
 class MemberPointType extends Enum
 {
+
     public const AWARD_POINTS = 'AwardPoints';
 
     public const OTHER_POINTS = 'OtherPoints';
+
+
 }
 

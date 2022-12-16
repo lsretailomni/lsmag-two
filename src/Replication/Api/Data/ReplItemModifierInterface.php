@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemModifierInterface
 {
+
     /**
      * @param ItemModifierPriceHandling $AlwaysCharge
      * @return $this
@@ -339,5 +340,7 @@ interface ReplItemModifierInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

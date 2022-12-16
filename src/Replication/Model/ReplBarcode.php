@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplBarcodeInterface;
 
 class ReplBarcode extends AbstractModel implements ReplBarcodeInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_barcode';
 
     protected $_cacheTag = 'ls_replication_repl_barcode';
@@ -429,5 +430,7 @@ class ReplBarcode extends AbstractModel implements ReplBarcodeInterface, Identit
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class TokenEntryGet implements RequestInterface
 {
+
     /**
      * @property string $accountNo
      */
@@ -57,5 +58,7 @@ class TokenEntryGet implements RequestInterface
     {
         return $this->hotelToken;
     }
+
+
 }
 

@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplImageLink extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_image_link', 'repl_image_link_id' );
     }
+
+
 }
 

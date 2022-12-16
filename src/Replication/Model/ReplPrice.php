@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplPriceInterface;
 
 class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_price';
 
     protected $_cacheTag = 'ls_replication_repl_price';
@@ -754,5 +755,7 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

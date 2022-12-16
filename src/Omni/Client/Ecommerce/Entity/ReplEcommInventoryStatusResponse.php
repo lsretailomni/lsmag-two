@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommInventoryStatusResponse implements ResponseInterface
 {
+
     /**
      * @property ReplInvStatusResponse $ReplEcommInventoryStatusResult
      */
@@ -42,5 +43,7 @@ class ReplEcommInventoryStatusResponse implements ResponseInterface
     {
         return $this->ReplEcommInventoryStatusResult;
     }
+
+
 }
 

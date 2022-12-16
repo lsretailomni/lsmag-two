@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityConfirmGroupResponse implements ResponseInterface
 {
+
     /**
      * @property ActivityResponse $ActivityConfirmGroupResult
      */
@@ -42,5 +43,7 @@ class ActivityConfirmGroupResponse implements ResponseInterface
     {
         return $this->ActivityConfirmGroupResult;
     }
+
+
 }
 

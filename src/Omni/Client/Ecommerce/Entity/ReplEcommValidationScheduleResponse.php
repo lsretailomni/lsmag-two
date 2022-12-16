@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommValidationScheduleResponse implements ResponseInterface
 {
+
     /**
      * @property ReplValidationScheduleResponse $ReplEcommValidationScheduleResult
      */
@@ -42,5 +43,7 @@ class ReplEcommValidationScheduleResponse implements ResponseInterface
     {
         return $this->ReplEcommValidationScheduleResult;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommDiscountValidationsResponse as Repl
 
 class ReplEcommDiscountValidations extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_DISCOUNT_VALIDATIONS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommDiscountValidations extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfOneListLink implements IteratorAggregate
 {
+
     /**
      * @property OneListLink[] $OneListLink
      */
@@ -45,5 +46,7 @@ class ArrayOfOneListLink implements IteratorAggregate
     {
         return $this->OneListLink;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplTaxSetupResponse
 {
+
     /**
      * @property ArrayOfReplTaxSetup $TaxSetups
      */
@@ -101,5 +102,7 @@ class ReplTaxSetupResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplImageLinkSearchResultsFactory;
 
 class ReplImageLinkRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplImageLinkFactory $objectFactory
      */
@@ -131,5 +132,7 @@ class ReplImageLinkRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

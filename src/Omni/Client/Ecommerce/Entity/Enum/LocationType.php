@@ -18,6 +18,7 @@ use MyCLabs\Enum\Enum;
  */
 class LocationType extends Enum
 {
+
     public const FILE = 'File';
 
     public const IMAGE = 'Image';
@@ -25,5 +26,7 @@ class LocationType extends Enum
     public const URL = 'Url';
 
     public const NO_IMAGE = 'NoImage';
+
+
 }
 

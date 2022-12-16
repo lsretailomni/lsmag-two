@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class HospOrderCancel implements RequestInterface
 {
+
     /**
      * @property string $storeId
      */
@@ -57,5 +58,7 @@ class HospOrderCancel implements RequestInterface
     {
         return $this->orderId;
     }
+
+
 }
 

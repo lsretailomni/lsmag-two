@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommImageLinksResponse implements ResponseInterface
 {
+
     /**
      * @property ReplImageLinkResponse $ReplEcommImageLinksResult
      */
@@ -42,5 +43,7 @@ class ReplEcommImageLinksResponse implements ResponseInterface
     {
         return $this->ReplEcommImageLinksResult;
     }
+
+
 }
 

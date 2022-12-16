@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplStore implements IteratorAggregate
 {
+
     /**
      * @property ReplStore[] $ReplStore
      */
@@ -45,5 +46,7 @@ class ArrayOfReplStore implements IteratorAggregate
     {
         return $this->ReplStore;
     }
+
+
 }
 

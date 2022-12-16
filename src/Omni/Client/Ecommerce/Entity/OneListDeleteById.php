@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListDeleteById implements RequestInterface
 {
+
     /**
      * @property string $oneListId
      */
@@ -34,5 +35,7 @@ class OneListDeleteById implements RequestInterface
     {
         return $this->oneListId;
     }
+
+
 }
 

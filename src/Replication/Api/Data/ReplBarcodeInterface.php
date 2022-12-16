@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplBarcodeInterface
 {
+
     /**
      * @param int $Blocked
      * @return $this
@@ -185,5 +186,7 @@ interface ReplBarcodeInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

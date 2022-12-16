@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplAttributeOptionValue extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_attribute_option_value', 'repl_attribute_option_value_id' );
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class HierarchyAttribute extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -32,5 +33,7 @@ class HierarchyAttribute extends Entity
     {
         return $this->Description;
     }
+
+
 }
 

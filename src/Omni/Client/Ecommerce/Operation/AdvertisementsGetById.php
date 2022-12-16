@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\AdvertisementsGetByIdResponse as Advertiseme
 
 class AdvertisementsGetById extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ADVERTISEMENTS_GET_BY_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class AdvertisementsGetById extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

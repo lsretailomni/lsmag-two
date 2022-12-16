@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplPriceSearchResultsFactory;
 
 class ReplPriceRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplPriceFactory $objectFactory
      */
@@ -131,5 +132,7 @@ class ReplPriceRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

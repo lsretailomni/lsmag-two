@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfSourcingLocation implements IteratorAggregate
 {
+
     /**
      * @property SourcingLocation[] $SourcingLocation
      */
@@ -45,5 +46,7 @@ class ArrayOfSourcingLocation implements IteratorAggregate
     {
         return $this->SourcingLocation;
     }
+
+
 }
 

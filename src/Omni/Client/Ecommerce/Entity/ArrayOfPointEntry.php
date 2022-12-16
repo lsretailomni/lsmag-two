@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfPointEntry implements IteratorAggregate
 {
+
     /**
      * @property PointEntry[] $PointEntry
      */
@@ -45,5 +46,7 @@ class ArrayOfPointEntry implements IteratorAggregate
     {
         return $this->PointEntry;
     }
+
+
 }
 

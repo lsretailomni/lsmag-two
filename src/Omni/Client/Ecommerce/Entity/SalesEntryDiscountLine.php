@@ -14,6 +14,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class SalesEntryDiscountLine extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -263,5 +264,7 @@ class SalesEntryDiscountLine extends Entity
     {
         return $this->PeriodicDiscType;
     }
+
+
 }
 

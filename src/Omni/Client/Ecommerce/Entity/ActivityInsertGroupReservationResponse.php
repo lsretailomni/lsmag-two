@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityInsertGroupReservationResponse implements ResponseInterface
 {
+
     /**
      * @property string $ActivityInsertGroupReservationResult
      */
@@ -42,5 +43,7 @@ class ActivityInsertGroupReservationResponse implements ResponseInterface
     {
         return $this->ActivityInsertGroupReservationResult;
     }
+
+
 }
 

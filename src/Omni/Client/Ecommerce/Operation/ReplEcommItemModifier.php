@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommItemModifierResponse as ReplEcommIt
 
 class ReplEcommItemModifier extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_ITEM_MODIFIER';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommItemModifier extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

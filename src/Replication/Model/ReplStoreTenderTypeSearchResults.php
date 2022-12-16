@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplStoreTenderTypeSearchResults extends SearchResults implements ReplStoreTenderTypeSearchResultsInterface
 {
+
+
 }
 

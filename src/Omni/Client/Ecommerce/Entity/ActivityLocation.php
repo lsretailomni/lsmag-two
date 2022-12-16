@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityLocation extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -55,5 +56,7 @@ class ActivityLocation extends Entity
     {
         return $this->RetailStore;
     }
+
+
 }
 

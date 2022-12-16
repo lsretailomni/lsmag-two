@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityGetAvailabilityTokenResponse implements ResponseInterface
 {
+
     /**
      * @property string $ActivityGetAvailabilityTokenResult
      */
@@ -42,5 +43,7 @@ class ActivityGetAvailabilityTokenResponse implements ResponseInterface
     {
         return $this->ActivityGetAvailabilityTokenResult;
     }
+
+
 }
 

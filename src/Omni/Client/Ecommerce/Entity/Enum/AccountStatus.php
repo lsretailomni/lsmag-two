@@ -17,10 +17,13 @@ use MyCLabs\Enum\Enum;
  */
 class AccountStatus extends Enum
 {
+
     public const UNASSIGNED = 'Unassigned';
 
     public const ACTIVE = 'Active';
 
     public const CLOSED = 'Closed';
+
+
 }
 

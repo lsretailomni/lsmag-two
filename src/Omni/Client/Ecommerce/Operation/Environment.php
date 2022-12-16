@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\EnvironmentResponse as EnvironmentResponse;
 
 class Environment extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ENVIRONMENT';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class Environment extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

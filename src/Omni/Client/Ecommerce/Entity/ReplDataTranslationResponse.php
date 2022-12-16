@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplDataTranslationResponse
 {
+
     /**
      * @property ArrayOfReplDataTranslation $Texts
      */
@@ -101,5 +102,7 @@ class ReplDataTranslationResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

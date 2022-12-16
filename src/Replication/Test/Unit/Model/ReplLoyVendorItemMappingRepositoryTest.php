@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplLoyVendorItemMappingSearchResultsFactory;
 
 class ReplLoyVendorItemMappingRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplLoyVendorItemMappingFactory $objectFactory
      */
@@ -132,5 +133,7 @@ class ReplLoyVendorItemMappingRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

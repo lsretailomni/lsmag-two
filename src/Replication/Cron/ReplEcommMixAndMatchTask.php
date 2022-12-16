@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplDiscountInterface;
 
 class ReplEcommMixAndMatchTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_discount';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_discount';
@@ -152,5 +153,7 @@ class ReplEcommMixAndMatchTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

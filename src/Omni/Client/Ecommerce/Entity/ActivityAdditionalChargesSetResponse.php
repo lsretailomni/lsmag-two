@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityAdditionalChargesSetResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $ActivityAdditionalChargesSetResult
      */
@@ -42,5 +43,7 @@ class ActivityAdditionalChargesSetResponse implements ResponseInterface
     {
         return $this->ActivityAdditionalChargesSetResult;
     }
+
+
 }
 

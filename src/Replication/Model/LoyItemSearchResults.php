@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class LoyItemSearchResults extends SearchResults implements LoyItemSearchResultsInterface
 {
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityCancel implements RequestInterface
 {
+
     /**
      * @property string $activityNo
      */
@@ -34,5 +35,7 @@ class ActivityCancel implements RequestInterface
     {
         return $this->activityNo;
     }
+
+
 }
 

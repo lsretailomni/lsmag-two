@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplBarcodeResponse
 {
+
     /**
      * @property ArrayOfReplBarcode $Barcodes
      */
@@ -101,5 +102,7 @@ class ReplBarcodeResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

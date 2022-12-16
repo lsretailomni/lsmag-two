@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityCheckAccessResponse as ActivityCheck
 
 class ActivityCheckAccess extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_CHECK_ACCESS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivityCheckAccess extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

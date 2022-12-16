@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplCollection extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_collection', 'repl_collection_id' );
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class VariantExt
 {
+
     /**
      * @property ArrayOfDimValue $Values
      */
@@ -101,5 +102,7 @@ class VariantExt
     {
         return $this->DisplayOrder;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplDiscountValidation implements IteratorAggregate
 {
+
     /**
      * @property ReplDiscountValidation[] $ReplDiscountValidation
      */
@@ -45,5 +46,7 @@ class ArrayOfReplDiscountValidation implements IteratorAggregate
     {
         return $this->ReplDiscountValidation;
     }
+
+
 }
 

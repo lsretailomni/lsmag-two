@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfLoyItem implements IteratorAggregate
 {
+
     /**
      * @property LoyItem[] $LoyItem
      */
@@ -45,5 +46,7 @@ class ArrayOfLoyItem implements IteratorAggregate
     {
         return $this->LoyItem;
     }
+
+
 }
 

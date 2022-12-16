@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderCheckLines
 {
+
     /**
      * @property float $Amount
      */
@@ -239,5 +240,7 @@ class OrderCheckLines
     {
         return $this->VariantDescription;
     }
+
+
 }
 

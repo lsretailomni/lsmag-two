@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplExtendedVariantValueSearchResultsFactory;
 
 class ReplExtendedVariantValueRepository implements ReplExtendedVariantValueRepositoryInterface
 {
+
     /**
      * @property ReplExtendedVariantValueFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplExtendedVariantValueRepository implements ReplExtendedVariantValueRepo
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

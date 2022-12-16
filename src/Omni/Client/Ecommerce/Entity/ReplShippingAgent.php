@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplShippingAgent
 {
+
     /**
      * @property ArrayOfShippingAgentService $Services
      */
@@ -193,5 +194,7 @@ class ReplShippingAgent
     {
         return $this->scope_id;
     }
+
+
 }
 

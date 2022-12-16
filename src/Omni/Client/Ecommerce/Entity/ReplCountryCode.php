@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCountryCode
 {
+
     /**
      * @property ArrayOfTaxItemGroup $TaxItemGroups
      */
@@ -193,5 +194,7 @@ class ReplCountryCode
     {
         return $this->scope_id;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfstring implements IteratorAggregate
 {
+
     /**
      * @property string[] $string
      */
@@ -45,5 +46,7 @@ class ArrayOfstring implements IteratorAggregate
     {
         return $this->string;
     }
+
+
 }
 
