@@ -746,7 +746,6 @@ abstract class AbstractReplicationTask
         try {
             $properties = $this->getProperties();
             $response   = $request->execute();
-            $navIds = [];
             if (method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();
                 $lastKey                = $result->getLastKey();
@@ -759,9 +758,6 @@ abstract class AbstractReplicationTask
                     // @codingStandardsIgnoreLine
                     if (count($traversable) > 0) {
                         foreach ($traversable as $source) {
-                            if ($source instanceof \Ls\Omni\Client\Ecommerce\Entity\ReplItem) {
-                                $navIds[] = $source->getId();
-                            }
                             //TODO need to understand this before we modify it.
                             $source->setScope(ScopeInterface::SCOPE_STORES)
                                 ->setScopeId($storeId);
@@ -784,12 +780,6 @@ abstract class AbstractReplicationTask
                         $storeId,
                         false
                     );
-                }
-
-                if (!empty($navIds)) {
-                    $where['`Key` IN (?)'] = implode(',', $navIds);
-                    $where['`scope_id` = ?'] = $storeId;
-                    $this->rep_helper->updateDataTranslationTables($where);
                 }
             } else {
                 $this->logger->debug(

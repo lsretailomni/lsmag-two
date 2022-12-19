@@ -243,7 +243,7 @@ class DataTranslationTask
                             $langCode,
                             $store->getWebsiteId()
                         );
-                        $itemsStatus                           = $this->updateItem($store->getId(), $langCode);
+                        list($itemsStatus,,)                           = $this->updateItem($store->getId(), $langCode);
                         $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
                         $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
                             $store->getId(),
@@ -561,19 +561,25 @@ class DataTranslationTask
     /**
      * Cater translation of products name and description
      *
-     * @param int $storeId
-     * @param string $langCode
-     * @return bool
+     * @param $storeId
+     * @param $langCode
+     * @param $sku
+     * @return array
      * @throws LocalizedException
      */
-    public function updateItem($storeId, $langCode)
+    public function updateItem($storeId, $langCode, $sku = '')
     {
         $filters = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_ITEM_HTML . ',' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION
         );
-        $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        if (!empty($sku)) {
+            $criteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1, true);
+        } else {
+            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+        }
+
         $collection = $this->replDataTranslationCollectionFactory->create();
         $this->replicationHelper->setCollectionPropertiesPlusJoinSku(
             $collection,
@@ -582,6 +588,12 @@ class DataTranslationTask
             null,
             ['repl_data_translation_id']
         );
+        if (!empty($sku)) {
+            $collection->addFieldToFilter('main_table.Key', $sku);
+        }
+
+        $sql = $collection->getSelect()->__toString();
+        $nameFlag = $descriptionFlag = 0;
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {
             try {
@@ -597,11 +609,13 @@ class DataTranslationTask
                     if ($dataTranslation->getTranslationId() == LSR::SC_TRANSLATION_ID_ITEM_HTML) {
                         $productData->setDescription($dataTranslation->getText());
                         $this->productResourceModel->saveAttribute($productData, 'description');
+                        $descriptionFlag = 1;
                     } else {
                         $productData->setMetaTitle($dataTranslation->getText());
                         $productData->setName($dataTranslation->getText());
                         // @codingStandardsIgnoreLine
                         $this->productResourceModel->saveAttribute($productData, 'name');
+                        $nameFlag = 1;
                     }
                 }
             } catch (Exception $e) {
@@ -616,7 +630,7 @@ class DataTranslationTask
             $this->dataTranslationRepository->save($dataTranslation);
         }
 
-        return $collection->getSize() == 0;
+        return [$collection->getSize() == 0, $nameFlag, $descriptionFlag];
     }
 
     /**

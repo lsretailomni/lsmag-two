@@ -24,15 +24,15 @@ use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemUnitOfMeasureSearchResultsFactory;
-use Ls\Replication\Model\ReplItemVariant;
+use \Ls\Replication\Model\ReplItemVariant;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
-use Ls\Replication\Model\ReplItemVariantRepository;
+use \Ls\Replication\Model\ReplItemVariantRepository;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplItemUnitOfMeasure\CollectionFactory as ReplItemUomCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping\CollectionFactory as ReplItemVendorCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
@@ -388,7 +388,8 @@ class ProductCreateTask
         ReplItemVariantRepository $replItemVariantRepository,
         Filesystem $filesystem,
         ResourceConnection $resourceConnection,
-        File $file
+        File $file,
+        \Ls\Replication\Cron\DataTranslationTask $dataTranslationTask
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -441,6 +442,7 @@ class ProductCreateTask
         $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
+        $this->dataTranslationTask = $dataTranslationTask;
     }
 
     /**
@@ -542,12 +544,41 @@ class ProductCreateTask
                         foreach ($items->getItems() as $item) {
                             try {
                                 $taxClass    = null;
+                                $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                    $item->getNavId(),
+                                    '',
+                                    '',
+                                    $store->getId()
+                                );
+
+                                $langCode = $this->lsr->getStoreConfig(
+                                    LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                                    $store->getId()
+                                );
+                                list(, $nameFlag, $descriptionFlag) =
+                                    $this->dataTranslationTask->updateItem(
+                                        $store->getId(),
+                                        $langCode,
+                                        $item->getNavId()
+                                    );
+
                                 $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                     $item->getNavId(),
                                     '',
                                     '',
                                     $store->getId()
                                 );
+
+                                if (!$nameFlag) {
+                                    $productData->setName($item->getDescription());
+                                    $productData->setMetaTitle($item->getDescription());
+                                } else {
+                                    $productData->setMetaTitle($productData->getname());
+                                }
+
+                                if (!$descriptionFlag) {
+                                    $productData->setDescription($item->getDetails());
+                                }
 
                                 if (!empty($item->getTaxItemGroupId())) {
                                     $taxClass = $this->replicationHelper->getTaxClassGivenName(
@@ -560,9 +591,7 @@ class ProductCreateTask
                                     $websitesProduct[] = $store->getWebsiteId();
                                     $productData->setWebsiteIds($websitesProduct);
                                 }
-                                $productData->setName($item->getDescription());
-                                $productData->setMetaTitle($item->getDescription());
-                                $productData->setDescription($item->getDetails());
+
                                 $productData->setWeight($item->getGrossWeight());
                                 if (!empty($taxClass)) {
                                     $productData->setTaxClassId($taxClass->getClassId());
