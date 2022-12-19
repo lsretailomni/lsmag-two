@@ -47,6 +47,7 @@ type AppliedLoyaltyPoints {
 type Cart {
      applied_gift_card: AppliedGiftCard @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\GiftCard\\AppliedGiftCard") @doc(description:"An array of `Gift Card` object.")
      loyalty_points_info: AppliedLoyaltyPoints @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\LoyaltyPoints\\LoyaltyPointsInfo") @doc(description:"An array of `Loyalty Point` object.")
+     customer_cart_discounts : GetCustomerCartDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetCustomerCartDiscountsOutput") @doc(description: "Get list of discounts based on customer cart id.")
 }
 
 type Order {
@@ -73,7 +74,6 @@ type Query {
    order_taking_calendar (
     store_id: String! @doc(description: "Store ID.")
    ): OrderTakingCalendarOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\OrderTakingCalendarOutput") @doc(description: "Get Order taking calender.")
-   get_customer_cart_discounts : GetCustomerCartDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetCustomerCartDiscountsOutput") @doc(description: "Get list of discounts based on customer cart id.")
    get_discounts (
     item_id: String! @doc(description: "Item Sku whose availability is required.")
    ): GetDiscountsOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GetDiscountsOutput") @doc(description: "Get list of discounts based on Item Id and customer group.")
@@ -207,15 +207,11 @@ type GetDiscountsOutput {
 }
 
 type GetCustomerCartDiscountsOutput {
-    output: cartDiscountsData @doc(description: "Pro active discounts output in cart")
+    coupons: [couponsDataArray] @doc(description: "Coupons output")
 }
 
 type discountsData {
     discounts: [discountsDataArray] @doc(description: "Pro active discounts output")
-    coupons: [couponsDataArray] @doc(description: "Coupons output")
-}
-
-type cartDiscountsData {
     coupons: [couponsDataArray] @doc(description: "Coupons output")
 }
 

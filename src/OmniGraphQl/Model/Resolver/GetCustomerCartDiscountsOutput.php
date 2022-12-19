@@ -66,10 +66,8 @@ class GetCustomerCartDiscountsOutput extends View implements ResolverInterface
             }
         }
 
-        return ['output' =>
-                    [
-                        'coupons' =>  $couponsArr
-                    ]
+        return [
+                    'coupons' =>  $couponsArr
         ];
     }
 
