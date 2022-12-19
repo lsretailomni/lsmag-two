@@ -24,17 +24,18 @@ use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ReplItemSearchResults;
 use \Ls\Replication\Model\ReplItemUnitOfMeasureSearchResultsFactory;
-use Ls\Replication\Model\ReplItemVariant;
+use \Ls\Replication\Model\ReplItemVariant;
 use \Ls\Replication\Model\ReplItemVariantRegistration;
-use Ls\Replication\Model\ReplItemVariantRepository;
+use \Ls\Replication\Model\ReplItemVariantRepository;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplHierarchyLeaf\CollectionFactory as ReplHierarchyLeafCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\CollectionFactory as ReplImageLinkCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplInvStatus\CollectionFactory as ReplInvStatusCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplItemUnitOfMeasure\CollectionFactory as ReplItemUomCollectionFactory;
-use Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
+use \Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplLoyVendorItemMapping\CollectionFactory as ReplItemVendorCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplPrice\CollectionFactory as ReplPriceCollectionFactory;
+use \Ls\Replication\Service\ImportImageService;
 use Magento\Catalog\Api\CategoryLinkRepositoryInterface;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\Data\ProductAttributeMediaGalleryEntryInterface;
@@ -44,6 +45,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\Backend\Media\EntryConverterPool;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
+use Magento\Catalog\Model\Product\Gallery\Entry;
 use Magento\Catalog\Model\Product\Gallery\UpdateHandlerFactory;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\Product\Visibility;
@@ -276,6 +278,11 @@ class ProductCreateTask
     public MediaProcessor $mediaProcessor;
 
     /**
+     * @var ImportImageService
+     */
+    public $imageService;
+
+    /**
      * @var ReplItemVariantCollectionFactory
      */
     public $replItemVariantCollectionFactory;
@@ -336,6 +343,7 @@ class ProductCreateTask
      * @param Filesystem $filesystem
      * @param ResourceConnection $resourceConnection
      * @param File $file
+     * @param ImportImageService $imageService
      * @throws FileSystemException
      */
     public function __construct(
@@ -388,7 +396,8 @@ class ProductCreateTask
         ReplItemVariantRepository $replItemVariantRepository,
         Filesystem $filesystem,
         ResourceConnection $resourceConnection,
-        File $file
+        File $file,
+        ImportImageService $imageService
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -441,6 +450,7 @@ class ProductCreateTask
         $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
+        $this->imageService                              = $imageService;
     }
 
     /**
@@ -786,39 +796,55 @@ class ProductCreateTask
                 if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                     $mimeType = $this->getMimeType($result['image']);
                     if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
-                        $this->imagesFetched[$image->getImageId()] = $result;
+                        $imageContent = $this->imageContent->create()
+                            ->setBase64EncodedData($result['image'])
+                            ->setName($this->replicationHelper->oSlug($image->getImageId()))
+                            ->setType($mimeType);
+                        $this->attributeMediaGalleryEntry->setMediaType('image')
+                            ->setLabel(($image->getDescription()) ?: __('Product Image'))
+                            ->setPosition($image->getDisplayOrder())
+                            ->setDisabled(false)
+                            ->setContent($imageContent);
+
+                        if ($i == 0) {
+                            $types = ['image', 'small_image', 'thumbnail'];
+                        }
+                        $this->attributeMediaGalleryEntry->setTypes($types);
+                        $galleryArray[] = clone $this->attributeMediaGalleryEntry;
+                        $this->imagesFetched[$image->getImageId()] = $galleryArray[$i];
+                        $i++;
+                    } else {
+                        $image->setData('is_failed', 1);
+                        $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
                     }
-                }
-
-            } else {
-                $result = $this->imagesFetched[$image->getImageId()];
-            }
-            if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
-                $mimeType = $this->getMimeType($result['image']);
-                if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
-                    $imageContent = $this->imageContent->create()
-                        ->setBase64EncodedData($result['image'])
-                        ->setName($this->replicationHelper->oSlug($image->getImageId()))
-                        ->setType($mimeType);
-                    $this->attributeMediaGalleryEntry->setMediaType('image')
-                        ->setLabel(($image->getDescription()) ?: __('Product Image'))
-                        ->setPosition($image->getDisplayOrder())
-                        ->setDisabled(false)
-                        ->setContent($imageContent);
-
+                } elseif (!empty($result) && !empty($result['location'])) {
                     if ($i == 0) {
                         $types = ['image', 'small_image', 'thumbnail'];
                     }
-                    $this->attributeMediaGalleryEntry->setTypes($types);
-                    $galleryArray[] = clone $this->attributeMediaGalleryEntry;
+                    $galleryArray[] = [
+                        'location' => $result['location'], 'types' => $types, 'repl_image_link_id' => $image->getId()
+                    ];
+                    $this->imagesFetched[$image->getImageId()] = $galleryArray[$i];
                     $i++;
                 } else {
                     $image->setData('is_failed', 1);
                     $this->logger->debug('MIME Type is not valid for Image Id : ' . $image->getImageId());
                 }
             } else {
-                $image->setData('is_failed', 1);
-                $this->logger->debug('Response is empty or format empty for Image Id : ' . $image->getImageId());
+                $existentImage = $this->imagesFetched[$image->getImageId()];
+
+                if ($i == 0) {
+                    $types = ['image', 'small_image', 'thumbnail'];
+                    if (!($existentImage instanceof Entry)) {
+                        $existentImage['types'] = $types;
+                    } else {
+                        $existentImage->setTypes($types);
+                    }
+                }
+
+                $galleryArray[] = $existentImage;
+                $this->logger->debug('Image corresponding to Image Id is already fetched: ' . $image->getImageId());
+                $i++;
             }
 
             $image->setData('processed_at', $this->replicationHelper->getDateTime());
