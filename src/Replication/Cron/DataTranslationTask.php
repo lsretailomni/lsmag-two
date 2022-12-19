@@ -243,7 +243,7 @@ class DataTranslationTask
                             $langCode,
                             $store->getWebsiteId()
                         );
-                        list($itemsStatus,,)                           = $this->updateItem($store->getId(), $langCode);
+                        list($itemsStatus,,)                   = $this->updateItem($store->getId(), $langCode);
                         $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
                         $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
                             $store->getId(),
@@ -384,6 +384,13 @@ class DataTranslationTask
                 $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
+            $dataTranslation->addData(
+                [
+                    'is_updated' => 0,
+                    'processed_at' => $this->replicationHelper->getDateTime(),
+                    'processed' => 1
+                ]
+            );
             // @codingStandardsIgnoreLine
             $this->dataTranslationRepository->save($dataTranslation);
         }
@@ -592,7 +599,6 @@ class DataTranslationTask
             $collection->addFieldToFilter('main_table.Key', $sku);
         }
 
-        $sql = $collection->getSelect()->__toString();
         $nameFlag = $descriptionFlag = 0;
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {

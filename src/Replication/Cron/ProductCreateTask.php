@@ -286,6 +286,11 @@ class ProductCreateTask
     public $replItemVariantRepository;
 
     /**
+     * @var DataTranslationTask
+     */
+    public $dataTranslationTask;
+
+    /**
      * @param Config $eavConfig
      * @param ConfigurableProTypeModel $configurable
      * @param Attribute $attribute
@@ -336,6 +341,7 @@ class ProductCreateTask
      * @param Filesystem $filesystem
      * @param ResourceConnection $resourceConnection
      * @param File $file
+     * @param DataTranslationTask $dataTranslationTask
      * @throws FileSystemException
      */
     public function __construct(
@@ -389,7 +395,7 @@ class ProductCreateTask
         Filesystem $filesystem,
         ResourceConnection $resourceConnection,
         File $file,
-        \Ls\Replication\Cron\DataTranslationTask $dataTranslationTask
+        DataTranslationTask $dataTranslationTask
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -442,7 +448,7 @@ class ProductCreateTask
         $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
-        $this->dataTranslationTask = $dataTranslationTask;
+        $this->dataTranslationTask                       = $dataTranslationTask;
     }
 
     /**
