@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class StoresGetbyItemInStock implements RequestInterface
 {
+
     /**
      * @property string $itemId
      */
@@ -126,5 +127,7 @@ class StoresGetbyItemInStock implements RequestInterface
     {
         return $this->maxDistance;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommMemberResponse as ReplEcommMemberRe
 
 class ReplEcommMember extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_MEMBER';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommMember extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

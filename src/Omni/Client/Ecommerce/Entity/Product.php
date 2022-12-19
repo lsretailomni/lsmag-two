@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Product extends MenuItem
 {
+
     /**
      * @property ArrayOfProductModifierGroup $ProductModifierGroups
      */
@@ -78,5 +79,7 @@ class Product extends MenuItem
     {
         return $this->DefaultUnitOfMeasure;
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class CustomerSearchResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfCustomer $CustomerSearchResult
      */
@@ -42,5 +43,7 @@ class CustomerSearchResponse implements ResponseInterface
     {
         return $this->CustomerSearchResult;
     }
+
+
 }
 

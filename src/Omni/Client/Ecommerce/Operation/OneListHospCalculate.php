@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListHospCalculateResponse as OneListHospC
 
 class OneListHospCalculate extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ONE_LIST_HOSP_CALCULATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class OneListHospCalculate extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplDiscountValidationSearchResults extends SearchResults implements ReplDiscountValidationSearchResultsInterface
 {
+
+
 }
 

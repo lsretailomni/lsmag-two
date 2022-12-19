@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplHierarchyLeaf
 {
+
     /**
      * @property float $DealPrice
      */
@@ -436,5 +437,7 @@ class ReplHierarchyLeaf
     {
         return $this->scope_id;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Promotion extends Entity
 {
+
     /**
      * @property string $ClubMembersOnly
      */
@@ -308,5 +309,7 @@ class Promotion extends Entity
     {
         return $this->TimeTo;
     }
+
+
 }
 

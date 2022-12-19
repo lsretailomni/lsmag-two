@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplUnitOfMeasureInterface
 {
+
     /**
      * @param string $Description
      * @return $this
@@ -163,5 +164,7 @@ interface ReplUnitOfMeasureInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

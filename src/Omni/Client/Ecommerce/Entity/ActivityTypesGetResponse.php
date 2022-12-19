@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityTypesGetResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfActivityType $ActivityTypesGetResult
      */
@@ -42,5 +43,7 @@ class ActivityTypesGetResponse implements ResponseInterface
     {
         return $this->ActivityTypesGetResult;
     }
+
+
 }
 

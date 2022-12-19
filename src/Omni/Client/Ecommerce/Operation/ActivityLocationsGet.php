@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityLocationsGetResponse as ActivityLoca
 
 class ActivityLocationsGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_LOCATIONS_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivityLocationsGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

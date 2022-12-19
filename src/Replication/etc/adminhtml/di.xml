@@ -100,6 +100,15 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplItemVariant\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_item_variant</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Ls\Replication\Model\ResourceModel\ReplItemVariant
+            </argument>
+        </arguments>
+    </virtualType>
     <virtualType name="Ls\Replication\Model\ResourceModel\ReplHierarchy\Grid\Collection"
                  type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>

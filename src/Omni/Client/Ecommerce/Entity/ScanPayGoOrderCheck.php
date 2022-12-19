@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ScanPayGoOrderCheck implements RequestInterface
 {
+
     /**
      * @property string $documentId
      */
@@ -34,5 +35,7 @@ class ScanPayGoOrderCheck implements RequestInterface
     {
         return $this->documentId;
     }
+
+
 }
 

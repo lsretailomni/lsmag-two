@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Recipe extends MenuItem
 {
+
     /**
      * @property ArrayOfIngredient $Ingredients
      */
@@ -55,5 +56,7 @@ class Recipe extends MenuItem
     {
         return $this->ProductModifierGroupIds;
     }
+
+
 }
 

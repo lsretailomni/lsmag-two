@@ -15,6 +15,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class MemberContact extends Entity
 {
+
     /**
      * @property ArrayOfAddress $Addresses
      */
@@ -619,5 +620,7 @@ class MemberContact extends Entity
     {
         return $this->UserName;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\PushNotificationSaveResponse as PushNotifica
 
 class PushNotificationSave extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'PUSH_NOTIFICATION_SAVE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class PushNotificationSave extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

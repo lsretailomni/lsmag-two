@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommHierarchyNodeResponse implements ResponseInterface
 {
+
     /**
      * @property ReplHierarchyNodeResponse $ReplEcommHierarchyNodeResult
      */
@@ -42,5 +43,7 @@ class ReplEcommHierarchyNodeResponse implements ResponseInterface
     {
         return $this->ReplEcommHierarchyNodeResult;
     }
+
+
 }
 

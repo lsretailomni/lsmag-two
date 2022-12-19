@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplItemRecipeRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplItemRecipeInterface $page);
@@ -21,5 +22,7 @@ interface ReplItemRecipeRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

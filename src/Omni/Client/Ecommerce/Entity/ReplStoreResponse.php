@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplStoreResponse
 {
+
     /**
      * @property ArrayOfReplStore $Stores
      */
@@ -101,5 +102,7 @@ class ReplStoreResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

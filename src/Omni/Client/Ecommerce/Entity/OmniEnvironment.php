@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OmniEnvironment
 {
+
     /**
      * @property Currency $Currency
      */
@@ -78,5 +79,7 @@ class OmniEnvironment
     {
         return $this->Version;
     }
+
+
 }
 

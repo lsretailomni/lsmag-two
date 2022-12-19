@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplItemModifierInterface;
 
 class ReplItemModifier extends AbstractModel implements ReplItemModifierInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_item_modifier';
 
     protected $_cacheTag = 'ls_replication_repl_item_modifier';
@@ -779,5 +780,7 @@ class ReplItemModifier extends AbstractModel implements ReplItemModifierInterfac
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

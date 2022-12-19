@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\SPGPasswordResponse as SPGPasswordResponse;
 
 class SPGPassword extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'S_P_G_PASSWORD';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class SPGPassword extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

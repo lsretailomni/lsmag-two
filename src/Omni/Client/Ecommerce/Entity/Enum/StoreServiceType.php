@@ -21,6 +21,7 @@ use MyCLabs\Enum\Enum;
  */
 class StoreServiceType extends Enum
 {
+
     public const NONE = 'None';
 
     public const GARDEN = 'Garden';
@@ -34,5 +35,7 @@ class StoreServiceType extends Enum
     public const PLAY_PLACE = 'PlayPlace';
 
     public const FREE_REFILL = 'FreeRefill';
+
+
 }
 

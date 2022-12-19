@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplHierarchyHospDealLineInterface;
 
 class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHospDealLineInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_hierarchy_hosp_deal_line';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy_hosp_deal_line';
@@ -629,5 +630,7 @@ class ReplHierarchyHospDealLine extends AbstractModel implements ReplHierarchyHo
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

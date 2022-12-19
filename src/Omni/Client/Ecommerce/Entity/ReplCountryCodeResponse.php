@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCountryCodeResponse
 {
+
     /**
      * @property ArrayOfReplCountryCode $Codes
      */
@@ -101,5 +102,7 @@ class ReplCountryCodeResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

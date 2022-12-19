@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityUpdateGroupReservationResponse as Ac
 
 class ActivityUpdateGroupReservation extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_UPDATE_GROUP_RESERVATION';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivityUpdateGroupReservation extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

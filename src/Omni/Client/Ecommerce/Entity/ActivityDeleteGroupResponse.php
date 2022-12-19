@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityDeleteGroupResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $ActivityDeleteGroupResult
      */
@@ -42,5 +43,7 @@ class ActivityDeleteGroupResponse implements ResponseInterface
     {
         return $this->ActivityDeleteGroupResult;
     }
+
+
 }
 

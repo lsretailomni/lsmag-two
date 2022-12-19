@@ -519,9 +519,11 @@ class ContactHelper extends AbstractHelper
      */
     public function getCountryId($countryName)
     {
-        if (strlen($countryName) == 2) {
+        if ($countryName && strlen($countryName) == 2) {
             return $countryName;
         }
+        
+        $countryName       = $countryName ?? '';
         $countryName       = ucwords(strtolower($countryName));
         $countryId         = 'US';
         $countryCollection = $this->country->getCollection();

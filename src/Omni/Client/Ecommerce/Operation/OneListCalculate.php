@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse as OneListCalculate
 
 class OneListCalculate extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ONE_LIST_CALCULATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class OneListCalculate extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemVariantRegistrationInterface
 {
+
     /**
      * @param int $BlockedOnECom
      * @return $this
@@ -240,5 +241,7 @@ interface ReplItemVariantRegistrationInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

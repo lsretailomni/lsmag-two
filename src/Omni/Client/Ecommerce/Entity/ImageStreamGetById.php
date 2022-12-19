@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ImageStreamGetById implements RequestInterface
 {
+
     /**
      * @property string $id
      */
@@ -80,5 +81,7 @@ class ImageStreamGetById implements RequestInterface
     {
         return $this->height;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplMixMatchResponse
 {
+
     /**
      * @property ArrayOfReplDiscount $Discounts
      */
@@ -101,5 +102,7 @@ class ReplMixMatchResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

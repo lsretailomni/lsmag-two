@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplDataTranslationLangCodeResponse
 {
+
     /**
      * @property ArrayOfReplDataTranslationLangCode $Codes
      */
@@ -101,5 +102,7 @@ class ReplDataTranslationLangCodeResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

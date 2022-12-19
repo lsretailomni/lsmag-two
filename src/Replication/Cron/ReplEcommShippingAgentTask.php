@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplShippingAgentInterface;
 
 class ReplEcommShippingAgentTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_shipping_agent';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_shipping_agent';
@@ -152,5 +153,7 @@ class ReplEcommShippingAgentTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

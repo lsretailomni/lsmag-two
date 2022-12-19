@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplShippingAgentRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplShippingAgentInterface $page);
@@ -21,5 +22,7 @@ interface ReplShippingAgentRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

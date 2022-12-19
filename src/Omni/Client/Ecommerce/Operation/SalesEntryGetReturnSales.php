@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetReturnSalesResponse as SalesEnt
 
 class SalesEntryGetReturnSales extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'SALES_ENTRY_GET_RETURN_SALES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class SalesEntryGetReturnSales extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

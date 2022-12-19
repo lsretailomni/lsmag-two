@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ProfilesGetAllResponse as ProfilesGetAllResp
 
 class ProfilesGetAll extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'PROFILES_GET_ALL';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ProfilesGetAll extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

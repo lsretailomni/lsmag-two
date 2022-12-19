@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Device extends Entity
 {
+
     /**
      * @property string $BlockedBy
      */
@@ -262,5 +263,7 @@ class Device extends Entity
     {
         return $this->Status;
     }
+
+
 }
 

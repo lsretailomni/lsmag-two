@@ -12,5 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityResourceGet implements RequestInterface
 {
+
+
 }
 

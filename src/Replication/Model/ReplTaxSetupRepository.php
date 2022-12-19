@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplTaxSetupSearchResultsFactory;
 
 class ReplTaxSetupRepository implements ReplTaxSetupRepositoryInterface
 {
+
     /**
      * @property ReplTaxSetupFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplTaxSetupRepository implements ReplTaxSetupRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

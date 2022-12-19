@@ -110,6 +110,11 @@ abstract class AbstractReplicationTask
             "VariantId",
             "scope_id"
         ],
+        "ls_mag/replication/repl_item_variant"               => [
+            "ItemId",
+            "VariantId",
+            "scope_id"
+        ],
         "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
         "ls_mag/replication/repl_price"                      => [
             "ItemId",
@@ -240,6 +245,13 @@ abstract class AbstractReplicationTask
             $this->rep_helper->updateCronStatus(
                 false,
                 LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                ($storeId) ?: false,
+                false
+            );
+        } elseif ($confPath == "ls_mag/replication/repl_item_variant") {
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
                 ($storeId) ?: false,
                 false
             );

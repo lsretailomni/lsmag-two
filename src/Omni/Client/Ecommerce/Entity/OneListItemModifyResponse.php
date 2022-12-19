@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OneListItemModifyResponse implements ResponseInterface
 {
+
     /**
      * @property OneList $OneListItemModifyResult
      */
@@ -42,5 +43,7 @@ class OneListItemModifyResponse implements ResponseInterface
     {
         return $this->OneListItemModifyResult;
     }
+
+
 }
 

@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplImageLinkInterface;
 
 class ReplEcommImageLinksTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_image_link';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_image_link';
@@ -152,5 +153,7 @@ class ReplEcommImageLinksTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplDataTranslationInterface;
 
 class ReplDataTranslation extends AbstractModel implements ReplDataTranslationInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_data_translation';
 
     protected $_cacheTag = 'ls_replication_repl_data_translation';
@@ -379,5 +380,7 @@ class ReplDataTranslation extends AbstractModel implements ReplDataTranslationIn
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

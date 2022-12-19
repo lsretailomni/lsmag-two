@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHospLine extends Entity
 {
+
     /**
      * @property ArrayOfOrderHospSubLine $SubLines
      */
@@ -482,5 +483,7 @@ class OrderHospLine extends Entity
     {
         return $this->VariantId;
     }
+
+
 }
 

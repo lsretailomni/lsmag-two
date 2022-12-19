@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ProfilesGetByCardIdResponse as ProfilesGetBy
 
 class ProfilesGetByCardId extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'PROFILES_GET_BY_CARD_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ProfilesGetByCardId extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

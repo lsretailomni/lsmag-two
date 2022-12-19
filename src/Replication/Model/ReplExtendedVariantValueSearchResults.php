@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplExtendedVariantValueSearchResults extends SearchResults implements ReplExtendedVariantValueSearchResultsInterface
 {
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfAdmissionEntry implements IteratorAggregate
 {
+
     /**
      * @property AdmissionEntry[] $AdmissionEntry
      */
@@ -45,5 +46,7 @@ class ArrayOfAdmissionEntry implements IteratorAggregate
     {
         return $this->AdmissionEntry;
     }
+
+
 }
 

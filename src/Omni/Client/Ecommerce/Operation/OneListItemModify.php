@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListItemModifyResponse as OneListItemModi
 
 class OneListItemModify extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ONE_LIST_ITEM_MODIFY';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class OneListItemModify extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 
