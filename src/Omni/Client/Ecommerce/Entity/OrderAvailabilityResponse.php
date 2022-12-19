@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderAvailabilityResponse
 {
+
     /**
      * @property ArrayOfOrderLineAvailabilityResponse $Lines
      */
@@ -55,5 +56,7 @@ class OrderAvailabilityResponse
     {
         return $this->PreferredSourcingLocation;
     }
+
+
 }
 

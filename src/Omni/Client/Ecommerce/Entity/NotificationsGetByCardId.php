@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class NotificationsGetByCardId implements RequestInterface
 {
+
     /**
      * @property string $cardId
      */
@@ -57,5 +58,7 @@ class NotificationsGetByCardId implements RequestInterface
     {
         return $this->numberOfNotifications;
     }
+
+
 }
 

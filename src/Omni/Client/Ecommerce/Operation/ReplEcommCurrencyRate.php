@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommCurrencyRateResponse as ReplEcommCu
 
 class ReplEcommCurrencyRate extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_CURRENCY_RATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommCurrencyRate extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

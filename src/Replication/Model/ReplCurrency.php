@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplCurrencyInterface;
 
 class ReplCurrency extends AbstractModel implements ReplCurrencyInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_currency';
 
     protected $_cacheTag = 'ls_replication_repl_currency';
@@ -504,5 +505,7 @@ class ReplCurrency extends AbstractModel implements ReplCurrencyInterface, Ident
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ItemCustomerPricesGetResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfItemCustomerPrice $ItemCustomerPricesGetResult
      */
@@ -42,5 +43,7 @@ class ItemCustomerPricesGetResponse implements ResponseInterface
     {
         return $this->ItemCustomerPricesGetResult;
     }
+
+
 }
 

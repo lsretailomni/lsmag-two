@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ImageGetByIdResponse implements ResponseInterface
 {
+
     /**
      * @property ImageView $ImageGetByIdResult
      */
@@ -42,5 +43,7 @@ class ImageGetByIdResponse implements ResponseInterface
     {
         return $this->ImageGetByIdResult;
     }
+
+
 }
 

@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplImageLinkInterface;
 
 class ReplImageLink extends AbstractModel implements ReplImageLinkInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_image_link';
 
     protected $_cacheTag = 'ls_replication_repl_image_link';
@@ -404,5 +405,7 @@ class ReplImageLink extends AbstractModel implements ReplImageLinkInterface, Ide
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

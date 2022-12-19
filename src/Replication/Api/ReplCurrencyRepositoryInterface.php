@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplCurrencyRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplCurrencyInterface $page);
@@ -21,5 +22,7 @@ interface ReplCurrencyRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

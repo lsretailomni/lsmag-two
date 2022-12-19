@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfPromotion implements IteratorAggregate
 {
+
     /**
      * @property Promotion[] $Promotion
      */
@@ -45,5 +46,7 @@ class ArrayOfPromotion implements IteratorAggregate
     {
         return $this->Promotion;
     }
+
+
 }
 

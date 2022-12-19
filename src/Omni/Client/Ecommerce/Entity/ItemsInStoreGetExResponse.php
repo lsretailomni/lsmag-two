@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ItemsInStoreGetExResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfInventoryResponse $ItemsInStoreGetExResult
      */
@@ -42,5 +43,7 @@ class ItemsInStoreGetExResponse implements ResponseInterface
     {
         return $this->ItemsInStoreGetExResult;
     }
+
+
 }
 

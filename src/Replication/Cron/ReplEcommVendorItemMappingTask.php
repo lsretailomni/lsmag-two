@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplLoyVendorItemMappingInterface;
 
 class ReplEcommVendorItemMappingTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_loy_vendor_item_mapping';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_loy_vendor_item_mapping';
@@ -152,5 +153,7 @@ class ReplEcommVendorItemMappingTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\NotificationsUpdateStatusResponse as Notific
 
 class NotificationsUpdateStatus extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'NOTIFICATIONS_UPDATE_STATUS';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class NotificationsUpdateStatus extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

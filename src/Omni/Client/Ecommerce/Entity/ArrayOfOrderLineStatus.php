@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfOrderLineStatus implements IteratorAggregate
 {
+
     /**
      * @property OrderLineStatus[] $OrderLineStatus
      */
@@ -45,5 +46,7 @@ class ArrayOfOrderLineStatus implements IteratorAggregate
     {
         return $this->OrderLineStatus;
     }
+
+
 }
 

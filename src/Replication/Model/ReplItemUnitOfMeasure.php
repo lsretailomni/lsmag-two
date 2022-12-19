@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
 
 class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasureInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_item_unit_of_measure';
 
     protected $_cacheTag = 'ls_replication_repl_item_unit_of_measure';
@@ -504,5 +505,7 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

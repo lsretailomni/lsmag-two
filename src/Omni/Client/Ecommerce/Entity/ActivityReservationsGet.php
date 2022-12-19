@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityReservationsGet implements RequestInterface
 {
+
     /**
      * @property string $reservationNo
      */
@@ -80,5 +81,7 @@ class ActivityReservationsGet implements RequestInterface
     {
         return $this->activityType;
     }
+
+
 }
 

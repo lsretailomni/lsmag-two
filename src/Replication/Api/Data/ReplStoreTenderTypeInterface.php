@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplStoreTenderTypeInterface
 {
+
     /**
      * @param string $AboveMinimumTenderId
      * @return $this
@@ -328,5 +329,7 @@ interface ReplStoreTenderTypeInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

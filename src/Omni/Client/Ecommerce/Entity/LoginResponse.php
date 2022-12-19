@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class LoginResponse implements ResponseInterface
 {
+
     /**
      * @property MemberContact $LoginResult
      */
@@ -42,5 +43,7 @@ class LoginResponse implements ResponseInterface
     {
         return $this->LoginResult;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfAvailabilityResponse implements IteratorAggregate
 {
+
     /**
      * @property AvailabilityResponse[] $AvailabilityResponse
      */
@@ -45,5 +46,7 @@ class ArrayOfAvailabilityResponse implements IteratorAggregate
     {
         return $this->AvailabilityResponse;
     }
+
+
 }
 

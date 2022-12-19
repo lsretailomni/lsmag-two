@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReplEcommValidationSchedule implements RequestInterface
 {
+
     /**
      * @property ReplRequest $replRequest
      */
@@ -34,5 +35,7 @@ class ReplEcommValidationSchedule implements RequestInterface
     {
         return $this->replRequest;
     }
+
+
 }
 

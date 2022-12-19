@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfActivityLocation implements IteratorAggregate
 {
+
     /**
      * @property ActivityLocation[] $ActivityLocation
      */
@@ -45,5 +46,7 @@ class ArrayOfActivityLocation implements IteratorAggregate
     {
         return $this->ActivityLocation;
     }
+
+
 }
 

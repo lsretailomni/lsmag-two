@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityGetAvailabilityTokenResponse as Acti
 
 class ActivityGetAvailabilityToken extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_GET_AVAILABILITY_TOKEN';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivityGetAvailabilityToken extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

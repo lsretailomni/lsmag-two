@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplInvStatusInterface;
 
 class ReplInvStatus extends AbstractModel implements ReplInvStatusInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_inv_status';
 
     protected $_cacheTag = 'ls_replication_repl_inv_status';
@@ -379,5 +380,7 @@ class ReplInvStatus extends AbstractModel implements ReplInvStatusInterface, Ide
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

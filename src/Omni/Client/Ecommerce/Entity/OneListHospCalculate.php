@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListHospCalculate implements RequestInterface
 {
+
     /**
      * @property OneList $oneList
      */
@@ -34,5 +35,7 @@ class OneListHospCalculate implements RequestInterface
     {
         return $this->oneList;
     }
+
+
 }
 

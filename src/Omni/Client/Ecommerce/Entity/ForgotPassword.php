@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ForgotPassword implements RequestInterface
 {
+
     /**
      * @property string $userNameOrEmail
      */
@@ -34,5 +35,7 @@ class ForgotPassword implements RequestInterface
     {
         return $this->userNameOrEmail;
     }
+
+
 }
 

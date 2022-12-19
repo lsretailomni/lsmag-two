@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfInventoryRequest implements IteratorAggregate
 {
+
     /**
      * @property InventoryRequest[] $InventoryRequest
      */
@@ -45,5 +46,7 @@ class ArrayOfInventoryRequest implements IteratorAggregate
     {
         return $this->InventoryRequest;
     }
+
+
 }
 

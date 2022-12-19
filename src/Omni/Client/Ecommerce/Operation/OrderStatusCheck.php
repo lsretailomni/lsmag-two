@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\OrderStatusCheckResponse as OrderStatusCheck
 
 class OrderStatusCheck extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ORDER_STATUS_CHECK';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class OrderStatusCheck extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

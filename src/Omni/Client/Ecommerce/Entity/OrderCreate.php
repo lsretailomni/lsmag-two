@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class OrderCreate implements RequestInterface
 {
+
     /**
      * @property Order $request
      */
@@ -34,5 +35,7 @@ class OrderCreate implements RequestInterface
     {
         return $this->request;
     }
+
+
 }
 

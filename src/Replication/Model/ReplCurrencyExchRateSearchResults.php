@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplCurrencyExchRateSearchResults extends SearchResults implements ReplCurrencyExchRateSearchResultsInterface
 {
+
+
 }
 

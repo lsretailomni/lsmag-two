@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplCurrencyExchRateSearchResultsFactory;
 
 class ReplCurrencyExchRateRepository implements ReplCurrencyExchRateRepositoryInterface
 {
+
     /**
      * @property ReplCurrencyExchRateFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplCurrencyExchRateRepository implements ReplCurrencyExchRateRepositoryIn
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

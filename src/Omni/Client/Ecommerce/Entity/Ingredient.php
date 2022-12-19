@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Ingredient extends Entity
 {
+
     /**
      * @property int $DisplayOrder
      */
@@ -216,5 +217,7 @@ class Ingredient extends Entity
     {
         return $this->UnitOfMeasure;
     }
+
+
 }
 

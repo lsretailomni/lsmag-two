@@ -12,5 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityPromotionsGet implements RequestInterface
 {
+
+
 }
 

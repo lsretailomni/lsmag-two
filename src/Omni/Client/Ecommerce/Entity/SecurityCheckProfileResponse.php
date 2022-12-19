@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SecurityCheckProfileResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $SecurityCheckProfileResult
      */
@@ -42,5 +43,7 @@ class SecurityCheckProfileResponse implements ResponseInterface
     {
         return $this->SecurityCheckProfileResult;
     }
+
+
 }
 

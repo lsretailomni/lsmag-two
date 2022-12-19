@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class AttributeOptionValue
 {
+
     /**
      * @property string $Code
      */
@@ -78,5 +79,7 @@ class AttributeOptionValue
     {
         return $this->Value;
     }
+
+
 }
 

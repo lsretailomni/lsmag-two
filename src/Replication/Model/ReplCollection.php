@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplCollectionInterface;
 
 class ReplCollection extends AbstractModel implements ReplCollectionInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_collection';
 
     protected $_cacheTag = 'ls_replication_repl_collection';
@@ -379,5 +380,7 @@ class ReplCollection extends AbstractModel implements ReplCollectionInterface, I
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

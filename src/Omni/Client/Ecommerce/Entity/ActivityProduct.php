@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityProduct extends Entity
 {
+
     /**
      * @property string $ActivityType
      */
@@ -446,5 +447,7 @@ class ActivityProduct extends Entity
     {
         return $this->RetailItem;
     }
+
+
 }
 

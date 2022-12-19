@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplDiscountValidationInterface;
 
 class ReplDiscountValidation extends AbstractModel implements ReplDiscountValidationInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_discount_validation';
 
     protected $_cacheTag = 'ls_replication_repl_discount_validation';
@@ -1179,5 +1180,7 @@ class ReplDiscountValidation extends AbstractModel implements ReplDiscountValida
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

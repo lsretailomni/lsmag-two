@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplProductGroup extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_product_group', 'repl_product_group_id' );
     }
+
+
 }
 

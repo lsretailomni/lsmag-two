@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ContactAddCardResponse implements ResponseInterface
 {
+
     /**
      * @property double $ContactAddCardResult
      */
@@ -42,5 +43,7 @@ class ContactAddCardResponse implements ResponseInterface
     {
         return $this->ContactAddCardResult;
     }
+
+
 }
 

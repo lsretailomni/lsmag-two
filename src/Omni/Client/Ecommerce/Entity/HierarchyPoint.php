@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class HierarchyPoint extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -101,5 +102,7 @@ class HierarchyPoint extends Entity
     {
         return $this->ParentNode;
     }
+
+
 }
 

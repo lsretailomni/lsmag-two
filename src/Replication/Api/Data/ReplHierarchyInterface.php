@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplHierarchyInterface
 {
+
     /**
      * @param string $Description
      * @return $this
@@ -196,5 +197,7 @@ interface ReplHierarchyInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

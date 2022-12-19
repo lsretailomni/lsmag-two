@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class OneListItemModify implements RequestInterface
 {
+
     /**
      * @property string $onelistId
      */
@@ -103,5 +104,7 @@ class OneListItemModify implements RequestInterface
     {
         return $this->calculate;
     }
+
+
 }
 

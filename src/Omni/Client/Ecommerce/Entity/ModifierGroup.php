@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ModifierGroup extends Entity
 {
+
     /**
      * @property string $DefaultItemId
      */
@@ -124,5 +125,7 @@ class ModifierGroup extends Entity
     {
         return $this->RequiredSelection;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReplItemVariantRegistration implements IteratorAggregate
 {
+
     /**
      * @property ReplItemVariantRegistration[] $ReplItemVariantRegistration
      */
@@ -45,5 +46,7 @@ class ArrayOfReplItemVariantRegistration implements IteratorAggregate
     {
         return $this->ReplItemVariantRegistration;
     }
+
+
 }
 

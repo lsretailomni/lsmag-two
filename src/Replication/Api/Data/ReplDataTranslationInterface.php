@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplDataTranslationInterface
 {
+
     /**
      * @param boolean $IsDeleted
      * @return $this
@@ -163,5 +164,7 @@ interface ReplDataTranslationInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

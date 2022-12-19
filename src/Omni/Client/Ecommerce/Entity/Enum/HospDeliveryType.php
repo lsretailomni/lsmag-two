@@ -19,6 +19,7 @@ use MyCLabs\Enum\Enum;
  */
 class HospDeliveryType extends Enum
 {
+
     public const NO_CHOICE = 'NoChoice';
 
     public const HOME = 'Home';
@@ -28,5 +29,7 @@ class HospDeliveryType extends Enum
     public const OTHER = 'Other';
 
     public const TAKEOUT = 'Takeout';
+
+
 }
 

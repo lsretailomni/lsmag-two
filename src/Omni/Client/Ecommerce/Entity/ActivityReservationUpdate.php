@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityReservationUpdate implements RequestInterface
 {
+
     /**
      * @property Reservation $request
      */
@@ -34,5 +35,7 @@ class ActivityReservationUpdate implements RequestInterface
     {
         return $this->request;
     }
+
+
 }
 

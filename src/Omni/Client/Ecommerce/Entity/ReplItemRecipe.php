@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplItemRecipe
 {
+
     /**
      * @property string $Description
      */
@@ -285,5 +286,7 @@ class ReplItemRecipe
     {
         return $this->scope_id;
     }
+
+
 }
 

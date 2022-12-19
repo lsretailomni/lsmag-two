@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class RecommendedActiveResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $RecommendedActiveResult
      */
@@ -42,5 +43,7 @@ class RecommendedActiveResponse implements ResponseInterface
     {
         return $this->RecommendedActiveResult;
     }
+
+
 }
 

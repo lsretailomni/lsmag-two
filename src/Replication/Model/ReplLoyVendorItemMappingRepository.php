@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplLoyVendorItemMappingSearchResultsFactory;
 
 class ReplLoyVendorItemMappingRepository implements ReplLoyVendorItemMappingRepositoryInterface
 {
+
     /**
      * @property ReplLoyVendorItemMappingFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplLoyVendorItemMappingRepository implements ReplLoyVendorItemMappingRepo
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

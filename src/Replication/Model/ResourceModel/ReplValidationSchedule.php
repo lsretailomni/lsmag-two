@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplValidationSchedule extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_validation_schedule', 'repl_validation_schedule_id' );
     }
+
+
 }
 

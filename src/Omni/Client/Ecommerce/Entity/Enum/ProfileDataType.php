@@ -19,6 +19,7 @@ use MyCLabs\Enum\Enum;
  */
 class ProfileDataType extends Enum
 {
+
     public const TEXT = 'Text';
 
     public const INTEGER = 'Integer';
@@ -28,5 +29,7 @@ class ProfileDataType extends Enum
     public const DATE = 'Date';
 
     public const BOOLEAN = 'Boolean';
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class DealModifierGroup extends ModifierGroup
 {
+
     /**
      * @property ArrayOfDealModifier $DealModifiers
      */
@@ -32,5 +33,7 @@ class DealModifierGroup extends ModifierGroup
     {
         return $this->DealModifiers;
     }
+
+
 }
 

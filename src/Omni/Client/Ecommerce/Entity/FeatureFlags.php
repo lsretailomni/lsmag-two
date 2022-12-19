@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class FeatureFlags
 {
+
     /**
      * @property ArrayOfFeatureFlag $Flags
      */
@@ -32,5 +33,7 @@ class FeatureFlags
     {
         return $this->Flags;
     }
+
+
 }
 

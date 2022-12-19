@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfReturnPolicy implements IteratorAggregate
 {
+
     /**
      * @property ReturnPolicy[] $ReturnPolicy
      */
@@ -45,5 +46,7 @@ class ArrayOfReturnPolicy implements IteratorAggregate
     {
         return $this->ReturnPolicy;
     }
+
+
 }
 

@@ -17,10 +17,13 @@ use MyCLabs\Enum\Enum;
  */
 class VSTimeScheduleType extends Enum
 {
+
     public const NOT_SPECIFIED = 'NotSpecified';
 
     public const DINING_HOURS = 'DiningHours';
 
     public const VALIDATION_SCHEDULE = 'ValidationSchedule';
+
+
 }
 

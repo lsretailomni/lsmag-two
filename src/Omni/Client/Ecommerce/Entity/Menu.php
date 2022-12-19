@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Menu extends Entity
 {
+
     /**
      * @property ArrayOfMenuNode $MenuNodes
      */
@@ -262,5 +263,7 @@ class Menu extends Entity
     {
         return $this->Version;
     }
+
+
 }
 

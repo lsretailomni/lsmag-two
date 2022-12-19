@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Store extends Entity
 {
+
     /**
      * @property ArrayOfSalesType $HospSalesTypes
      */
@@ -538,5 +539,7 @@ class Store extends Entity
     {
         return $this->WebOmniTerminal;
     }
+
+
 }
 

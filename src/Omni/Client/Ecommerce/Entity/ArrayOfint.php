@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfint implements IteratorAggregate
 {
+
     /**
      * @property int[] $int
      */
@@ -45,5 +46,7 @@ class ArrayOfint implements IteratorAggregate
     {
         return $this->int;
     }
+
+
 }
 

@@ -24,6 +24,7 @@ use Ls\Replication\Model\ReplDataTranslationSearchResultsFactory;
 
 class ReplDataTranslationRepository implements ReplDataTranslationRepositoryInterface
 {
+
     /**
      * @property ReplDataTranslationFactory $object_factory
      */
@@ -125,5 +126,7 @@ class ReplDataTranslationRepository implements ReplDataTranslationRepositoryInte
     {
         return $this->delete( $this->getById( $id ) );
     }
+
+
 }
 

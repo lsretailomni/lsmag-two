@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class DeviceSaveResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $DeviceSaveResult
      */
@@ -42,5 +43,7 @@ class DeviceSaveResponse implements ResponseInterface
     {
         return $this->DeviceSaveResult;
     }
+
+
 }
 
