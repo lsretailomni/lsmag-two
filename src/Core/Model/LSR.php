@@ -238,10 +238,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
     //Delivery and pickup time options
-    const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/delivery_pickup_date_time/pickup_date_time_slot';
-    const PICKUP_TIME_INTERVAL = 'ls_mag/delivery_pickup_date_time/pickup_time_interval';
-    const PICKUP_DATE_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_date_format';
-    const PICKUP_TIME_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_time_format';
+    const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot';
+    const PICKUP_TIME_INTERVAL = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_interval';
+    const PICKUP_DATE_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_format';
+    const PICKUP_TIME_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_format';
 
     //Pay At Store Payment Method
     const SC_PAYMENT_PAY_AT_STORE_ACTIVE = 'payment/ls_payment_method_pay_at_store/active';

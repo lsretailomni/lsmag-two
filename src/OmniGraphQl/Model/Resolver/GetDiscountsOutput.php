@@ -14,6 +14,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
+use Magento\Catalog\Helper\Image;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Area;
@@ -26,12 +27,11 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Store\Model\StoreManagerInterface;
-use Magento\Catalog\Helper\Image;
-use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 use Magento\Store\Model\App\Emulation;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * To get discounts in product view page in graphql
@@ -80,9 +80,9 @@ class GetDiscountsOutput extends View implements ResolverInterface
     private Image $imageHelper;
 
     /**
-     * @var PriceHelper
+     * @var PriceCurrencyInterface
      */
-    private PriceHelper $priceHelper;
+    protected $priceCurrency;
 
     /**
      * @var TimezoneInterface
@@ -113,10 +113,10 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param StoreManagerInterface $storeManager
      * @param ItemHelper $itemHelper
      * @param Image $imageHelper
-     * @param PriceHelper $priceHelper
+     * @param PriceCurrencyInterface $priceCurrency
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
-     * @param Proxy $customerSession
+     * @param Session $customerSession
      * @param Http $request
      * @param Emulation $appEmulation
      */
@@ -129,7 +129,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
         StoreManagerInterface $storeManager,
         ItemHelper $itemHelper,
         Image $imageHelper,
-        PriceHelper $priceHelper,
+        PriceCurrencyInterface $priceCurrency,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         Session $customerSession,
@@ -144,7 +144,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->storeManager      = $storeManager;
         $this->itemHelper        = $itemHelper;
         $this->imageHelper       = $imageHelper;
-        $this->priceHelper       = $priceHelper;
+        $this->priceCurrency     = $priceCurrency;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->customerSession   = $customerSession;
@@ -157,13 +157,12 @@ class GetDiscountsOutput extends View implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-
         if (empty($args['item_id'])) {
             throw new GraphQlInputException(__('Required parameter "item_id" is missing'));
         }
 
-        $itemId = $args['item_id'];
-        $couponsObj   = $this->getCoupons($itemId);
+        $itemId     = $args['item_id'];
+        $couponsObj = $this->getCoupons($itemId);
 
         $discountsArr = $couponsArr = [];
         $discountsObj = $this->getProactiveDiscounts($itemId);
@@ -178,15 +177,14 @@ class GetDiscountsOutput extends View implements ResolverInterface
                 if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
                     $couponsArr[] = $this->getFormattedDescriptionCoupon($coupon);
                 }
-
             }
         }
 
-        return ['output' =>
-                    [
-                        'coupons' =>  $couponsArr,
-                        'discounts' => $discountsArr
-                    ]
+        return [
+            'output' => [
+                    'coupons'   => $couponsArr,
+                    'discounts' => $discountsArr
+                ]
         ];
     }
 
@@ -233,7 +231,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
         try {
             $storeId = $this->lsr->getActiveWebStore();
             if ($this->customerSession->getCustomerId()
-                    && str_contains($this->request->getOriginalPathInfo(), 'graphql')
+                && str_contains($this->request->getOriginalPathInfo(), 'graphql')
             ) {
                 $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
                 $email     = ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL)) ?
@@ -246,7 +244,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
                 }
                 return [];
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
         return [];
@@ -294,9 +292,9 @@ class GetDiscountsOutput extends View implements ResolverInterface
             $counter      = 0;
             $productsData = [];
             $productName  = '';
-
+            $currency     = $this->priceCurrency->getCurrency($this->lsr->getCurrentStoreId())->getCurrencyCode();
             if (!empty($itemIds)) {
-                $productsData = $this->itemHelper->getProductsInfoBySku($itemIds);
+                $productsData = $this->itemHelper->getProductsInfoByItemIds($itemIds);
             }
             foreach ($productsData as $productInfo) {
                 if ($this->getMixandMatchProductLimit() == $counter) {
@@ -305,11 +303,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
 
                 $productPrice = '';
                 if (!empty($productInfo)) {
-                    $imageUrl = $this->getImageUrl($productInfo);
+                    $imageUrl = $productInfo->getImage();
                     if (!empty($productInfo->getFinalPrice())) {
                         $productPrice = $productInfo->getFinalPrice();
                     }
-                    if (!empty($productInfo->getProductUrl())) {
+                    if (!empty($productInfo->getUrlKey())) {
                         if (!empty($productInfo->getName())) {
                             $productName = $productInfo->getName();
                         }
@@ -318,9 +316,16 @@ class GetDiscountsOutput extends View implements ResolverInterface
                     $productData[] = [
                         'product_name' => $productName,
                         'image_url'    => $imageUrl,
-                        'product_url'  => $productInfo->getProductUrl(),
+                        'product_url'  => $productInfo->getUrlKey(),
                         'sku'          => $productInfo->getSku(),
-                        'price'        => $this->priceHelper->currency($productPrice, true, false)
+                        'price'        => [
+                            'currency' => $currency,
+                            'value'    => $productInfo->getPrice(),
+                        ],
+                        'final_price'  => [
+                            'currency' => $currency,
+                            'value'    => $productPrice,
+                        ]
                     ];
                 }
                 $counter++;
@@ -333,7 +338,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
 
             if ($this->getMixandMatchProductLimit() != 0) {
                 if (!empty($productsData)) {
-                    $responseArr['discount_products_data']    = $productData;
+                    $responseArr['discount_products_data'] = $productData;
                 }
             }
         } else {
@@ -420,7 +425,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
             ));
 
             return $offerExpiryDate;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
