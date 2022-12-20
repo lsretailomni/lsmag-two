@@ -219,7 +219,7 @@ type couponsDataArray {
     coupon_description : String @doc(description: "Coupon Name")
     coupon_details : String @doc(description: "Coupon details")
     coupon_expire_date : String @doc(description: "Coupon expiry date")
-    offer_id : String @doc(description: "Offer Id")
+    offer_id: String @doc(description: "Offer Id")
 }
 
 type discountsDataArray {
@@ -232,7 +232,8 @@ type discountsDataArray {
 type discountProductArray {
     product_name: String @doc(description: "Mix and match product name")
     image_url: String @doc(description: "Mix and match product image url")
-    product_url : String @doc(description: "Mix and match product url")
-    sku : String @doc(description: "Mix and match product sku")
-    price: String @doc(description: "Mix and match product name")
+    product_url: String @doc(description: "Mix and match product url")
+    sku: String @doc(description: "Mix and match product sku")
+    price: Money @doc(description: "Product original price")
+    final_price: Money @doc(description: "Product final price")
 }
