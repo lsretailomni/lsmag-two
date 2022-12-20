@@ -193,9 +193,13 @@ class DataHelper
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getSaleEntry(SalesEntry $salesEntry, $magOrder): array
+    public function getSaleEntry(SalesEntry $salesEntry, $magOrder = null): array
     {
         $externalId = '';
+        if (!$magOrder) {
+            $magOrder = $this->orderHelper->getOrderByDocumentId($salesEntry);
+        }
+
         if (!empty($magOrder)) {
             $externalId = $magOrder->getIncrementId();
         }
@@ -215,6 +219,7 @@ class DataHelper
             'status'                  => $salesEntry->getStatus(),
             'store_id'                => $salesEntry->getStoreId(),
             'store_name'              => $salesEntry->getStoreName(),
+            'store_currency'          => ($salesEntry->getStoreCurrency())?: $magOrder->getOrderCurrencyCode(),
             'total_amount'            => $salesEntry->getTotalAmount(),
             'total_net_amount'        => $salesEntry->getTotalNetAmount(),
             'total_discount'          => $salesEntry->getTotalDiscount(),
@@ -251,6 +256,7 @@ class DataHelper
      *
      * @param ArrayOfSalesEntryPayment $payments
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getPayments(ArrayOfSalesEntryPayment $payments): array
     {

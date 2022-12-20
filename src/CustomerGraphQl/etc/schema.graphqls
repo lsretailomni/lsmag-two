@@ -41,6 +41,7 @@ type SalesEntry @doc(description: "Sales entry information") {
     status: String @doc(description: "Order Status")
     store_id: String @doc(description: "Store Id")
     store_name: String @doc(description: "Store Name")
+    store_currency: String @doc(description: "Currency Code")
     total_amount: Float @doc(description: "Total Amount")
     total_net_amount: Float @doc(description: "Total Net Amount")
     total_discount: Float @doc(description: "Total Discount")
