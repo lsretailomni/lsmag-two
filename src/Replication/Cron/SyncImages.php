@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
+use Magento\Catalog\Model\Product\Gallery\Entry;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\FileSystemException;
@@ -99,9 +100,8 @@ class SyncImages extends ProductCreateTask
      */
     public function syncItemImages()
     {
-        $sortOrder  = $this->replicationHelper->getSortOrderObject();
+        $sortOrder = $this->replicationHelper->getSortOrderObject();
         $collection = $this->getRecordsForImagesToProcess();
-
         $this->imagesFetched = [];
         if ($collection->getSize() > 0) {
             // Right now the only thing we have to do is flush all the images and do it again.
@@ -202,9 +202,7 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
-     * Get remaining records
-     *
-     * @param mixed $storeData
+     * @param $storeData
      * @return int
      * @throws LocalizedException
      */
@@ -240,10 +238,44 @@ class SyncImages extends ProductCreateTask
 
         if (!empty($encodedImages)) {
             try {
-                $encodedImages = $this->convertToRequiredFormat($encodedImages);
+                $base64Images = [];
+                foreach ($encodedImages as $encodedImage) {
+                    if (!($encodedImage instanceof Entry)) {
+                        try {
+                            $this->imageService->execute(
+                                $productData,
+                                $encodedImage['location'],
+                                $encodedImage['repl_image_link_id'],
+                                false,
+                                $encodedImage['types']
+                            );
+                        } catch (Exception $e) {
+                            $this->logger->debug(
+                                sprintf('Problem getting image using url in : %s', __METHOD__)
+                            );
+                            $this->logger->debug($e->getMessage());
+                            continue;
+                        }
+                    } else {
+                        $base64Images[] = $encodedImage;
+                    }
+                }
+
+                $updatedMediaGallery['images'] = [];
+                $formattedImages = $this->convertToRequiredFormat($base64Images);
+                foreach ($productData->getMediaGallery()['images'] as $i => $image) {
+                    if (!isset($image['value_id'])) {
+                        $formattedImages[] = $image;
+                    } else {
+                        $updatedMediaGallery['images'][$i] = $image;
+                    }
+                }
+
+                $productData->setMediaGallery($updatedMediaGallery);
+
                 $this->mediaGalleryProcessor->processMediaGallery(
                     $productData,
-                    $encodedImages
+                    $formattedImages
                 );
                 $this->updateHandlerFactory->create()->execute($productData);
 
@@ -557,6 +589,7 @@ class SyncImages extends ProductCreateTask
         );
         $collection->getSelect()->order('main_table.processed ASC');
 
+        $query = $collection->getSelect()->__toString();
         return $collection;
     }
 }
