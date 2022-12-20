@@ -12,8 +12,11 @@ use Magento\Framework\Api\SearchResultsInterface;
 
 interface ReplAttributeOptionValueSearchResultsInterface extends SearchResultsInterface
 {
+
     public function getItems();
 
     public function setItems(array $items);
+
+
 }
 

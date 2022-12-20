@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplValidationSchedule
 {
+
     /**
      * @property ArrayOfValidationScheduleLine $Lines
      */
@@ -147,5 +148,7 @@ class ReplValidationSchedule
     {
         return $this->scope_id;
     }
+
+
 }
 

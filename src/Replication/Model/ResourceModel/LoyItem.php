@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class LoyItem extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_loy_item', 'loy_item_id' );
     }
+
+
 }
 

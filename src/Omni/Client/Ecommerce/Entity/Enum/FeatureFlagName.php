@@ -65,6 +65,7 @@ use MyCLabs\Enum\Enum;
  */
 class FeatureFlagName extends Enum
 {
+
     public const NONE = 'None';
 
     public const ALLOW_AUTO_LOGOFF = 'AllowAutoLogoff';
@@ -166,5 +167,7 @@ class FeatureFlagName extends Enum
     public const FACEBOOK_LOGIN_ENABLED = 'FacebookLoginEnabled';
 
     public const APPLE_LOGIN_ENABLED = 'AppleLoginEnabled';
+
+
 }
 

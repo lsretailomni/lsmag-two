@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplItemUnitOfMeasureRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplItemUnitOfMeasureInterface $page);
@@ -21,5 +22,7 @@ interface ReplItemUnitOfMeasureRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

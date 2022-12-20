@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class HierarchyGet implements RequestInterface
 {
+
     /**
      * @property string $storeId
      */
@@ -34,5 +35,7 @@ class HierarchyGet implements RequestInterface
     {
         return $this->storeId;
     }
+
+
 }
 

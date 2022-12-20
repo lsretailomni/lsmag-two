@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class OrderCancelResponse implements ResponseInterface
 {
+
     /**
      * @property string $OrderCancelResult
      */
@@ -42,5 +43,7 @@ class OrderCancelResponse implements ResponseInterface
     {
         return $this->OrderCancelResult;
     }
+
+
 }
 

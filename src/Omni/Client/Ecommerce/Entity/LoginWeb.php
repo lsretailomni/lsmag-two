@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class LoginWeb implements RequestInterface
 {
+
     /**
      * @property string $userName
      */
@@ -57,5 +58,7 @@ class LoginWeb implements RequestInterface
     {
         return $this->password;
     }
+
+
 }
 

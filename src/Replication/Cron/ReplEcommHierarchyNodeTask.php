@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplHierarchyNodeInterface;
 
 class ReplEcommHierarchyNodeTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_hierarchy_node';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_hierarchy_node';
@@ -152,5 +153,7 @@ class ReplEcommHierarchyNodeTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface;
 
 class ReplDataTranslationLangCode extends AbstractModel implements ReplDataTranslationLangCodeInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_data_translation_lang_code';
 
     protected $_cacheTag = 'ls_replication_repl_data_translation_lang_code';
@@ -304,5 +305,7 @@ class ReplDataTranslationLangCode extends AbstractModel implements ReplDataTrans
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

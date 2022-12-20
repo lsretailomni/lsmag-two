@@ -484,6 +484,17 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             'comment'    => 'Updated At'
                         ]
                     ];
+
+
+                    if ($tableName == 'ls_replication_repl_item_variant') {
+                        $extraColumnsArray[] =  [
+                            'name'       => 'ready_to_process',
+                            'field_type' => 'boolean',
+                            'default'    => '0',
+                            'comment'    => 'Flag to check if data is ready to be processed. 0 means not yet ready & 1 means already ready'
+                        ];
+                    }
+
                     $restrictions        = $this->metadata->getRestrictions();
                     $reflectedEntity     = new ClassReflection($replicationOperation->getOmniEntityFqn());
                     $defaultColumnsArray = $propertyTypes = [];

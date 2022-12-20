@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemsGetByPublishedOfferIdResponse as ItemsG
 
 class ItemsGetByPublishedOfferId extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ITEMS_GET_BY_PUBLISHED_OFFER_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ItemsGetByPublishedOfferId extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

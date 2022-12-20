@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class RecommendedItemsGet implements RequestInterface
 {
+
     /**
      * @property ArrayOfstring $items
      */
@@ -34,5 +35,7 @@ class RecommendedItemsGet implements RequestInterface
     {
         return $this->items;
     }
+
+
 }
 

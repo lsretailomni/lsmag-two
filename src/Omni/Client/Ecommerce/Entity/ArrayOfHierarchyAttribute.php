@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfHierarchyAttribute implements IteratorAggregate
 {
+
     /**
      * @property HierarchyAttribute[] $HierarchyAttribute
      */
@@ -45,5 +46,7 @@ class ArrayOfHierarchyAttribute implements IteratorAggregate
     {
         return $this->HierarchyAttribute;
     }
+
+
 }
 

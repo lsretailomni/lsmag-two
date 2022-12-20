@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemGetByBarcode implements RequestInterface
 {
+
     /**
      * @property string $barcode
      */
@@ -57,5 +58,7 @@ class ItemGetByBarcode implements RequestInterface
     {
         return $this->storeId;
     }
+
+
 }
 

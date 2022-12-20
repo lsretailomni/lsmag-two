@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ProductGroup extends Entity
 {
+
     /**
      * @property ArrayOfImageView $Images
      */
@@ -101,5 +102,7 @@ class ProductGroup extends Entity
     {
         return $this->ItemCategoryId;
     }
+
+
 }
 

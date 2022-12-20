@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityConfirmGroup implements RequestInterface
 {
+
     /**
      * @property ActivityRequest $request
      */
@@ -34,5 +35,7 @@ class ActivityConfirmGroup implements RequestInterface
     {
         return $this->request;
     }
+
+
 }
 

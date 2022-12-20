@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class MenuGet implements RequestInterface
 {
+
     /**
      * @property string $storeId
      */
@@ -103,5 +104,7 @@ class MenuGet implements RequestInterface
     {
         return $this->imageSize;
     }
+
+
 }
 

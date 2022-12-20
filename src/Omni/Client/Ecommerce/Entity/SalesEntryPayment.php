@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class SalesEntryPayment
 {
+
     /**
      * @property float $Amount
      */
@@ -206,5 +207,7 @@ class SalesEntryPayment
     {
         return $this->Type;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderStatusResponse
 {
+
     /**
      * @property ArrayOfOrderLineStatus $Lines
      */
@@ -124,5 +125,7 @@ class OrderStatusResponse
     {
         return $this->OrderStatus;
     }
+
+
 }
 

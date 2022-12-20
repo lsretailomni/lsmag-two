@@ -13,5 +13,7 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplHierarchyHospDealSearchResults extends SearchResults implements ReplHierarchyHospDealSearchResultsInterface
 {
+
+
 }
 

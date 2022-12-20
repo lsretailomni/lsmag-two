@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplLoyVendorItemMappingInterface
 {
+
     /**
      * @param boolean $Deleted
      * @return $this
@@ -185,5 +186,7 @@ interface ReplLoyVendorItemMappingInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

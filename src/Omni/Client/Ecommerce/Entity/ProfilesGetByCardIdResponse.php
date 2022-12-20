@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ProfilesGetByCardIdResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfProfile $ProfilesGetByCardIdResult
      */
@@ -42,5 +43,7 @@ class ProfilesGetByCardIdResponse implements ResponseInterface
     {
         return $this->ProfilesGetByCardIdResult;
     }
+
+
 }
 

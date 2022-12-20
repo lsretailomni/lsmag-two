@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ItemCategoriesGetByIdResponse implements ResponseInterface
 {
+
     /**
      * @property ItemCategory $ItemCategoriesGetByIdResult
      */
@@ -42,5 +43,7 @@ class ItemCategoriesGetByIdResponse implements ResponseInterface
     {
         return $this->ItemCategoriesGetByIdResult;
     }
+
+
 }
 

@@ -12,9 +12,12 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplItemRecipe extends AbstractDb
 {
+
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_item_recipe', 'repl_item_recipe_id' );
     }
+
+
 }
 

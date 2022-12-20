@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReplEcommHierarchyLeaf implements RequestInterface
 {
+
     /**
      * @property ReplRequest $replRequest
      */
@@ -34,5 +35,7 @@ class ReplEcommHierarchyLeaf implements RequestInterface
     {
         return $this->replRequest;
     }
+
+
 }
 

@@ -17,6 +17,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ItemModifier
 {
+
     /**
      * @property ItemModifierPriceHandling $AlwaysCharge
      */
@@ -503,5 +504,7 @@ class ItemModifier
     {
         return $this->VariantCode;
     }
+
+
 }
 

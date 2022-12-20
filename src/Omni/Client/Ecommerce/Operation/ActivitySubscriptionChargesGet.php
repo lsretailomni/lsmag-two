@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivitySubscriptionChargesGetResponse as Ac
 
 class ActivitySubscriptionChargesGet extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'ACTIVITY_SUBSCRIPTION_CHARGES_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ActivitySubscriptionChargesGet extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

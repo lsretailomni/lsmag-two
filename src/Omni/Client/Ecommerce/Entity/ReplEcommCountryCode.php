@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReplEcommCountryCode implements RequestInterface
 {
+
     /**
      * @property ReplRequest $replRequest
      */
@@ -34,5 +35,7 @@ class ReplEcommCountryCode implements RequestInterface
     {
         return $this->replRequest;
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplPriceRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplPriceInterface $page);
@@ -21,5 +22,7 @@ interface ReplPriceRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

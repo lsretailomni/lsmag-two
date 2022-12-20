@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplImageInterface;
 
 class ReplImage extends AbstractModel implements ReplImageInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_image';
 
     protected $_cacheTag = 'ls_replication_repl_image';
@@ -454,5 +455,7 @@ class ReplImage extends AbstractModel implements ReplImageInterface, IdentityInt
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

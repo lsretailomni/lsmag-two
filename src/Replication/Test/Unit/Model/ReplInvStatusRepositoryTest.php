@@ -28,6 +28,7 @@ use \Ls\Replication\Model\ReplInvStatusSearchResultsFactory;
 
 class ReplInvStatusRepositoryTest extends TestCase
 {
+
     /**
      * @property ReplInvStatusFactory $objectFactory
      */
@@ -131,5 +132,7 @@ class ReplInvStatusRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
+
+
 }
 

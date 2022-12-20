@@ -21,6 +21,7 @@ use Ls\Replication\Api\Data\ReplProductGroupInterface;
 
 class ReplEcommProductGroupsTask extends AbstractReplicationTask
 {
+
     public const JOB_CODE = 'replication_repl_product_group';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_product_group';
@@ -152,5 +153,7 @@ class ReplEcommProductGroupsTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
+
+
 }
 

@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfOfferDetails implements IteratorAggregate
 {
+
     /**
      * @property OfferDetails[] $OfferDetails
      */
@@ -45,5 +46,7 @@ class ArrayOfOfferDetails implements IteratorAggregate
     {
         return $this->OfferDetails;
     }
+
+
 }
 

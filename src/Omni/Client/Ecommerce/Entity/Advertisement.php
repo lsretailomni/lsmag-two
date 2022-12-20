@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Advertisement
 {
+
     /**
      * @property ArrayOfstring $MenuIds
      */
@@ -206,5 +207,7 @@ class Advertisement
     {
         return $this->RV;
     }
+
+
 }
 

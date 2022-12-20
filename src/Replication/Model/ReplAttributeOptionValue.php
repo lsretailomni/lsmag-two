@@ -14,6 +14,7 @@ use Ls\Replication\Api\Data\ReplAttributeOptionValueInterface;
 
 class ReplAttributeOptionValue extends AbstractModel implements ReplAttributeOptionValueInterface, IdentityInterface
 {
+
     public const CACHE_TAG = 'ls_replication_repl_attribute_option_value';
 
     protected $_cacheTag = 'ls_replication_repl_attribute_option_value';
@@ -354,5 +355,7 @@ class ReplAttributeOptionValue extends AbstractModel implements ReplAttributeOpt
     {
         return $this->getData( 'processed_at' );
     }
+
+
 }
 

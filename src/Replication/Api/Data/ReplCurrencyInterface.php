@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplCurrencyInterface
 {
+
     /**
      * @param string $CurrencyCode
      * @return $this
@@ -218,5 +219,7 @@ interface ReplCurrencyInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

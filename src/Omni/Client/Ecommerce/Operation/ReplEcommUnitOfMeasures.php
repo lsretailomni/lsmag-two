@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommUnitOfMeasuresResponse as ReplEcomm
 
 class ReplEcommUnitOfMeasures extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'REPL_ECOMM_UNIT_OF_MEASURES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ReplEcommUnitOfMeasures extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

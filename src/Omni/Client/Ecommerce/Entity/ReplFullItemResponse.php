@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplFullItemResponse
 {
+
     /**
      * @property ArrayOfLoyItem $Items
      */
@@ -101,5 +102,7 @@ class ReplFullItemResponse
     {
         return $this->RecordsRemaining;
     }
+
+
 }
 

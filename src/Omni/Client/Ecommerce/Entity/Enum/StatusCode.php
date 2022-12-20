@@ -178,6 +178,7 @@ use MyCLabs\Enum\Enum;
  */
 class StatusCode extends Enum
 {
+
     public const O_K = 'OK';
 
     public const ERROR = 'Error';
@@ -505,5 +506,7 @@ class StatusCode extends Enum
     public const CUSTOMER_ORDER_ITEM_QUANTITY_TOO_HIGH = 'CustomerOrderItemQuantityTooHigh';
 
     public const CUSTOMER_ORDER_ALREADY_SCANNED = 'CustomerOrderAlreadyScanned';
+
+
 }
 

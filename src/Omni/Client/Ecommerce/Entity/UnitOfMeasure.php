@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class UnitOfMeasure extends Entity
 {
+
     /**
      * @property int $Decimals
      */
@@ -147,5 +148,7 @@ class UnitOfMeasure extends Entity
     {
         return $this->ShortDescription;
     }
+
+
 }
 

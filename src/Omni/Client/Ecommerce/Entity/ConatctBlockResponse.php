@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ConatctBlockResponse implements ResponseInterface
 {
+
     /**
      * @property boolean $ConatctBlockResult
      */
@@ -42,5 +43,7 @@ class ConatctBlockResponse implements ResponseInterface
     {
         return $this->ConatctBlockResult;
     }
+
+
 }
 

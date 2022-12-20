@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\LoginResponse as LoginResponse;
 
 class Login extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'LOGIN';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class Login extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

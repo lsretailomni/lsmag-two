@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Card extends Entity
 {
+
     /**
      * @property string $BlockedBy
      */
@@ -206,5 +207,7 @@ class Card extends Entity
     {
         return $this->Status;
     }
+
+
 }
 

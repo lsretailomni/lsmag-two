@@ -18,6 +18,7 @@ use MyCLabs\Enum\Enum;
  */
 class PushPlatform extends Enum
 {
+
     public const UNKNOWN = 'Unknown';
 
     public const APPLE = 'Apple';
@@ -25,5 +26,7 @@ class PushPlatform extends Enum
     public const ANDROID = 'Android';
 
     public const WINDOWS = 'Windows';
+
+
 }
 

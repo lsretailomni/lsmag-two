@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityResourceGroupAvailabilityGetResponse implements ResponseInterface
 {
+
     /**
      * @property ArrayOfAvailabilityResponse
      * $ActivityResourceGroupAvailabilityGetResult
@@ -43,5 +44,7 @@ class ActivityResourceGroupAvailabilityGetResponse implements ResponseInterface
     {
         return $this->ActivityResourceGroupAvailabilityGetResult;
     }
+
+
 }
 

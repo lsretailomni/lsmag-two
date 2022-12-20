@@ -13,6 +13,7 @@ use ArrayIterator;
 
 class ArrayOfDimValue implements IteratorAggregate
 {
+
     /**
      * @property DimValue[] $DimValue
      */
@@ -45,5 +46,7 @@ class ArrayOfDimValue implements IteratorAggregate
     {
         return $this->DimValue;
     }
+
+
 }
 

@@ -17,10 +17,13 @@ use MyCLabs\Enum\Enum;
  */
 class AccountType extends Enum
 {
+
     public const PRIVATE = 'Private';
 
     public const FAMILY = 'Family';
 
     public const COMPANY = 'Company';
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplDataTranslationLangCodeInterface
 {
+
     /**
      * @param string $Code
      * @return $this
@@ -130,5 +131,7 @@ interface ReplDataTranslationLangCodeInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

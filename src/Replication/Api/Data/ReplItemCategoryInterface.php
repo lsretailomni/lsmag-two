@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemCategoryInterface
 {
+
     /**
      * @param string $Description
      * @return $this
@@ -141,5 +142,7 @@ interface ReplItemCategoryInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

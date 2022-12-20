@@ -21,6 +21,8 @@ use \Ls\Replication\Model\ReplExtendedVariantValueSearchResults;
 use \Ls\Replication\Model\ReplUnitOfMeasureSearchResults;
 use \Ls\Replication\Model\ReplVendor;
 use \Ls\Replication\Model\ReplVendorSearchResults;
+use \Ls\Replication\Model\ReplItemVariantRepository;
+use \Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory as ReplItemVariantCollectionFactory;
 use Magento\Catalog\Api\ProductAttributeRepositoryInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
@@ -50,6 +52,11 @@ class AttributesCreateTask
      * @var ReplExtendedVariantValueRepository
      */
     public $replExtendedVariantValueRepository;
+
+    /**
+     * @var ReplItemVariantRepository
+     */
+    public $replItemVariantRepository;
 
     /**
      * @var ProductAttributeRepositoryInterface
@@ -88,6 +95,11 @@ class AttributesCreateTask
      * @var bool
      */
     public $successCronAttributeVariant = false;
+
+    /**
+     * @var bool
+     */
+    public $successCronAttributeStandardVariant = false;
 
     /**
      * @var AttributeFactory
@@ -130,6 +142,11 @@ class AttributesCreateTask
     public $replVendorRepositoryInterface;
 
     /**
+     * @var ReplItemVariantCollectionFactory
+     */
+    public $replItemVariantCollectionFactory;
+
+    /**
      * @var CollectionFactory
      */
     public $attrOptionCollectionFactory;
@@ -157,6 +174,8 @@ class AttributesCreateTask
      * @param AttributeOptionInterfaceFactory $optionFactory
      * @param OptionManagement $attributeOptionManagement
      * @param LSR $LSR
+     * @param ReplItemVariantRepository $replItemVariantRepository
+     * @param ReplItemVariantCollectionFactory $replItemVariantCollectionFactory
      * @param CollectionFactory $attrOptionCollectionFactory
      */
     public function __construct(
@@ -176,6 +195,8 @@ class AttributesCreateTask
         AttributeOptionInterfaceFactory $optionFactory,
         OptionManagement $attributeOptionManagement,
         LSR $LSR,
+        ReplItemVariantRepository $replItemVariantRepository,
+        ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
         CollectionFactory $attrOptionCollectionFactory
     ) {
         $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
@@ -194,6 +215,8 @@ class AttributesCreateTask
         $this->optionLabelFactory                          = $optionLabelFactory;
         $this->optionFactory                               = $optionFactory;
         $this->attributeOptionManagement                   = $attributeOptionManagement;
+        $this->replItemVariantRepository                   = $replItemVariantRepository;
+        $this->replItemVariantCollectionFactory            = $replItemVariantCollectionFactory;
         $this->attrOptionCollectionFactory                 = $attrOptionCollectionFactory;
     }
 
@@ -229,6 +252,9 @@ class AttributesCreateTask
                     $this->processAttributes($store);
                     // Process variants attributes which are going to be used for configurable product
                     $this->processVariantAttributes($store);
+
+                    $this->processStandardVariantAttributes($store);
+
                     //Process Attribute Option Values
                     $this->updateAttributeOptionValues($store);
                     //Process UOM Attribute Options
@@ -245,6 +271,11 @@ class AttributesCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttributeVariant,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                        $store->getId()
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        $this->successCronAttributeStandardVariant,
+                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
                         $store->getId()
                     );
                 }
@@ -476,6 +507,127 @@ class AttributesCreateTask
             $this->successCronAttributeVariant = true;
         }
         $this->logger->debug('Finished variants create task for store ' . $store->getName());
+    }
+
+    /**
+     * Process Standard Variant Attributes
+     * @param $store
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function processStandardVariantAttributes($store)
+    {
+        $variantBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
+        $this->logger->debug('Running standard variants create task for store ' . $store->getName());
+        $criteria = $this->replicationHelper->buildCriteriaForVariantAttributesNewItems(
+            'scope_id',
+            $store->getId(),
+            'eq',
+            $variantBatchSize,
+            true
+        );
+        $collection = $this->replItemVariantCollectionFactory->create();
+        $this->replicationHelper->setCollectionForStandardVariants($collection, $criteria);
+        $standardVariantValues = [];
+
+        foreach ($collection as $item) {
+            if (empty($item->getDescription2())) {
+                continue;
+            }
+            $standardVariantValues[] = $item->getDescription2();
+            $item->addData(
+                [
+                    'is_updated'   => 0,
+                    'processed_at' => $this->replicationHelper->getDateTime(),
+                    'ready_to_process'    => 1,
+                    'is_failed'    => 0
+                ]
+            );
+            $this->replItemVariantRepository->save($item);
+        }
+
+        $standardVariantValues = array_unique($standardVariantValues);
+
+        if (!empty($standardVariantValues)) {
+            $code = LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE;
+            $formattedCode = $this->replicationHelper->formatAttributeCode($code);
+            $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
+            if (!$attribute || !$attribute->getAttributeId()) {
+                $attributeData = [
+                    'attribute_code'                => $formattedCode,
+                    'is_global'                     => ScopedAttributeInterface::SCOPE_GLOBAL,
+                    'frontend_label'                => ucwords(strtolower(LSR::LS_STANDARD_VARIANT_ATTRIBUTE_LABEL)),
+                    'frontend_input'                => 'multiselect',
+                    'source_model'                  => Table::class,
+                    'default_value_text'            => '',
+                    'default_value_yesno'           => 0,
+                    'default_value_date'            => '',
+                    'default_value_textarea'        => '',
+                    'is_unique'                     => 0,
+                    'apply_to'                      => 0,
+                    'is_required'                   => 0,
+                    'is_configurable'               => 1,
+                    'is_searchable'                 => 1,
+                    'is_comparable'                 => 1,
+                    'is_user_defined'               => 1,
+                    'is_visible_in_advanced_search' => 1,
+                    'is_used_for_price_rules'       => 0,
+                    'is_wysiwyg_enabled'            => 0,
+                    'is_html_allowed_on_front'      => 1,
+                    'is_visible_on_front'           => 1,
+                    'used_in_product_listing'       => 0,
+                    'used_for_sort_by'              => 1,
+                    'is_filterable'                 => 1,
+                    'is_filterable_in_search'       => 1,
+                    'backend_type'                  => 'varchar',
+                    'is_used_in_grid'               => 1,
+                    'is_visible_in_grid'            => 1,
+                    'is_filterable_in_grid'         => 1
+                ];
+                try {
+                    // @codingStandardsIgnoreStart
+                    $this->eavAttributeFactory->create()
+                        ->addData($attributeData)
+                        ->setEntityTypeId($this->getEntityTypeId(Product::ENTITY))
+                        ->save();
+                    // @codingStandardsIgnoreEnd
+                } catch (Exception $e) {
+                    $this->logger->debug($e->getMessage());
+                }
+            }
+            $existingOptions = $this->getOptimizedOptionArrayByAttributeCode($formattedCode);
+            if (count($existingOptions) === 1) {
+                foreach ($standardVariantValues as $index => $eachVariantValue) {
+                    if (isset($eachVariantValue)) {
+                        $this->eavSetupFactory->create()
+                            ->addAttributeOption(
+                                [
+                                    'values'       => [$index => $eachVariantValue],
+                                    'attribute_id' => $this->getAttributeIdByCode($formattedCode)
+                                ]
+                            );
+                    }
+                }
+            } else {
+                foreach ($standardVariantValues as $k => $v) {
+                    if (!in_array($v, $existingOptions, true)) {
+                        $this->eavSetupFactory->create()
+                            ->addAttributeOption(
+                                [
+                                    'values' => [$k => $v],
+                                    'attribute_id' => $this->getAttributeIdByCode($formattedCode)
+                                ]
+                            );
+                    } else {
+                        $this->updateVariantLogicalOrderByLabel($formattedCode, [$k => $v]);
+                    }
+                }
+            }
+        } else {
+            $this->successCronAttributeStandardVariant = true;
+        }
+
+        $this->logger->debug('Finished standard variants create task for store ' . $store->getName());
     }
 
     /**
@@ -1003,7 +1155,7 @@ class AttributesCreateTask
     {
         $optionSwatch = ['value' => []];
         foreach ($attributeData['option'] as $optionKey => $optionValue) {
-            $optionValue = strtoupper($optionValue);
+            $optionValue = $optionValue ? strtoupper($optionValue) : '';
             if (substr($optionValue, 0, 1) == '#' && strlen($optionValue) == 7) {
                 $optionSwatch['value'][$optionKey] = $optionValue;
             } elseif (!empty($this->lsr->getColorCodes()[$optionValue])) {

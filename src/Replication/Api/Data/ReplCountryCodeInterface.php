@@ -10,6 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplCountryCodeInterface
 {
+
     /**
      * @param ArrayOfTaxItemGroup $TaxItemGroups
      * @return $this
@@ -174,5 +175,7 @@ interface ReplCountryCodeInterface
      * @return string
      */
     public function getProcessedAt();
+
+
 }
 

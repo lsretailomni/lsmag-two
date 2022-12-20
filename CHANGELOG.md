@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2022-12-05
+
+### Added
+
+- Added support to send out order update emails using webhooks for hospitality based orders. [21353](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/21353)
+- Added support to get coupons and discount based on ItemId using GraphQl interface. [24306](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/24306)
+- Added support for color swatch attributes. [26087](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26087)
+
+
+
+
+### Changed
+
+- Changed dependency from product sku to the new custom product attribute 'LS Central Item ID' for all the data mapping between LS Central and Magento.  [20380](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/20380)
+
+
+### Bugs/Fixes
+
+- Fixed issue with enabling "Used for Sorting in Product Listing" option for a product attribute on attribute edit page. [26808](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26808)
+- Fixed issue with using 'store email' contact to send out click and collect webhook emails. [28073](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28073)
+- Fixed issue of discount lines not going through when syncing order from admin. [27455](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/27455)
+- Fixed issue in assigning categories and tax class to associated simple products of the configurable products. [28106](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28106)
+- Fixed currency issue in customer dashboard for all orders which were placed offline in physical stores. [28820](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28820)
+- Fixed issue with canceled order status not showing in restricted order configuration. [29817](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/29817)
+- Fixed issue in Image replication logic to remove duplicate catalog images. [28105](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28105)
+- Fixed currency conversion rate in payment line when sending order to LS Central. [29839](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/29839)
+
+
+
+
 ## [2.0.0] - 2022-10-07
 
 ### Added

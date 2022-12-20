@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MenuNode extends Entity
 {
+
     /**
      * @property ArrayOfMenuNode $MenuGroupNodes
      */
@@ -262,5 +263,7 @@ class MenuNode extends Entity
     {
         return $this->ValidationTimeWithinBounds;
     }
+
+
 }
 

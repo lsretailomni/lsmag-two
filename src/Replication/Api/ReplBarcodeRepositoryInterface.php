@@ -12,6 +12,7 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplBarcodeRepositoryInterface
 {
+
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplBarcodeInterface $page);
@@ -21,5 +22,7 @@ interface ReplBarcodeRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
+
+
 }
 

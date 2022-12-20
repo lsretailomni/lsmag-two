@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class SubscriptionEntry extends Entity
 {
+
     /**
      * @property float $AdditionalCharges
      */
@@ -377,5 +378,7 @@ class SubscriptionEntry extends Entity
     {
         return $this->Quantity;
     }
+
+
 }
 

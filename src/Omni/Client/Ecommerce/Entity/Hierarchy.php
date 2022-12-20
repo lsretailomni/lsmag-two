@@ -13,6 +13,7 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Hierarchy extends Entity
 {
+
     /**
      * @property ArrayOfHierarchyAttribute $Attributes
      */
@@ -206,5 +207,7 @@ class Hierarchy extends Entity
     {
         return $this->ValidationScheduleId;
     }
+
+
 }
 

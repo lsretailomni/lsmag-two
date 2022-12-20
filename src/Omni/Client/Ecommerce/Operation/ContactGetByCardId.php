@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactGetByCardIdResponse as ContactGetByCa
 
 class ContactGetByCardId extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'CONTACT_GET_BY_CARD_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class ContactGetByCardId extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

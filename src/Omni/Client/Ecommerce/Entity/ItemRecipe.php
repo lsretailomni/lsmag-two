@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ItemRecipe extends Entity
 {
+
     /**
      * @property string $Description
      */
@@ -170,5 +171,7 @@ class ItemRecipe extends Entity
     {
         return $this->UnitOfMeasure;
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\RequestInterface;
 
 class SalesEntriesGetByCardId implements RequestInterface
 {
+
     /**
      * @property string $cardId
      */
@@ -57,5 +58,7 @@ class SalesEntriesGetByCardId implements RequestInterface
     {
         return $this->maxNumberOfEntries;
     }
+
+
 }
 

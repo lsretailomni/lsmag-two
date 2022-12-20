@@ -275,7 +275,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "ItemTrackingCode": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -311,7 +312,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "EComSelection": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -348,7 +350,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "BlockedOnPos": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -837,7 +840,9 @@
             "MemberValue": true,
             "ValidationPeriod": true,
             "ItemUOM": true,
-            "SortOrder": true
+            "SortOrder": true,
+            "Prepayment": true,
+            "VendorSourcing": true
         },
         "constraint": {
             "PRIMARY": true,
@@ -973,7 +978,8 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true
+            "updated_at": true,
+            "ItemTrackingCode": true
         },
         "constraint": {
             "PRIMARY": true
@@ -1462,6 +1468,29 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_item_variant": {
+        "column": {
+            "repl_item_variant_id": true,
+            "Description": true,
+            "Description2": true,
+            "IsDeleted": true,
+            "ItemId": true,
+            "VariantId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true,
+            "ready_to_process": true
         },
         "constraint": {
             "PRIMARY": true

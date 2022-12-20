@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplDataTranslationLangCode
 {
+
     /**
      * @property string $Code
      */
@@ -101,5 +102,7 @@ class ReplDataTranslationLangCode
     {
         return $this->scope_id;
     }
+
+
 }
 

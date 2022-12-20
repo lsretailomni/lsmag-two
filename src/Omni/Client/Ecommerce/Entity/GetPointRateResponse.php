@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class GetPointRateResponse implements ResponseInterface
 {
+
     /**
      * @property float $GetPointRateResult
      */
@@ -42,5 +43,7 @@ class GetPointRateResponse implements ResponseInterface
     {
         return $this->GetPointRateResult;
     }
+
+
 }
 

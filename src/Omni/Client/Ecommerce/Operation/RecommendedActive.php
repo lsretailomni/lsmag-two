@@ -20,6 +20,7 @@ use Ls\Omni\Client\Ecommerce\Entity\RecommendedActiveResponse as RecommendedActi
 
 class RecommendedActive extends AbstractOperation
 {
+
     public const OPERATION_NAME = 'RECOMMENDED_ACTIVE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -206,5 +207,7 @@ class RecommendedActive extends AbstractOperation
     {
         return $this->error;
     }
+
+
 }
 

@@ -12,6 +12,7 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommShippingAgentResponse implements ResponseInterface
 {
+
     /**
      * @property ReplShippingAgentResponse $ReplEcommShippingAgentResult
      */
@@ -42,5 +43,7 @@ class ReplEcommShippingAgentResponse implements ResponseInterface
     {
         return $this->ReplEcommShippingAgentResult;
     }
+
+
 }
 

@@ -10,6 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplAttribute
 {
+
     /**
      * @property string $Code
      */
@@ -170,5 +171,7 @@ class ReplAttribute
     {
         return $this->scope_id;
     }
+
+
 }
 
