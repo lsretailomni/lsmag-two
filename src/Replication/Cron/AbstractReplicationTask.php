@@ -746,6 +746,7 @@ abstract class AbstractReplicationTask
         try {
             $properties = $this->getProperties();
             $response   = $request->execute();
+
             if (method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();
                 $lastKey                = $result->getLastKey();

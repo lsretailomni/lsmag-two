@@ -294,7 +294,7 @@ class ProductCreateTask
     /**
      * @var DataTranslationTask
      */
-    private DataTranslationTask $dataTranslationTask;
+    public $dataTranslationTask;
 
     /**
      * @param Config $eavConfig
