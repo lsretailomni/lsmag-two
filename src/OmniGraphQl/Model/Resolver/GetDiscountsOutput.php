@@ -14,6 +14,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
+use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Catalog\Helper\Image;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
@@ -32,6 +33,8 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\App\Emulation;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Framework\Pricing\Helper\Data as PriceHelper;
+
 
 /**
  * To get discounts in product view page in graphql
@@ -85,11 +88,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
     protected $priceCurrency;
 
     /**
-     * @var TimezoneInterface
-     */
-    private TimezoneInterface $timeZoneInterface;
-
-    /**
      * @var ScopeConfigInterface
      */
     private ScopeConfigInterface $scopeConfig;
@@ -105,6 +103,19 @@ class GetDiscountsOutput extends View implements ResolverInterface
     protected $appEmulation;
 
     /**
+     * @var DataHelper
+     */
+    public DataHelper $dataHelper;
+    /**
+     * @var PriceHelper
+     */
+    public PriceHelper $priceHelper;
+    /**
+     * @var TimezoneInterface
+     */
+    public TimezoneInterface $timeZoneInterface;
+
+    /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param PageFactory $resultPageFactory
@@ -113,12 +124,15 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param StoreManagerInterface $storeManager
      * @param ItemHelper $itemHelper
      * @param Image $imageHelper
+
+     * @param PriceHelper $priceHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param Session $customerSession
      * @param Http $request
      * @param Emulation $appEmulation
+     * @param DataHelper $dataHelper
      */
     public function __construct(
         LSR $lsr,
@@ -129,12 +143,14 @@ class GetDiscountsOutput extends View implements ResolverInterface
         StoreManagerInterface $storeManager,
         ItemHelper $itemHelper,
         Image $imageHelper,
+        PriceHelper $priceHelper,
         PriceCurrencyInterface $priceCurrency,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         Session $customerSession,
         Http $request,
-        Emulation $appEmulation
+        Emulation $appEmulation,
+        DataHelper $dataHelper
     ) {
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -144,12 +160,14 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->storeManager      = $storeManager;
         $this->itemHelper        = $itemHelper;
         $this->imageHelper       = $imageHelper;
+        $this->priceHelper       = $priceHelper;
         $this->priceCurrency     = $priceCurrency;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->customerSession   = $customerSession;
         $this->request           = $request;
         $this->appEmulation      = $appEmulation;
+        $this->dataHelper        = $dataHelper;
     }
 
     /**
@@ -175,7 +193,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
         if (!empty($couponsObj != '')) {
             foreach ($couponsObj as $coupon) {
                 if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
-                    $couponsArr[] = $this->getFormattedDescriptionCoupon($coupon);
+                    $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
                 }
             }
         }

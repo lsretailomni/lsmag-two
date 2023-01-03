@@ -73,6 +73,7 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * Get default google map api key from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getGoogleMapsApiKey()
     {
@@ -82,6 +83,7 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * Get default latitude from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultLatitude()
     {
@@ -91,6 +93,7 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * Get default longitude from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultLongitude()
     {
@@ -100,6 +103,7 @@ class View extends \Magento\Catalog\Block\Product\View
     /**
      * Get default default zoom from config
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getDefaultZoom()
     {
