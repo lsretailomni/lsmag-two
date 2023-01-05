@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
 {
-
     /**
      * @property ReplLoyVendorItemMapping[] $ReplLoyVendorItemMapping
      */
@@ -46,7 +45,5 @@ class ArrayOfReplLoyVendorItemMapping implements IteratorAggregate
     {
         return $this->ReplLoyVendorItemMapping;
     }
-
-
 }
 

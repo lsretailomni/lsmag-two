@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplImageInterface
 {
-
     /**
      * @param string $Description
      * @return $this
@@ -197,7 +196,5 @@ interface ReplImageInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

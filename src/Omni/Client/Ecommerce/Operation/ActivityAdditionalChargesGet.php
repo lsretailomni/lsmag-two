@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityAdditionalChargesGetResponse as Acti
 
 class ActivityAdditionalChargesGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_ADDITIONAL_CHARGES_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityAdditionalChargesGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

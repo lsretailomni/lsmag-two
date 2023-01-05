@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfMenuNode implements IteratorAggregate
 {
-
     /**
      * @property MenuNode[] $MenuNode
      */
@@ -46,7 +45,5 @@ class ArrayOfMenuNode implements IteratorAggregate
     {
         return $this->MenuNode;
     }
-
-
 }
 

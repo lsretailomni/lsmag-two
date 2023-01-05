@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplAttributeOptionValueSearchResultsFactory;
 
 class ReplAttributeOptionValueRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplAttributeOptionValueFactory $objectFactory
      */
@@ -133,7 +132,5 @@ class ReplAttributeOptionValueRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

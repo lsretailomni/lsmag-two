@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityMembershipCancelResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $ActivityMembershipCancelResult
      */
@@ -43,7 +42,5 @@ class ActivityMembershipCancelResponse implements ResponseInterface
     {
         return $this->ActivityMembershipCancelResult;
     }
-
-
 }
 

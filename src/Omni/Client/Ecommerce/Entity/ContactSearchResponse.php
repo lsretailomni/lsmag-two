@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ContactSearchResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfMemberContact $ContactSearchResult
      */
@@ -43,7 +42,5 @@ class ContactSearchResponse implements ResponseInterface
     {
         return $this->ContactSearchResult;
     }
-
-
 }
 

@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplStoreInterface;
 
 class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_store';
 
     protected $_cacheTag = 'ls_replication_repl_store';
@@ -805,7 +804,5 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

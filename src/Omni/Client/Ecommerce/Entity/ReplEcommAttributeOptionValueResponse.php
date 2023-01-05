@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommAttributeOptionValueResponse implements ResponseInterface
 {
-
     /**
      * @property ReplAttributeOptionValueResponse $ReplEcommAttributeOptionValueResult
      */
@@ -43,7 +42,5 @@ class ReplEcommAttributeOptionValueResponse implements ResponseInterface
     {
         return $this->ReplEcommAttributeOptionValueResult;
     }
-
-
 }
 

@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplCountryCodeSearchResultsFactory;
 
 class ReplCountryCodeRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplCountryCodeFactory $objectFactory
      */
@@ -132,7 +131,5 @@ class ReplCountryCodeRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplAttributeOptionValue implements IteratorAggregate
 {
-
     /**
      * @property ReplAttributeOptionValue[] $ReplAttributeOptionValue
      */
@@ -46,7 +45,5 @@ class ArrayOfReplAttributeOptionValue implements IteratorAggregate
     {
         return $this->ReplAttributeOptionValue;
     }
-
-
 }
 

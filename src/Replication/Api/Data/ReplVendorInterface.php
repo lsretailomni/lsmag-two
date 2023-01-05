@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplVendorInterface
 {
-
     /**
      * @param boolean $AllowCustomersToSelectPageSize
      * @return $this
@@ -241,7 +240,5 @@ interface ReplVendorInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

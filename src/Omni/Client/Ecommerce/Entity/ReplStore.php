@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplStore
 {
-
     /**
      * @property string $City
      */
@@ -562,7 +561,5 @@ class ReplStore
     {
         return $this->scope_id;
     }
-
-
 }
 

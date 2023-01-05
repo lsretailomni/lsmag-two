@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfOneListItem implements IteratorAggregate
 {
-
     /**
      * @property OneListItem[] $OneListItem
      */
@@ -46,7 +45,5 @@ class ArrayOfOneListItem implements IteratorAggregate
     {
         return $this->OneListItem;
     }
-
-
 }
 

@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplDiscountValidationSearchResultsFactory;
 
 class ReplDiscountValidationRepository implements ReplDiscountValidationRepositoryInterface
 {
-
     /**
      * @property ReplDiscountValidationFactory $object_factory
      */
@@ -126,7 +125,5 @@ class ReplDiscountValidationRepository implements ReplDiscountValidationReposito
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

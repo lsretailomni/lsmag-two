@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse as Publis
 
 class PublishedOffersGetByCardId extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'PUBLISHED_OFFERS_GET_BY_CARD_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class PublishedOffersGetByCardId extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

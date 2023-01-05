@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class InventoryRequest
 {
-
     /**
      * @property string $ItemId
      */
@@ -56,7 +55,5 @@ class InventoryRequest
     {
         return $this->VariantId;
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplRequest
 {
-
     /**
      * @property string $AppId
      */
@@ -171,7 +170,5 @@ class ReplRequest
     {
         return $this->TerminalId;
     }
-
-
 }
 

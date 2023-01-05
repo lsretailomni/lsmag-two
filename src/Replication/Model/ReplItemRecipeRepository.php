@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplItemRecipeSearchResultsFactory;
 
 class ReplItemRecipeRepository implements ReplItemRecipeRepositoryInterface
 {
-
     /**
      * @property ReplItemRecipeFactory $object_factory
      */
@@ -126,7 +125,5 @@ class ReplItemRecipeRepository implements ReplItemRecipeRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

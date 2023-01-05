@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SocialLogonResponse implements ResponseInterface
 {
-
     /**
      * @property MemberContact $SocialLogonResult
      */
@@ -43,7 +42,5 @@ class SocialLogonResponse implements ResponseInterface
     {
         return $this->SocialLogonResult;
     }
-
-
 }
 

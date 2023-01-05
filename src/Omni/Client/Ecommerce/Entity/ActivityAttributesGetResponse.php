@@ -12,14 +12,13 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityAttributesGetResponse implements ResponseInterface
 {
-
     /**
-     * @property AttributeResponse $ActivityAttributesGetResult
+     * @property ArrayOfAttributeResponse $ActivityAttributesGetResult
      */
     protected $ActivityAttributesGetResult = null;
 
     /**
-     * @param AttributeResponse $ActivityAttributesGetResult
+     * @param ArrayOfAttributeResponse $ActivityAttributesGetResult
      * @return $this
      */
     public function setActivityAttributesGetResult($ActivityAttributesGetResult)
@@ -29,7 +28,7 @@ class ActivityAttributesGetResponse implements ResponseInterface
     }
 
     /**
-     * @return AttributeResponse
+     * @return ArrayOfAttributeResponse
      */
     public function getActivityAttributesGetResult()
     {
@@ -37,13 +36,11 @@ class ActivityAttributesGetResponse implements ResponseInterface
     }
 
     /**
-     * @return AttributeResponse
+     * @return ArrayOfAttributeResponse
      */
     public function getResult()
     {
         return $this->ActivityAttributesGetResult;
     }
-
-
 }
 

@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplItemRecipeInterface;
 
 class ReplItemRecipe extends AbstractModel implements ReplItemRecipeInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_item_recipe';
 
     protected $_cacheTag = 'ls_replication_repl_item_recipe';
@@ -505,7 +504,5 @@ class ReplItemRecipe extends AbstractModel implements ReplItemRecipeInterface, I
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplLoyVendorItemMapping
 {
-
     /**
      * @property boolean $Deleted
      */
@@ -217,7 +216,5 @@ class ReplLoyVendorItemMapping
     {
         return $this->scope_id;
     }
-
-
 }
 

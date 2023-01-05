@@ -12,11 +12,15 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactCreate implements RequestInterface
 {
-
     /**
      * @property MemberContact $contact
      */
     protected $contact = null;
+
+    /**
+     * @property boolean $doLogin
+     */
+    protected $doLogin = null;
 
     /**
      * @param MemberContact $contact
@@ -36,6 +40,22 @@ class ContactCreate implements RequestInterface
         return $this->contact;
     }
 
+    /**
+     * @param boolean $doLogin
+     * @return $this
+     */
+    public function setDoLogin($doLogin)
+    {
+        $this->doLogin = $doLogin;
+        return $this;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function getDoLogin()
+    {
+        return $this->doLogin;
+    }
 }
 

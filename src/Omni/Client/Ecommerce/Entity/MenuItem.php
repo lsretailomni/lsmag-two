@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MenuItem extends Entity
 {
-
     /**
      * @property ArrayOfImageView $Images
      */
@@ -240,7 +239,5 @@ class MenuItem extends Entity
     {
         return $this->Validation;
     }
-
-
 }
 

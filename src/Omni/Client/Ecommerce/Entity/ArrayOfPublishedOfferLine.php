@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfPublishedOfferLine implements IteratorAggregate
 {
-
     /**
      * @property PublishedOfferLine[] $PublishedOfferLine
      */
@@ -46,7 +45,5 @@ class ArrayOfPublishedOfferLine implements IteratorAggregate
     {
         return $this->PublishedOfferLine;
     }
-
-
 }
 

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityInsertGroupReservationResponse as Ac
 
 class ActivityInsertGroupReservation extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_INSERT_GROUP_RESERVATION';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityInsertGroupReservation extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

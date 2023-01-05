@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\LoyItemInterface;
 
 class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_loy_item';
 
     protected $_cacheTag = 'ls_replication_loy_item';
@@ -955,7 +954,5 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

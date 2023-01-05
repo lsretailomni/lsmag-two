@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfRecipe implements IteratorAggregate
 {
-
     /**
      * @property Recipe[] $Recipe
      */
@@ -46,7 +45,5 @@ class ArrayOfRecipe implements IteratorAggregate
     {
         return $this->Recipe;
     }
-
-
 }
 

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityConfirmResponse as ActivityConfirmRe
 
 class ActivityConfirm extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_CONFIRM';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityConfirm extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

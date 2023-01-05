@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfOrderCheckLines implements IteratorAggregate
 {
-
     /**
      * @property OrderCheckLines[] $OrderCheckLines
      */
@@ -46,7 +45,5 @@ class ArrayOfOrderCheckLines implements IteratorAggregate
     {
         return $this->OrderCheckLines;
     }
-
-
 }
 

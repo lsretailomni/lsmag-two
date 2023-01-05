@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplExtendedVariantValueInterface;
 
 class ReplEcommExtendedVariantsTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_extended_variant_value';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_extended_variant_value';
@@ -153,7 +152,5 @@ class ReplEcommExtendedVariantsTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

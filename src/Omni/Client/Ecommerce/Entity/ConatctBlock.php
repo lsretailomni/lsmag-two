@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ConatctBlock implements RequestInterface
 {
-
     /**
      * @property string $accountId
      */
@@ -58,7 +57,5 @@ class ConatctBlock implements RequestInterface
     {
         return $this->cardId;
     }
-
-
 }
 

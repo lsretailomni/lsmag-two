@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplHierarchySearchResultsFactory;
 
 class ReplHierarchyRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplHierarchyFactory $objectFactory
      */
@@ -132,7 +131,5 @@ class ReplHierarchyRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

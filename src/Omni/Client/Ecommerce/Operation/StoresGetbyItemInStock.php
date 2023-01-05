@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\StoresGetbyItemInStockResponse as StoresGetb
 
 class StoresGetbyItemInStock extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'STORES_GETBY_ITEM_IN_STOCK';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class StoresGetbyItemInStock extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

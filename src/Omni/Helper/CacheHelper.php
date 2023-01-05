@@ -26,7 +26,8 @@ class CacheHelper extends AbstractHelper
     public $soapOptions = [
         'cache_wsdl'   => WSDL_CACHE_DISK,
         'soap_version' => SOAP_1_1,
-        'features'     => SOAP_SINGLE_ELEMENT_ARRAYS
+        'features'     => SOAP_SINGLE_ELEMENT_ARRAYS,
+        'encoding'     => 'UTF-8'
     ];
 
     /**

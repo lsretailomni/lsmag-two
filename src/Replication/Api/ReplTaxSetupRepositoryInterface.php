@@ -12,7 +12,6 @@ use Magento\Framework\Api\SearchCriteriaInterface;
  */
 interface ReplTaxSetupRepositoryInterface
 {
-
     public function getList(SearchCriteriaInterface $criteria);
 
     public function save(ReplTaxSetupInterface $page);
@@ -22,7 +21,5 @@ interface ReplTaxSetupRepositoryInterface
     public function getById($id);
 
     public function deleteById($id);
-
-
 }
 

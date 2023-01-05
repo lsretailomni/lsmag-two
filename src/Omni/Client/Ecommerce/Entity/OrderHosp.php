@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHosp extends Entity
 {
-
     /**
      * @property ArrayOfOrderDiscountLine $OrderDiscountLines
      */
@@ -50,6 +49,11 @@ class OrderHosp extends Entity
     protected $Comment = null;
 
     /**
+     * @property string $Currency
+     */
+    protected $Currency = null;
+
+    /**
      * @property HospDeliveryType $DeliveryType
      */
     protected $DeliveryType = null;
@@ -75,6 +79,11 @@ class OrderHosp extends Entity
     protected $Email = null;
 
     /**
+     * @property string $ExternalId
+     */
+    protected $ExternalId = null;
+
+    /**
      * @property int $LineItemCount
      */
     protected $LineItemCount = null;
@@ -93,6 +102,11 @@ class OrderHosp extends Entity
      * @property string $PickupTime
      */
     protected $PickupTime = null;
+
+    /**
+     * @property string $QRData
+     */
+    protected $QRData = null;
 
     /**
      * @property string $ReceiptNo
@@ -256,6 +270,24 @@ class OrderHosp extends Entity
     }
 
     /**
+     * @param string $Currency
+     * @return $this
+     */
+    public function setCurrency($Currency)
+    {
+        $this->Currency = $Currency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->Currency;
+    }
+
+    /**
      * @param HospDeliveryType|string $DeliveryType
      * @return $this
      * @throws InvalidEnumException
@@ -356,6 +388,24 @@ class OrderHosp extends Entity
     }
 
     /**
+     * @param string $ExternalId
+     * @return $this
+     */
+    public function setExternalId($ExternalId)
+    {
+        $this->ExternalId = $ExternalId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalId()
+    {
+        return $this->ExternalId;
+    }
+
+    /**
      * @param int $LineItemCount
      * @return $this
      */
@@ -425,6 +475,24 @@ class OrderHosp extends Entity
     public function getPickupTime()
     {
         return $this->PickupTime;
+    }
+
+    /**
+     * @param string $QRData
+     * @return $this
+     */
+    public function setQRData($QRData)
+    {
+        $this->QRData = $QRData;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQRData()
+    {
+        return $this->QRData;
     }
 
     /**
@@ -552,7 +620,5 @@ class OrderHosp extends Entity
     {
         return $this->TotalNetAmount;
     }
-
-
 }
 

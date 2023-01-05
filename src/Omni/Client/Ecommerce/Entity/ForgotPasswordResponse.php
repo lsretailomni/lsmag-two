@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ForgotPasswordResponse implements ResponseInterface
 {
-
     /**
      * @property string $ForgotPasswordResult
      */
@@ -43,7 +42,5 @@ class ForgotPasswordResponse implements ResponseInterface
     {
         return $this->ForgotPasswordResult;
     }
-
-
 }
 

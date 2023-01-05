@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReplEcommMixAndMatch implements RequestInterface
 {
-
     /**
      * @property ReplRequest $replRequest
      */
@@ -35,7 +34,5 @@ class ReplEcommMixAndMatch implements RequestInterface
     {
         return $this->replRequest;
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OneListItem extends Entity
 {
-
     /**
      * @property ArrayOfOneListItemDiscount $OnelistItemDiscounts
      */
@@ -677,7 +676,5 @@ class OneListItem extends Entity
     {
         return $this->VariantRegistration;
     }
-
-
 }
 

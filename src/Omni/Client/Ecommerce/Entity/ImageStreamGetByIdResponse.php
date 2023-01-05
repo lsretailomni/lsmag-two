@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ImageStreamGetByIdResponse implements ResponseInterface
 {
-
     /**
      * @property string $ImageStreamGetByIdResult
      */
@@ -43,7 +42,5 @@ class ImageStreamGetByIdResponse implements ResponseInterface
     {
         return $this->ImageStreamGetByIdResult;
     }
-
-
 }
 

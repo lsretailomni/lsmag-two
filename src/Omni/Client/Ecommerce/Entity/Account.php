@@ -14,7 +14,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Account extends Entity
 {
-
     /**
      * @property boolean $Blocked
      */
@@ -241,7 +240,5 @@ class Account extends Entity
     {
         return $this->Type;
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplAttributeOptionValueInterface
 {
-
     /**
      * @param string $Code
      * @return $this
@@ -153,7 +152,5 @@ interface ReplAttributeOptionValueInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

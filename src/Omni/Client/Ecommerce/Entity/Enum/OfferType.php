@@ -19,7 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class OfferType extends Enum
 {
-
     public const GENERAL = 'General';
 
     public const SPECIAL_MEMBER = 'SpecialMember';
@@ -29,7 +28,5 @@ class OfferType extends Enum
     public const CLUB = 'Club';
 
     public const UNKNOWN = 'Unknown';
-
-
 }
 

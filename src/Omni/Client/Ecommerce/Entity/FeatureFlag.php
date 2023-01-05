@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class FeatureFlag
 {
-
     /**
      * @property FeatureFlagName $name
      */
@@ -69,7 +68,5 @@ class FeatureFlag
     {
         return $this->value;
     }
-
-
 }
 

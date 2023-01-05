@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ScanPayGoProfile extends Entity
 {
-
     /**
      * @property ArrayOfScanPayGoTender $TenderTypes
      */
@@ -115,7 +114,5 @@ class ScanPayGoProfile extends Entity
     {
         return $this->StoreId;
     }
-
-
 }
 

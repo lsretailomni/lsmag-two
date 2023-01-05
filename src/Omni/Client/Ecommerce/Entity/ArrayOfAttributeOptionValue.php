@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfAttributeOptionValue implements IteratorAggregate
 {
-
     /**
      * @property AttributeOptionValue[] $AttributeOptionValue
      */
@@ -46,7 +45,5 @@ class ArrayOfAttributeOptionValue implements IteratorAggregate
     {
         return $this->AttributeOptionValue;
     }
-
-
 }
 

@@ -21,7 +21,6 @@ use MyCLabs\Enum\Enum;
  */
 class OfferDiscountLineType extends Enum
 {
-
     public const ITEM = 'Item';
 
     public const PRODUCT_GROUP = 'ProductGroup';
@@ -35,7 +34,5 @@ class OfferDiscountLineType extends Enum
     public const P_L_U_MENU = 'PLUMenu';
 
     public const DEAL_MODIFIER = 'DealModifier';
-
-
 }
 
