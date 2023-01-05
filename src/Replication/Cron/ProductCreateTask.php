@@ -291,6 +291,10 @@ class ProductCreateTask
      * @var ReplItemVariantRepository
      */
     public $replItemVariantRepository;
+    /**
+     * @var DataTranslationTask
+     */
+    public $dataTranslationTask;
 
     /**
      * @param Config $eavConfig
@@ -343,6 +347,7 @@ class ProductCreateTask
      * @param Filesystem $filesystem
      * @param ResourceConnection $resourceConnection
      * @param File $file
+     * @param DataTranslationTask $dataTranslationTask
      * @param ImportImageService $imageService
      * @throws FileSystemException
      */
@@ -397,6 +402,7 @@ class ProductCreateTask
         Filesystem $filesystem,
         ResourceConnection $resourceConnection,
         File $file,
+        DataTranslationTask $dataTranslationTask,
         ImportImageService $imageService
     ) {
         $this->eavConfig                                 = $eavConfig;
@@ -450,6 +456,7 @@ class ProductCreateTask
         $this->mediaDirectory                            = $filesystem->getDirectoryWrite(DirectoryList::ROOT);
         $this->resourceConnection                        = $resourceConnection;
         $this->file                                      = $file;
+        $this->dataTranslationTask                       = $dataTranslationTask;
         $this->imageService                              = $imageService;
     }
 
@@ -552,12 +559,41 @@ class ProductCreateTask
                         foreach ($items->getItems() as $item) {
                             try {
                                 $taxClass    = null;
+                                $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                    $item->getNavId(),
+                                    '',
+                                    '',
+                                    $store->getId()
+                                );
+
+                                $langCode = $this->lsr->getStoreConfig(
+                                    LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                                    $store->getId()
+                                );
+                                list(, $nameFlag, $descriptionFlag) =
+                                    $this->dataTranslationTask->updateItem(
+                                        $store->getId(),
+                                        $langCode,
+                                        $item->getNavId()
+                                    );
+
                                 $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                     $item->getNavId(),
                                     '',
                                     '',
                                     $store->getId()
                                 );
+
+                                if (!$nameFlag) {
+                                    $productData->setName($item->getDescription());
+                                    $productData->setMetaTitle($item->getDescription());
+                                } else {
+                                    $productData->setMetaTitle($productData->getname());
+                                }
+
+                                if (!$descriptionFlag) {
+                                    $productData->setDescription($item->getDetails());
+                                }
 
                                 if (!empty($item->getTaxItemGroupId())) {
                                     $taxClass = $this->replicationHelper->getTaxClassGivenName(
@@ -570,9 +606,7 @@ class ProductCreateTask
                                     $websitesProduct[] = $store->getWebsiteId();
                                     $productData->setWebsiteIds($websitesProduct);
                                 }
-                                $productData->setName($item->getDescription());
-                                $productData->setMetaTitle($item->getDescription());
-                                $productData->setDescription($item->getDetails());
+
                                 $productData->setWeight($item->getGrossWeight());
                                 if (!empty($taxClass)) {
                                     $productData->setTaxClassId($taxClass->getClassId());
