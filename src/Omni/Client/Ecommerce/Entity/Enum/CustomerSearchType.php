@@ -18,7 +18,6 @@ use MyCLabs\Enum\Enum;
  */
 class CustomerSearchType extends Enum
 {
-
     public const CUSTOMER_ID = 'CustomerId';
 
     public const PHONE_NUMBER = 'PhoneNumber';
@@ -26,7 +25,5 @@ class CustomerSearchType extends Enum
     public const EMAIL = 'Email';
 
     public const NAME = 'Name';
-
-
 }
 

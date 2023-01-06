@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\StoresGetByCoordinatesResponse as StoresGetB
 
 class StoresGetByCoordinates extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'STORES_GET_BY_COORDINATES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class StoresGetByCoordinates extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

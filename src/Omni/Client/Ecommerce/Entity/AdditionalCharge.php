@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class AdditionalCharge
 {
-
     /**
      * @property string $ActivityNo
      */
@@ -299,7 +298,5 @@ class AdditionalCharge
     {
         return $this->UnitOfMeasure;
     }
-
-
 }
 

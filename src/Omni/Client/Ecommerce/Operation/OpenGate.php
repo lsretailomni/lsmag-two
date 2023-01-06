@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\OpenGateResponse as OpenGateResponse;
 
 class OpenGate extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'OPEN_GATE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class OpenGate extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityDeleteGroupResponse as ActivityDelet
 
 class ActivityDeleteGroup extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_DELETE_GROUP';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityDeleteGroup extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

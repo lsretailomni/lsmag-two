@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplImageSearchResultsFactory;
 
 class ReplImageRepository implements ReplImageRepositoryInterface
 {
-
     /**
      * @property ReplImageFactory $object_factory
      */
@@ -126,7 +125,5 @@ class ReplImageRepository implements ReplImageRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

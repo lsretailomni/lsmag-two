@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class Allowance extends Entity
 {
-
     /**
      * @property string $ClientName
      */
@@ -263,7 +262,5 @@ class Allowance extends Entity
     {
         return $this->ValidLocation;
     }
-
-
 }
 

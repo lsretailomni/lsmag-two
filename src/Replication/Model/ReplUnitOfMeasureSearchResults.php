@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplUnitOfMeasureSearchResults extends SearchResults implements ReplUnitOfMeasureSearchResultsInterface
 {
-
-
 }
 

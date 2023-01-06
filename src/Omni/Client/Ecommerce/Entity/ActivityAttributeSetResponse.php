@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityAttributeSetResponse implements ResponseInterface
 {
-
     /**
      * @property int $ActivityAttributeSetResult
      */
@@ -43,7 +42,5 @@ class ActivityAttributeSetResponse implements ResponseInterface
     {
         return $this->ActivityAttributeSetResult;
     }
-
-
 }
 

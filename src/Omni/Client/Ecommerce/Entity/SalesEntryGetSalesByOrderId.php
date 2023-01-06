@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class SalesEntryGetSalesByOrderId implements RequestInterface
 {
-
     /**
      * @property string $orderId
      */
@@ -35,7 +34,5 @@ class SalesEntryGetSalesByOrderId implements RequestInterface
     {
         return $this->orderId;
     }
-
-
 }
 

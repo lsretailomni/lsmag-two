@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OfferDetails
 {
-
     /**
      * @property string $Description
      */
@@ -102,7 +101,5 @@ class OfferDetails
     {
         return $this->OfferId;
     }
-
-
 }
 

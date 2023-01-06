@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommMixAndMatchResponse implements ResponseInterface
 {
-
     /**
      * @property ReplMixMatchResponse $ReplEcommMixAndMatchResult
      */
@@ -43,7 +42,5 @@ class ReplEcommMixAndMatchResponse implements ResponseInterface
     {
         return $this->ReplEcommMixAndMatchResult;
     }
-
-
 }
 

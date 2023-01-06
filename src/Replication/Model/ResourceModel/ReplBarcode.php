@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplBarcode extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_barcode', 'repl_barcode_id' );
     }
-
-
 }
 

@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplProductGroupInterface;
 
 class ReplProductGroup extends AbstractModel implements ReplProductGroupInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_product_group';
 
     protected $_cacheTag = 'ls_replication_repl_product_group';
@@ -355,7 +354,5 @@ class ReplProductGroup extends AbstractModel implements ReplProductGroupInterfac
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

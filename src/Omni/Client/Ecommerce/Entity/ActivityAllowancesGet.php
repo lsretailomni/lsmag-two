@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityAllowancesGet implements RequestInterface
 {
-
     /**
      * @property string $contactNo
      */
@@ -35,7 +34,5 @@ class ActivityAllowancesGet implements RequestInterface
     {
         return $this->contactNo;
     }
-
-
 }
 

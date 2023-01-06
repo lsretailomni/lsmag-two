@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplItemVariantRegistrationSearchResultsFactory;
 
 class ReplItemVariantRegistrationRepository implements ReplItemVariantRegistrationRepositoryInterface
 {
-
     /**
      * @property ReplItemVariantRegistrationFactory $object_factory
      */
@@ -126,7 +125,5 @@ class ReplItemVariantRegistrationRepository implements ReplItemVariantRegistrati
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

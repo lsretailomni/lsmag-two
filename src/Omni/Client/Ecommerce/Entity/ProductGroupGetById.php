@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ProductGroupGetById implements RequestInterface
 {
-
     /**
      * @property string $productGroupId
      */
@@ -58,7 +57,5 @@ class ProductGroupGetById implements RequestInterface
     {
         return $this->includeDetails;
     }
-
-
 }
 

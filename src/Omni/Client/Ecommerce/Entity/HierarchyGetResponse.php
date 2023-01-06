@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class HierarchyGetResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfHierarchy $HierarchyGetResult
      */
@@ -43,7 +42,5 @@ class HierarchyGetResponse implements ResponseInterface
     {
         return $this->HierarchyGetResult;
     }
-
-
 }
 

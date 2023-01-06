@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplVendorInterface;
 
 class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_vendor';
 
     protected $_cacheTag = 'ls_replication_repl_vendor';
@@ -555,7 +554,5 @@ class ReplVendor extends AbstractModel implements ReplVendorInterface, IdentityI
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

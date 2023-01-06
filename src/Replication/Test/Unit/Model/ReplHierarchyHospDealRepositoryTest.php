@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplHierarchyHospDealSearchResultsFactory;
 
 class ReplHierarchyHospDealRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplHierarchyHospDealFactory $objectFactory
      */
@@ -133,7 +132,5 @@ class ReplHierarchyHospDealRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

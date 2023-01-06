@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplDataTranslationLangCodeInterface;
 
 class ReplEcommDataTranslationLangCodeTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_data_translation_lang_code';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_data_translation_lang_code';
@@ -153,7 +152,5 @@ class ReplEcommDataTranslationLangCodeTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

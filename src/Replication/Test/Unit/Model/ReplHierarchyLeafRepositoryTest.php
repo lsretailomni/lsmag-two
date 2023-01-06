@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplHierarchyLeafSearchResultsFactory;
 
 class ReplHierarchyLeafRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplHierarchyLeafFactory $objectFactory
      */
@@ -132,7 +131,5 @@ class ReplHierarchyLeafRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

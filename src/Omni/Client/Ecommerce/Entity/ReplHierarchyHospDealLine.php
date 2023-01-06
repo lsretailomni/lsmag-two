@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplHierarchyHospDealLine
 {
-
     /**
      * @property float $AddedAmount
      */
@@ -401,7 +400,5 @@ class ReplHierarchyHospDealLine
     {
         return $this->scope_id;
     }
-
-
 }
 

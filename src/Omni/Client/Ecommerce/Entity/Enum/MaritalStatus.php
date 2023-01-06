@@ -19,7 +19,6 @@ use MyCLabs\Enum\Enum;
  */
 class MaritalStatus extends Enum
 {
-
     public const UNKNOWN = 'Unknown';
 
     public const SINGLE = 'Single';
@@ -29,7 +28,5 @@ class MaritalStatus extends Enum
     public const DIVORCED = 'Divorced';
 
     public const WIDOWED = 'Widowed';
-
-
 }
 

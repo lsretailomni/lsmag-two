@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ReplEcommAttribute implements RequestInterface
 {
-
     /**
      * @property ReplRequest $replRequest
      */
@@ -35,7 +34,5 @@ class ReplEcommAttribute implements RequestInterface
     {
         return $this->replRequest;
     }
-
-
 }
 

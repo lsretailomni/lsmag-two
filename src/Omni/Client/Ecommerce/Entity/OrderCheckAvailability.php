@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class OrderCheckAvailability implements RequestInterface
 {
-
     /**
      * @property OneList $request
      */
@@ -58,7 +57,5 @@ class OrderCheckAvailability implements RequestInterface
     {
         return $this->shippingOrder;
     }
-
-
 }
 

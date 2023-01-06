@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OrderHospSubLine
 {
-
     /**
      * @property float $Amount
      */
@@ -575,7 +574,5 @@ class OrderHospSubLine
     {
         return $this->VariantId;
     }
-
-
 }
 

@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplHierarchyHospDealLineSearchResultsFactory;
 
 class ReplHierarchyHospDealLineRepository implements ReplHierarchyHospDealLineRepositoryInterface
 {
-
     /**
      * @property ReplHierarchyHospDealLineFactory $object_factory
      */
@@ -126,7 +125,5 @@ class ReplHierarchyHospDealLineRepository implements ReplHierarchyHospDealLineRe
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

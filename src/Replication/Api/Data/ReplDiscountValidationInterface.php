@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplDiscountValidationInterface
 {
-
     /**
      * @param string $Description
      * @return $this
@@ -516,7 +515,5 @@ interface ReplDiscountValidationInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

@@ -10,6 +10,10 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderCheckLines
 {
+    /**
+     * @property boolean $AlwaysCheck
+     */
+    protected $AlwaysCheck = null;
 
     /**
      * @property float $Amount
@@ -60,6 +64,24 @@ class OrderCheckLines
      * @property string $VariantDescription
      */
     protected $VariantDescription = null;
+
+    /**
+     * @param boolean $AlwaysCheck
+     * @return $this
+     */
+    public function setAlwaysCheck($AlwaysCheck)
+    {
+        $this->AlwaysCheck = $AlwaysCheck;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAlwaysCheck()
+    {
+        return $this->AlwaysCheck;
+    }
 
     /**
      * @param float $Amount
@@ -240,7 +262,5 @@ class OrderCheckLines
     {
         return $this->VariantDescription;
     }
-
-
 }
 

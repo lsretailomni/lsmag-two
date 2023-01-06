@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ConatctBlockResponse as ConatctBlockResponse
 
 class ConatctBlock extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'CONATCT_BLOCK';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ConatctBlock extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

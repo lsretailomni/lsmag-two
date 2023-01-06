@@ -17,13 +17,10 @@ use MyCLabs\Enum\Enum;
  */
 class CurrencyRoundingMethod extends Enum
 {
-
     public const ROUND_NEAREST = 'RoundNearest';
 
     public const ROUND_DOWN = 'RoundDown';
 
     public const ROUND_UP = 'RoundUp';
-
-
 }
 

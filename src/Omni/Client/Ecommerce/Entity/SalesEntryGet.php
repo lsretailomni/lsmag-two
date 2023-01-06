@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class SalesEntryGet implements RequestInterface
 {
-
     /**
      * @property string $entryId
      */
@@ -70,7 +69,5 @@ class SalesEntryGet implements RequestInterface
     {
         return $this->type;
     }
-
-
 }
 

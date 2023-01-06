@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfScheme implements IteratorAggregate
 {
-
     /**
      * @property Scheme[] $Scheme
      */
@@ -46,7 +45,5 @@ class ArrayOfScheme implements IteratorAggregate
     {
         return $this->Scheme;
     }
-
-
 }
 

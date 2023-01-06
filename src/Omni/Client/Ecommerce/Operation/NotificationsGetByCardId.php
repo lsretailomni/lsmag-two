@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\NotificationsGetByCardIdResponse as Notifica
 
 class NotificationsGetByCardId extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'NOTIFICATIONS_GET_BY_CARD_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class NotificationsGetByCardId extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplHierarchyLeafInterface;
 
 class ReplEcommHierarchyLeafTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_hierarchy_leaf';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_hierarchy_leaf';
@@ -153,7 +152,5 @@ class ReplEcommHierarchyLeafTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

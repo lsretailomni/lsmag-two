@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplItemCategorySearchResultsFactory;
 
 class ReplItemCategoryRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplItemCategoryFactory $objectFactory
      */
@@ -132,7 +131,5 @@ class ReplItemCategoryRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

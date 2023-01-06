@@ -12,11 +12,15 @@ use Ls\Omni\Client\RequestInterface;
 
 class ContactUpdate implements RequestInterface
 {
-
     /**
      * @property MemberContact $contact
      */
     protected $contact = null;
+
+    /**
+     * @property boolean $getContact
+     */
+    protected $getContact = null;
 
     /**
      * @param MemberContact $contact
@@ -36,6 +40,22 @@ class ContactUpdate implements RequestInterface
         return $this->contact;
     }
 
+    /**
+     * @param boolean $getContact
+     * @return $this
+     */
+    public function setGetContact($getContact)
+    {
+        $this->getContact = $getContact;
+        return $this;
+    }
 
+    /**
+     * @return boolean
+     */
+    public function getGetContact()
+    {
+        return $this->getContact;
+    }
 }
 

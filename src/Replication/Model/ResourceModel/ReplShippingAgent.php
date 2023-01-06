@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplShippingAgent extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_shipping_agent', 'repl_shipping_agent_id' );
     }
-
-
 }
 

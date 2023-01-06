@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplDataTranslationInterface;
 
 class ReplEcommHtmlTranslationTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_html_translation';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_html_translation';
@@ -153,7 +152,5 @@ class ReplEcommHtmlTranslationTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

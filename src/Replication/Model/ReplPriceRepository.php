@@ -24,7 +24,6 @@ use Ls\Replication\Model\ReplPriceSearchResultsFactory;
 
 class ReplPriceRepository implements ReplPriceRepositoryInterface
 {
-
     /**
      * @property ReplPriceFactory $object_factory
      */
@@ -126,7 +125,5 @@ class ReplPriceRepository implements ReplPriceRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

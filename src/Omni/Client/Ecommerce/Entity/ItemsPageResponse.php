@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ItemsPageResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfLoyItem $ItemsPageResult
      */
@@ -43,7 +42,5 @@ class ItemsPageResponse implements ResponseInterface
     {
         return $this->ItemsPageResult;
     }
-
-
 }
 

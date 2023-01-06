@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplTaxSetupInterface
 {
-
     /**
      * @param string $BusinessTaxGroup
      * @return $this
@@ -153,7 +152,5 @@ interface ReplTaxSetupInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

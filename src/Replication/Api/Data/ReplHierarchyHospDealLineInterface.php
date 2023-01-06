@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplHierarchyHospDealLineInterface
 {
-
     /**
      * @param float $AddedAmount
      * @return $this
@@ -274,7 +273,5 @@ interface ReplHierarchyHospDealLineInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

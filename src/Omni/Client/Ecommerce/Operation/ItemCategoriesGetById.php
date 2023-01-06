@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ItemCategoriesGetByIdResponse as ItemCategor
 
 class ItemCategoriesGetById extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ITEM_CATEGORIES_GET_BY_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ItemCategoriesGetById extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 
