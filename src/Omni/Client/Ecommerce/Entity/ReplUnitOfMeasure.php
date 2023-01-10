@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplUnitOfMeasure
 {
-
     /**
      * @property string $Description
      */
@@ -171,7 +170,5 @@ class ReplUnitOfMeasure
     {
         return $this->scope_id;
     }
-
-
 }
 

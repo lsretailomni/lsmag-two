@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class DimValue
 {
-
     /**
      * @property int $DisplayOrder
      */
@@ -79,7 +78,5 @@ class DimValue
     {
         return $this->Value;
     }
-
-
 }
 

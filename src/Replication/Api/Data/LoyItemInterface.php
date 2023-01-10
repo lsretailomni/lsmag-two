@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface LoyItemInterface
 {
-
     /**
      * @param ArrayOfImageView $Images
      * @return $this
@@ -417,7 +416,5 @@ interface LoyItemInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

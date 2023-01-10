@@ -12,7 +12,5 @@ use Ls\Omni\Client\RequestInterface;
 
 class StoresGetAll implements RequestInterface
 {
-
-
 }
 

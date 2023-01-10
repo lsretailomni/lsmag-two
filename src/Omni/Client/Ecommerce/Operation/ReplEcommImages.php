@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommImagesResponse as ReplEcommImagesRe
 
 class ReplEcommImages extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_IMAGES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommImages extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

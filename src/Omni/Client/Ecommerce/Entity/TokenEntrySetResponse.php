@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class TokenEntrySetResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $TokenEntrySetResult
      */
@@ -43,7 +42,5 @@ class TokenEntrySetResponse implements ResponseInterface
     {
         return $this->TokenEntrySetResult;
     }
-
-
 }
 

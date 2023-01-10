@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplItemUnitOfMeasureSearchResultsFactory;
 
 class ReplItemUnitOfMeasureRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplItemUnitOfMeasureFactory $objectFactory
      */
@@ -133,7 +132,5 @@ class ReplItemUnitOfMeasureRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

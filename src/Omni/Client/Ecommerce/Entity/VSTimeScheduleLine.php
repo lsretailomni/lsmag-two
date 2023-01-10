@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class VSTimeScheduleLine
 {
-
     /**
      * @property string $DiningDurationCode
      */
@@ -171,7 +170,5 @@ class VSTimeScheduleLine
     {
         return $this->TimeToIsPastMidnight;
     }
-
-
 }
 

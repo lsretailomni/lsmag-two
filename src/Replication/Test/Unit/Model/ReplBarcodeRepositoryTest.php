@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplBarcodeSearchResultsFactory;
 
 class ReplBarcodeRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplBarcodeFactory $objectFactory
      */
@@ -132,7 +131,5 @@ class ReplBarcodeRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

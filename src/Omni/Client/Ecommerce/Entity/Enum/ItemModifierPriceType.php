@@ -18,7 +18,6 @@ use MyCLabs\Enum\Enum;
  */
 class ItemModifierPriceType extends Enum
 {
-
     public const NONE = 'None';
 
     public const FROM_ITEM = 'FromItem';
@@ -26,7 +25,5 @@ class ItemModifierPriceType extends Enum
     public const AMOUNT = 'Amount';
 
     public const PERCENT = 'Percent';
-
-
 }
 

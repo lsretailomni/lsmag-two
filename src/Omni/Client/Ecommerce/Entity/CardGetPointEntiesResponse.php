@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class CardGetPointEntiesResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfPointEntry $CardGetPointEntiesResult
      */
@@ -43,7 +42,5 @@ class CardGetPointEntiesResponse implements ResponseInterface
     {
         return $this->CardGetPointEntiesResult;
     }
-
-
 }
 

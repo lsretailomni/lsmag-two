@@ -23,7 +23,6 @@ use MyCLabs\Enum\Enum;
  */
 class ItemTriggerFunction extends Enum
 {
-
     public const DEFAULT = 'Default';
 
     public const ITEM = 'Item';
@@ -41,7 +40,5 @@ class ItemTriggerFunction extends Enum
     public const TEXT_MODIFIER = 'TextModifier';
 
     public const TAX_AREA_CODE = 'TaxAreaCode';
-
-
 }
 

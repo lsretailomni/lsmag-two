@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class CheckAvailabilityResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfHospAvailabilityResponse $CheckAvailabilityResult
      */
@@ -43,7 +42,5 @@ class CheckAvailabilityResponse implements ResponseInterface
     {
         return $this->CheckAvailabilityResult;
     }
-
-
 }
 

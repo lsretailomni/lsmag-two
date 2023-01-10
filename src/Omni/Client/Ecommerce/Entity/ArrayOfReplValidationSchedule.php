@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfReplValidationSchedule implements IteratorAggregate
 {
-
     /**
      * @property ReplValidationSchedule[] $ReplValidationSchedule
      */
@@ -46,7 +45,5 @@ class ArrayOfReplValidationSchedule implements IteratorAggregate
     {
         return $this->ReplValidationSchedule;
     }
-
-
 }
 

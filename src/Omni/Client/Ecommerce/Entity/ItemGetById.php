@@ -12,7 +12,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ItemGetById implements RequestInterface
 {
-
     /**
      * @property string $itemId
      */
@@ -58,7 +57,5 @@ class ItemGetById implements RequestInterface
     {
         return $this->storeId;
     }
-
-
 }
 

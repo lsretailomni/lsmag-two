@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplValidationScheduleSearchResultsFactory;
 
 class ReplValidationScheduleRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplValidationScheduleFactory $objectFactory
      */
@@ -133,7 +132,5 @@ class ReplValidationScheduleRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

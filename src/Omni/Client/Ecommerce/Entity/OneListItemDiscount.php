@@ -14,7 +14,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneListItemDiscount extends Entity
 {
-
     /**
      * @property string $Description
      */
@@ -264,7 +263,5 @@ class OneListItemDiscount extends Entity
     {
         return $this->Quantity;
     }
-
-
 }
 

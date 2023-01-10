@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplDiscountSearchResults extends SearchResults implements ReplDiscountSearchResultsInterface
 {
-
-
 }
 

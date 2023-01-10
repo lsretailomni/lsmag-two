@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplDiscount extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_discount', 'repl_discount_id' );
     }
-
-
 }
 

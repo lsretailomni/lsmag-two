@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ActivityAllowancesGetResponse as ActivityAll
 
 class ActivityAllowancesGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ACTIVITY_ALLOWANCES_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ActivityAllowancesGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

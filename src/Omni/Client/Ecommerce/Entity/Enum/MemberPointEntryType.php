@@ -21,7 +21,6 @@ use MyCLabs\Enum\Enum;
  */
 class MemberPointEntryType extends Enum
 {
-
     public const SALES = 'Sales';
 
     public const REDEMPTION = 'Redemption';
@@ -35,7 +34,5 @@ class MemberPointEntryType extends Enum
     public const TRANSFER_FROM = 'TransferFrom';
 
     public const TRANSFER_TO = 'TransferTo';
-
-
 }
 

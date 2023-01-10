@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfShippingAgentService implements IteratorAggregate
 {
-
     /**
      * @property ShippingAgentService[] $ShippingAgentService
      */
@@ -46,7 +45,5 @@ class ArrayOfShippingAgentService implements IteratorAggregate
     {
         return $this->ShippingAgentService;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class OneList extends Entity
 {
-
     /**
      * @property ArrayOfOneListLink $CardLinks
      */
@@ -38,6 +37,11 @@ class OneList extends Entity
      * @property string $CreateDate
      */
     protected $CreateDate = null;
+
+    /**
+     * @property string $Currency
+     */
+    protected $Currency = null;
 
     /**
      * @property string $Description
@@ -197,6 +201,24 @@ class OneList extends Entity
     public function getCreateDate()
     {
         return $this->CreateDate;
+    }
+
+    /**
+     * @param string $Currency
+     * @return $this
+     */
+    public function setCurrency($Currency)
+    {
+        $this->Currency = $Currency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->Currency;
     }
 
     /**
@@ -460,7 +482,5 @@ class OneList extends Entity
     {
         return $this->TotalTaxAmount;
     }
-
-
 }
 

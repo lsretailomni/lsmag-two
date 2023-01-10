@@ -24,7 +24,6 @@ use Ls\Replication\Model\LoyItemSearchResultsFactory;
 
 class LoyItemRepository implements LoyItemRepositoryInterface
 {
-
     /**
      * @property LoyItemFactory $object_factory
      */
@@ -126,7 +125,5 @@ class LoyItemRepository implements LoyItemRepositoryInterface
     {
         return $this->delete( $this->getById( $id ) );
     }
-
-
 }
 

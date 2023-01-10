@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ActivityRequest
 {
-
     /**
      * @property string $ActivityTime
      */
@@ -447,7 +446,5 @@ class ActivityRequest
     {
         return $this->UnitPrice;
     }
-
-
 }
 

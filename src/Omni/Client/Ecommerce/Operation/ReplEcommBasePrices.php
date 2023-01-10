@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ReplEcommBasePricesResponse as ReplEcommBase
 
 class ReplEcommBasePrices extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'REPL_ECOMM_BASE_PRICES';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ReplEcommBasePrices extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

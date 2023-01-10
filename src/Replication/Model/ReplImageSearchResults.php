@@ -13,7 +13,5 @@ use Magento\Framework\Api\SearchResults;
 
 class ReplImageSearchResults extends SearchResults implements ReplImageSearchResultsInterface
 {
-
-
 }
 

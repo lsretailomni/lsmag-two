@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ScanPayGoProfileGetResponse implements ResponseInterface
 {
-
     /**
      * @property ScanPayGoProfile $ScanPayGoProfileGetResult
      */
@@ -43,7 +42,5 @@ class ScanPayGoProfileGetResponse implements ResponseInterface
     {
         return $this->ScanPayGoProfileGetResult;
     }
-
-
 }
 

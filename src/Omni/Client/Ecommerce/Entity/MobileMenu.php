@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class MobileMenu extends Entity
 {
-
     /**
      * @property ArrayOfDealModifierGroup $DealModifierGroups
      */
@@ -217,7 +216,5 @@ class MobileMenu extends Entity
     {
         return $this->Version;
     }
-
-
 }
 

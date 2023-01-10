@@ -14,7 +14,6 @@ use Ls\Omni\Client\RequestInterface;
 
 class ActivityAttributeSet implements RequestInterface
 {
-
     /**
      * @property AttributeType $type
      */
@@ -116,7 +115,5 @@ class ActivityAttributeSet implements RequestInterface
     {
         return $this->attributeValue;
     }
-
-
 }
 

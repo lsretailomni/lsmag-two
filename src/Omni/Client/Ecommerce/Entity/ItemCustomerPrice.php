@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ItemCustomerPrice extends Entity
 {
-
     /**
      * @property float $DiscountPercent
      */
@@ -125,7 +124,5 @@ class ItemCustomerPrice extends Entity
     {
         return $this->VariantId;
     }
-
-
 }
 

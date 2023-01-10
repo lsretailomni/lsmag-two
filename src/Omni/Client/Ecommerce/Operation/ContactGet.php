@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\ContactGetResponse as ContactGetResponse;
 
 class ContactGet extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'CONTACT_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class ContactGet extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

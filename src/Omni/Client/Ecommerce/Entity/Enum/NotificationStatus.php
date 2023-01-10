@@ -17,13 +17,10 @@ use MyCLabs\Enum\Enum;
  */
 class NotificationStatus extends Enum
 {
-
     public const TYPE_NEW = 'New';
 
     public const READ = 'Read';
 
     public const CLOSED = 'Closed';
-
-
 }
 

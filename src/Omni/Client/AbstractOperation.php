@@ -220,8 +220,8 @@ abstract class AbstractOperation implements OperationInterface
             $dom,
             ['password', 'Password', 'newPassword', 'oldPassword', 'PasswordResetResult', 'token', 'SecurityToken']
         );
-
-        return "\n" . $dom->saveXML();
+        //@codingStandardsIgnoreLine
+        return "\n" . html_entity_decode($dom->saveXML());
     }
 
     /**

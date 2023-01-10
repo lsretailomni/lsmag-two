@@ -17,13 +17,10 @@ use MyCLabs\Enum\Enum;
  */
 class ItemModifierType extends Enum
 {
-
     public const ITEM = 'Item';
 
     public const TIME = 'Time';
 
     public const TEXT = 'Text';
-
-
 }
 

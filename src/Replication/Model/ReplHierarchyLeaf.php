@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplHierarchyLeafInterface;
 
 class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_hierarchy_leaf';
 
     protected $_cacheTag = 'ls_replication_repl_hierarchy_leaf';
@@ -655,7 +654,5 @@ class ReplHierarchyLeaf extends AbstractModel implements ReplHierarchyLeafInterf
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

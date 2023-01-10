@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplLoyVendorItemMappingResponse
 {
-
     /**
      * @property ArrayOfReplLoyVendorItemMapping $Mapping
      */
@@ -102,7 +101,5 @@ class ReplLoyVendorItemMappingResponse
     {
         return $this->RecordsRemaining;
     }
-
-
 }
 

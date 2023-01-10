@@ -17,7 +17,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplItemModifier
 {
-
     /**
      * @property ItemModifierPriceHandling $AlwaysCharge
      */
@@ -596,7 +595,5 @@ class ReplItemModifier
     {
         return $this->scope_id;
     }
-
-
 }
 

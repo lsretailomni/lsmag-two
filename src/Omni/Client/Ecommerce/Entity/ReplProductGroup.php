@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplProductGroup
 {
-
     /**
      * @property string $Description
      */
@@ -148,7 +147,5 @@ class ReplProductGroup
     {
         return $this->scope_id;
     }
-
-
 }
 

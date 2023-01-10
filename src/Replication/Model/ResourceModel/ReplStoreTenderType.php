@@ -12,12 +12,9 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
 class ReplStoreTenderType extends AbstractDb
 {
-
     public function _construct()
     {
         $this->_init( 'ls_replication_repl_store_tender_type', 'repl_store_tender_type_id' );
     }
-
-
 }
 

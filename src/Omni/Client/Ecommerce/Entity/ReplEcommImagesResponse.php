@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ReplEcommImagesResponse implements ResponseInterface
 {
-
     /**
      * @property ReplImageResponse $ReplEcommImagesResult
      */
@@ -43,7 +42,5 @@ class ReplEcommImagesResponse implements ResponseInterface
     {
         return $this->ReplEcommImagesResult;
     }
-
-
 }
 

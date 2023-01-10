@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\PasswordResetResponse as PasswordResetRespon
 
 class PasswordReset extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'PASSWORD_RESET';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class PasswordReset extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

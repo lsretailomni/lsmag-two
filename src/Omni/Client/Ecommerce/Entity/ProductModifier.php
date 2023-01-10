@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ProductModifier extends Modifier
 {
-
     /**
      * @property string $ModifierGroupCode
      */
@@ -56,7 +55,5 @@ class ProductModifier extends Modifier
     {
         return $this->ModifierSubCode;
     }
-
-
 }
 

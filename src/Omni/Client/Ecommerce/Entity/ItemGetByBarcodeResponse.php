@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ItemGetByBarcodeResponse implements ResponseInterface
 {
-
     /**
      * @property LoyItem $ItemGetByBarcodeResult
      */
@@ -43,7 +42,5 @@ class ItemGetByBarcodeResponse implements ResponseInterface
     {
         return $this->ItemGetByBarcodeResult;
     }
-
-
 }
 

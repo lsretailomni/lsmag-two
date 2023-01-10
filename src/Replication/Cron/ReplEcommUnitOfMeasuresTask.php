@@ -21,7 +21,6 @@ use Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 
 class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
 {
-
     public const JOB_CODE = 'replication_repl_unit_of_measure';
 
     public const CONFIG_PATH = 'ls_mag/replication/repl_unit_of_measure';
@@ -153,7 +152,5 @@ class ReplEcommUnitOfMeasuresTask extends AbstractReplicationTask
     {
         return $this->data_interface;
     }
-
-
 }
 

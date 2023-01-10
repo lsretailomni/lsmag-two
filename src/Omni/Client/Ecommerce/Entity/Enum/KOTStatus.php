@@ -24,7 +24,6 @@ use MyCLabs\Enum\Enum;
  */
 class KOTStatus extends Enum
 {
-
     public const NOT_SENT = 'NotSent';
 
     public const N_A_S_ERROR = 'NASError';
@@ -44,7 +43,5 @@ class KOTStatus extends Enum
     public const POSTED = 'Posted';
 
     public const VOIDED = 'Voided';
-
-
 }
 

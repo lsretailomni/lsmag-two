@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SchemesGetAllResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfScheme $SchemesGetAllResult
      */
@@ -43,7 +42,5 @@ class SchemesGetAllResponse implements ResponseInterface
     {
         return $this->SchemesGetAllResult;
     }
-
-
 }
 

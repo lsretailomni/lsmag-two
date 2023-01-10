@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ClientToken
 {
-
     /**
      * @property string $AccountNo
      */
@@ -378,7 +377,5 @@ class ClientToken
     {
         return $this->pSPID;
     }
-
-
 }
 

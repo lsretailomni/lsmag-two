@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class SalesEntryGetResponse implements ResponseInterface
 {
-
     /**
      * @property SalesEntry $SalesEntryGetResult
      */
@@ -43,7 +42,5 @@ class SalesEntryGetResponse implements ResponseInterface
     {
         return $this->SalesEntryGetResult;
     }
-
-
 }
 

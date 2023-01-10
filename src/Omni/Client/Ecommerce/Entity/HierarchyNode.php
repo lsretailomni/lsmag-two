@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class HierarchyNode extends HierarchyPoint
 {
-
     /**
      * @property ArrayOfHierarchyLeaf $Leafs
      */
@@ -345,7 +344,5 @@ class HierarchyNode extends HierarchyPoint
     {
         return $this->VariantCode;
     }
-
-
 }
 

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\OneListDeleteByIdResponse as OneListDeleteBy
 
 class OneListDeleteById extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'ONE_LIST_DELETE_BY_ID';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class OneListDeleteById extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfCard implements IteratorAggregate
 {
-
     /**
      * @property Card[] $Card
      */
@@ -46,7 +45,5 @@ class ArrayOfCard implements IteratorAggregate
     {
         return $this->Card;
     }
-
-
 }
 

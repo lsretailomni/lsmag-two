@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\DeviceSaveResponse as DeviceSaveResponse;
 
 class DeviceSave extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'DEVICE_SAVE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class DeviceSave extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 

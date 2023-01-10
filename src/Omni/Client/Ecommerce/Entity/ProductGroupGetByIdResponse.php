@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ProductGroupGetByIdResponse implements ResponseInterface
 {
-
     /**
      * @property ProductGroup $ProductGroupGetByIdResult
      */
@@ -43,7 +42,5 @@ class ProductGroupGetByIdResponse implements ResponseInterface
     {
         return $this->ProductGroupGetByIdResult;
     }
-
-
 }
 

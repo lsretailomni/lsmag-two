@@ -14,7 +14,6 @@ use Ls\Replication\Api\Data\ReplValidationScheduleInterface;
 
 class ReplValidationSchedule extends AbstractModel implements ReplValidationScheduleInterface, IdentityInterface
 {
-
     public const CACHE_TAG = 'ls_replication_repl_validation_schedule';
 
     protected $_cacheTag = 'ls_replication_repl_validation_schedule';
@@ -355,7 +354,5 @@ class ReplValidationSchedule extends AbstractModel implements ReplValidationSche
     {
         return $this->getData( 'processed_at' );
     }
-
-
 }
 

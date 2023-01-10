@@ -10,11 +10,15 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class OrderCheck
 {
-
     /**
      * @property ArrayOfOrderCheckLines $Lines
      */
     protected $Lines = null;
+
+    /**
+     * @property ArrayOfOrderCheckPayment $Payments
+     */
+    protected $Payments = null;
 
     /**
      * @property boolean $DoCheck
@@ -32,6 +36,16 @@ class OrderCheck
     protected $OrderPayed = null;
 
     /**
+     * @property string $Status
+     */
+    protected $Status = null;
+
+    /**
+     * @property string $StatusDate
+     */
+    protected $StatusDate = null;
+
+    /**
      * @param ArrayOfOrderCheckLines $Lines
      * @return $this
      */
@@ -47,6 +61,24 @@ class OrderCheck
     public function getLines()
     {
         return $this->Lines;
+    }
+
+    /**
+     * @param ArrayOfOrderCheckPayment $Payments
+     * @return $this
+     */
+    public function setPayments($Payments)
+    {
+        $this->Payments = $Payments;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOrderCheckPayment
+     */
+    public function getPayments()
+    {
+        return $this->Payments;
     }
 
     /**
@@ -103,6 +135,40 @@ class OrderCheck
         return $this->OrderPayed;
     }
 
+    /**
+     * @param string $Status
+     * @return $this
+     */
+    public function setStatus($Status)
+    {
+        $this->Status = $Status;
+        return $this;
+    }
 
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->Status;
+    }
+
+    /**
+     * @param string $StatusDate
+     * @return $this
+     */
+    public function setStatusDate($StatusDate)
+    {
+        $this->StatusDate = $StatusDate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusDate()
+    {
+        return $this->StatusDate;
+    }
 }
 

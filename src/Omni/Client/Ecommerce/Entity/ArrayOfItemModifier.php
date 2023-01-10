@@ -13,7 +13,6 @@ use ArrayIterator;
 
 class ArrayOfItemModifier implements IteratorAggregate
 {
-
     /**
      * @property ItemModifier[] $ItemModifier
      */
@@ -46,7 +45,5 @@ class ArrayOfItemModifier implements IteratorAggregate
     {
         return $this->ItemModifier;
     }
-
-
 }
 

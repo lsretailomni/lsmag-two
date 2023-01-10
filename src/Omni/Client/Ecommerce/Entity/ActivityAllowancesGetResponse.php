@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityAllowancesGetResponse implements ResponseInterface
 {
-
     /**
      * @property ArrayOfAllowance $ActivityAllowancesGetResult
      */
@@ -43,7 +42,5 @@ class ActivityAllowancesGetResponse implements ResponseInterface
     {
         return $this->ActivityAllowancesGetResult;
     }
-
-
 }
 

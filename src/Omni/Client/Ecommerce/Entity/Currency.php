@@ -13,7 +13,6 @@ use Ls\Omni\Exception\InvalidEnumException;
 
 class Currency extends Entity
 {
-
     /**
      * @property CurrencyRoundingMethod $AmountRoundingMethod
      */
@@ -309,7 +308,5 @@ class Currency extends Entity
     {
         return $this->ThousandSeparator;
     }
-
-
 }
 

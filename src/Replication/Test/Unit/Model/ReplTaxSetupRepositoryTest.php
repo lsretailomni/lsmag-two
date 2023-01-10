@@ -28,7 +28,6 @@ use \Ls\Replication\Model\ReplTaxSetupSearchResultsFactory;
 
 class ReplTaxSetupRepositoryTest extends TestCase
 {
-
     /**
      * @property ReplTaxSetupFactory $objectFactory
      */
@@ -132,7 +131,5 @@ class ReplTaxSetupRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

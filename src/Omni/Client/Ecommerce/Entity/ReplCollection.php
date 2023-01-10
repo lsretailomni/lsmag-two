@@ -10,7 +10,6 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ReplCollection
 {
-
     /**
      * @property boolean $IsDeleted
      */
@@ -171,7 +170,5 @@ class ReplCollection
     {
         return $this->scope_id;
     }
-
-
 }
 

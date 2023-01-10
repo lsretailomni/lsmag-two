@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class PushNotificationSaveResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $PushNotificationSaveResult
      */
@@ -43,7 +42,5 @@ class PushNotificationSaveResponse implements ResponseInterface
     {
         return $this->PushNotificationSaveResult;
     }
-
-
 }
 

@@ -12,7 +12,6 @@ use Ls\Omni\Client\ResponseInterface;
 
 class ActivityCheckAccessResponse implements ResponseInterface
 {
-
     /**
      * @property boolean $ActivityCheckAccessResult
      */
@@ -66,7 +65,5 @@ class ActivityCheckAccessResponse implements ResponseInterface
     {
         return $this->ActivityCheckAccessResult;
     }
-
-
 }
 

@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplProductGroupInterface
 {
-
     /**
      * @param string $Description
      * @return $this
@@ -153,7 +152,5 @@ interface ReplProductGroupInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

@@ -20,7 +20,6 @@ use Ls\Omni\Client\Ecommerce\Entity\PasswordChangeResponse as PasswordChangeResp
 
 class PasswordChange extends AbstractOperation
 {
-
     public const OPERATION_NAME = 'PASSWORD_CHANGE';
 
     public const SERVICE_TYPE = 'ecommerce';
@@ -207,7 +206,5 @@ class PasswordChange extends AbstractOperation
     {
         return $this->error;
     }
-
-
 }
 
