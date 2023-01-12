@@ -58,10 +58,10 @@ class SalesEntries implements ResolverInterface
             }
         }
 
-        if ($type == 'order') {
-            $type = DocumentIdType::ORDER;
-        } else {
+        if ($type == 'Receipt') {
             $type = DocumentIdType::RECEIPT;
+        } else {
+            $type = DocumentIdType::ORDER;
         }
 
         if (!empty($orderId)) {
