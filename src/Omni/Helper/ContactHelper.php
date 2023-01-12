@@ -405,7 +405,9 @@ class ContactHelper extends AbstractHelper
             $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
             try {
                 $response    = $request->execute($search);
-                $contact_pos = $response->getContactSearchResult();
+                if ($response) {
+                    $contact_pos = $response->getContactGetResult();
+                }
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
@@ -522,7 +524,7 @@ class ContactHelper extends AbstractHelper
         if ($countryName && strlen($countryName) == 2) {
             return $countryName;
         }
-        
+
         $countryName       = $countryName ?? '';
         $countryName       = ucwords(strtolower($countryName));
         $countryId         = 'US';
@@ -723,7 +725,7 @@ class ContactHelper extends AbstractHelper
      * @param $customer
      * @return Entity\PasswordResetResponse|ResponseInterface|string|null
      */
-    public function forgotPassword($customer)
+    public function forgotPassword($userName)
     {
         $response = null;
         // @codingStandardsIgnoreStart
@@ -731,7 +733,7 @@ class ContactHelper extends AbstractHelper
         $forgotPassword = new Entity\PasswordReset();
         // @codingStandardsIgnoreEnd
 
-        $forgotPassword->setUserName($customer->getData('lsr_username'));
+        $forgotPassword->setUserName($userName);
         $forgotPassword->setEmail('');
 
         try {
@@ -1337,7 +1339,7 @@ class ContactHelper extends AbstractHelper
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($customer);
+                    $resetCode                = $this->forgotPassword($userName);
                     $customer->setData('lsr_resetcode', $resetCode);
                     $this->resetPassword($customer, $customerPost);
                     $customer->setData('lsr_resetcode', null);
