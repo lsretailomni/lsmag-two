@@ -58,6 +58,12 @@ class SalesEntries implements ResolverInterface
             }
         }
 
+        if ($type == 'order') {
+            $type = DocumentIdType::ORDER;
+        } else {
+            $type = DocumentIdType::RECEIPT;
+        }
+
         if (!empty($orderId)) {
             return $this->dataHelper->getSalesEntryByDocumentId($context, $orderId, $type);
         }
