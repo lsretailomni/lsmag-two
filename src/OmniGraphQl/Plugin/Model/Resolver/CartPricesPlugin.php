@@ -52,9 +52,10 @@ class CartPricesPlugin
         /** @var Quote $quote */
         $quote = $value['model'];
         $quote->setCartFixedRules([]);
-        $cartTotals    = $this->totalsCollector->collectQuoteTotals($quote);
-        $currency      = $quote->getQuoteCurrencyCode();
-        $result['vat'] = $this->getVat($cartTotals, $currency);
+        $cartTotals           = $this->totalsCollector->collectQuoteTotals($quote);
+        $currency             = $quote->getQuoteCurrencyCode();
+        $result['lstax']      = $this->getVat($cartTotals, $currency);
+        $result['lsdiscount'] = $this->getDiscounts($cartTotals, $currency);
 
         return $result;
     }
@@ -72,7 +73,26 @@ class CartPricesPlugin
             return null;
         }
         return [
-            'amount' => ['value' => $total->getTaxAmount(), 'currency' => $currency]
+            'amount' => ['value' => $total->getTaxAmount(), 'currency' => $currency],
+            'label'  => __('Tax')
+        ];
+    }
+
+    /**
+     * Returns information related to discounts from total
+     *
+     * @param Total $total
+     * @param string $currency
+     * @return array|null
+     */
+    private function getDiscounts(Total $total, string $currency)
+    {
+        if ($total->getDiscountAmount() === 0) {
+            return null;
+        }
+        return [
+            'amount' => ['value' => $total->getDiscountAmount(), 'currency' => $currency],
+            'label'  => __('Discount')
         ];
     }
 }
