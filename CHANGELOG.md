@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2023-01-17
+
+### Added
+
+- Added support to replicate variants (Microsoft BC Variants) without a variant framework for eCommerce. [28081](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28081)
+- Added support to replicate images by Image location (URL) from LS Central. [28107](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28107)
+- Added support for the compatibility of php8.1. [22859](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/22859)
+- Added additional features for order history on GraphQl. [29642](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/29642)
+- Added additional support to fetch proactive coupons for shopping cart and checkout on GraphQl. [24307](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/24307)
+
+
+
+
+### Changed
+
+- Added lsvat and lsdiscount in cart query graphql.
+  [31718](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31718)
+
+
+### Bugs/Fixes
+
+- Fixed issue with creating online refunds in Magento through webhooks when order is canceled from LS Central. [29746](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/29746)
+- Fixed issue with item modifiers not replicating for deal types products. [28091](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/28091)
+- Fixed issues with order cancellation response from Commerce Service for both retail and hospitality stores. [29901](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/29901)
+- Fixed issue with data translation attribute values overridden by product updates values. [30062](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/30062)
+- Fixed issue with merging extension_attributes on addressInformation. [31945](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31945)
+
+
+
+
 ## [2.1.0] - 2022-12-05
 
 ### Added
