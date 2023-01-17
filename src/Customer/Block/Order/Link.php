@@ -77,7 +77,12 @@ class Link extends Current
     public function getHref()
     {
         $orderId = $this->getRequest()->getParam('order_id');
-        $type = $this->getRequest()->getParam('type');
+
+        if ($this->getPath() == 'customer/order/view') {
+            $type = DocumentIdType::ORDER;
+        } else {
+            $type = DocumentIdType::RECEIPT;
+        }
 
         return $this->getUrl(
             $this->getPath(),

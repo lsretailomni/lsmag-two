@@ -144,11 +144,8 @@ type HourType {
 }
 
 type CartPrices {
-    vat: CartVat @doc(description: "Tax value.")
-}
-
-type CartVat {
-    amount: Money!
+    lstax: CartTaxItem @doc(description: "Tax value.")
+    lsdiscount: Discount @doc(description: "Discount value.")
 }
 
 type ReturnPolicyOutput {
