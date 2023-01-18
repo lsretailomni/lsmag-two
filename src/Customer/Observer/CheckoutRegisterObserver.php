@@ -107,7 +107,7 @@ class CheckoutRegisterObserver implements ObserverInterface
                         );
                         $customer->setGroupId($customerGroupId);
                     }
-                    $result = $this->contactHelper->forgotPassword($customer);
+                    $result = $this->contactHelper->forgotPassword($customer->getEmail());
                     if ($result) {
                         $customer->setData('lsr_resetcode', $result);
                     }

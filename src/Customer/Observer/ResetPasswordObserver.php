@@ -14,6 +14,7 @@ use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Registry;
 use Magento\Store\Model\StoreManagerInterface;
@@ -83,16 +84,16 @@ class ResetPasswordObserver implements ObserverInterface
         LSR $LSR,
         Registry $registry
     ) {
-        $this->contactHelper     = $contactHelper;
-        $this->messageManager    = $messageManager;
-        $this->logger            = $logger;
-        $this->customerSession   = $customerSession;
-        $this->redirectInterface = $redirectInterface;
-        $this->actionFlag        = $actionFlag;
-        $this->storeManager      = $storeManager;
-        $this->lsr               = $LSR;
-        $this->registry          = $registry;
-        $this->customerFactory   = $customerFactory;
+        $this->contactHelper      = $contactHelper;
+        $this->messageManager     = $messageManager;
+        $this->logger             = $logger;
+        $this->customerSession    = $customerSession;
+        $this->redirectInterface  = $redirectInterface;
+        $this->actionFlag         = $actionFlag;
+        $this->storeManager       = $storeManager;
+        $this->lsr                = $LSR;
+        $this->registry           = $registry;
+        $this->customerFactory    = $customerFactory;
     }
 
     /**
@@ -101,6 +102,7 @@ class ResetPasswordObserver implements ObserverInterface
      * We are only suppose to do a post dispatch event to update the password.
      * @param Observer $observer
      * @return $this
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
@@ -112,6 +114,7 @@ class ResetPasswordObserver implements ObserverInterface
                 /** @var Interceptor $controller_action */
                 $controller_action = $observer->getData('controller_action');
                 $post_param        = $controller_action->getRequest()->getParams();
+                $result            = null;
                 /**
                  * only have to continue if actual event does not throws any error
                  * from Magento/Customer/Controller/Account/ResetPasswordPost.php
@@ -126,6 +129,11 @@ class ResetPasswordObserver implements ObserverInterface
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
                             ->loadByEmail($email);
+                    } else {
+                        $customerId = $observer->getRequest()->getQuery('id');
+                        $customer   =  $this->customerFactory->create()->load($customerId);
+                    }
+                    if ($customer) {
                         $result   = $this->contactHelper->resetPassword($customer, $post_param);
                     }
                     if (!$result) {

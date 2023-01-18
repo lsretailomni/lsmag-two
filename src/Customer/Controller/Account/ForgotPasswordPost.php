@@ -88,7 +88,8 @@ class ForgotPasswordPost extends \Magento\Customer\Controller\Account\ForgotPass
                         $customer = $this->customerFactory->create()
                             ->setWebsiteId($websiteId)
                             ->loadByEmail($search->getEmail());
-                        $result   = $this->contactHelper->forgotPassword($customer);
+                        $userName = ($customer->getData('lsr_username')) ?:$search->getUserName();
+                        $result   = $this->contactHelper->forgotPassword($userName);
                         if ($result) {
                             if (!$customer->getId()) {
                                 // Check if customer is already created in magento or not.
