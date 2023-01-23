@@ -3133,7 +3133,7 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
-            $storeId = $storeId == '' ? $this->storeManager->getStore()->getId() : $storeId;
+            $storeId = ( $storeId == '' || $storeId == 'global') ? $this->storeManager->getStore()->getId() : $storeId;
             $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $storeId);
             $optionId = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
@@ -3147,11 +3147,14 @@ class ReplicationHelper extends AbstractHelper
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
-        if ($storeId != '') {
+        if ($storeId != '' && $storeId != 'global') {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
                 $storeId
             )->create();
+        } elseif ($storeId == 'global') {
+            //add no store filter
+            $searchCriteria = $searchCriteria->create();
         } else {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',

@@ -559,12 +559,12 @@ class ProductCreateTask
                         foreach ($items->getItems() as $item) {
                             try {
                                 $taxClass    = null;
-                                $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                    $item->getNavId(),
-                                    '',
-                                    '',
-                                    $store->getId()
-                                );
+//                                $this->replicationHelper->getProductDataByIdentificationAttributes(
+//                                    $item->getNavId(),
+//                                    '',
+//                                    '',
+//                                    $store->getId()
+//                                );
 
                                 $langCode = $this->lsr->getStoreConfig(
                                     LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
@@ -581,7 +581,7 @@ class ProductCreateTask
                                     $item->getNavId(),
                                     '',
                                     '',
-                                    $store->getId()
+                                    'global'
                                 );
 
                                 if (!$nameFlag) {
@@ -600,6 +600,7 @@ class ProductCreateTask
                                         $item->getTaxItemGroupId()
                                     );
                                 }
+                                $productData->setStoreId($store->getId());
                                 $websitesProduct = $productData->getWebsiteIds();
                                 /** Check if item exist in the website and assign it if it doesn't exist*/
                                 if (!in_array($store->getWebsiteId(), $websitesProduct, true)) {
