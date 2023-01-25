@@ -3153,7 +3153,7 @@ class ReplicationHelper extends AbstractHelper
                 $storeId
             )->create();
         } elseif ($storeId == 'global') {
-            //add no store filter
+            //add no store filter to fetch item id present in any store view
             $searchCriteria = $searchCriteria->create();
         } else {
             $searchCriteria = $searchCriteria->addFilter(

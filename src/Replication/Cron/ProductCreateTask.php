@@ -559,13 +559,6 @@ class ProductCreateTask
                         foreach ($items->getItems() as $item) {
                             try {
                                 $taxClass    = null;
-//                                $this->replicationHelper->getProductDataByIdentificationAttributes(
-//                                    $item->getNavId(),
-//                                    '',
-//                                    '',
-//                                    $store->getId()
-//                                );
-
                                 $langCode = $this->lsr->getStoreConfig(
                                     LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
                                     $store->getId()
