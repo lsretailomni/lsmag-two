@@ -92,6 +92,9 @@ use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
  */
 class ReplicationHelper extends AbstractHelper
 {
+    public const VARIANT_ID_TABLE_ALIAS = 'variantId_table';
+    public const ITEM_ID_TABLE_ALIAS = 'itemId_table';
+
     /**
      * @var array
      */
@@ -1388,6 +1391,25 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Apply product website join
+     * Must have applied itemIdTable join before using this
+     * @param $collection
+     * @param $websiteId
+     * @return void
+     */
+    public function applyProductWebsiteJoin(&$collection, $websiteId)
+    {
+        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+
+        $collection->getSelect()->joinInner(
+            ['cpw' => 'catalog_product_website'],
+            "cpw.product_id = $itemIdTableAlias.entity_id" .
+            " AND cpw.website_id = $websiteId",
+            []
+        );
+    }
+
+    /**
      * Set collection joins for inventory
      *
      * @param mixed $collection
@@ -1437,12 +1459,14 @@ class ReplicationHelper extends AbstractHelper
         $mainTableVariantIdColumn,
         $groupColumns = []
     ) {
+        $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
+
         $this->applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn);
         $this->applyVariantdJoin($collection, $mainTableAlias, $mainTableVariantIdColumn);
         /**
          * @codingStandardsIgnoreStart
          */
-        $collection->getSelect()->where("IF (main_table.$mainTableVariantIdColumn IS NOT NULL AND (variantId_table.value IS NULL OR variantId_table.value = ''),0,1)");
+        $collection->getSelect()->where("IF (main_table.$mainTableVariantIdColumn IS NOT NULL AND ($variantIdTableAlias.value IS NULL OR $variantIdTableAlias.value = ''),0,1)");
         /**
          * @codingStandardsIgnoreEnd
          */
@@ -1463,15 +1487,16 @@ class ReplicationHelper extends AbstractHelper
      */
     public function applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn, $groupColumns = [])
     {
+        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
         $itemAttributeId = $this->eavConfig->getAttribute(
             'catalog_product',
             LSR::LS_ITEM_ID_ATTRIBUTE_CODE
         )->getId();
 
         $collection->getSelect()->joinInner(
-            ['itemId_table' => 'catalog_product_entity_varchar'],
-            "$mainTableAlias.$mainTableItemIdColumn = itemId_table.value" .
-            " AND itemId_table.attribute_id = $itemAttributeId",
+            [self::ITEM_ID_TABLE_ALIAS => 'catalog_product_entity_varchar'],
+            "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
             []
         );
 
@@ -1491,16 +1516,18 @@ class ReplicationHelper extends AbstractHelper
      */
     public function applyVariantdJoin($collection, $mainTableAlias, $mainTableVariantIdColumn)
     {
+        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
         $variantAttributeId = $this->eavConfig->getAttribute(
             'catalog_product',
             LSR::LS_VARIANT_ID_ATTRIBUTE_CODE
         )->getId();
 
         $collection->getSelect()->joinLeft(
-            ['variantId_table' => 'catalog_product_entity_varchar'],
-            "$mainTableAlias.$mainTableVariantIdColumn = variantId_table.value" .
-            " AND itemId_table.entity_id = variantId_table.entity_id".
-            " AND variantId_table.attribute_id = $variantAttributeId",
+            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
+            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
             []
         );
     }
@@ -1571,6 +1598,9 @@ class ReplicationHelper extends AbstractHelper
      */
     public function setCollectionPropertiesPlusJoinsForImages(&$collection, SearchCriteriaInterface $criteria, $type)
     {
+        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
+
         if ($type == 'Item') {
             $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
         } else {
@@ -1589,17 +1619,17 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinInner(
-            ['itemId_table' => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = itemId_table.value" .
-            " AND itemId_table.attribute_id = $itemAttributeId",
+            [$itemIdTableAlias => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
+            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
             []
         );
 
         $collection->getSelect()->joinLeft(
-            ['variantId_table' => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = variantId_table.value" .
-            " AND itemId_table.entity_id = variantId_table.entity_id".
-            " AND variantId_table.attribute_id = $variantAttributeId",
+            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
+            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
             []
         );
 
@@ -1612,7 +1642,7 @@ class ReplicationHelper extends AbstractHelper
 
         if ($type == 'Item') {
             //@codingStandardsIgnoreLine
-            $collection->getSelect()->where("IF (main_table.TableName = 'Item Variant' AND variantId_table.value IS NOT NULL,1,0) OR IF (main_table.TableName = 'Item' AND variantId_table.value IS NULL,1,0)");
+            $collection->getSelect()->where("IF (main_table.TableName = 'Item Variant' AND $variantIdTableAlias.value IS NOT NULL,1,0) OR IF (main_table.TableName = 'Item' AND $variantIdTableAlias.value IS NULL,1,0)");
         }
         $collection->getSelect()->group("main_table.repl_image_link_id");
         /** For Xdebug only to check the query $query */
@@ -1634,6 +1664,8 @@ class ReplicationHelper extends AbstractHelper
         &$collection,
         SearchCriteriaInterface $criteria
     ) {
+        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $itemAttributeId = $this->eavConfig->getAttribute(
@@ -1649,21 +1681,21 @@ class ReplicationHelper extends AbstractHelper
          * @codingStandardsIgnoreStart
          */
         $collection->getSelect()->joinInner(
-            ['itemId_table' => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = itemId_table.value" .
-            " AND itemId_table.attribute_id = $itemAttributeId",
+            [$itemIdTableAlias => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
+            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
             []
         );
 
         $collection->getSelect()->joinLeft(
-            ['variantId_table' => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = variantId_table.value" .
-            " AND itemId_table.entity_id = variantId_table.entity_id".
-            " AND variantId_table.attribute_id = $variantAttributeId",
+            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
+            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
             []
         );
 
-        $collection->getSelect()->where("IF (SUBSTRING_INDEX (main_table.Key, ';', 1) = 'Variant' AND variantId_table.value IS NOT NULL,1,0) OR IF (SUBSTRING_INDEX (main_table.Key, ';', 1)  = 'Item' AND variantId_table.value IS NULL,1,0)");
+        $collection->getSelect()->where("IF (SUBSTRING_INDEX (main_table.Key, ';', 1) = 'Variant' AND $variantIdTableAlias.value IS NOT NULL,1,0) OR IF (SUBSTRING_INDEX (main_table.Key, ';', 1)  = 'Item' AND $variantIdTableAlias.value IS NULL,1,0)");
         /**
          * @codingStandardsIgnoreEnd
          */
@@ -3133,8 +3165,8 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
-            $storeId = ( $storeId == '' || $storeId == 'global') ? $this->storeManager->getStore()->getId() : $storeId;
-            $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $storeId);
+            $scopeId = ( $storeId == '' || $storeId == 'global') ? $this->storeManager->getStore()->getId() : $storeId;
+            $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $scopeId);
             $optionId = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
                 $uomDescription
