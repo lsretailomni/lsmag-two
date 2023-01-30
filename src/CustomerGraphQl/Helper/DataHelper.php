@@ -195,13 +195,15 @@ class DataHelper
      */
     public function getSaleEntry(SalesEntry $salesEntry, $magOrder = null): array
     {
-        $externalId = '';
+        $externalId        = '';
+        $orderCurrencyCode = '';
         if (!$magOrder) {
             $magOrder = $this->orderHelper->getOrderByDocumentId($salesEntry);
         }
 
         if (!empty($magOrder)) {
-            $externalId = $magOrder->getIncrementId();
+            $externalId        = $magOrder->getIncrementId();
+            $orderCurrencyCode = $magOrder->getOrderCurrencyCode();
         }
         return [
             'id'                      => $salesEntry->getId(),
@@ -219,7 +221,7 @@ class DataHelper
             'status'                  => $salesEntry->getStatus(),
             'store_id'                => $salesEntry->getStoreId(),
             'store_name'              => $salesEntry->getStoreName(),
-            'store_currency'          => ($salesEntry->getStoreCurrency())?: $magOrder->getOrderCurrencyCode(),
+            'store_currency'          => ($salesEntry->getStoreCurrency()) ?: $orderCurrencyCode,
             'total_amount'            => $salesEntry->getTotalAmount(),
             'total_net_amount'        => $salesEntry->getTotalNetAmount(),
             'total_discount'          => $salesEntry->getTotalDiscount(),
