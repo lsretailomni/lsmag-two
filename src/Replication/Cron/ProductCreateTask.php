@@ -559,12 +559,14 @@ class ProductCreateTask
                         foreach ($items->getItems() as $item) {
                             try {
                                 $taxClass    = null;
-                                $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                     $item->getNavId(),
                                     '',
                                     '',
-                                    $store->getId()
+                                    'global'
                                 );
+
+                                $productData->setStoreId($store->getId());
 
                                 $langCode = $this->lsr->getStoreConfig(
                                     LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
@@ -572,17 +574,11 @@ class ProductCreateTask
                                 );
                                 list(, $nameFlag, $descriptionFlag) =
                                     $this->dataTranslationTask->updateItem(
-                                        $store->getId(),
+                                        $store,
                                         $langCode,
-                                        $item->getNavId()
+                                        $item->getNavId(),
+                                        $productData
                                     );
-
-                                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                    $item->getNavId(),
-                                    '',
-                                    '',
-                                    $store->getId()
-                                );
 
                                 if (!$nameFlag) {
                                     $productData->setName($item->getDescription());
@@ -2028,8 +2024,10 @@ class ProductCreateTask
             $itemId,
             $variantId,
             $uomCode,
-            $storeId
+            'global'
         );
+
+        $productData->setStoreId($this->store->getId());
         $websitesProduct = $productData->getWebsiteIds();
         /** Check if Item exist in the website and assign it if it does not exist*/
         if (!in_array($this->store->getWebsiteId(), $websitesProduct)) {
