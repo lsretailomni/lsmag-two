@@ -290,6 +290,9 @@ class Payment
             ) {
                 continue;
             }
+            if (empty($parentItem)) {
+                $parentItem = $orderItem;
+            }
             $qty          = $this->getQtyToShip($orderItem, $lines);
             $shipmentItem = $this->convertOrder->itemToShipmentItem($parentItem)->setQty($qty);
             $orderShipment->addItem($shipmentItem);
