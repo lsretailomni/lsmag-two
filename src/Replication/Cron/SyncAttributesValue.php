@@ -116,7 +116,7 @@ class SyncAttributesValue extends ProductCreateTask
             'LinkField2',
             ['repl_attribute_value_id']
         );
-
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $this->store->getWebsiteId());
         /** @var ReplAttributeValue $attributeValue */
         foreach ($collection as $attributeValue) {
             try {
@@ -211,6 +211,7 @@ class SyncAttributesValue extends ProductCreateTask
                 'LinkField2',
                 ['repl_attribute_value_id']
             );
+            $this->replicationHelper->applyProductWebsiteJoin($collection, $this->store->getWebsiteId());
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
