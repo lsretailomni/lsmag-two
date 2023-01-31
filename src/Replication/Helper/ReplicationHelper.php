@@ -2374,16 +2374,7 @@ class ReplicationHelper extends AbstractHelper
         foreach ($items->getItems() as $item) {
             $itemId    = $item->getLinkField1();
             $variantId = $item->getLinkField2();
-            if (!empty($variantId)) {
-                $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
-                    ->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId)
-                    ->addFilter('store_id', 0)->create();
-            } else {
-                $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
-                    ->addFilter('store_id', 0)->create();
-            }
-            $productList   = $productRepository->getList($searchCriteria)->getItems();
-            $product       = array_pop($productList);
+            $product   = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 0);
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
@@ -2763,12 +2754,12 @@ class ReplicationHelper extends AbstractHelper
                 $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
                 foreach ($uomCodes[$itemId] as $uomCode) {
                     if ($baseUnitOfMeasure != $uomCode && !empty($variantId)) {
-                        $searchCriteria = $this->searchCriteriaBuilder->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId)
-                            ->addFilter(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $variantId)
-                            ->addFilter('uom', $uomCode)
-                            ->addFilter('store_id', 0)->create();
-                        $productList    = $productRepository->getList($searchCriteria)->getItems();
-                        $product        = array_pop($productList);
+                        $product = $this->getProductDataByIdentificationAttributes(
+                            $itemId,
+                            $variantId,
+                            $uomCode,
+                            0
+                        );
                         $product->setData($formattedCode, $value);
                         $product->getResource()->saveAttribute($product, $formattedCode);
                     }
@@ -3179,12 +3170,12 @@ class ReplicationHelper extends AbstractHelper
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
-        if ($storeId != '' && $storeId != 'global') {
+        if ($storeId !== '' && $storeId !== 'global') {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
                 $storeId
             )->create();
-        } elseif ($storeId == 'global') {
+        } elseif ($storeId === 'global') {
             //add no store filter to fetch item id present in any store view
             $searchCriteria = $searchCriteria->create();
         } else {
