@@ -243,7 +243,7 @@ class DataTranslationTask
                             $langCode,
                             $store->getWebsiteId()
                         );
-                        list($itemsStatus,,)                   = $this->updateItem($store->getId(), $langCode);
+                        list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
                         $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
                         $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
                             $store->getId(),
@@ -568,16 +568,17 @@ class DataTranslationTask
     /**
      * Cater translation of products name and description
      *
-     * @param $storeId
+     * @param $store
      * @param $langCode
-     * @param $sku
+     * @param string $sku
+     * @param null $productData
      * @return array
      * @throws LocalizedException
      */
-    public function updateItem($storeId, $langCode, $sku = '')
+    public function updateItem($store, $langCode, $sku = '', $productData = null)
     {
         $filters = $this->getFiltersGivenValues(
-            $storeId,
+            $store->getId(),
             $langCode,
             LSR::SC_TRANSLATION_ID_ITEM_HTML . ',' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION
         );
@@ -595,6 +596,9 @@ class DataTranslationTask
             null,
             ['repl_data_translation_id']
         );
+        $websiteId = $store->getWebsiteId();
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
+
         if (!empty($sku)) {
             $collection->addFieldToFilter('main_table.Key', $sku);
         }
@@ -603,13 +607,16 @@ class DataTranslationTask
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {
             try {
-                $sku         = $dataTranslation->getKey();
-                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                    $sku,
-                    '',
-                    '',
-                    $storeId
-                );
+                $sku = $dataTranslation->getKey();
+
+                if (!$productData) {
+                    $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $sku,
+                        '',
+                        '',
+                        $store->getId()
+                    );
+                }
 
                 if (isset($productData)) {
                     if ($dataTranslation->getTranslationId() == LSR::SC_TRANSLATION_ID_ITEM_HTML) {
