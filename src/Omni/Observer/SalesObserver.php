@@ -58,7 +58,7 @@ class SalesObserver implements ObserverInterface
             }
 
             if ($addressType == AbstractAddress::TYPE_SHIPPING) {
-                $grandTotal     = $basketData->getTotalAmount() + $total->getShippingAmount()
+                $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
                 $subTotal       = $basketData->getTotalNetAmount() + $basketData->getTotalDiscount();
