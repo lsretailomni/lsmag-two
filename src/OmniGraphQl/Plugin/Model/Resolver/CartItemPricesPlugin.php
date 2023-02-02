@@ -54,6 +54,12 @@ class CartItemPricesPlugin
             $result['price']['value'] = $cartItem->getCustomPrice() ?
                 $cartItem->getCustomPrice() : $cartItem->getPrice();
         }
+        $result['discounts'][] = [
+            'label'  => "",
+            'amount' => [
+                'value' => 0
+            ]
+        ];
         return $result;
     }
 }
