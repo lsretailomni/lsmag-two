@@ -74,15 +74,17 @@ class CartItemPricesPlugin
         }
         $basketData              = $this->basketHelper->getBasketSessionValue();
         $discountDescriptionData = $this->itemHelper->getOrderDiscountLinesForItem($cartItem, $basketData);
-        foreach ($discountDescriptionData as $discountDescription) {
-            $discountDescription = str_replace('<br />', '', $discountDescription);
-            if ($discountDescription != __('Save')) {
-                $result['discounts'][] = [
-                    'label'  => $discountDescription,
-                    'amount' => [
-                        'value' => $cartItem->getDiscountAmount()
-                    ]
-                ];
+        if (!empty($discountDescriptionData)) {
+            foreach ($discountDescriptionData as $discountDescription) {
+                $discountDescription = str_replace('<br />', '', $discountDescription);
+                if ($discountDescription != __('Save')) {
+                    $result['discounts'][] = [
+                        'label'  => $discountDescription,
+                        'amount' => [
+                            'value' => 0
+                        ]
+                    ];
+                }
             }
         }
 
