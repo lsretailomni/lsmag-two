@@ -64,6 +64,8 @@ use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\ProductMetadata;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Exception\InputException;
@@ -94,6 +96,12 @@ class ReplicationHelper extends AbstractHelper
 {
     public const VARIANT_ID_TABLE_ALIAS = 'variantId_table';
     public const ITEM_ID_TABLE_ALIAS = 'itemId_table';
+
+    public const COLUMNS_MAPPING = [
+        'catalog_product_entity_varchar' => [
+            'entity_id' => 'row_id'
+        ]
+    ];
 
     /**
      * @var array
@@ -333,6 +341,11 @@ class ReplicationHelper extends AbstractHelper
     public $productResourceModel;
 
     /**
+     * @var ProductMetadataInterface
+     */
+    private $productMetadata;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -444,7 +457,8 @@ class ReplicationHelper extends AbstractHelper
         StockStatusRepository $stockStatusRepository,
         GetProductIdsBySkus $getProductIdsBySkus,
         AttributeFactory $eavAttributeFactory,
-        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
+        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        ProductMetadataInterface $productMetadata
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -500,6 +514,7 @@ class ReplicationHelper extends AbstractHelper
         $this->getProductIdsBySkus                       = $getProductIdsBySkus;
         $this->eavAttributeFactory                       = $eavAttributeFactory;
         $this->productResourceModel                      = $productResourceModel;
+        $this->productMetadata = $productMetadata;
         parent::__construct(
             $context
         );
@@ -1403,8 +1418,12 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinInner(
             ['cpw' => 'catalog_product_website'],
-            "cpw.product_id = $itemIdTableAlias.entity_id" .
-            " AND cpw.website_id = $websiteId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "cpw.product_id = $itemIdTableAlias.entity_id" .
+                " AND cpw.website_id = $websiteId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
     }
@@ -1476,6 +1495,38 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Replace column names of joining tables based on mapping
+     *
+     * @param $whereClause
+     * @param $tableName
+     * @param $aliasNames
+     * @return array|mixed|string|string[]
+     */
+    public function magentoEditionSpecificJoinWhereClause(
+        $whereClause,
+        $tableName,
+        $aliasNames
+    ) {
+        if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
+        isset(self::COLUMNS_MAPPING[$tableName])
+        ) {
+            $mappingColumns = self::COLUMNS_MAPPING[$tableName];
+
+            foreach($aliasNames as $alias) {
+                foreach ($mappingColumns as $columnName => $newColumnName) {
+                    $whereClause = str_replace(
+                        "$alias.$columnName",
+                        "$alias.$newColumnName",
+                        $whereClause
+                    );
+                }
+            }
+        }
+
+        return $whereClause;
+    }
+
+    /**
      * Apply join for lsr_item_id custom attribute
      *
      * @param mixed $collection
@@ -1492,11 +1543,15 @@ class ReplicationHelper extends AbstractHelper
             'catalog_product',
             LSR::LS_ITEM_ID_ATTRIBUTE_CODE
         )->getId();
-
+        
         $collection->getSelect()->joinInner(
             [self::ITEM_ID_TABLE_ALIAS => 'catalog_product_entity_varchar'],
-            "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
-            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
 
@@ -1525,9 +1580,13 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinLeft(
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
-            "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
-            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias, $variantIdTableAlias]
+            ),
             []
         );
     }
@@ -1620,16 +1679,24 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinInner(
             [$itemIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
-            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
 
         $collection->getSelect()->joinLeft(
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
-            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias, $variantIdTableAlias]
+            ),
             []
         );
 
@@ -1682,16 +1749,24 @@ class ReplicationHelper extends AbstractHelper
          */
         $collection->getSelect()->joinInner(
             [$itemIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
-            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
 
         $collection->getSelect()->joinLeft(
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
-            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias, $variantIdTableAlias]
+            ),
             []
         );
 

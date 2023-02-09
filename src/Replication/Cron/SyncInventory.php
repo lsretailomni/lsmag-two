@@ -61,6 +61,8 @@ class SyncInventory extends ProductCreateTask
                     /** @var ReplInvStatus $replInvStatus */
                     foreach ($collection as $replInvStatus) {
                         try {
+                            $sku = '';
+
                             if (!$replInvStatus->getVariantId()) {
                                 $sku = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                     $replInvStatus->getItemId()
