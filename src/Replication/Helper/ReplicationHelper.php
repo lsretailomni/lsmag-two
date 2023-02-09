@@ -401,6 +401,7 @@ class ReplicationHelper extends AbstractHelper
      * @param GetProductIdsBySkus $getProductIdsBySkus
      * @param AttributeFactory $eavAttributeFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
+     * @param ProductMetadataInterface $productMetadata
      */
     public function __construct(
         Context $context,
@@ -514,7 +515,7 @@ class ReplicationHelper extends AbstractHelper
         $this->getProductIdsBySkus                       = $getProductIdsBySkus;
         $this->eavAttributeFactory                       = $eavAttributeFactory;
         $this->productResourceModel                      = $productResourceModel;
-        $this->productMetadata = $productMetadata;
+        $this->productMetadata                           = $productMetadata;
         parent::__construct(
             $context
         );
@@ -1543,7 +1544,7 @@ class ReplicationHelper extends AbstractHelper
             'catalog_product',
             LSR::LS_ITEM_ID_ATTRIBUTE_CODE
         )->getId();
-        
+
         $collection->getSelect()->joinInner(
             [self::ITEM_ID_TABLE_ALIAS => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
