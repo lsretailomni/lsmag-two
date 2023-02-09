@@ -343,7 +343,7 @@ class ReplicationHelper extends AbstractHelper
     /**
      * @var ProductMetadataInterface
      */
-    private $productMetadata;
+    public $productMetadata;
 
     /**
      * @param Context $context
