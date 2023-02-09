@@ -1584,7 +1584,8 @@ class ReplicationHelper extends AbstractHelper
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
@@ -1694,7 +1695,8 @@ class ReplicationHelper extends AbstractHelper
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
@@ -1764,7 +1766,8 @@ class ReplicationHelper extends AbstractHelper
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),

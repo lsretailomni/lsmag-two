@@ -54,5 +54,10 @@
         "column": {
             "parameters": true
         }
+    },
+    "catalog_product_entity_varchar": {
+        "index": {
+            "CATALOG_PRODUCT_ENTITY_VARCHAR_VALUE": true
+        }
     }
 }
