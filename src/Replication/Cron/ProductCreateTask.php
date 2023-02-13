@@ -53,7 +53,6 @@ use Magento\CatalogImportExport\Model\Import\Product\MediaGalleryProcessor as Me
 use Magento\Catalog\Model\ProductRepository\MediaGalleryProcessor;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute\Interceptor;
-use Magento\CatalogInventory\Api\StockRegistryInterface;
 use Magento\ConfigurableProduct\Api\Data\OptionInterface;
 use Magento\ConfigurableProduct\Helper\Product\Options\Factory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
@@ -171,9 +170,6 @@ class ProductCreateTask
 
     /** @var \Magento\Catalog\Model\ResourceModel\Product */
     public $productResourceModel;
-
-    /** @var StockRegistryInterface */
-    public $stockRegistry;
 
     /** @var CategoryLinkRepositoryInterface */
     public $categoryLinkRepositoryInterface;
@@ -325,7 +321,6 @@ class ProductCreateTask
      * @param ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory
      * @param ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
-     * @param StockRegistryInterface $stockRegistry
      * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface
      * @param CollectionFactory $collectionFactory
@@ -380,7 +375,6 @@ class ProductCreateTask
         ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
         ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        StockRegistryInterface $stockRegistry,
         CategoryRepositoryInterface $categoryRepository,
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         CollectionFactory $collectionFactory,
@@ -433,7 +427,6 @@ class ProductCreateTask
         $this->replHierarchyLeafCollectionFactory        = $replHierarchyLeafCollectionFactory;
         $this->replAttributeValueCollectionFactory       = $replAttributeValueCollectionFactory;
         $this->productResourceModel                      = $productResourceModel;
-        $this->stockRegistry                             = $stockRegistry;
         $this->categoryLinkRepositoryInterface           = $categoryLinkRepositoryInterface;
         $this->collectionFactory                         = $collectionFactory;
         $this->categoryRepository                        = $categoryRepository;
