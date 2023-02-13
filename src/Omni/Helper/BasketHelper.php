@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Pricing\Price\FinalPrice;
@@ -279,21 +280,30 @@ class BasketHelper extends AbstractHelper
         $itemsArray = [];
 
         foreach ($quoteItems as $quoteItem) {
+            $children = [];
 
-            list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                $quoteItem->getSku()
-            );
+            if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $quoteItem->getChildren();
+            } else {
+                $children[] = $quoteItem;
+            }
 
-            // @codingStandardsIgnoreLine
-            $list_item = (new Entity\OneListItem())
-                ->setQuantity($quoteItem->getData('qty'))
-                ->setItemId($itemId)
-                ->setId('')
-                ->setBarcodeId($barCode)
-                ->setVariantId($variantId)
-                ->setUnitOfMeasureId($uom);
+            foreach ($children as $child) {
+                list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                    $child->getSku()
+                );
 
-            $itemsArray[] = $list_item;
+                // @codingStandardsIgnoreLine
+                $list_item = (new Entity\OneListItem())
+                    ->setQuantity($quoteItem->getData('qty'))
+                    ->setItemId($itemId)
+                    ->setId('')
+                    ->setBarcodeId($barCode)
+                    ->setVariantId($variantId)
+                    ->setUnitOfMeasureId($uom);
+
+                $itemsArray[] = $list_item;
+            }
         }
         $items->setOneListItem($itemsArray);
 
