@@ -24,6 +24,7 @@ use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ReplInvStatus;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -2834,13 +2835,11 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Getting inventory information for the item/variant
-     *
      * @param $itemId
      * @param $storeId
      * @param $scopeId
      * @param $variantId
-     * @return ReplInvStatusRepository
+     * @return false|ReplInvStatusRepository
      */
     public function getInventoryStatus($itemId, $storeId, $scopeId, $variantId = null)
     {
@@ -2858,6 +2857,17 @@ class ReplicationHelper extends AbstractHelper
         $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
         /** @var ReplInvStatusRepository $inventoryStatus */
         $inventoryStatus = $this->replInvStatusRepository->getList($searchCriteria)->getItems();
+
+        if (!empty($inventoryStatus)) {
+            try {
+                $inventoryStatus = reset($inventoryStatus);
+            } catch (Exception $e) {
+                $this->_logger->debug($e->getMessage());
+                $inventoryStatus->setData('is_failed', 1);
+            }
+            $inventoryStatus->addData(['is_updated' => 0, 'processed_at' => $this->getDateTime(), 'processed' => 1]);
+            $this->replInvStatusRepository->save($inventoryStatus);
+        }
 
         return $inventoryStatus;
     }
