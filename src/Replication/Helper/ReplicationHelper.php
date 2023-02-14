@@ -2931,7 +2931,7 @@ class ReplicationHelper extends AbstractHelper
     public function getSourceItemGivenData($sku, $inventory, $status)
     {
         $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();
-        $sourceCode        = $this->getSourceCodeFromWebstiteCode($defaultSourceCode);
+        $sourceCode        = $this->getSourceCodeFromWebsiteCode($defaultSourceCode);
         if ($sourceCode != $defaultSourceCode) {
             $this->deleteSourceItemsBySku($defaultSourceCode, $sku);
         }
@@ -2973,7 +2973,7 @@ class ReplicationHelper extends AbstractHelper
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getSourceCodeFromWebstiteCode($sourceCode)
+    public function getSourceCodeFromWebsiteCode($sourceCode)
     {
         $websiteId      = $this->storeManager->getStore()->getWebsiteId();
         $websiteCode    = $this->storeManager->getWebsite($websiteId)->getCode();
