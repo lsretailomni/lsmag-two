@@ -285,7 +285,7 @@ class OrderHelper extends AbstractHelper
     {
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
-        $shippingAmount     = $order->getShippingAmount();
+        $shippingAmount     = $order->getShippingInclTax();
         if ($shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;

@@ -34,6 +34,7 @@ class SetShippingMethodsOnCartPlugin
      * @var BasketHelper
      */
     public $basketHelper;
+
     /**
      * @var Data
      */

@@ -58,28 +58,40 @@ class SyncInventory extends ProductCreateTask
                     );
                     $collection                = $this->replInvStatusCollectionFactory->create();
                     $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
+                    $sku = '';
                     /** @var ReplInvStatus $replInvStatus */
                     foreach ($collection as $replInvStatus) {
                         try {
-                            if (!$replInvStatus->getVariantId()) {
-                                $sku = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                    $replInvStatus->getItemId()
-                                )->getSku();
-                                $this->replicationHelper->updateInventory($sku, $replInvStatus);
-                            }
-
-                            $uomCodes = $this->getUomCodesProcessed($replInvStatus->getItemId());
+                            $uomCodeStatus = false;
+                            $uomCodes      = $this->getUomCodesProcessed($replInvStatus->getItemId());
                             if (!empty($uomCodes)) {
                                 if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
-                                    foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
-                                        $sku = $this->replicationHelper->
-                                        getProductDataByIdentificationAttributes(
-                                            $replInvStatus->getItemId(),
-                                            $replInvStatus->getVariantId(),
-                                            $uomCode
-                                        )->getSku();
-                                        $this->replicationHelper->updateInventory($sku, $replInvStatus);
-                                    }
+                                    $uomCodeStatus = true;
+
+                                }
+                            }
+                            if (!$uomCodeStatus) {
+                                $sku = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                    $replInvStatus->getItemId(),
+                                    $replInvStatus->getVariantId()
+                                )->getSku();
+                                $this->replicationHelper->updateInventory(
+                                    $sku,
+                                    $replInvStatus
+                                );
+                            }
+                            if ($uomCodeStatus) {
+                                foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                                    $sku = $this->replicationHelper->
+                                    getProductDataByIdentificationAttributes(
+                                        $replInvStatus->getItemId(),
+                                        $replInvStatus->getVariantId(),
+                                        $uomCode
+                                    )->getSku();
+                                    $this->replicationHelper->updateInventory(
+                                        $sku,
+                                        $replInvStatus
+                                    );
                                 }
                             }
                         } catch (Exception $e) {

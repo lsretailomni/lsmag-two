@@ -289,11 +289,11 @@ class DataHelper
      * @param $magOrder
      * @return array
      */
-    public function getItems(ArrayOfSalesEntryLine $items, $magOrder): array
+    public function getItems(ArrayOfSalesEntryLine $items, $magOrder = null): array
     {
         $itemsArray = [];
         foreach ($items->getSalesEntryLine() as $item) {
-            $itemsArray = [
+            $itemsArray[] = [
                 'amount'                 => $item->getAmount(),
                 'click_and_collect_line' => $item->getClickAndCollectLine(),
                 'discount_amount'        => $item->getDiscountAmount(),

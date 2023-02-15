@@ -3,6 +3,8 @@
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\OmniGraphQl\Helper\DataHelper;
+use \Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Quote\Item;
@@ -19,12 +21,28 @@ class CartItemPricesPlugin
     private $dataHelper;
 
     /**
+     * @var BasketHelper
+     */
+    private $basketHelper;
+
+    /**
+     * @var ItemHelper
+     */
+    private $itemHelper;
+
+    /**
      * @param DataHelper $dataHelper
+     * @param BasketHelper $basketHelper
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        BasketHelper $basketHelper,
+        ItemHelper $itemHelper
     ) {
-        $this->dataHelper = $dataHelper;
+        $this->dataHelper   = $dataHelper;
+        $this->basketHelper = $basketHelper;
+        $this->itemHelper   = $itemHelper;
     }
 
     /**
@@ -54,6 +72,22 @@ class CartItemPricesPlugin
             $result['price']['value'] = $cartItem->getCustomPrice() ?
                 $cartItem->getCustomPrice() : $cartItem->getPrice();
         }
+        $basketData              = $this->basketHelper->getBasketSessionValue();
+        $discountDescriptionData = $this->itemHelper->getOrderDiscountLinesForItem($cartItem, $basketData);
+        if (!empty($discountDescriptionData)) {
+            foreach ($discountDescriptionData as $discountDescription) {
+                $discountDescription = str_replace('<br />', '', $discountDescription);
+                if ($discountDescription != __('Save')) {
+                    $result['discounts'][] = [
+                        'label'  => $discountDescription,
+                        'amount' => [
+                            'value' => 0
+                        ]
+                    ];
+                }
+            }
+        }
+
         return $result;
     }
 }
