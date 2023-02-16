@@ -62,6 +62,15 @@ class SyncInventory extends ProductCreateTask
                     /** @var ReplInvStatus $replInvStatus */
                     foreach ($collection as $replInvStatus) {
                         try {
+                            $sku = '';
+
+                            if (!$replInvStatus->getVariantId()) {
+                                $sku = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                    $replInvStatus->getItemId()
+                                )->getSku();
+                                $this->replicationHelper->updateInventory($sku, $replInvStatus);
+                            }
+
                             $uomCodeStatus = false;
                             $uomCodes      = $this->getUomCodesProcessed($replInvStatus->getItemId());
                             if (!empty($uomCodes)) {
