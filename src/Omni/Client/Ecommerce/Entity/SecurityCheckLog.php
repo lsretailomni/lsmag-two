@@ -10,29 +10,29 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class ScanPayGoOrderCheck implements RequestInterface
+class SecurityCheckLog implements RequestInterface
 {
     /**
-     * @property string $documentId
+     * @property string $orderNo
      */
-    protected $documentId = null;
+    protected $orderNo = null;
 
     /**
-     * @param string $documentId
+     * @param string $orderNo
      * @return $this
      */
-    public function setDocumentId($documentId)
+    public function setOrderNo($orderNo)
     {
-        $this->documentId = $documentId;
+        $this->orderNo = $orderNo;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getDocumentId()
+    public function getOrderNo()
     {
-        return $this->documentId;
+        return $this->orderNo;
     }
 }
 
