@@ -415,16 +415,24 @@ class LoyaltyHelper extends AbstractHelperOmni
             $coupons            = $itemIdentifiers = [];
             /** @var Item $item */
             foreach ($itemsInCart as $item) {
-                list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
-                    $item->getSku(),
-                    $item->getProductId()
-                );
-                $itemIdentifiers[] = [
-                    'itemId' => $itemId,
-                    'variantId' => $variantId,
-                    'uom' => $uom,
-                    'baseUom' => $baseUom
-                ];
+                if ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
+                    $children = $item->getChildren();
+                } else {
+                    $children[] = $item;
+                }
+
+                foreach ($children as $child) {
+                    list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
+                        $child->getSku(),
+                        $child->getProductId()
+                    );
+                    $itemIdentifiers[] = [
+                        'itemId' => $itemId,
+                        'variantId' => $variantId,
+                        'uom' => $uom,
+                        'baseUom' => $baseUom
+                    ];
+                }
             }
 
             if ($publishedOffersObj) {

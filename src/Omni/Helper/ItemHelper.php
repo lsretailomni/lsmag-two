@@ -13,6 +13,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ReplBarcodeRepository;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session\Proxy;
@@ -244,56 +245,106 @@ class ItemHelper extends AbstractHelper
      */
     public function getOrderDiscountLinesForItem($item, $orderData, $type = 1)
     {
-        $check             = false;
-        $baseUnitOfMeasure = "";
-        $discountInfo      = $orderLines = $discountsLines = [];
         $discountText      = __("Save");
-
+        $discountInfo = [];
         try {
             if ($type == 2) {
                 $itemId      = $item->getItemId();
                 $variantId   = $item->getVariantId();
                 $uom         = $item->getUomId();
+                $baseUnitOfMeasure = "";
                 $customPrice = $item->getDiscountAmount();
-            } else {
-                $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-                list($itemId, $variantId, $uom) = $this->getComparisonValues(
-                    $item->getSku()
+                $this->getDiscountInfo(
+                    $orderData,
+                    $customPrice,
+                    $itemId,
+                    $variantId,
+                    $uom,
+                    $baseUnitOfMeasure,
+                    $discountInfo
                 );
+            } else {
                 $customPrice = $item->getCustomPrice();
-            }
+                $children = [];
 
-            if ($orderData instanceof SalesEntry) {
-                $orderLines     = $orderData->getLines();
-                $discountsLines = $orderData->getDiscountLines();
-            } elseif ($orderData instanceof Order) {
-                $orderLines     = $orderData->getOrderLines();
-                $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
-            }
+                if ($item->getProductType() == Type::TYPE_BUNDLE) {
+                    $children = $item->getChildren();
+                } else {
+                    $children[] = $item;
+                }
 
-            foreach ($orderLines as $line) {
-                if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    if ($customPrice > 0 && $customPrice != null) {
-                        foreach ($discountsLines as $orderDiscountLine) {
-                            if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                                if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
-                                    $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
-                                }
-                            }
-                            $check = true;
-                        }
-                    }
+                foreach ($children as $child) {
+                    $baseUnitOfMeasure = $child->getProduct()->getData('uom');
+                    list($itemId, $variantId, $uom) = $this->getComparisonValues(
+                        $child->getSku()
+                    );
+                    $this->getDiscountInfo(
+                        $orderData,
+                        $customPrice,
+                        $itemId,
+                        $variantId,
+                        $uom,
+                        $baseUnitOfMeasure,
+                        $discountInfo
+                    );
                 }
             }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        if ($check == true) {
+        if (!empty($discountInfo)) {
             return [implode($discountInfo), $discountText];
         } else {
             return null;
         }
+    }
+
+    /**
+     * Get discount related info in the basket coming from Central
+     *
+     * @param $orderData
+     * @param $customPrice
+     * @param $itemId
+     * @param $variantId
+     * @param $uom
+     * @param $baseUnitOfMeasure
+     * @param $discountInfo
+     * @return mixed
+     */
+    public function getDiscountInfo(
+        $orderData,
+        $customPrice,
+        $itemId,
+        $variantId,
+        $uom,
+        $baseUnitOfMeasure,
+        &$discountInfo
+    ) {
+        $orderLines = $discountsLines = [];
+        if ($orderData instanceof SalesEntry) {
+            $orderLines     = $orderData->getLines();
+            $discountsLines = $orderData->getDiscountLines();
+        } elseif ($orderData instanceof Order) {
+            $orderLines     = $orderData->getOrderLines();
+            $discountsLines = $orderData->getOrderDiscountLines()->getOrderDiscountLine();
+        }
+
+        foreach ($orderLines as $line) {
+            if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                if ($customPrice > 0 && $customPrice != null) {
+                    foreach ($discountsLines as $orderDiscountLine) {
+                        if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
+                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                                $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $discountInfo;
     }
 
     /**
@@ -335,22 +386,54 @@ class ItemHelper extends AbstractHelper
         }
 
         foreach ($quoteItemList as $quoteItem) {
-            $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
-            list($itemId, $variantId, $uom) = $this->getComparisonValues(
-                $quoteItem->getSku()
-            );
+            $bundleProduct = $customPrice = $discountAmount = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
+            $children = [];
+            $orderLines = $basketData->getOrderLines()->getOrderLine();
 
-            foreach ($orderLines as $index => $line) {
-                if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $unitPrice = $line->getAmount() / $line->getQuantity();
-                    $this->setRelatedAmountsAgainstGivenQuoteItem($line, $quoteItem, $unitPrice, $type);
-                    unset($orderLines[$index]);
-                    break;
-                }
+            if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $quoteItem->getChildren();
+                $bundleProduct = 1;
+            } else {
+                $children[] = $quoteItem;
             }
-            $quoteItem->getProduct()->setIsSuperMode(true);
-            // @codingStandardsIgnoreLine
-            $this->itemResourceModel->save($quoteItem);
+
+            foreach ($children as $child) {
+                $baseUnitOfMeasure = $child->getProduct()->getData('uom');
+                list($itemId, $variantId, $uom) = $this->getComparisonValues(
+                    $child->getSku()
+                );
+
+                foreach ($orderLines as $index => $line) {
+                    if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                        $unitPrice = $line->getAmount() / $line->getQuantity();
+                        $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
+                        unset($orderLines[$index]);
+                        break;
+                    }
+                }
+                $child->getProduct()->setIsSuperMode(true);
+                // @codingStandardsIgnoreLine
+                $this->itemResourceModel->save($child);
+
+                $customPrice += $child->getCustomPrice();
+                $priceInclTax += $child->getPriceInclTax();
+                $taxAmount += $child->getTaxAmount();
+                $rowTotal += $child->getRowTotal();
+                $rowTotalIncTax += $child->getRowTotalInclTax();
+                $discountAmount += $child->getDiscountAmount();
+            }
+
+            if ($bundleProduct == 1) {
+                $quoteItem->setCustomPrice($customPrice);
+                $quoteItem->setDiscountAmount($discountAmount);
+                $quoteItem->setRowTotal($rowTotal);
+                $quoteItem->setRowTotalInclTax($rowTotalIncTax);
+                $quoteItem->setTaxAmount($taxAmount);
+                $quoteItem->setPriceInclTax($priceInclTax);
+                $quoteItem->getProduct()->setIsSuperMode(true);
+                // @codingStandardsIgnoreLine
+                $this->itemResourceModel->save($quoteItem);
+            }
         }
     }
 
@@ -400,28 +483,52 @@ class ItemHelper extends AbstractHelper
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
-        if ($line->getDiscountAmount() > 0) {
-            $quoteItem->setCustomPrice($unitPrice);
-            $quoteItem->setDiscountAmount($line->getDiscountAmount());
-            $quoteItem->setOriginalCustomPrice($unitPrice);
-        } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
-            $quoteItem->setCustomPrice($unitPrice);
-            $quoteItem->setOriginalCustomPrice($unitPrice);
-            $quoteItem->setDiscountAmount(null);
-        } else {
-            $quoteItem->setCustomPrice(null);
-            $quoteItem->setDiscountAmount(null);
-            $quoteItem->setOriginalCustomPrice(null);
+        $customPrice = $discountAmount = $amount = $taxAmount = $netAmount = null;
+        $itemQty = $quoteItem->getQty();
+
+        if ($quoteItem->getParentItem() &&
+            $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
+        ) {
+            $itemQty = $quoteItem->getParentItem()->getQty();
         }
+        $qtyEqual = $line->getQuantity() == $itemQty;
+
+        if ($line->getDiscountAmount() > 0) {
+            $discountAmount = $qtyEqual ? $line->getDiscountAmount() :
+                ($line->getDiscountAmount() / $line->getQuantity()) * $itemQty;
+            $customPrice = $unitPrice;
+        } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
+            $customPrice = $unitPrice;
+        }
+
+        if ($line->getTaxAmount() > 0) {
+            $taxAmount = $qtyEqual ? $line->getTaxAmount() :
+                ($line->getTaxAmount() / $line->getQuantity()) * $itemQty;
+        }
+
+        if ($line->getNetAmount() > 0) {
+            $netAmount = $qtyEqual ? $line->getNetAmount() :
+                ($line->getNetAmount() / $line->getQuantity()) * $itemQty;
+        }
+
+        if ($line->getAmount() > 0) {
+            $amount = $qtyEqual ? $line->getAmount() :
+                ($line->getAmount() / $line->getQuantity()) * $itemQty;
+        }
+
         $rowTotal = $line->getPrice() * $line->getQuantity();
-        $quoteItem->setTaxAmount($line->getTaxAmount())
-            ->setBaseTaxAmount($line->getTaxAmount())
+
+        $quoteItem->setCustomPrice($customPrice)
+            ->setDiscountAmount($discountAmount)
+            ->setOriginalCustomPrice($customPrice)
+            ->setTaxAmount($taxAmount)
+            ->setBaseTaxAmount($taxAmount)
             ->setPriceInclTax($unitPrice)
             ->setBasePriceInclTax($unitPrice)
-            ->setRowTotal($type == 1 ? $line->getNetAmount() : $rowTotal)
-            ->setBaseRowTotal($type == 1 ? $line->getNetAmount() : $rowTotal)
-            ->setRowTotalInclTax($type == 1 ? $line->getAmount() : $rowTotal)
-            ->setBaseRowTotalInclTax($type == 1 ? $line->getAmount() : $rowTotal);
+            ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
+            ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
+            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotal)
+            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotal);
     }
 
     /**

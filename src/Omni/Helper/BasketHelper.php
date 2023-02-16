@@ -292,17 +292,32 @@ class BasketHelper extends AbstractHelper
                 list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
                     $child->getSku()
                 );
+                $match = false;
 
-                // @codingStandardsIgnoreLine
-                $list_item = (new Entity\OneListItem())
-                    ->setQuantity($quoteItem->getData('qty'))
-                    ->setItemId($itemId)
-                    ->setId('')
-                    ->setBarcodeId($barCode)
-                    ->setVariantId($variantId)
-                    ->setUnitOfMeasureId($uom);
+                foreach ($itemsArray as $itemArray) {
+                    if ($itemArray->getItemId() == $itemId &&
+                        $itemArray->getVariantId() == $variantId &&
+                        $itemArray->getUnitOfMeasureId() == $uom &&
+                        $itemArray->getBarcodeId() == $barCode
+                    ) {
+                        $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                        $match = true;
+                        break;
+                    }
+                }
 
-                $itemsArray[] = $list_item;
+                if (!$match) {
+                    // @codingStandardsIgnoreLine
+                    $list_item = (new Entity\OneListItem())
+                        ->setQuantity($quoteItem->getData('qty'))
+                        ->setItemId($itemId)
+                        ->setId('')
+                        ->setBarcodeId($barCode)
+                        ->setVariantId($variantId)
+                        ->setUnitOfMeasureId($uom);
+
+                    $itemsArray[] = $list_item;
+                }
             }
         }
         $items->setOneListItem($itemsArray);
@@ -982,19 +997,35 @@ class BasketHelper extends AbstractHelper
      */
     public function getItemRowTotal($item)
     {
-        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-            $item->getSku()
-        );
-        $rowTotal   = $item->getRowTotal();
-        $basketData = $this->getOneListCalculation();
-        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $rowTotal = $this->getRowTotalBundleProduct($item);
+        } else {
+            $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $item->getSku()
+            );
+            $rowTotal   = $item->getRowTotal();
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
-        foreach ($orderLines as $line) {
-            if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                $rowTotal = $line->getAmount();
-                break;
+            foreach ($orderLines as $line) {
+                if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                    $rowTotal = $line->getQuantity() == $item->getQty() ? $line->getAmount()
+                        : ($line->getAmount() / $line->getQuantity()) * $item->getQty();
+                    break;
+                }
             }
+        }
+
+        return $rowTotal;
+    }
+
+    public function getRowTotalBundleProduct($item)
+    {
+        $rowTotal = 0.00;
+
+        foreach ($item->getChildren() as $child) {
+            $rowTotal += $child->getRowTotal();
         }
 
         return $rowTotal;
