@@ -169,7 +169,7 @@ class StoreHelper extends AbstractHelper
         $request = new Entity\StoresGet();
         $request->setStoreType(StoreGetType::CLICK_AND_COLLECT);
         $request->setIncludeDetails(true);
-        $operation = new Operation\StoresGetAll($baseUrl);
+        $operation = new Operation\StoresGet($baseUrl);
         // @codingStandardsIgnoreEnd
         try {
             $response = $operation->execute($request);
