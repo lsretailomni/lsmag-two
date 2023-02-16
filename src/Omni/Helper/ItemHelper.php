@@ -407,6 +407,7 @@ class ItemHelper extends AbstractHelper
         } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
             $quoteItem->setCustomPrice($unitPrice);
             $quoteItem->setOriginalCustomPrice($unitPrice);
+            $quoteItem->setDiscountAmount(null);
         } else {
             $quoteItem->setCustomPrice(null);
             $quoteItem->setDiscountAmount(null);
@@ -463,7 +464,7 @@ class ItemHelper extends AbstractHelper
     public function getProductByIdentificationAttributes($itemId, $variantId = '')
     {
         $searchCriteria = clone $this->searchCriteriaBuilder;
-        $productData = null;
+        $productData    = null;
         try {
             $searchCriteria->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $itemId);
 
@@ -500,11 +501,11 @@ class ItemHelper extends AbstractHelper
         $uom       = $product->getData('uom');
         $barCode   = $product->getData('barcode');
         $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
-        $baseUom = null;
+        $baseUom   = null;
 
         if ($parentId != '') {
             $parentProduct = $this->productRepository->getById($parentId);
-            $baseUom = $parentProduct->getData('uom');
+            $baseUom       = $parentProduct->getData('uom');
         }
 
         return [$itemId, $variantId, $uom, $barCode, $uomQty, $baseUom];
