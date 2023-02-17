@@ -1020,6 +1020,12 @@ class BasketHelper extends AbstractHelper
         return $rowTotal;
     }
 
+    /**
+     * Calculate row total of bundle adding all individual simple items
+     *
+     * @param $item
+     * @return float
+     */
     public function getRowTotalBundleProduct($item)
     {
         $rowTotal = 0.00;
