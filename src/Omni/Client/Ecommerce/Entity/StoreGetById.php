@@ -18,6 +18,11 @@ class StoreGetById implements RequestInterface
     protected $storeId = null;
 
     /**
+     * @property boolean $includeImages
+     */
+    protected $includeImages = null;
+
+    /**
      * @param string $storeId
      * @return $this
      */
@@ -33,6 +38,24 @@ class StoreGetById implements RequestInterface
     public function getStoreId()
     {
         return $this->storeId;
+    }
+
+    /**
+     * @param boolean $includeImages
+     * @return $this
+     */
+    public function setIncludeImages($includeImages)
+    {
+        $this->includeImages = $includeImages;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIncludeImages()
+    {
+        return $this->includeImages;
     }
 }
 

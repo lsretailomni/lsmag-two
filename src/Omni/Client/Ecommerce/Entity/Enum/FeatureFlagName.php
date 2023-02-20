@@ -45,6 +45,9 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName SHOW_CUSTOMER_QR_CODE()
  * @$method static FeatureFlagName SHOW_POINT_STATUS()
  * @$method static FeatureFlagName USE_SECURITY_CHECK()
+ * @$method static FeatureFlagName HIDE_PRICE_OF_ITEM()
+ * @$method static FeatureFlagName HIDE_ADD_CREDIT_CARD()
+ * @$method static FeatureFlagName HIDE_SHOPPING_SCREEN()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName CARD_PAYMENT_METHOD()
  * @$method static FeatureFlagName LS_PAY_SERVICE_IP_ADDRESS()
@@ -132,6 +135,12 @@ class FeatureFlagName extends Enum
     public const SHOW_POINT_STATUS = 'ShowPointStatus';
 
     public const USE_SECURITY_CHECK = 'UseSecurityCheck';
+
+    public const HIDE_PRICE_OF_ITEM = 'HidePriceOfItem';
+
+    public const HIDE_ADD_CREDIT_CARD = 'HideAddCreditCard';
+
+    public const HIDE_SHOPPING_SCREEN = 'HideShoppingScreen';
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 
