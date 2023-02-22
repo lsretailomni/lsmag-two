@@ -14,6 +14,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\Context as ProductContext;
 use Magento\Catalog\Block\Product\View;
@@ -23,6 +24,7 @@ use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\EncoderInterface;
@@ -32,6 +34,8 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Stdlib\StringUtils;
 use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Bundle\Api\Data\LinkInterface;
+use Magento\Bundle\Api\ProductLinkManagementInterface;
 
 class Proactive extends View
 {
@@ -72,7 +76,11 @@ class Proactive extends View
     public $scopeConfig;
 
     /**
-     * Proactive constructor.
+     * @var ProductLinkManagementInterface
+     */
+    public $productLinkManagement;
+
+    /**
      * @param ProductContext $context
      * @param UrlEncoderInterface $urlEncoder
      * @param EncoderInterface $jsonEncoder
@@ -91,6 +99,7 @@ class Proactive extends View
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
+     * @param ProductLinkManagementInterface $productLinkManagement
      * @param array $data
      */
     public function __construct(
@@ -112,6 +121,7 @@ class Proactive extends View
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
+        ProductLinkManagementInterface $productLinkManagement,
         array $data = []
     ) {
         parent::__construct(
@@ -135,6 +145,7 @@ class Proactive extends View
         $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
+        $this->productLinkManagement = $productLinkManagement;
     }
 
     /**
@@ -154,8 +165,7 @@ class Proactive extends View
             }
             $tempArray = [];
             foreach ($response as $key => $responseData) {
-                $uniqueKey = $responseData->getPercentage() . '|' . $responseData->getItemId() . '|'
-                    . $responseData->getPopUpLine1() . '|' . $responseData->getType();
+                $uniqueKey = $responseData->getId();
                 if (!in_array($uniqueKey, $tempArray, true)) {
                     $tempArray[] = $uniqueKey;
                     continue;
@@ -170,12 +180,11 @@ class Proactive extends View
     /**
      * Get all coupons
      *
-     * @param $sku
-     * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
+     * @param $itemId
+     * @return array
      */
-    public function getCoupons($sku)
+    public function getCoupons($itemId)
     {
-        $itemId = $this->itemHelper->getLsCentralItemIdBySku($sku);
         try {
             $storeId = $this->lsr->getActiveWebStore();
             if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID)) {
@@ -183,10 +192,16 @@ class Proactive extends View
                 $email     = $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL);
                 $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
                 $cardId    = $customer->getData('lsr_cardid');
-                if ($response = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $itemId)) {
-                    return $response;
+                $response = [];
+
+                foreach ($itemId as $id) {
+                    $publishedOffers = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
+
+                    foreach ($publishedOffers as $publishedOffer) {
+                        $response[$publishedOffer->getOfferId()] = $publishedOffer;
+                    }
                 }
-                return [];
+                return $response;
             }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -206,9 +221,11 @@ class Proactive extends View
     ) {
         $description  = [];
         $discountText = '';
+
         if ($discount->getDescription()) {
             $description[] = "<span class='discount-description'>" . $discount->getDescription() . '</span>';
         }
+
         if (floatval($discount->getMinimumQuantity()) > 0 && $discount->getType() == ProactiveDiscountType::MULTIBUY) {
             $description[] = "
                 <span class='discount-min-qty-label discount-label'>" . __('Minimum Qty :') . "</span>
@@ -227,11 +244,16 @@ class Proactive extends View
         }
         if ($discount->getItemIds()) {
             $itemIds = $discount->getItemIds()->getString();
+
             if (!is_array($itemIds)) {
                 $itemIds = [$discount->getItemIds()->getString()];
             }
             $itemIds      = array_unique($itemIds);
-            $itemIds      = array_diff($itemIds, [$itemId]);
+
+            if (!is_array($itemId)) {
+                $itemIds      = array_diff($itemIds, [$itemId]);
+            }
+
             $counter      = 0;
             $popupLink    = '';
             $popupHtml    = '';
@@ -413,5 +435,37 @@ class Proactive extends View
     public function getLsCentralItemIdBySku($sku)
     {
         return $this->itemHelper->getLsCentralItemIdBySku($sku);
+    }
+
+    /**
+     * Get current product
+     *
+     * @param $sku
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getCurrentProduct($sku)
+    {
+        return $this->productRepository->get($sku);
+    }
+
+    /**
+     * Get bundle product linked item_ids
+     *
+     * @param $bundleProduct
+     * @return array
+     * @throws NoSuchEntityException
+     * @throws InputException
+     */
+    public function getLinkedProductsItemIds($bundleProduct)
+    {
+        $items = $this->productLinkManagement->getChildren($bundleProduct->getSku());
+        $itemIds = [];
+
+        foreach ($items as $item) {
+            $itemIds[] = $this->getLsCentralItemIdBySku($item->getSku());
+        }
+
+        return $itemIds;
     }
 }

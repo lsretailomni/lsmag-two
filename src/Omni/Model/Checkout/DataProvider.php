@@ -9,6 +9,7 @@ use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Checkout\Model\ConfigProviderInterface;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -301,20 +302,29 @@ class DataProvider implements ConfigProviderInterface
     public function filterStoresOnTheBasisOfQty($response, $items)
     {
         foreach ($items as $item) {
-            $itemQty = $item->getQty();
-            list($parentProductSku, $childProductSku, , , $uomQty) =
-                $this->stockHelper->itemHelper->getComparisonValues($item->getSku());
-
-            if (!empty($uomQty)) {
-                $itemQty = $itemQty * $uomQty;
+            $children = [];
+            if ($item->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $item->getChildren();
+            } else {
+                $children[] = $item;
             }
 
-            foreach ($response as $index => $responseItem) {
-                if ($responseItem->getItemId() == $parentProductSku &&
-                    $responseItem->getVariantId() == $childProductSku &&
-                    ceil($responseItem->getQtyInventory()) < $itemQty
-                ) {
-                    $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+            foreach ($children as $child) {
+                $itemQty = $item->getQty();
+                list($parentProductSku, $childProductSku, , , $uomQty) =
+                    $this->stockHelper->itemHelper->getComparisonValues($child->getSku());
+
+                if (!empty($uomQty)) {
+                    $itemQty = $itemQty * $uomQty;
+                }
+
+                foreach ($response as $index => $responseItem) {
+                    if ($responseItem->getItemId() == $parentProductSku &&
+                        $responseItem->getVariantId() == $childProductSku &&
+                        ceil($responseItem->getQtyInventory()) < $itemQty
+                    ) {
+                        $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+                    }
                 }
             }
         }
