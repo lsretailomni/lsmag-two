@@ -13,12 +13,12 @@ use Ls\Omni\Client\ResponseInterface;
 class OrderCancelResponse implements ResponseInterface
 {
     /**
-     * @property string $OrderCancelResult
+     * @property boolean $OrderCancelResult
      */
     protected $OrderCancelResult = null;
 
     /**
-     * @param string $OrderCancelResult
+     * @param boolean $OrderCancelResult
      * @return $this
      */
     public function setOrderCancelResult($OrderCancelResult)
@@ -28,7 +28,7 @@ class OrderCancelResponse implements ResponseInterface
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getOrderCancelResult()
     {
@@ -36,7 +36,7 @@ class OrderCancelResponse implements ResponseInterface
     }
 
     /**
-     * @return string
+     * @return boolean
      */
     public function getResult()
     {

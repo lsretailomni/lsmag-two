@@ -3,19 +3,21 @@
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Helper\Data;
+use \Ls\Webhooks\Model\Notification\EmailNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
+use Magento\Sales\Model\Order\CreditmemoFactory;
+use Magento\Sales\Model\Order\Invoice;
+use Magento\Sales\Model\Service\CreditmemoService;
 
 /**
  * class to process status through webhook
  */
 class Status
 {
-
     /**
      * @var Data
      */
@@ -32,42 +34,69 @@ class Status
     private $creditMemo;
 
     /**
-     * @var Notify
-     */
-    private $notify;
-
-    /**
      * @var Payment
      */
     private $payment;
 
     /**
-     * Status constructor.
+     * @var EmailNotification
+     */
+    private $emailNotification;
+
+    /**
+     * @var Invoice
+     */
+    private $invoice;
+
+    /**
+     * @var CreditmemoFactory
+     */
+    private $creditMemoFactory;
+
+    /**
+     * @var CreditmemoService
+     */
+    private $creditMemoService;
+
+    /**
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
-     * @param Notify $notify
      * @param Payment $payment
+     * @param EmailNotification $emailNotification
+     * @param Invoice $invoice
+     * @param CreditmemoFactory $creditMemoFactory
+     * @param CreditmemoService $creditMemoService
      */
     public function __construct(
         Data $helper,
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
-        Notify $notify,
-        Payment $payment
+        Payment $payment,
+        EmailNotification $emailNotification,
+        Invoice $invoice,
+        CreditmemoFactory $creditMemoFactory,
+        CreditmemoService $creditMemoService
     ) {
-        $this->helper      = $helper;
-        $this->orderCancel = $orderCancel;
-        $this->creditMemo  = $creditMemo;
-        $this->notify      = $notify;
-        $this->payment     = $payment;
+        $this->helper            = $helper;
+        $this->orderCancel       = $orderCancel;
+        $this->creditMemo        = $creditMemo;
+        $this->payment           = $payment;
+        $this->emailNotification = $emailNotification;
+        $this->invoice           = $invoice;
+        $this->creditMemoFactory = $creditMemoFactory;
+        $this->creditMemoService = $creditMemoService;
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Process order status based on webhook call from Ls Central
      *
-     * @param $data
-     * @throws InvalidEnumException|NoSuchEntityException
+     * @param array $data
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function process($data)
     {
@@ -97,27 +126,24 @@ class Status
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $storeId                = $magOrder->getStoreId();
-        $items                  = $this->helper->getItems($magOrder, $itemsInfo);
-        $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
-        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+        $items                      = $this->helper->getItems($magOrder, $itemsInfo);
+        $isOffline                  = $magOrder->getPayment()->getMethodInstance()->isOffline();
+        $isClickAndCollectOrder     = $this->helper->isClickAndcollectOrder($magOrder);
+        $storeId                    = $magOrder->getStoreId();
+        $configuredNotificationType = explode(',', $this->helper->getNotificationType($storeId));
+        $orderStatus                = null;
 
         if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
-            $this->cancel($magOrder, $itemsInfo, $items, $storeId);
+            $this->cancel($magOrder, $itemsInfo, $items);
+            $orderStatus = LSR::LS_STATE_CANCELED;
         }
 
         if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
-            if ($this->helper->isPickupNotifyEnabled($storeId)) {
-                $templateId = $this->helper->getPickupTemplate($storeId);
-                $this->processSendEmail($magOrder, $items, $templateId);
-            }
+            $orderStatus = LSR::LS_STATE_PICKED;
         }
 
         if ($status == LSR::LS_STATE_COLLECTED && $isClickAndCollectOrder) {
-            if ($this->helper->isCollectedNotifyEnabled($storeId)) {
-                $templateId = $this->helper->getCollectedTemplate($storeId);
-                $this->processSendEmail($magOrder, $items, $templateId);
-            }
+            $orderStatus = LSR::LS_STATE_COLLECTED;
 
             if ($isOffline) {
                 $this->payment->generateInvoice($data);
@@ -129,6 +155,16 @@ class Status
                 $this->payment->generateInvoice($data);
             }
         }
+
+        if ($orderStatus !== null) {
+            foreach ($configuredNotificationType as $type) {
+                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
+                    $this->emailNotification->setNotificationType($orderStatus);
+                    $this->emailNotification->setOrder($magOrder)->setItems($items);
+                    $this->emailNotification->prepareAndSendNotification();
+                }
+            }
+        }
     }
 
     /**
@@ -137,14 +173,15 @@ class Status
      * @param OrderInterface $magOrder
      * @param array $itemsInfo
      * @param array $items
-     * @param int $storeId
+     * @throws LocalizedException
      */
-    public function cancel($magOrder, $itemsInfo, $items, $storeId)
+    public function cancel($magOrder, $itemsInfo, $items)
     {
-        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
-        $magentoOrderTotalItemsQty = (int) $magOrder->getTotalQtyOrdered();
-        $shipmentLineCount = (int) $isClickAndCollectOrder ? 0 : 1;
-        $magentoOrderTotalItemsQty = $magentoOrderTotalItemsQty + $shipmentLineCount;
+        $isClickAndCollectOrder    = $this->helper->isClickAndcollectOrder($magOrder);
+        $magentoOrderTotalItemsQty = (int)$magOrder->getTotalQtyOrdered();
+        $shipmentLineCount         = (int)$isClickAndCollectOrder ? 0 : 1;
+        $magentoOrderTotalItemsQty = $magentoOrderTotalItemsQty +
+            (($shipmentLineCount == 1 && $magOrder->getShippingAmount()) ? $shipmentLineCount : 0);
 
         if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
             $this->orderCancel->cancelOrder($magOrder->getEntityId());
@@ -152,29 +189,82 @@ class Status
             $this->orderCancel->cancelItems($magOrder, $items);
         }
 
-        if ($magOrder->hasInvoices()) {
-            $shippingItemId = $this->helper->getShippingItemId();
-            $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
-            $this->creditMemo->refund($magOrder, $items, $creditMemoData);
-        }
+        if ($magOrder->hasInvoices() && $this->itemExistsInInvoice($magOrder, $itemsInfo)) {
+            if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
+                $invoices = $magOrder->getInvoiceCollection();
 
-        if ($this->helper->isCancelNotifyEnabled($storeId)) {
-            $templateId = $this->helper->getCancelTemplate($storeId);
-            $this->processSendEmail($magOrder, $items, $templateId);
+                foreach ($invoices as $invoice) {
+                    $invoiceIncrementId = $invoice->getIncrementId();
+                    $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+                    $creditMemo         = $this->creditMemoFactory->createByOrder($magOrder);
+                    $creditMemo->setInvoice($invoiceObj);
+                    $this->creditMemoService->refund($creditMemo);
+                }
+            } else {
+                $invoice = null;
+
+                foreach ($itemsInfo as $item) {
+                    $itemId    = $item['ItemId'];
+                    $variantId = $item['VariantId'];
+                    $invoice   = $this->getItemInvoice($magOrder, $itemId, $variantId);
+                }
+                $shippingItemId = $this->helper->getShippingItemId();
+                $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
+                $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
+            }
         }
     }
 
-    /** Process click and collect order
+    /**
+     * Item exists in invoice
      *
      * @param $magOrder
-     * @param $items
-     * @param $templateId
+     * @param $itemsInfo
+     * @return bool
+     * @throws NoSuchEntityException
      */
-    public function processSendEmail($magOrder, $items, $templateId)
+    public function itemExistsInInvoice($magOrder, $itemsInfo)
     {
-        $templateVars = $this->notify->setTemplateVars($magOrder, $items);
-        if (!empty($templateVars['items'])) {
-            $this->notify->sendEmail($templateId, $templateVars, $magOrder);
+        $exists1 = true;
+
+        foreach ($itemsInfo as $item) {
+            $itemId    = $item['ItemId'];
+            $variantId = $item['VariantId'];
+            $exists2   = $this->getItemInvoice($magOrder, $itemId, $variantId);
+            $exists1   = $exists1 && $exists2;
         }
+
+        return $exists1;
+    }
+
+    /**
+     * Get item invoice
+     *
+     * @param $magOrder
+     * @param $itemId
+     * @param $variantId
+     * @return false|Invoice
+     * @throws NoSuchEntityException
+     */
+    public function getItemInvoice($magOrder, $itemId, $variantId)
+    {
+        $invoices  = $magOrder->getInvoiceCollection();
+        $requiredInvoice = false;
+
+        foreach ($invoices as $invoice) {
+            $invoiceIncrementId = $invoice->getIncrementId();
+            $invoiceObj         = $this->invoice->loadByIncrementId($invoiceIncrementId);
+
+            foreach ($invoiceObj->getItems() as $invoiceItem) {
+                $product = $this->helper->getProductById($invoiceItem->getProductId());
+
+                if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                    $requiredInvoice = $invoiceObj;
+                    break;
+                }
+            }
+        }
+
+        return $requiredInvoice;
     }
 }

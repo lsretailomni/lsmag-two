@@ -23,6 +23,7 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Io\File;
 use Magento\Store\Api\Data\StoreInterface;
 
@@ -136,9 +137,12 @@ class CategoryCreateTask
     }
 
     /**
-     * execute
-     * @param null $storeData
+     * Method responsible for creating categories
+     *
+     * @param $storeData
+     * @return void
      * @throws InputException
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
@@ -159,7 +163,8 @@ class CategoryCreateTask
                     $this->logger->debug('Running CategoryCreateTask for Store ' . $this->store->getName());
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
-                        LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
+                        LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE,
+                        $this->store->getId()
                     );
                     $hierarchyCode = $this->getHierarchyCode($store);
                     if (empty($hierarchyCode)) {
@@ -177,17 +182,26 @@ class CategoryCreateTask
                         'condition_type' => 'eq'
                     ];
                     $mediaAttribute              = ['image', 'small_image', 'thumbnail'];
-                    $this->caterMainCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute,
-                        $scopeIdFilter);
-                    $this->caterSubCategoryHierarchyNodeAddOrUpdate($hierarchyCodeSpecificFilter, $mediaAttribute,
-                        $scopeIdFilter);
+                    $this->caterMainCategoryHierarchyNodeAddOrUpdate(
+                        $hierarchyCodeSpecificFilter,
+                        $mediaAttribute,
+                        $scopeIdFilter
+                    );
+                    $this->caterSubCategoryHierarchyNodeAddOrUpdate(
+                        $hierarchyCodeSpecificFilter,
+                        $mediaAttribute,
+                        $scopeIdFilter
+                    );
                     if ($this->getRemainingRecords($store) == 0) {
                         $this->cronStatus = true;
                     }
                     $this->caterHierarchyNodeRemoval($hierarchyCode);
                     $this->updateImagesOnly();
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_CATEGORY,
-                        $store->getId());
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_CATEGORY,
+                        $store->getId()
+                    );
                     $this->logger->debug('CategoryCreateTask Completed for Store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
@@ -196,9 +210,12 @@ class CategoryCreateTask
     }
 
     /**
+     * Responsible for adding or updating all main categories under root category
+     *
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
-     * @return int
+     * @param $scopeIdFilter
+     * @return void
      */
     public function caterMainCategoryHierarchyNodeAddOrUpdate(
         $HierarchyCodeSpecificFilter,
@@ -234,7 +251,7 @@ class CategoryCreateTask
                     continue;
                 }
                 //** Adding Filter for Store so that we can search for Store based on Store Root Category. */
-                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId(), $this->store);
+                $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId(), true);
                 if (!$categoryExistData) {
                     /** @var Category $category */
                     $category = $this->categoryFactory->create();
@@ -298,6 +315,8 @@ class CategoryCreateTask
     }
 
     /**
+     * Responsible for creating or updating all sub categories under main categories
+     *
      * @param $HierarchyCodeSpecificFilter
      * @param $mediaAttribute
      * @param bool $scopeIdFilter
@@ -346,7 +365,7 @@ class CategoryCreateTask
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
                     ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
                     ->setPageSize(1);
-                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), $this->store);
+                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), true);
                 if ($collection->getSize() > 0) {
                     if (!$subCategoryExistData) {
                         /** @var CategoryFactory $categorysub */
@@ -379,14 +398,16 @@ class CategoryCreateTask
                                 'name',
                                 ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
                             );
-                            $parentCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getParentNode());
+                            $parentCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getParentNode(), true);
                             if ($parentCategoryExistData) {
                                 $newParentId = $parentCategoryExistData->getId();
                                 if ($newParentId != $subCategoryExistData->getData('parent_id')) {
                                     $subCategoryExistData->move($newParentId, null);
                                 }
                             } else {
-                                $this->logger->debug('Parent Category not found for Nav Id : ' . $hierarchyNodeSub->getNavId());
+                                $this->logger->debug(
+                                    sprintf('Parent Category not found for Nav Id : %s', $hierarchyNodeSub->getNavId())
+                                );
                             }
                             $subCategoryExistData->setData('is_active', 1);
                             if ($hierarchyNodeSub->getImageId()) {
@@ -420,7 +441,10 @@ class CategoryCreateTask
     }
 
     /**
+     * Responsible for disabling categories
+     *
      * @param $hierarchyCode
+     * @return void
      */
     public function caterHierarchyNodeRemoval($hierarchyCode)
     {
@@ -446,7 +470,7 @@ class CategoryCreateTask
             foreach ($collection as $hierarchyNode) {
                 try {
                     if (!empty($hierarchyNode->getNavId())) {
-                        $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId());
+                        $categoryExistData = $this->isCategoryExist($hierarchyNode->getNavId(), true);
                         if ($categoryExistData) {
                             $categoryExistData->setData('is_active', 0);
                             // @codingStandardsIgnoreLine
@@ -470,8 +494,11 @@ class CategoryCreateTask
     }
 
     /**
-     * @param null $storeData
-     * @return array
+     * Method responsible for executing cron manually from admin cron grid
+     *
+     * @param $storeData
+     * @return int[]
+     * @throws InputException|NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
@@ -481,8 +508,11 @@ class CategoryCreateTask
     }
 
     /**
+     * Utility function for formatting
+     *
      * @param $string
-     * @return string]
+     * @param $parent
+     * @return string
      */
     public function oSlug($string, $parent = false)
     {
@@ -522,6 +552,7 @@ class CategoryCreateTask
 
     /**
      * Check if the category already exist or not
+     *
      * @param $nav_id
      * @param bool $store
      * @return bool|DataObject
@@ -545,8 +576,11 @@ class CategoryCreateTask
     }
 
     /**
-     * @param string $imageId
+     * Responsible for fetching category images
+     *
+     * @param $imageId
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getImage($imageId = '')
     {
@@ -583,6 +617,7 @@ class CategoryCreateTask
 
     /**
      * Return the media path of the category
+     *
      * @return string
      */
     public function getMediaPathtoStore()
@@ -593,6 +628,8 @@ class CategoryCreateTask
 
     /**
      * Update/Add the modified/added images of the item
+     *
+     * @return void
      */
     public function updateImagesOnly()
     {
@@ -607,7 +644,7 @@ class CategoryCreateTask
                 try {
                     $keyValue          = explode(',', $image->getKeyValue());
                     $navId             = $keyValue[1];
-                    $categoryExistData = $this->isCategoryExist($navId);
+                    $categoryExistData = $this->isCategoryExist($navId, true);
                     if ($categoryExistData) {
                         $imageSub       = $this->getImage($image->getImageId());
                         $mediaAttribute = ['image', 'small_image', 'thumbnail'];
@@ -628,8 +665,10 @@ class CategoryCreateTask
         }
     }
 
-
     /**
+     * Getting remaining records
+     *
+     * @param $storeData
      * @return int
      */
     public function getRemainingRecords($storeData)
@@ -646,8 +685,10 @@ class CategoryCreateTask
     }
 
     /**
+     * Get configured hierarchy code
+     *
      * @param $storeData
-     * @return string
+     * @return array|string
      */
     public function getHierarchyCode($storeData)
     {

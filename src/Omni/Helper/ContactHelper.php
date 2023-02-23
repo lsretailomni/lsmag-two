@@ -405,7 +405,9 @@ class ContactHelper extends AbstractHelper
             $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
             try {
                 $response    = $request->execute($search);
-                $contact_pos = $response->getContactSearchResult();
+                if ($response) {
+                    $contact_pos = $response->getContactGetResult();
+                }
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
             }
@@ -469,7 +471,8 @@ class ContactHelper extends AbstractHelper
                 ->setData('website_id', $websiteId)
                 ->setData('email', $contact->getEmail())
                 ->setData('firstname', $contact->getFirstName())
-                ->setData('lastname', $contact->getLastName());
+                ->setData('lastname', $contact->getLastName())
+                ->setData('lsr_username', $contact->getUserName());
             $this->customerResourceModel->save($customer);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -519,9 +522,11 @@ class ContactHelper extends AbstractHelper
      */
     public function getCountryId($countryName)
     {
-        if (strlen($countryName) == 2) {
+        if ($countryName && strlen($countryName) == 2) {
             return $countryName;
         }
+
+        $countryName       = $countryName ?? '';
         $countryName       = ucwords(strtolower($countryName));
         $countryId         = 'US';
         $countryCollection = $this->country->getCollection();
@@ -721,7 +726,7 @@ class ContactHelper extends AbstractHelper
      * @param $customer
      * @return Entity\PasswordResetResponse|ResponseInterface|string|null
      */
-    public function forgotPassword($customer)
+    public function forgotPassword($userName)
     {
         $response = null;
         // @codingStandardsIgnoreStart
@@ -729,7 +734,7 @@ class ContactHelper extends AbstractHelper
         $forgotPassword = new Entity\PasswordReset();
         // @codingStandardsIgnoreEnd
 
-        $forgotPassword->setUserName($customer->getData('lsr_username'));
+        $forgotPassword->setUserName($userName);
         $forgotPassword->setEmail('');
 
         try {
@@ -905,16 +910,6 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param $countryCode
-     * @return string
-     */
-    private function getCountryname($countryCode)
-    {
-        $country = $this->countryFactory->create()->loadByCode($countryCode);
-        return $country->getName();
-    }
-
-    /**
      * @return array
      */
     public function getAllCustomerGroupIds()
@@ -1038,8 +1033,10 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Update wishlist after login
+     *
      * @param Entity\OneList $oneListWishlist
-     * @throws Exception
+     * @return void
      */
     public function updateWishlistAfterLogin(Entity\OneList $oneListWishlist)
     {
@@ -1057,26 +1054,34 @@ class ContactHelper extends AbstractHelper
             foreach ($itemsCollection as $item) {
                 $buyRequest        = [];
                 $sku               = $item->getItemId();
-                $product           = $this->productRepository->get($sku);
-                $qty               = $item->getQuantity();
-                $buyRequest['qty'] = $qty;
-                if ($item->getVariantId()) {
-                    $simSku                        = $sku . '-' . $item->getVariantId();
-                    $simProduct                    = $this->productRepository->get($simSku);
-                    $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
-                    $buyRequest['super_attribute'] = [];
-                    foreach ($optionsData as $key => $option) {
-                        $code                                = $option['attribute_code'];
-                        $value                               = $simProduct->getData($code);
-                        $buyRequest['super_attribute'][$key] = $value;
+                $product           = $this->itemHelper->getProductByIdentificationAttributes($sku);
+
+                if ($product) {
+                    $qty               = $item->getQuantity();
+                    $buyRequest['qty'] = $qty;
+                    if ($item->getVariantId()) {
+                        $simProduct                    = $this->itemHelper->getProductByIdentificationAttributes(
+                            $item->getItemId(),
+                            $item->getVariantId()
+                        );
+
+                        if ($simProduct) {
+                            $optionsData                   = $product->getTypeInstance(true)->getConfigurableAttributesAsArray($product);
+                            $buyRequest['super_attribute'] = [];
+                            foreach ($optionsData as $key => $option) {
+                                $code                                = $option['attribute_code'];
+                                $value                               = $simProduct->getData($code);
+                                $buyRequest['super_attribute'][$key] = $value;
+                            }
+                        }
                     }
+                    $result = $wishlist->addNewItem($product, $buyRequest);
+                    $this->wishlistResourceModel->save($wishlist);
+                    $this->_eventManager->dispatch(
+                        'wishlist_add_product',
+                        ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
+                    );
                 }
-                $result = $wishlist->addNewItem($product, $buyRequest);
-                $this->wishlistResourceModel->save($wishlist);
-                $this->_eventManager->dispatch(
-                    'wishlist_add_product',
-                    ['wishlist' => $wishlist, 'product' => $product, 'item' => $result]
-                );
             }
 
             if (!is_array($oneListWishlist) &&
@@ -1335,7 +1340,7 @@ class ContactHelper extends AbstractHelper
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($customer);
+                    $resetCode                = $this->forgotPassword($userName);
                     $customer->setData('lsr_resetcode', $resetCode);
                     $this->resetPassword($customer, $customerPost);
                     $customer->setData('lsr_resetcode', null);

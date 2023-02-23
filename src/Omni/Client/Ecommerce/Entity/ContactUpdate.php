@@ -18,6 +18,11 @@ class ContactUpdate implements RequestInterface
     protected $contact = null;
 
     /**
+     * @property boolean $getContact
+     */
+    protected $getContact = null;
+
+    /**
      * @param MemberContact $contact
      * @return $this
      */
@@ -33,6 +38,24 @@ class ContactUpdate implements RequestInterface
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * @param boolean $getContact
+     * @return $this
+     */
+    public function setGetContact($getContact)
+    {
+        $this->getContact = $getContact;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getGetContact()
+    {
+        return $this->getContact;
     }
 }
 

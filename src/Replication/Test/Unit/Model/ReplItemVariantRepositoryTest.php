@@ -17,20 +17,19 @@ use Magento\Framework\Phrase;
 use Magento\Framework\Api\SortOrder;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
-use \Ls\Replication\Model\ReplHtmlTranslationRepository;
-use \Ls\Replication\Model\ResourceModel\ReplHtmlTranslation\Collection;
-use \Ls\Replication\Model\ResourceModel\ReplHtmlTranslation\CollectionFactory;
-use \Ls\Replication\Api\ReplHtmlTranslationRepositoryInterface;
-use \Ls\Replication\Api\Data\ReplHtmlTranslationInterface;
-use \Ls\Replication\Api\Data\ReplHtmlTranslationSearchResultsInterface;
-use \Ls\Replication\Model\ReplHtmlTranslationFactory;
-use \Ls\Replication\Model\ReplHtmlTranslationSearchResultsFactory;
+use \Ls\Replication\Model\ReplItemVariantRepository;
+use \Ls\Replication\Model\ResourceModel\ReplItemVariant\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplItemVariant\CollectionFactory;
+use \Ls\Replication\Api\ReplItemVariantRepositoryInterface;
+use \Ls\Replication\Api\Data\ReplItemVariantInterface;
+use \Ls\Replication\Api\Data\ReplItemVariantSearchResultsInterface;
+use \Ls\Replication\Model\ReplItemVariantFactory;
+use \Ls\Replication\Model\ReplItemVariantSearchResultsFactory;
 
-class ReplHtmlTranslationRepositoryTest extends TestCase
+class ReplItemVariantRepositoryTest extends TestCase
 {
-
     /**
-     * @property ReplHtmlTranslationFactory $objectFactory
+     * @property ReplItemVariantFactory $objectFactory
      */
     protected $objectFactory = null;
 
@@ -40,34 +39,33 @@ class ReplHtmlTranslationRepositoryTest extends TestCase
     protected $collectionFactory = null;
 
     /**
-     * @property ReplHtmlTranslationSearchResultsFactory $resultFactory
+     * @property ReplItemVariantSearchResultsFactory $resultFactory
      */
     protected $resultFactory = null;
 
     /**
-     * @property ReplHtmlTranslationRepository $model
+     * @property ReplItemVariantRepository $model
      */
     private $model = null;
 
     /**
-     * @property ReplHtmlTranslationInterface $entityInterface
+     * @property ReplItemVariantInterface $entityInterface
      */
     private $entityInterface = null;
 
     /**
-     * @property ReplHtmlTranslationSearchResultsInterface
-     * $entitySearchResultsInterface
+     * @property ReplItemVariantSearchResultsInterface $entitySearchResultsInterface
      */
     private $entitySearchResultsInterface = null;
 
-    public function setUp()
+    public function setUp() : void
     {
-        $this->objectFactory = $this->createPartialMock(ReplHtmlTranslationFactory::class, ['create']);
+        $this->objectFactory = $this->createPartialMock(ReplItemVariantFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);
-        $this->resultFactory = $this->createMock(ReplHtmlTranslationSearchResultsFactory::class);
-        $this->entityInterface = $this->createMock(ReplHtmlTranslationInterface::class);
-        $this->entitySearchResultsInterface = $this->createMock(ReplHtmlTranslationSearchResultsInterface::class);
-        $this->model = new ReplHtmlTranslationRepository(
+        $this->resultFactory = $this->createMock(ReplItemVariantSearchResultsFactory::class);
+        $this->entityInterface = $this->createMock(ReplItemVariantInterface::class);
+        $this->entitySearchResultsInterface = $this->createMock(ReplItemVariantSearchResultsInterface::class);
+        $this->model = new ReplItemVariantRepository(
                 $this->objectFactory,
                 $this->collectionFactory,
                 $this->resultFactory
@@ -77,21 +75,19 @@ class ReplHtmlTranslationRepositoryTest extends TestCase
     public function testGetById()
     {
         $entityId = 1;
-        $entityMock = $this->createMock(ReplHtmlTranslationRepository::class);
+        $entityMock = $this->createMock(ReplItemVariantRepository::class);
         $entityMock->method('getById')
              ->with($entityId)
              ->willReturn($entityId);
         $this->assertEquals($entityId, $entityMock->getById($entityId));
     }
 
-    /**
-     * @expectedException \Magento\Framework\Exception\NoSuchEntityException
-     * @expectedExceptionMessage Object with id 1 does not exist.
-     */
     public function testGetWithNoSuchEntityException()
     {
+        $this->expectExceptionMessage("Object with id 1 does not exist.");
+        $this->expectException(\Magento\Framework\Exception\NoSuchEntityException::class);
         $entityId = 1;
-        $entityMock = $this->createMock(ReplHtmlTranslationRepository::class);
+        $entityMock = $this->createMock(ReplItemVariantRepository::class);
         $entityMock->method('getById')
              ->with($entityId)
              ->willThrowException(
@@ -105,7 +101,7 @@ class ReplHtmlTranslationRepositoryTest extends TestCase
     public function testGetListWithSearchCriteria()
     {
         $searchCriteria = $this->getMockBuilder(SearchCriteriaInterface::class)->getMock();
-        $entityMock = $this->createMock(ReplHtmlTranslationRepository::class);
+        $entityMock = $this->createMock(ReplItemVariantRepository::class);
         $entityMock->method('getList')
              ->with($searchCriteria)
              ->willReturn($this->entitySearchResultsInterface);
@@ -114,20 +110,18 @@ class ReplHtmlTranslationRepositoryTest extends TestCase
 
     public function testSave()
     {
-        $entityMock = $this->createMock(ReplHtmlTranslationRepository::class);
+        $entityMock = $this->createMock(ReplItemVariantRepository::class);
         $entityMock->method('save')
              ->with($this->entityInterface)
              ->willReturn($this->entityInterface);
         $this->assertEquals($this->entityInterface, $entityMock->save($this->entityInterface));
     }
 
-    /**
-     * @expectedException \Magento\Framework\Exception\CouldNotSaveException
-     * @expectedExceptionMessage Could not save entity
-     */
     public function testSaveWithCouldNotSaveException()
     {
-        $entityMock = $this->createMock(ReplHtmlTranslationRepository::class);
+        $this->expectExceptionMessage("Could not save entity");
+        $this->expectException(\Magento\Framework\Exception\CouldNotSaveException::class);
+        $entityMock = $this->createMock(ReplItemVariantRepository::class);
         $entityMock->method('save')
              ->with($this->entityInterface)
              ->willThrowException(
@@ -137,7 +131,5 @@ class ReplHtmlTranslationRepositoryTest extends TestCase
              );
         $entityMock->save($this->entityInterface);
     }
-
-
 }
 

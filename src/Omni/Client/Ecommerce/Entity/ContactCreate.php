@@ -18,6 +18,11 @@ class ContactCreate implements RequestInterface
     protected $contact = null;
 
     /**
+     * @property boolean $doLogin
+     */
+    protected $doLogin = null;
+
+    /**
      * @param MemberContact $contact
      * @return $this
      */
@@ -33,6 +38,24 @@ class ContactCreate implements RequestInterface
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * @param boolean $doLogin
+     * @return $this
+     */
+    public function setDoLogin($doLogin)
+    {
+        $this->doLogin = $doLogin;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDoLogin()
+    {
+        return $this->doLogin;
     }
 }
 

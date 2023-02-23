@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
@@ -13,6 +14,8 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
@@ -23,8 +26,11 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model;
+use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\StoreManagerInterface;
+use Magento\Directory\Model\CurrencyFactory;
 
 /**
  * Useful helper functions for order
@@ -43,6 +49,11 @@ class OrderHelper extends AbstractHelper
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
+
+    /**
+     * @var StoreHelper
+     */
+    public $storeHelper;
 
     /**
      * @var CustomerSessionProxy
@@ -88,11 +99,31 @@ class OrderHelper extends AbstractHelper
     public Registry $registry;
 
     /**
+     * @var StoreManagerInterface
+     */
+    public $storeManager;
+
+    /**
+     * @var CurrencyFactory
+     */
+    public $currencyFactory;
+
+    /**
+     * @var mixed
+     */
+    private $currentOrder;
+
+    /**
+     * @var mixed
+     */
+    private $storeData;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Model\OrderRepository $orderRepository
+     * @param OrderRepository $orderRepository
      * @param CustomerSessionProxy $customerSession
      * @param CheckoutSessionProxy $checkoutSession
      * @param LSR $lsr
@@ -100,6 +131,9 @@ class OrderHelper extends AbstractHelper
      * @param Json $json
      * @param Registry $registry
      * @param DateTime $dateTime
+     * @param StoreManagerInterface $storeManager
+     * @param StoreHelper $storeHelper
+     * @param CurrencyFactory $currencyFactory
      */
     public function __construct(
         Context $context,
@@ -113,7 +147,10 @@ class OrderHelper extends AbstractHelper
         Order $orderResourceModel,
         Json $json,
         Registry $registry,
-        DateTime $dateTime
+        DateTime $dateTime,
+        StoreManagerInterface $storeManager,
+        StoreHelper $storeHelper,
+        CurrencyFactory $currencyFactory
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -127,6 +164,9 @@ class OrderHelper extends AbstractHelper
         $this->json               = $json;
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
+        $this->storeManager       = $storeManager;
+        $this->storeHelper        = $storeHelper;
+        $this->currencyFactory    = $currencyFactory;
     }
 
     /**
@@ -203,8 +243,10 @@ class OrderHelper extends AbstractHelper
             } else {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
-                $oneListCalculateResponse->setShippingAgentCode(substr($carrierCode, 0, 10));
-                $oneListCalculateResponse->setShippingAgentServiceCode(substr($method, 0, 10));
+                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
+                $method      = ($method) ? substr($method, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentServiceCode($method);
                 $oneListCalculateResponse->setShippingStatus(Entity\Enum\ShippingStatus::NOT_YET_SHIPPED);
             }
             $pickupDateTimeslot = $order->getPickupDateTimeslot();
@@ -243,7 +285,7 @@ class OrderHelper extends AbstractHelper
     {
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
-        $shippingAmount     = $order->getShippingAmount();
+        $shippingAmount     = $order->getShippingInclTax();
         if ($shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
@@ -373,7 +415,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor($order->getBaseToGlobalRate())
+                ->setCurrencyFactor($order->getBaseToOrderRate())
                 ->setLineNumber('1')
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getGrandTotal());
@@ -716,8 +758,8 @@ class OrderHelper extends AbstractHelper
      */
     public function getMagentoOrderGivenDocumentId($documentId)
     {
-        $order = null;
-        $orderList  = $this->orderRepository->getList(
+        $order     = null;
+        $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
             addFilter('document_id', $documentId)->create()
         )->getItems();
@@ -747,11 +789,12 @@ class OrderHelper extends AbstractHelper
         $customerId = 0,
         $sortOrder = null
     ) {
-        $orders = null;
+        $orders    = null;
+        $websiteId = $this->storeManager->getStore($this->lsr->getCurrentStoreId());
         try {
-            $orderStatuses   = $this->lsr->getStoreConfig(
+            $orderStatuses   = $this->lsr->getWebsiteConfig(
                 LSR::LSR_RESTRICTED_ORDER_STATUSES,
-                $this->lsr->getCurrentStoreId()
+                $websiteId
             );
             $criteriaBuilder = $this->basketHelper->getSearchCriteriaBuilder();
 
@@ -852,7 +895,7 @@ class OrderHelper extends AbstractHelper
      * For cancelling the order in LS central
      * @param $documentId
      * @param $storeId
-     * @return string
+     * @return OrderCancelResponse|ResponseInterface|string|null
      */
     public function orderCancel($documentId, $storeId)
     {
@@ -867,7 +910,51 @@ class OrderHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
-        return $response;
+
+        return $response ? $response->getOrderCancelResult() : $response;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Formulate order cancel response
+     *
+     * @param $response
+     * @param $order
+     * @return void
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function formulateOrderCancelResponse($response, $order)
+    {
+        if (version_compare($this->lsr->getOmniVersion(), '2022.12.0', '>')) {
+            if (!$response) {
+                $this->formulateException($order);
+            }
+        } else {
+            if ($response !== "") {
+                $this->formulateException($order);
+            }
+        }
+    }
+
+    /**
+     * Formulate Exception in case of error
+     *
+     * @param $order
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function formulateException($order)
+    {
+        $message = __('Order could not be canceled from LS Central. Try again later.');
+        $order->addCommentToStatusHistory($message);
+        $this->orderRepository->save($order);
+        throw new LocalizedException(__($message));
     }
 
     /**
@@ -945,5 +1032,66 @@ class OrderHelper extends AbstractHelper
     public function getDateTimeObject()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * Order status is not one of restricted order statuses
+     *
+     * @param Model\Order $order
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isAllowed($order)
+    {
+        $websiteId     = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
+        $orderStatuses = $this->lsr->getWebsiteConfig(
+            LSR::LSR_RESTRICTED_ORDER_STATUSES,
+            $websiteId
+        );
+
+        $status = $order->getStatus();
+
+        return empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+    }
+
+    /**
+     * Getting price with currency from store
+     *
+     * @param $priceCurrency
+     * @param $amount
+     * @param $currency
+     * @param $storeId
+     * @param $orderType
+     * @return mixed
+     */
+    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
+    {
+        $currencyObject = null;
+
+        if (empty($currency) && empty($storeId) && !$this->currentOrder) {
+            $this->currentOrder = $this->getGivenValueFromRegistry('current_order');
+        }
+
+        if (empty($currency) && empty($storeId) && empty($orderType) && $this->currentOrder) {
+            if (is_array($this->currentOrder)) {
+                foreach ($this->currentOrder as $order) {
+                    $currency  = $order->getStoreCurrency();
+                    $orderType = $order->getIdType();
+                }
+            } else {
+                $currency  = $this->currentOrder->getStoreCurrency();
+                $orderType = $this->currentOrder->getIdType();
+            }
+        }
+
+        if ($orderType != DocumentIdType::RECEIPT) {
+            $currency = null;
+        }
+
+        if (!empty($currency)) {
+            $currencyObject = $this->currencyFactory->create()->load($currency);
+        }
+
+        return $priceCurrency->format($amount, false, 2, null, $currencyObject);
     }
 }

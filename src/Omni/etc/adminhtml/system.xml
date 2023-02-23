@@ -73,18 +73,18 @@
                    translate="label"
                    type="text"
                    sortOrder="50"
-                   showInWebsite="1">
+                   showInWebsite="1" showInStore="1" showInDefault="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Service Down Notification</label>
                 <field id="notification" translate="label" type="select" sortOrder="1"
-                       showInWebsite="1">
+                       showInWebsite="1" showInStore="1" showInDefault="1">
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="email" translate="label" type="text" sortOrder="2"
-                       showInWebsite="1">
+                       showInWebsite="1" showInStore="1" showInDefault="1">
                     <label>Notification Email</label>
                     <depends>
                         <field id="*/*/notification">1</field>
@@ -365,16 +365,16 @@
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\RestrictedOrderStatuses</source_model>
                     <comment>Order will not be synced to LS Central based on the selected order status, please leave it empty if you want to sync all orders to LS Central independent of the order status</comment>
                 </field>
-                <field id="stock_validation_active" translate="label" type="select"  sortOrder="7" showInWebsite="1">
+                <field id="stock_validation_active" translate="label" type="select" sortOrder="7" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable Stock Validation Before Order Creation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="graphql_stock_validation_active" translate="label" type="select"  sortOrder="8" showInWebsite="1">
+                <field id="graphql_stock_validation_active" translate="label" type="select" sortOrder="8" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable Stock Validation Before Order Creation via GraphQl</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>
-            <group id="delivery_pickup_date_time"
+            <group id="ls_delivery_pickup_date_time"
                    translate="label"
                    type="text"
                    sortOrder="140"
@@ -385,13 +385,13 @@
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
                 <label>Delivery and Pickup Date Management</label>
-                <field id="pickup_date_time_slot" translate="label" type="select" sortOrder="6" showInDefault="1"
-                       showInWebsite="1">
+                <field id="pickup_date_time_slot" translate="label" type="select" sortOrder="6"
+                       showInDefault="1" showInStore="1" showInWebsite="1">
                     <label>Show Pick up/Delivery Date and Time Slots</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="pickup_time_interval" translate="label" type="text" sortOrder="6" showInDefault="1"
-                       showInWebsite="1">
+                       showInStore="1" showInWebsite="1">
                     <depends>
                         <field id="ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot">1</field>
                     </depends>
@@ -399,7 +399,7 @@
                     <comment>Time interval between pickup/delivery slots in minutes</comment>
                 </field>
                 <field id="pickup_date_format" translate="label" type="text" sortOrder="7" showInDefault="1"
-                       showInWebsite="1">
+                      showInStore="1" showInWebsite="1">
                     <depends>
                         <field id="ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot">1</field>
                     </depends>
@@ -410,7 +410,7 @@
                        showInWebsite="1"
                        showInStore="1">
                     <depends>
-                        <field id="ls_mag/hospitality/pickup_date_time_slot">1</field>
+                        <field id="ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot">1</field>
                     </depends>
                     <label>Pickup/Delivery Time Format</label>
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\TimeFormat</source_model>

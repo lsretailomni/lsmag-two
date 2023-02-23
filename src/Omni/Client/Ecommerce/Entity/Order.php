@@ -55,6 +55,11 @@ class Order extends Entity
     protected $ContactName = null;
 
     /**
+     * @property string $Currency
+     */
+    protected $Currency = null;
+
+    /**
      * @property string $CustomerId
      */
     protected $CustomerId = null;
@@ -301,6 +306,24 @@ class Order extends Entity
     public function getContactName()
     {
         return $this->ContactName;
+    }
+
+    /**
+     * @param string $Currency
+     * @return $this
+     */
+    public function setCurrency($Currency)
+    {
+        $this->Currency = $Currency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->Currency;
     }
 
     /**

@@ -8,7 +8,12 @@ define([
     return function (Component) {
         return Component.extend({
             validateShippingInformation: function () {
-                let isEnabledTimeSlots = window.checkoutConfig.shipping.pickup_date_timeslots.enabled;
+                if (!window.checkoutConfig.ls_enabled) {
+                    return this._super();
+                }
+
+                let isEnabledTimeSlots = window.checkoutConfig.shipping.pickup_date_timeslots.enabled,
+                    storeType = window.checkoutConfig.shipping.pickup_date_timeslots.store_type;
 
                 if (quote.shippingMethod().carrier_code === 'clickandcollect' && $('#pickup-store').val() === '') {
                     let stores = $.parseJSON(window.checkoutConfig.shipping.select_store.stores);
@@ -23,6 +28,7 @@ define([
                 }
 
                 if (isEnabledTimeSlots &&
+                    storeType === 0 &&
                     quote.shippingMethod().carrier_code !== 'clickandcollect' &&
                     ($("[name='pickup-date']").val() === '')
                 ) {

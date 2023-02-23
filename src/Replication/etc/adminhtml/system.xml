@@ -161,12 +161,36 @@
                 <field id="product_assignment_to_category_batch_size"
                        translate="label"
                        type="text"
-                       sortOrder="150"
+                       sortOrder="200"
                        showInDefault="1"
                        showInWebsite="0"
                        showInStore="0">
                     <label>Product Assignment to Category Batch Size</label>
                     <comment>Product Assignment to Category Batch Size</comment>
+                </field>
+                <field id="convert_attribute_to_visual_swatch"
+                       translate="label"
+                       type="select"
+                       sortOrder="210"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Convert Attributes To Visual Swatch</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Convert Attribute To Visual Swatch</comment>
+                </field>
+                <field id="visual_type_attributes"
+                       translate="label"
+                       type="text"
+                       sortOrder="220"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Variant Attributes that Convert to Visual Swatch Type</label>
+                    <comment>Comma seperated list of Attributes that convert to Visual Swatch Type. The attribute name should have a prefix ls_ for e.g ls_colour.</comment>
+                    <depends>
+                        <field id="ls_mag/replication/convert_attribute_to_visual_swatch">1</field>
+                    </depends>
                 </field>
             </group>
             <group id="one_list"

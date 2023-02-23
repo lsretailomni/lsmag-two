@@ -12,7 +12,7 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * For sync soft attribute value
+ * Cron responsible to update products and variants with soft attribute values
  */
 class SyncAttributesValue extends ProductCreateTask
 {
@@ -24,8 +24,10 @@ class SyncAttributesValue extends ProductCreateTask
     public $remainingRecords;
 
     /**
-     * @param null $storeData
-     * @throws InputException
+     * Entry point for cron
+     *
+     * @param mixed $storeData
+     * @return void
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -75,9 +77,10 @@ class SyncAttributesValue extends ProductCreateTask
     }
 
     /**
-     * @param null $storeData
-     * @return array|int[]
-     * @throws InputException
+     * Execute manually
+     *
+     * @param mixed $storeData
+     * @return int[]
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -110,89 +113,88 @@ class SyncAttributesValue extends ProductCreateTask
             $collection,
             $criteria,
             'LinkField1',
-            null,
-            'catalog_product_entity',
-            'sku'
+            'LinkField2',
+            ['repl_attribute_value_id']
         );
-
-        if ($collection->getSize() > 0) {
-            /** @var ReplAttributeValue $attributeValue */
-            foreach ($collection as $attributeValue) {
-                try {
-                    // skipping is failed and processed in case of variant attribute value
-                    $checkIsVariant   = false;
-                    $checkIsException = false;
-                    $itemId           = $attributeValue->getLinkField1();
-                    $variantId        = $attributeValue->getLinkField2();
-                    $sku              = $itemId;
-                    if (!empty($variantId)) {
-                        $sku            = $sku . '-' . $variantId;
-                        $checkIsVariant = true;
-                    }
-                    $product        = $this->productRepository->get($sku, true, 0);
-                    $formattedCode  = $this->replicationHelper->formatAttributeCode(
-                        $attributeValue->getCode()
-                    );
-                    $attributeSetId = $product->getAttributeSetId();
-                    $this->attributeAssignmentToAttributeSet(
-                        $attributeSetId,
-                        $formattedCode,
-                        LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP
-                    );
-                    $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
-                    if ($attribute->getFrontendInput() == 'multiselect') {
-                        $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
-                            $itemId,
-                            $variantId,
-                            $attributeValue->getCode(),
-                            $formattedCode,
-                            $this->store->getId()
-                        );
-                    } elseif ($attribute->getFrontendInput() == 'boolean') {
-                        if (strtolower($attributeValue->getValue()) == 'yes') {
-                            $value = 1;
-                        } else {
-                            $value = 0;
-                        }
-                    } else {
-                        $value = $attributeValue->getValue();
-                    }
-
-                    $product->setData($formattedCode, $value);
-                    $product->getResource()->saveAttribute($product, $formattedCode);
-
-                    $uomCodes = $this->getUomCodesProcessed($itemId);
-                    $this->replicationHelper->processUomAttributes(
-                        $uomCodes,
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $this->store->getWebsiteId());
+        /** @var ReplAttributeValue $attributeValue */
+        foreach ($collection as $attributeValue) {
+            try {
+                // skipping is failed and processed in case of variant attribute value
+                $checkIsVariant   = false;
+                $checkIsException = false;
+                $itemId           = $attributeValue->getLinkField1();
+                $variantId        = $attributeValue->getLinkField2();
+                $product          = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $itemId,
+                    $variantId,
+                    '',
+                    0
+                );
+                $formattedCode    = $this->replicationHelper->formatAttributeCode(
+                    $attributeValue->getCode()
+                );
+                $attributeSetId   = $product->getAttributeSetId();
+                $this->attributeAssignmentToAttributeSet(
+                    $attributeSetId,
+                    $formattedCode,
+                    LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP
+                );
+                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                if ($attribute->getFrontendInput() == 'multiselect') {
+                    $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
                         $itemId,
-                        $sku,
-                        $formattedCode,
-                        $value,
                         $variantId,
-                        $this->productRepository
+                        $attributeValue->getCode(),
+                        $formattedCode,
+                        $this->store->getId()
                     );
-                } catch (Exception $e) {
-                    if (!$checkIsVariant) {
-                        $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
-                        $this->logger->debug($e->getMessage());
-                        $attributeValue->setData('is_failed', 1);
+                } elseif ($attribute->getFrontendInput() == 'boolean') {
+                    if (strtolower($attributeValue->getValue()) == 'yes') {
+                        $value = 1;
+                    } else {
+                        $value = 0;
                     }
-                    $checkIsException = true;
+                } else {
+                    $value = $attributeValue->getValue();
                 }
-                if (!$checkIsVariant || !$checkIsException) {
-                    $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $attributeValue->setData('processed', 1);
-                    $attributeValue->setData('is_updated', 0);
-                    // @codingStandardsIgnoreLine
-                    $this->replAttributeValueRepositoryInterface->save($attributeValue);
+
+                $product->setData($formattedCode, $value);
+                $product->getResource()->saveAttribute($product, $formattedCode);
+
+                $uomCodes = $this->getUomCodesProcessed($itemId);
+                $this->replicationHelper->processUomAttributes(
+                    $uomCodes,
+                    $itemId,
+                    $formattedCode,
+                    $value,
+                    $variantId,
+                    $this->productRepository
+                );
+            } catch (Exception $e) {
+                if (!$checkIsVariant) {
+                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                    $this->logger->debug($e->getMessage());
+                    $attributeValue->setData('is_failed', 1);
                 }
+                $checkIsException = true;
+            }
+            if (!$checkIsVariant || !$checkIsException) {
+                $attributeValue->setData('processed_at', $this->replicationHelper->getDateTime());
+                $attributeValue->setData('processed', 1);
+                $attributeValue->setData('is_updated', 0);
+                // @codingStandardsIgnoreLine
+                $this->replAttributeValueRepositoryInterface->save($attributeValue);
             }
         }
     }
 
     /**
-     * @param $storeData
+     * Get remaining records
+     *
+     * @param mixed $storeData
      * @return int
+     * @throws LocalizedException
      */
     public function getRemainingRecords($storeData)
     {
@@ -206,10 +208,10 @@ class SyncAttributesValue extends ProductCreateTask
                 $collection,
                 $criteria,
                 'LinkField1',
-                null,
-                'catalog_product_entity',
-                'sku'
+                'LinkField2',
+                ['repl_attribute_value_id']
             );
+            $this->replicationHelper->applyProductWebsiteJoin($collection, $this->store->getWebsiteId());
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;

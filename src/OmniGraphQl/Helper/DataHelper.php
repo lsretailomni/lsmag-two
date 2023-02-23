@@ -3,14 +3,19 @@
 namespace Ls\OmniGraphQl\Helper;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
+use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
+use \Ls\Omni\Model\Checkout\DataProvider;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\CustomerRepositoryInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Quote\Api\Data\AddressInterface;
 use Magento\Quote\Api\Data\AddressInterfaceFactory;
 use Magento\Customer\Model\CustomerFactory;
@@ -35,7 +40,6 @@ use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\Information;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use \Ls\Omni\Model\Checkout\DataProvider;
 
 /**
  * Useful helper functions for the module
@@ -127,6 +131,14 @@ class DataHelper extends AbstractHelper
 
     /** @var DataProvider */
     public DataProvider $dataProvider;
+    /**
+     * @var TimezoneInterface
+     */
+    private TimezoneInterface $timeZoneInterface;
+    /**
+     * @var LSR
+     */
+    private LSR $lsr;
 
     /**
      * @param Context $context
@@ -149,6 +161,8 @@ class DataHelper extends AbstractHelper
      * @param StoreManagerInterface $storeManager
      * @param AddressInterfaceFactory $addressFactory
      * @param DataProvider $dataProvider
+     * @param TimezoneInterface $timeZoneInterface
+     * @param LSR $lsr
      */
     public function __construct(
         Context $context,
@@ -170,7 +184,9 @@ class DataHelper extends AbstractHelper
         Information $storeInfo,
         StoreManagerInterface $storeManager,
         AddressInterfaceFactory $addressFactory,
-        DataProvider $dataProvider
+        DataProvider $dataProvider,
+        TimezoneInterface $timeZoneInterface,
+        LSR $lsr
     ) {
         parent::__construct($context);
         $this->eventManager           = $eventManager;
@@ -191,7 +207,9 @@ class DataHelper extends AbstractHelper
         $this->storeInfo              = $storeInfo;
         $this->storeManager           = $storeManager;
         $this->addressFactory         = $addressFactory;
-        $this->dataProvider          = $dataProvider;
+        $this->dataProvider           = $dataProvider;
+        $this->timeZoneInterface      = $timeZoneInterface;
+        $this->lsr                    = $lsr;
     }
 
     /**
@@ -310,7 +328,7 @@ class DataHelper extends AbstractHelper
     {
         $storeHours = $this->omniDataHelper->getStoreHours($storeId);
         $hours      = [];
-        $i = 0;
+        $i          = 0;
 
         $hoursFormat = $this->scopeConfig->getValue(
             LSR::LS_STORES_OPENING_HOURS_FORMAT,
@@ -322,10 +340,10 @@ class DataHelper extends AbstractHelper
             foreach ($storeHour as $key => $hour) {
                 $hours[$i]['day_of_week'] = $hour['day'];
                 if ($hour['type'] == "Normal") {
-                    $normalTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $normalTypeOpenHours  = date($hoursFormat, strtotime($hour['open']));
                     $normalTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
                 } elseif ($hour['type'] == "Closed") {
-                    $closedTypeOpenHours = date($hoursFormat, strtotime($hour['open']));
+                    $closedTypeOpenHours  = date($hoursFormat, strtotime($hour['open']));
                     $closedTypeCloseHours = date($hoursFormat, strtotime($hour['close']));
                 }
 
@@ -333,9 +351,9 @@ class DataHelper extends AbstractHelper
                     && ($normalTypeOpenHours == $closedTypeOpenHours)
                     && ($normalTypeCloseHours == $closedTypeCloseHours)
                 ) {
-                    $hours[$i]['hour_types'][0]  = $this->formatHoursAccordingToType($hour);
+                    $hours[$i]['hour_types'][0] = $this->formatHoursAccordingToType($hour);
                 } else {
-                    $hours[$i]['hour_types'][$key]  = $this->formatHoursAccordingToType($hour);
+                    $hours[$i]['hour_types'][$key] = $this->formatHoursAccordingToType($hour);
                 }
             }
             $i++;
@@ -439,8 +457,8 @@ class DataHelper extends AbstractHelper
      */
     public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId)
     {
-        $store = $this->storeHelper->getStore($websiteId, $storeId);
-        $slots = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
+        $store         = $this->storeHelper->getStore($websiteId, $storeId);
+        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
         $formattedData = [];
 
         foreach ($slots as $index => $slot) {
@@ -489,7 +507,7 @@ class DataHelper extends AbstractHelper
     public function getAnonymousAddress()
     {
         $storeInformation = $this->getStoreInformation();
-        $streets = [$storeInformation->getData('street_line1')];
+        $streets          = [$storeInformation->getData('street_line1')];
 
         if ($storeInformation->getData('street_line2')) {
             $streets[] = $storeInformation->getData('street_line2');
@@ -531,5 +549,56 @@ class DataHelper extends AbstractHelper
     public function getStoreNameById($storeId)
     {
         return $this->omniDataHelper->getStoreNameById($storeId);
+    }
+
+    /**
+     * Format coupon code response
+     *
+     * @param PublishedOffer $coupon
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
+    {
+        $responseArr = [];
+        if ($coupon->getDescription()) {
+            $responseArr['coupon_description'] = $coupon->getDescription();
+        }
+        if ($coupon->getDetails()) {
+            $responseArr['coupon_details'] = $coupon->getDetails();
+        }
+        if ($coupon->getCode() != DiscountType::PROMOTION) {
+            if ($coupon->getExpirationDate()) {
+                $responseArr['coupon_expire_date'] = $this->getFormattedOfferExpiryDate($coupon->getExpirationDate());
+            }
+            if ($coupon->getOfferId()) {
+                $responseArr['offer_id'] = $coupon->getOfferId();
+            }
+        }
+
+        return $responseArr;
+    }
+
+    /**
+     * Get formatted expiry date
+     *
+     * @param $date
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getFormattedOfferExpiryDate($date)
+    {
+        try {
+            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+                LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
+                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
+                $this->lsr->getActiveWebStore()
+            ));
+
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return null;
     }
 }

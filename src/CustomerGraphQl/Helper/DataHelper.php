@@ -14,6 +14,8 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper as Helper;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\ItemHelper;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -40,6 +42,16 @@ class DataHelper
     private $orderHelper;
 
     /**
+     * @var Data
+     */
+    private $data;
+
+    /**
+     * @var ItemHelper
+     */
+    public $itemHelper;
+
+    /**
      * @var LSR
      */
     private $lsr;
@@ -53,6 +65,8 @@ class DataHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
+     * @param Data $data
+     * @param ItemHelper $itemHelper
      * @param Currency $currencyHelper
      * @param LSR $lsr
      */
@@ -60,12 +74,16 @@ class DataHelper
         LoyaltyHelper $loyaltyHelper,
         OrderHelper $orderHelper,
         Helper $helper,
+        Data $data,
+        ItemHelper $itemHelper,
         Currency $currencyHelper,
         LSR $lsr
     ) {
         $this->loyaltyHelper  = $loyaltyHelper;
         $this->orderHelper    = $orderHelper;
         $this->helper         = $helper;
+        $this->data           = $data;
+        $this->itemHelper     = $itemHelper;
         $this->currencyHelper = $currencyHelper;
         $this->lsr            = $lsr;
     }
@@ -93,8 +111,8 @@ class DataHelper
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                 $result = $this->loyaltyHelper->getMemberInfo();
                 if ($result) {
-                    $customerAccount['account_id']   = $result->getAccount()->getId();
-                    $scheme = $result->getAccount()->getScheme();
+                    $customerAccount['account_id'] = $result->getAccount()->getId();
+                    $scheme                        = $result->getAccount()->getScheme();
                     if (!empty($scheme)) {
                         $schemeArray                  = [];
                         $schemeArray['club_name']     = $scheme->getClub()->getName();
@@ -157,8 +175,11 @@ class DataHelper
             $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
             $userId    = $context->getUserId();
             $this->helper->setCustomerValuesInSession($userId, $websiteId);
-            $salesEntry           = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
-            $salesEntriesArray [] = $this->getSaleEntry($salesEntry);
+            $salesEntry = $this->orderHelper->getOrderDetailsAgainstId($documentId, $type);
+            $magOrder   = $this->orderHelper->getMagentoOrderGivenDocumentId($documentId);
+            if (!empty($salesEntry)) {
+                $salesEntriesArray [] = $this->getSaleEntry($salesEntry, $magOrder);
+            }
         }
 
         return $salesEntriesArray;
@@ -168,16 +189,28 @@ class DataHelper
      * Get Sales entry info
      *
      * @param SalesEntry $salesEntry
+     * @param $magOrder
      * @return array
+     * @throws NoSuchEntityException
      */
-    public function getSaleEntry(SalesEntry $salesEntry): array
+    public function getSaleEntry(SalesEntry $salesEntry, $magOrder = null): array
     {
+        $externalId        = '';
+        $orderCurrencyCode = '';
+        if (!$magOrder) {
+            $magOrder = $this->orderHelper->getOrderByDocumentId($salesEntry);
+        }
+
+        if (!empty($magOrder)) {
+            $externalId        = $magOrder->getIncrementId();
+            $orderCurrencyCode = $magOrder->getOrderCurrencyCode();
+        }
         return [
             'id'                      => $salesEntry->getId(),
             'click_and_collect_order' => $salesEntry->getClickAndCollectOrder(),
             'document_reg_time'       => $salesEntry->getDocumentRegTime(),
             'document_id'             => $salesEntry->getCustomerOrderNo(),
-            'external_id'             => $salesEntry->getExternalId(),
+            'external_id'             => ($salesEntry->getExternalId()) ?: $externalId,
             'id_type'                 => $salesEntry->getIdType(),
             'line_item_count'         => $salesEntry->getLineItemCount(),
             'points_rewarded'         => $salesEntry->getPointsRewarded(),
@@ -188,13 +221,14 @@ class DataHelper
             'status'                  => $salesEntry->getStatus(),
             'store_id'                => $salesEntry->getStoreId(),
             'store_name'              => $salesEntry->getStoreName(),
+            'store_currency'          => ($salesEntry->getStoreCurrency()) ?: $orderCurrencyCode,
             'total_amount'            => $salesEntry->getTotalAmount(),
             'total_net_amount'        => $salesEntry->getTotalNetAmount(),
             'total_discount'          => $salesEntry->getTotalDiscount(),
             'contact_address'         => $this->getAddress($salesEntry->getContactAddress()),
             'ship_to_address'         => $this->getAddress($salesEntry->getShipToAddress()),
             'payments'                => $this->getPayments($salesEntry->getPayments()),
-            'items'                   => $this->getItems($salesEntry->getLines())
+            'items'                   => $this->getItems($salesEntry->getLines(), $magOrder)
         ];
     }
 
@@ -224,18 +258,24 @@ class DataHelper
      *
      * @param ArrayOfSalesEntryPayment $payments
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getPayments(ArrayOfSalesEntryPayment $payments): array
     {
-        $paymentsArray = [];
+        $paymentsArray     = [];
+        $tenderTypeMapping = $this->data->getTenderTypesPaymentMapping();
         foreach ($payments->getSalesEntryPayment() as $payment) {
+            $tenderType = $payment->getTenderType();
+            if (array_key_exists($tenderType, $tenderTypeMapping)) {
+                $tenderType = $tenderTypeMapping[$tenderType];
+            }
             $paymentsArray[] = [
                 'amount'          => $payment->getAmount(),
                 'card_no'         => $payment->getCardNo(),
                 'currency_code'   => $payment->getCurrencyCode(),
                 'currency_factor' => $payment->getCurrencyFactor(),
                 'line_number'     => $payment->getLineNumber(),
-                'tender_type'     => $payment->getTenderType(),
+                'tender_type'     => $tenderType,
             ];
         }
 
@@ -246,9 +286,10 @@ class DataHelper
      * Get items array
      *
      * @param ArrayOfSalesEntryLine $items
+     * @param $magOrder
      * @return array
      */
-    public function getItems(ArrayOfSalesEntryLine $items): array
+    public function getItems(ArrayOfSalesEntryLine $items, $magOrder = null): array
     {
         $itemsArray = [];
         foreach ($items->getSalesEntryLine() as $item) {

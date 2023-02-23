@@ -220,6 +220,17 @@ interface LoyItemInterface
     public function getItemFamilyCode();
 
     /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode);
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode();
+
+    /**
      * @param string $Price
      * @return $this
      */

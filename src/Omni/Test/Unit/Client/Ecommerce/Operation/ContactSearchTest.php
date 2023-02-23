@@ -19,7 +19,7 @@ class ContactSearchTest extends TestCase
 
     public $email;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $baseUrl        = $_ENV['BASE_URL'];
         $this->username = $_ENV['USERNAME'];

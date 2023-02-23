@@ -19,6 +19,7 @@ use MyCLabs\Enum\Enum;
  * @$method static LineType FREE_TEXT()
  * @$method static LineType COUPON()
  * @$method static LineType SHIPPING()
+ * @$method static LineType DEAL()
  * @$method static LineType UNKNOWN()
  */
 class LineType extends Enum
@@ -38,6 +39,8 @@ class LineType extends Enum
     public const COUPON = 'Coupon';
 
     public const SHIPPING = 'Shipping';
+
+    public const DEAL = 'Deal';
 
     public const UNKNOWN = 'Unknown';
 }

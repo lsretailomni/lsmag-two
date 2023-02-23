@@ -11,10 +11,12 @@ use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
+use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 
 /**
  * Helper class to handle webhooks function
@@ -63,6 +65,11 @@ class Data
     public $loyaltyHelper;
 
     /**
+     * @var SerializerJson
+     */
+    public $jsonSerializer;
+
+    /**
      * @param Logger $logger
      * @param OrderRepositoryInterface $orderRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -71,6 +78,7 @@ class Data
      * @param OmniHelper $omniHelper
      * @param ItemHelper $itemHelper
      * @param LoyaltyHelper $loyaltyHelper
+     * @param SerializerJson $jsonSerializer
      */
     public function __construct(
         Logger $logger,
@@ -80,7 +88,9 @@ class Data
         LSR $lsr,
         OmniHelper $omniHelper,
         ItemHelper $itemHelper,
-        LoyaltyHelper $loyaltyHelper
+        LoyaltyHelper $loyaltyHelper,
+        SerializerJson $jsonSerializer,
+        \Magento\Catalog\Model\ProductRepository $productRepository
     ) {
 
         $this->logger                = $logger;
@@ -91,6 +101,8 @@ class Data
         $this->omniHelper            = $omniHelper;
         $this->itemHelper            = $itemHelper;
         $this->loyaltyHelper         = $loyaltyHelper;
+        $this->jsonSerializer        = $jsonSerializer;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -140,6 +152,16 @@ class Data
     }
 
     /**
+     * Getting sender name
+     * @param $storeId
+     * @return string
+     */
+    public function getSenderName($storeId)
+    {
+        return $this->lsr->getStoreConfig('trans_email/ident_general/name', $storeId);
+    }
+
+    /**
      * Getting store email
      * @param $storeId
      * @return string
@@ -150,63 +172,74 @@ class Data
     }
 
     /**
-     * Get configuration for pickup email
-     * @param $storeId
+     * Get configuration for notification type
+     *
+     * @param mixed $storeId
      * @return string
      */
-    public function isPickupNotifyEnabled($storeId)
+    public function getNotificationType($storeId)
     {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_PICKUP, $storeId);
+        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_TYPE, $storeId);
     }
 
     /**
-     * Get configuration for collected email
-     * @param $storeId
-     * @return string
+     * Is notification enabled
+     *
+     * @param string $notificationType
+     * @param string $orderStatus
+     * @param string $storeId
+     * @return bool
      */
-    public function isCollectedNotifyEnabled($storeId)
+    public function isNotifyEnabled($notificationType, $orderStatus, $storeId)
     {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_COLLECTED, $storeId);
+        $enabled = false;
+
+        if ($notificationType == LSR::LS_NOTIFICATION_EMAIL) {
+            $config = $this->lsr->getStoreConfig(LSR::LS_EMAIL_NOTIFICATION_ORDER_STATUS, $storeId);
+
+            if (!is_array($config)) {
+                $config = $this->jsonSerializer->unserialize($config);
+            }
+
+            foreach ($config as $item) {
+                if ($item['order_status'] == $orderStatus) {
+                    $enabled = true;
+                    break;
+                }
+            }
+        }
+
+        return $enabled;
     }
 
     /**
-     * Get configuration for collected email
-     * @param $storeId
-     * @return string
+     * Is notification enabled
+     *
+     * @param string $notificationType
+     * @param string $orderStatus
+     * @param string $storeId
+     * @return bool
      */
-    public function isCancelNotifyEnabled($storeId)
+    public function getNotificationTemplate($notificationType, $orderStatus, $storeId)
     {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_CANCEL, $storeId);
-    }
+        $template = '';
 
-    /**
-     * Get configuration for pickup email template
-     * @param $storeId
-     * @return string
-     */
-    public function getPickupTemplate($storeId)
-    {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP, $storeId);
-    }
+        if ($notificationType == LSR::LS_NOTIFICATION_EMAIL) {
+            $config = $this->lsr->getStoreConfig(LSR::LS_EMAIL_NOTIFICATION_ORDER_STATUS, $storeId);
 
-    /**
-     * Get configuration for collected email template
-     * @param $storeId
-     * @return string
-     */
-    public function getCollectedTemplate($storeId)
-    {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED, $storeId);
-    }
+            if (!is_array($config)) {
+                $config = $this->jsonSerializer->unserialize($config);
+            }
 
-    /**
-     * Get configuration for collected email template
-     * @param $storeId
-     * @return string
-     */
-    public function getCancelTemplate($storeId)
-    {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL, $storeId);
+            foreach ($config as $item) {
+                if ($item['order_status'] == $orderStatus) {
+                    $template = $item['email_template'];
+                    break;
+                }
+            }
+        }
+
+        return $template;
     }
 
     /**
@@ -231,7 +264,6 @@ class Data
         $items = [];
         foreach ($order->getAllVisibleItems() as $orderItem) {
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                $orderItem->getProductId(),
                 $orderItem->getSku()
             );
             $totalAmount = 0;
@@ -342,5 +374,17 @@ class Data
     public function getPointRate()
     {
         return $this->loyaltyHelper->getPointRate();
+    }
+
+    /**
+     * Get product by id
+     *
+     * @param $id
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getProductById($id)
+    {
+        return $this->productRepository->getById($id);
     }
 }

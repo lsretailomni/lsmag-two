@@ -116,6 +116,11 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     protected $ItemFamilyCode = null;
 
     /**
+     * @property string $ItemTrackingCode
+     */
+    protected $ItemTrackingCode = null;
+
+    /**
      * @property string $Price
      */
     protected $Price = null;
@@ -588,6 +593,26 @@ class LoyItem extends AbstractModel implements LoyItemInterface, IdentityInterfa
     public function getItemFamilyCode()
     {
         return $this->getData( 'ItemFamilyCode' );
+    }
+
+    /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode)
+    {
+        $this->setData( 'ItemTrackingCode', $ItemTrackingCode );
+        $this->ItemTrackingCode = $ItemTrackingCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode()
+    {
+        return $this->getData( 'ItemTrackingCode' );
     }
 
     /**

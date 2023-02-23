@@ -70,12 +70,15 @@
     <preference for="Ls\Replication\Api\ReplItemRepositoryInterface" type="Ls\Replication\Model\ReplItemRepository"/>
     <preference for="Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface"
                 type="Ls\Replication\Model\ReplItemVariantRegistrationRepository"/>
+    <preference for="Ls\Replication\Api\ReplItemVariantRepositoryInterface"
+                type="Ls\Replication\Model\ReplItemVariantRepository"/>
     <preference for="Ls\Replication\Api\ReplPriceRepositoryInterface" type="Ls\Replication\Model\ReplPriceRepository"/>
     <preference for="Ls\Replication\Api\ReplInvStatusRepositoryInterface"
                 type="Ls\Replication\Model\ReplInvStatusRepository"/>
     <preference for="Ls\Replication\Api\ReplProductGroupRepositoryInterface"
                 type="Ls\Replication\Model\ReplProductGroupRepository"/>
-    <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface" type="Ls\Replication\Model\ReplStoreRepository"/>
+    <preference for="Ls\Replication\Api\ReplStoreRepositoryInterface"
+                type="Ls\Replication\Model\ReplStoreRepository"/>
     <preference for="Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface"
                 type="Ls\Replication\Model\ReplUnitOfMeasureRepository"/>
     <preference for="Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface"
@@ -115,9 +118,12 @@
     <preference for="Ls\Replication\Api\Data\ReplItemInterface" type="Ls\Replication\Model\ReplItem"/>
     <preference for="Ls\Replication\Api\Data\ReplItemVariantRegistrationInterface"
                 type="Ls\Replication\Model\ReplItemVariantRegistration"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemVariantInterface"
+                type="Ls\Replication\Model\ReplItemVariant"/>
     <preference for="Ls\Replication\Api\Data\ReplPriceInterface" type="Ls\Replication\Model\ReplPrice"/>
     <preference for="Ls\Replication\Api\Data\ReplInvStatusInterface" type="Ls\Replication\Model\ReplInvStatus"/>
-    <preference for="Ls\Replication\Api\Data\ReplProductGroupInterface" type="Ls\Replication\Model\ReplProductGroup"/>
+    <preference for="Ls\Replication\Api\Data\ReplProductGroupInterface"
+                type="Ls\Replication\Model\ReplProductGroup"/>
     <preference for="Ls\Replication\Api\Data\ReplStoreInterface" type="Ls\Replication\Model\ReplStore"/>
     <preference for="Ls\Replication\Api\Data\ReplUnitOfMeasureInterface" type="Ls\Replication\Model\ReplUnitOfMeasure"/>
     <preference for="Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface"
@@ -166,6 +172,8 @@
                 type="Ls\Replication\Model\ReplItemSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplItemVariantRegistrationSearchResultsInterface"
                 type="Ls\Replication\Model\ReplItemVariantRegistrationSearchResults"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemVariantSearchResultsInterface"
+                type="Ls\Replication\Model\ReplItemVariantSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplPriceSearchResultsInterface"
                 type="Ls\Replication\Model\ReplPriceSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplInvStatusSearchResultsInterface"
@@ -217,6 +225,9 @@
                 </item>
                 <item name="ls_repl_grids_itemvariantregistration_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplItemVariantRegistration\Grid\Collection
+                </item>
+                <item name="ls_repl_grids_itemvariant_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplItemVariant\Grid\Collection
                 </item>
                 <item name="ls_repl_grids_hierarchy_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplHierarchy\Grid\Collection

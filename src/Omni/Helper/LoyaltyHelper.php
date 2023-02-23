@@ -92,11 +92,21 @@ class LoyaltyHelper extends AbstractHelperOmni
         if (!empty($response) && !empty($response->getResult())) {
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
-                ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()],
+                [
+                    "image" => $response->getResult()->getImage(),
+                    "format" => $response->getResult()->getFormat(),
+                    "location" => $response->getResult()->getLocation(),
+                    "locationType" => $response->getResult()->getLocationType()
+                ],
                 [Type::CACHE_TAG],
                 604800
             );
-            return ["image" => $response->getResult()->getImage(), "format" => $response->getResult()->getFormat()];
+            return [
+                "image" => $response->getResult()->getImage(),
+                "format" => $response->getResult()->getFormat(),
+                "location" => $response->getResult()->getLocation(),
+                "locationType" => $response->getResult()->getLocationType()
+            ];
         }
         return [];
     }
@@ -401,46 +411,32 @@ class LoyaltyHelper extends AbstractHelperOmni
             $storeId            = $this->lsr->getActiveWebStore();
             $cardId             = $this->contactHelper->getCardIdFromCustomerSession();
             $publishedOffersObj = $this->getPublishedOffers($cardId, $storeId);
-            $itemsInCart        = $this->checkoutSession->getQuote()->getAllItems();
-            $itemsSku           = [];
-            $coupons            = [];
+            $itemsInCart        = $this->checkoutSession->getQuote()->getAllVisibleItems();
+            $coupons            = $itemIdentifiers = [];
             /** @var Item $item */
             foreach ($itemsInCart as $item) {
-                if (!empty($item->getParentItemId())) {
-                    $parentItem = $item->getParentItem();
-                    $parentSku  = $parentItem->getProduct()->getData('sku');
-                    if (!empty($parentSku)) {
-                        if (!empty($parentItem)) {
-                            $itemsSku[] = $parentSku;
-                            if (!empty($item->getProduct()->getData('uom'))) {
-                                $itemsSku[] = $parentSku . '-' . $item->getProduct()->getData('uom');
-                            }
-                        }
-                    }
-                } else {
-                    $itemsSku[] = $item->getSku();
-                    if (!empty($item->getProduct()->getData('uom'))) {
-                        $itemsSku[] = $item->getSku() . '-' . $item->getProduct()->getData('uom');
-                    }
-                }
+                list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
+                    $item->getSku(),
+                    $item->getProductId()
+                );
+                $itemIdentifiers[] = [
+                    'itemId' => $itemId,
+                    'variantId' => $variantId,
+                    'uom' => $uom,
+                    'baseUom' => $baseUom
+                ];
             }
 
             if ($publishedOffersObj) {
                 foreach ($publishedOffersObj as $each) {
                     $getPublishedOfferLineArray = $each->getOfferLines()->getPublishedOfferLine();
+
                     if ($each->getCode() == "Coupon" && $each->getOfferLines()) {
                         foreach ($getPublishedOfferLineArray as $publishedOfferLine) {
-                            if (!empty($publishedOfferLine->getVariant())) {
-                                $itemSku = $publishedOfferLine->getId() . '-' . $publishedOfferLine->getVariant();
-                            } else {
-                                $itemSku = $publishedOfferLine->getId();
-                            }
-                            if (!empty($publishedOfferLine->getUnitOfMeasure())) {
-                                $itemSku = $itemSku . '-' . $publishedOfferLine->getUnitOfMeasure();
-                            }
-                            if (in_array($itemSku, $itemsSku)) {
+                            if ($this->itemExistsInCart($publishedOfferLine, $itemIdentifiers)) {
                                 $coupons[] = $each;
                             }
+
                             if ($publishedOfferLine->getLineType() == Entity\Enum\OfferDiscountLineType::PRODUCT_GROUP
                                 || $publishedOfferLine->getLineType() == OfferDiscountLineType::ITEM_CATEGORY
                                 || $publishedOfferLine->getLineType() == OfferDiscountLineType::SPECIAL_GROUP
@@ -454,6 +450,36 @@ class LoyaltyHelper extends AbstractHelperOmni
             }
         }
         return [];
+    }
+
+    /**
+     * Item exists in cart
+     *
+     * @param mixed $publishedOfferLine
+     * @param array $itemIdentifiers
+     * @return bool
+     */
+    public function itemExistsInCart($publishedOfferLine, $itemIdentifiers)
+    {
+        $flag = false;
+
+        foreach ($itemIdentifiers as $identifier) {
+            if ($publishedOfferLine->getId() == $identifier['itemId'] &&
+                (
+                    $publishedOfferLine->getVariant() == $identifier['variantId'] ||
+                    $publishedOfferLine->getVariant() == ''
+                ) &&
+                (
+                    $publishedOfferLine->getUnitOfMeasure() == $identifier['uom'] ||
+                    ($publishedOfferLine->getUnitOfMeasure() == '' && $identifier['uom'] == $identifier['baseUom'])
+                )
+            ) {
+                $flag = true;
+                break;
+            }
+        }
+
+        return $flag;
     }
 
     /**

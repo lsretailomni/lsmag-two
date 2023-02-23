@@ -30,6 +30,7 @@ class Items extends AbstractItems
      * @var Collection|null
      */
     private $itemCollection;
+
     /**
      * @param Context $context
      * @param LSR $lsr
@@ -57,11 +58,19 @@ class Items extends AbstractItems
     public function getItems()
     {
         $type    = $this->_request->getParam('type');
+        $order        = $this->getOrder();
         if ($this->getMagOrder() && $type != 'Receipt') {
+            $magentoOrder = $this->getMagOrder();
+
+            if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
+                if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
+                    $magentoOrder = null;
+                }
+            }
             return $this->itemCollection->getItems();
         }
 
-        $orderLines = $this->getOrder()->getLines()->getSalesEntryLine();
+        $orderLines = $order->getLines()->getSalesEntryLine();
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {

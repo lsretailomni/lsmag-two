@@ -116,6 +116,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //check for Attribute Variant
     const SC_SUCCESS_CRON_ATTRIBUTE_VARIANT = 'ls_mag/replication/success_repl_attribute_variant';
 
+    //check for Standard Attribute Variant
+    const SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT = 'ls_mag/replication/success_repl_attribute_standard_variant';
+
     //check for Category
     const SC_SUCCESS_CRON_CATEGORY = 'ls_mag/replication/success_repl_category';
     const SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_category';
@@ -168,6 +171,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_TRANSLATION_ID_ATTRIBUTE = 'T0010000784-F0000000005';
     const SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE = 'T0010000785-F0000000003';
     const SC_TRANSLATION_ID_PRODUCT_ATTRIBUTE_VALUE = 'T0010000786-F0000000003';
+    const SC_TRANSLATION_ID_EXTENDED_VARIANT_VALUE = 'T0010001413-F0000000011';
+    const SC_TRANSLATION_ID_EXTENDED_VARIANT = 'T0010001412-F0000000011';
+    const SC_TRANSLATION_ID_STANDARD_VARIANT_ATTRIBUTE_OPTION_VALUE = 'T0000005401-F0000000004';
     const SC_ITEM_HTML_JOB_CODE = 'repl_html_translation';
 
     const SC_VERSION_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_version';
@@ -232,10 +238,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
 
     //Delivery and pickup time options
-    const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/delivery_pickup_date_time/pickup_date_time_slot';
-    const PICKUP_TIME_INTERVAL = 'ls_mag/delivery_pickup_date_time/pickup_time_interval';
-    const PICKUP_DATE_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_date_format';
-    const PICKUP_TIME_FORMAT = 'ls_mag/delivery_pickup_date_time/pickup_time_format';
+    const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot';
+    const PICKUP_TIME_INTERVAL = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_interval';
+    const PICKUP_DATE_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_format';
+    const PICKUP_TIME_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_format';
 
     //Pay At Store Payment Method
     const SC_PAYMENT_PAY_AT_STORE_ACTIVE = 'payment/ls_payment_method_pay_at_store/active';
@@ -326,6 +332,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const ATTRIBUTE_TAX_REFUNDED = 'lsr_tax_refunded';
     const ATTRIBUTE_BASE_TAX_REFUNDED = 'lsr_base_tax_refunded';
     const ATTRIBUTE_COUPON_CODE = 'lsr_coupon_code';
+    const CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH = 'ls_mag/replication/convert_attribute_to_visual_swatch';
+    const VISUAL_TYPE_ATTRIBUTES = 'ls_mag/replication/visual_type_attributes';
 
     // ORDER STATES
     const ORDER_STATE_NA = 'NOT_AVAILABLE';
@@ -434,7 +442,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_SHIPPED = 'SHIPPED';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
 
+    const LS_NOTIFICATION_EMAIL = 'email';
+
     //Email notification through webhook
+    const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';
+    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/webhooks_email_notification_order_status';
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
     const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';
@@ -453,12 +465,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_VENDOR_ATTRIBUTE = 'lsr_vendor';
     const LS_ITEM_VENDOR_ATTRIBUTE = 'lsr_item_vendor';
 
+    const LS_ITEM_ID_ATTRIBUTE_CODE = 'lsr_item_id';
+    const LS_ITEM_ID_ATTRIBUTE_LABEL = 'Item ID';
+
     const LS_VARIANT_ID_ATTRIBUTE_CODE = 'lsr_variant_id';
     const LS_VARIANT_ID_ATTRIBUTE_LABEL = 'Variant ID';
 
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
+
+    const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
+    const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
 
     /**
      * @var ScopeConfigInterface
@@ -880,5 +898,45 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
 
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
+    }
+
+    /**
+     * Function for getting colour codes based on variant value
+     *
+     * @return string[]
+     */
+    public function getColorCodes()
+    {
+        $colorCodes = [
+            'ORANGE'    => '#FFA500',
+            'GREEN'     => '#00FF00',
+            'BLACK'     => '#000000',
+            'GRAY'      => '#808080',
+            'GREY'      => '#808080',
+            'BLUE'      => '#0000FF',
+            'BROWN'     => '#964B00',
+            'WHITE'     => '#FFFFFF',
+            'FAIR'      => '#F3CFBB',
+            'LIGHT'     => '#eedd82',
+            'NUDE'      => '#E3BC9A',
+            'TAN'       => '#D2B48C',
+            'YELLOW'    => '#FFFF00',
+            'PEACH'     => '#FFE5B4',
+            'PINK'      => '#FFC0CB',
+            'BRONZE'    => '#CD7F32',
+            'LIGHTRED'  => '#FFCCCB',
+            'RED'       => '#FF0000',
+            'DARKRED'   => '#8B0000',
+            'RUST'      => ' #b7410e',
+            'BLUEBERRY' => '#4f86f7',
+            'DIMRED'    => '#4d3c45',
+            'PURPLE'    => '#A020F0',
+            'DEEP'      => '#361313',
+            'NAVY'      => '#000080',
+            'METALLIC'  => '#aaa9ad',
+            'CREAM'     => '#FFFDD0'
+        ];
+
+        return $colorCodes;
     }
 }

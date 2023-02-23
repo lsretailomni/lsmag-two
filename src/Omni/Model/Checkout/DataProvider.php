@@ -101,6 +101,7 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getConfig()
     {
+        $config = [];
 
         if ($this->isValid()) {
             $store                = $this->getStoreId();
@@ -159,11 +160,11 @@ class DataProvider implements ConfigProviderInterface
                 ]
             ];
             $config['coupons_display'] = $this->isCouponsDisplayEnabled();
-
-            return $config;
         }
 
-        return [];
+        $config['ls_enabled']  = (bool) $this->lsr->isEnabled();
+
+        return $config;
     }
 
     /**
@@ -223,7 +224,6 @@ class DataProvider implements ConfigProviderInterface
 
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
-
 
         if ($response) {
             if (is_object($response)) {
@@ -303,7 +303,7 @@ class DataProvider implements ConfigProviderInterface
         foreach ($items as $item) {
             $itemQty = $item->getQty();
             list($parentProductSku, $childProductSku, , , $uomQty) =
-                $this->stockHelper->itemHelper->getComparisonValues($item->getProductId(), $item->getSku());
+                $this->stockHelper->itemHelper->getComparisonValues($item->getSku());
 
             if (!empty($uomQty)) {
                 $itemQty = $itemQty * $uomQty;

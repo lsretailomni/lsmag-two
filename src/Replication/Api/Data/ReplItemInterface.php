@@ -10,7 +10,6 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplItemInterface
 {
-
     /**
      * @param string $BaseUnitOfMeasure
      * @return $this
@@ -241,6 +240,17 @@ interface ReplItemInterface
      * @return string
      */
     public function getItemFamilyCode();
+
+    /**
+     * @param string $ItemTrackingCode
+     * @return $this
+     */
+    public function setItemTrackingCode($ItemTrackingCode);
+
+    /**
+     * @return string
+     */
+    public function getItemTrackingCode();
 
     /**
      * @param int $KeyingInPrice
@@ -516,7 +526,5 @@ interface ReplItemInterface
      * @return string
      */
     public function getProcessedAt();
-
-
 }
 

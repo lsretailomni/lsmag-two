@@ -79,7 +79,7 @@ class Link extends Current
         $orderId = $this->getRequest()->getParam('order_id');
         $reqType = $this->getRequest()->getParam('type');
 
-        if ($this->getPath() == 'customer/order/view' && $reqType !=DocumentIdType::RECEIPT) {
+        if ($this->getPath() == 'customer/order/view' && $reqType != DocumentIdType::RECEIPT) {
             $type = DocumentIdType::ORDER;
         } else {
             $type = DocumentIdType::RECEIPT;

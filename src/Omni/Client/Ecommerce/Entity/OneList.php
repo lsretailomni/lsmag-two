@@ -39,6 +39,11 @@ class OneList extends Entity
     protected $CreateDate = null;
 
     /**
+     * @property string $Currency
+     */
+    protected $Currency = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -196,6 +201,24 @@ class OneList extends Entity
     public function getCreateDate()
     {
         return $this->CreateDate;
+    }
+
+    /**
+     * @param string $Currency
+     * @return $this
+     */
+    public function setCurrency($Currency)
+    {
+        $this->Currency = $Currency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->Currency;
     }
 
     /**

@@ -7,15 +7,18 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplImageLink;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
+use Magento\Catalog\Model\Product\Gallery\Entry;
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
+use Magento\Framework\Filesystem\Driver\File;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Creates images
- * for items and variants
+ * Cron responsible to update images for item and variants
  */
 class SyncImages extends ProductCreateTask
 {
@@ -25,9 +28,17 @@ class SyncImages extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
+    private const HASH_ALGORITHM = 'sha256';
+
+    /** @var array  */
+    public array $imageHashes = [];
+
     /**
-     * @param null $storeData
-     * @throws InputException
+     * Entry point for cron
+     *
+     * @param mixed $storeData
+     * @return void
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
@@ -49,14 +60,17 @@ class SyncImages extends ProductCreateTask
                         $this->store->getId()
                     );
                     $this->replicationHelper->setEnvVariables();
-                    $this->logger->debug('Running SyncImages Task for store ' . $this->store->getName());
+                    $this->logger->debug(sprintf('Running SyncImages Task for store %s', $this->store->getName()));
                     $this->syncItemImages();
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
                         $this->store->getId()
                     );
-                    $this->logger->debug('End SyncImages Task with remaining : ' . $this->getRemainingRecords($this->store));
+
+                    $this->logger->debug(
+                        sprintf('End SyncImages Task with remaining : %s', $this->getRemainingRecords($this->store))
+                    );
                 }
                 $this->lsr->setStoreId(null);
             }
@@ -64,9 +78,11 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
-     * @param null $storeData
-     * @return array
-     * @throws InputException
+     * Execute manually
+     *
+     * @param mixed $storeData
+     * @return int[]
+     * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
@@ -77,48 +93,48 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
-     * @throws InputException
+     * Sync item images
+     *
+     * @return void
+     * @throws InputException|LocalizedException
      */
     public function syncItemImages()
     {
-        $sortOrder  = $this->replicationHelper->getSortOrderObject();
+        $sortOrder = $this->replicationHelper->getSortOrderObject();
         $collection = $this->getRecordsForImagesToProcess();
+        $this->imagesFetched = [];
         if ($collection->getSize() > 0) {
             // Right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
             foreach ($collection->getItems() as $itemImage) {
                 try {
-                    $checkIsNotVariant = true;
-                    $itemSku           = $itemImage->getKeyValue();
-                    $itemSku           = str_replace(',', '-', $itemSku);
-
-                    $explodeSku = explode("-", $itemSku);
+                    $variantId  = '';
+                    $keyValue   = $itemImage->getKeyValue();
+                    $explodeSku = explode(",", $keyValue);
                     if (count($explodeSku) > 1) {
-                        $checkIsNotVariant = false;
+                        $variantId = $explodeSku[1];
                     }
-                    $sku           = $explodeSku[0];
-                    $uomCodesTotal = $this->replicationHelper->getUomCodes($sku, $this->store->getId());
+                    $itemId        = $explodeSku[0];
+                    $this->getExistingImageswithHash($itemId);
+                    $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->store->getId());
                     if (!empty($uomCodesTotal)) {
-                        if (count($uomCodesTotal[$sku]) > 1) {
-                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $sku);
+                        if (count($uomCodesTotal[$itemId]) > 1) {
+                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
                             if (count($uomCodesNotProcessed) == 0) {
-                                $this->processImages($itemImage, $sortOrder, $itemSku);
-                                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($sku);
-                                foreach ($uomCodesTotal[$sku] as $uomCode) {
-                                    if ($checkIsNotVariant || $baseUnitOfMeasure != $uomCode) {
-                                        $this->processImages($itemImage, $sortOrder, $itemSku, $uomCode);
-                                    }
+                                $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
+                                foreach ($uomCodesTotal[$itemId] as $uomCode) {
+                                    $this->processImages($itemImage, $sortOrder, $itemId, $variantId, $uomCode);
                                 }
                             }
                         } else {
-                            $this->processImages($itemImage, $sortOrder, $itemSku);
+                            $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                         }
                     } else {
-                        $this->processImages($itemImage, $sortOrder, $itemSku);
+                        $this->processImages($itemImage, $sortOrder, $itemId, $variantId);
                     }
                 } catch (Exception $e) {
                     $this->logger->debug(
-                        'Problem with Image Synchronization : ' . $itemImage->getKeyValue() . ' in ' . __METHOD__
+                        sprintf('Problem with Image Synchronization : %s in %s', $itemImage->getKeyValue(), __METHOD__)
                     );
                     $this->logger->debug($e->getMessage());
                     $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -134,14 +150,61 @@ class SyncImages extends ProductCreateTask
                 $this->cronStatus = true;
             }
             $this->replicationHelper->flushByTypeCode('full_page');
-        } else {
-            $this->cronStatus = true;
+        }
+    }
+
+    /**
+     * Fetch existing images based on sku and add image hashes.
+     *
+     * @param $itemId
+     * @return void
+     * @throws FileSystemException
+     */
+    public function getExistingImageswithHash($itemId)
+    {
+        $filterArr = [];
+        $searchCriteria = $this->searchCriteriaBuilder
+            ->addFilter(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, "%".$itemId."%", 'like')
+            ->create();
+
+        $productObjs = $this->productRepository->getList($searchCriteria);
+
+        foreach ($productObjs->getItems() as $productObj) {
+            $filterArr[]['sku'] = $productObj->getSku();
+        }
+
+        if (count($filterArr) >0) {
+            $existingImages = $this->mediaProcessor->getExistingImages($filterArr);
+            $this->addImageHashes($existingImages);
+        }
+    }
+
+    /**
+     * Add image hashes.
+     *
+     * @param $existingImages
+     * @return void
+     * @throws FileSystemException
+     */
+    public function addImageHashes($existingImages)
+    {
+        $productMediaPath = $this->getProductMediaPath();
+        foreach ($existingImages as $storeId => $skus) {
+            foreach ($skus as $sku => $files) {
+                foreach ($files as $path => $file) {
+                    $hash = $this->getFileHash($this->joinFilePaths($productMediaPath, $file['value']));
+                    if ($hash) {
+                        $this->imageHashes[$file['value']] = $hash;
+                    }
+                }
+            }
         }
     }
 
     /**
      * @param $storeData
      * @return int
+     * @throws LocalizedException
      */
     public function getRemainingRecords($storeData)
     {
@@ -155,8 +218,8 @@ class SyncImages extends ProductCreateTask
     /**
      * Process Media Gallery Images
      *
-     * @param $imagesToUpdate
-     * @param $productData
+     * @param mixed $imagesToUpdate
+     * @param mixed $productData
      * @return void
      */
     public function processMediaGalleryImages($imagesToUpdate, $productData)
@@ -168,24 +231,58 @@ class SyncImages extends ProductCreateTask
             );
         } catch (Exception $e) {
             $this->logger->debug(
-                'Problem getting encoded Images in : ' . __METHOD__
+                sprintf('Problem getting encoded Images in : %s', __METHOD__)
             );
             $this->logger->debug($e->getMessage());
         }
 
         if (!empty($encodedImages)) {
             try {
-                $encodedImages = $this->convertToRequiredFormat($encodedImages);
+                $base64Images = [];
+                foreach ($encodedImages as $encodedImage) {
+                    if (!($encodedImage instanceof Entry)) {
+                        try {
+                            $this->imageService->execute(
+                                $productData,
+                                $encodedImage['location'],
+                                $encodedImage['repl_image_link_id'],
+                                false,
+                                $encodedImage['types']
+                            );
+                        } catch (Exception $e) {
+                            $this->logger->debug(
+                                sprintf('Problem getting image using url in : %s', __METHOD__)
+                            );
+                            $this->logger->debug($e->getMessage());
+                            continue;
+                        }
+                    } else {
+                        $base64Images[] = $encodedImage;
+                    }
+                }
+
+                $updatedMediaGallery['images'] = [];
+                $formattedImages = $this->convertToRequiredFormat($base64Images);
+                foreach ($productData->getMediaGallery()['images'] as $i => $image) {
+                    if (!isset($image['value_id'])) {
+                        $formattedImages[] = $image;
+                    } else {
+                        $updatedMediaGallery['images'][$i] = $image;
+                    }
+                }
+
+                $productData->setMediaGallery($updatedMediaGallery);
+
                 $this->mediaGalleryProcessor->processMediaGallery(
                     $productData,
-                    $encodedImages
+                    $formattedImages
                 );
                 $this->updateHandlerFactory->create()->execute($productData);
 
                 $this->removeNoSelection($productData);
             } catch (Exception $e) {
                 $this->logger->debug(
-                    'Problem while converting the images or Gallery CreateHandler in : ' . __METHOD__
+                    sprintf('Problem while converting the images or Gallery CreateHandler in : %s', __METHOD__)
                 );
                 $this->logger->debug($e->getMessage());
             }
@@ -193,22 +290,26 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
-     * @param $itemImage
-     * @param $sortOrder
-     * @param $itemSku
-     * @param null $uomCode
-     * @throws InputException
+     * Process images
+     *
+     * @param mixed $itemImage
+     * @param mixed $sortOrder
+     * @param mixed $itemId
+     * @param mixed $variantId
+     * @param mixed $uomCode
+     * @return void
      * @throws LocalizedException
-     * @throws StateException
-     * @throws NoSuchEntityException
      */
-    public function processImages($itemImage, $sortOrder, $itemSku, $uomCode = null)
+    public function processImages($itemImage, $sortOrder, $itemId, $variantId = null, $uomCode = null)
     {
-        if (!empty($uomCode)) {
-            $itemSku = $itemSku . '-' . $uomCode;
-        }
         try {
-            $productData = $this->productRepository->get($itemSku, true, 0, true);
+            $product     = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                $itemId,
+                $variantId,
+                $uomCode,
+                $this->store->getId()
+            );
+            $productData = $this->productRepository->get($product->getSku(), true, 0, true);
         } catch (NoSuchEntityException $e) {
             return;
         }
@@ -229,9 +330,183 @@ class SyncImages extends ProductCreateTask
         if ($newImagesToProcess->getTotalCount() > 0) {
             $this->processMediaGalleryImages($newImagesToProcess, $productData);
         }
+
+        //To remove duplicated images
+        $this->removeDuplicatedImages($productData);
     }
 
     /**
+     * Custom function to remove duplicated images for the sku and its variants.
+     *
+     * @throws FileSystemException
+     * @throws FileSystemException
+     */
+    public function removeDuplicatedImages($productData)
+    {
+        $mediaGalleryImages = $productData->getMediaGalleryImages();
+
+        $productMediaPath = $this->getProductMediaPath();
+
+        foreach ($mediaGalleryImages as $galleryImage) {
+            $filePath = $galleryImage->getFile();
+            $hash     = $this->getFileHash($this->joinFilePaths($productMediaPath, $filePath));
+            if ($hash && !in_array($hash, $this->imageHashes)) {
+                $this->imageHashes[$filePath] = $hash;
+            } else {
+                $existingFilePath    = array_search($hash, $this->imageHashes);
+
+                if ($filePath != $existingFilePath && $this->imageExists($existingFilePath)) {
+                    $this->updateMediaPaths('catalog_product_entity_varchar', $existingFilePath, $filePath);
+                    $this->updateMediaPaths('catalog_product_entity_media_gallery', $existingFilePath, $filePath);
+
+                    $this->deleteDuplicateCatalogImage($filePath);
+                }
+
+            }
+        }
+    }
+
+    /**
+     * Update duplicated catalog image paths with already existing image file
+     *
+     * @param $tableName
+     * @param $existingFilePath
+     * @param $newFilePath
+     * @return void
+     */
+    public function updateMediaPaths($tableName, $existingFilePath, $newFilePath): void
+    {
+        try {
+            $connection          = $this->resourceConnection->getConnection(
+                ResourceConnection::DEFAULT_CONNECTION
+            );
+            $catalogEntityVarcharTable = $this->resourceConnection
+                ->getTableName($tableName);
+
+            $connection->startSetup();
+
+            $updateData = [
+                'value' => $existingFilePath
+            ];
+            $whereCondition = [
+                'value = ?' => (string)$newFilePath
+            ];
+
+            $connection->update(
+                $catalogEntityVarcharTable,
+                $updateData,
+                $whereCondition
+            );
+            $connection->endSetup();
+        } catch (Exception $e) {
+            $this->logger->debug(
+                'Problem with Media path update in : ' . $catalogEntityVarcharTable .
+                ' for ' . $newFilePath . ' with '.$existingFilePath
+            );
+        }
+    }
+
+    /**
+     * Check if image file exists
+     *
+     * @param $fileName
+     * @return bool
+     * @throws FileSystemException
+     */
+    public function imageExists($fileName): bool
+    {
+        $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+        $mediaRootDir = $this->joinFilePaths($mediaDirectory->getAbsolutePath(), 'catalog', 'product');
+
+        return $this->file->isExists($this->joinFilePaths($mediaRootDir, $fileName));
+    }
+
+    /**
+     * Delete duplicated image files
+     *
+     * @param $fileName
+     * @return void
+     */
+    public function deleteDuplicateCatalogImage($fileName): void
+    {
+        $mediaDirectory = $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+        $mediaRootDir = $this->joinFilePaths($mediaDirectory->getAbsolutePath(), 'catalog', 'product');
+
+        try {
+            if ($this->file->isExists($this->joinFilePaths($mediaRootDir, $fileName))) {
+                $this->file->deleteFile($mediaRootDir . $fileName);
+            }
+        } catch (Exception $e) {
+            $this->logger->debug(
+                'Problem with deleting file : ' . $fileName
+            );
+        }
+    }
+
+    /**
+     * Returns image hash by path
+     *
+     * @param string $path
+     * @return string
+     * @throws \Magento\Framework\Exception\FileSystemException
+     */
+    private function getFileHash(string $path): string
+    {
+        $content = '';
+        if ($this->mediaDirectory->isFile($path)
+            && $this->mediaDirectory->isReadable($path)
+        ) {
+            $content = $this->mediaDirectory->readFile($path);
+        }
+        return $content ? hash(self::HASH_ALGORITHM, $content) : '';
+    }
+
+    /**
+     * Returns product media
+     *
+     * @return string relative path to root folder
+     */
+    private function getProductMediaPath(): string
+    {
+        return $this->joinFilePaths($this->getMediaBasePath(), 'catalog', 'product');
+    }
+
+    /**
+     * Returns media base path
+     *
+     * @return string relative path to root folder
+     */
+    private function getMediaBasePath(): string
+    {
+        $mediaDir = !is_a($this->mediaDirectory->getDriver(), File::class)
+            // make media folder a primary folder for media in external storages
+            ? $this->filesystem->getDirectoryReadByPath(DirectoryList::MEDIA)
+            : $this->filesystem->getDirectoryRead(DirectoryList::MEDIA);
+
+        return $this->mediaDirectory->getRelativePath($mediaDir->getAbsolutePath());
+    }
+
+    /**
+     * Joins two paths and remove redundant directory separator
+     *
+     * @param array $paths
+     * @return string
+     */
+    private function joinFilePaths(...$paths): string
+    {
+        $result = '';
+        if ($paths) {
+            $result = rtrim(array_shift($paths), DIRECTORY_SEPARATOR);
+            foreach ($paths as $path) {
+                $result .= DIRECTORY_SEPARATOR . ltrim($path, DIRECTORY_SEPARATOR);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Convert to required format
+     *
      * @param array $mediaGalleryEntries
      * @return array
      * @throws LocalizedException
@@ -250,7 +525,7 @@ class SyncImages extends ProductCreateTask
     /**
      * Remove no selection
      *
-     * @param $productData
+     * @param mixed $productData
      * @return void
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -270,7 +545,7 @@ class SyncImages extends ProductCreateTask
 
         if ($saveMe) {
             $this->logger->debug(
-                'Fixed no_selection issue for images of product : '. $customProduct->getSku()
+                sprintf('Fixed no_selection issue for images of product : %s', $customProduct->getSku())
             );
             $this->updateHandlerFactory->create()->execute($customProduct);
         }
@@ -278,8 +553,12 @@ class SyncImages extends ProductCreateTask
 
     /**
      * This function is overriding in hospitality module
-     * @param false $totalCount
+     *
+     *  Get records for images to process
+     *
+     * @param bool $totalCount
      * @return Collection
+     * @throws LocalizedException
      */
     public function getRecordsForImagesToProcess($totalCount = false)
     {
@@ -289,7 +568,7 @@ class SyncImages extends ProductCreateTask
             $batchSize = -1;
         }
         /** Get Images for only those items which are already processed */
-        $filters = [
+        $filters  = [
             ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
             ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
@@ -310,6 +589,7 @@ class SyncImages extends ProductCreateTask
         );
         $collection->getSelect()->order('main_table.processed ASC');
 
+        $query = $collection->getSelect()->__toString();
         return $collection;
     }
 }

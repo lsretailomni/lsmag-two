@@ -6,10 +6,15 @@ use Exception;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
-use Magento\InventoryInStorePickupSales\Model\Order\CreateShippingDocument;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Api\ShipmentRepositoryInterface;
+use Magento\Sales\Model\Convert\Order;
 use Magento\Sales\Model\Order\Email\Sender\InvoiceSender;
 use Magento\Sales\Model\Order\Invoice;
 use Magento\Sales\Model\Service\InvoiceService;
+use Magento\Shipping\Model\ShipmentNotifier;
 
 /**
  * class to create invoice through webhook
@@ -42,13 +47,35 @@ class Payment
     private $helper;
 
     /**
-     * Payment constructor.
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+
+    /**
+     * @var Order
+     */
+    private $convertOrder;
+
+    /**
+     * @var ShipmentNotifier
+     */
+    private $shipmentNotifier;
+
+    /**
+     * @var ShipmentRepositoryInterface
+     */
+    private $shipmentRepository;
+
+    /**
      * @param Logger $logger
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
      * @param Data $helper ,
-     * @param CreateShippingDocument $createShippingDocument
+     * @param OrderRepositoryInterface $orderRepository
+     * @param Order $convertOrder
+     * @param ShipmentNotifier $shipmentNotifier
+     * @param ShipmentRepositoryInterface $shipmentRepository
      */
     public function __construct(
         Logger $logger,
@@ -56,15 +83,20 @@ class Payment
         TransactionFactory $transactionFactory,
         InvoiceSender $invoiceSender,
         Data $helper,
-        CreateShippingDocument $createShippingDocument
+        OrderRepositoryInterface $orderRepository,
+        Order $convertOrder,
+        ShipmentNotifier $shipmentNotifier,
+        ShipmentRepositoryInterface $shipmentRepository
     ) {
-
-        $this->logger                 = $logger;
-        $this->invoiceService         = $invoiceService;
-        $this->transactionFactory     = $transactionFactory;
-        $this->invoiceSender          = $invoiceSender;
-        $this->helper                 = $helper;
-        $this->createShippingDocument = $createShippingDocument;
+        $this->logger             = $logger;
+        $this->invoiceService     = $invoiceService;
+        $this->transactionFactory = $transactionFactory;
+        $this->invoiceSender      = $invoiceSender;
+        $this->helper             = $helper;
+        $this->orderRepository    = $orderRepository;
+        $this->convertOrder       = $convertOrder;
+        $this->shipmentNotifier   = $shipmentNotifier;
+        $this->shipmentRepository = $shipmentRepository;
     }
 
     /**
@@ -140,15 +172,13 @@ class Payment
                     $this->invoiceSender->send($invoice);
 
                     if ($order->getShippingMethod() == "clickandcollect_clickandcollect") {
-                        $this->createShippingDocument->execute($order);
+                        $this->createShipment($order, $lines);
                     }
 
                     return $this->helper->outputMessage(
                         true,
                         'Order posted successfully and invoice sent to customer for document id #' . $documentId
                     );
-
-
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
                         . $documentId);
@@ -197,6 +227,7 @@ class Payment
      * @param $order
      * @param $amount
      * @param $documentId
+     * @param $shippingAmount
      * @return array[]
      */
     public function validatePayment($order, $amount, $documentId, $shippingAmount)
@@ -230,5 +261,105 @@ class Payment
             $validate = false;
         }
         return $validate;
+    }
+
+    /**
+     * Create shipment
+     *
+     * @param $order
+     * @param $lines
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function createShipment($order, $lines)
+    {
+        if (!$order->canShip()) {
+            throw new LocalizedException(
+                __('You can\'t create the Shipment of this order.')
+            );
+        }
+        $orderShipment = $this->convertOrder->toShipment($order);
+
+        foreach ($order->getAllItems() as $orderItem) {
+            $parentItem = $orderItem->getParentItem();
+
+            if (!$this->isAllowed($orderItem, $lines) ||
+                ($parentItem ?
+                    !$parentItem->getQtyToShip() : !$orderItem->getQtyToShip())
+            ) {
+                continue;
+            }
+            if (empty($parentItem)) {
+                $parentItem = $orderItem;
+            }
+            $qty          = $this->getQtyToShip($orderItem, $lines);
+            $shipmentItem = $this->convertOrder->itemToShipmentItem($parentItem)->setQty($qty);
+            $orderShipment->addItem($shipmentItem);
+        }
+        $orderShipment->register();
+        $order->setIsInProcess(true);
+        try {
+            // Save created Order Shipment
+            $this->shipmentRepository->save($orderShipment);
+            $this->orderRepository->save($order);
+            // Send Shipment Email
+            $this->shipmentNotifier->notify($orderShipment);
+        } catch (\Exception $e) {
+            throw new LocalizedException(
+                __($e->getMessage())
+            );
+        }
+    }
+
+    /**
+     * Is allowed
+     *
+     * @param $orderItem
+     * @param $lines
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isAllowed($orderItem, $lines)
+    {
+        $product = $this->helper->getProductById($orderItem->getProductId());
+        $found   = false;
+
+        foreach ($lines as $line) {
+            $itemId    = $line['ItemId'];
+            $variantId = $line['VariantId'];
+
+            if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                $found = true;
+                break;
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * Get qty to ship
+     *
+     * @param $orderItem
+     * @param $lines
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getQtyToShip($orderItem, $lines)
+    {
+        $product = $this->helper->getProductById($orderItem->getProductId());
+        $qty     = 0;
+
+        foreach ($lines as $line) {
+            $itemId    = $line['ItemId'];
+            $variantId = $line['VariantId'];
+
+            if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                $qty++;
+            }
+        }
+
+        return $qty;
     }
 }

@@ -5,15 +5,12 @@ namespace Ls\Replication\Cron;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Model\ReplPrice;
-use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\StateException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 
 /**
- * Class SyncPrice
- * @package Ls\Replication\Cron
+ * Cron responsible to update prices for item and variants
  */
 class SyncPrice extends ProductCreateTask
 {
@@ -23,6 +20,14 @@ class SyncPrice extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
+    /**
+     * Entry point for cron
+     *
+     * @param mixed $storeData
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
     public function execute($storeData = null)
     {
         if (!empty($storeData) && $storeData instanceof StoreInterface) {
@@ -61,64 +66,63 @@ class SyncPrice extends ProductCreateTask
                         $criteria,
                         'ItemId',
                         'VariantId',
-                        'catalog_product_entity',
-                        'sku',
-                        true
+                        ['repl_price_id']
                     );
-                    if ($collection->getSize() > 0) {
-                        /** @var ReplPrice $replPrice */
-                        foreach ($collection as $replPrice) {
-                            try {
-                                $baseUnitOfMeasure = null;
-                                $itemPriceCount    = null;
-                                if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
-                                    $sku = $replPrice->getItemId();
-                                } else {
-                                    $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
+                    /** @var ReplPrice $replPrice */
+                    foreach ($collection as $replPrice) {
+                        try {
+                            $baseUnitOfMeasure = null;
+                            $itemPriceCount    = null;
+                            if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
+                                $sku = $replPrice->getItemId();
+                            } else {
+                                $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
+                            }
+                            $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                                $replPrice->getItemId(),
+                                $replPrice->getVariantId(),
+                                '',
+                                $this->store->getId()
+                            );
+                            if (isset($productData)) {
+                                if (empty($replPrice->getUnitOfMeasure())) {
+                                    $baseUnitOfMeasure = $productData->getData('uom');
+                                    $itemPriceCount    = $this->getItemPriceCount($replPrice->getItemId());
+                                    $productData->setPrice($replPrice->getUnitPriceInclVat());
+                                    // @codingStandardsIgnoreStart
+                                    $this->productResourceModel->saveAttribute($productData, 'price');
                                 }
-                                $productData = $this->productRepository->get($sku, true, $this->store->getId());
-                                if (isset($productData)) {
-                                    if (empty($replPrice->getUnitOfMeasure())) {
-                                        $baseUnitOfMeasure = $productData->getData('uom');
-                                        $itemPriceCount    = $this->getItemPriceCount($replPrice->getItemId());
-                                        $productData->setPrice($replPrice->getUnitPriceInclVat());
-                                        // @codingStandardsIgnoreStart
-                                        $this->productResourceModel->saveAttribute($productData, 'price');
-                                    }
-                                    // @codingStandardsIgnoreEnd
-                                    if ($productData->getTypeId() == 'configurable') {
-                                        $children = $productData->getTypeInstance()->getUsedProducts($productData);
-                                        foreach ($children as $child) {
-                                            $childProductData = $this->productRepository->get($child->getSKU());
-                                            if ($this->validateChildPriceUpdate(
-                                                $childProductData,
-                                                $replPrice,
-                                                $baseUnitOfMeasure,
-                                                $itemPriceCount
-                                            )) {
-                                                $childProductData->setPrice($replPrice->getUnitPriceInclVat());
-                                                // @codingStandardsIgnoreStart
-                                                $this->productResourceModel->saveAttribute($childProductData, 'price');
-                                                // @codingStandardsIgnoreEnd
-                                            }
+                                // @codingStandardsIgnoreEnd
+                                if ($productData->getTypeId() == 'configurable') {
+                                    $children = $productData->getTypeInstance()->getUsedProducts($productData);
+                                    foreach ($children as $child) {
+                                        $childProductData = $this->productRepository->get($child->getSKU());
+                                        if ($this->validateChildPriceUpdate(
+                                            $childProductData,
+                                            $replPrice,
+                                            $baseUnitOfMeasure,
+                                            $itemPriceCount
+                                        )) {
+                                            $childProductData->setPrice($replPrice->getUnitPriceInclVat());
+                                            // @codingStandardsIgnoreStart
+                                            $this->productResourceModel->saveAttribute($childProductData, 'price');
+                                            // @codingStandardsIgnoreEnd
                                         }
                                     }
                                 }
-                            } catch (Exception $e) {
-                                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
-                                $this->logger->debug($e->getMessage());
-                                $replPrice->setData('is_failed', 1);
                             }
-                            $replPrice->setData('is_updated', 0);
-                            $replPrice->setData('processed', 1);
-                            $replPrice->setData('processed_at', $this->replicationHelper->getDateTime());
-                            $this->replPriceRepository->save($replPrice);
+                        } catch (Exception $e) {
+                            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                            $this->logger->debug($e->getMessage());
+                            $replPrice->setData('is_failed', 1);
                         }
-                        $remainingItems = (int)$this->getRemainingRecords($this->store);
-                        if ($remainingItems == 0) {
-                            $this->cronStatus = true;
-                        }
-                    } else {
+                        $replPrice->setData('is_updated', 0);
+                        $replPrice->setData('processed', 1);
+                        $replPrice->setData('processed_at', $this->replicationHelper->getDateTime());
+                        $this->replPriceRepository->save($replPrice);
+                    }
+                    $remainingItems = (int)$this->getRemainingRecords($this->store);
+                    if ($remainingItems == 0) {
                         $this->cronStatus = true;
                     }
                     $this->replicationHelper->updateCronStatus(
@@ -134,12 +138,12 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * @param null $storeData
-     * @return array
-     * @throws CouldNotSaveException
-     * @throws InputException
+     * Execute manually
+     *
+     * @param mixed $storeData
+     * @return int[]
      * @throws LocalizedException
-     * @throws StateException
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
@@ -150,10 +154,11 @@ class SyncPrice extends ProductCreateTask
 
     /**
      * Validate child product price update
-     * @param $productData
-     * @param $replPrice
-     * @param null $baseUnitOfMeasure
-     * @param null $itemPriceCount
+     *
+     * @param mixed $productData
+     * @param mixed $replPrice
+     * @param string $baseUnitOfMeasure
+     * @param string $itemPriceCount
      * @return bool
      */
     private function validateChildPriceUpdate(
@@ -178,7 +183,8 @@ class SyncPrice extends ProductCreateTask
 
     /**
      * Getting total entries of price in price table
-     * @param $itemId
+     *
+     * @param string $itemId
      * @return int
      */
     public function getItemPriceCount($itemId)
@@ -203,8 +209,11 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * @param null $storeData
+     * Get remaining records
+     *
+     * @param mixed $storeData
      * @return int
+     * @throws LocalizedException
      */
     public function getRemainingRecords($storeData = null)
     {
@@ -224,9 +233,7 @@ class SyncPrice extends ProductCreateTask
                 $criteria,
                 'ItemId',
                 'VariantId',
-                'catalog_product_entity',
-                'sku',
-                true
+                ['repl_price_id']
             );
             $this->remainingRecords = $collection->getSize();
         }
