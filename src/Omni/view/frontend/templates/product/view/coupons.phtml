@@ -6,7 +6,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use Magento\Catalog\Model\Product\Type;
 
 $productData = $block->getData();
-$product = $block->getCurrentProduct($productData['data']['productSku']);
+$product = $block->getProductGivenSku($productData['data']['productSku']);
 
 if ($product->getTypeId() == Type::TYPE_BUNDLE) {
     $itemId = $block->getLinkedProductsItemIds($product);

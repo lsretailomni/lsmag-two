@@ -9,7 +9,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
-use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -34,7 +33,6 @@ use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Framework\Stdlib\StringUtils;
 use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Bundle\Api\Data\LinkInterface;
 use Magento\Bundle\Api\ProductLinkManagementInterface;
 
 class Proactive extends View
@@ -76,11 +74,6 @@ class Proactive extends View
     public $scopeConfig;
 
     /**
-     * @var ProductLinkManagementInterface
-     */
-    public $productLinkManagement;
-
-    /**
      * @param ProductContext $context
      * @param UrlEncoderInterface $urlEncoder
      * @param EncoderInterface $jsonEncoder
@@ -99,7 +92,6 @@ class Proactive extends View
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
-     * @param ProductLinkManagementInterface $productLinkManagement
      * @param array $data
      */
     public function __construct(
@@ -121,7 +113,6 @@ class Proactive extends View
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
-        ProductLinkManagementInterface $productLinkManagement,
         array $data = []
     ) {
         parent::__construct(
@@ -145,7 +136,6 @@ class Proactive extends View
         $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
-        $this->productLinkManagement = $productLinkManagement;
     }
 
     /**
@@ -438,15 +428,15 @@ class Proactive extends View
     }
 
     /**
-     * Get current product
+     * Get product given sku
      *
      * @param $sku
      * @return ProductInterface
      * @throws NoSuchEntityException
      */
-    public function getCurrentProduct($sku)
+    public function getProductGivenSku($sku)
     {
-        return $this->productRepository->get($sku);
+        return $this->itemHelper->getProductGivenSku($sku);
     }
 
     /**
@@ -459,13 +449,6 @@ class Proactive extends View
      */
     public function getLinkedProductsItemIds($bundleProduct)
     {
-        $items = $this->productLinkManagement->getChildren($bundleProduct->getSku());
-        $itemIds = [];
-
-        foreach ($items as $item) {
-            $itemIds[] = $this->getLsCentralItemIdBySku($item->getSku());
-        }
-
-        return $itemIds;
+        return $this->itemHelper->getLinkedProductsItemIds($bundleProduct);
     }
 }

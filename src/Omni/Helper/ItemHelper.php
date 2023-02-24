@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\VariantRegistration;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Replication\Model\ReplBarcodeRepository;
+use Magento\Bundle\Api\ProductLinkManagementInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type;
@@ -21,6 +22,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
@@ -74,6 +76,11 @@ class ItemHelper extends AbstractHelper
     public $quoteFactory;
 
     /**
+     * @var ProductLinkManagementInterface
+     */
+    public $productLinkManagement;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param ReplBarcodeRepository $barcodeRepository
@@ -85,6 +92,7 @@ class ItemHelper extends AbstractHelper
      * @param Cart $cart
      * @param Quote $quoteResourceModel
      * @param QuoteFactory $quoteFactory
+     * @param ProductLinkManagementInterface $productLinkManagement
      */
     public function __construct(
         Context $context,
@@ -97,7 +105,8 @@ class ItemHelper extends AbstractHelper
         LoyaltyHelper $loyaltyHelper,
         Cart $cart,
         Quote $quoteResourceModel,
-        QuoteFactory $quoteFactory
+        QuoteFactory $quoteFactory,
+        ProductLinkManagementInterface $productLinkManagement
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -110,6 +119,7 @@ class ItemHelper extends AbstractHelper
         $this->cart                  = $cart;
         $this->quoteResourceModel    = $quoteResourceModel;
         $this->quoteFactory          = $quoteFactory;
+        $this->productLinkManagement = $productLinkManagement;
     }
 
     /**
@@ -631,6 +641,38 @@ class ItemHelper extends AbstractHelper
         $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
 
         return $itemId ?: $sku;
+    }
+
+    /**
+     * Get product given sku
+     *
+     * @param $sku
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getProductGivenSku($sku)
+    {
+        return $this->productRepository->get($sku);
+    }
+
+    /**
+     * Get bundle product linked item_ids
+     *
+     * @param $bundleProduct
+     * @return array
+     * @throws NoSuchEntityException
+     * @throws InputException
+     */
+    public function getLinkedProductsItemIds($bundleProduct)
+    {
+        $items = $this->productLinkManagement->getChildren($bundleProduct->getSku());
+        $itemIds = [];
+
+        foreach ($items as $item) {
+            $itemIds[] = $this->getLsCentralItemIdBySku($item->getSku());
+        }
+
+        return $itemIds;
     }
 
     /**

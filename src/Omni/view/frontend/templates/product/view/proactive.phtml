@@ -5,7 +5,7 @@ use \Ls\Omni\Block\Product\View\Discount\Proactive;
 use Magento\Catalog\Model\Product\Type;
 
 $productData = $block->getData();
-$product = $block->getCurrentProduct($productData['data']['productSku']);
+$product = $block->getProductGivenSku($productData['data']['productSku']);
 
 if ($product->getTypeId() == Type::TYPE_BUNDLE) {
     $itemId = $block->getLinkedProductsItemIds($product);
