@@ -189,7 +189,15 @@ class AbstractOrderBlock extends Template
      */
     public function getPrintAllInvoicesUrl($order)
     {
-        return $this->getUrl('*/*/printInvoice', ['order_id' => $order->getDocumentId()]);
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params ['order_id'] = $order->getDocumentId();
+
+        if ($reqType) {
+            $params ['type'] = $reqType;
+        }
+
+        return $this->getUrl('*/*/printInvoice', $params);
     }
 
     /**
@@ -200,7 +208,15 @@ class AbstractOrderBlock extends Template
      */
     public function getPrintAllShipmentUrl($order)
     {
-        return $this->getUrl('*/*/printShipment', ['order_id' => $order->getDocumentId()]);
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params ['order_id'] = $order->getDocumentId();
+
+        if ($reqType) {
+            $params ['type'] = $reqType;
+        }
+
+        return $this->getUrl('*/*/printShipment', $params);
     }
 
     /**
