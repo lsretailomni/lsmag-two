@@ -21,6 +21,11 @@ class ReplItemUnitOfMeasure
     protected $CountAsOne = null;
 
     /**
+     * @property float $Cubage
+     */
+    protected $Cubage = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -31,6 +36,11 @@ class ReplItemUnitOfMeasure
     protected $EComSelection = null;
 
     /**
+     * @property float $Height
+     */
+    protected $Height = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
@@ -39,6 +49,11 @@ class ReplItemUnitOfMeasure
      * @property string $ItemId
      */
     protected $ItemId = null;
+
+    /**
+     * @property float $Length
+     */
+    protected $Length = null;
 
     /**
      * @property int $Order
@@ -59,6 +74,16 @@ class ReplItemUnitOfMeasure
      * @property string $ShortDescription
      */
     protected $ShortDescription = null;
+
+    /**
+     * @property float $Weight
+     */
+    protected $Weight = null;
+
+    /**
+     * @property float $Width
+     */
+    protected $Width = null;
 
     /**
      * @property string $scope
@@ -107,6 +132,24 @@ class ReplItemUnitOfMeasure
     }
 
     /**
+     * @param float $Cubage
+     * @return $this
+     */
+    public function setCubage($Cubage)
+    {
+        $this->Cubage = $Cubage;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCubage()
+    {
+        return $this->Cubage;
+    }
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -143,6 +186,24 @@ class ReplItemUnitOfMeasure
     }
 
     /**
+     * @param float $Height
+     * @return $this
+     */
+    public function setHeight($Height)
+    {
+        $this->Height = $Height;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHeight()
+    {
+        return $this->Height;
+    }
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -176,6 +237,24 @@ class ReplItemUnitOfMeasure
     public function getItemId()
     {
         return $this->ItemId;
+    }
+
+    /**
+     * @param float $Length
+     * @return $this
+     */
+    public function setLength($Length)
+    {
+        $this->Length = $Length;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLength()
+    {
+        return $this->Length;
     }
 
     /**
@@ -248,6 +327,42 @@ class ReplItemUnitOfMeasure
     public function getShortDescription()
     {
         return $this->ShortDescription;
+    }
+
+    /**
+     * @param float $Weight
+     * @return $this
+     */
+    public function setWeight($Weight)
+    {
+        $this->Weight = $Weight;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWeight()
+    {
+        return $this->Weight;
+    }
+
+    /**
+     * @param float $Width
+     * @return $this
+     */
+    public function setWidth($Width)
+    {
+        $this->Width = $Width;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWidth()
+    {
+        return $this->Width;
     }
 
     /**

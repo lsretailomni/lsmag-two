@@ -12,6 +12,7 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -262,27 +263,44 @@ class Data
     public function getItems($order, $itemsInfo)
     {
         $items = [];
+        $globalCounter = 0;
         foreach ($order->getAllVisibleItems() as $orderItem) {
-            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                $orderItem->getSku()
-            );
-            $totalAmount = 0;
-            foreach ($itemsInfo as $skuValues) {
-                if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
-                    $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
-                    $items[$itemId]['item'] = $orderItem;
-                    if (isset($items[$itemId]['qty'])) {
-                        $items[$itemId]['qty'] += $skuValues['Quantity'];
-                    } else {
-                        $items[$itemId]['qty'] = $skuValues['Quantity'];
+            if ($orderItem->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $orderItem->getChildrenItems();
+            } else {
+                $children = [$orderItem];
+            }
+
+            foreach ($children as $child) {
+                list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                    $child->getSku()
+                );
+                $totalAmount = 0;
+                $counter = 0;
+                foreach ($itemsInfo as $index => $skuValues) {
+                    if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
+                        $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
+
+                        if ($counter >= $orderItem->getQtyOrdered()) {
+                            continue;
+                        }
+                        $items[$globalCounter][$itemId]['item'] = $child;
+                        if (isset($items[$globalCounter][$itemId]['qty'])) {
+                            $items[$globalCounter][$itemId]['qty'] += $skuValues['Quantity'];
+                        } else {
+                            $items[$globalCounter][$itemId]['qty'] = $skuValues['Quantity'];
+                        }
+                        if (array_key_exists('Amount', $skuValues)) {
+                            $totalAmount              += $skuValues['Amount'];
+                            $items[$globalCounter][$itemId]['amount'] = $totalAmount;
+                        }
+                        $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
+                        $counter++;
+                        unset($itemsInfo[$index]);
                     }
-                    if (array_key_exists('Amount', $skuValues)) {
-                        $totalAmount              += $skuValues['Amount'];
-                        $items[$itemId]['amount'] = $totalAmount;
-                    }
-                    $items[$itemId]['itemStatus'] = $orderItem->getStatusId();
                 }
             }
+            $globalCounter++;
         }
         return $items;
     }
