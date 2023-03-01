@@ -170,6 +170,8 @@ use MyCLabs\Enum\Enum;
  * @$method static StatusCode CANNOT_MIX_NORMAL_SALE_AND_RETURN()
  * @$method static StatusCode UNKNOWN_USER()
  * @$method static StatusCode NAV_W_S_ERROR()
+ * @$method static StatusCode NAV_W_S_QRY_ERROR()
+ * @$method static StatusCode NAV_O_DATA_ERROR()
  * @$method static StatusCode CUSTOMER_ORDER_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_NOT_FOUND()
  * @$method static StatusCode CUSTOMER_ORDER_ITEM_ALREADY_IN_BOX()
@@ -495,6 +497,10 @@ class StatusCode extends Enum
     public const UNKNOWN_USER = 'UnknownUser';
 
     public const NAV_W_S_ERROR = 'NavWSError';
+
+    public const NAV_W_S_QRY_ERROR = 'NavWSQryError';
+
+    public const NAV_O_DATA_ERROR = 'NavODataError';
 
     public const CUSTOMER_ORDER_NOT_FOUND = 'CustomerOrderNotFound';
 

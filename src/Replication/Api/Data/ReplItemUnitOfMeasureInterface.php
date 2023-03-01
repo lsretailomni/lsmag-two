@@ -33,6 +33,17 @@ interface ReplItemUnitOfMeasureInterface
     public function getCountAsOne();
 
     /**
+     * @param float $Cubage
+     * @return $this
+     */
+    public function setCubage($Cubage);
+
+    /**
+     * @return float
+     */
+    public function getCubage();
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -55,6 +66,17 @@ interface ReplItemUnitOfMeasureInterface
     public function getEComSelection();
 
     /**
+     * @param float $Height
+     * @return $this
+     */
+    public function setHeight($Height);
+
+    /**
+     * @return float
+     */
+    public function getHeight();
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -75,6 +97,17 @@ interface ReplItemUnitOfMeasureInterface
      * @return string
      */
     public function getItemId();
+
+    /**
+     * @param float $Length
+     * @return $this
+     */
+    public function setLength($Length);
+
+    /**
+     * @return float
+     */
+    public function getLength();
 
     /**
      * @param int $Order
@@ -119,6 +152,28 @@ interface ReplItemUnitOfMeasureInterface
      * @return string
      */
     public function getShortDescription();
+
+    /**
+     * @param float $Weight
+     * @return $this
+     */
+    public function setWeight($Weight);
+
+    /**
+     * @return float
+     */
+    public function getWeight();
+
+    /**
+     * @param float $Width
+     * @return $this
+     */
+    public function setWidth($Width);
+
+    /**
+     * @return float
+     */
+    public function getWidth();
 
     /**
      * @param string $scope

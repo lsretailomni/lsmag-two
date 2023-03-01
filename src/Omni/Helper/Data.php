@@ -267,7 +267,7 @@ class Data extends AbstractHelper
      */
     public function checkDateValidity($current, $storeHoursObj)
     {
-        $currentTimeStamp                = strtotime($current);
+        $currentTimeStamp = strtotime($current);
 
         if ($storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
             $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
@@ -279,7 +279,7 @@ class Data extends AbstractHelper
                 $storeHoursObjStartDateTimeStamp = strtotime($storeHoursObj->getStartDate());
                 return $currentTimeStamp >= $storeHoursObjStartDateTimeStamp;
             } else {
-                $storeHoursObjEndDateTimeStamp   = strtotime($storeHoursObj->getEndDate());
+                $storeHoursObjEndDateTimeStamp = strtotime($storeHoursObj->getEndDate());
                 if (!$storeHoursObj->getStartDate() && $storeHoursObj->getEndDate()) {
                     return $currentTimeStamp <= $storeHoursObjEndDateTimeStamp;
                 }
@@ -585,22 +585,22 @@ class Data extends AbstractHelper
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
-                return ( $this->lsr->getStoreConfig(
+                return ($this->lsr->getStoreConfig(
+                        LSR::LS_ENABLE_COUPON_ELEMENTS,
+                        $this->lsr->getCurrentStoreId()
+                    ) && $this->lsr->getStoreConfig(
+                        LSR::LS_COUPONS_SHOW_ON_CART,
+                        $this->lsr->getCurrentStoreId()
+                    )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_COUPON_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CART,
+                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
                     $this->lsr->getCurrentStoreId()
                 )
-                );
-            }
-            return ( $this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_COUPON_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) && $this->lsr->getStoreConfig(
-                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
-                $this->lsr->getCurrentStoreId()
-            )
             );
         } else {
             return false;

@@ -5,7 +5,9 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
+use Ls\Omni\Client\Ecommerce\Operation\StoresGet;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\Data;
@@ -141,7 +143,8 @@ class LoadStore extends Action
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
             $url          = OmniService::getUrl($service_type, $baseUrl);
             $client       = new OmniClient($url, $service_type);
-            $getStores    = new StoresGetAll();
+            $getStores    = new StoresGet();
+            $getStores->getOperationInput()->setStoreType(StoreGetType::WEB_STORE);
             //@codingStandardsIgnoreEnd
             $getStores->setClient($client);
             $getStores->setToken($lsKey);
