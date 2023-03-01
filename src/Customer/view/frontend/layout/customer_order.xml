@@ -24,6 +24,11 @@
                     <argument name="view_model" xsi:type="object">Ls\Customer\ViewModel\ItemRenderer</argument>
                 </arguments>
             </referenceBlock>
+            <referenceBlock name="sales.order.items.renderers.bundle" template="Ls_Customer::order/item/renderer/bundle.phtml">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Customer\ViewModel\ItemRenderer</argument>
+                </arguments>
+            </referenceBlock>
         </referenceContainer>
     </body>
 </page>

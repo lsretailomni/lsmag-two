@@ -313,14 +313,19 @@ class LoyaltyHelper extends AbstractHelperOmni
             // @codingStandardsIgnoreEnd
             $storeId         = $this->lsr->getCurrentStoreId();
             $customerGroupId = $this->customerSession->getCustomerGroupId();
-            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
+            $cacheItemId = $itemId;
+
+            if (is_array($itemId)) {
+                $cacheItemId = implode('_', $itemId);
+            }
+            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
             $response        = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
                 return $response;
             }
             $group = $this->groupRepository->getById($customerGroupId)->getCode();
-            $string->setString([$itemId]);
+            $string->setString(is_array($itemId) ? $itemId : [$itemId]);
             $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
             try {
                 $response = $request->execute($entity);

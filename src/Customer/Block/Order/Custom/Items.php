@@ -57,16 +57,16 @@ class Items extends AbstractItems
      */
     public function getItems()
     {
-        $magentoOrder = $this->getMagOrder();
+        $type    = $this->_request->getParam('type');
         $order        = $this->getOrder();
+        if ($this->getMagOrder() && $type != 'Receipt') {
+            $magentoOrder = $this->getMagOrder();
 
-        if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
-            if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
-                $magentoOrder = null;
+            if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
+                if ($order->getStoreCurrency() != $magentoOrder->getOrderCurrencyCode()) {
+                    $magentoOrder = null;
+                }
             }
-        }
-
-        if ($magentoOrder) {
             return $this->itemCollection->getItems();
         }
 

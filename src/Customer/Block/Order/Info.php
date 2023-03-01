@@ -276,12 +276,17 @@ class Info extends AbstractOrderBlock
      */
     public function getPrintUrl($order)
     {
+        $reqType = $this->getRequest()->getParam('type');
+
+        $params ['order_id'] = $order->getCustomerOrderNo() ?: $order->getId();
+
+        if ($reqType) {
+            $params ['type'] = $reqType;
+        }
+
         return $order ? $this->getUrl(
             'customer/order/print',
-            [
-                'order_id' => $order->getCustomerOrderNo() ?: $order->getId(),
-                'type'     => $order->getCustomerOrderNo() ? DocumentIdType::ORDER : $order->getIdType()
-            ]
+            $params
         ) : '';
     }
 

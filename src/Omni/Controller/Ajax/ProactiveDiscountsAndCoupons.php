@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use \Ls\Omni\Block\Product\View\Discount\Proactive;
 use \Ls\Omni\Helper\SessionHelper;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -79,13 +80,13 @@ class ProactiveDiscountsAndCoupons extends Action
         $currentProductSku = $this->getRequest()->getParam('currentProduct');
         $data              = ['productSku' => $currentProductSku];
         $blockCoupons      = $resultPage->getLayout()
-            ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
+            ->createBlock(Proactive::class)
             ->setTemplate('Ls_Omni::product/view/coupons.phtml')
             ->setData('data', $data)
             ->toHtml();
         $data              = array_merge($data, ['coupons' => $blockCoupons]);
         $block             = $resultPage->getLayout()
-            ->createBlock('Ls\Omni\Block\Product\View\Discount\Proactive')
+            ->createBlock(Proactive::class)
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')
             ->setData('data', $data)
             ->toHtml();

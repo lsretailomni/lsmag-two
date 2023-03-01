@@ -18,37 +18,9 @@ use \Ls\Customer\Block\Order\Item\Renderer; ?>
 <tr id="order-item-row-<?= $_item->getItemId() ?>">
     <td class="col name" data-th="<?= /* @noEscape */ __('Product Name') ?>">
         <strong class="product name product-item-name"><?= /* @noEscape */ $_item->getItemDescription() ?></strong>
-        <?php if ($_options = $block->getItemOptions()): ?>
-            <dl class="item-options">
-                <?php foreach ($_options as $_option): ?>
-                    <dt><?= /* @noEscape */ $_option['label'] ?></dt>
-                    <?php if (!$block->getPrintStatus()): ?>
-                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
-                        <dd<?= /* @noEscape */ (isset($_formatedOptionValue['full_view']) ? ' class="tooltip wrapper"' : '') ?>>
-                            <?= /* @noEscape */ $_formatedOptionValue['value'] ?>
-                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
-                                <div class="tooltip content">
-                                    <dl class="item options">
-                                        <dt><?= /* @noEscape */ $_option['label'] ?></dt>
-                                        <dd><?= /* @noEscape */ $_formatedOptionValue['full_view'] ?></dd>
-                                    </dl>
-                                </div>
-                            <?php endif; ?>
-                        </dd>
-                    <?php else: ?>
-                        <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
-                        <dd><?= /* @noEscape */ $optionValue ?></dd>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </dl>
-        <?php else: ?>
-                <?php if (!empty($_item->getVariantDescription())): ?>
-                    <p><?= /* @noEscape */ $_item->getVariantDescription() ?></p>
-                <?php endif;?>
-        <?php endif; ?>
         <?php if (!empty($discountInfo)): ?>
             <p><strong><?= /* @noEscape */ $discountInfo[0]; ?></strong></p>
-            <?php endif;?>
+        <?php endif;?>
     </td>
     <td class="col sku" data-th="<?= /* @noEscape */ __('SKU') ?>">
         <?= /* @noEscape */ $sku ?>
