@@ -4,8 +4,10 @@ namespace Ls\Omni\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
+use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
@@ -15,8 +17,6 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -34,9 +34,8 @@ use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\MaskedQuoteIdToQuoteIdInterface;
 use Magento\QuoteGraphQl\Model\Cart\GetCartForUser;
-use Magento\Store\Model\ScopeInterface;
 use Magento\Sales\Model\Order\Creditmemo;
-use function PHPUnit\Framework\throwException;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Helper class that is used on multiple areas
@@ -448,8 +447,10 @@ class Data extends AbstractHelper
             $results = explode('LS:', $pingResponseText);
 
             if (!empty($results)) {
-                // for Omni 4.16 or higher
-                $versions = explode('LS Commerce Service:', $results[1]);
+                $versions = explode('Commerce Service for LS Central:', $results[1]);
+                if (!empty($versions) && count($versions) < 2) {
+                    $versions = explode('LS Commerce Service:', $results[1]);
+                }
                 if (!empty($versions) && count($versions) < 2) {
                     // for Omni lower then 4.16
                     $versions = explode('OMNI:', $results[1]);
@@ -527,13 +528,16 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Function for commerce service ping
+     *
      * @param $baseUrl
      * @param $lsKey
-     * @return string
+     * @return Entity\PingResponse|\Ls\Omni\Client\ResponseInterface|string|null
      */
     public function omniPing($baseUrl, $lsKey)
     {
         //@codingStandardsIgnoreStart
+        $result       = null;
         $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
         $url          = OmniService::getUrl($service_type, $baseUrl);
         $client       = new OmniClient($url, $service_type);
@@ -543,7 +547,11 @@ class Data extends AbstractHelper
         $ping->setToken($lsKey);
         $client->setClassmap($ping->getClassMap());
         $result = $ping->execute();
-        return $result->getResult();
+        if (!empty($result)) {
+            return $result->getResult();
+        }
+
+        return $result;
     }
 
     /**
@@ -697,7 +705,6 @@ class Data extends AbstractHelper
             ->addFilter('scope_id', $scopeId, 'eq')->create();
         try {
             $items = $this->replStoreTenderTypeRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
