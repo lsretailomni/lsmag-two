@@ -7,7 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
-use Ls\Omni\Client\Ecommerce\Operation\StoresGet;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGet;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\Data;
