@@ -59,8 +59,12 @@ class NavStore implements OptionSourceInterface
 
         if ($this->lsr->validateBaseUrl($baseUrl)) {
             // @codingStandardsIgnoreLine
-            $get_nav_stores = new StoresGet($baseUrl);
-            $get_nav_stores->getOperationInput()->setStoreType(StoreGetType::WEB_STORE);
+            if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
+                $get_nav_stores = new StoresGet($baseUrl);
+                $get_nav_stores->getOperationInput()->setStoreType(StoreGetType::WEB_STORE);
+            } else {
+                $get_nav_stores = new StoresGetAll($baseUrl);
+            }
             $result = $get_nav_stores->execute();
 
             if ($result != null) {
