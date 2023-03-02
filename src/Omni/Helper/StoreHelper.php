@@ -166,10 +166,15 @@ class StoreHelper extends AbstractHelper
         $response = [];
         $baseUrl  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $webStoreId);
         // @codingStandardsIgnoreStart
-        $request = new Entity\StoresGet();
-        $request->setStoreType(StoreGetType::CLICK_AND_COLLECT);
-        $request->setIncludeDetails(true);
-        $operation = new Operation\StoresGet($baseUrl);
+        if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
+            $request = new Entity\StoresGet();
+            $request->setStoreType(StoreGetType::CLICK_AND_COLLECT);
+            $request->setIncludeDetails(true);
+            $operation = new Operation\StoresGet($baseUrl);
+        } else {
+            $request   = new Entity\StoresGetAll();
+            $operation = new Operation\StoresGetAll($baseUrl);
+        }
         // @codingStandardsIgnoreEnd
         try {
             $response = $operation->execute($request);
