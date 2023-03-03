@@ -118,6 +118,7 @@ class EmailNotification extends AbstractNotification
         $magStoreName = $order->getStore()->getFrontEndName();
         $ccStoreName  = $this->helper->getStoreName($order->getPickupStore());
         $receiver     = $this->getReceiver();
+        $status       = $this->getNotificationType();
 
         return [
             'order' => $order,
@@ -126,6 +127,7 @@ class EmailNotification extends AbstractNotification
             'store' => $order->getStore(),
             'store_name' => $magStoreName,
             'cc_store_name' => $ccStoreName,
+            'status' => $status,
             'order_data' => [
                 'customer_name' => $receiver->getReceiverName(),
                 'email_customer_note' => $order->getEmailCustomerNote(),
@@ -142,7 +144,6 @@ class EmailNotification extends AbstractNotification
     {
         $type      = $this->getNotificationType();
         $storeId   = $this->getStoreId();
-        $isEnabled = false;
 
         switch ($type) {
             case LSR::LS_STATE_PICKED:
@@ -163,6 +164,13 @@ class EmailNotification extends AbstractNotification
                 $isEnabled = (bool)$this->helper->isNotifyEnabled(
                     LSR::LS_NOTIFICATION_EMAIL,
                     LSR::LS_STATE_CANCELED,
+                    $storeId
+                );
+                break;
+            default:
+                $isEnabled = (bool)$this->helper->isNotifyEnabled(
+                    LSR::LS_NOTIFICATION_EMAIL,
+                    LSR::LS_STATE_MISC,
                     $storeId
                 );
                 break;

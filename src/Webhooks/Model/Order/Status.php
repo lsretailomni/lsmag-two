@@ -133,27 +133,35 @@ class Status
         $configuredNotificationType = explode(',', $this->helper->getNotificationType($storeId));
         $orderStatus                = null;
 
-        if (($status == LSR::LS_STATE_CANCELED || $status == LSR::LS_STATE_SHORTAGE)) {
-            $this->cancel($magOrder, $itemsInfo, $items);
-            $orderStatus = LSR::LS_STATE_CANCELED;
-        }
-
-        if ($status == LSR::LS_STATE_PICKED && $isClickAndCollectOrder) {
-            $orderStatus = LSR::LS_STATE_PICKED;
-        }
-
-        if ($status == LSR::LS_STATE_COLLECTED && $isClickAndCollectOrder) {
-            $orderStatus = LSR::LS_STATE_COLLECTED;
-
-            if ($isOffline) {
-                $this->payment->generateInvoice($data);
-            }
-        }
-
-        if ($status == LSR::LS_STATE_SHIPPED) {
-            if ($isOffline) {
-                $this->payment->generateInvoice($data);
-            }
+        switch ($status) {
+            case LSR::LS_STATE_CANCELED:
+            case LSR::LS_STATE_SHORTAGE:
+                $this->cancel($magOrder, $itemsInfo, $items);
+                $orderStatus = LSR::LS_STATE_CANCELED;
+                break;
+            case LSR::LS_STATE_PICKED:
+                if ($isClickAndCollectOrder) {
+                    $orderStatus = LSR::LS_STATE_PICKED;
+                }
+                break;
+            case LSR::LS_STATE_COLLECTED:
+                if ($isClickAndCollectOrder) {
+                    $orderStatus = LSR::LS_STATE_COLLECTED;
+                    if ($isOffline) {
+                        $this->payment->generateInvoice($data);
+                    }
+                }
+                break;
+            case LSR::LS_STATE_SHIPPED:
+                if ($isOffline) {
+                    $this->payment->generateInvoice($data);
+                }
+                break;
+            default:
+                if ($isClickAndCollectOrder) {
+                    $orderStatus = $status;
+                }
+                break;
         }
 
         if ($orderStatus !== null) {

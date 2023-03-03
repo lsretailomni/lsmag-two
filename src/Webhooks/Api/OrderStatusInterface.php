@@ -18,5 +18,5 @@ interface OrderStatusInterface
      * @param mixed $Lines
      * @return mixed
      */
-    public function set($OrderId, $CardId, $HeaderStatus, $MsgSubject, $MsgDetail, $Lines);
+    public function set($OrderId, $CardId = null, $HeaderStatus, $MsgSubject, $MsgDetail, $Lines = null);
 }
