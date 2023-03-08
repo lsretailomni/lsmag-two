@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -228,10 +229,20 @@ class LSRecommend extends AbstractHelper
             /** @var Item $quoteItem */
 
             foreach ($quoteItems as $quoteItem) {
-                list($sku) = $this->itemHelper->getComparisonValues(
-                    $quoteItem->getSku()
-                );
-                $itemsSkusArray[] = $sku;
+                $children = [];
+
+                if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
+                    $children = $quoteItem->getChildren();
+                } else {
+                    $children[] = $quoteItem;
+                }
+
+                foreach ($children as $child) {
+                    list($sku) = $this->itemHelper->getComparisonValues(
+                        $child->getSku()
+                    );
+                    $itemsSkusArray[] = $sku;
+                }
             }
         }
 

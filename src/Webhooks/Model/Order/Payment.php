@@ -3,11 +3,13 @@
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
+use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Magento\Sales\Model\Convert\Order;
@@ -67,6 +69,16 @@ class Payment
     private $shipmentRepository;
 
     /**
+     * @var DefaultSourceProviderInterfaceFactory
+     */
+    private $defaultSourceProviderFactory;
+
+    /**
+     * @var ReplicationHelper
+     */
+    private $replicationHelper;
+
+    /**
      * @param Logger $logger
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
@@ -76,6 +88,8 @@ class Payment
      * @param Order $convertOrder
      * @param ShipmentNotifier $shipmentNotifier
      * @param ShipmentRepositoryInterface $shipmentRepository
+     * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         Logger $logger,
@@ -86,17 +100,21 @@ class Payment
         OrderRepositoryInterface $orderRepository,
         Order $convertOrder,
         ShipmentNotifier $shipmentNotifier,
-        ShipmentRepositoryInterface $shipmentRepository
+        ShipmentRepositoryInterface $shipmentRepository,
+        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        ReplicationHelper $replicationHelper
     ) {
-        $this->logger             = $logger;
-        $this->invoiceService     = $invoiceService;
-        $this->transactionFactory = $transactionFactory;
-        $this->invoiceSender      = $invoiceSender;
-        $this->helper             = $helper;
-        $this->orderRepository    = $orderRepository;
-        $this->convertOrder       = $convertOrder;
-        $this->shipmentNotifier   = $shipmentNotifier;
-        $this->shipmentRepository = $shipmentRepository;
+        $this->logger                       = $logger;
+        $this->invoiceService               = $invoiceService;
+        $this->transactionFactory           = $transactionFactory;
+        $this->invoiceSender                = $invoiceSender;
+        $this->helper                       = $helper;
+        $this->orderRepository              = $orderRepository;
+        $this->convertOrder                 = $convertOrder;
+        $this->shipmentNotifier             = $shipmentNotifier;
+        $this->shipmentRepository           = $shipmentRepository;
+        $this->defaultSourceProviderFactory = $defaultSourceProviderFactory;
+        $this->replicationHelper            = $replicationHelper;
     }
 
     /**
@@ -125,11 +143,13 @@ class Payment
             if ($validateOrder['data']['success'] && $order->canInvoice()) {
                 $items = $this->helper->getItems($order, $lines);
                 foreach ($items as $itemData) {
-                    $item                         = $itemData['item'];
-                    $orderItemId                  = $item->getItemId();
-                    $itemsToInvoice[$orderItemId] = $itemData['qty'];
-                    if ($isOffline) {
-                        $totalAmount += $itemData['amount'];
+                    foreach ($itemData as $itemData) {
+                        $item                         = $itemData['item'];
+                        $orderItemId                  = $item->getItemId();
+                        $itemsToInvoice[$orderItemId] = $itemData['qty'];
+                        if ($isOffline) {
+                            $totalAmount += $itemData['amount'];
+                        }
                     }
                 }
 
@@ -234,8 +254,10 @@ class Payment
     {
         $validate = true;
         $message  = '';
+        $grandTotal = (float) $order->getGrandTotal();
+        $totalDue = (float) $order->getTotalDue();
 
-        if ($order->getGrandTotal() < $amount && $order->getTotalDue() <= $amount) {
+        if (bccomp($grandTotal, $amount, 3) == -1 && bccomp($totalDue, $amount, 3) != 1) {
             $message = "Invoice amount is greater than order amount for document id #" . $documentId;
             $this->logger->error($message);
             $validate = false;
@@ -281,23 +303,35 @@ class Payment
         }
         $orderShipment = $this->convertOrder->toShipment($order);
 
+        $parentItems = [];
         foreach ($order->getAllItems() as $orderItem) {
             $parentItem = $orderItem->getParentItem();
 
-            if (!$this->isAllowed($orderItem, $lines) ||
+            if (!$this->helper->isAllowed($orderItem, $lines) ||
                 ($parentItem ?
                     !$parentItem->getQtyToShip() : !$orderItem->getQtyToShip())
             ) {
                 continue;
             }
+
             if (empty($parentItem)) {
                 $parentItem = $orderItem;
             }
-            $qty          = $this->getQtyToShip($orderItem, $lines);
+
+            if (in_array($parentItem->getItemId(), $parentItems)) {
+                continue;
+            }
+            $qty          = $this->helper->getQtyToShip($orderItem, $lines);
             $shipmentItem = $this->convertOrder->itemToShipmentItem($parentItem)->setQty($qty);
             $orderShipment->addItem($shipmentItem);
+            $parentItems[] = $parentItem->getItemId();
         }
         $orderShipment->register();
+        $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();
+        $websiteId         = $order->getStore()->getWebsiteId();
+        $sourceCode        = $this->replicationHelper->getSourceCodeFromWebsiteCode($defaultSourceCode, $websiteId);
+        $orderShipment->getExtensionAttributes()->setSourceCode($sourceCode);
+
         $order->setIsInProcess(true);
         try {
             // Save created Order Shipment
@@ -310,56 +344,5 @@ class Payment
                 __($e->getMessage())
             );
         }
-    }
-
-    /**
-     * Is allowed
-     *
-     * @param $orderItem
-     * @param $lines
-     * @return bool
-     * @throws NoSuchEntityException
-     */
-    public function isAllowed($orderItem, $lines)
-    {
-        $product = $this->helper->getProductById($orderItem->getProductId());
-        $found   = false;
-
-        foreach ($lines as $line) {
-            $itemId    = $line['ItemId'];
-            $variantId = $line['VariantId'];
-
-            if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
-                $found = true;
-                break;
-            }
-        }
-
-        return $found;
-    }
-
-    /**
-     * Get qty to ship
-     *
-     * @param $orderItem
-     * @param $lines
-     * @return int
-     * @throws NoSuchEntityException
-     */
-    public function getQtyToShip($orderItem, $lines)
-    {
-        $product = $this->helper->getProductById($orderItem->getProductId());
-        $qty     = 0;
-
-        foreach ($lines as $line) {
-            $itemId    = $line['ItemId'];
-            $variantId = $line['VariantId'];
-
-            if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
-                $qty++;
-            }
-        }
-
-        return $qty;
     }
 }
