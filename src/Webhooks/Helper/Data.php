@@ -405,4 +405,59 @@ class Data
     {
         return $this->productRepository->getById($id);
     }
+
+    /**
+     * Is allowed
+     *
+     * @param $orderItem
+     * @param $lines
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isAllowed($orderItem, $lines)
+    {
+        $product = $this->getProductById($orderItem->getProductId());
+        $found   = false;
+
+        foreach ($lines as $line) {
+            $itemId    = $line['ItemId'];
+            $variantId = $line['VariantId'];
+
+            if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+                $found = true;
+                break;
+            }
+        }
+
+        return $found;
+    }
+
+    /**
+     * Get qty to ship
+     *
+     * @param $orderItem
+     * @param $lines
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getQtyToShip($orderItem, &$lines)
+    {
+        $product = $this->getProductById($orderItem->getProductId());
+        $qty     = 0;
+
+        foreach ($lines as $index => $line) {
+            $itemId    = $line['ItemId'];
+            $variantId = $line['VariantId'];
+
+            if ($product->getLsrItemId() == $itemId &&
+                $product->getLsrVariantId() == $variantId &&
+                $orderItem->getQtyOrdered() > $qty
+            ) {
+                $qty++;
+                unset($lines[$index]);
+            }
+        }
+
+        return $qty;
+    }
 }
