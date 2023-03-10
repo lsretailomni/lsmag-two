@@ -93,18 +93,18 @@ class LoyaltyHelper extends AbstractHelperOmni
             $this->cacheHelper->persistContentInCache(
                 $cacheId,
                 [
-                    "image" => $response->getResult()->getImage(),
-                    "format" => $response->getResult()->getFormat(),
-                    "location" => $response->getResult()->getLocation(),
+                    "image"        => $response->getResult()->getImage(),
+                    "format"       => $response->getResult()->getFormat(),
+                    "location"     => $response->getResult()->getLocation(),
                     "locationType" => $response->getResult()->getLocationType()
                 ],
                 [Type::CACHE_TAG],
                 604800
             );
             return [
-                "image" => $response->getResult()->getImage(),
-                "format" => $response->getResult()->getFormat(),
-                "location" => $response->getResult()->getLocation(),
+                "image"        => $response->getResult()->getImage(),
+                "format"       => $response->getResult()->getFormat(),
+                "location"     => $response->getResult()->getLocation(),
                 "locationType" => $response->getResult()->getLocationType()
             ];
         }
@@ -137,14 +137,14 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
-        $cardId = $this->contactHelper->getCardIdFromCustomerSession();
-        $points = $this->basketHelper->getMemberPointsFromCheckoutSession();
+        $cardId   = $this->contactHelper->getCardIdFromCustomerSession();
+        $points   = $this->basketHelper->getMemberPointsFromCheckoutSession();
         $response = null;
 
         if ($points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
             $request = new Operation\CardGetPointBalance();
-            $entity = new Entity\CardGetPointBalance();
+            $entity  = new Entity\CardGetPointBalance();
             // @codingStandardsIgnoreEnd
             $entity->setCardId($cardId);
             try {
@@ -220,14 +220,16 @@ class LoyaltyHelper extends AbstractHelperOmni
         $storeId  = $this->lsr->getCurrentStoreId();
         $response = null;
         if ($this->lsr->isLSR($storeId)) {
-            $cacheId  = LSR::POINTRATE . $storeId;
-            $response = $this->cacheHelper->getCachedContent($cacheId);
+            $currencyCode = $this->lsr->getStoreCurrencyCode();
+            $cacheId      = LSR::POINTRATE . $storeId . $currencyCode;
+            $response     = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 return $response;
             }
             // @codingStandardsIgnoreStart
             $request = new Operation\GetPointRate();
             $entity  = new Entity\GetPointRate();
+            $entity->setCurrency($currencyCode);
             // @codingStandardsIgnoreEnd
             try {
                 $response = $request->execute($entity);
@@ -356,9 +358,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getPublishedOffers($cardId, $storeId, $itemId = null)
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $cacheId = LSR::COUPONS;
-            $cacheId = $itemId ? $cacheId . $itemId . '_' : $cacheId;
-            $cacheId .= $cardId . "_" . $storeId;
+            $cacheId  = LSR::COUPONS;
+            $cacheId  = $itemId ? $cacheId . $itemId . '_' : $cacheId;
+            $cacheId  .= $cardId . "_" . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response) {
@@ -420,10 +422,10 @@ class LoyaltyHelper extends AbstractHelperOmni
                     $item->getProductId()
                 );
                 $itemIdentifiers[] = [
-                    'itemId' => $itemId,
+                    'itemId'    => $itemId,
                     'variantId' => $variantId,
-                    'uom' => $uom,
-                    'baseUom' => $baseUom
+                    'uom'       => $uom,
+                    'baseUom'   => $baseUom
                 ];
             }
 

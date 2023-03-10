@@ -939,4 +939,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
         return $colorCodes;
     }
+
+    /**
+     * Getting current store currency code
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCurrencyCode()
+    {
+        return $this->storeManager->getStore($this->getCurrentStoreId())->getCurrentCurrencyCode();
+    }
 }

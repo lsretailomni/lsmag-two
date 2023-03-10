@@ -71,6 +71,12 @@ class GiftCardHelper extends AbstractHelper
         try {
             $responseData = $request->execute($entity);
             $response     = $responseData ? $responseData->getResult() : $response;
+            if (!empty($response)) {
+                $currency = $response->getCurrencyCode();
+                if (!empty($currency)) {
+                    $response = ($currency == $this->lsr->getStoreCurrencyCode()) ?: null;
+                }
+            }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -102,22 +108,22 @@ class GiftCardHelper extends AbstractHelper
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == 'cart') {
-                return ( $this->lsr->getStoreConfig(
+                return ($this->lsr->getStoreConfig(
+                        LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
+                        $this->lsr->getCurrentStoreId()
+                    ) && $this->lsr->getStoreConfig(
+                        LSR::LS_GIFTCARD_SHOW_ON_CART,
+                        $this->lsr->getCurrentStoreId()
+                    )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_GIFTCARD_SHOW_ON_CART,
+                    LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
                     $this->lsr->getCurrentStoreId()
                 )
-                );
-            }
-            return ( $this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) && $this->lsr->getStoreConfig(
-                LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
-                $this->lsr->getCurrentStoreId()
-            )
             );
         } else {
             return false;

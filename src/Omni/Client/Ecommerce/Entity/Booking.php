@@ -86,6 +86,16 @@ class Booking extends Entity
     protected $Location = null;
 
     /**
+     * @property string $MainResource
+     */
+    protected $MainResource = null;
+
+    /**
+     * @property string $MainResourceName
+     */
+    protected $MainResourceName = null;
+
+    /**
      * @property int $NoOfPersons
      */
     protected $NoOfPersons = null;
@@ -101,9 +111,19 @@ class Booking extends Entity
     protected $PriceCurrency = null;
 
     /**
+     * @property string $PromoCode
+     */
+    protected $PromoCode = null;
+
+    /**
      * @property float $Quantity
      */
     protected $Quantity = null;
+
+    /**
+     * @property string $ReservationNo
+     */
+    protected $ReservationNo = null;
 
     /**
      * @property string $Status
@@ -401,6 +421,42 @@ class Booking extends Entity
     }
 
     /**
+     * @param string $MainResource
+     * @return $this
+     */
+    public function setMainResource($MainResource)
+    {
+        $this->MainResource = $MainResource;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMainResource()
+    {
+        return $this->MainResource;
+    }
+
+    /**
+     * @param string $MainResourceName
+     * @return $this
+     */
+    public function setMainResourceName($MainResourceName)
+    {
+        $this->MainResourceName = $MainResourceName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMainResourceName()
+    {
+        return $this->MainResourceName;
+    }
+
+    /**
      * @param int $NoOfPersons
      * @return $this
      */
@@ -455,6 +511,24 @@ class Booking extends Entity
     }
 
     /**
+     * @param string $PromoCode
+     * @return $this
+     */
+    public function setPromoCode($PromoCode)
+    {
+        $this->PromoCode = $PromoCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPromoCode()
+    {
+        return $this->PromoCode;
+    }
+
+    /**
      * @param float $Quantity
      * @return $this
      */
@@ -470,6 +544,24 @@ class Booking extends Entity
     public function getQuantity()
     {
         return $this->Quantity;
+    }
+
+    /**
+     * @param string $ReservationNo
+     * @return $this
+     */
+    public function setReservationNo($ReservationNo)
+    {
+        $this->ReservationNo = $ReservationNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReservationNo()
+    {
+        return $this->ReservationNo;
     }
 
     /**
