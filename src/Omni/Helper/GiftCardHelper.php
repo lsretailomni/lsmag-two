@@ -74,7 +74,7 @@ class GiftCardHelper extends AbstractHelper
             if (!empty($response)) {
                 $currency = $response->getCurrencyCode();
                 if (!empty($currency)) {
-                    $response = ($currency == $this->lsr->getStoreCurrencyCode()) ?: null;
+                    $response = ($currency == $this->lsr->getStoreCurrencyCode()) ? $response : null;
                 }
             }
         } catch (Exception $e) {
