@@ -150,12 +150,12 @@ class Totals extends AbstractOrderBlock
                 if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
                     $method    = $tenderTypeMapping[$tenderTypeId];
                     $methods[] = __($method);
-                    if (!empty($line->getCardNo())) {
-                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-                        if ($giftCardTenderId == $tenderTypeId) {
-                            $this->giftCardAmount = $line->getAmount();
-                        }
+
+                    $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                    if ($giftCardTenderId == $tenderTypeId) {
+                        $this->giftCardAmount = $line->getAmount();
                     }
+
                     $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
                     if ($loyaltyTenderId == $tenderTypeId) {
                         $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
