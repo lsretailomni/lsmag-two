@@ -11,6 +11,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Client\Ecommerce\Operation\ReturnPolicyGet as ReturnPolicyGetOperation;
 use \Ls\Omni\Model\Cache\Type;
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Psr\Log\LoggerInterface;
 
@@ -45,41 +46,56 @@ class ReturnPolicyManagement implements ReturnPolicyManagementInterface
      */
     private $logger;
 
+    /** @var ProductRepository $productRepository */
+    private $productRepository;
+
     /**
      * @param LSR $lsr
      * @param CacheHelper $cacheHelper
      * @param ReturnPolicyGet $returnPolicyGet
      * @param ReturnPolicyGetOperation $returnPolicyOperation
      * @param LoggerInterface $logger
+     * @param ProductRepository $productRepository
      */
     public function __construct(
         LSR $lsr,
         CacheHelper $cacheHelper,
         ReturnPolicyGet $returnPolicyGet,
         ReturnPolicyGetOperation $returnPolicyOperation,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ProductRepository $productRepository
     ) {
         $this->lsr                   = $lsr;
         $this->cacheHelper           = $cacheHelper;
         $this->returnPolicyGet       = $returnPolicyGet;
         $this->returnPolicyOperation = $returnPolicyOperation;
         $this->logger                = $logger;
+        $this->productRepository     = $productRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getReturnPolicy($itemId, $variantId, $storeId)
+    public function getReturnPolicy($parentSku, $childSku, $storeId)
     {
         if (empty($storeId)) {
             $storeId = $this->lsr->getActiveWebStore();
         }
+
+        if (!empty($childSku)) {
+            $product = $this->productRepository->get($childSku);
+        } else {
+            $product = $this->productRepository->get($parentSku);
+        }
+
+        $itemId = $product->getLsrItemId();
+        $variantId = $product->getLsrVariantId();
         $cacheKey = LSR::RETURN_POLICY_CACHE . $storeId;
         if (!empty($itemId)) {
             $cacheKey = $cacheKey . '_' . $itemId;
         }
         if (!empty($variantId)) {
-            $cacheKey = $cacheKey . '_' . $variantId;
+            $cacheKey = $cacheKey . '_'. $itemId. '_' . $variantId;
         }
         $response = null;
         try {

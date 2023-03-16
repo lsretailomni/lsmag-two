@@ -37,17 +37,17 @@ class ReturnPolicyOutput implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "store_id" is missing'));
         }
 
-        $itemId    = '';
-        $variantId = '';
+        $parentSku    = '';
+        $childSku = '';
 
         $storeId = $args['store_id'];
-        if (!empty($args['item_id'])) {
-            $itemId = $args['item_id'];
+        if (!empty($args['parent_sku'])) {
+            $parentSku = $args['parent_sku'];
         }
-        if (!empty($args['variant_id'])) {
-            $variantId = $args['variant_id'];
+        if (!empty($args['child_sku'])) {
+            $childSku = $args['child_sku'];
         }
-        $response = $this->returnPolicyManagement->getReturnPolicy($itemId, $variantId, $storeId);
+        $response = $this->returnPolicyManagement->getReturnPolicy($parentSku, $childSku, $storeId);
 
         return [
             'text' => $response,
