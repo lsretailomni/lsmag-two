@@ -141,7 +141,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         $points = $this->basketHelper->getMemberPointsFromCheckoutSession();
         $response = null;
 
-        if ($points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
             $request = new Operation\CardGetPointBalance();
             $entity = new Entity\CardGetPointBalance();

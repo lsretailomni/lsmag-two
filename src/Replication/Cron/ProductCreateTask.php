@@ -811,8 +811,14 @@ class ProductCreateTask
             }
             $types           = [];
             $imageSize       = [
-                'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
-                'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
+                'height' =>  $this->lsr->getStoreConfig(
+                    LSR::SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT,
+                    $this->store->getId()
+                ),
+                'width'  => $this->lsr->getStoreConfig(
+                    LSR::SC_REPLICATION_DEFAULT_ITEM_IMAGE_WIDTH,
+                    $this->store->getId()
+                )
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
