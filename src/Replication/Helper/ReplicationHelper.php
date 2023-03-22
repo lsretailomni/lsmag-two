@@ -38,6 +38,9 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogInventory\Api\StockConfigurationInterface;
+use Magento\CatalogInventory\Api\StockItemCriteriaInterfaceFactory;
+use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
@@ -371,6 +374,21 @@ class ReplicationHelper extends AbstractHelper
     public $getAssignedStockIdForWebsite;
 
     /**
+     * @var StockItemCriteriaInterfaceFactory
+     */
+    public $criteriaInterfaceFactory;
+
+    /**
+     * @var StockItemRepositoryInterface
+     */
+    public $stockItemRepository;
+
+    /**
+     * @var StockConfigurationInterface
+     */
+    public $stockConfiguration;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -431,6 +449,9 @@ class ReplicationHelper extends AbstractHelper
      * @param SourceItemRepositoryInterface $sourceItemRepository
      * @param SourceItemsDeleteInterface $sourceItemsDelete
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+     * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
+     * @param StockItemRepositoryInterface $stockItemRepository
+     * @param StockConfigurationInterface $stockConfiguration
      */
     public function __construct(
         Context $context,
@@ -492,7 +513,10 @@ class ReplicationHelper extends AbstractHelper
         GetStockSourceLinksInterface $getStockSourceLinks,
         SourceItemRepositoryInterface $sourceItemRepository,
         SourceItemsDeleteInterface $sourceItemsDelete,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
+        StockItemRepositoryInterface $stockItemRepository,
+        StockConfigurationInterface $stockConfiguration
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -553,6 +577,9 @@ class ReplicationHelper extends AbstractHelper
         $this->sourceItemRepository                      = $sourceItemRepository;
         $this->sourceItemDeleteRepository                = $sourceItemsDelete;
         $this->getAssignedStockIdForWebsite              = $getAssignedStockIdForWebsite;
+        $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
+        $this->stockItemRepository                       = $stockItemRepository;
+        $this->stockConfiguration                        = $stockConfiguration;
         parent::__construct(
             $context
         );
@@ -2968,7 +2995,9 @@ class ReplicationHelper extends AbstractHelper
             $sourceItems        = [];
             $skus               = [$sku];
             foreach ($parentProductsSkus as $parentSku) {
-                $parentSku     = array_shift($parentSku);
+                $productId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus($parentSku);
+                $parentSku = array_shift($parentSku);
+                $this->setStockStatusChangedAuto($productId);
                 $skus[]        = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
                     $parentSku,
@@ -2996,6 +3025,31 @@ class ReplicationHelper extends AbstractHelper
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Set stock_status_changed_auto = 1 for configurable product in table cataloginventory_stock_item
+     *
+     * @param $productId
+     * @return void
+     */
+    public function setStockStatusChangedAuto($productId)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $parentStockItem = array_shift($allItems);
+        $this->stockItemRepository->save(
+            $parentStockItem
+                ->setStockStatusChangedAuto(1)
+                ->setStockStatusChangedAutomaticallyFlag(1)
+        );
     }
 
     /**
