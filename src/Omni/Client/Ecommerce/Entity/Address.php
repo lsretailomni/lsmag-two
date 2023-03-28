@@ -39,6 +39,11 @@ class Address
     protected $Country = null;
 
     /**
+     * @property string $County
+     */
+    protected $County = null;
+
+    /**
      * @property string $HouseNo
      */
     protected $HouseNo = null;
@@ -156,6 +161,24 @@ class Address
     public function getCountry()
     {
         return $this->Country;
+    }
+
+    /**
+     * @param string $County
+     * @return $this
+     */
+    public function setCounty($County)
+    {
+        $this->County = $County;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCounty()
+    {
+        return $this->County;
     }
 
     /**
