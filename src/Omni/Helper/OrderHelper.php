@@ -357,7 +357,7 @@ class OrderHelper extends AbstractHelper
         $omniAddress
             ->setCity($magentoAddress->getCity())
             ->setCountry($magentoAddress->getCountryId())
-            ->setStateProvinceRegion($region)
+            ->setCounty($region)
             ->setPostCode($magentoAddress->getPostcode())
             ->setPhoneNumber($magentoAddress->getTelephone());
 
