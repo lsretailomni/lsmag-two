@@ -390,6 +390,11 @@ class ReplicationHelper extends AbstractHelper
     public $stockConfiguration;
 
     /**
+     * @var IsSingleSourceModeInterface
+     */
+    public $isSingleSourceMode;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -453,6 +458,7 @@ class ReplicationHelper extends AbstractHelper
      * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
      * @param StockItemRepositoryInterface $stockItemRepository
      * @param StockConfigurationInterface $stockConfiguration
+     * @param IsSingleSourceModeInterface $isSingleSourceMode
      */
     public function __construct(
         Context $context,
