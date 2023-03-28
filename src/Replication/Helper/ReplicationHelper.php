@@ -87,6 +87,7 @@ use Magento\InventoryApi\Api\SourceItemRepositoryInterface;
 use Magento\InventoryApi\Api\SourceItemsDeleteInterface;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
+use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
 use Magento\InventorySales\Model\ResourceModel\GetAssignedStockIdForWebsite;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -516,7 +517,8 @@ class ReplicationHelper extends AbstractHelper
         GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
         StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
         StockItemRepositoryInterface $stockItemRepository,
-        StockConfigurationInterface $stockConfiguration
+        StockConfigurationInterface $stockConfiguration,
+        IsSingleSourceModeInterface $isSingleSourceMode
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -580,6 +582,7 @@ class ReplicationHelper extends AbstractHelper
         $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
         $this->stockItemRepository                       = $stockItemRepository;
         $this->stockConfiguration                        = $stockConfiguration;
+        $this->isSingleSourceMode                        = $isSingleSourceMode;
         parent::__construct(
             $context
         );
@@ -3045,11 +3048,15 @@ class ReplicationHelper extends AbstractHelper
             return;
         }
         $parentStockItem = array_shift($allItems);
-        $this->stockItemRepository->save(
-            $parentStockItem
-                ->setStockStatusChangedAuto(1)
-                ->setStockStatusChangedAutomaticallyFlag(1)
-        );
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1);
+
+        if (!$this->isSingleSourceMode->execute()) {
+            $parentStockItem->setIsInStock(1);
+        }
+
+        $this->stockItemRepository->save($parentStockItem);
     }
 
     /**
