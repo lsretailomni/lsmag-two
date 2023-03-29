@@ -245,7 +245,7 @@ class OrderHelper extends AbstractHelper
                 //TODO need to fix the length issue once LS Central allow more then 10 characters.
                 $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
                 $oneListCalculateResponse->setShippingAgentCode($carrierCode);
-                $method      = ($method) ? substr($method, 0, 10) : "";
+                $method = ($method) ? substr($method, 0, 10) : "";
                 $oneListCalculateResponse->setShippingAgentServiceCode($method);
                 $oneListCalculateResponse->setShippingStatus(Entity\Enum\ShippingStatus::NOT_YET_SHIPPED);
             }
@@ -790,7 +790,8 @@ class OrderHelper extends AbstractHelper
         $sortOrder = null
     ) {
         $orders    = null;
-        $websiteId = $this->storeManager->getStore($this->lsr->getCurrentStoreId());
+        $store     = $this->storeManager->getStore($storeId);
+        $websiteId = $store->getWebsiteId();
         try {
             $orderStatuses   = $this->lsr->getWebsiteConfig(
                 LSR::LSR_RESTRICTED_ORDER_STATUSES,
