@@ -47,7 +47,7 @@ class ClientGenerate extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
+     * @return int
      * @throws Exception
      */
     public function execute(InputInterface $input, OutputInterface $output)
