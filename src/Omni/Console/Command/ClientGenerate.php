@@ -123,6 +123,8 @@ class ClientGenerate extends Command
         $this->output->writeln($ok);
         $this->output->writeln('- - - - - - - - - - ');
         $this->output->writeln('OK');
+
+        return 0;
     }
 
     /**
