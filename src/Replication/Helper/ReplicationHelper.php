@@ -5,6 +5,7 @@ namespace Ls\Replication\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
@@ -25,6 +26,7 @@ use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
+use Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -433,67 +435,68 @@ class ReplicationHelper extends AbstractHelper
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
      */
     public function __construct(
-        Context $context,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        FilterBuilder $filterBuilder,
-        FilterGroupBuilder $filterGroupBuilder,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        StoreManagerInterface $storeManager,
-        Filesystem $Filesystem,
-        Config $eavConfig,
-        WriterInterface $configWriter,
-        Set $attributeSet,
-        TypeListInterface $cacheTypeList,
-        LSR $LSR,
-        ResourceConnection $resource,
-        SortOrder $sortOrder,
-        DateTime $date,
-        TimezoneInterface $timezone,
-        Logger $_logger,
-        ReplItemRepository $itemRepository,
-        FileSystemDirectory $fileSystemDirectory,
-        CollectionFactory $categoryCollectionFactory,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
-        CategoryLinkManagementInterface $categoryLinkManagement,
-        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
-        ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
-        TypeFactory $eavTypeFactory,
-        SetFactory $attributeSetFactory,
-        AttributeSetManagement $attributeSetManagement,
-        AttributeManagement $attributeManagement,
-        GroupFactory $attributeSetGroupFactory,
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
-        AttributeSetRepositoryInterface $attributeSetRepository,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        ConfigurableProTypeModel $configurableProTypeModel,
-        ReplExtendedVariantValueRepository $extendedVariantValueRepository,
-        ReplItemUnitOfMeasure $replItemUomRepository,
-        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
-        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
-        TaxClassRepositoryInterface $taxClassRepository,
-        ClassModelFactory $classModelFactory,
-        ReplInvStatusRepository $replInvStatusRepository,
-        SourceItemsSave $sourceItemsSave,
-        SourceItemInterfaceFactory $sourceItemFactory,
-        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
+        Context                                                        $context,
+        SearchCriteriaBuilder                                          $searchCriteriaBuilder,
+        FilterBuilder                                                  $filterBuilder,
+        FilterGroupBuilder                                             $filterGroupBuilder,
+        ReplImageLinkRepositoryInterface                               $replImageLinkRepositoryInterface,
+        StoreManagerInterface                                          $storeManager,
+        Filesystem                                                     $Filesystem,
+        Config                                                         $eavConfig,
+        WriterInterface                                                $configWriter,
+        Set                                                            $attributeSet,
+        TypeListInterface                                              $cacheTypeList,
+        LSR                                                            $LSR,
+        ResourceConnection                                             $resource,
+        SortOrder                                                      $sortOrder,
+        DateTime                                                       $date,
+        TimezoneInterface                                              $timezone,
+        Logger                                                         $_logger,
+        ReplItemRepository                                             $itemRepository,
+        FileSystemDirectory                                            $fileSystemDirectory,
+        CollectionFactory                                              $categoryCollectionFactory,
+        ReplHierarchyLeafRepository                                    $replHierarchyLeafRepository,
+        CategoryLinkManagementInterface                                $categoryLinkManagement,
+        ReplAttributeValueCollectionFactory                            $replAttributeValueCollectionFactory,
+        ReplExtendedVariantValueCollectionFactory                      $replExtendedVariantValueCollectionFactory,
+        TypeFactory                                                    $eavTypeFactory,
+        SetFactory                                                     $attributeSetFactory,
+        AttributeSetManagement                                         $attributeSetManagement,
+        AttributeManagement                                            $attributeManagement,
+        GroupFactory                                                   $attributeSetGroupFactory,
+        AttributeGroupRepositoryInterface                              $attributeGroupRepository,
+        AttributeSetRepositoryInterface                                $attributeSetRepository,
+        ReplAttributeValueRepositoryInterface                          $replAttributeValueRepositoryInterface,
+        ConfigurableProTypeModel                                       $configurableProTypeModel,
+        ReplExtendedVariantValueRepository                             $extendedVariantValueRepository,
+        ReplItemUnitOfMeasure                                          $replItemUomRepository,
+        ReplTaxSetupRepositoryInterface                                $replTaxSetupRepository,
+        ReplStoreTenderTypeRepositoryInterface                         $replStoreTenderTypeRepository,
+        TaxClassRepositoryInterface                                    $taxClassRepository,
+        ClassModelFactory                                              $classModelFactory,
+        ReplInvStatusRepository                                        $replInvStatusRepository,
+        SourceItemsSave                                                $sourceItemsSave,
+        SourceItemInterfaceFactory                                     $sourceItemFactory,
+        DefaultSourceProviderInterfaceFactory                          $defaultSourceProviderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        CategoryRepositoryInterface $categoryRepository,
-        ResourceModelCategory $categoryResourceModel,
-        RuleCollectionFactory $ruleCollectionFactory,
-        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
-        ParentItemProcessor $parentItemProcessor,
-        ProductRepositoryInterface $productRepository,
-        GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
-        StockStatusRepository $stockStatusRepository,
-        GetProductIdsBySkus $getProductIdsBySkus,
-        AttributeFactory $eavAttributeFactory,
-        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        ProductMetadataInterface $productMetadata,
-        GetStockSourceLinksInterface $getStockSourceLinks,
-        SourceItemRepositoryInterface $sourceItemRepository,
-        SourceItemsDeleteInterface $sourceItemsDelete,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
-    ) {
+        CategoryRepositoryInterface                                    $categoryRepository,
+        ResourceModelCategory                                          $categoryResourceModel,
+        RuleCollectionFactory                                          $ruleCollectionFactory,
+        ReplUnitOfMeasureRepositoryInterface                           $replUnitOfMeasureRepository,
+        ParentItemProcessor                                            $parentItemProcessor,
+        ProductRepositoryInterface                                     $productRepository,
+        GetParentSkusOfChildrenSkus                                    $getParentSkusOfChildrenSkus,
+        StockStatusRepository                                          $stockStatusRepository,
+        GetProductIdsBySkus                                            $getProductIdsBySkus,
+        AttributeFactory                                               $eavAttributeFactory,
+        \Magento\Catalog\Model\ResourceModel\Product                   $productResourceModel,
+        ProductMetadataInterface                                       $productMetadata,
+        GetStockSourceLinksInterface                                   $getStockSourceLinks,
+        SourceItemRepositoryInterface                                  $sourceItemRepository,
+        SourceItemsDeleteInterface                                     $sourceItemsDelete,
+        GetAssignedStockIdForWebsite                                   $getAssignedStockIdForWebsite
+    )
+    {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
         $this->filterGroupBuilder                        = $filterGroupBuilder;
@@ -572,7 +575,8 @@ class ReplicationHelper extends AbstractHelper
         $conditionType = 'eq',
         $pagesize = 100,
         $excludeDeleted = true
-    ) {
+    )
+    {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -621,7 +625,8 @@ class ReplicationHelper extends AbstractHelper
         $conditionType = 'eq',
         $pagesize = 100,
         $excludeDeleted = true
-    ) {
+    )
+    {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('ready_to_process')
@@ -667,7 +672,8 @@ class ReplicationHelper extends AbstractHelper
         $pagesize = 100,
         $excludeDeleted = true,
         $scope_id = false
-    ) {
+    )
+    {
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
             ->setConditionType('eq')
@@ -707,11 +713,12 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaForArray(
         array $filters,
-        $pagesize = 100,
-        $excludeDeleted = true,
-        $parameter = null,
-        $parameter2 = null
-    ) {
+              $pagesize = 100,
+              $excludeDeleted = true,
+              $parameter = null,
+              $parameter2 = null
+    )
+    {
         $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
@@ -786,10 +793,11 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaForArrayFrontEnd(
         array $filters,
-        $pageSize = 100,
-        $excludeDeleted = true,
-        $parameter = null
-    ) {
+              $pageSize = 100,
+              $excludeDeleted = true,
+              $parameter = null
+    )
+    {
         $filterOr      = null;
         $attrProcessed = $this->filterBuilder->setField('processed')
             ->setValue('1')
@@ -836,11 +844,12 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaForDirect(
         array $filters,
-        $pagesize = 100,
-        $excludeDeleted = true,
-        $parameter = null,
-        $parameter2 = null
-    ) {
+              $pagesize = 100,
+              $excludeDeleted = true,
+              $parameter = null,
+              $parameter2 = null
+    )
+    {
         $filterOr = null;
         if (!empty($parameter) && !empty($parameter2)) {
             $parameter1 = $this->filterBuilder->setField($parameter['field'])
@@ -1366,7 +1375,8 @@ class ReplicationHelper extends AbstractHelper
         $isReplaceJoin = false,
         $isCatJoin = false,
         $websiteId = null
-    ) {
+    )
+    {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $second_table_name = $this->resource->getTableName($secondaryTableName);
@@ -1421,7 +1431,8 @@ class ReplicationHelper extends AbstractHelper
         $primaryTableColumnName,
         $primaryTableColumnName2,
         $groupColumns = []
-    ) {
+    )
+    {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         // @codingStandardsIgnoreStart
@@ -1516,7 +1527,8 @@ class ReplicationHelper extends AbstractHelper
         $mainTableItemIdColumn,
         $mainTableVariantIdColumn,
         $groupColumns = []
-    ) {
+    )
+    {
         $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
 
         $this->applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn);
@@ -1545,13 +1557,14 @@ class ReplicationHelper extends AbstractHelper
         $whereClause,
         $tableName,
         $aliasNames
-    ) {
+    )
+    {
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
-        isset(self::COLUMNS_MAPPING[$tableName])
+            isset(self::COLUMNS_MAPPING[$tableName])
         ) {
             $mappingColumns = self::COLUMNS_MAPPING[$tableName];
 
-            foreach($aliasNames as $alias) {
+            foreach ($aliasNames as $alias) {
                 foreach ($mappingColumns as $columnName => $newColumnName) {
                     $whereClause = str_replace(
                         "$alias.$columnName",
@@ -1621,8 +1634,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1671,7 +1684,8 @@ class ReplicationHelper extends AbstractHelper
         &$collection,
         SearchCriteriaInterface $criteria,
         $joinCatalogTable = false
-    ) {
+    )
+    {
         if ($joinCatalogTable) {
             $this->setCollectionPropertiesPlusJoinSku($collection, $criteria, 'ItemId', null, ['repl_item_variant_id']);
         } else {
@@ -1732,8 +1746,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1771,7 +1785,8 @@ class ReplicationHelper extends AbstractHelper
     public function setCollectionPropertiesPlusJoinsForProductAttributeValuesDataTranslation(
         &$collection,
         SearchCriteriaInterface $criteria
-    ) {
+    )
+    {
         $itemIdTableAlias    = self::ITEM_ID_TABLE_ALIAS;
         $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
@@ -1803,8 +1818,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1872,7 +1887,8 @@ class ReplicationHelper extends AbstractHelper
         SearchCriteriaInterface $criteria,
         $resultFactory,
         $fieldToSort = null
-    ) {
+    )
+    {
         foreach ($criteria->getFilterGroups() as $filter_group) {
             $fields = $conditions = [];
             foreach ($filter_group->getFilters() as $filter) {
@@ -2318,7 +2334,8 @@ class ReplicationHelper extends AbstractHelper
         $joiningTableName,
         $storeId,
         $identifier
-    ) {
+    )
+    {
         $attributes = [];
         if ($joiningTableName == 'ls_replication_repl_item') {
             if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
@@ -2476,7 +2493,8 @@ class ReplicationHelper extends AbstractHelper
         $storeId,
         $productRepository,
         $uomCodes = null
-    ) {
+    )
+    {
         $criteria = $this->buildCriteriaForProductAttributes(
             $navId,
             -1,
@@ -2816,7 +2834,8 @@ class ReplicationHelper extends AbstractHelper
         $attributeCode,
         $formattedCode,
         $storeId
-    ) {
+    )
+    {
         $values  = [];
         $filters = [
             ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'],
@@ -2863,7 +2882,8 @@ class ReplicationHelper extends AbstractHelper
         $value,
         $variantId,
         $productRepository
-    ) {
+    )
+    {
         if (!empty($uomCodes)) {
             if (count($uomCodes[$itemId]) > 1) {
                 $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
@@ -2949,6 +2969,32 @@ class ReplicationHelper extends AbstractHelper
         }
 
         return $inventoryStatus;
+    }
+
+    /**
+     * @param $itemId
+     * @param $storeId
+     * @param $scopeId
+     * @return \Ls\Replication\Model\ItemType|null
+     */
+    public function getInventoryType($itemId, $storeId, $scopeId)
+    {
+        $filters = [
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
+        /** @var ReplItem $item */
+        $item = $this->itemRepository->getList($searchCriteria)->getItems();
+
+        if (!empty($itemRepository)) {
+            return $item->getType();
+
+        }
+
+        return null;
     }
 
     /**
@@ -3373,5 +3419,37 @@ class ReplicationHelper extends AbstractHelper
     public function isVisualSwatchAttributes($storeId)
     {
         return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
+    }
+
+    /**
+     * item manage stock
+     *
+     * @param $product
+     * @param $itemStock
+     * @param $type
+     * @return mixed
+     */
+    public function manageStock($product, $itemStock, $type)
+    {
+        $useManageStock = 1;
+        $quantity       = 0;
+        $isInStock      = 0;
+
+        if (!empty($type) && $type != ItemType::INVENTORY) {
+            $useManageStock = 0;
+        }
+        if (!empty($itemStock)) {
+            $isInStock = ($itemStock->getQuantity() > 0) ? 1 : 0;
+            $quantity  = $itemStock->getQuantity();
+        }
+
+        $product->setStockData([
+            'use_config_manage_stock' => $useManageStock,
+            'is_in_stock'             => $isInStock,
+            'qty'                     => $quantity
+        ]);
+
+        return $product;
+
     }
 }

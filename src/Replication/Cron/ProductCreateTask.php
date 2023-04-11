@@ -347,58 +347,59 @@ class ProductCreateTask
      * @throws FileSystemException
      */
     public function __construct(
-        Config $eavConfig,
-        Configurable $configurable,
-        Attribute $attribute,
-        ProductInterfaceFactory $productInterfaceFactory,
-        ProductRepositoryInterface $productRepository,
-        ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
-        ImageContentFactory $imageContent,
-        ReplItemRepository $itemRepository,
-        ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository,
-        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
-        ReplBarcodeRepository $replBarcodeRepository,
-        ReplPriceRepository $replPriceRepository,
-        ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository,
-        ReplInvStatusRepository $replInvStatusRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
-        LoyaltyHelper $loyaltyHelper,
-        ReplicationHelper $replicationHelper,
-        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
-        ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
-        Logger $logger,
-        LSR $LSR,
-        ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
-        ReplPriceCollectionFactory $replPriceCollectionFactory,
-        ReplItemUomCollectionFactory $replItemUomCollectionFactory,
-        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
-        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        Config                                       $eavConfig,
+        Configurable                                 $configurable,
+        Attribute                                    $attribute,
+        ProductInterfaceFactory                      $productInterfaceFactory,
+        ProductRepositoryInterface                   $productRepository,
+        ProductAttributeMediaGalleryEntryInterface   $attributeMediaGalleryEntry,
+        ImageContentFactory                          $imageContent,
+        ReplItemRepository                           $itemRepository,
+        ReplItemVariantRegistrationRepository        $replItemVariantRegistrationRepository,
+        ReplHierarchyLeafRepository                  $replHierarchyLeafRepository,
+        ReplBarcodeRepository                        $replBarcodeRepository,
+        ReplPriceRepository                          $replPriceRepository,
+        ReplItemUnitOfMeasure                        $replItemUnitOfMeasureRepository,
+        ReplInvStatusRepository                      $replInvStatusRepository,
+        SearchCriteriaBuilder                        $searchCriteriaBuilder,
+        ReplImageLinkRepositoryInterface             $replImageLinkRepositoryInterface,
+        LoyaltyHelper                                $loyaltyHelper,
+        ReplicationHelper                            $replicationHelper,
+        ReplAttributeValueRepositoryInterface        $replAttributeValueRepositoryInterface,
+        ReplLoyVendorItemMappingRepositoryInterface  $replVendorItemMappingRepositoryInterface,
+        Logger                                       $logger,
+        LSR                                          $LSR,
+        ReplInvStatusCollectionFactory               $replInvStatusCollectionFactory,
+        ReplPriceCollectionFactory                   $replPriceCollectionFactory,
+        ReplItemUomCollectionFactory                 $replItemUomCollectionFactory,
+        ReplHierarchyLeafCollectionFactory           $replHierarchyLeafCollectionFactory,
+        ReplAttributeValueCollectionFactory          $replAttributeValueCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
-        CollectionFactory $collectionFactory,
-        ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
-        MediaProcessor $mediaProcessor,
-        MediaGalleryProcessor $mediaGalleryProcessor,
-        UpdateHandlerFactory $updateHandlerFactory,
-        EntryConverterPool $entryConverterPool,
-        Factory $optionsFactory,
-        AttributeManagement $attributeManagement,
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
-        ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
-        EavAttributeCollectionFactory $eavAttributeCollectionFactory,
-        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
-        GroupFactory $attributeSetGroupFactory,
-        Product\Media\Config $mediaConfig,
-        ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
-        ReplItemVariantRepository $replItemVariantRepository,
-        Filesystem $filesystem,
-        ResourceConnection $resourceConnection,
-        File $file,
-        DataTranslationTask $dataTranslationTask,
-        ImportImageService $imageService
-    ) {
+        CategoryRepositoryInterface                  $categoryRepository,
+        CategoryLinkRepositoryInterface              $categoryLinkRepositoryInterface,
+        CollectionFactory                            $collectionFactory,
+        ReplImageLinkCollectionFactory               $replImageLinkCollectionFactory,
+        MediaProcessor                               $mediaProcessor,
+        MediaGalleryProcessor                        $mediaGalleryProcessor,
+        UpdateHandlerFactory                         $updateHandlerFactory,
+        EntryConverterPool                           $entryConverterPool,
+        Factory                                      $optionsFactory,
+        AttributeManagement                          $attributeManagement,
+        AttributeGroupRepositoryInterface            $attributeGroupRepository,
+        ReplItemUnitOfMeasureSearchResultsFactory    $replItemUnitOfMeasureSearchResultsFactory,
+        EavAttributeCollectionFactory                $eavAttributeCollectionFactory,
+        ReplItemVendorCollectionFactory              $replItemVendorCollectionFactory,
+        GroupFactory                                 $attributeSetGroupFactory,
+        Product\Media\Config                         $mediaConfig,
+        ReplItemVariantCollectionFactory             $replItemVariantCollectionFactory,
+        ReplItemVariantRepository                    $replItemVariantRepository,
+        Filesystem                                   $filesystem,
+        ResourceConnection                           $resourceConnection,
+        File                                         $file,
+        DataTranslationTask                          $dataTranslationTask,
+        ImportImageService                           $imageService
+    )
+    {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
         $this->attribute                                 = $attribute;
@@ -604,7 +605,17 @@ class ProductCreateTask
                                 $productData->setCountryOfManufacture($item->getCountryOfOrigin());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-                                $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $product   = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $itemStock = $this->replicationHelper->getInventoryStatus(
+                                    $item->getNavId(),
+                                    $storeId,
+                                    $this->store->getId()
+                                );
+                                $product   = $this->replicationHelper->manageStock(
+                                    $product,
+                                    $itemStock,
+                                    $item->getType()
+                                );
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $productSaved = $this->productRepository->save($product);
@@ -677,17 +688,19 @@ class ProductCreateTask
                                     $storeId,
                                     $this->store->getId()
                                 );
-                                $product->setStockData([
-                                    'use_config_manage_stock' => 1,
-                                    'is_in_stock'             => ($itemStock->getQuantity() > 0) ? 1 : 0,
-                                    'qty'                     => $itemStock->getQuantity()
-                                ]);
+                                $product   = $this->replicationHelper->manageStock(
+                                    $product,
+                                    $itemStock,
+                                    $item->getType()
+                                );
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
                                     /** @var ProductRepositoryInterface $productSaved */
                                     $productSaved = $this->productRepository->save($product);
-                                    $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+                                    if($itemStock) {
+                                        $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+                                    }
                                     // @codingStandardsIgnoreLine
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
@@ -1500,7 +1513,8 @@ class ProductCreateTask
         $item,
         $itemBarcodes,
         $variants
-    ) {
+    )
+    {
         $formattedCode  = $this->replicationHelper->formatAttributeCode(LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE);
         $attributesCode = [$formattedCode];
         $this->attributeAssignmentToAttributeSet(
@@ -1584,7 +1598,8 @@ class ProductCreateTask
         $variants,
         $totalUomCodes = null,
         $uomCodesNotProcessed = null
-    ) {
+    )
+    {
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->store->getId());
 
@@ -1831,7 +1846,8 @@ class ProductCreateTask
         $configProduct,
         $attributesCode,
         $associatedProductIds
-    ) {
+    )
+    {
         // This is added to take care Magento Commerce PK
         $productId = $configProduct->getDataByKey('row_id');
         if (empty($productId)) {
@@ -1957,8 +1973,9 @@ class ProductCreateTask
      */
     public function getNameForVariant(
         ReplItemVariantRegistration $value,
-        ReplItem $item
-    ) {
+        ReplItem                    $item
+    )
+    {
         $d1 = (($value->getVariantDimension1()) ?: '');
         $d2 = (($value->getVariantDimension2()) ?: '');
         $d3 = (($value->getVariantDimension3()) ?: '');
@@ -1980,8 +1997,9 @@ class ProductCreateTask
      */
     public function getNameForStandardVariant(
         ReplItemVariant $value,
-        ReplItem $item
-    ) {
+        ReplItem        $item
+    )
+    {
         $d1      = (($value->getDescription2()) ?: '');
         $dMerged = (($d1) ? '-' . $d1 : '');
 
@@ -2146,7 +2164,8 @@ class ProductCreateTask
         $configProduct,
         $attributesCode,
         $itemBarcodes
-    ) {
+    )
+    {
         $productV = $this->productFactory->create();
         $productV->setName($name);
         $productV->setStoreId($this->store->getId());
@@ -2201,14 +2220,7 @@ class ProductCreateTask
                 $this->store->getId()
             );
         }
-
-        $productV->setStockData([
-            'use_config_manage_stock' => 1,
-            'is_in_stock'             => ($itemStock->getQuantity() > 0) ? 1 : 0,
-            'is_qty_decimal'          => 0,
-            'qty'                     => $itemStock->getQuantity()
-        ]);
-
+        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
@@ -2251,7 +2263,8 @@ class ProductCreateTask
         $configProduct,
         $attributesCode,
         $itemBarcodes
-    ) {
+    )
+    {
         $productStatus = true;
         $productV      = $this->productFactory->create();
         $productV->setName($name);
@@ -2369,12 +2382,7 @@ class ProductCreateTask
                 $this->store->getId()
             );
         }
-        $productV->setStockData([
-            'use_config_manage_stock' => 1,
-            'is_in_stock'             => ($itemStock->getQuantity() > 0) ? 1 : 0,
-            'is_qty_decimal'          => 0,
-            'qty'                     => $itemStock->getQuantity()
-        ]);
+        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
         try {
             /** @var ProductInterface $productSaved */
             // @codingStandardsIgnoreStart

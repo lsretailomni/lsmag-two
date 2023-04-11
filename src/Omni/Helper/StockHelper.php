@@ -47,12 +47,13 @@ class StockHelper extends AbstractHelper
      * @param ItemHelper $itemHelper
      */
     public function __construct(
-        Context $context,
+        Context                    $context,
         ProductRepositoryInterface $productRepository,
-        CollectionFactory $storeCollectionFactory,
-        LSR $lsr,
-        ItemHelper $itemHelper
-    ) {
+        CollectionFactory          $storeCollectionFactory,
+        LSR                        $lsr,
+        ItemHelper                 $itemHelper
+    )
+    {
         $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->lsr                    = $lsr;
@@ -122,10 +123,10 @@ class StockHelper extends AbstractHelper
             }
 
             $stockCollection[] = [
-                'item_id' => $parentProductSku,
+                'item_id'    => $parentProductSku,
                 'variant_id' => $childProductSku,
-                'name' => $item->getName(),
-                'qty' => $itemQty
+                'name'       => $item->getName(),
+                'qty'        => $itemQty
             ];
 
             $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
@@ -162,19 +163,20 @@ class StockHelper extends AbstractHelper
             }
             $inventoryRequestCollection[] = $inventoryRequest;
         }
-
-        $inventoryRequestArray = new Entity\ArrayOfInventoryRequest();
-        $inventoryRequestArray->setInventoryRequest($inventoryRequestCollection);
-        $itemStock->setItems($inventoryRequestArray);
-        try {
-            $response = $request->execute($itemStock);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) &&
-            !empty($response->getItemsInStoreGetExResult()) &&
-            !empty($response->getItemsInStoreGetExResult()->getInventoryResponse())) {
-            return $response->getItemsInStoreGetExResult()->getInventoryResponse();
+        if (!empty($inventoryRequestCollection)) {
+            $inventoryRequestArray = new Entity\ArrayOfInventoryRequest();
+            $inventoryRequestArray->setInventoryRequest($inventoryRequestCollection);
+            $itemStock->setItems($inventoryRequestArray);
+            try {
+                $response = $request->execute($itemStock);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (!empty($response) &&
+                !empty($response->getItemsInStoreGetExResult()) &&
+                !empty($response->getItemsInStoreGetExResult()->getInventoryResponse())) {
+                return $response->getItemsInStoreGetExResult()->getInventoryResponse();
+            }
         }
 
         return null;
@@ -387,7 +389,8 @@ class StockHelper extends AbstractHelper
         $quote = null,
         bool $isRemoveItem = false,
         bool $throwException = false
-    ) {
+    )
+    {
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
             if (!$item->getHasError()) {
                 $storeId = $this->lsr->getActiveWebStore();

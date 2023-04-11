@@ -75,14 +75,15 @@ class DataProvider implements ConfigProviderInterface
      */
     public function __construct(
         StoreManagerInterface $storeManager,
-        CollectionFactory $storeCollectionFactory,
-        ScopeConfigInterface $scopeConfig,
-        PageFactory $resultPageFactory,
-        LSR $lsr,
-        Session $checkoutSession,
-        StockHelper $stockHelper,
-        StoreHelper $storeHelper
-    ) {
+        CollectionFactory     $storeCollectionFactory,
+        ScopeConfigInterface  $scopeConfig,
+        PageFactory           $resultPageFactory,
+        LSR                   $lsr,
+        Session               $checkoutSession,
+        StockHelper           $stockHelper,
+        StoreHelper           $storeHelper
+    )
+    {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;
@@ -155,14 +156,14 @@ class DataProvider implements ConfigProviderInterface
                         'options'           => $this->checkoutSession->getStorePickupHours(),
                         'enabled'           => $enabled,
                         'current_web_store' => $this->lsr->getActiveWebStore(),
-                        'store_type' => 0
+                        'store_type'        => 0
                     ]
                 ]
             ];
             $config['coupons_display'] = $this->isCouponsDisplayEnabled();
         }
 
-        $config['ls_enabled']  = (bool) $this->lsr->isEnabled();
+        $config['ls_enabled'] = (bool)$this->lsr->isEnabled();
 
         return $config;
     }
@@ -198,7 +199,7 @@ class DataProvider implements ConfigProviderInterface
     public function getStores()
     {
         $storeHoursArray = [];
-        $storesData = $this->storeCollectionFactory
+        $storesData      = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter('scope_id', $this->getStoreId())
             ->addFieldToFilter('ClickAndCollect', 1);
@@ -283,9 +284,11 @@ class DataProvider implements ConfigProviderInterface
      */
     public function filterClickAndCollectStores(&$response, $clickNCollectStoresIds)
     {
-        foreach ($response as $index => $item) {
-            if (!in_array($item->getStoreId(), $clickNCollectStoresIds)) {
-                unset($response[$index]);
+        if (!empty($response)) {
+            foreach ($response as $index => $item) {
+                if (!in_array($item->getStoreId(), $clickNCollectStoresIds)) {
+                    unset($response[$index]);
+                }
             }
         }
     }
@@ -308,18 +311,23 @@ class DataProvider implements ConfigProviderInterface
             if (!empty($uomQty)) {
                 $itemQty = $itemQty * $uomQty;
             }
-
-            foreach ($response as $index => $responseItem) {
-                if ($responseItem->getItemId() == $parentProductSku &&
-                    $responseItem->getVariantId() == $childProductSku &&
-                    ceil($responseItem->getQtyInventory()) < $itemQty
-                ) {
-                    $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+            if (!empty($response)) {
+                foreach ($response as $index => $responseItem) {
+                    if ($responseItem->getItemId() == $parentProductSku &&
+                        $responseItem->getVariantId() == $childProductSku &&
+                        ceil($responseItem->getQtyInventory()) < $itemQty
+                    ) {
+                        $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+                    }
                 }
             }
         }
 
-        $responseItems = $this->getAllResponseItemsWithInventoryAvailable($response);
+        $responseItems = null;
+
+        if (!empty($response)) {
+            $responseItems = $this->getAllResponseItemsWithInventoryAvailable($response);
+        }
 
         return $this->getSelectedClickAndCollectStoresData($responseItems);
     }
@@ -379,10 +387,10 @@ class DataProvider implements ConfigProviderInterface
      */
     public function isCouponsDisplayEnabled()
     {
-        return ( $this->lsr->getStoreConfig(
-            LSR::LS_ENABLE_COUPON_ELEMENTS,
-            $this->lsr->getCurrentStoreId()
-        ) &&
+        return ($this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) &&
             $this->lsr->getStoreConfig(
                 LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
