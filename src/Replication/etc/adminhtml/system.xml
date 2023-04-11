@@ -192,6 +192,26 @@
                         <field id="ls_mag/replication/convert_attribute_to_visual_swatch">1</field>
                     </depends>
                 </field>
+                <field id="item_image_width"
+                       translate="label"
+                       type="text"
+                       sortOrder="230"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Item Image Width</label>
+                    <comment>Selected image width will be used in image replication</comment>
+                </field>
+                <field id="item_image_height"
+                       translate="label"
+                       type="text"
+                       sortOrder="240"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Item Image Height</label>
+                    <comment>Selected image height will be used in image replication</comment>
+                </field>
             </group>
             <group id="one_list"
                    translate="label"

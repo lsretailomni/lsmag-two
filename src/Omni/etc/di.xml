@@ -147,6 +147,11 @@
         <plugin name="display_central_shipping_id"
                 type="Ls\Omni\Plugin\Order\TrackPlugin"/>
     </type>
+    <!-- Plugin to set correct final_price for a simple product in bundle for showing on minicart & cart page -->
+    <type name="Magento\Bundle\Helper\Catalog\Product\Configuration">
+        <plugin name="bundle_product_final_price_override"
+                type="Ls\Omni\Plugin\Bundle\Helper\Catalog\Product\ConfigurationPlugin"/>
+    </type>
     <type name="Ls\Omni\Helper\AbstractHelperOmni">
         <arguments>
             <argument name="basketHelper" xsi:type="object">Ls\Omni\Helper\BasketHelper\Proxy</argument>
@@ -166,3 +171,4 @@
         </arguments>
     </type>
 </config>
+

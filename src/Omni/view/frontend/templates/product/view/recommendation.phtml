@@ -3,11 +3,20 @@
 
 use \Ls\Omni\Block\Product\View\Recommend;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product\Type;
 
 $mode        = 'grid';
 $title       = __('Recommended Products for you');
 $productData = $block->getData();
-$itemId      = $block->getLsCentralItemIdBySku($productData['data']['productSku']);
+
+$product = $block->getProductGivenSku($productData['data']['productSku']);
+
+if ($product->getTypeId() == Type::TYPE_BUNDLE) {
+    $itemId = $block->getLinkedProductsItemIds($product);
+} else {
+    $itemId  = $block->getLsCentralItemIdBySku($productData['data']['productSku']);
+}
+
 if ($items = $block->getProductRecommendation($itemId)) : ?>
     <div class="block">
         <div class="block-title">

@@ -131,6 +131,11 @@ class SalesEntry extends Entity
     protected $Posted = null;
 
     /**
+     * @property float $Quantity
+     */
+    protected $Quantity = null;
+
+    /**
      * @property string $RequestedDeliveryDate
      */
     protected $RequestedDeliveryDate = null;
@@ -632,6 +637,24 @@ class SalesEntry extends Entity
     public function getPosted()
     {
         return $this->Posted;
+    }
+
+    /**
+     * @param float $Quantity
+     * @return $this
+     */
+    public function setQuantity($Quantity)
+    {
+        $this->Quantity = $Quantity;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getQuantity()
+    {
+        return $this->Quantity;
     }
 
     /**

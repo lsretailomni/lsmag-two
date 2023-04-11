@@ -141,7 +141,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         $points   = $this->basketHelper->getMemberPointsFromCheckoutSession();
         $response = null;
 
-        if ($points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
             $request = new Operation\CardGetPointBalance();
             $entity  = new Entity\CardGetPointBalance();
@@ -315,14 +315,19 @@ class LoyaltyHelper extends AbstractHelperOmni
             // @codingStandardsIgnoreEnd
             $storeId         = $this->lsr->getCurrentStoreId();
             $customerGroupId = $this->customerSession->getCustomerGroupId();
-            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
+            $cacheItemId = $itemId;
+
+            if (is_array($itemId)) {
+                $cacheItemId = implode('_', $itemId);
+            }
+            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
             $response        = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
                 return $response;
             }
             $group = $this->groupRepository->getById($customerGroupId)->getCode();
-            $string->setString([$itemId]);
+            $string->setString(is_array($itemId) ? $itemId : [$itemId]);
             $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
             try {
                 $response = $request->execute($entity);
@@ -417,16 +422,24 @@ class LoyaltyHelper extends AbstractHelperOmni
             $coupons            = $itemIdentifiers = [];
             /** @var Item $item */
             foreach ($itemsInCart as $item) {
-                list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
-                    $item->getSku(),
-                    $item->getProductId()
-                );
-                $itemIdentifiers[] = [
-                    'itemId'    => $itemId,
-                    'variantId' => $variantId,
-                    'uom'       => $uom,
-                    'baseUom'   => $baseUom
-                ];
+                if ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
+                    $children = $item->getChildren();
+                } else {
+                    $children[] = $item;
+                }
+
+                foreach ($children as $child) {
+                    list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
+                        $child->getSku(),
+                        $child->getProductId()
+                    );
+                    $itemIdentifiers[] = [
+                        'itemId' => $itemId,
+                        'variantId' => $variantId,
+                        'uom' => $uom,
+                        'baseUom' => $baseUom
+                    ];
+                }
             }
 
             if ($publishedOffersObj) {

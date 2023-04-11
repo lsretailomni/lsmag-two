@@ -63,10 +63,12 @@ class CreditMemo
     {
         $orderId = $magOrder->getEntityId();
         foreach ($items as $itemData) {
-            $item                       = $itemData['item'];
-            $orderItemId                = $item->getItemId();
-            $itemToCredit[$orderItemId] = ['qty' => $itemData['qty']];
-            $creditMemoData['items']    = $itemToCredit;
+            foreach ($itemData as $itemData) {
+                $item                       = $itemData['item'];
+                $orderItemId                = $item->getItemId();
+                $itemToCredit[$orderItemId] = ['qty' => $itemData['qty']];
+                $creditMemoData['items']    = $itemToCredit;
+            }
         }
 
         try {
