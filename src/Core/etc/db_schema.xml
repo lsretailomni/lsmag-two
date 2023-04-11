@@ -42,4 +42,9 @@
     <table name="cron_schedule" resource="default" engine="innodb" comment="Cron Schedule">
         <column xsi:type="varchar" name="parameters" length="100" nullable="true" comment="Accept parameters from the specific job types"/>
     </table>
+    <table name="catalog_product_entity_varchar" resource="default" engine="innodb" comment="Catalog Product Varchar Attribute Backend Table">
+        <index referenceId="CATALOG_PRODUCT_ENTITY_VARCHAR_VALUE" indexType="btree">
+            <column name="value"/>
+        </index>
+    </table>
 </schema>

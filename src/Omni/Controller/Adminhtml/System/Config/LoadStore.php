@@ -5,7 +5,9 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGet;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\Data;
@@ -92,26 +94,34 @@ class LoadStore extends Action
      */
     public function execute()
     {
-        $pong                 = 'Omni Ping failed. Please try with valid service base URL.';
         $hierarchyPlaceholder = [
             ['value' => '', 'label' => __('No hierarchy code found for the selected store')]
         ];
-        $option_array         = [];
+        $option_array         = [
+            ['value' => '', 'label' => __('No store found for entered omni api url')]
+        ];
         $version              = null;
         try {
             $baseUrl   = $this->getRequest()->getParam('baseUrl');
             $lsKey     = $this->getRequest()->getParam('lsKey');
             $websiteId = $this->getRequest()->getParam('websiteId');
-            $stores    = $this->getStores($baseUrl, $lsKey);
-            if (!empty($stores)) {
-                $option_array = [['value' => '', 'label' => __('Please select your web store')]];
-                $pong         = $this->helper->omniPing($baseUrl, $lsKey);
-                $version      = $this->helper->parsePingResponseAndSaveToConfigData($pong, $websiteId);
-                foreach ($stores as $store) {
-                    $option_array[] = ['value' => $store->getId(), 'label' => $store->getDescription()];
+            $pong      = $this->helper->omniPing($baseUrl, $lsKey);
+            if (empty($pong)) {
+                $pong = 'Omni Ping failed. Please try with valid service base URL.';
+            }
+
+            if (!empty($pong)) {
+                $version = $this->helper->parsePingResponseAndSaveToConfigData($pong, $websiteId);
+                if (!empty($version)) {
+                    $stores = $this->getStores($baseUrl, $lsKey, $version['service_version']);
+                    if (!empty($stores)) {
+                        $option_array = null;
+                        $option_array = [['value' => '', 'label' => __('Please select your web store')]];
+                        foreach ($stores as $store) {
+                            $option_array[] = ['value' => $store->getId(), 'label' => $store->getDescription()];
+                        }
+                    }
                 }
-            } else {
-                $option_array = [['value' => '', 'label' => __('No store found for entered omni api url')]];
             }
         } catch (Exception $e) {
             $this->logger->critical($e);
@@ -134,14 +144,19 @@ class LoadStore extends Action
      * @param $lsKey
      * @return array|ArrayOfStore|StoresGetAllResponse|ResponseInterface
      */
-    public function getStores($baseUrl, $lsKey)
+    public function getStores($baseUrl, $lsKey, $serviceVersion)
     {
         if ($this->lsr->validateBaseUrl($baseUrl)) {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
             $url          = OmniService::getUrl($service_type, $baseUrl);
             $client       = new OmniClient($url, $service_type);
-            $getStores    = new StoresGetAll();
+            if (version_compare($serviceVersion, '2023.01', '>')) {
+                $getStores = new StoresGet();
+                $getStores->getOperationInput()->setStoreType(StoreGetType::WEB_STORE);
+            } else {
+                $getStores = new StoresGetAll();
+            }
             //@codingStandardsIgnoreEnd
             $getStores->setClient($client);
             $getStores->setToken($lsKey);

@@ -48,6 +48,7 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName HIDE_PRICE_OF_ITEM()
  * @$method static FeatureFlagName HIDE_ADD_CREDIT_CARD()
  * @$method static FeatureFlagName HIDE_SHOPPING_SCREEN()
+ * @$method static FeatureFlagName USE_ONLINE_SEARCH()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName CARD_PAYMENT_METHOD()
  * @$method static FeatureFlagName LS_PAY_SERVICE_IP_ADDRESS()
@@ -141,6 +142,8 @@ class FeatureFlagName extends Enum
     public const HIDE_ADD_CREDIT_CARD = 'HideAddCreditCard';
 
     public const HIDE_SHOPPING_SCREEN = 'HideShoppingScreen';
+
+    public const USE_ONLINE_SEARCH = 'UseOnlineSearch';
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 

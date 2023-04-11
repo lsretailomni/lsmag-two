@@ -736,6 +736,7 @@ class ClassMap
         		'StoreHourOpeningType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreHourOpeningType',
         		'StoreServiceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreServiceType',
         		'StoreGetType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreGetType',
+        		'ItemType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ItemType',
         		'DiscountValueType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\DiscountValueType',
         		'ReplDiscountType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ReplDiscountType',
         		'ProductChargeType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ProductChargeType',

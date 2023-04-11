@@ -31,6 +31,11 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     protected $CountAsOne = null;
 
     /**
+     * @property float $Cubage
+     */
+    protected $Cubage = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -41,6 +46,11 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     protected $EComSelection = null;
 
     /**
+     * @property float $Height
+     */
+    protected $Height = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
@@ -49,6 +59,11 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
      * @property string $ItemId
      */
     protected $ItemId = null;
+
+    /**
+     * @property float $Length
+     */
+    protected $Length = null;
 
     /**
      * @property int $Order
@@ -69,6 +84,16 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
      * @property string $ShortDescription
      */
     protected $ShortDescription = null;
+
+    /**
+     * @property float $Weight
+     */
+    protected $Weight = null;
+
+    /**
+     * @property float $Width
+     */
+    protected $Width = null;
 
     /**
      * @property string $scope
@@ -166,6 +191,26 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     }
 
     /**
+     * @param float $Cubage
+     * @return $this
+     */
+    public function setCubage($Cubage)
+    {
+        $this->setData( 'Cubage', $Cubage );
+        $this->Cubage = $Cubage;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCubage()
+    {
+        return $this->getData( 'Cubage' );
+    }
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -206,6 +251,26 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     }
 
     /**
+     * @param float $Height
+     * @return $this
+     */
+    public function setHeight($Height)
+    {
+        $this->setData( 'Height', $Height );
+        $this->Height = $Height;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getHeight()
+    {
+        return $this->getData( 'Height' );
+    }
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -243,6 +308,26 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     public function getItemId()
     {
         return $this->getData( 'ItemId' );
+    }
+
+    /**
+     * @param float $Length
+     * @return $this
+     */
+    public function setLength($Length)
+    {
+        $this->setData( 'Length', $Length );
+        $this->Length = $Length;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLength()
+    {
+        return $this->getData( 'Length' );
     }
 
     /**
@@ -323,6 +408,46 @@ class ReplItemUnitOfMeasure extends AbstractModel implements ReplItemUnitOfMeasu
     public function getShortDescription()
     {
         return $this->getData( 'ShortDescription' );
+    }
+
+    /**
+     * @param float $Weight
+     * @return $this
+     */
+    public function setWeight($Weight)
+    {
+        $this->setData( 'Weight', $Weight );
+        $this->Weight = $Weight;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWeight()
+    {
+        return $this->getData( 'Weight' );
+    }
+
+    /**
+     * @param float $Width
+     * @return $this
+     */
+    public function setWidth($Width)
+    {
+        $this->setData( 'Width', $Width );
+        $this->Width = $Width;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getWidth()
+    {
+        return $this->getData( 'Width' );
     }
 
     /**
