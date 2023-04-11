@@ -206,6 +206,7 @@ class DataHelper
             $externalId = $magOrder->getIncrementId();
             $orderCurrencyCode = $magOrder->getOrderCurrencyCode();
         }
+        $orderCurrencyCode = ($salesEntry->getStoreCurrency()) ?: $orderCurrencyCode;
         return [
             'id' => $salesEntry->getId(),
             'click_and_collect_order' => $salesEntry->getClickAndCollectOrder(),
@@ -261,10 +262,11 @@ class DataHelper
      * Get payments array
      *
      * @param ArrayOfSalesEntryPayment $payments
+     * @param $orderCurrencyCode
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getPayments(ArrayOfSalesEntryPayment $payments): array
+    public function getPayments(ArrayOfSalesEntryPayment $payments, $orderCurrencyCode): array
     {
         $paymentsArray = [];
         $tenderTypeMapping = $this->data->getTenderTypesPaymentMapping();
@@ -273,10 +275,19 @@ class DataHelper
             if (array_key_exists($tenderType, $tenderTypeMapping)) {
                 $tenderType = $tenderTypeMapping[$tenderType];
             }
+
+            $currency = $payment->getCurrencyCode();
+            $amount   = $payment->getAmount();
+
+            if ($payment->getCurrencyCode() == 'LOY') {
+                $currency = $orderCurrencyCode;
+                $amount   = $amount * $payment->getCurrencyFactor();
+            }
+
             $paymentsArray[] = [
-                'amount' => $payment->getAmount(),
-                'card_no' => $payment->getCardNo(),
-                'currency_code' => $payment->getCurrencyCode(),
+                'amount'          => $amount,
+                'card_no'         => $payment->getCardNo(),
+                'currency_code'   => $currency,
                 'currency_factor' => $payment->getCurrencyFactor(),
                 'line_number' => $payment->getLineNumber(),
                 'tender_type' => $tenderType,
