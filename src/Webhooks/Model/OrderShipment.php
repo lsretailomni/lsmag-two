@@ -50,7 +50,17 @@ class OrderShipment implements OrderShipmentInterface
     public function set($orderId, $shipmentNo, $trackingId, $trackingUrl, $provider, $service, $lines)
     {
         try {
-            $data = [
+            $logOriginal = [
+                'OrderId'     => $orderId,
+                'ShipmentNo'  => $shipmentNo,
+                'TrackingId'  => $trackingId,
+                'TrackingUrl' => $trackingUrl,
+                'Provider'    => $provider,
+                'Service'     => $service,
+                'Lines'       => $lines,
+
+            ];
+            $data        = [
                 'orderId'             => $orderId,
                 'lsCentralShippingId' => $shipmentNo,
                 'trackingId'          => $trackingId,
@@ -59,7 +69,7 @@ class OrderShipment implements OrderShipmentInterface
                 'lines'               => $lines,
 
             ];
-            $this->logger->info('OrderShipment', $data);
+            $this->logger->info('OrderShipment', $logOriginal);
             return $this->shipment->createShipment($data);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());

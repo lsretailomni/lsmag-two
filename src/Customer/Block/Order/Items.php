@@ -46,7 +46,7 @@ class Items extends AbstractItems
     public function getItems($trans)
     {
         $orderLines = $trans->getLines()->getSalesEntryLine();
-        $this->getChildBlock("custom_order_item_renderer")->setData("order", $trans);
+        $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $trans);
 
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
@@ -87,7 +87,7 @@ class Items extends AbstractItems
      */
     public function getCustomItemRenderer($item)
     {
-        return $this->getChildBlock("custom_order_item_renderer")->setData("item", $item)->toHtml();
+        return $this->getChildBlock("custom_order_item_renderer_custom")->setData("item", $item)->toHtml();
     }
 
     /**
