@@ -10,8 +10,12 @@ use Magento\Sales\Model\Order\Shipment\TrackFactory;
 use Magento\Sales\Api\Data\ShipmentCommentCreationInterface;
 use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
+use Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory;
+use Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory;
+use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use \Ls\Webhooks\Logger\Logger;
 
 /**
@@ -65,18 +69,49 @@ class Shipment
     protected $searchCriteriaBuilder;
 
     /**
+     * @var ShipmentCreationArgumentsInterfaceFactory
+     */
+    private $shipmentArgumentsFactory;
+
+    /**
+     * @var ShipmentCreationArgumentsExtensionInterfaceFactory
+     */
+    private $argumentExtensionFactory;
+
+    /**
+     * @var ReplicationHelper
+     */
+    private $replicationHelper;
+
+    /**
+     * @var DefaultSourceProviderInterfaceFactory
+     */
+    private $defaultSourceProviderFactory;
+
+    /**
      * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
+     * @param ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory
+     * @param ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionInterfaceFactory
+     * @param ReplicationHelper $replicationHelper
+     * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      * @param ShipmentInterface $shipmentInterface
      * @param TrackFactory $trackFactory
      * @param ShipmentCommentCreationInterface $shipmentCommentCreation
      * @param Data $helper
      * @param ShippingHelper $shippingHelper
+     * @param ShipmentRepositoryInterface $shipmentRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Logger $logger
      */
     public function __construct(
         ShipOrderInterface $shipOrderInterface,
         ShipmentItemCreationInterface $shipmentItemCreationInterface,
+        ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory,
+        ShipmentCreationArgumentsExtensionInterfaceFactory $shipmentCreationArgumentsExtensionInterfaceFactory,
+        ReplicationHelper $replicationHelper,
+        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
         ShipmentInterface $shipmentInterface,
         TrackFactory $trackFactory,
         ShipmentCommentCreationInterface $shipmentCommentCreation,
@@ -88,6 +123,10 @@ class Shipment
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
+        $this->shipmentArgumentsFactory      = $shipmentCreationArgumentsInterfaceFactory;
+        $this->argumentExtensionFactory      = $shipmentCreationArgumentsExtensionInterfaceFactory;
+        $this->replicationHelper             = $replicationHelper;
+        $this->defaultSourceProviderFactory  = $defaultSourceProviderFactory;
         $this->shipmentInterface             = $shipmentInterface;
         $this->trackFactory                  = $trackFactory;
         $this->shipmentCommentCreation       = $shipmentCommentCreation;
@@ -109,32 +148,42 @@ class Shipment
         $orderId             = $data['orderId'];
         $trackingId          = $data['trackingId'];
         $lsCentralShippingId = $data['lsCentralShippingId'];
+        $lines               = $data['lines'];
 
         $magOrder        = $this->helper->getOrderByDocumentId($orderId);
         $status          = false;
         $statusMsg       = '';
-        $shipmentItems   = [];
         $shipmentDetails = [];
         if (!empty($magOrder)) {
             if ($magOrder->canShip() && !$this->getShipmentExists($orderId, $lsCentralShippingId)) { //if shipment not exists create shipment
-                $items    = $this->helper->getItems($magOrder, $data['lines']);
-                $shipItem = [];
-                foreach ($items as $itemData) {
-                    $item                        = $itemData['item'];
-                    $orderItemId                 = $item->getItemId();
-                    $shipmentItems[$orderItemId] = $itemData['qty'];
-                }
-                if (count($shipmentItems) > 0) {
-                    foreach ($shipmentItems as $orderItemId => $qty) {
-                        $itemCreation = $this->shipmentItemCreationInterface;
-                        $itemCreation->setOrderItemId($orderItemId)->setQty($qty);
-                        $shipItem[] = clone $itemCreation;
+                $shipItems   = [];
+                $parentItems = [];
+                foreach ($magOrder->getAllItems() as $orderItem) {
+                    $parentItem = $orderItem->getParentItem();
 
+                    if (!$this->helper->isAllowed($orderItem, $lines) ||
+                        ($parentItem ?
+                            !$parentItem->getQtyToShip() : !$orderItem->getQtyToShip())
+                    ) {
+                        continue;
                     }
 
-                    $shipmentItemArray = $this->shipmentInterface->setItems($shipItem)->getItems();
+                    if (empty($parentItem)) {
+                        $parentItem = $orderItem;
+                    }
 
-                    $shipmentTracks = $this->trackFactory->create();
+                    if (in_array($parentItem->getItemId(), $parentItems)) {
+                        continue;
+                    }
+                    $qty          = $this->helper->getQtyToShip($orderItem, $lines);
+                    $itemCreation = $this->shipmentItemCreationInterface;
+                    $itemCreation->setOrderItemId($parentItem->getItemId())->setQty($qty);
+                    $shipItems[]   = clone $itemCreation;
+                    $parentItems[] = $parentItem->getItemId();
+                }
+                if (!empty($shipItems)) {
+                    $shipmentItemArray = $this->shipmentInterface->setItems($shipItems)->getItems();
+                    $shipmentTracks    = $this->trackFactory->create();
                     if (!empty($trackingId)) {
                         $shipmentTracks->setCarrierCode($data['shipmentProvider']);
                         $shipmentTracks->setTitle($data['service']);
@@ -145,13 +194,28 @@ class Shipment
                     $this->shipmentCommentCreation->setComment(__("Shipment added from LS Central"))
                         ->setIsVisibleOnFront(0);
 
+                    $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();
+                    $websiteId         = $magOrder->getStore()->getWebsiteId();
+                    $sourceCode        = $this->replicationHelper->getSourceCodeFromWebsiteCode(
+                        $defaultSourceCode,
+                        $websiteId
+                    );
+
+                    $arguments = $this->shipmentArgumentsFactory->create();
+                    $extension = $this->argumentExtensionFactory
+                        ->create()
+                        ->setSourceCode($sourceCode);
+                    $arguments->setExtensionAttributes($extension);
+
                     $shipmentId = $this->shipOrderInterface->execute(
                         $magOrder->getEntityId(),
                         $shipmentItemArray,
                         true,
                         false,
                         $this->shipmentCommentCreation,
-                        [$shipmentTracks]
+                        [$shipmentTracks],
+                        [],
+                        $arguments
                     );
 
                     $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);

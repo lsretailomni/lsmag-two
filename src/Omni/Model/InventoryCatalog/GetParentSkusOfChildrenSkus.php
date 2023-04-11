@@ -75,4 +75,16 @@ class GetParentSkusOfChildrenSkus
 
         return $parentSkusOfChildSkus;
     }
+
+    /**
+     * Get product ids by sku
+     *
+     * @param array $skus
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getProductIdBySkus(array $skus)
+    {
+        return $this->getProductIdsBySkus->execute($skus);
+    }
 }

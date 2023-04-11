@@ -75,15 +75,17 @@ class Cancel
     {
         if ($magOrder->canCancel()) {
             foreach ($items as $itemData) {
-                $item               = $itemData['item'];
-                $cancellationAmount = $itemData['amount'];
-                $item->setQtyCanceled($item->getQtyCanceled() + $itemData['qty']);
-                $this->itemRepository->save($item);
+                foreach ($itemData as $itemData) {
+                    $item               = $itemData['item'];
+                    $cancellationAmount = $itemData['amount'];
+                    $item->setQtyCanceled($item->getQtyCanceled() + $itemData['qty']);
+                    $this->itemRepository->save($item);
 
-                $magOrder->setTotalCanceled($magOrder->getTotalCanceled() + $cancellationAmount);
-                $magOrder->setBaseTotalCanceled($magOrder->getBaseTotalCanceled() + $cancellationAmount);
+                    $magOrder->setTotalCanceled($magOrder->getTotalCanceled() + $cancellationAmount);
+                    $magOrder->setBaseTotalCanceled($magOrder->getBaseTotalCanceled() + $cancellationAmount);
 
-                $this->helper->getOrderRepository()->save($magOrder);
+                    $this->helper->getOrderRepository()->save($magOrder);
+                }
             }
         }
     }

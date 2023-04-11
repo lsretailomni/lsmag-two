@@ -11,6 +11,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\LocalizedException;
@@ -110,29 +111,69 @@ class StockHelper extends AbstractHelper
      */
     public function getGivenItemsStockInGivenStore($items, $storeId = '')
     {
-        $stockCollection = [];
+        $stockCollection = $stockItems = [];
 
         foreach ($items as &$item) {
-            $itemQty = $item->getQty();
-            list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues(
-                $item->getSku()
-            );
-
-            if (!empty($uomQty)) {
-                $itemQty = $itemQty * $uomQty;
+            $children = [];
+            if ($item->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $item->getChildren();
+            } else {
+                $children[] = $item;
             }
 
+            foreach ($children as $child) {
+                $itemQty = $item->getQty();
+                list($parentProductSku, $childProductSku, , , $uomQty) = $this->itemHelper->getComparisonValues(
+                    $child->getSku()
+                );
+
+                if (!empty($uomQty)) {
+                    $itemQty = $itemQty * $uomQty;
+                }
+                $this->mergeStockCollection(
+                    $stockCollection,
+                    $parentProductSku,
+                    $childProductSku,
+                    $child->getName(),
+                    $itemQty
+                );
+
+                $stockItems[] = ['parent' => $parentProductSku, 'child' => $childProductSku];
+            }
+        }
+
+        return [$this->getAllItemsStockInSingleStore($storeId, $stockItems), $stockCollection];
+    }
+
+    /**
+     * Merge Stock Collection
+     *
+     * @param $stockCollection
+     * @param $parentProductSku
+     * @param $childProductSku
+     * @param $name
+     * @param $qty
+     */
+    public function mergeStockCollection(&$stockCollection, $parentProductSku, $childProductSku, $name, $qty)
+    {
+        $found = false;
+
+        foreach ($stockCollection as &$stock) {
+            if ($stock['item_id'] == $parentProductSku && $stock['variant_id'] == $childProductSku) {
+                $stock['qty'] = $stock['qty'] + $qty;
+                $found = true;
+                break;
+            }
+        }
+
+        if (!$found) {
             $stockCollection[] = [
                 'item_id'    => $parentProductSku,
                 'variant_id' => $childProductSku,
-                'name'       => $item->getName(),
-                'qty'        => $itemQty
+                'name' => $name,
+                'qty' => $qty
             ];
-
-            $item = ['parent' => $parentProductSku, 'child' => $childProductSku];
         }
-
-        return [$this->getAllItemsStockInSingleStore($storeId, $items), $stockCollection];
     }
 
     /**
@@ -394,55 +435,65 @@ class StockHelper extends AbstractHelper
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
             if (!$item->getHasError()) {
                 $storeId = $this->lsr->getActiveWebStore();
-                $uomQty  = $item->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                $children = [];
 
-                if (!empty($uomQty)) {
-                    $qty = $qty * $uomQty;
+                if ($item->getProductType() == Type::TYPE_BUNDLE) {
+                    $children = $item->getChildren();
+                } else {
+                    $children[] = $item;
                 }
-                [$itemId, $variantId] = $this->itemHelper->getComparisonValues(
-                    $item->getSku()
-                );
 
-                $stock = $this->getItemStockInStore(
-                    $storeId,
-                    $itemId,
-                    $variantId
-                );
+                foreach ($children as $child) {
+                    $uomQty  = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
-                if ($stock) {
-                    $itemStock = reset($stock);
+                    if (!empty($uomQty)) {
+                        $qty = $qty * $uomQty;
+                    }
+                    [$itemId, $variantId] = $this->itemHelper->getComparisonValues(
+                        $child->getSku()
+                    );
 
-                    if ($itemStock->getQtyInventory() <= 0) {
-                        if ($isRemoveItem == true) {
-                            $this->deleteItemFromQuote($item, $quote);
-                        }
-                        $item->setHasError(true);
-                        $item->setMessage(__(
-                            'Product %1 is not available.',
-                            $item->getName()
-                        ));
-                        if ($throwException == true) {
-                            throw new LocalizedException(__(
+                    $stock = $this->getItemStockInStore(
+                        $storeId,
+                        $itemId,
+                        $variantId
+                    );
+
+                    if ($stock) {
+                        $itemStock = reset($stock);
+
+                        if ($itemStock->getQtyInventory() <= 0) {
+                            if ($isRemoveItem == true) {
+                                $this->deleteItemFromQuote($item, $quote);
+                            }
+                            $item->setHasError(true);
+                            $item->setMessage(__(
                                 'Product %1 is not available.',
                                 $item->getName()
                             ));
-                        }
-                    } elseif ($itemStock->getQtyInventory() < $qty) {
-                        if ($isRemoveItem == true) {
-                            $this->deleteItemFromQuote($item, $quote);
-                        }
-                        $item->setHasError(true);
-                        $item->setMessage(__(
-                            'Max quantity available for item %2 is %1',
-                            $itemStock->getQtyInventory(),
-                            $item->getName()
-                        ));
-                        if ($throwException == true) {
-                            throw new LocalizedException(__(
+                            if ($throwException == true) {
+                                throw new LocalizedException(__(
+                                    'Product %1 is not available.',
+                                    $item->getName()
+                                ));
+                            }
+                        } elseif ($itemStock->getQtyInventory() < $qty) {
+                            if ($isRemoveItem == true) {
+                                $this->deleteItemFromQuote($item, $quote);
+                            }
+                            $item->setHasError(true);
+                            $item->setMessage(__(
                                 'Max quantity available for item %2 is %1',
                                 $itemStock->getQtyInventory(),
                                 $item->getName()
                             ));
+                            if ($throwException == true) {
+                                throw new LocalizedException(__(
+                                    'Max quantity available for item %2 is %1',
+                                    $itemStock->getQtyInventory(),
+                                    $item->getName()
+                                ));
+                            }
                         }
                     }
                 }

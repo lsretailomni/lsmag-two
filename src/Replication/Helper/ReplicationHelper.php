@@ -40,6 +40,9 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogInventory\Api\StockConfigurationInterface;
+use Magento\CatalogInventory\Api\StockItemCriteriaInterfaceFactory;
+use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
@@ -86,6 +89,7 @@ use Magento\InventoryApi\Api\SourceItemRepositoryInterface;
 use Magento\InventoryApi\Api\SourceItemsDeleteInterface;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
+use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
 use Magento\InventorySales\Model\ResourceModel\GetAssignedStockIdForWebsite;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -373,6 +377,26 @@ class ReplicationHelper extends AbstractHelper
     public $getAssignedStockIdForWebsite;
 
     /**
+     * @var StockItemCriteriaInterfaceFactory
+     */
+    public $criteriaInterfaceFactory;
+
+    /**
+     * @var StockItemRepositoryInterface
+     */
+    public $stockItemRepository;
+
+    /**
+     * @var StockConfigurationInterface
+     */
+    public $stockConfiguration;
+
+    /**
+     * @var IsSingleSourceModeInterface
+     */
+    public $isSingleSourceMode;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -433,6 +457,10 @@ class ReplicationHelper extends AbstractHelper
      * @param SourceItemRepositoryInterface $sourceItemRepository
      * @param SourceItemsDeleteInterface $sourceItemsDelete
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+     * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
+     * @param StockItemRepositoryInterface $stockItemRepository
+     * @param StockConfigurationInterface $stockConfiguration
+     * @param IsSingleSourceModeInterface $isSingleSourceMode
      */
     public function __construct(
         Context                                                        $context,
@@ -479,24 +507,27 @@ class ReplicationHelper extends AbstractHelper
         SourceItemInterfaceFactory                                     $sourceItemFactory,
         DefaultSourceProviderInterfaceFactory                          $defaultSourceProviderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
-        CategoryRepositoryInterface                                    $categoryRepository,
-        ResourceModelCategory                                          $categoryResourceModel,
-        RuleCollectionFactory                                          $ruleCollectionFactory,
-        ReplUnitOfMeasureRepositoryInterface                           $replUnitOfMeasureRepository,
-        ParentItemProcessor                                            $parentItemProcessor,
-        ProductRepositoryInterface                                     $productRepository,
-        GetParentSkusOfChildrenSkus                                    $getParentSkusOfChildrenSkus,
-        StockStatusRepository                                          $stockStatusRepository,
-        GetProductIdsBySkus                                            $getProductIdsBySkus,
-        AttributeFactory                                               $eavAttributeFactory,
-        \Magento\Catalog\Model\ResourceModel\Product                   $productResourceModel,
-        ProductMetadataInterface                                       $productMetadata,
-        GetStockSourceLinksInterface                                   $getStockSourceLinks,
-        SourceItemRepositoryInterface                                  $sourceItemRepository,
-        SourceItemsDeleteInterface                                     $sourceItemsDelete,
-        GetAssignedStockIdForWebsite                                   $getAssignedStockIdForWebsite
-    )
-    {
+        CategoryRepositoryInterface $categoryRepository,
+        ResourceModelCategory $categoryResourceModel,
+        RuleCollectionFactory $ruleCollectionFactory,
+        ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
+        ParentItemProcessor $parentItemProcessor,
+        ProductRepositoryInterface $productRepository,
+        GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
+        StockStatusRepository $stockStatusRepository,
+        GetProductIdsBySkus $getProductIdsBySkus,
+        AttributeFactory $eavAttributeFactory,
+        \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        ProductMetadataInterface $productMetadata,
+        GetStockSourceLinksInterface $getStockSourceLinks,
+        SourceItemRepositoryInterface $sourceItemRepository,
+        SourceItemsDeleteInterface $sourceItemsDelete,
+        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
+        StockItemRepositoryInterface $stockItemRepository,
+        StockConfigurationInterface $stockConfiguration,
+        IsSingleSourceModeInterface $isSingleSourceMode
+    ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
         $this->filterGroupBuilder                        = $filterGroupBuilder;
@@ -556,6 +587,10 @@ class ReplicationHelper extends AbstractHelper
         $this->sourceItemRepository                      = $sourceItemRepository;
         $this->sourceItemDeleteRepository                = $sourceItemsDelete;
         $this->getAssignedStockIdForWebsite              = $getAssignedStockIdForWebsite;
+        $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
+        $this->stockItemRepository                       = $stockItemRepository;
+        $this->stockConfiguration                        = $stockConfiguration;
+        $this->isSingleSourceMode                        = $isSingleSourceMode;
         parent::__construct(
             $context
         );
@@ -2215,6 +2250,7 @@ class ReplicationHelper extends AbstractHelper
         }
         if (!empty($resultantCategoryIds)) {
             try {
+                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $product->getCategoryIds()));
                 $this->categoryLinkManagement->assignProductToCategories(
                     $product->getSku(),
                     $resultantCategoryIds
@@ -3014,7 +3050,9 @@ class ReplicationHelper extends AbstractHelper
             $sourceItems        = [];
             $skus               = [$sku];
             foreach ($parentProductsSkus as $parentSku) {
-                $parentSku     = array_shift($parentSku);
+                $productId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus($parentSku);
+                $parentSku = array_shift($parentSku);
+                $this->setStockStatusChangedAuto($productId);
                 $skus[]        = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
                     $parentSku,
@@ -3045,6 +3083,35 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Set stock_status_changed_auto = 1 for configurable product in table cataloginventory_stock_item
+     *
+     * @param $productId
+     * @return void
+     */
+    public function setStockStatusChangedAuto($productId)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $parentStockItem = array_shift($allItems);
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1);
+
+        if (!$this->isSingleSourceMode->execute()) {
+            $parentStockItem->setIsInStock(1);
+        }
+
+        $this->stockItemRepository->save($parentStockItem);
+    }
+
+    /**
      * Get source item given data
      *
      * @param $sku
@@ -3056,7 +3123,8 @@ class ReplicationHelper extends AbstractHelper
     public function getSourceItemGivenData($sku, $inventory, $status)
     {
         $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();
-        $sourceCode        = $this->getSourceCodeFromWebsiteCode($defaultSourceCode);
+        $websiteId         = $this->storeManager->getStore()->getWebsiteId();
+        $sourceCode        = $this->getSourceCodeFromWebsiteCode($defaultSourceCode, $websiteId);
         if ($sourceCode != $defaultSourceCode) {
             $this->deleteSourceItemsBySku($defaultSourceCode, $sku);
         }
@@ -3094,13 +3162,12 @@ class ReplicationHelper extends AbstractHelper
      * Get source code from website
      *
      * @param $sourceCode
+     * @param $websiteId
      * @return mixed|string|null
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
-    public function getSourceCodeFromWebsiteCode($sourceCode)
+    public function getSourceCodeFromWebsiteCode($sourceCode, $websiteId)
     {
-        $websiteId      = $this->storeManager->getStore()->getWebsiteId();
         $websiteCode    = $this->storeManager->getWebsite($websiteId)->getCode();
         $stockId        = $this->getAssignedStockIdForWebsite->execute($websiteCode);
         $searchCriteria = $this->searchCriteriaBuilder->addFilter(StockSourceLinkInterface::STOCK_ID, $stockId)
