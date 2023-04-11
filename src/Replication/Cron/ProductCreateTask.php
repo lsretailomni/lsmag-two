@@ -2,7 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Exception;
+use \Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
