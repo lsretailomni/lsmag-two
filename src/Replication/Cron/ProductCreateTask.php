@@ -559,30 +559,19 @@ class ProductCreateTask
                                     'global'
                                 );
 
-                                $productData->setStoreId($store->getId());
-
                                 $langCode = $this->lsr->getStoreConfig(
                                     LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
                                     $store->getId()
                                 );
-                                list(, $nameFlag, $descriptionFlag) =
-                                    $this->dataTranslationTask->updateItem(
-                                        $store,
-                                        $langCode,
-                                        $item->getNavId(),
-                                        $productData
-                                    );
+                                $this->dataTranslationTask->updateItem(
+                                    $store,
+                                    $langCode,
+                                    $item->getNavId()
+                                );
 
-                                if (!$nameFlag) {
-                                    $productData->setName($item->getDescription());
-                                    $productData->setMetaTitle($item->getDescription());
-                                } else {
-                                    $productData->setMetaTitle($productData->getname());
-                                }
-
-                                if (!$descriptionFlag) {
-                                    $productData->setDescription($item->getDetails());
-                                }
+                                $productData->setName($item->getDescription());
+                                $productData->setMetaTitle($item->getDescription());
+                                $productData->setDescription($item->getDetails());
 
                                 if (!empty($item->getTaxItemGroupId())) {
                                     $taxClass = $this->replicationHelper->getTaxClassGivenName(
@@ -610,6 +599,11 @@ class ProductCreateTask
                                     $productSaved = $this->productRepository->save($product);
                                     $this->updateProductStatusGlobal($productSaved);
                                 } catch (Exception $e) {
+                                    $this->logDetailedException(
+                                        __METHOD__,
+                                        $this->store->getName(),
+                                        $item->getNavId()
+                                    );
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
                                 }
@@ -625,7 +619,7 @@ class ProductCreateTask
                                         $item->getTaxItemGroupId()
                                     );
                                 }
-                                $product->setStoreId($store->getId());
+                                $product->setStoreId(0);
                                 $product->setWebsiteIds([$store->getWebsiteId()]);
                                 $product->setName($item->getDescription());
                                 $product->setMetaTitle($item->getDescription());
@@ -719,6 +713,11 @@ class ProductCreateTask
                                         $this->store->getId()
                                     );
                                 } catch (Exception $e) {
+                                    $this->logDetailedException(
+                                        __METHOD__,
+                                        $this->store->getName(),
+                                        $item->getNavId()
+                                    );
                                     $this->logger->debug($e->getMessage());
                                     $item->setData('is_failed', 1);
                                 }
@@ -1117,6 +1116,13 @@ class ProductCreateTask
                 $this->replPriceRepository->save($item);
             }
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $itemId,
+                $variantId,
+                $unitOfMeasure
+            );
             $this->logger->debug($e->getMessage());
         }
         return $item;
@@ -1167,6 +1173,11 @@ class ProductCreateTask
                 }
             }
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $itemId
+            );
             $this->logger->debug($e->getMessage());
         }
         return $itemUom;
@@ -1226,7 +1237,11 @@ class ProductCreateTask
                     }
                 }
             } catch (Exception $e) {
-                $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
+                $this->logDetailedException(
+                    __METHOD__,
+                    $this->store->getName(),
+                    $item
+                );
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -1282,7 +1297,11 @@ class ProductCreateTask
                     }
                 }
             } catch (Exception $e) {
-                $this->logger->debug('Problem with sku: ' . $item . ' in ' . __METHOD__);
+                $this->logDetailedException(
+                    __METHOD__,
+                    $this->store->getName(),
+                    $item,
+                );
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -1311,7 +1330,11 @@ class ProductCreateTask
                     $productData = $this->setProductStatus($productData, 1);
                     $this->productRepository->save($productData);
                 } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                    $this->logDetailedException(
+                        __METHOD__,
+                        $this->store->getName(),
+                        $sku
+                    );
                     $this->logger->debug($e->getMessage());
                     $value->setData('is_failed', 1);
                 }
@@ -1359,7 +1382,11 @@ class ProductCreateTask
                         $this->productRepository->save($item);
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                    $this->logDetailedException(
+                        __METHOD__,
+                        $this->store->getName(),
+                        $itemId
+                    );
                     $this->logger->debug($e->getMessage());
                     $value->setData('is_failed', 1);
                 }
@@ -1407,7 +1434,11 @@ class ProductCreateTask
                         }
                     }
                 } catch (Exception $e) {
-                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                    $this->logDetailedException(
+                        __METHOD__,
+                        $this->store->getName(),
+                        $itemId
+                    );
                     $this->logger->debug($e->getMessage());
                     $uom->setData('is_failed', 1);
                 }
@@ -1469,7 +1500,11 @@ class ProductCreateTask
                             $this->productResourceModel->saveAttribute($productData, 'barcode');
                         }
                     } catch (Exception $e) {
-                        $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                        $this->logDetailedException(
+                            __METHOD__,
+                            $this->store->getName(),
+                            $itemId
+                        );
                         $this->logger->debug($e->getMessage());
                         $replBarcode->setData('is_failed', 1);
                     }
@@ -1526,6 +1561,12 @@ class ProductCreateTask
                     );
                     $associatedProductIds   = array_unique($associatedProductIds);
                 } catch (Exception $e) {
+                    $this->logDetailedException(
+                        __METHOD__,
+                        $this->store->getName(),
+                        $value->getItemId(),
+                        $value->getVariantId()
+                    );
                     $this->logger->debug($e->getMessage());
                     $value->setData('is_failed', 1);
                 }
@@ -1645,6 +1686,13 @@ class ProductCreateTask
                             );
                             $associatedProductIds   = array_unique($associatedProductIds);
                         } catch (Exception $e) {
+                            $this->logDetailedException(
+                                __METHOD__,
+                                $this->store->getName(),
+                                $value->getItemId(),
+                                $value->getVariantId(),
+                                $uomCode->getCode()
+                            );
                             $this->logger->debug($e->getMessage());
                             $value->setData('is_failed', 1);
                         }
@@ -1716,6 +1764,13 @@ class ProductCreateTask
                         $associatedProductIds[] = $this->updateConfigProduct($productData, $item, $name, $uomCode);
                         $associatedProductIds   = array_unique($associatedProductIds);
                     } catch (Exception $e) {
+                        $this->logDetailedException(
+                            __METHOD__,
+                            $this->store->getName(),
+                            $uomCode->getItemId(),
+                            null,
+                            $uomCode->getCode()
+                        );
                         $this->logger->debug($e->getMessage());
                         $uomCode->setData('is_failed', 1);
                     }
@@ -1767,6 +1822,12 @@ class ProductCreateTask
                         );
                         $associatedProductIds   = array_unique($associatedProductIds);
                     } catch (Exception $e) {
+                        $this->logDetailedException(
+                            __METHOD__,
+                            $this->store->getName(),
+                            $value->getItemId(),
+                            $value->getVariantId()
+                        );
                         $this->logger->debug($e->getMessage());
                         $value->setData('is_failed', 1);
                     }
@@ -2021,7 +2082,6 @@ class ProductCreateTask
             'global'
         );
 
-        $productData->setStoreId($this->store->getId());
         $websitesProduct = $productData->getWebsiteIds();
         /** Check if Item exist in the website and assign it if it does not exist*/
         if (!in_array($this->store->getWebsiteId(), $websitesProduct)) {
@@ -2047,7 +2107,6 @@ class ProductCreateTask
     public function updateConfigProduct($productData, $item, $name, $uomCode = null, $value = null)
     {
         $productStatus = true;
-        $productData->setStoreId($this->store->getId());
         $productData->setName($name);
         $productData->setMetaTitle($name);
         $productData->setDescription($item->getDetails());
@@ -2121,6 +2180,12 @@ class ProductCreateTask
             $productSaved = $this->productRepository->save($productData);
             return $productSaved->getId();
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $item->getNavId(),
+                $value ? $value->getVariantId() : null
+            );
             $this->logger->debug($e->getMessage());
         }
     }
@@ -2224,6 +2289,13 @@ class ProductCreateTask
             return $productSaved->getId();
             // @codingStandardsIgnoreEnd
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $item->getNavId(),
+                $value->getVariantId(),
+                $unitOfMeasure
+            );
             $this->logger->debug($e->getMessage());
         }
     }
@@ -2255,7 +2327,7 @@ class ProductCreateTask
         $productStatus = true;
         $productV      = $this->productFactory->create();
         $productV->setName($name);
-        $productV->setStoreId($this->store->getId());
+        $productV->setStoreId(0);
         $productV->setWebsiteIds([$this->store->getWebsiteId()]);
         $productV->setMetaTitle($name);
         $productV->setDescription($item->getDetails());
@@ -2383,6 +2455,13 @@ class ProductCreateTask
             return $productSaved->getId();
             // @codingStandardsIgnoreEnd
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $item->getNavId(),
+                $value ? $value->getVariantId() : null,
+                $uomCode
+            );
             $this->logger->debug($e->getMessage());
         }
     }
@@ -2500,6 +2579,12 @@ class ProductCreateTask
             $product->setStoreId(0);
             $product->getResource()->saveAttribute($product, 'status');
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $product->getItemId(),
+                $product->getVariantId()
+            );
             $this->logger->error($e->getMessage());
         }
     }
@@ -2619,6 +2704,12 @@ class ProductCreateTask
                 }
             }
         } catch (Exception $e) {
+            $this->logDetailedException(
+                __METHOD__,
+                $this->store->getName(),
+                $itemId,
+                $variantId
+            );
             $this->logger->error($e->getMessage());
         }
     }
@@ -2699,6 +2790,30 @@ class ProductCreateTask
             $attributeGroupId,
             $attributeCode,
             $sortOrder
+        );
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @param null $variantId
+     * @param null $uom
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId, $variantId = null, $uom = null)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store %s, item id: %s, variant id: %s, Uom: %s',
+                $method,
+                $storeName,
+                $itemId,
+                $variantId,
+                $uom
+            )
         );
     }
 }

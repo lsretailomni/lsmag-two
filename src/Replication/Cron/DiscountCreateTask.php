@@ -353,6 +353,7 @@ class DiscountCreateTask
             $rule->loadPost($rule->getData());
             $this->catalogRule->save($rule);
         } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
             $this->logger->debug($e->getMessage());
             $replDiscount->setData('is_failed', 1);
             // @codingStandardsIgnoreLine
@@ -404,6 +405,7 @@ class DiscountCreateTask
                     $this->catalogRule->deleteById($rule->getId());
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
                 $this->logger->debug($e->getMessage());
                 $replDiscount->setData('is_failed', 1);
             }
@@ -422,13 +424,14 @@ class DiscountCreateTask
     {
         $websiteIds     = [$this->store->getWebsiteId()];
         $ruleCollection = $this->ruleCollectionFactory->create();
-        $ruleCollection->addFieldToFilter('name', $name);
+        $ruleCollection->addFieldToFilter('name', );
         $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
             }
         } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $name);
             $this->logger->debug($e->getMessage());
         }
     }
@@ -454,5 +457,25 @@ class DiscountCreateTask
                 ->getTotalCount();
         }
         return $this->remainingRecords;
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
     }
 }

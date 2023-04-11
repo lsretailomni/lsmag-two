@@ -2489,7 +2489,7 @@ class ReplicationHelper extends AbstractHelper
         foreach ($items->getItems() as $item) {
             $itemId        = $item->getLinkField1();
             $variantId     = $item->getLinkField2();
-            $product       = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 0);
+            $product       = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 'global');
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
@@ -3301,6 +3301,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '')
     {
+        $currentStoreId = $this->storeManager->getStore()->getId();
         $searchCriteria = clone $this->searchCriteriaBuilder;
 
         if (!empty($itemId) || $itemId == '0') {
@@ -3316,7 +3317,7 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
-            $scopeId        = ($storeId == '' || $storeId == 'global') ? $this->storeManager->getStore()->getId() : $storeId;
+            $scopeId        = ($storeId == '' || $storeId == 'global') ? $currentStoreId : $storeId;
             $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $scopeId);
             $optionId       = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
@@ -3345,7 +3346,13 @@ class ReplicationHelper extends AbstractHelper
             )->create();
         }
 
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId(0);
+        }
         $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId($currentStoreId);
+        }
         if (!empty($productList)) {
             return array_pop($productList);
         } else {

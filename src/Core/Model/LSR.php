@@ -335,6 +335,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH = 'ls_mag/replication/convert_attribute_to_visual_swatch';
     const VISUAL_TYPE_ATTRIBUTES = 'ls_mag/replication/visual_type_attributes';
 
+    const IMAGE_CACHE_INDEPENDENT_OF_STORE_ID = 'ls_mag/replication/image_cache_independent_of_store_id';
+
     // ORDER STATES
     const ORDER_STATE_NA = 'NOT_AVAILABLE';
     const ORDER_STATE_NC = 'NOT_CREATED';

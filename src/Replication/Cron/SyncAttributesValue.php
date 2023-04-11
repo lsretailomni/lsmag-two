@@ -173,7 +173,14 @@ class SyncAttributesValue extends ProductCreateTask
                 );
             } catch (Exception $e) {
                 if (!$checkIsVariant) {
-                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                    $this->logger->debug(
+                        sprintf(
+                            'Exception happened in %s for store: %, item id: %s',
+                            __METHOD__,
+                            $this->store->getName(),
+                            $itemId
+                        )
+                    );
                     $this->logger->debug($e->getMessage());
                     $attributeValue->setData('is_failed', 1);
                 }

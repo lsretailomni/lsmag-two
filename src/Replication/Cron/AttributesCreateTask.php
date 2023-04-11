@@ -371,6 +371,7 @@ class AttributesCreateTask
                     );
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $replAttribute->getCode());
                 $this->logger->debug($e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
@@ -460,6 +461,7 @@ class AttributesCreateTask
                             ->save();
                         // @codingStandardsIgnoreEnd
                     } catch (Exception $e) {
+                        $this->logDetailedException(__METHOD__, $this->store->getName(), $code);
                         $this->logger->debug($e->getMessage());
                     }
                 }
@@ -592,6 +594,7 @@ class AttributesCreateTask
                         ->save();
                     // @codingStandardsIgnoreEnd
                 } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $code);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -654,6 +657,7 @@ class AttributesCreateTask
                 }
             }
         } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $formattedCode);
             $this->logger->debug($e->getMessage());
         }
     }
@@ -705,6 +709,7 @@ class AttributesCreateTask
                     ->save();
                 $this->logger->debug('Successfully created attribute : ' . $formattedCode);
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $formattedCode);
                 $this->logger->debug('Failed with Exception : ' . $e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
@@ -794,8 +799,7 @@ class AttributesCreateTask
                         try {
                             $this->eavSetupFactory->create()->addAttributeOption($data);
                         } catch (Exception $e) {
-                            $this->logger->debug("Update attribute - $attributeCode failed with exception : "
-                                . $e->getMessage());
+                            $this->logDetailedException(__METHOD__, $this->store->getName(), $attributeCode);
                         }
                     }
                 }
@@ -832,6 +836,7 @@ class AttributesCreateTask
                 }
             } catch (Exception $e) {
                 $item->setIsFailed(1);
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $item->getCode());
                 $this->logger->debug($e->getMessage());
             }
             $item->setProcessed(1);
@@ -992,6 +997,13 @@ class AttributesCreateTask
                     $option
                 );
             } catch (Exception $e) {
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %s',
+                        __METHOD__,
+                        $this->store->getName()
+                    )
+                );
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -1197,5 +1209,25 @@ class AttributesCreateTask
                 $this->addVisualSwatchTypeOptions($swatchTypeAttribute);
             }
         }
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store: %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
     }
 }

@@ -301,8 +301,8 @@ class CategoryCreateTask
                     }
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $hierarchyNode->getNavId());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId() . ' for store ' . $this->store->getName());
                 $hierarchyNode->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreStart
@@ -429,8 +429,8 @@ class CategoryCreateTask
                     $hierarchyNodeSub->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $hierarchyNodeSub->getNavId());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while creating ' . $hierarchyNodeSub->getNavId() . ' for store ' . $this->store->getName());
                 $hierarchyNodeSub->setData('is_failed', 1);
             }
             $hierarchyNodeSub->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -480,8 +480,8 @@ class CategoryCreateTask
                         $hierarchyNode->setData('is_failed', 1);
                     }
                 } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $hierarchyNode->getNavId());
                     $this->logger->debug($e->getMessage());
-                    $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId());
                     $hierarchyNode->setData('is_failed', 1);
                 }
                 $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -653,6 +653,7 @@ class CategoryCreateTask
                         $this->cronStatus = true;
                     }
                 } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $navId);
                     $this->logger->debug($e->getMessage());
                     $image->setData('is_failed', 1);
                 }
@@ -694,5 +695,25 @@ class CategoryCreateTask
     {
         $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
         return $this->hierarchyCode;
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store: %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
     }
 }

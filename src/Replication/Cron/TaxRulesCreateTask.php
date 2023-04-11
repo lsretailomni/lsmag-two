@@ -186,6 +186,14 @@ class TaxRulesCreateTask
                                     $this->createTaxCalculationRuleGivenInfo($taxRate, $taxClass);
                                 }
                             } catch (Exception $e) {
+                                $this->logger->debug(
+                                    sprintf(
+                                        'Exception happened in %s for store: %, item id: %s',
+                                        __METHOD__,
+                                        $this->store->getName(),
+                                        $taxPostGroup
+                                    )
+                                );
                                 $this->logger->debug($e->getMessage());
                                 $countryCode->setData('is_failed', 1);
                             }

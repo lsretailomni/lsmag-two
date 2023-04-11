@@ -27,6 +27,7 @@
                 <debug_on_error>0</debug_on_error>
                 <convert_attribute_to_visual_swatch>0</convert_attribute_to_visual_swatch>
                 <visual_type_attributes>ls_colour,ls_colours</visual_type_attributes>
+                <image_cache_independent_of_store_id>1</image_cache_independent_of_store_id>
                 <cron_expr_configuration>0</cron_expr_configuration>
                 <cron_expr_nav_store>1 * * * * *</cron_expr_nav_store>
                 <cron_expr_tender_type>1 * * * * *</cron_expr_tender_type>

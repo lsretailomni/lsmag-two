@@ -133,7 +133,14 @@ class SyncVendorAttributesValue extends ProductCreateTask
                 $product->setData(LSR::LS_ITEM_VENDOR_ATTRIBUTE, $attributeValue->getNavManufacturerItemId());
                 $product->getResource()->saveAttribute($product, LSR::LS_ITEM_VENDOR_ATTRIBUTE);
             } catch (Exception $e) {
-                $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %, item id: %s',
+                        __METHOD__,
+                        $this->store->getName(),
+                        $itemId
+                    )
+                );
                 $this->logger->debug($e->getMessage());
                 $attributeValue->setData('is_failed', 1);
             }

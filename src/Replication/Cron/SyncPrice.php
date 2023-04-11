@@ -112,7 +112,14 @@ class SyncPrice extends ProductCreateTask
                                 }
                             }
                         } catch (Exception $e) {
-                            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                            $this->logger->debug(
+                                sprintf(
+                                    'Exception happened in %s for store: %, item id: %s',
+                                    __METHOD__,
+                                    $this->store->getName(),
+                                    $sku
+                                )
+                            );
                             $this->logger->debug($e->getMessage());
                             $replPrice->setData('is_failed', 1);
                         }
@@ -203,6 +210,14 @@ class SyncPrice extends ProductCreateTask
         try {
             $itemsCount = $this->replPriceRepository->getList($searchCriteria)->getTotalCount();
         } catch (Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Exception happened in %s for store: %, item id: %s',
+                    __METHOD__,
+                    $this->store->getName(),
+                    $itemId
+                )
+            );
             $this->logger->debug($e->getMessage());
         }
         return $itemsCount;

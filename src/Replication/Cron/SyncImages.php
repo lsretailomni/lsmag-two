@@ -134,7 +134,12 @@ class SyncImages extends ProductCreateTask
                     }
                 } catch (Exception $e) {
                     $this->logger->debug(
-                        sprintf('Problem with Image Synchronization : %s in %s', $itemImage->getKeyValue(), __METHOD__)
+                        sprintf(
+                            'Exception happened in %s for store: %, item id: %s',
+                            __METHOD__,
+                            $this->store->getName(),
+                            $itemImage->getKeyValue()
+                        )
                     );
                     $this->logger->debug($e->getMessage());
                     $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -231,7 +236,11 @@ class SyncImages extends ProductCreateTask
             );
         } catch (Exception $e) {
             $this->logger->debug(
-                sprintf('Problem getting encoded Images in : %s', __METHOD__)
+                sprintf(
+                    'Exception happened in %s for store: %s',
+                    __METHOD__,
+                    $this->store->getName()
+                )
             );
             $this->logger->debug($e->getMessage());
         }
@@ -251,7 +260,11 @@ class SyncImages extends ProductCreateTask
                             );
                         } catch (Exception $e) {
                             $this->logger->debug(
-                                sprintf('Problem getting image using url in : %s', __METHOD__)
+                                sprintf(
+                                    'Exception happened in %s for store: %s',
+                                    __METHOD__,
+                                    $this->store->getName()
+                                )
                             );
                             $this->logger->debug($e->getMessage());
                             continue;
@@ -282,7 +295,11 @@ class SyncImages extends ProductCreateTask
                 $this->removeNoSelection($productData);
             } catch (Exception $e) {
                 $this->logger->debug(
-                    sprintf('Problem while converting the images or Gallery CreateHandler in : %s', __METHOD__)
+                    sprintf(
+                        'Exception happened in %s for store: %s',
+                        __METHOD__,
+                        $this->store->getName()
+                    )
                 );
                 $this->logger->debug($e->getMessage());
             }

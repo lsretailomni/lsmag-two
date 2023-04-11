@@ -192,6 +192,17 @@
                         <field id="ls_mag/replication/convert_attribute_to_visual_swatch">1</field>
                     </depends>
                 </field>
+                <field id="image_cache_independent_of_store_id"
+                       translate="label"
+                       type="select"
+                       sortOrder="230"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Cache image content independent of store id</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Image cache is build based on image id. If disabled, the cache will be build based on image id as well as store id.</comment>
+                </field>
             </group>
             <group id="one_list"
                    translate="label"

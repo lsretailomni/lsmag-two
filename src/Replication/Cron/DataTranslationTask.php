@@ -330,8 +330,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -380,8 +380,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->addData(
@@ -426,8 +426,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -465,8 +465,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -519,8 +519,8 @@ class DataTranslationTask
                     $productData->addAttributeUpdate($formattedCode, $dataTranslation->getText(), $storeId);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -554,8 +554,8 @@ class DataTranslationTask
             try {
                 $this->updateAttributeLabel($dataTranslation, $dataTranslation->getKey(), $storeId);
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -609,7 +609,7 @@ class DataTranslationTask
             try {
                 $sku = $dataTranslation->getKey();
 
-                if (!$productData) {
+                if (!$productData || $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) != $sku) {
                     $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                         $sku,
                         '',
@@ -632,8 +632,8 @@ class DataTranslationTask
                     }
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -693,8 +693,8 @@ class DataTranslationTask
                     $this->categoryRepository->save($categoryExistData);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -950,5 +950,25 @@ class DataTranslationTask
                 ]
             );
         }
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store: %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
     }
 }
