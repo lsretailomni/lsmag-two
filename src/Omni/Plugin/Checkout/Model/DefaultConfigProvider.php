@@ -70,7 +70,7 @@ class DefaultConfigProvider
         $items = $result['totalsData']['items'];
         foreach ($items as $index => $item) {
             $quoteItem     = $this->checkoutSession->getQuote()->getItemById($item['item_id']);
-            $originalPrice = $quoteItem->getProduct()->getPrice() * $quoteItem->getQty();
+            $originalPrice = $quoteItem->getPrice() * $quoteItem->getQty();
             if ($quoteItem->getCustomPrice() > 0) {
                 $result['quoteItemData'][$index]['discountprice']      =
                     $this->pricingHelper->currency($this->basketHelper->getItemRowTotal($quoteItem), true, false);

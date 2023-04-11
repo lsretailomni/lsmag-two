@@ -150,12 +150,13 @@ class SyncImages extends ProductCreateTask
                     $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
             }
-            $remainingItems = (int)$this->getRemainingRecords($this->store);
-            if ($remainingItems == 0) {
-                $this->cronStatus = true;
-            }
-            $this->replicationHelper->flushByTypeCode('full_page');
         }
+
+        $remainingItems = (int)$this->getRemainingRecords($this->store);
+        if ($remainingItems == 0) {
+            $this->cronStatus = true;
+        }
+        $this->replicationHelper->flushByTypeCode('full_page');
     }
 
     /**

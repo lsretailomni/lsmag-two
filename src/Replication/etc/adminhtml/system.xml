@@ -203,6 +203,26 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Image cache is build based on image id. If disabled, the cache will be build based on image id as well as store id.</comment>
                 </field>
+                <field id="item_image_width"
+                       translate="label"
+                       type="text"
+                       sortOrder="230"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Item Image Width</label>
+                    <comment>Selected image width will be used in image replication</comment>
+                </field>
+                <field id="item_image_height"
+                       translate="label"
+                       type="text"
+                       sortOrder="240"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Item Image Height</label>
+                    <comment>Selected image height will be used in image replication</comment>
+                </field>
             </group>
             <group id="one_list"
                    translate="label"

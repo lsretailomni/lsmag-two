@@ -72,7 +72,7 @@ use Magento\Framework\Escaper;
                                         $_order->getCustomerOrderNo() ? $_order->getCustomerOrderNo() : $_order->getId() ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Date')) ?>"
                                         class="col date"><?= /* @escapeNotVerified */
-                                        $block->getFormattedDate($_order->getDocumentRegTime()) ?></td>
+                                        $block->getFormattedDate($_order->getCreateTime()) ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Ship To')) ?>"
                                         class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Store Name')) ?>"

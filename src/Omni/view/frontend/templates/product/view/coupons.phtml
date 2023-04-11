@@ -3,12 +3,19 @@
 // @codingStandardsIgnoreFile
 use \Ls\Omni\Block\Product\View\Discount\Proactive;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
+use Magento\Catalog\Model\Product\Type;
 
 $productData = $block->getData();
-$productSku  = $productData['data']['productSku'];
+$product = $block->getProductGivenSku($productData['data']['productSku']);
+
+if ($product->getTypeId() == Type::TYPE_BUNDLE) {
+    $itemId = $block->getLinkedProductsItemIds($product);
+} else {
+    $itemId  = [$block->getLsCentralItemIdBySku($productData['data']['productSku'])];
+}
 ?>
 <?php
-$coupons = $block->getCoupons($productSku);
+$coupons = $block->getCoupons($itemId);
 if (!empty($coupons)) {
     ?>
     <?php

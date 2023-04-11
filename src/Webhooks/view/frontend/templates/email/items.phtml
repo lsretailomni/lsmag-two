@@ -26,26 +26,33 @@
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($items as $itemInfo):
-            $item = $itemInfo['item'] ?>
-            <tr>
-                <td class="item-info">
-                    <?= $escaper->escapeHtml($item->getName()) ?>
-                    <table class="item-info">
-                        <?php if ($options = $item->getProductOptions()): ?>
-                            <?php if (isset($options['attributes_info'])): ?>
-                                <?php foreach ($options['attributes_info'] as $option): ?>
-                                    <br/>
-                                    <strong><em><small><?= $escaper->escapeHtml($option['label']) ?></small></em></strong>
-                                    <br/><?= (isset($option['print_value']) ? $escaper->escapeHtml($option['print_value']) : nl2br($escaper->escapeHtml($option['value']))) ?>
-                                <?php endforeach; ?>
+        <?php foreach ($items as $index => $itemInfo): ?>
+            <?php if (isset($itemInfo['item'])): ?>
+                <?php $itemInfoArray = [$itemInfo]; ?>
+            <?php else: ?>
+                <?php $itemInfoArray = $itemInfo; ?>
+            <?php endif; ?>
+            <?php foreach ($itemInfoArray as $itemInfo) :?>
+                <?php $item = $itemInfo['item'] ?>
+                <tr>
+                    <td class="item-info">
+                        <?= $escaper->escapeHtml($item->getName()) ?>
+                        <table class="item-info">
+                            <?php if ($options = $item->getProductOptions()): ?>
+                                <?php if (isset($options['attributes_info'])): ?>
+                                    <?php foreach ($options['attributes_info'] as $option): ?>
+                                        <br/>
+                                        <strong><em><small><?= $escaper->escapeHtml($option['label']) ?></small></em></strong>
+                                        <br/><?= (isset($option['print_value']) ? $escaper->escapeHtml($option['print_value']) : nl2br($escaper->escapeHtml($option['value']))) ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             <?php endif; ?>
-                        <?php endif; ?>
-                    </table>
-                </td>
-                <td class="item-info"><?= $escaper->escapeHtml($item->getSku()) ?></td>
-                <td class="item-info"><?= (float)$escaper->escapeHtml($itemInfo['qty']) ?></td>
-            </tr>
+                        </table>
+                    </td>
+                    <td class="item-info"><?= $escaper->escapeHtml($item->getSku()) ?></td>
+                    <td class="item-info"><?= (float)$escaper->escapeHtml($itemInfo['qty']) ?></td>
+                </tr>
+            <?php endforeach; ?>
         <?php endforeach; ?>
         </tbody>
     </table>

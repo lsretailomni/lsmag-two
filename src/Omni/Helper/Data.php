@@ -367,12 +367,11 @@ class Data extends AbstractHelper
             }
             $quote = $this->cartRepository->get($this->checkoutSession->getQuoteId());
             if (!empty($basketData)) {
-                $totalAmount = $basketData->getTotalAmount() + $quote->getShippingAddress()->getShippingAmount();
-                return $totalAmount - $giftCardAmount - $loyaltyAmount;
+                $totalAmount = $basketData->getTotalAmount() + $quote->getShippingAddress()->getShippingInclTax();
             } else {
                 $totalAmount = $quote->getGrandTotal();
-                return $totalAmount - $giftCardAmount - $loyaltyAmount;
             }
+            return $totalAmount - $giftCardAmount - $loyaltyAmount;
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }

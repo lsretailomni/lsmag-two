@@ -125,8 +125,10 @@ class SyncItemUpdates extends ProductCreateTask
             null,
             ['repl_hierarchy_leaf_id']
         );
-
+        $websiteId = $this->store->getWebsiteId();
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
         $sku = '';
+
         foreach ($collection as $hierarchyLeaf) {
             try {
                 $sku     = $hierarchyLeaf->getNavId();
@@ -265,6 +267,8 @@ class SyncItemUpdates extends ProductCreateTask
                 null,
                 ['repl_hierarchy_leaf_id']
             );
+            $websiteId = $this->store->getWebsiteId();
+            $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;

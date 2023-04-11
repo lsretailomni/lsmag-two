@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -108,7 +109,8 @@ class Cart
                             $discountAmount = '';
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
-                                $originalPrice  = $item->getProduct()->getPrice() * $item->getQty();
+                                $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
+                                    $item->getRowTotal()  : $item->getProduct()->getPrice() * $item->getQty();
                             }
                             $result['items'][$key]['lsPriceOriginal']  = ($originalPrice != "") ?
                                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice;

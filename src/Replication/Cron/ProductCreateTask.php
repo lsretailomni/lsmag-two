@@ -2,7 +2,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Exception;
+use \Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
@@ -673,15 +673,19 @@ class ProductCreateTask
                                 );
                                 $product->setStockData([
                                     'use_config_manage_stock' => 1,
-                                    'is_in_stock'             => ($itemStock->getQuantity() > 0) ? 1 : 0,
-                                    'qty'                     => $itemStock->getQuantity()
+                                    'is_in_stock'             => ($itemStock && $itemStock->getQuantity() > 0) ? 1 : 0,
+                                    'qty'                     => $itemStock ? $itemStock->getQuantity() : 0
                                 ]);
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
                                     /** @var ProductRepositoryInterface $productSaved */
                                     $productSaved = $this->productRepository->save($product);
-                                    $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+
+                                    if ($itemStock) {
+                                        $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+                                    }
+
                                     // @codingStandardsIgnoreLine
                                     $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
@@ -810,8 +814,14 @@ class ProductCreateTask
             }
             $types           = [];
             $imageSize       = [
-                'height' => LSR::DEFAULT_ITEM_IMAGE_HEIGHT,
-                'width'  => LSR::DEFAULT_ITEM_IMAGE_WIDTH
+                'height' =>  $this->lsr->getStoreConfig(
+                    LSR::SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT,
+                    $this->store->getId()
+                ),
+                'width'  => $this->lsr->getStoreConfig(
+                    LSR::SC_REPLICATION_DEFAULT_ITEM_IMAGE_WIDTH,
+                    $this->store->getId()
+                )
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
@@ -2269,9 +2279,9 @@ class ProductCreateTask
 
         $productV->setStockData([
             'use_config_manage_stock' => 1,
-            'is_in_stock'             => ($itemStock->getQuantity() > 0) ? 1 : 0,
+            'is_in_stock'             => ($itemStock && $itemStock->getQuantity() > 0) ? 1 : 0,
             'is_qty_decimal'          => 0,
-            'qty'                     => $itemStock->getQuantity()
+            'qty'                     => $itemStock  ? $itemStock->getQuantity() : 0
         ]);
 
         if ($value->getVariantId()) {
@@ -2285,7 +2295,11 @@ class ProductCreateTask
         try {
             // @codingStandardsIgnoreStart
             $productSaved = $this->productRepository->save($productV);
-            $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+
+            if ($itemStock) {
+                $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+            }
+
             return $productSaved->getId();
             // @codingStandardsIgnoreEnd
         } catch (Exception $e) {
@@ -2443,15 +2457,19 @@ class ProductCreateTask
         }
         $productV->setStockData([
             'use_config_manage_stock' => 1,
-            'is_in_stock'             => ($itemStock->getQuantity() > 0) ? 1 : 0,
+            'is_in_stock'             => ($itemStock && $itemStock->getQuantity() > 0) ? 1 : 0,
             'is_qty_decimal'          => 0,
-            'qty'                     => $itemStock->getQuantity()
+            'qty'                     => $itemStock ? $itemStock->getQuantity() : 0
         ]);
         try {
             /** @var ProductInterface $productSaved */
             // @codingStandardsIgnoreStart
             $productSaved = $this->productRepository->save($productV);
-            $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+
+            if ($itemStock) {
+                $this->replicationHelper->updateInventory($productSaved->getSku(), $itemStock);
+            }
+
             return $productSaved->getId();
             // @codingStandardsIgnoreEnd
         } catch (Exception $e) {

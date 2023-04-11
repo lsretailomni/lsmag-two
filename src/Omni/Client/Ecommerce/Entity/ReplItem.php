@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class ReplItem
 {
     /**
@@ -169,6 +172,11 @@ class ReplItem
      * @property string $TaxItemGroupId
      */
     protected $TaxItemGroupId = null;
+
+    /**
+     * @property ItemType $Type
+     */
+    protected $Type = null;
 
     /**
      * @property float $UnitPrice
@@ -784,6 +792,34 @@ class ReplItem
     public function getTaxItemGroupId()
     {
         return $this->TaxItemGroupId;
+    }
+
+    /**
+     * @param ItemType|string $Type
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setType($Type)
+    {
+        if ( ! $Type instanceof ItemType ) {
+            if ( ItemType::isValid( $Type ) )
+                $Type = new ItemType( $Type );
+            elseif ( ItemType::isValidKey( $Type ) )
+                $Type = new ItemType( constant( "ItemType::$Type" ) );
+            elseif ( ! $Type instanceof ItemType )
+                throw new InvalidEnumException();
+        }
+        $this->Type = $Type->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return ItemType
+     */
+    public function getType()
+    {
+        return $this->Type;
     }
 
     /**
