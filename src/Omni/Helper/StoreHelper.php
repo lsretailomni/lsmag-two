@@ -8,7 +8,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use Ls\Omni\Client\Ecommerce\Entity\Store;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -166,8 +166,15 @@ class StoreHelper extends AbstractHelper
         $response = [];
         $baseUrl  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $webStoreId);
         // @codingStandardsIgnoreStart
-        $request   = new Entity\StoresGetAll();
-        $operation = new Operation\StoresGetAll($baseUrl);
+        if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
+            $request = new Entity\StoresGet();
+            $request->setStoreType(StoreGetType::CLICK_AND_COLLECT);
+            $request->setIncludeDetails(true);
+            $operation = new Operation\StoresGet($baseUrl);
+        } else {
+            $request   = new Entity\StoresGetAll();
+            $operation = new Operation\StoresGetAll($baseUrl);
+        }
         // @codingStandardsIgnoreEnd
         try {
             $response = $operation->execute($request);

@@ -47,7 +47,7 @@ class ClientGenerate extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
+     * @return int
      * @throws Exception
      */
     public function execute(InputInterface $input, OutputInterface $output)
@@ -123,6 +123,8 @@ class ClientGenerate extends Command
         $this->output->writeln($ok);
         $this->output->writeln('- - - - - - - - - - ');
         $this->output->writeln('OK');
+
+        return 0;
     }
 
     /**

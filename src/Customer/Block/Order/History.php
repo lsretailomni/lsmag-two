@@ -167,8 +167,10 @@ class History extends \Magento\Sales\Block\Order\History
             return $this->getUrl(
                 'customer/order/view',
                 [
-                    'order_id' => $order->getCustomerOrderNo() ?: $order->getId(),
-                    'type'     => $order->getCustomerOrderNo() ? DocumentIdType::ORDER : $order->getIdType()
+                    'order_id' => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
+                        $order->getCustomerOrderNo() : $order->getId(),
+                    'type'     => $order->getIdType() == 'Order' && $order->getCustomerOrderNo() ?
+                        DocumentIdType::ORDER : $order->getIdType()
                 ]
             );
         }

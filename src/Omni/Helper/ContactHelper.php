@@ -494,7 +494,7 @@ class ContactHelper extends AbstractHelper
                     ->setStreet([$addressInfo->getAddress1(), $addressInfo->getAddress2()])
                     ->setIsDefaultBilling('1')
                     ->setIsDefaultShipping('1');
-                $regionName = $addressInfo->getStateProvinceRegion();
+                $regionName = $addressInfo->getCounty();
                 if (!empty($regionName)) {
                     $regionDataFactory = $this->regionFactory->create();
                     $address->setRegion($regionDataFactory->setRegion($regionName));
@@ -901,8 +901,8 @@ class ContactHelper extends AbstractHelper
                 ->setPostCode($customerAddress->getPostcode())
                 ->setPhoneNumber($customerAddress->getTelephone())
                 ->setType(Entity\Enum\AddressType::RESIDENTIAL);
-            $region ? $address->setStateProvinceRegion($region)
-                : $address->setStateProvinceRegion('');
+            $region ? $address->setCounty($region)
+                : $address->setCounty('');
             return $address;
         } else {
             return null;

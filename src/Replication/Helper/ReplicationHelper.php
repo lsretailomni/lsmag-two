@@ -38,6 +38,9 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogInventory\Api\StockConfigurationInterface;
+use Magento\CatalogInventory\Api\StockItemCriteriaInterfaceFactory;
+use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
@@ -64,6 +67,8 @@ use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\ProductMetadata;
+use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
 use Magento\Framework\Exception\InputException;
@@ -82,6 +87,7 @@ use Magento\InventoryApi\Api\SourceItemRepositoryInterface;
 use Magento\InventoryApi\Api\SourceItemsDeleteInterface;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
+use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
 use Magento\InventorySales\Model\ResourceModel\GetAssignedStockIdForWebsite;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -99,6 +105,12 @@ class ReplicationHelper extends AbstractHelper
 {
     public const VARIANT_ID_TABLE_ALIAS = 'variantId_table';
     public const ITEM_ID_TABLE_ALIAS = 'itemId_table';
+
+    public const COLUMNS_MAPPING = [
+        'catalog_product_entity_varchar' => [
+            'entity_id' => 'row_id'
+        ]
+    ];
 
     /**
      * @var array
@@ -338,6 +350,11 @@ class ReplicationHelper extends AbstractHelper
     public $productResourceModel;
 
     /**
+     * @var ProductMetadataInterface
+     */
+    public $productMetadata;
+
+    /**
      * @var GetStockSourceLinksInterface
      */
     public $getStockSourceLinks;
@@ -356,6 +373,26 @@ class ReplicationHelper extends AbstractHelper
      * @var GetAssignedStockIdForWebsite
      */
     public $getAssignedStockIdForWebsite;
+
+    /**
+     * @var StockItemCriteriaInterfaceFactory
+     */
+    public $criteriaInterfaceFactory;
+
+    /**
+     * @var StockItemRepositoryInterface
+     */
+    public $stockItemRepository;
+
+    /**
+     * @var StockConfigurationInterface
+     */
+    public $stockConfiguration;
+
+    /**
+     * @var IsSingleSourceModeInterface
+     */
+    public $isSingleSourceMode;
 
     /**
      * @param Context $context
@@ -413,10 +450,15 @@ class ReplicationHelper extends AbstractHelper
      * @param GetProductIdsBySkus $getProductIdsBySkus
      * @param AttributeFactory $eavAttributeFactory
      * @param \Magento\Catalog\Model\ResourceModel\Product $productResourceModel
+     * @param ProductMetadataInterface $productMetadata
      * @param GetStockSourceLinksInterface $getStockSourceLinks
      * @param SourceItemRepositoryInterface $sourceItemRepository
      * @param SourceItemsDeleteInterface $sourceItemsDelete
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+     * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
+     * @param StockItemRepositoryInterface $stockItemRepository
+     * @param StockConfigurationInterface $stockConfiguration
+     * @param IsSingleSourceModeInterface $isSingleSourceMode
      */
     public function __construct(
         Context $context,
@@ -474,10 +516,15 @@ class ReplicationHelper extends AbstractHelper
         GetProductIdsBySkus $getProductIdsBySkus,
         AttributeFactory $eavAttributeFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
+        ProductMetadataInterface $productMetadata,
         GetStockSourceLinksInterface $getStockSourceLinks,
         SourceItemRepositoryInterface $sourceItemRepository,
         SourceItemsDeleteInterface $sourceItemsDelete,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
+        StockItemRepositoryInterface $stockItemRepository,
+        StockConfigurationInterface $stockConfiguration,
+        IsSingleSourceModeInterface $isSingleSourceMode
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -533,10 +580,15 @@ class ReplicationHelper extends AbstractHelper
         $this->getProductIdsBySkus                       = $getProductIdsBySkus;
         $this->eavAttributeFactory                       = $eavAttributeFactory;
         $this->productResourceModel                      = $productResourceModel;
+        $this->productMetadata                           = $productMetadata;
         $this->getStockSourceLinks                       = $getStockSourceLinks;
         $this->sourceItemRepository                      = $sourceItemRepository;
         $this->sourceItemDeleteRepository                = $sourceItemsDelete;
         $this->getAssignedStockIdForWebsite              = $getAssignedStockIdForWebsite;
+        $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
+        $this->stockItemRepository                       = $stockItemRepository;
+        $this->stockConfiguration                        = $stockConfiguration;
+        $this->isSingleSourceMode                        = $isSingleSourceMode;
         parent::__construct(
             $context
         );
@@ -1441,8 +1493,12 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinInner(
             ['cpw' => 'catalog_product_website'],
-            "cpw.product_id = $itemIdTableAlias.entity_id" .
-            " AND cpw.website_id = $websiteId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "cpw.product_id = $itemIdTableAlias.entity_id" .
+                " AND cpw.website_id = $websiteId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
     }
@@ -1514,6 +1570,38 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Replace column names of joining tables based on mapping
+     *
+     * @param $whereClause
+     * @param $tableName
+     * @param $aliasNames
+     * @return array|mixed|string|string[]
+     */
+    public function magentoEditionSpecificJoinWhereClause(
+        $whereClause,
+        $tableName,
+        $aliasNames
+    ) {
+        if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
+        isset(self::COLUMNS_MAPPING[$tableName])
+        ) {
+            $mappingColumns = self::COLUMNS_MAPPING[$tableName];
+
+            foreach($aliasNames as $alias) {
+                foreach ($mappingColumns as $columnName => $newColumnName) {
+                    $whereClause = str_replace(
+                        "$alias.$columnName",
+                        "$alias.$newColumnName",
+                        $whereClause
+                    );
+                }
+            }
+        }
+
+        return $whereClause;
+    }
+
+    /**
      * Apply join for lsr_item_id custom attribute
      *
      * @param mixed $collection
@@ -1533,8 +1621,12 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinInner(
             [self::ITEM_ID_TABLE_ALIAS => 'catalog_product_entity_varchar'],
-            "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
-            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
 
@@ -1563,9 +1655,14 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinLeft(
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
-            "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
-            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
-            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias, $variantIdTableAlias]
+            ),
             []
         );
     }
@@ -1658,16 +1755,25 @@ class ReplicationHelper extends AbstractHelper
 
         $collection->getSelect()->joinInner(
             [$itemIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
-            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
 
         $collection->getSelect()->joinLeft(
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
-            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
-            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias, $variantIdTableAlias]
+            ),
             []
         );
 
@@ -1720,16 +1826,25 @@ class ReplicationHelper extends AbstractHelper
          */
         $collection->getSelect()->joinInner(
             [$itemIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
-            " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
+                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias]
+            ),
             []
         );
 
         $collection->getSelect()->joinLeft(
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
-            "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
-            " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
-            " AND $variantIdTableAlias.attribute_id = $variantAttributeId",
+            $this->magentoEditionSpecificJoinWhereClause(
+                "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
+                'catalog_product_entity_varchar',
+                [$itemIdTableAlias, $variantIdTableAlias]
+            ),
             []
         );
 
@@ -2120,6 +2235,7 @@ class ReplicationHelper extends AbstractHelper
         }
         if (!empty($resultantCategoryIds)) {
             try {
+                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $product->getCategoryIds()));
                 $this->categoryLinkManagement->assignProductToCategories(
                     $product->getSku(),
                     $resultantCategoryIds
@@ -2889,7 +3005,9 @@ class ReplicationHelper extends AbstractHelper
             $sourceItems        = [];
             $skus               = [$sku];
             foreach ($parentProductsSkus as $parentSku) {
-                $parentSku     = array_shift($parentSku);
+                $productId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus($parentSku);
+                $parentSku = array_shift($parentSku);
+                $this->setStockStatusChangedAuto($productId);
                 $skus[]        = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
                     $parentSku,
@@ -2917,6 +3035,35 @@ class ReplicationHelper extends AbstractHelper
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Set stock_status_changed_auto = 1 for configurable product in table cataloginventory_stock_item
+     *
+     * @param $productId
+     * @return void
+     */
+    public function setStockStatusChangedAuto($productId)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $parentStockItem = array_shift($allItems);
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1);
+
+        if (!$this->isSingleSourceMode->execute()) {
+            $parentStockItem->setIsInStock(1);
+        }
+
+        $this->stockItemRepository->save($parentStockItem);
     }
 
     /**

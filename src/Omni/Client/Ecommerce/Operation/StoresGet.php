@@ -15,12 +15,12 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ScanPayGoOrderCheck as ScanPayGoOrderCheckRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ScanPayGoOrderCheckResponse as ScanPayGoOrderCheckResponse;
+use Ls\Omni\Client\Ecommerce\Entity\StoresGet as StoresGetRequest;
+use Ls\Omni\Client\Ecommerce\Entity\StoresGetResponse as StoresGetResponse;
 
-class ScanPayGoOrderCheck extends AbstractOperation
+class StoresGet extends AbstractOperation
 {
-    public const OPERATION_NAME = 'SCAN_PAY_GO_ORDER_CHECK';
+    public const OPERATION_NAME = 'STORES_GET';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -30,12 +30,12 @@ class ScanPayGoOrderCheck extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ScanPayGoOrderCheckRequest $request
+     * @property StoresGetRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ScanPayGoOrderCheckResponse $response
+     * @property StoresGetResponse $response
      */
     protected $response = null;
 
@@ -64,24 +64,24 @@ class ScanPayGoOrderCheck extends AbstractOperation
     }
 
     /**
-     * @param ScanPayGoOrderCheckRequest $request
-     * @return ResponseInterface|ScanPayGoOrderCheckResponse
+     * @param StoresGetRequest $request
+     * @return ResponseInterface|StoresGetResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ScanPayGoOrderCheck' );
+        return $this->makeRequest( 'StoresGet' );
     }
 
     /**
-     * @return ScanPayGoOrderCheckRequest
+     * @return StoresGetRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ScanPayGoOrderCheckRequest();
+            $this->request = new StoresGetRequest();
         }
         return $this->request;
     }
@@ -118,7 +118,7 @@ class ScanPayGoOrderCheck extends AbstractOperation
     }
 
     /**
-     * @param ScanPayGoOrderCheckRequest $request
+     * @param StoresGetRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -128,7 +128,7 @@ class ScanPayGoOrderCheck extends AbstractOperation
     }
 
     /**
-     * @return ScanPayGoOrderCheckRequest
+     * @return StoresGetRequest
      */
     public function getRequest()
     {
@@ -136,7 +136,7 @@ class ScanPayGoOrderCheck extends AbstractOperation
     }
 
     /**
-     * @param ScanPayGoOrderCheckResponse $response
+     * @param StoresGetResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -146,7 +146,7 @@ class ScanPayGoOrderCheck extends AbstractOperation
     }
 
     /**
-     * @return ScanPayGoOrderCheckResponse
+     * @return StoresGetResponse
      */
     public function getResponse()
     {

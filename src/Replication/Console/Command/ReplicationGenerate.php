@@ -103,7 +103,7 @@ class ReplicationGenerate extends OmniCommand
      *
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void null or 0 if everything went fine, or an error code
+     * @return int null or 0 if everything went fine, or an error code
      *
      * @see setCode()
      */
@@ -131,6 +131,8 @@ class ReplicationGenerate extends OmniCommand
             $this->output->writeln("\t- - Error End - -");
         }
         $this->output->writeln('Finish Generating Replication Task Files');
+
+        return 0;
     }
 
     /**
