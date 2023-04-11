@@ -2235,6 +2235,7 @@ class ReplicationHelper extends AbstractHelper
         }
         if (!empty($resultantCategoryIds)) {
             try {
+                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $product->getCategoryIds()));
                 $this->categoryLinkManagement->assignProductToCategories(
                     $product->getSku(),
                     $resultantCategoryIds
