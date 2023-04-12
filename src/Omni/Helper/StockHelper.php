@@ -48,13 +48,12 @@ class StockHelper extends AbstractHelper
      * @param ItemHelper $itemHelper
      */
     public function __construct(
-        Context                    $context,
+        Context $context,
         ProductRepositoryInterface $productRepository,
-        CollectionFactory          $storeCollectionFactory,
-        LSR                        $lsr,
-        ItemHelper                 $itemHelper
-    )
-    {
+        CollectionFactory $storeCollectionFactory,
+        LSR $lsr,
+        ItemHelper $itemHelper
+    ) {
         $this->productRepository      = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->lsr                    = $lsr;
@@ -161,7 +160,7 @@ class StockHelper extends AbstractHelper
         foreach ($stockCollection as &$stock) {
             if ($stock['item_id'] == $parentProductSku && $stock['variant_id'] == $childProductSku) {
                 $stock['qty'] = $stock['qty'] + $qty;
-                $found = true;
+                $found        = true;
                 break;
             }
         }
@@ -170,8 +169,8 @@ class StockHelper extends AbstractHelper
             $stockCollection[] = [
                 'item_id'    => $parentProductSku,
                 'variant_id' => $childProductSku,
-                'name' => $name,
-                'qty' => $qty
+                'name'       => $name,
+                'qty'        => $qty
             ];
         }
     }
@@ -430,11 +429,10 @@ class StockHelper extends AbstractHelper
         $quote = null,
         bool $isRemoveItem = false,
         bool $throwException = false
-    )
-    {
+    ) {
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
             if (!$item->getHasError()) {
-                $storeId = $this->lsr->getActiveWebStore();
+                $storeId  = $this->lsr->getActiveWebStore();
                 $children = [];
 
                 if ($item->getProductType() == Type::TYPE_BUNDLE) {
@@ -444,7 +442,7 @@ class StockHelper extends AbstractHelper
                 }
 
                 foreach ($children as $child) {
-                    $uomQty  = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                    $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
                     if (!empty($uomQty)) {
                         $qty = $qty * $uomQty;

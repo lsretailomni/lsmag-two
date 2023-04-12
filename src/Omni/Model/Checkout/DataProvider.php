@@ -76,15 +76,14 @@ class DataProvider implements ConfigProviderInterface
      */
     public function __construct(
         StoreManagerInterface $storeManager,
-        CollectionFactory     $storeCollectionFactory,
-        ScopeConfigInterface  $scopeConfig,
-        PageFactory           $resultPageFactory,
-        LSR                   $lsr,
-        Session               $checkoutSession,
-        StockHelper           $stockHelper,
-        StoreHelper           $storeHelper
-    )
-    {
+        CollectionFactory $storeCollectionFactory,
+        ScopeConfigInterface $scopeConfig,
+        PageFactory $resultPageFactory,
+        LSR $lsr,
+        Session $checkoutSession,
+        StockHelper $stockHelper,
+        StoreHelper $storeHelper
+    ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;

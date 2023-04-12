@@ -5,7 +5,7 @@ namespace Ls\Replication\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
@@ -463,49 +463,49 @@ class ReplicationHelper extends AbstractHelper
      * @param IsSingleSourceModeInterface $isSingleSourceMode
      */
     public function __construct(
-        Context                                                        $context,
-        SearchCriteriaBuilder                                          $searchCriteriaBuilder,
-        FilterBuilder                                                  $filterBuilder,
-        FilterGroupBuilder                                             $filterGroupBuilder,
-        ReplImageLinkRepositoryInterface                               $replImageLinkRepositoryInterface,
-        StoreManagerInterface                                          $storeManager,
-        Filesystem                                                     $Filesystem,
-        Config                                                         $eavConfig,
-        WriterInterface                                                $configWriter,
-        Set                                                            $attributeSet,
-        TypeListInterface                                              $cacheTypeList,
-        LSR                                                            $LSR,
-        ResourceConnection                                             $resource,
-        SortOrder                                                      $sortOrder,
-        DateTime                                                       $date,
-        TimezoneInterface                                              $timezone,
-        Logger                                                         $_logger,
-        ReplItemRepository                                             $itemRepository,
-        FileSystemDirectory                                            $fileSystemDirectory,
-        CollectionFactory                                              $categoryCollectionFactory,
-        ReplHierarchyLeafRepository                                    $replHierarchyLeafRepository,
-        CategoryLinkManagementInterface                                $categoryLinkManagement,
-        ReplAttributeValueCollectionFactory                            $replAttributeValueCollectionFactory,
-        ReplExtendedVariantValueCollectionFactory                      $replExtendedVariantValueCollectionFactory,
-        TypeFactory                                                    $eavTypeFactory,
-        SetFactory                                                     $attributeSetFactory,
-        AttributeSetManagement                                         $attributeSetManagement,
-        AttributeManagement                                            $attributeManagement,
-        GroupFactory                                                   $attributeSetGroupFactory,
-        AttributeGroupRepositoryInterface                              $attributeGroupRepository,
-        AttributeSetRepositoryInterface                                $attributeSetRepository,
-        ReplAttributeValueRepositoryInterface                          $replAttributeValueRepositoryInterface,
-        ConfigurableProTypeModel                                       $configurableProTypeModel,
-        ReplExtendedVariantValueRepository                             $extendedVariantValueRepository,
-        ReplItemUnitOfMeasure                                          $replItemUomRepository,
-        ReplTaxSetupRepositoryInterface                                $replTaxSetupRepository,
-        ReplStoreTenderTypeRepositoryInterface                         $replStoreTenderTypeRepository,
-        TaxClassRepositoryInterface                                    $taxClassRepository,
-        ClassModelFactory                                              $classModelFactory,
-        ReplInvStatusRepository                                        $replInvStatusRepository,
-        SourceItemsSave                                                $sourceItemsSave,
-        SourceItemInterfaceFactory                                     $sourceItemFactory,
-        DefaultSourceProviderInterfaceFactory                          $defaultSourceProviderFactory,
+        Context $context,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterBuilder $filterBuilder,
+        FilterGroupBuilder $filterGroupBuilder,
+        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        StoreManagerInterface $storeManager,
+        Filesystem $Filesystem,
+        Config $eavConfig,
+        WriterInterface $configWriter,
+        Set $attributeSet,
+        TypeListInterface $cacheTypeList,
+        LSR $LSR,
+        ResourceConnection $resource,
+        SortOrder $sortOrder,
+        DateTime $date,
+        TimezoneInterface $timezone,
+        Logger $_logger,
+        ReplItemRepository $itemRepository,
+        FileSystemDirectory $fileSystemDirectory,
+        CollectionFactory $categoryCollectionFactory,
+        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        CategoryLinkManagementInterface $categoryLinkManagement,
+        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
+        ReplExtendedVariantValueCollectionFactory $replExtendedVariantValueCollectionFactory,
+        TypeFactory $eavTypeFactory,
+        SetFactory $attributeSetFactory,
+        AttributeSetManagement $attributeSetManagement,
+        AttributeManagement $attributeManagement,
+        GroupFactory $attributeSetGroupFactory,
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        AttributeSetRepositoryInterface $attributeSetRepository,
+        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        ConfigurableProTypeModel $configurableProTypeModel,
+        ReplExtendedVariantValueRepository $extendedVariantValueRepository,
+        ReplItemUnitOfMeasure $replItemUomRepository,
+        ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
+        ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
+        TaxClassRepositoryInterface $taxClassRepository,
+        ClassModelFactory $classModelFactory,
+        ReplInvStatusRepository $replInvStatusRepository,
+        SourceItemsSave $sourceItemsSave,
+        SourceItemInterfaceFactory $sourceItemFactory,
+        DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
         \Magento\Catalog\Model\ResourceModel\Product\CollectionFactory $productCollectionFactory,
         CategoryRepositoryInterface $categoryRepository,
         ResourceModelCategory $categoryResourceModel,
@@ -610,8 +610,7 @@ class ReplicationHelper extends AbstractHelper
         $conditionType = 'eq',
         $pagesize = 100,
         $excludeDeleted = true
-    )
-    {
+    ) {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('processed')
@@ -660,8 +659,7 @@ class ReplicationHelper extends AbstractHelper
         $conditionType = 'eq',
         $pagesize = 100,
         $excludeDeleted = true
-    )
-    {
+    ) {
         // creating search criteria for two fields
         // processed = 0 which means not yet processed
         $attr_processed = $this->filterBuilder->setField('ready_to_process')
@@ -707,8 +705,7 @@ class ReplicationHelper extends AbstractHelper
         $pagesize = 100,
         $excludeDeleted = true,
         $scope_id = false
-    )
-    {
+    ) {
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
             ->setConditionType('eq')
@@ -748,12 +745,11 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaForArray(
         array $filters,
-              $pagesize = 100,
-              $excludeDeleted = true,
-              $parameter = null,
-              $parameter2 = null
-    )
-    {
+        $pagesize = 100,
+        $excludeDeleted = true,
+        $parameter = null,
+        $parameter2 = null
+    ) {
         $filterOr       = null;
         $attr_processed = $this->filterBuilder->setField('processed')
             ->setValue('0')
@@ -828,11 +824,10 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaForArrayFrontEnd(
         array $filters,
-              $pageSize = 100,
-              $excludeDeleted = true,
-              $parameter = null
-    )
-    {
+        $pageSize = 100,
+        $excludeDeleted = true,
+        $parameter = null
+    ) {
         $filterOr      = null;
         $attrProcessed = $this->filterBuilder->setField('processed')
             ->setValue('1')
@@ -879,12 +874,11 @@ class ReplicationHelper extends AbstractHelper
      */
     public function buildCriteriaForDirect(
         array $filters,
-              $pagesize = 100,
-              $excludeDeleted = true,
-              $parameter = null,
-              $parameter2 = null
-    )
-    {
+        $pagesize = 100,
+        $excludeDeleted = true,
+        $parameter = null,
+        $parameter2 = null
+    ) {
         $filterOr = null;
         if (!empty($parameter) && !empty($parameter2)) {
             $parameter1 = $this->filterBuilder->setField($parameter['field'])
@@ -1410,8 +1404,7 @@ class ReplicationHelper extends AbstractHelper
         $isReplaceJoin = false,
         $isCatJoin = false,
         $websiteId = null
-    )
-    {
+    ) {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $second_table_name = $this->resource->getTableName($secondaryTableName);
@@ -1466,8 +1459,7 @@ class ReplicationHelper extends AbstractHelper
         $primaryTableColumnName,
         $primaryTableColumnName2,
         $groupColumns = []
-    )
-    {
+    ) {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         // @codingStandardsIgnoreStart
@@ -1562,8 +1554,7 @@ class ReplicationHelper extends AbstractHelper
         $mainTableItemIdColumn,
         $mainTableVariantIdColumn,
         $groupColumns = []
-    )
-    {
+    ) {
         $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
 
         $this->applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn);
@@ -1592,8 +1583,7 @@ class ReplicationHelper extends AbstractHelper
         $whereClause,
         $tableName,
         $aliasNames
-    )
-    {
+    ) {
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
             isset(self::COLUMNS_MAPPING[$tableName])
         ) {
@@ -1719,8 +1709,7 @@ class ReplicationHelper extends AbstractHelper
         &$collection,
         SearchCriteriaInterface $criteria,
         $joinCatalogTable = false
-    )
-    {
+    ) {
         if ($joinCatalogTable) {
             $this->setCollectionPropertiesPlusJoinSku($collection, $criteria, 'ItemId', null, ['repl_item_variant_id']);
         } else {
@@ -1820,8 +1809,7 @@ class ReplicationHelper extends AbstractHelper
     public function setCollectionPropertiesPlusJoinsForProductAttributeValuesDataTranslation(
         &$collection,
         SearchCriteriaInterface $criteria
-    )
-    {
+    ) {
         $itemIdTableAlias    = self::ITEM_ID_TABLE_ALIAS;
         $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
@@ -1922,8 +1910,7 @@ class ReplicationHelper extends AbstractHelper
         SearchCriteriaInterface $criteria,
         $resultFactory,
         $fieldToSort = null
-    )
-    {
+    ) {
         foreach ($criteria->getFilterGroups() as $filter_group) {
             $fields = $conditions = [];
             foreach ($filter_group->getFilters() as $filter) {
@@ -2370,8 +2357,7 @@ class ReplicationHelper extends AbstractHelper
         $joiningTableName,
         $storeId,
         $identifier
-    )
-    {
+    ) {
         $attributes = [];
         if ($joiningTableName == 'ls_replication_repl_item') {
             if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
@@ -2529,8 +2515,7 @@ class ReplicationHelper extends AbstractHelper
         $storeId,
         $productRepository,
         $uomCodes = null
-    )
-    {
+    ) {
         $criteria = $this->buildCriteriaForProductAttributes(
             $navId,
             -1,
@@ -2870,8 +2855,7 @@ class ReplicationHelper extends AbstractHelper
         $attributeCode,
         $formattedCode,
         $storeId
-    )
-    {
+    ) {
         $values  = [];
         $filters = [
             ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'],
@@ -2918,8 +2902,7 @@ class ReplicationHelper extends AbstractHelper
         $value,
         $variantId,
         $productRepository
-    )
-    {
+    ) {
         if (!empty($uomCodes)) {
             if (count($uomCodes[$itemId]) > 1) {
                 $baseUnitOfMeasure = $uomCodes[$itemId . '-' . 'BaseUnitOfMeasure'];
@@ -3095,7 +3078,7 @@ class ReplicationHelper extends AbstractHelper
 
         $criteria->setProductsFilter($productId);
         $stockItemCollection = $this->stockItemRepository->getList($criteria);
-        $allItems = $stockItemCollection->getItems();
+        $allItems            = $stockItemCollection->getItems();
         if (empty($allItems)) {
             return;
         }

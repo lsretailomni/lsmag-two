@@ -347,59 +347,58 @@ class ProductCreateTask
      * @throws FileSystemException
      */
     public function __construct(
-        Config                                       $eavConfig,
-        Configurable                                 $configurable,
-        Attribute                                    $attribute,
-        ProductInterfaceFactory                      $productInterfaceFactory,
-        ProductRepositoryInterface                   $productRepository,
-        ProductAttributeMediaGalleryEntryInterface   $attributeMediaGalleryEntry,
-        ImageContentFactory                          $imageContent,
-        ReplItemRepository                           $itemRepository,
-        ReplItemVariantRegistrationRepository        $replItemVariantRegistrationRepository,
-        ReplHierarchyLeafRepository                  $replHierarchyLeafRepository,
-        ReplBarcodeRepository                        $replBarcodeRepository,
-        ReplPriceRepository                          $replPriceRepository,
-        ReplItemUnitOfMeasure                        $replItemUnitOfMeasureRepository,
-        ReplInvStatusRepository                      $replInvStatusRepository,
-        SearchCriteriaBuilder                        $searchCriteriaBuilder,
-        ReplImageLinkRepositoryInterface             $replImageLinkRepositoryInterface,
-        LoyaltyHelper                                $loyaltyHelper,
-        ReplicationHelper                            $replicationHelper,
-        ReplAttributeValueRepositoryInterface        $replAttributeValueRepositoryInterface,
-        ReplLoyVendorItemMappingRepositoryInterface  $replVendorItemMappingRepositoryInterface,
-        Logger                                       $logger,
-        LSR                                          $LSR,
-        ReplInvStatusCollectionFactory               $replInvStatusCollectionFactory,
-        ReplPriceCollectionFactory                   $replPriceCollectionFactory,
-        ReplItemUomCollectionFactory                 $replItemUomCollectionFactory,
-        ReplHierarchyLeafCollectionFactory           $replHierarchyLeafCollectionFactory,
-        ReplAttributeValueCollectionFactory          $replAttributeValueCollectionFactory,
+        Config $eavConfig,
+        Configurable $configurable,
+        Attribute $attribute,
+        ProductInterfaceFactory $productInterfaceFactory,
+        ProductRepositoryInterface $productRepository,
+        ProductAttributeMediaGalleryEntryInterface $attributeMediaGalleryEntry,
+        ImageContentFactory $imageContent,
+        ReplItemRepository $itemRepository,
+        ReplItemVariantRegistrationRepository $replItemVariantRegistrationRepository,
+        ReplHierarchyLeafRepository $replHierarchyLeafRepository,
+        ReplBarcodeRepository $replBarcodeRepository,
+        ReplPriceRepository $replPriceRepository,
+        ReplItemUnitOfMeasure $replItemUnitOfMeasureRepository,
+        ReplInvStatusRepository $replInvStatusRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        ReplImageLinkRepositoryInterface $replImageLinkRepositoryInterface,
+        LoyaltyHelper $loyaltyHelper,
+        ReplicationHelper $replicationHelper,
+        ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
+        ReplLoyVendorItemMappingRepositoryInterface $replVendorItemMappingRepositoryInterface,
+        Logger $logger,
+        LSR $LSR,
+        ReplInvStatusCollectionFactory $replInvStatusCollectionFactory,
+        ReplPriceCollectionFactory $replPriceCollectionFactory,
+        ReplItemUomCollectionFactory $replItemUomCollectionFactory,
+        ReplHierarchyLeafCollectionFactory $replHierarchyLeafCollectionFactory,
+        ReplAttributeValueCollectionFactory $replAttributeValueCollectionFactory,
         \Magento\Catalog\Model\ResourceModel\Product $productResourceModel,
-        CategoryRepositoryInterface                  $categoryRepository,
-        CategoryLinkRepositoryInterface              $categoryLinkRepositoryInterface,
-        CollectionFactory                            $collectionFactory,
-        ReplImageLinkCollectionFactory               $replImageLinkCollectionFactory,
-        MediaProcessor                               $mediaProcessor,
-        MediaGalleryProcessor                        $mediaGalleryProcessor,
-        UpdateHandlerFactory                         $updateHandlerFactory,
-        EntryConverterPool                           $entryConverterPool,
-        Factory                                      $optionsFactory,
-        AttributeManagement                          $attributeManagement,
-        AttributeGroupRepositoryInterface            $attributeGroupRepository,
-        ReplItemUnitOfMeasureSearchResultsFactory    $replItemUnitOfMeasureSearchResultsFactory,
-        EavAttributeCollectionFactory                $eavAttributeCollectionFactory,
-        ReplItemVendorCollectionFactory              $replItemVendorCollectionFactory,
-        GroupFactory                                 $attributeSetGroupFactory,
-        Product\Media\Config                         $mediaConfig,
-        ReplItemVariantCollectionFactory             $replItemVariantCollectionFactory,
-        ReplItemVariantRepository                    $replItemVariantRepository,
-        Filesystem                                   $filesystem,
-        ResourceConnection                           $resourceConnection,
-        File                                         $file,
-        DataTranslationTask                          $dataTranslationTask,
-        ImportImageService                           $imageService
-    )
-    {
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
+        CollectionFactory $collectionFactory,
+        ReplImageLinkCollectionFactory $replImageLinkCollectionFactory,
+        MediaProcessor $mediaProcessor,
+        MediaGalleryProcessor $mediaGalleryProcessor,
+        UpdateHandlerFactory $updateHandlerFactory,
+        EntryConverterPool $entryConverterPool,
+        Factory $optionsFactory,
+        AttributeManagement $attributeManagement,
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        ReplItemUnitOfMeasureSearchResultsFactory $replItemUnitOfMeasureSearchResultsFactory,
+        EavAttributeCollectionFactory $eavAttributeCollectionFactory,
+        ReplItemVendorCollectionFactory $replItemVendorCollectionFactory,
+        GroupFactory $attributeSetGroupFactory,
+        Product\Media\Config $mediaConfig,
+        ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
+        ReplItemVariantRepository $replItemVariantRepository,
+        Filesystem $filesystem,
+        ResourceConnection $resourceConnection,
+        File $file,
+        DataTranslationTask $dataTranslationTask,
+        ImportImageService $imageService
+    ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
         $this->attribute                                 = $attribute;
@@ -826,7 +825,7 @@ class ProductCreateTask
             }
             $types           = [];
             $imageSize       = [
-                'height' =>  $this->lsr->getStoreConfig(
+                'height' => $this->lsr->getStoreConfig(
                     LSR::SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT,
                     $this->store->getId()
                 ),
@@ -1521,8 +1520,7 @@ class ProductCreateTask
         $item,
         $itemBarcodes,
         $variants
-    )
-    {
+    ) {
         $formattedCode  = $this->replicationHelper->formatAttributeCode(LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE);
         $attributesCode = [$formattedCode];
         $this->attributeAssignmentToAttributeSet(
@@ -1606,8 +1604,7 @@ class ProductCreateTask
         $variants,
         $totalUomCodes = null,
         $uomCodesNotProcessed = null
-    )
-    {
+    ) {
         // Get those attribute codes which are assigned to product.
         $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->store->getId());
 
@@ -1854,8 +1851,7 @@ class ProductCreateTask
         $configProduct,
         $attributesCode,
         $associatedProductIds
-    )
-    {
+    ) {
         // This is added to take care Magento Commerce PK
         $productId = $configProduct->getDataByKey('row_id');
         if (empty($productId)) {
@@ -1981,9 +1977,8 @@ class ProductCreateTask
      */
     public function getNameForVariant(
         ReplItemVariantRegistration $value,
-        ReplItem                    $item
-    )
-    {
+        ReplItem $item
+    ) {
         $d1 = (($value->getVariantDimension1()) ?: '');
         $d2 = (($value->getVariantDimension2()) ?: '');
         $d3 = (($value->getVariantDimension3()) ?: '');
@@ -2005,9 +2000,8 @@ class ProductCreateTask
      */
     public function getNameForStandardVariant(
         ReplItemVariant $value,
-        ReplItem        $item
-    )
-    {
+        ReplItem $item
+    ) {
         $d1      = (($value->getDescription2()) ?: '');
         $dMerged = (($d1) ? '-' . $d1 : '');
 
@@ -2172,8 +2166,7 @@ class ProductCreateTask
         $configProduct,
         $attributesCode,
         $itemBarcodes
-    )
-    {
+    ) {
         $productV = $this->productFactory->create();
         $productV->setName($name);
         $productV->setStoreId($this->store->getId());
@@ -2275,8 +2268,7 @@ class ProductCreateTask
         $configProduct,
         $attributesCode,
         $itemBarcodes
-    )
-    {
+    ) {
         $productStatus = true;
         $productV      = $this->productFactory->create();
         $productV->setName($name);
