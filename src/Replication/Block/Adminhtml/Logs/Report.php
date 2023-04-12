@@ -38,14 +38,6 @@ class Report extends Template
     /**
      * @return mixed
      */
-    public function getLogData()
-    {
-        return $this->coreRegistry->registry("display_log");
-    }
-
-    /**
-     * @return mixed
-     */
     public function getQueryUrlData()
     {
         return $logFileName = $this->_request->getParam('log_filename');

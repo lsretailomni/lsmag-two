@@ -3,8 +3,8 @@
 
 use \Ls\Replication\Block\Adminhtml\Logs\Report;
 
-$displayLogData = $block->getLogData();
 $logFileName    = $block->getQueryUrlData();
+$displayLogData = $block->getData("message");
 ?>
 <form id="logs" name="logs">
     <select class="select admin__control-select" id="log_filename" name="log_filename">
@@ -17,6 +17,9 @@ $logFileName    = $block->getQueryUrlData();
         </option>
         <option <?php if (!empty($logFileName == "exception.log")) { ?> selected="selected" <?php } ?>
                 value="exception.log">Exception
+        </option>
+        <option <?php if (!empty($logFileName == "system.log")) { ?> selected="selected" <?php } ?>
+            value="system.log">System
         </option>
         <option <?php if (!empty($logFileName == "replication.log")) { ?> selected="selected" <?php } ?>
                 value="replication.log">Replication
