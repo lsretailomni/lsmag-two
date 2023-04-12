@@ -32,21 +32,21 @@ class ReturnPolicyOutput implements ResolverInterface
      */
     public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
     {
-
-        if (empty($args['store_id'])) {
-            throw new GraphQlInputException(__('Required parameter "store_id" is missing'));
+        if (empty($args['parent_sku'])) {
+            throw new GraphQlInputException(__('Required parameter "parent_sku" is missing'));
         }
 
-        $parentSku    = '';
-        $childSku = '';
+        $childSku = $storeId = '';
+        $parentSku = $args['parent_sku'];
 
-        $storeId = $args['store_id'];
-        if (!empty($args['parent_sku'])) {
-            $parentSku = $args['parent_sku'];
+        if (!empty($args['store_id'])) {
+            $storeId = $args['store_id'];
         }
+
         if (!empty($args['child_sku'])) {
             $childSku = $args['child_sku'];
         }
+
         $response = $this->returnPolicyManagement->getReturnPolicy($parentSku, $childSku, $storeId);
 
         return [
