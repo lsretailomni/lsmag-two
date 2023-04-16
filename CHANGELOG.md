@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0] - 2023-04-14
+
+### Added
+
+- Added support for the compatibility of Magento 2.4.6. [35323](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35323)
+- Added support to configure stock validation feature from Magento admin panel on store view level. [31940](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31940)
+- Added support to save and display VAT calculated from LS Central, for the orders created in Magento. [32020](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/32020)
+- Added support for multiple source inventory MSI against each website in Magento. [26089](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26089)
+- Added support to display the discount description in cart items on GraphQl. [32568](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/32568)
+- Added support to show real time order lines in order history once the order is collected on POS. This is helpful when the customer change the order lines by adding or removing items once they arrive at the store for click and collect orders. [26510](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/26510)
+- Added support to calculate basket from LS Central for items including the bundle products. [30609](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/30609)
+- Added support to sync orders to LS Central for items including the bundle products. [30610](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/30610)
+- Added support to query return policy for simple and configurable products on GraphQl. [24315](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/24315)
+
+
+
+
+
+### Changed
+
+- Changed StoresGetAll to StoreGet function on all the areas where we need to filter web or click & collect stores to optimize performance.
+  [33056](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/33056)
+
+
+### Bugs/Fixes
+
+- Fixed issue with customizable options throwing error on GraphQl when required options were not selected. [31940](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31940)
+- Fixed issue with creating shipment document using webhooks, when click & collect orders were collected from the in-store. [31940](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31940)
+- Fixed issue with reset password email not working for customers which only exist in LS Central. [31806](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31806)
+- Fixed issue with replicating & assigning the same products to multiple websites. [32212](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/32212)
+- Fixed issue with attribute values not syncing for products in Magento. [31941](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/31941)
+- Fixed issue with CategoryCreateTask cron causing a crash in DataTranslationTask cron. [32653](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/32653)
+- Fixed issue with total_item_discount not updating when coupon code is removed from GraphQl. [32568](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/32568)
+- Fixed issues with item synchronization not working for Adobe Commerce due to column mapping. [33081](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/33081)
+- Fixed Issue with synchronizing region_id on checkout once a new account is created. [34478](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/34478)
+- Fixed Issue with product assignment to categories in case of multiple websites. [34432](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/34432)
+- Fixed issue in handling exceptions for product replication. [35433](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35433)
+- Fixed issue with configurable products shows out of stock after inventory has been assigned to child products. [35097](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35097)
+- Fixed issue with store_id is being used instead of website_id while syncing orders to LS Central. [35565](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35565)
+- Fixed issues with replicating stock information for deal types products. [35667](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35667)
+- Fixed security vulnerability while reviewing LS logs in the Magento admin panel. [35914](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35914)
+
+
+
+
+
+
 ## [2.2.0] - 2023-01-17
 
 ### Added
