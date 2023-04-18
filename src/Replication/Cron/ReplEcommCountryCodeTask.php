@@ -11,7 +11,7 @@ namespace Ls\Replication\Cron;
 use Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Core\Helper\Data as LsHelper;
+use Ls\Core\Model\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use Ls\Omni\Client\Ecommerce\Operation\ReplEcommCountryCode;

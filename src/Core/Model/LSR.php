@@ -2,15 +2,13 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Core\Helper\Data;
+use \Ls\Core\Model\Data;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
-use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
 
 /**
  * LSR Model
@@ -501,7 +499,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * @var Data
      */
-    public $coreHelper;
+    public $data;
 
     /**
      * @var null
@@ -513,25 +511,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $validateBaseUrlStoreId = null;
 
-    /** @var ConfigCollectionFactory */
-    public $configDataCollectionFactory;
-
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
-     * @param Data $coreHelper
-     * @param ConfigCollectionFactory $configDataCollectionFactory
+     * @param \Ls\Core\Model\Data $data
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        Data $coreHelper,
-        ConfigCollectionFactory $configDataCollectionFactory
+        Data $data
     ) {
         $this->scopeConfig                 = $scopeConfig;
         $this->storeManager                = $storeManager;
-        $this->coreHelper                  = $coreHelper;
-        $this->configDataCollectionFactory = $configDataCollectionFactory;
+        $this->data                        = $data;
     }
 
     /**
@@ -560,15 +552,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
     {
-        /** @var ConfigDataCollection $configDataCollection */
-        $configDataCollection = $this->configDataCollectionFactory->create();
-        $configDataCollection->addFieldToFilter('scope', $scope);
-        $configDataCollection->addFieldToFilter('scope_id', $scopeId);
-        $configDataCollection->addFieldToFilter('path', $path);
-        if ($configDataCollection->count() !== 0) {
-            return $configDataCollection->getFirstItem()->getValue();
-        }
-        return null;
+        return $this->data->getConfigValueFromDb($path, $scope, $scopeId);
     }
 
     /**
@@ -601,7 +585,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return false;
         }
         $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-        return $this->coreHelper->isEndpointResponding($url);
+        return $this->data->isEndpointResponding($url);
     }
 
     /**
