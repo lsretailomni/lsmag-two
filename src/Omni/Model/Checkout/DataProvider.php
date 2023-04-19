@@ -226,6 +226,10 @@ class DataProvider implements ConfigProviderInterface
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
 
+        if (!$this->availableStoresOnlyEnabled()) {
+            return $storesData;
+        }
+
         if ($response) {
             if (is_object($response)) {
                 if (!is_array($response->getInventoryResponse())) {
@@ -245,6 +249,8 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
+     * This function is using in hospitality
+     *
      * Available Stores only enabled
      *
      * @return mixed
@@ -319,13 +325,14 @@ class DataProvider implements ConfigProviderInterface
                 if (!empty($uomQty)) {
                     $itemQty = $itemQty * $uomQty;
                 }
-
-                foreach ($response as $index => $responseItem) {
-                    if ($responseItem->getItemId() == $parentProductSku &&
-                        $responseItem->getVariantId() == $childProductSku &&
-                        ceil($responseItem->getQtyInventory()) < $itemQty
-                    ) {
-                        $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+                if ($response) {
+                    foreach ($response as $responseItem) {
+                        if ($responseItem->getItemId() == $parentProductSku &&
+                            $responseItem->getVariantId() == $childProductSku &&
+                            ceil($responseItem->getQtyInventory()) < $itemQty
+                        ) {
+                            $this->removeAllOccurrenceOfGivenStore($response, $responseItem->getStoreId());
+                        }
                     }
                 }
             }
