@@ -52,7 +52,8 @@ class SyncVendorAttributesValue extends ProductCreateTask
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
                             LSR::LAST_EXECUTE_REPL_SYNC_VENDOR_ATTRIBUTES,
-                            $this->store->getId()
+                            $this->store->getId(),
+                            ScopeInterface::SCOPE_STORES
                         );
                         $this->logger->debug('Running Sync Vendor Task for store ' . $this->store->getName());
                         $this->processVendorAttributesValue();
@@ -66,7 +67,9 @@ class SyncVendorAttributesValue extends ProductCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('End Sync Vendor Task for store ' . $this->store->getName());
                 }
@@ -101,7 +104,7 @@ class SyncVendorAttributesValue extends ProductCreateTask
     {
         /** Get list of only those Attribute Value whose items are already processed */
         $filters = [
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -164,7 +167,7 @@ class SyncVendorAttributesValue extends ProductCreateTask
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
             $filters = [
-                ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters

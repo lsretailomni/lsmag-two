@@ -476,27 +476,28 @@ class ProductCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_PRODUCT_CONFIG_PATH_LAST_EXECUTE,
-                        $store->getId()
+                        $store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $fullReplicationImageLinkStatus = $this->lsr->getConfigValueFromDb(
                         ReplEcommImageLinksTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
+                        ScopeInterface::SCOPE_WEBSITES,
+                        $this->getScopeId()
                     );
                     $fullReplicationBarcodeStatus   = $this->lsr->getConfigValueFromDb(
                         ReplEcommBarcodesTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
+                        ScopeInterface::SCOPE_WEBSITES,
+                        $this->getScopeId()
                     );
                     $fullReplicationPriceStatus     = $this->lsr->getConfigValueFromDb(
                         ReplEcommPricesTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
+                        ScopeInterface::SCOPE_WEBSITES,
+                        $this->getScopeId()
                     );
                     $fullReplicationInvStatus       = $this->lsr->getConfigValueFromDb(
                         ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
+                        ScopeInterface::SCOPE_WEBSITES,
+                        $this->getScopeId()
                     );
                     $cronCategoryCheck              = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_CATEGORY,
@@ -542,7 +543,7 @@ class ProductCreateTask
                         );
                         $criteria         = $this->replicationHelper->buildCriteriaForNewItems(
                             'scope_id',
-                            $store->getId(),
+                            $this->getScopeId(),
                             'eq',
                             $productBatchSize
                         );
@@ -669,7 +670,7 @@ class ProductCreateTask
                                 $itemStock = $this->replicationHelper->getInventoryStatus(
                                     $item->getNavId(),
                                     $storeId,
-                                    $this->store->getId()
+                                    $this->getScopeId()
                                 );
                                 $product->setStockData([
                                     'use_config_manage_stock' => 1,
@@ -691,7 +692,7 @@ class ProductCreateTask
                                     $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                     $totalUomCodes        = $this->replicationHelper->getUomCodes(
                                         $item->getNavId(),
-                                        $this->store->getId()
+                                        $this->getScopeId()
                                     );
                                     if (!empty($variants) || count($totalUomCodes[$item->getNavId()]) > 1) {
                                         $this->createConfigurableProducts(
@@ -706,7 +707,7 @@ class ProductCreateTask
                                     $uomCodes = $this->getUomCodesProcessed($item->getNavId());
                                     $this->replicationHelper->getProductAttributes(
                                         $item->getNavId(),
-                                        $this->store->getId(),
+                                        $this->getScopeId(),
                                         $this->productRepository,
                                         $uomCodes
                                     );
@@ -735,8 +736,8 @@ class ProductCreateTask
                             $this->caterItemsRemoval();
                             $fullReplicationVariantStatus         = $this->lsr->getConfigValueFromDb(
                                 ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS,
-                                ScopeInterface::SCOPE_STORES,
-                                $store->getId()
+                                ScopeInterface::SCOPE_WEBSITES,
+                                $this->getScopeId()
                             );
                             $fullReplicationStandardVariantStatus = $this->lsr->getConfigValueFromDb(
                                 LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
@@ -769,7 +770,13 @@ class ProductCreateTask
                             "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
                     }
                     // @codingStandardsIgnoreLine
-                    $this->replicationHelper->updateCronStatus($this->cronStatus, LSR::SC_SUCCESS_CRON_PRODUCT, $store->getId());
+                    $this->replicationHelper->updateCronStatus(
+                        $this->cronStatus,
+                        LSR::SC_SUCCESS_CRON_PRODUCT,
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
+                    );
                 }
                 $this->lsr->setStoreId(null);
             }
@@ -912,7 +919,7 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
         if (isset($itemId)) {
             $filters[] = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
@@ -933,7 +940,7 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
         if (isset($itemId)) {
             $filters[] = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
@@ -955,7 +962,7 @@ class ProductCreateTask
         $filters = [
             ['field' => 'VariantId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'Description2', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
         if (isset($itemId)) {
             $filters[] = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
@@ -978,7 +985,7 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'Code', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
         if (isset($itemId)) {
             $filters[] = ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'];
@@ -1036,7 +1043,7 @@ class ProductCreateTask
     public function _getBarcode($itemId)
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-            ->addFilter('scope_id', $this->store->getId(), 'eq')->create();
+            ->addFilter('scope_id', $this->getScopeId(), 'eq')->create();
         $allBarCodes    = [];
         /** @var ReplBarcodeRepository $itemBarcodes */
         $itemBarcodes = $this->replBarcodeRepository->getList($searchCriteria)->getItems();
@@ -1066,7 +1073,7 @@ class ProductCreateTask
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('nav_id', $itemId)->addFilter(
             'scope_id',
-            $this->store->getId(),
+            $this->getScopeId(),
             'eq'
         )->create();
         /** @var ReplItemRepository $items */
@@ -1092,7 +1099,7 @@ class ProductCreateTask
         $filters = [
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'StoreId', 'value' => $this->webStoreId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
 
         if (!$unitOfMeasure) {
@@ -1148,10 +1155,10 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'main_table.ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.processed', 'value' => 1, 'condition_type' => 'eq'],
             ['field' => 'main_table.is_updated', 'value' => 0, 'condition_type' => 'eq'],
-            ['field' => 'second.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'second.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
 
         $itemUom = [];
@@ -1230,7 +1237,7 @@ class ProductCreateTask
                 if (!empty($itemData)) {
                     $totalUomCodes = $this->replicationHelper->getUomCodes(
                         $itemData->getNavId(),
-                        $this->store->getId()
+                        $this->getScopeId()
                     );
                     if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
                         $productVariants = $this->getProductVariants($itemData->getNavId());
@@ -1264,7 +1271,7 @@ class ProductCreateTask
     {
         $batchSize = $this->replicationHelper->getVariantBatchSize();
         $filters   = [
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.ready_to_process', 'value' => 1, 'condition_type' => 'eq']
         ];
 
@@ -1324,7 +1331,7 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'nav_id', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $items   = $this->getDeletedItemsOnly($filters);
         if (!empty($items->getItems())) {
@@ -1364,7 +1371,7 @@ class ProductCreateTask
     {
         $filters  = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
 
         ];
         $variants = $this->getDeletedVariantsOnly($filters);
@@ -1416,7 +1423,7 @@ class ProductCreateTask
     {
         $filters = [
             ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
 
         ];
         $uoms    = $this->getDeletedUomsOnly($filters);
@@ -1477,7 +1484,7 @@ class ProductCreateTask
         if ($cronProductCheck == 1) {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems(
                 'scope_id',
-                $this->store->getId(),
+                $this->getScopeId(),
                 'eq',
                 $barcodeBatchSize
             );
@@ -1637,7 +1644,7 @@ class ProductCreateTask
         $uomCodesNotProcessed = null
     ) {
         // Get those attribute codes which are assigned to product.
-        $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->store->getId());
+        $attributesCode = $this->replicationHelper->_getAttributesCodes($item->getNavId(), $this->getScopeId());
 
         if (empty($attributesCode)) {
             $this->handleVariantsInCaseOfNoItemAttributeInExtendedVariant($variants);
@@ -2265,7 +2272,7 @@ class ProductCreateTask
         $itemStock = $this->replicationHelper->getInventoryStatus(
             $value->getItemId(),
             $this->webStoreId,
-            $this->store->getId(),
+            $this->getScopeId(),
             $value->getVariantId()
         );
 
@@ -2273,7 +2280,7 @@ class ProductCreateTask
             $itemStock = $this->replicationHelper->getInventoryStatus(
                 $item->getNavId(),
                 $this->webStoreId,
-                $this->store->getId()
+                $this->getScopeId()
             );
         }
 
@@ -2442,7 +2449,7 @@ class ProductCreateTask
             $itemStock = $this->replicationHelper->getInventoryStatus(
                 $value->getItemId(),
                 $this->webStoreId,
-                $this->store->getId(),
+                $this->getScopeId(),
                 $value->getVariantId()
             );
             if ($value->getVariantId()) {
@@ -2452,7 +2459,7 @@ class ProductCreateTask
             $itemStock = $this->replicationHelper->getInventoryStatus(
                 $item->getNavId(),
                 $this->webStoreId,
-                $this->store->getId()
+                $this->getScopeId()
             );
         }
         $productV->setStockData([
@@ -2532,7 +2539,7 @@ class ProductCreateTask
         if (!$this->remainingRecords) {
             $criteria               = $this->replicationHelper->buildCriteriaForNewItems(
                 'scope_id',
-                $storeData->getId(),
+                $this->getScopeId(),
                 'eq',
                 -1
             );
@@ -2833,5 +2840,15 @@ class ProductCreateTask
                 $uom
             )
         );
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
     }
 }

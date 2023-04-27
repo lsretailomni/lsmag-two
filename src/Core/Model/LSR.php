@@ -7,6 +7,7 @@ use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
@@ -490,6 +491,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /** @var StoreInterface[] */
     public $stores;
 
+    public $websites;
+
     /** @var array End Points */
     public $endpoints = [
         ServiceType::ECOMMERCE => 'UCService.svc'
@@ -624,7 +627,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return $this->validateBaseUrlResponse;
         }
 
-        if ($scope == 'website') {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
         } else {
@@ -776,6 +779,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Return all websites
+     *
+     * @return WebsiteInterface[]
+     */
+    public function getAllWebsites()
+    {
+        /** add it into the object in order to avoid loading multiple time within the same call. */
+        if ($this->websites) {
+            return $this->websites;
+        }
+        $this->websites = $this->storeManager->getWebsites();
+
+        return $this->websites;
+    }
+
+    /**
      * Set Store ID in Magento Session
      * @param $storeId
      */
@@ -885,6 +904,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Get current website id
+     *
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getCurrentWebsiteId()
+    {
+        return $this->storeManager->getStore()->getWebsiteId();
+    }
+
+    /**
      * Config to check if module is enabled or not for given store
      *
      * @param int $storeId
@@ -894,7 +924,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isEnabled($storeId = null, $scope = null)
     {
-        if ($scope == 'website') {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope ==  ScopeInterface::SCOPE_WEBSITE) {
             return $this->getWebsiteConfig(LSR::SC_MODULE_ENABLED, $storeId);
         }
         if ($storeId === null) {
@@ -902,6 +932,21 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
 
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
+    }
+
+    /**
+     * Get given config in given scope
+     *
+     * @param $configPath
+     * @param $scopeId
+     * @param $scope
+     * @return array|mixed|string
+     */
+    public function getGivenConfigInGivenScope($configPath, $scope, $scopeId)
+    {
+        return $scope == ScopeInterface::SCOPE_WEBSITES ?
+            $this->getWebsiteConfig($configPath, $scopeId) :
+            $this->getStoreConfig($configPath, $scopeId);
     }
 
     /**

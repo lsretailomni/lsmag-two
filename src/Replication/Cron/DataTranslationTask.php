@@ -285,12 +285,15 @@ class DataTranslationTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
-                        $store->getId()
+                        $store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
                 }
@@ -598,7 +601,7 @@ class DataTranslationTask
         );
         $websiteId = $store->getWebsiteId();
         $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
-
+        $query = $collection->getSelect()->__toString();
         if (!empty($sku)) {
             $collection->addFieldToFilter('main_table.Key', $sku);
         }

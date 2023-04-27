@@ -68,6 +68,7 @@ class StockHelper extends AbstractHelper
      * @param $parentProductId
      * @param $childProductId
      * @return InventoryResponse[]|null
+     * @throws NoSuchEntityException
      */
     public function getItemStockInStore($storeId, $parentProductId, $childProductId)
     {
@@ -314,7 +315,7 @@ class StockHelper extends AbstractHelper
     {
         $stores        = $this->storeCollectionFactory->create()
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
-            ->addFieldToFilter('scope_id', ['eq' => $this->lsr->getCurrentStoreId()]);
+            ->addFieldToFilter('scope_id', ['eq' => $this->lsr->getCurrentWebsiteId()]);
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
         if (!$displayStores) {

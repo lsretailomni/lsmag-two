@@ -8,6 +8,7 @@ use \Ls\Replication\Model\ReplInvStatus;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Cron responsible to update inventory for item and variants
@@ -44,12 +45,13 @@ class SyncInventory extends ProductCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_PRODUCT_INVENTORY_CONFIG_PATH_LAST_EXECUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('Running SyncInventory Task for store ' . $this->store->getName());
                     $productInventoryBatchSize = $this->replicationHelper->getProductInventoryBatchSize();
                     $filters                   = [
-                        ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+                        ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
                     ];
                     $criteria                  = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                         $filters,
@@ -119,7 +121,9 @@ class SyncInventory extends ProductCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('End SyncInventory Task for store ' . $this->store->getName());
                 }
@@ -154,7 +158,7 @@ class SyncInventory extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             $filters    = [
-                ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,

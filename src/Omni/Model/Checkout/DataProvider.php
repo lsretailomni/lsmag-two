@@ -201,7 +201,7 @@ class DataProvider implements ConfigProviderInterface
         $storeHoursArray = [];
         $storesData = $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id', $this->getStoreId())
+            ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId())
             ->addFieldToFilter('ClickAndCollect', 1);
 
         if ($this->lsr->isPickupTimeslotsEnabled()) {
@@ -377,7 +377,7 @@ class DataProvider implements ConfigProviderInterface
     {
         return $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id', $this->getStoreId())
+            ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId())
             ->addFieldToFilter('nav_id', ['in' => $responseItems]);
     }
 

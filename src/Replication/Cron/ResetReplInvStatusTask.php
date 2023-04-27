@@ -5,7 +5,9 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
-use Magento\Store\Api\Data\StoreInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\WebsiteInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class ResetReplInvStatusTask
@@ -14,6 +16,11 @@ use Magento\Store\Api\Data\StoreInterface;
 class ResetReplInvStatusTask
 {
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_inv_status_reset';
+
+    /**
+     * @var string
+     */
+    public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
     /** @var ReplicationHelper */
     public $replicationHelper;
@@ -27,7 +34,6 @@ class ResetReplInvStatusTask
     public $logger;
 
     /**
-     * ResetReplInvStatusTask constructor.
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
      * @param Logger $logger
@@ -43,41 +49,48 @@ class ResetReplInvStatusTask
     }
 
     /**
-     * Reset the Inventory Status
+     * Entry point for cron jobs
+     *
      * @param null $storeData
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+        if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
             $stores = [$storeData];
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = $this->lsr->getAllWebsites();
         }
 
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->lsr->setStoreId($store->getId());
-                if ($this->lsr->isLSR($store->getId())) {
+                if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         self::CONFIG_PATH_LAST_EXECUTE,
-                        $store->getId()
+                        $store->getId(),
+                        $this->defaultScope
                     );
                     $this->replicationHelper->updateCronStatus(
                         false,
                         ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        $this->defaultScope
                     );
                     $this->replicationHelper->updateCronStatus(
                         false,
                         ReplEcommInventoryStatusTask::CONFIG_PATH,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        $this->defaultScope
                     );
                     $this->replicationHelper->updateCronStatus(
                         false,
                         ReplEcommInventoryStatusTask::CONFIG_PATH_MAX_KEY,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        $this->defaultScope
                     );
                 }
             }
@@ -85,8 +98,11 @@ class ResetReplInvStatusTask
     }
 
     /**
+     * Entry point for manually run cron jobs
+     *
      * @param null $storeData
      * @return array
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {

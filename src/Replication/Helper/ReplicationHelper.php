@@ -1199,8 +1199,9 @@ class ReplicationHelper extends AbstractHelper
      * @param $path
      * @param bool $storeId
      * @param bool $flushCache
+     * @param string $scope
      */
-    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true)
+    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
 
         /**
@@ -1208,7 +1209,7 @@ class ReplicationHelper extends AbstractHelper
          */
         $existingData = $this->lsr->getConfigValueFromDb(
             $path,
-            ScopeInterface::SCOPE_STORES,
+            $scope,
             $storeId
         );
 
@@ -1222,7 +1223,7 @@ class ReplicationHelper extends AbstractHelper
                 $this->configWriter->save(
                     $path,
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES,
+                    $scope,
                     $storeId
                 );
             } else {
@@ -1264,10 +1265,10 @@ class ReplicationHelper extends AbstractHelper
      * @param $value
      * @param $path
      * @param bool $storeId
+     * @param string $scope
      */
-    public function updateConfigValue($value, $path, $storeId = false)
+    public function updateConfigValue($value, $path, $storeId = false, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
-
         /**
          * Added the condition to update config value based on specific store id.
          */
@@ -1275,7 +1276,7 @@ class ReplicationHelper extends AbstractHelper
             $this->configWriter->save(
                 $path,
                 $value,
-                ScopeInterface::SCOPE_STORES,
+                $scope,
                 $storeId
             );
         } else {
@@ -1415,7 +1416,7 @@ class ReplicationHelper extends AbstractHelper
                 []
             );
         } elseif ($isCatJoin) {
-            $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
+            $hierarchyCode = $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
             $hierarchyCode = $hierarchyCode . ';';
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
@@ -2211,7 +2212,7 @@ class ReplicationHelper extends AbstractHelper
         $filters              = [
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
             [
                 'field' => 'nav_id',
                 'value' => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), 'condition_type' => 'eq'
