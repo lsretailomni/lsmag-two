@@ -1032,7 +1032,7 @@ class AttributesCreateTask
 
             $option = $this->optionFactory->create();
             $option->setLabel($label);
-            $option->setValue($value);
+            $option->setValue((string) $value);
             $option->setStoreLabels([$optionLabel]);
             $option->setSortOrder(0);
             $option->setIsDefault(false);
