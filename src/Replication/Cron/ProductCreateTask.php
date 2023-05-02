@@ -604,7 +604,17 @@ class ProductCreateTask
                                 $productData->setCountryOfManufacture($item->getCountryOfOrigin());
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-                                $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $product   = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $itemStock = $this->replicationHelper->getInventoryStatus(
+                                    $item->getNavId(),
+                                    $storeId,
+                                    $this->store->getId()
+                                );
+                                $product   = $this->replicationHelper->manageStock(
+                                    $product,
+                                    $itemStock,
+                                    $item->getType()
+                                );
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $productSaved = $this->productRepository->save($product);
@@ -677,11 +687,11 @@ class ProductCreateTask
                                     $storeId,
                                     $this->store->getId()
                                 );
-                                $product->setStockData([
-                                    'use_config_manage_stock' => 1,
-                                    'is_in_stock'             => ($itemStock && $itemStock->getQuantity() > 0) ? 1 : 0,
-                                    'qty'                     => $itemStock ? $itemStock->getQuantity() : 0
-                                ]);
+                                $product   = $this->replicationHelper->manageStock(
+                                    $product,
+                                    $itemStock,
+                                    $item->getType()
+                                );
                                 try {
                                     // @codingStandardsIgnoreLine
                                     $this->logger->debug('Trying to save product ' . $item->getNavId() . ' in store ' . $store->getName());
@@ -815,7 +825,7 @@ class ProductCreateTask
             }
             $types           = [];
             $imageSize       = [
-                'height' =>  $this->lsr->getStoreConfig(
+                'height' => $this->lsr->getStoreConfig(
                     LSR::SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT,
                     $this->store->getId()
                 ),
@@ -2211,14 +2221,7 @@ class ProductCreateTask
                 $this->store->getId()
             );
         }
-
-        $productV->setStockData([
-            'use_config_manage_stock' => 1,
-            'is_in_stock'             => ($itemStock && $itemStock->getQuantity() > 0) ? 1 : 0,
-            'is_qty_decimal'          => 0,
-            'qty'                     => $itemStock  ? $itemStock->getQuantity() : 0
-        ]);
-
+        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
@@ -2383,12 +2386,7 @@ class ProductCreateTask
                 $this->store->getId()
             );
         }
-        $productV->setStockData([
-            'use_config_manage_stock' => 1,
-            'is_in_stock'             => ($itemStock && $itemStock->getQuantity() > 0) ? 1 : 0,
-            'is_qty_decimal'          => 0,
-            'qty'                     => $itemStock ? $itemStock->getQuantity() : 0
-        ]);
+        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
         try {
             /** @var ProductInterface $productSaved */
             // @codingStandardsIgnoreStart
