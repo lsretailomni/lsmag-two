@@ -296,7 +296,7 @@ class TaxRulesCreateTask
             ->setTaxCountryId($countryCode->getCode())
             ->setTaxRegionId(0)
             ->setTaxPostcode('*')
-            ->setCode($countryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup());
+            ->setCode($countryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup() . '-' . $this->getScopeId());
         return $this->taxRateRepository->save($taxRate);
     }
 
