@@ -703,6 +703,21 @@ class ProductCreateTask
                                             $totalUomCodes,
                                             $uomCodesNotProcessed
                                         );
+                                    } else {
+                                        if (count($totalUomCodes[$item->getNavId()]) == 1) {
+                                            foreach ($uomCodesNotProcessed as $uomCode) {
+                                                $uomCode->addData(
+                                                    [
+                                                        'is_updated'   => 0,
+                                                        'processed_at' => $this->replicationHelper->getDateTime(),
+                                                        'processed'    => 1,
+                                                        'is_failed'    => 1
+                                                    ]
+                                                );
+
+                                                $this->replItemUomRepository->save($uomCode);
+                                            }
+                                        }
                                     }
                                     $uomCodes = $this->getUomCodesProcessed($item->getNavId());
                                     $this->replicationHelper->getProductAttributes(
@@ -1222,12 +1237,6 @@ class ProductCreateTask
         $items = array_unique($items);
         foreach ($items as $item) {
             try {
-                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                    $item,
-                    '',
-                    '',
-                    $this->store->getId()
-                );
                 /** @var ReplBarcodeRepository $itemBarcodes */
                 $itemBarcodes = $this->_getBarcode($item);
                 /** @var ReplItemRepository $itemData */
@@ -1243,6 +1252,12 @@ class ProductCreateTask
                         $productVariants = $this->getProductVariants($itemData->getNavId());
                     }
                     if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1) {
+                        $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                            $item,
+                            '',
+                            '',
+                            $this->store->getId()
+                        );
                         $this->createConfigurableProducts(
                             $productData,
                             $itemData,
@@ -1251,6 +1266,21 @@ class ProductCreateTask
                             $totalUomCodes,
                             $uomCodesNotProcessed
                         );
+                    } else {
+                        if (count($totalUomCodes[$itemData->getNavId()]) == 1) {
+                            foreach ($uomCodesNotProcessed as $uomCode) {
+                                $uomCode->addData(
+                                    [
+                                        'is_updated'   => 0,
+                                        'processed_at' => $this->replicationHelper->getDateTime(),
+                                        'processed'    => 1,
+                                        'is_failed'    => 1
+                                    ]
+                                );
+
+                                $this->replItemUomRepository->save($uomCode);
+                            }
+                        }
                     }
                 }
             } catch (Exception $e) {
