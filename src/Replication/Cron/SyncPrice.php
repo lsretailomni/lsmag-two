@@ -8,6 +8,7 @@ use \Ls\Replication\Model\ReplPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Cron responsible to update prices for item and variants
@@ -44,7 +45,8 @@ class SyncPrice extends ProductCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_PRODUCT_PRICE_CONFIG_PATH_LAST_EXECUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('Running SyncPrice Task for store ' . $this->store->getName());
 
@@ -52,7 +54,7 @@ class SyncPrice extends ProductCreateTask
 
                     /** Get list of only those prices whose items are already processed */
                     $filters = [
-                        ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+                        ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
                     ];
 
                     $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -112,7 +114,14 @@ class SyncPrice extends ProductCreateTask
                                 }
                             }
                         } catch (Exception $e) {
-                            $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                            $this->logger->debug(
+                                sprintf(
+                                    'Exception happened in %s for store: %, item id: %s',
+                                    __METHOD__,
+                                    $this->store->getName(),
+                                    $sku
+                                )
+                            );
                             $this->logger->debug($e->getMessage());
                             $replPrice->setData('is_failed', 1);
                         }
@@ -128,7 +137,9 @@ class SyncPrice extends ProductCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('End SyncPrice Task for store ' . $this->store->getName());
                 }
@@ -197,12 +208,20 @@ class SyncPrice extends ProductCreateTask
         $filters        = [
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'StoreId', 'value' => $webStoreId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
         $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
         try {
             $itemsCount = $this->replPriceRepository->getList($searchCriteria)->getTotalCount();
         } catch (Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Exception happened in %s for store: %, item id: %s',
+                    __METHOD__,
+                    $this->store->getName(),
+                    $itemId
+                )
+            );
             $this->logger->debug($e->getMessage());
         }
         return $itemsCount;
@@ -220,7 +239,7 @@ class SyncPrice extends ProductCreateTask
         if (!$this->remainingRecords) {
             /** Get list of only those prices whose items are already processed */
             $filters = [
-                ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
                 ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
             ];
 

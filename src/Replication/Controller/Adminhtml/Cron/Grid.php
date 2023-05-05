@@ -15,6 +15,7 @@ use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManager;
 use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\System\Store;
 
 /**
  * Class Grid
@@ -44,13 +45,18 @@ class Grid extends Action
     public $lsr;
 
     /**
-     * Grid constructor.
+     * @var Store
+     */
+    public $systemStoreManager;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
      * @param Logger $logger
      * @param StoreManager $storeManager
      * @param LSR $lsr
+     * @param Store $systemStoreManager
      */
     public function __construct(
         Context $context,
@@ -58,34 +64,53 @@ class Grid extends Action
         ObjectManagerInterface $objectManager,
         Logger $logger,
         StoreManager $storeManager,
-        LSR $lsr
+        LSR $lsr,
+        Store $systemStoreManager
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->objectManager     = $objectManager;
-        $this->logger            = $logger;
-        $this->storeManager      = $storeManager;
-        $this->lsr               = $lsr;
+        $this->resultPageFactory  = $resultPageFactory;
+        $this->objectManager      = $objectManager;
+        $this->logger             = $logger;
+        $this->storeManager       = $storeManager;
+        $this->lsr                = $lsr;
+        $this->systemStoreManager = $systemStoreManager;
         parent::__construct($context);
     }
 
     /**
+     * Entry point for the controller
+     *
      * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
         try {
             $resultPage = $this->resultPageFactory->create();
+            $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
             $resultPage->getConfig()->getTitle()->prepend(__('Cron Listing'));
             $jobUrl    = $this->_request->getParam('joburl');
             $jobName   = $this->_request->getParam('jobname');
             $storeId   = $this->_request->getParam('store');
+            $scope     = $this->_request->getParam('scope');
             $storeData = null;
+
+            if (empty($scope) && empty($storeId)) {
+                $storeId = $this->getDefaultWebsiteId();
+                $resultRedirect->setPath(
+                    'ls_repl/cron/grid',
+                    ['website' => $storeId, '_current' => true, 'scope' => 'website']
+                );
+
+                return $resultRedirect;
+            }
+
             if ($jobUrl != "") {
                 // @codingStandardsIgnoreStart
                 $cron = $this->objectManager->create($jobUrl);
                 // @codingStandardsIgnoreEnd
                 if (!empty($storeId)) {
-                    $storeData = $this->storeManager->getStore($storeId);
+                    $storeData = $scope == 'website' ?
+                        $this->storeManager->getWebsite($storeId) :
+                        $this->storeManager->getStore($storeId);
                 }
                 $info = $cron->executeManually($storeData);
                 if (!empty($info)) {
@@ -101,18 +126,11 @@ class Grid extends Action
                         ['url' => $executeMoreData, 'jobName' => $jobName, 'remaining' => $info[0]]
                     );
                 }
-                $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
                 return $resultRedirect;
-            } else {
-                if (empty($storeId)) {
-                    $storeId        = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE);
-                    $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
-                    $resultRedirect->setPath(LSR::URL_PATH_EXECUTE . '/store/' . $storeId);
-                    return $resultRedirect;
-                }
-                return $resultPage;
             }
+            return $resultPage;
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
             $this->messageManager->addErrorMessage($e->getMessage());
@@ -120,5 +138,24 @@ class Grid extends Action
             $resultRedirect->setUrl($this->_redirect->getRefererUrl());
             return $resultRedirect;
         }
+    }
+
+    /**
+     * Get Default website Id
+     *
+     * @return array|string
+     */
+    public function getDefaultWebsiteId()
+    {
+        $websiteId = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE);
+
+        if (empty($websiteId)) {
+            foreach ($this->systemStoreManager->getWebsiteCollection() as $website) {
+                $websiteId = $website->getId();
+                break;
+            }
+        }
+
+        return $websiteId;
     }
 }
