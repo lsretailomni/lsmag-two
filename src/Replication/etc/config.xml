@@ -5,7 +5,6 @@
         <ls_mag>
             <replication>
                 <replicate_data_translation_lang_code>Default</replicate_data_translation_lang_code>
-                <manual_cron_grid_default_store>1</manual_cron_grid_default_store>
                 <identical_table_web_service_list>ReplEcommHtmlTranslation</identical_table_web_service_list>
                 <replicate_all_stores_items>0</replicate_all_stores_items>
                 <default_batch_size>2000</default_batch_size>
