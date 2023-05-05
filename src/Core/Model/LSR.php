@@ -350,13 +350,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT_12HRS = 'h:i A';
     const STORE_HOURS_TIME_FORMAT_24HRS = 'H:i';
-    //LS Recommendation
-    const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
-    const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
-    const LS_RECOMMEND_SHOW_ON_CART = 'ls_mag/ls_recommend/cart';
-    const LS_RECOMMEND_SHOW_ON_CHECKOUT = 'ls_mag/ls_recommend/checkout';
-    const LS_RECOMMEND_SHOW_ON_HOME = 'ls_mag/ls_recommend/home';
-    const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
 
     //Coupons
     const LS_ENABLE_COUPON_ELEMENTS = 'ls_mag/ls_coupons/active';
@@ -391,7 +384,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
-    const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
     const POINTRATE = 'LS_POINT_RATE_';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
