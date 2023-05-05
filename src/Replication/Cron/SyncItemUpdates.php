@@ -53,7 +53,8 @@ class SyncItemUpdates extends ProductCreateTask
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
                             LSR::SC_ITEM_UPDATES_CONFIG_PATH_LAST_EXECUTE,
-                            $this->store->getId()
+                            $this->store->getId(),
+                            ScopeInterface::SCOPE_STORES
                         );
                         $hierarchyCode = $this->lsr->getStoreConfig(
                             LSR::SC_REPLICATION_HIERARCHY_CODE,
@@ -72,7 +73,9 @@ class SyncItemUpdates extends ProductCreateTask
                         $this->replicationHelper->updateCronStatus(
                             $this->cronStatus,
                             LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
-                            $this->store->getId()
+                            $this->store->getId(),
+                            false,
+                            ScopeInterface::SCOPE_STORES
                         );
                         $this->logger->debug('End SyncItemUpdates Task for store ' . $this->store->getName());
                     }
@@ -109,7 +112,7 @@ class SyncItemUpdates extends ProductCreateTask
 
         $filters = [
             ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
 
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -128,7 +131,6 @@ class SyncItemUpdates extends ProductCreateTask
         $websiteId = $this->store->getWebsiteId();
         $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
         $sku = '';
-
         foreach ($collection as $hierarchyLeaf) {
             try {
                 $sku     = $hierarchyLeaf->getNavId();
@@ -137,7 +139,14 @@ class SyncItemUpdates extends ProductCreateTask
                 );
                 $this->replicationHelper->assignProductToCategories($product, $this->store);
             } catch (Exception $e) {
-                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %, item id: %s',
+                        __METHOD__,
+                        $this->store->getName(),
+                        $sku
+                    )
+                );
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -155,7 +164,7 @@ class SyncItemUpdates extends ProductCreateTask
     {
         $filters    = [
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $criteria   = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection = $this->replHierarchyLeafCollectionFactory->create();
@@ -193,7 +202,14 @@ class SyncItemUpdates extends ProductCreateTask
                     }
                 }
             } catch (Exception $e) {
-                $this->logger->debug('Problem with sku: ' . $sku . ' in ' . __METHOD__);
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %, item id: %s',
+                        __METHOD__,
+                        $this->store->getName(),
+                        $sku
+                    )
+                );
                 $this->logger->debug($e->getMessage());
             }
             $hierarchyLeaf->setData('processed', 1);
@@ -238,7 +254,7 @@ class SyncItemUpdates extends ProductCreateTask
         if (!$this->remainingRecords) {
             $filters = [
                 ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq'],
-                ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+                ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
             $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,

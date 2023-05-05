@@ -4,20 +4,24 @@ namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use \Ls\Core\Model\LSR;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class LsTables for truncating all flat tables
  */
 class LsTables extends AbstractReset
 {
+    public const LS_TRANSLATION_TABLES = [
+        'ls_replication_repl_data_translation',
+        'ls_replication_repl_data_translation_lang_code'
+    ];
+
     /** List of all the ls_ tables */
     public const LS_TABLES = [
         'ls_replication_loy_item',
         'ls_replication_repl_currency',
         'ls_replication_repl_currency_exch_rate',
         'ls_replication_repl_customer',
-        'ls_replication_repl_data_translation',
-        'ls_replication_repl_data_translation_lang_code',
         'ls_replication_repl_hierarchy',
         'ls_replication_repl_image',
         'ls_replication_repl_item_category',
@@ -41,11 +45,13 @@ class LsTables extends AbstractReset
      * Truncate ls_ Tables
      *
      * @return ResponseInterface
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
         $jobName             = $this->_request->getParam('jobname');
         $scopeId             = $this->_request->getParam('store');
+        $scope               = $this->_request->getParam('scope');
         $coreConfigTableName = $this->replicationHelper->getGivenTableName('core_config_data');
         $this->replicationHelper->getConnection()->startSetup();
 
@@ -58,8 +64,12 @@ class LsTables extends AbstractReset
             $message      = __('All ls_ tables truncated successfully.');
             $redirectPath = 'adminhtml/system_config/edit/section/ls_mag';
         }
-        $arguments = ['store' => $scopeId];
 
+        if ($scope == 'website') {
+            $arguments = ['website' => $scopeId];
+        } else {
+            $arguments = ['store' => $scopeId];
+        }
         $this->replicationHelper->getConnection()->endSetup();
         $this->messageManager->addSuccessMessage($message);
 
@@ -111,6 +121,7 @@ class LsTables extends AbstractReset
      * @param $scopeId
      * @param $coreConfigTableName
      * @return void
+     * @throws NoSuchEntityException
      */
     public function resetAllCronsData($scopeId, $coreConfigTableName)
     {
@@ -120,13 +131,26 @@ class LsTables extends AbstractReset
             self::LS_ATTRIBUTE_RELATED_TABLES,
             self::LS_CATEGORY_RELATED_TABLES,
             self::LS_ITEM_RELATED_TABLES,
-            self::LS_TABLES
+            self::LS_TABLES,
+            self::LS_TRANSLATION_TABLES
         );
         foreach ($mergedTables as $lsTable) {
             $tableName = $this->replicationHelper->getGivenTableName($lsTable);
 
             if ($scopeId) {
-                $this->replicationHelper->deleteGivenTableDataGivenConditions($tableName, ['scope_id = ?' => $scopeId]);
+                $websiteId = $this->replicationHelper->getWebsiteIdGivenStoreId($scopeId);
+
+                if (!in_array($tableName, self::LS_TRANSLATION_TABLES)) {
+                    $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                        $tableName,
+                        ['scope_id = ?' => $websiteId]
+                    );
+                } else {
+                    $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                        $tableName,
+                        ['scope_id = ?' => $scopeId]
+                    );
+                }
             } else {
                 $this->replicationHelper->truncateGivenTable($lsTable);
             }

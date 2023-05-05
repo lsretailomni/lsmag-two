@@ -79,9 +79,6 @@
         <add id="Ls_Replication::discount_grid" title="Discount Replication" translate="title" module="Ls_Replication"
              sortOrder="7" resource="Ls_Replication::discount_grid" parent="Ls_Replication::replication_grid_group_second"
              action="ls_repl/grids/discount"/>
-        <add id="Ls_Replication::discount_validation_grid" title="Discount Validation Replication" translate="title" module="Ls_Replication"
-             sortOrder="7" resource="Ls_Replication::discount_validation_grid" parent="Ls_Replication::replication_grid_group_second"
-             action="ls_repl/grids/discountvalidation"/>
         <add id="Ls_Replication::store_grid" title="Store" translate="title" module="Ls_Replication" sortOrder="8"
              resource="Ls_Replication::store_grid" parent="Ls_Replication::replication_grid_group_second"
              action="ls_repl/grids/store"/>
