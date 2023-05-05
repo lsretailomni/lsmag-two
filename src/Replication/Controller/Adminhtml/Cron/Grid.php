@@ -67,16 +67,18 @@ class Grid extends Action
         LSR $lsr,
         Store $systemStoreManager
     ) {
-        $this->resultPageFactory = $resultPageFactory;
-        $this->objectManager     = $objectManager;
-        $this->logger            = $logger;
-        $this->storeManager      = $storeManager;
-        $this->lsr               = $lsr;
+        $this->resultPageFactory  = $resultPageFactory;
+        $this->objectManager      = $objectManager;
+        $this->logger             = $logger;
+        $this->storeManager       = $storeManager;
+        $this->lsr                = $lsr;
         $this->systemStoreManager = $systemStoreManager;
         parent::__construct($context);
     }
 
     /**
+     * Entry point for the controller
+     *
      * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
