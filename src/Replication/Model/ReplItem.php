@@ -181,6 +181,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $TaxItemGroupId = null;
 
     /**
+     * @property ItemType $Type
+     */
+    protected $Type = null;
+
+    /**
      * @property float $UnitPrice
      */
     protected $UnitPrice = null;
@@ -903,6 +908,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getTaxItemGroupId()
     {
         return $this->getData( 'TaxItemGroupId' );
+    }
+
+    /**
+     * @param ItemType $Type
+     * @return $this
+     */
+    public function setType($Type)
+    {
+        $this->setData( 'Type', $Type );
+        $this->Type = $Type;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ItemType
+     */
+    public function getType()
+    {
+        return $this->getData( 'Type' );
     }
 
     /**

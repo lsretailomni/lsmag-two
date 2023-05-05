@@ -5,6 +5,7 @@ namespace Ls\Replication\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
@@ -25,6 +26,7 @@ use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
+use Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -1584,11 +1586,11 @@ class ReplicationHelper extends AbstractHelper
         $aliasNames
     ) {
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
-        isset(self::COLUMNS_MAPPING[$tableName])
+            isset(self::COLUMNS_MAPPING[$tableName])
         ) {
             $mappingColumns = self::COLUMNS_MAPPING[$tableName];
 
-            foreach($aliasNames as $alias) {
+            foreach ($aliasNames as $alias) {
                 foreach ($mappingColumns as $columnName => $newColumnName) {
                     $whereClause = str_replace(
                         "$alias.$columnName",
@@ -1658,8 +1660,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1769,8 +1771,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1840,8 +1842,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -2990,6 +2992,32 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param $itemId
+     * @param $storeId
+     * @param $scopeId
+     * @return \Ls\Replication\Model\ItemType|null
+     */
+    public function getInventoryType($itemId, $storeId, $scopeId)
+    {
+        $filters = [
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
+        /** @var ReplItem $item */
+        $item = $this->itemRepository->getList($searchCriteria)->getItems();
+
+        if (!empty($itemRepository)) {
+            return $item->getType();
+
+        }
+
+        return null;
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Update inventory and status
@@ -3051,7 +3079,7 @@ class ReplicationHelper extends AbstractHelper
 
         $criteria->setProductsFilter($productId);
         $stockItemCollection = $this->stockItemRepository->getList($criteria);
-        $allItems = $stockItemCollection->getItems();
+        $allItems            = $stockItemCollection->getItems();
         if (empty($allItems)) {
             return;
         }
@@ -3449,5 +3477,37 @@ class ReplicationHelper extends AbstractHelper
     public function isVisualSwatchAttributes($storeId)
     {
         return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
+    }
+
+    /**
+     * item manage stock
+     *
+     * @param $product
+     * @param $itemStock
+     * @param $type
+     * @return mixed
+     */
+    public function manageStock($product, $itemStock, $type)
+    {
+        $useManageStock = 1;
+        $quantity       = 0;
+        $isInStock      = 0;
+
+        if (!empty($type) && $type != ItemType::INVENTORY) {
+            $useManageStock = 0;
+        }
+        if (!empty($itemStock)) {
+            $isInStock = ($itemStock->getQuantity() > 0) ? 1 : 0;
+            $quantity  = $itemStock->getQuantity();
+        }
+
+        $product->setStockData([
+            'use_config_manage_stock' => $useManageStock,
+            'is_in_stock'             => $isInStock,
+            'qty'                     => $quantity
+        ]);
+
+        return $product;
+
     }
 }

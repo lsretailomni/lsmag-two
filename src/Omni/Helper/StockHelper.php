@@ -48,16 +48,17 @@ class StockHelper extends AbstractHelper
      * @param ItemHelper $itemHelper
      */
     public function __construct(
-        Context $context,
+        Context                    $context,
         ProductRepositoryInterface $productRepository,
-        CollectionFactory $storeCollectionFactory,
-        LSR $lsr,
-        ItemHelper $itemHelper
-    ) {
-        $this->productRepository      = $productRepository;
+        CollectionFactory          $storeCollectionFactory,
+        LSR                        $lsr,
+        ItemHelper                 $itemHelper
+    )
+    {
+        $this->productRepository = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
-        $this->lsr                    = $lsr;
-        $this->itemHelper             = $itemHelper;
+        $this->lsr = $lsr;
+        $this->itemHelper = $itemHelper;
         parent::__construct($context);
     }
 
@@ -77,8 +78,8 @@ class StockHelper extends AbstractHelper
             return $this->getItemsStockInStoreFromSourcingLocation($storeId, $items);
         }
 
-        $response  = null;
-        $request   = new Operation\ItemsInStockGet();
+        $response = null;
+        $request = new Operation\ItemsInStockGet();
         $itemStock = new Entity\ItemsInStockGet();
         if (!empty($parentProductId) && !empty($childProductId)) {
             $itemStock->setItemId($parentProductId)->
@@ -187,16 +188,16 @@ class StockHelper extends AbstractHelper
      */
     public function getItemsStockInStoreFromSourcingLocation($storeId, $items)
     {
-        $response  = null;
-        $request   = new Operation\ItemsInStoreGetEx();
+        $response = null;
+        $request = new Operation\ItemsInStoreGetEx();
         $itemStock = new Entity\ItemsInStoreGetEx();
         $itemStock->setStoreId($storeId);
         $itemStock->setUseSourcingLocation(true);
         $itemStock->setLocationId('');
         foreach ($items as $item) {
             $inventoryRequest = new Entity\InventoryRequest();
-            $itemId           = reset($item);
-            $variantId        = end($item);
+            $itemId = reset($item);
+            $variantId = end($item);
             if (!empty($itemId) && !empty($variantId)) {
                 $inventoryRequest->setItemId($itemId)->setVariantId($variantId);
             } else {
@@ -204,19 +205,20 @@ class StockHelper extends AbstractHelper
             }
             $inventoryRequestCollection[] = $inventoryRequest;
         }
-
-        $inventoryRequestArray = new Entity\ArrayOfInventoryRequest();
-        $inventoryRequestArray->setInventoryRequest($inventoryRequestCollection);
-        $itemStock->setItems($inventoryRequestArray);
-        try {
-            $response = $request->execute($itemStock);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (!empty($response) &&
-            !empty($response->getItemsInStoreGetExResult()) &&
-            !empty($response->getItemsInStoreGetExResult()->getInventoryResponse())) {
-            return $response->getItemsInStoreGetExResult()->getInventoryResponse();
+        if (!empty($inventoryRequestCollection)) {
+            $inventoryRequestArray = new Entity\ArrayOfInventoryRequest();
+            $inventoryRequestArray->setInventoryRequest($inventoryRequestCollection);
+            $itemStock->setItems($inventoryRequestArray);
+            try {
+                $response = $request->execute($itemStock);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (!empty($response) &&
+                !empty($response->getItemsInStoreGetExResult()) &&
+                !empty($response->getItemsInStoreGetExResult()->getInventoryResponse())) {
+                return $response->getItemsInStoreGetExResult()->getInventoryResponse();
+            }
         }
 
         return null;
@@ -237,9 +239,9 @@ class StockHelper extends AbstractHelper
         }
         $response = null;
         // @codingStandardsIgnoreStart
-        $request                    = new Operation\ItemsInStoreGet();
-        $itemStock                  = new Entity\ItemsInStoreGet();
-        $inventoryRequestParent     = new Entity\ArrayOfInventoryRequest();
+        $request = new Operation\ItemsInStoreGet();
+        $itemStock = new Entity\ItemsInStoreGet();
+        $inventoryRequestParent = new Entity\ArrayOfInventoryRequest();
         $inventoryRequestCollection = [];
 
         foreach ($items as $item) {
@@ -248,16 +250,20 @@ class StockHelper extends AbstractHelper
             $inventoryRequest->setVariantId($item['child']);
             $inventoryRequestCollection[] = $inventoryRequest;
         }
-        // @codingStandardsIgnoreEnd
-        $inventoryRequestParent->setInventoryRequest($inventoryRequestCollection);
-        $itemStock->setItems($inventoryRequestParent)->setStoreId($storeId);
-        try {
-            $response = $request->execute($itemStock);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
+        if (!empty($inventoryRequestCollection)) {
+            // @codingStandardsIgnoreEnd
+            $inventoryRequestParent->setInventoryRequest($inventoryRequestCollection);
+            $itemStock->setItems($inventoryRequestParent)->setStoreId($storeId);
+            try {
+                $response = $request->execute($itemStock);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            return $response ?
+                $response->getItemsInStoreGetResult() : $response;
         }
-        return $response ?
-            $response->getItemsInStoreGetResult() : $response;
+
+        return null;
     }
 
     /**
@@ -286,7 +292,7 @@ class StockHelper extends AbstractHelper
 
             $response = null;
             // @codingStandardsIgnoreStart
-            $request   = new Operation\ItemsInStockGet();
+            $request = new Operation\ItemsInStockGet();
             $itemStock = new Entity\ItemsInStockGet();
             // @codingStandardsIgnoreEnd
 
@@ -313,7 +319,7 @@ class StockHelper extends AbstractHelper
      */
     public function getAllStoresFromReplTable($storesNavIds)
     {
-        $stores        = $this->storeCollectionFactory->create()
+        $stores = $this->storeCollectionFactory->create()
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
             ->addFieldToFilter('scope_id', ['eq' => $this->lsr->getCurrentWebsiteId()]);
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
@@ -335,9 +341,9 @@ class StockHelper extends AbstractHelper
      */
     public function fetchAllStoresItemInStockPlusApplyJoin($simpleProductId, $productSku)
     {
-        $itemId      = $this->itemHelper->getLsCentralItemIdBySku($productSku);
+        $itemId = $this->itemHelper->getLsCentralItemIdBySku($productSku);
         $storesNavId = [];
-        $response    = $this->getAllStoresItemInStock(
+        $response = $this->getAllStoresItemInStock(
             $simpleProductId,
             $itemId
         );
@@ -375,10 +381,10 @@ class StockHelper extends AbstractHelper
         }
 
         $response = [];
-        $items    = [];
+        $items = [];
 
         // @codingStandardsIgnoreStart
-        $request      = new Operation\ItemsInStoreGet();
+        $request = new Operation\ItemsInStoreGet();
         $itemsInStore = new Entity\ItemsInStoreGet();
         foreach ($variants as $variant) {
             $inventoryReq = new Entity\InventoryRequest();
@@ -402,7 +408,7 @@ class StockHelper extends AbstractHelper
             }
             if (is_array($inventoryResponseArray->getInventoryResponse())) {
                 foreach ($inventoryResponseArray->getInventoryResponse() as $inventoryResponse) {
-                    $sku                        = $inventoryResponse->getItemId() . '-' .
+                    $sku = $inventoryResponse->getItemId() . '-' .
                         $inventoryResponse->getVariantId();
                     $variants[$sku]['Quantity'] = $inventoryResponse->getQtyInventory();
                 }
@@ -429,7 +435,8 @@ class StockHelper extends AbstractHelper
         $quote = null,
         bool $isRemoveItem = false,
         bool $throwException = false
-    ) {
+    )
+    {
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
             if (!$item->getHasError()) {
                 $storeId = $this->lsr->getActiveWebStore();
@@ -442,7 +449,7 @@ class StockHelper extends AbstractHelper
                 }
 
                 foreach ($children as $child) {
-                    $uomQty  = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+                    $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
                     if (!empty($uomQty)) {
                         $qty = $qty * $uomQty;
@@ -516,11 +523,11 @@ class StockHelper extends AbstractHelper
             foreach ($stockCollection as &$values) {
                 if ($values['item_id'] == $item->getItemId() && $values['variant_id'] == $item->getVariantId()) {
                     if ($actualQty > 0) {
-                        $values['status']  = '1';
+                        $values['status'] = '1';
                         $values['display'] = __('This item is available');
 
                         if ($values['qty'] > $actualQty) {
-                            $values['status']  = '0';
+                            $values['status'] = '0';
                             $values['display'] = __(
                                 'You have selected %1 quantity for this item.
                                  We only have %2 quantity available in stock for this store.
@@ -530,7 +537,7 @@ class StockHelper extends AbstractHelper
                             );
                         }
                     } else {
-                        $values['status']  = '0';
+                        $values['status'] = '0';
                         $values['display'] = __('This item is not available');
                     }
                 }
