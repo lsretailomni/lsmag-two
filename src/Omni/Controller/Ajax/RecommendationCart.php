@@ -2,7 +2,8 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -13,7 +14,7 @@ use Magento\Framework\View\Result\PageFactory;
  * Class RecommendationCart
  * @package Ls\Omni\Controller\Ajax
  */
-class RecommendationCart extends Action
+class RecommendationCart implements HttpPostActionInterface
 {
 
     /**
@@ -32,22 +33,29 @@ class RecommendationCart extends Action
     public $resultRedirectFactory;
 
     /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
      * RecommendationCart constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         JsonFactory $resultJsonFactory,
-        RedirectFactory $resultRedirectFactory
+        RedirectFactory $resultRedirectFactory,
+        RequestInterface $request
     ) {
         $this->resultPageFactory     = $resultPageFactory;
         $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
-        parent::__construct($context);
+        $this->request               = $request;
     }
 
     /**
@@ -55,7 +63,7 @@ class RecommendationCart extends Action
      */
     public function execute()
     {
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->getMethod() !== 'POST' || !$this->request->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;

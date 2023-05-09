@@ -8,7 +8,8 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Session\Proxy;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -22,7 +23,7 @@ use Magento\Quote\Model\Quote;
  * Class UpdatePoints
  * @package Ls\Omni\Controller\Ajax
  */
-class UpdatePoints extends Action
+class UpdatePoints implements HttpPostActionInterface
 {
 
     /** @var JsonFactory */
@@ -60,6 +61,11 @@ class UpdatePoints extends Action
     public $data;
 
     /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
      * UpdatePoints constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -70,6 +76,7 @@ class UpdatePoints extends Action
      * @param Data $data
      * @param Proxy $checkoutSession
      * @param CartRepositoryInterface $cartRepository
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
@@ -80,9 +87,9 @@ class UpdatePoints extends Action
         BasketHelper $basketHelper,
         Data $data,
         Proxy $checkoutSession,
-        CartRepositoryInterface $cartRepository
+        CartRepositoryInterface $cartRepository,
+        RequestInterface $request
     ) {
-        parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -91,6 +98,7 @@ class UpdatePoints extends Action
         $this->cartRepository    = $cartRepository;
         $this->basketHelper      = $basketHelper;
         $this->data              = $data;
+        $this->request           = $request;
     }
 
     /**
@@ -102,7 +110,7 @@ class UpdatePoints extends Action
     {
         $httpBadRequestCode = 400;
         $resultRaw          = $this->resultRawFactory->create();
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->getMethod() !== 'POST' || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
@@ -114,7 +122,7 @@ class UpdatePoints extends Action
             ];
             return $resultJson->setData($response);
         }
-        $post          = $this->getRequest()->getContent();
+        $post          = $this->request->getContent();
         $postData      = json_decode($post);
         $loyaltyPoints = (float)$postData->loyaltyPoints;
         $isPointValid  = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);

@@ -5,8 +5,8 @@ namespace Ls\Omni\Controller\Ajax;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Session\Proxy;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -17,7 +17,7 @@ use Magento\Framework\Controller\ResultInterface;
  * Class Points
  * @package Ls\Omni\Controller\Ajax
  */
-class Points extends Action
+class Points implements HttpGetActionInterface
 {
 
     /** @var JsonFactory */
@@ -56,7 +56,6 @@ class Points extends Action
         LoyaltyHelper $loyaltyHelper,
         Proxy $checkoutSession
     ) {
-        parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -65,7 +64,9 @@ class Points extends Action
     }
 
     /**
-     * @return $this|ResponseInterface|ResultInterface
+     * @return ResponseInterface|Json|ResultInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {

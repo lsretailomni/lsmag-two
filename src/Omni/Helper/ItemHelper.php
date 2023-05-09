@@ -23,6 +23,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
@@ -388,12 +389,11 @@ class ItemHelper extends AbstractHelper
      */
     public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts(&$quote, $basketData, $type = 1)
     {
-        $orderLines    = [];
         $quoteItemList = $quote->getAllVisibleItems();
 
-        if (count($quoteItemList) && !empty($basketData)) {
-            $orderLines = $basketData->getOrderLines()->getOrderLine();
-        }
+//        if (count($quoteItemList) && !empty($basketData)) {
+//            $orderLines = $basketData->getOrderLines()->getOrderLine();
+//        }
 
         foreach ($quoteItemList as $quoteItem) {
             $bundleProduct = $customPrice = $discountAmount = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
@@ -422,8 +422,12 @@ class ItemHelper extends AbstractHelper
                     }
                 }
                 $child->getProduct()->setIsSuperMode(true);
-                // @codingStandardsIgnoreLine
-                $this->itemResourceModel->save($child);
+                try {
+                    // @codingStandardsIgnoreLine
+                    $this->itemResourceModel->save($child);
+                } catch (LocalizedException $e) {
+                    $this->_logger->critical("Error saving SKU:-".$child->getSku(). " - ".$e->getMessage());
+                }
 
                 $customPrice += $child->getCustomPrice();
                 $priceInclTax += $child->getPriceInclTax();
@@ -441,8 +445,12 @@ class ItemHelper extends AbstractHelper
                 $quoteItem->setTaxAmount($taxAmount);
                 $quoteItem->setPriceInclTax($priceInclTax);
                 $quoteItem->getProduct()->setIsSuperMode(true);
-                // @codingStandardsIgnoreLine
-                $this->itemResourceModel->save($quoteItem);
+                try {
+                    // @codingStandardsIgnoreLine
+                    $this->itemResourceModel->save($quoteItem);
+                } catch (LocalizedException $e) {
+                    $this->_logger->critical("Error saving Quote Item:-".$quoteItem->getSku(). " - ".$e->getMessage());
+                }
             }
         }
     }

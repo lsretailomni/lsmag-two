@@ -7,8 +7,9 @@ use \Ls\Omni\Block\Product\View\Recommend;
 use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Helper\SessionHelper;
 use \Ls\Omni\Model\Cache\Type;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -18,7 +19,7 @@ use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\View\Result\PageFactory;
 
-class Recommendation extends Action
+class Recommendation implements HttpPostActionInterface
 {
 
     /**
@@ -47,12 +48,18 @@ class Recommendation extends Action
     public $sessionHelper;
 
     /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
      * @param RedirectFactory $resultRedirectFactory
      * @param CacheHelper $cacheHelper
      * @param SessionHelper $sessionHelper
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
@@ -60,14 +67,15 @@ class Recommendation extends Action
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
         CacheHelper $cacheHelper,
-        SessionHelper $sessionHelper
+        SessionHelper $sessionHelper,
+        RequestInterface $request
     ) {
         $this->resultPageFactory     = $resultPageFactory;
         $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->cacheHelper           = $cacheHelper;
         $this->sessionHelper         = $sessionHelper;
-        parent::__construct($context);
+        $this->request               = $request;
     }
 
     /**
@@ -78,7 +86,7 @@ class Recommendation extends Action
      */
     public function execute()
     {
-        if (!$this->getRequest()->isXmlHttpRequest()) {
+        if (!$this->request->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;
@@ -86,7 +94,7 @@ class Recommendation extends Action
         $this->sessionHelper->newSessionHandler("lsrecommend");
         $result            = $this->resultJsonFactory->create();
         $resultPage        = $this->resultPageFactory->create();
-        $currentProductSku = $this->getRequest()->getParam('currentProduct');
+        $currentProductSku = $this->request->getParam('currentProduct');
         $data              = ['productSku' => $currentProductSku];
         $cacheKey          = LSR::PRODUCT_RECOMMENDATION_BLOCK_CACHE . $currentProductSku;
         $block             = $this->cacheHelper->getCachedContent($cacheKey);

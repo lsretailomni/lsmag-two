@@ -7,8 +7,9 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Checkout\Model\Session\Proxy;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -23,7 +24,7 @@ use Magento\Quote\Model\Quote;
 /**
  * Update gift card controller
  */
-class UpdateGiftCard extends Action
+class UpdateGiftCard implements HttpPostActionInterface
 {
 
     /** @var JsonFactory */
@@ -61,6 +62,11 @@ class UpdateGiftCard extends Action
     public $data;
 
     /**
+     * @var RequestInterface
+     */
+    private RequestInterface $request;
+
+    /**
      * UpdateGiftCard constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -71,6 +77,7 @@ class UpdateGiftCard extends Action
      * @param CartRepositoryInterface $cartRepository
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param Data $data
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
@@ -81,9 +88,9 @@ class UpdateGiftCard extends Action
         Proxy $checkoutSession,
         CartRepositoryInterface $cartRepository,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        Data $data
+        Data $data,
+        RequestInterface $request
     ) {
-        parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->giftCardHelper    = $giftCardHelper;
@@ -92,6 +99,7 @@ class UpdateGiftCard extends Action
         $this->cartRepository    = $cartRepository;
         $this->priceHelper       = $priceHelper;
         $this->data              = $data;
+        $this->request           = $request;
     }
 
     /**
@@ -105,13 +113,13 @@ class UpdateGiftCard extends Action
         $httpBadRequestCode = 400;
         /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        if ($this->request->getMethod() !== 'POST' || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
         /** @var Json $resultJson */
         $resultJson            = $this->resultJsonFactory->create();
-        $post                  = $this->getRequest()->getContent();
+        $post                  = $this->request->getContent();
         $postData              = json_decode($post);
         $giftCardNo            = $postData->gift_card_no;
         $giftCardAmount        = $postData->gift_card_amount;
@@ -127,18 +135,23 @@ class UpdateGiftCard extends Action
                 $giftCardBalanceAmount = $giftCardResponse;
             }
         } else {
-            $response = [
-                'success' => 'true',
-                'message' => __(
-                    'You have successfully cancelled the gift card.'
-                )
-            ];
-            $quote->setLsGiftCardNo($giftCardNo);
-            $quote->setLsGiftCardAmountUsed($giftCardAmount);
-            $this->validateQuote($quote);
-            $quote->collectTotals();
-            $this->cartRepository->save($quote);
-            return $resultJson->setData($response);
+            try {
+                $response = [
+                    'success' => 'true',
+                    'message' => __(
+                        'You have successfully cancelled the gift card.'
+                    )
+                ];
+                $quote->setLsGiftCardNo($giftCardNo);
+                $quote->setLsGiftCardAmountUsed($giftCardAmount);
+                $this->validateQuote($quote);
+                $quote->collectTotals();
+                $this->cartRepository->save($quote);
+                return $resultJson->setData($response);
+            } catch (Exception $e) {
+                $response = ['error' => 'true', 'message' => $e->getMessage()];
+                return $resultJson->setData($response);
+            }
         }
 
         if (empty($giftCardResponse)) {

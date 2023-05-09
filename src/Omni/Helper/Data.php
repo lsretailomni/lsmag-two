@@ -737,12 +737,18 @@ class Data extends AbstractHelper
             if ($lsKey == null) {
                 $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
             }
-            $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
-            $result  = $request->execute();
 
-            if ($result != null) {
-                $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
+            try {
+                $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
+                $result  = $request->execute();
+
+                if ($result != null) {
+                    $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
+                }
+            } catch (Exception $e) {
+                $this->_logger->critical($e->getMessage());
             }
+
         }
 
         return $result;
