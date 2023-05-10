@@ -73,17 +73,24 @@ class SyncPrice extends ProductCreateTask
                     /** @var ReplPrice $replPrice */
                     foreach ($collection as $replPrice) {
                         try {
-                            $baseUnitOfMeasure = null;
-                            $itemPriceCount    = null;
-                            if (!$replPrice->getVariantId() || !empty($replPrice->getUnitOfMeasure())) {
+                            $baseUnitOfMeasure = $itemPriceCount = null;
+
+                            if ($replPrice->getVariantId() && $replPrice->getUnitOfMeasure()) {
+                                $uom = $replPrice->getUnitOfMeasure();
+                                $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' . $uom;
+                            } elseif ((!$replPrice->getVariantId() && !$replPrice->getUnitOfMeasure()) ||
+                                (!$replPrice->getVariantId() && $replPrice->getUnitOfMeasure())
+                            ) {
                                 $sku = $replPrice->getItemId();
+                                $uom = '';
                             } else {
-                                $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId();
+                                $uom = $this->replicationHelper->getBaseUnitOfMeasure($replPrice->getItemId());
+                                $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' . $uom;
                             }
                             $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                                 $replPrice->getItemId(),
                                 $replPrice->getVariantId(),
-                                '',
+                                $uom,
                                 $this->store->getId()
                             );
                             if (isset($productData)) {
