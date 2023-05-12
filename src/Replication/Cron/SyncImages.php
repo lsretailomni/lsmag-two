@@ -609,6 +609,8 @@ class SyncImages extends ProductCreateTask
             $criteria,
             'Item'
         );
+        $websiteId = $this->store->getWebsiteId();
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
         $collection->getSelect()->order('main_table.processed ASC');
 
         $query = $collection->getSelect()->__toString();
