@@ -114,8 +114,6 @@ Subtotal,Subtotal
 "You have %1 loyalty points. Each of 10 Points gets %2 discount.","You have %1 loyalty points. Each of 10 Points gets %2 discount."
 "Enter points to redeem","Enter points to redeem"
 Redeem,Redeem
-"Loading recommended products for you...","Loading recommended products for you..."
-"Recommended Products for you","Recommended Products for you"
 "Add to Cart","Add to Cart"
 "In stock","In stock"
 "Out of stock","Out of stock"
@@ -201,7 +199,6 @@ Debug,Debug
 "Service Down Notification","Service Down Notification"
 Enabled,Enabled
 "Notification Email","Notification Email"
-"LS Recommend","LS Recommend"
 "Show on Product Page","Show on Product Page"
 "Show on Cart Page","Show on Cart Page"
 "Show on Home Page","Show on Home Page"
