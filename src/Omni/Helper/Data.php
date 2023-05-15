@@ -535,19 +535,24 @@ class Data extends AbstractHelper
      */
     public function omniPing($baseUrl, $lsKey)
     {
-        //@codingStandardsIgnoreStart
-        $result       = null;
-        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $ping         = new Ping();
-        //@codingStandardsIgnoreEnd
-        $ping->setClient($client);
-        $ping->setToken($lsKey);
-        $client->setClassmap($ping->getClassMap());
-        $result = $ping->execute();
-        if (!empty($result)) {
-            return $result->getResult();
+        $result = null;
+        try {
+            //@codingStandardsIgnoreStart
+            $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
+            $url          = OmniService::getUrl($service_type, $baseUrl);
+            $client       = new OmniClient($url, $service_type);
+            $ping         = new Ping();
+            //@codingStandardsIgnoreEnd
+            $ping->setClient($client);
+            $ping->setToken($lsKey);
+            $client->setClassmap($ping->getClassMap());
+            $result = $ping->execute();
+            if (!empty($result)) {
+                return $result->getResult();
+            }
+
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
         }
 
         return $result;
@@ -593,21 +598,21 @@ class Data extends AbstractHelper
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_COUPON_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_COUPONS_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    )
-                );
-            }
-            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_COUPON_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                    LSR::LS_COUPONS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;
