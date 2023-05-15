@@ -38,9 +38,11 @@ use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class AttributesCreateTask
@@ -246,7 +248,8 @@ class AttributesCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_ATTRIBUTE_CONFIG_PATH_LAST_EXECUTE,
-                        $store->getId()
+                        $store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     // Process display only attributes which are going to be used for product specification
                     $this->processAttributes($store);
@@ -266,17 +269,23 @@ class AttributesCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttribute,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttributeVariant,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->replicationHelper->updateCronStatus(
                         $this->successCronAttributeStandardVariant,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                 }
                 $this->lsr->setStoreId(null);
@@ -309,7 +318,7 @@ class AttributesCreateTask
         try {
             $criteria = $this->replicationHelper->buildCriteriaForNewItems(
                 'scope_id',
-                $store->getId(),
+                $this->getScopeId(),
                 'eq',
                 $batchSize,
                 true
@@ -371,6 +380,7 @@ class AttributesCreateTask
                     );
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $replAttribute->getCode());
                 $this->logger->debug($e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
@@ -394,7 +404,7 @@ class AttributesCreateTask
         $this->logger->debug('Running variants create task for store ' . $store->getName());
         $criteria = $this->replicationHelper->buildCriteriaForNewItems(
             'scope_id',
-            $store->getId(),
+            $this->getScopeId(),
             'eq',
             $variantBatchSize,
             true
@@ -460,6 +470,7 @@ class AttributesCreateTask
                             ->save();
                         // @codingStandardsIgnoreEnd
                     } catch (Exception $e) {
+                        $this->logDetailedException(__METHOD__, $this->store->getName(), $code);
                         $this->logger->debug($e->getMessage());
                     }
                 }
@@ -521,7 +532,7 @@ class AttributesCreateTask
         $this->logger->debug('Running standard variants create task for store ' . $store->getName());
         $criteria = $this->replicationHelper->buildCriteriaForVariantAttributesNewItems(
             'scope_id',
-            $store->getId(),
+            $this->getScopeId(),
             'eq',
             $variantBatchSize,
             true
@@ -592,6 +603,7 @@ class AttributesCreateTask
                         ->save();
                     // @codingStandardsIgnoreEnd
                 } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $code);
                     $this->logger->debug($e->getMessage());
                 }
             }
@@ -654,6 +666,7 @@ class AttributesCreateTask
                 }
             }
         } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $formattedCode);
             $this->logger->debug($e->getMessage());
         }
     }
@@ -705,6 +718,7 @@ class AttributesCreateTask
                     ->save();
                 $this->logger->debug('Successfully created attribute : ' . $formattedCode);
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $formattedCode);
                 $this->logger->debug('Failed with Exception : ' . $e->getMessage());
                 $replAttribute->setData('is_failed', 1);
             }
@@ -794,8 +808,7 @@ class AttributesCreateTask
                         try {
                             $this->eavSetupFactory->create()->addAttributeOption($data);
                         } catch (Exception $e) {
-                            $this->logger->debug("Update attribute - $attributeCode failed with exception : "
-                                . $e->getMessage());
+                            $this->logDetailedException(__METHOD__, $this->store->getName(), $attributeCode);
                         }
                     }
                 }
@@ -810,7 +823,7 @@ class AttributesCreateTask
     public function updateOptionValues($store)
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', -1, true);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->getScopeId(), 'eq', -1, true);
         /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
         $optionResults             = [];
@@ -832,6 +845,7 @@ class AttributesCreateTask
                 }
             } catch (Exception $e) {
                 $item->setIsFailed(1);
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $item->getCode());
                 $this->logger->debug($e->getMessage());
             }
             $item->setProcessed(1);
@@ -901,7 +915,7 @@ class AttributesCreateTask
     public function getUomOptions($store)
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', -1, true);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->getScopeId(), 'eq', -1, true);
         /** @var ReplUnitOfMeasureSearchResults $replUomOptionValues */
         $replUomOptionValues = $this->replUnitOfMeasureRepositoryInterface->getList($criteria);
 
@@ -938,7 +952,7 @@ class AttributesCreateTask
     public function getVendorOptions($store)
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $store->getId(), 'eq', -1, true);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->getScopeId(), 'eq', -1, true);
         /** @var ReplVendorSearchResults $replVendorOptionValues */
         $replVendorOptionValues = $this->replVendorRepositoryInterface->getList($criteria);
 
@@ -992,6 +1006,13 @@ class AttributesCreateTask
                     $option
                 );
             } catch (Exception $e) {
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %s',
+                        __METHOD__,
+                        $this->store->getName()
+                    )
+                );
                 $this->logger->debug($e->getMessage());
             }
         }
@@ -1011,7 +1032,7 @@ class AttributesCreateTask
 
             $option = $this->optionFactory->create();
             $option->setLabel($label);
-            $option->setValue($value);
+            $option->setValue((string) $value);
             $option->setStoreLabels([$optionLabel]);
             $option->setSortOrder(0);
             $option->setIsDefault(false);
@@ -1025,7 +1046,9 @@ class AttributesCreateTask
         $this->replicationHelper->updateCronStatus(
             true,
             LSR::SC_SUCCESS_CRON_VENDOR,
-            $this->store->getId()
+            $this->store->getId(),
+            false,
+            ScopeInterface::SCOPE_STORES
         );
     }
 
@@ -1038,7 +1061,7 @@ class AttributesCreateTask
         if (!$this->remainingAttributesCount) {
             $criteria                       = $this->replicationHelper->buildCriteriaForNewItems(
                 'scope_id',
-                $storeId,
+                $this->getScopeId(),
                 'eq'
             );
             $this->remainingAttributesCount = $this->replAttributeRepositoryInterface->getList($criteria)
@@ -1056,7 +1079,7 @@ class AttributesCreateTask
         if (!$this->remainingVariantsCount) {
             $criteria                     = $this->replicationHelper->buildCriteriaForNewItems(
                 'scope_id',
-                $storeId,
+                $this->getScopeId(),
                 'eq'
             );
             $this->remainingVariantsCount = $this->replExtendedVariantValueRepository->getList($criteria)
@@ -1197,5 +1220,35 @@ class AttributesCreateTask
                 $this->addVisualSwatchTypeOptions($swatchTypeAttribute);
             }
         }
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store: %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
     }
 }

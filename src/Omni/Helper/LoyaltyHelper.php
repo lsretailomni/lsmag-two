@@ -71,7 +71,12 @@ class LoyaltyHelper extends AbstractHelperOmni
             return [];
         }
         $storeId  = $this->lsr->getCurrentStoreId();
-        $cacheId  = LSR::IMAGE_CACHE . $image_id . "_" . $storeId;
+        $cacheId  = LSR::IMAGE_CACHE . $image_id;
+
+        if (!$this->imageCacheIndependenOfStoreId()) {
+            $cacheId .= "_" . $storeId;
+        }
+
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
@@ -586,6 +591,20 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         return $this->lsr->getStoreConfig(
             LSR::SC_LOYALTY_SHOW_COUPON_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Image cache is independent of store
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function imageCacheIndependenOfStoreId()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::IMAGE_CACHE_INDEPENDENT_OF_STORE_ID,
             $this->lsr->getCurrentStoreId()
         );
     }

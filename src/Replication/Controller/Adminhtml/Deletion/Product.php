@@ -140,17 +140,20 @@ class Product extends AbstractReset
                 $this->replicationHelper->getGivenTableName('catalog_product_entity'),
                 ['sku IN (?)' => $parentCollection->getSelect()]
             );
+            // Update all dependent ls tables to not processed
+            $this->updateAllGivenTablesToUnprocessed(self::LS_ITEM_RELATED_TABLES, ['scope_id = ?' => $websiteId]);
             $where = ['scope_id = ?' => $scopeId];
         } else {
             $this->truncateAllGivenTables(self::CATALOG_PRODUCT_TABLES);
             $this->clearRequiredMediaDirectories();
             $this->deleteAllAttributeSets();
+            // Update all dependent ls tables to not processed
+            $this->updateAllGivenTablesToUnprocessed(self::LS_ITEM_RELATED_TABLES, []);
         }
 
         // Remove the url keys from url_rewrite table
         $this->replicationHelper->resetUrlRewriteByType('product', $scopeId);
-        // Update all dependent ls tables to not processed
-        $this->updateAllGivenTablesToUnprocessed(self::LS_ITEM_RELATED_TABLES, $where);
+
         // Reset Data Translation Table for product name
         $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION;
         $this->updateDataTranslationTables($where);

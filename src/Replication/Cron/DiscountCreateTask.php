@@ -25,6 +25,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * This cron will create catalog rules in order to integrate the pre-active
@@ -160,9 +161,10 @@ class DiscountCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
-                    $storeId                  = $this->store->getId();
+                    $storeId                  = $this->getScopeId();
                     $publishedOfferCollection = $this->getUniquePublishedOffers($storeId);
                     if (!empty($publishedOfferCollection)) {
                         $reindexRules = false;
@@ -246,14 +248,32 @@ class DiscountCreateTask
                         if ($reindexRules) {
                             $this->jobApply->applyAll();
                         }
-                        if ($this->getRemainingRecords($storeId) == 0) {
-                            $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
+                        if ($this->getRemainingRecords($this->store->getId()) == 0) {
+                            $this->replicationHelper->updateCronStatus(
+                                true,
+                                LSR::SC_SUCCESS_CRON_DISCOUNT,
+                                $this->store->getId(),
+                                false,
+                                ScopeInterface::SCOPE_STORES
+                            );
                         } else {
-                            $this->replicationHelper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
+                            $this->replicationHelper->updateCronStatus(
+                                false,
+                                LSR::SC_SUCCESS_CRON_DISCOUNT,
+                                $this->store->getId(),
+                                false,
+                                ScopeInterface::SCOPE_STORES
+                            );
                         }
                     } else {
                         // set the status to success if there is nothing to process.
-                        $this->replicationHelper->updateCronStatus(true, LSR::SC_SUCCESS_CRON_DISCOUNT, $storeId);
+                        $this->replicationHelper->updateCronStatus(
+                            true,
+                            LSR::SC_SUCCESS_CRON_DISCOUNT,
+                            $this->store->getId(),
+                            false,
+                            ScopeInterface::SCOPE_STORES
+                        );
                     }
                     /* Delete the IsDeleted offers */
                     $this->deleteOffers();
@@ -287,11 +307,10 @@ class DiscountCreateTask
      * @param $customerGroupIds
      * @param $amount
      * @return void
-     * @throws NoSuchEntityException
      */
     public function addSalesRule(ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
     {
-        $websiteIds = [$this->replicationHelper->getWebsiteIdGivenStoreId($replDiscount->getScopeId())];
+        $websiteIds = [$replDiscount->getScopeId()];
 
         if ($amount == null) {
             $amount = $replDiscount->getDiscountValue();
@@ -353,6 +372,7 @@ class DiscountCreateTask
             $rule->loadPost($rule->getData());
             $this->catalogRule->save($rule);
         } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
             $this->logger->debug($e->getMessage());
             $replDiscount->setData('is_failed', 1);
             // @codingStandardsIgnoreLine
@@ -404,6 +424,7 @@ class DiscountCreateTask
                     $this->catalogRule->deleteById($rule->getId());
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
                 $this->logger->debug($e->getMessage());
                 $replDiscount->setData('is_failed', 1);
             }
@@ -422,13 +443,14 @@ class DiscountCreateTask
     {
         $websiteIds     = [$this->store->getWebsiteId()];
         $ruleCollection = $this->ruleCollectionFactory->create();
-        $ruleCollection->addFieldToFilter('name', $name);
+        $ruleCollection->addFieldToFilter('name', );
         $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
             }
         } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $name);
             $this->logger->debug($e->getMessage());
         }
     }
@@ -454,5 +476,35 @@ class DiscountCreateTask
                 ->getTotalCount();
         }
         return $this->remainingRecords;
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
     }
 }

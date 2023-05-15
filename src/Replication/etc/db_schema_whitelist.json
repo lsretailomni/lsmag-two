@@ -19,17 +19,17 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_BARCODE_NAV_ID_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_BARCODE_NAV_ID": true,
-            "LS_REPLICATION_REPL_BARCODE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_BARCODE_ITEMID": true,
+            "LS_REPLICATION_REPL_BARCODE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_BARCODE_PROCESSED": true,
             "LS_REPLICATION_REPL_BARCODE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_BARCODE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_BARCODE_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_currency": {
@@ -55,16 +55,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE": true,
             "LS_REPLICATION_REPL_CURRENCY_SCOPE_ID": true,
             "LS_REPLICATION_REPL_CURRENCY_PROCESSED": true,
             "LS_REPLICATION_REPL_CURRENCY_IS_UPDATED": true,
             "LS_REPLICATION_REPL_CURRENCY_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_CURRENCY_CURRENCYCODE_SCOPE_ID": true
         }
     },
     "ls_replication_repl_currency_exch_rate": {
@@ -85,16 +85,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE": true,
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_PROCESSED": true,
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_CURRENCY_EXCH_RATE_CURRENCYCODE_SCOPE_ID": true
         }
     },
     "ls_replication_repl_extended_variant_value": {
@@ -119,10 +119,6 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_9890E4FED6E4E3EDB3220E8A609C4F1C": true
-        },
         "index": {
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_CODE": true,
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_FRAMEWORKCODE": true,
@@ -132,6 +128,10 @@
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_PROCESSED": true,
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_9890E4FED6E4E3EDB3220E8A609C4F1C": true
         }
     },
     "ls_replication_repl_image_link": {
@@ -153,18 +153,18 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID_KEYVALUE_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_TABLENAME": true,
             "LS_REPLICATION_REPL_IMAGE_LINK_KEYVALUE": true,
             "LS_REPLICATION_REPL_IMAGE_LINK_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_IMAGE_LINK_TABLENAME": true,
             "LS_REPLICATION_REPL_IMAGE_LINK_PROCESSED": true,
             "LS_REPLICATION_REPL_IMAGE_LINK_IS_UPDATED": true,
             "LS_REPLICATION_REPL_IMAGE_LINK_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID_KEYVALUE_SCOPE_ID": true
         }
     },
     "ls_replication_repl_image": {
@@ -176,6 +176,7 @@
             "IsDeleted": true,
             "Location": true,
             "LocationType": true,
+            "MediaId": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -184,12 +185,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "MediaId": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_IMAGE_NAV_ID_SCOPE_ID": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_IMAGE_NAV_ID": true,
@@ -197,6 +193,10 @@
             "LS_REPLICATION_REPL_IMAGE_PROCESSED": true,
             "LS_REPLICATION_REPL_IMAGE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_IMAGE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_IMAGE_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_item_category": {
@@ -215,16 +215,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID": true,
             "LS_REPLICATION_REPL_ITEM_CATEGORY_SCOPE_ID": true,
             "LS_REPLICATION_REPL_ITEM_CATEGORY_PROCESSED": true,
             "LS_REPLICATION_REPL_ITEM_CATEGORY_IS_UPDATED": true,
             "LS_REPLICATION_REPL_ITEM_CATEGORY_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ITEM_CATEGORY_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_item": {
@@ -251,6 +251,7 @@
             "IsDeleted": true,
             "ItemCategoryCode": true,
             "ItemFamilyCode": true,
+            "ItemTrackingCode": true,
             "KeyingInPrice": true,
             "KeyingInQty": true,
             "MustKeyInComment": true,
@@ -275,21 +276,20 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "ItemTrackingCode": true
+            "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_ITEM_NAV_ID": true,
+            "LS_REPLICATION_REPL_ITEM_ITEMCATEGORYCODE": true,
+            "LS_REPLICATION_REPL_ITEM_PRODUCTGROUPID": true,
+            "LS_REPLICATION_REPL_ITEM_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_ISDELETED": true
         },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_ITEM_NAV_ID_SCOPE_ID": true
-        },
-        "index": {
-            "LS_REPLICATION_REPL_ITEM_NAV_ID": true,
-            "LS_REPLICATION_REPL_ITEM_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_ITEM_ITEMCATEGORYCODE": true,
-            "LS_REPLICATION_REPL_ITEM_PRODUCTGROUPID": true,
-            "LS_REPLICATION_REPL_ITEM_PROCESSED": true,
-            "LS_REPLICATION_REPL_ITEM_IS_UPDATED": true,
-            "LS_REPLICATION_REPL_ITEM_ISDELETED": true
         }
     },
     "ls_replication_repl_item_unit_of_measure": {
@@ -297,13 +297,19 @@
             "repl_item_unit_of_measure_id": true,
             "Code": true,
             "CountAsOne": true,
+            "Cubage": true,
             "Description": true,
+            "EComSelection": true,
+            "Height": true,
             "IsDeleted": true,
             "ItemId": true,
+            "Length": true,
             "Order": true,
             "QtyPrUOM": true,
             "Selection": true,
             "ShortDescription": true,
+            "Weight": true,
+            "Width": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -312,12 +318,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "EComSelection": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE_ITEMID_SCOPE_ID": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE": true,
@@ -326,15 +327,20 @@
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_PROCESSED": true,
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ITEM_UNIT_OF_MEASURE_CODE_ITEMID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_item_variant_registration": {
         "column": {
             "repl_item_variant_registration_id": true,
+            "BlockedOnECom": true,
+            "BlockedOnPos": true,
             "FrameworkCode": true,
             "IsDeleted": true,
             "ItemId": true,
-            "BlockedOnECom": true,
             "VariantDimension1": true,
             "VariantDimension2": true,
             "VariantDimension3": true,
@@ -350,12 +356,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "BlockedOnPos": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_7797FC0A3486B8BDA4E6973CB5D0798F": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ITEMID": true,
@@ -364,6 +365,33 @@
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_PROCESSED": true,
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_IS_UPDATED": true,
             "LS_REPLICATION_REPL_ITEM_VARIANT_REGISTRATION_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_7797FC0A3486B8BDA4E6973CB5D0798F": true
+        }
+    },
+    "ls_replication_repl_item_variant": {
+        "column": {
+            "repl_item_variant_id": true,
+            "Description": true,
+            "Description2": true,
+            "IsDeleted": true,
+            "ItemId": true,
+            "VariantId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true,
+            "ready_to_process": true
+        },
+        "constraint": {
+            "PRIMARY": true
         }
     },
     "ls_replication_repl_price": {
@@ -399,10 +427,6 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_4F9EEF843C48894BFFF7394591578430": true
-        },
         "index": {
             "LS_REPLICATION_REPL_PRICE_ITEMID": true,
             "LS_REPLICATION_REPL_PRICE_VARIANTID": true,
@@ -413,6 +437,10 @@
             "LS_REPLICATION_REPL_PRICE_PROCESSED": true,
             "LS_REPLICATION_REPL_PRICE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_PRICE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_4F9EEF843C48894BFFF7394591578430": true
         }
     },
     "ls_replication_repl_product_group": {
@@ -432,16 +460,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID": true,
             "LS_REPLICATION_REPL_PRODUCT_GROUP_SCOPE_ID": true,
             "LS_REPLICATION_REPL_PRODUCT_GROUP_PROCESSED": true,
             "LS_REPLICATION_REPL_PRODUCT_GROUP_IS_UPDATED": true,
             "LS_REPLICATION_REPL_PRODUCT_GROUP_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_PRODUCT_GROUP_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_store": {
@@ -455,6 +483,7 @@
             "Currency": true,
             "DefaultCustomerAccount": true,
             "FunctionalityProfile": true,
+            "HospSalesTypes": true,
             "nav_id": true,
             "IsDeleted": true,
             "Latitute": true,
@@ -465,6 +494,7 @@
             "State": true,
             "Street": true,
             "TaxGroup": true,
+            "UseSourcingLocation": true,
             "UserDefaultCustomerAccount": true,
             "ZipCode": true,
             "scope": true,
@@ -475,17 +505,15 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "UseSourcingLocation": true,
-            "HospSalesTypes": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_STORE_NAV_ID_SCOPE_ID": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_STORE_NAV_ID": true,
             "LS_REPLICATION_REPL_STORE_SCOPE_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_STORE_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_unit_of_measure": {
@@ -506,16 +534,38 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID": true,
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_PROCESSED": true,
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_UNIT_OF_MEASURE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_UNIT_OF_MEASURE_NAV_ID_SCOPE_ID": true
+        }
+    },
+    "ls_replication_repl_collection": {
+        "column": {
+            "repl_collection_id": true,
+            "IsDeleted": true,
+            "ItemId": true,
+            "Quantity": true,
+            "UnitOfMeasureId": true,
+            "VariantId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
         }
     },
     "ls_replication_repl_vendor": {
@@ -543,16 +593,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_VENDOR_NAME_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_VENDOR_NAME": true,
             "LS_REPLICATION_REPL_VENDOR_SCOPE_ID": true,
             "LS_REPLICATION_REPL_VENDOR_PROCESSED": true,
             "LS_REPLICATION_REPL_VENDOR_IS_UPDATED": true,
             "LS_REPLICATION_REPL_VENDOR_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_VENDOR_NAME_SCOPE_ID": true
         }
     },
     "ls_replication_repl_loy_vendor_item_mapping": {
@@ -575,10 +625,6 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_AAAA6511EEFDFA429EB95E38BCAA3E3D": true
-        },
         "index": {
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVMANUFACTURERID": true,
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_NAVPRODUCTID": true,
@@ -586,6 +632,10 @@
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_PROCESSED": true,
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_IS_UPDATED": true,
             "LS_REPLICATION_REPL_LOY_VENDOR_ITEM_MAPPING_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_AAAA6511EEFDFA429EB95E38BCAA3E3D": true
         }
     },
     "ls_replication_repl_attribute": {
@@ -606,16 +656,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_CODE_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_CODE": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_PROCESSED": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_CODE_SCOPE_ID": true
         }
     },
     "ls_replication_repl_attribute_value": {
@@ -640,21 +690,20 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_881B1B6243B13AC5C2EC51292F5F8DB7": true
-        },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_CODE": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD1": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD2": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_LINKFIELD3": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_VALUE": true,
-            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SEQUENCE": true,
+            "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_PROCESSED": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_VALUE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_881B1B6243B13AC5C2EC51292F5F8DB7": true
         }
     },
     "ls_replication_repl_attribute_option_value": {
@@ -674,10 +723,6 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_ATTR_OPT_VAL_CODE_SEQUENCE_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_CODE": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_SEQUENCE": true,
@@ -685,6 +730,10 @@
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_PROCESSED": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_ATTRIBUTE_OPTION_VALUE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_ATTR_OPT_VAL_CODE_SEQUENCE_SCOPE_ID": true
         }
     },
     "ls_replication_repl_data_translation": {
@@ -705,10 +754,6 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_79B1FA1D3B749CC9B91AFEAC5AA06F8C": true
-        },
         "index": {
             "LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_KEY": true,
@@ -717,6 +762,10 @@
             "LS_REPLICATION_REPL_DATA_TRANSLATION_PROCESSED": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_IS_UPDATED": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_79B1FA1D3B749CC9B91AFEAC5AA06F8C": true
         }
     },
     "ls_replication_repl_data_translation_lang_code": {
@@ -734,25 +783,24 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_PROCESSED": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_DATA_TRANSLATION_LANG_CODE_CODE_SCOPE_ID": true
         }
     },
-    "ls_replication_repl_hierarchy": {
+    "ls_replication_repl_validation_schedule": {
         "column": {
-            "repl_hierarchy_id": true,
+            "repl_validation_schedule_id": true,
             "Description": true,
             "nav_id": true,
             "IsDeleted": true,
-            "Type": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -761,15 +809,32 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "StartDate": true,
-            "Priority": true,
-            "SalesType": true,
-            "ValidationScheduleId": true
+            "updated_at": true
         },
         "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_HIERARCHY_NAV_ID_SCOPE_ID": true
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_hierarchy": {
+        "column": {
+            "repl_hierarchy_id": true,
+            "Description": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "Priority": true,
+            "SalesType": true,
+            "StartDate": true,
+            "Type": true,
+            "ValidationScheduleId": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_NAV_ID": true,
@@ -777,6 +842,10 @@
             "LS_REPLICATION_REPL_HIERARCHY_PROCESSED": true,
             "LS_REPLICATION_REPL_HIERARCHY_IS_UPDATED": true,
             "LS_REPLICATION_REPL_HIERARCHY_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_hierarchy_node": {
@@ -801,30 +870,39 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID_SCOPE_ID": true
-        },
         "index": {
-            "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID": true,
-            "LS_REPLICATION_REPL_HIERARCHY_NODE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_HIERARCHY_NODE_PARENTNODE": true,
             "LS_REPLICATION_REPL_HIERARCHY_NODE_HIERARCHYCODE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_SCOPE_ID": true,
             "LS_REPLICATION_REPL_HIERARCHY_NODE_PROCESSED": true,
             "LS_REPLICATION_REPL_HIERARCHY_NODE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_HIERARCHY_NODE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_HIERARCHY_NODE_NAV_ID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_hierarchy_leaf": {
         "column": {
             "repl_hierarchy_leaf_id": true,
+            "DealPrice": true,
             "Description": true,
             "HierarchyCode": true,
             "nav_id": true,
             "ImageId": true,
+            "IsActive": true,
             "IsDeleted": true,
+            "IsMemberClub": true,
+            "ItemUOM": true,
+            "MemberValue": true,
             "NodeId": true,
+            "Prepayment": true,
+            "SortOrder": true,
             "Type": true,
+            "ValidationPeriod": true,
+            "VendorSourcing": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -833,46 +911,39 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "DealPrice": true,
-            "IsActive": true,
-            "IsMemberClub": true,
-            "MemberValue": true,
-            "ValidationPeriod": true,
-            "ItemUOM": true,
-            "SortOrder": true,
-            "Prepayment": true,
-            "VendorSourcing": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID_NODEID_SCOPE_ID": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_NODEID": true,
-            "LS_REPLICATION_REPL_HIERARCHY_LEAF_SCOPE_ID": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_HIERARCHYCODE": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_TYPE": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_SCOPE_ID": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_PROCESSED": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_IS_UPDATED": true,
             "LS_REPLICATION_REPL_HIERARCHY_LEAF_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_HIERARCHY_LEAF_NAV_ID_NODEID_SCOPE_ID": true
         }
     },
     "ls_replication_repl_hierarchy_hosp_deal": {
         "column": {
             "repl_hierarchy_hosp_deal_id": true,
+            "AddedAmount": true,
+            "DealModSizeGroupIndex": true,
             "DealNo": true,
             "Description": true,
             "HierarchyCode": true,
             "ImageId": true,
             "IsDeleted": true,
-            "ItemNo": true,
             "LineNo": true,
+            "MaxSelection": true,
             "MinSelection": true,
+            "No": true,
             "ParentNode": true,
-            "Price": true,
-            "PriceWithVat": true,
+            "Type": true,
             "UnitOfMeasure": true,
             "VariantCode": true,
             "scope": true,
@@ -883,17 +954,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "AddedAmount": true,
-            "DealModSizeGroupIndex": true,
-            "MaxSelection": true,
-            "ModifierCode": true,
-            "No": true,
-            "Type": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_B9BC29C38EAD62DB1502AB9635F4EE48": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_DEALNO": true,
@@ -904,11 +965,16 @@
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_PROCESSED": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_IS_UPDATED": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_B9BC29C38EAD62DB1502AB9635F4EE48": true
         }
     },
     "ls_replication_repl_hierarchy_hosp_deal_line": {
         "column": {
             "repl_hierarchy_hosp_deal_line_id": true,
+            "AddedAmount": true,
             "DealLineCode": true,
             "DealLineNo": true,
             "DealNo": true,
@@ -918,10 +984,9 @@
             "IsDeleted": true,
             "ItemNo": true,
             "LineNo": true,
+            "MaxSelection": true,
             "MinSelection": true,
             "ParentNode": true,
-            "Price": true,
-            "PriceWithVat": true,
             "UnitOfMeasure": true,
             "VariantCode": true,
             "scope": true,
@@ -932,13 +997,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "AddedAmount": true,
-            "MaxSelection": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_D0D9271AA799577875DC221486DEAC7C": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_DEALNO": true,
@@ -949,6 +1008,98 @@
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_PROCESSED": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_HIERARCHY_HOSP_DEAL_LINE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_D0D9271AA799577875DC221486DEAC7C": true
+        }
+    },
+    "ls_replication_repl_item_recipe": {
+        "column": {
+            "repl_item_recipe_id": true,
+            "Description": true,
+            "Exclusion": true,
+            "ExclusionPrice": true,
+            "ImageId": true,
+            "IsDeleted": true,
+            "ItemNo": true,
+            "LineNo": true,
+            "QuantityPer": true,
+            "RecipeNo": true,
+            "UnitOfMeasure": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_RECIPENO": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_658482CF60AC4CA773D59F8D55AD8586": true
+        }
+    },
+    "ls_replication_repl_item_modifier": {
+        "column": {
+            "repl_item_modifier_id": true,
+            "AlwaysCharge": true,
+            "AmountPercent": true,
+            "Code": true,
+            "Description": true,
+            "ExplanatoryHeaderText": true,
+            "GroupMaxSelection": true,
+            "GroupMinSelection": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "MaxSelection": true,
+            "MinSelection": true,
+            "PriceType": true,
+            "Prompt": true,
+            "SubCode": true,
+            "TimeModifierMinutes": true,
+            "TriggerCode": true,
+            "TriggerFunction": true,
+            "Type": true,
+            "UnitOfMeasure": true,
+            "UsageCategory": true,
+            "VariantCode": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_NAV_ID": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_VARIANTCODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_CODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_SUBCODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_TRIGGERCODE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_UNITOFMEASURE": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_PROCESSED": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "UNQ_74822A85709C483BCDDDC7E26800F045": true
         }
     },
     "ls_replication_loy_item": {
@@ -964,6 +1115,7 @@
             "IsDeleted": true,
             "ItemCategoryCode": true,
             "ItemFamilyCode": true,
+            "ItemTrackingCode": true,
             "Price": true,
             "ProductGroupId": true,
             "SalesUomId": true,
@@ -978,14 +1130,13 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "ItemTrackingCode": true
-        },
-        "constraint": {
-            "PRIMARY": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_LOY_ITEM_NAV_ID": true
+        },
+        "constraint": {
+            "PRIMARY": true
         }
     },
     "ls_replication_repl_discount": {
@@ -1021,84 +1172,22 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_BA81CAD5F92CDE0A56741C9E17EFD0C9": true
-        },
         "index": {
             "LS_REPLICATION_REPL_DISCOUNT_ITEMID": true,
             "LS_REPLICATION_REPL_DISCOUNT_LOYALTYSCHEMECODE": true,
             "LS_REPLICATION_REPL_DISCOUNT_OFFERNO": true,
+            "LS_REPLICATION_REPL_DISCOUNT_TODATE": true,
             "LS_REPLICATION_REPL_DISCOUNT_STOREID": true,
             "LS_REPLICATION_REPL_DISCOUNT_VARIANTID": true,
             "LS_REPLICATION_REPL_DISCOUNT_MINIMUMQUANTITY": true,
             "LS_REPLICATION_REPL_DISCOUNT_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_DISCOUNT_TODATE": true,
             "LS_REPLICATION_REPL_DISCOUNT_PROCESSED": true,
             "LS_REPLICATION_REPL_DISCOUNT_IS_UPDATED": true,
             "LS_REPLICATION_REPL_DISCOUNT_ISDELETED": true
-        }
-    },
-    "ls_replication_repl_discount_validation": {
-        "column": {
-            "repl_discount_validation_id": true,
-            "Description": true,
-            "EndAfterMidnight": true,
-            "EndDate": true,
-            "EndTime": true,
-            "FridayEnd": true,
-            "FridayEndAfterMidnight": true,
-            "FridayStart": true,
-            "FridayWithinBounds": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "MondayEnd": true,
-            "MondayEndAfterMidnight": true,
-            "MondayStart": true,
-            "MondayWithinBounds": true,
-            "SaturdayEnd": true,
-            "SaturdayEndAfterMidnight": true,
-            "SaturdayStart": true,
-            "SaturdayWithinBounds": true,
-            "StartDate": true,
-            "StartTime": true,
-            "SundayEnd": true,
-            "SundayEndAfterMidnight": true,
-            "SundayStart": true,
-            "SundayWithinBounds": true,
-            "ThursdayEnd": true,
-            "ThursdayEndAfterMidnight": true,
-            "ThursdayStart": true,
-            "ThursdayWithinBounds": true,
-            "TimeWithinBounds": true,
-            "TuesdayEnd": true,
-            "TuesdayEndAfterMidnight": true,
-            "TuesdayStart": true,
-            "TuesdayWithinBounds": true,
-            "WednesdayEnd": true,
-            "WednesdayEndAfterMidnight": true,
-            "WednesdayStart": true,
-            "WednesdayWithinBounds": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
         },
         "constraint": {
             "PRIMARY": true,
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID_SCOPE_ID": true
-        },
-        "index": {
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID": true,
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_PROCESSED": true,
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IS_UPDATED": true,
-            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED": true
+            "UNQ_BA81CAD5F92CDE0A56741C9E17EFD0C9": true
         }
     },
     "ls_replication_repl_shipping_agent": {
@@ -1119,16 +1208,16 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_SHIPPING_AGENT_NAME_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_SHIPPING_AGENT_NAME": true,
             "LS_REPLICATION_REPL_SHIPPING_AGENT_SCOPE_ID": true,
             "LS_REPLICATION_REPL_SHIPPING_AGENT_PROCESSED": true,
             "LS_REPLICATION_REPL_SHIPPING_AGENT_IS_UPDATED": true,
             "LS_REPLICATION_REPL_SHIPPING_AGENT_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_SHIPPING_AGENT_NAME_SCOPE_ID": true
         }
     },
     "ls_replication_repl_customer": {
@@ -1172,24 +1261,26 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER": true,
             "LS_REPLICATION_REPL_CUSTOMER_SCOPE_ID": true,
             "LS_REPLICATION_REPL_CUSTOMER_PROCESSED": true,
             "LS_REPLICATION_REPL_CUSTOMER_IS_UPDATED": true,
             "LS_REPLICATION_REPL_CUSTOMER_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER_SCOPE_ID": true
         }
     },
     "ls_replication_repl_country_code": {
         "column": {
             "repl_country_code_id": true,
-            "nav_id": true,
+            "Code": true,
+            "CustomerNo": true,
             "IsDeleted": true,
             "Name": true,
+            "TaxPostGroup": true,
             "scope": true,
             "scope_id": true,
             "processed": true,
@@ -1198,14 +1289,7 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "Code": true,
-            "CustomerNo": true,
-            "TaxPostGroup": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_COUNTRY_CODE_NAME_SCOPE_ID": true
+            "updated_at": true
         },
         "index": {
             "LS_REPLICATION_REPL_COUNTRY_CODE_NAME": true,
@@ -1213,6 +1297,10 @@
             "LS_REPLICATION_REPL_COUNTRY_CODE_PROCESSED": true,
             "LS_REPLICATION_REPL_COUNTRY_CODE_IS_UPDATED": true,
             "LS_REPLICATION_REPL_COUNTRY_CODE_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_COUNTRY_CODE_NAME_SCOPE_ID": true
         }
     },
     "ls_replication_repl_store_tender_type": {
@@ -1229,6 +1317,7 @@
             "MaximumOverTenderAmount": true,
             "MinimumChangeAmount": true,
             "Name": true,
+            "OmniTenderTypeId": true,
             "OpenDrawer": true,
             "ReturnAllowed": true,
             "Rounding": true,
@@ -1245,17 +1334,15 @@
             "checksum": true,
             "processed_at": true,
             "created_at": true,
-            "updated_at": true,
-            "OmniTenderTypeId": true
+            "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID": true,
+            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPE_ID": true
         },
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID_SCOPE_ID": true
-        },
-        "index": {
-            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_STOREID": true,
-            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID": true,
-            "LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPE_ID": true
         }
     },
     "ls_replication_repl_tax_setup": {
@@ -1297,10 +1384,6 @@
             "created_at": true,
             "updated_at": true
         },
-        "constraint": {
-            "PRIMARY": true,
-            "LS_REPLICATION_REPL_INV_STATUS_ITEMID_VARIANTID_STOREID_SCOPE_ID": true
-        },
         "index": {
             "LS_REPLICATION_REPL_INV_STATUS_ITEMID": true,
             "LS_REPLICATION_REPL_INV_STATUS_VARIANTID": true,
@@ -1309,191 +1392,10 @@
             "LS_REPLICATION_REPL_INV_STATUS_PROCESSED": true,
             "LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED": true,
             "LS_REPLICATION_REPL_INV_STATUS_ISDELETED": true
-        }
-    },
-    "ls_replication_repl_hierarchy_hosp_modifier": {
-        "column": {
-            "repl_hierarchy_hosp_modifier_id": true,
-            "AlwaysCharge": true,
-            "AmountPercent": true,
-            "Code": true,
-            "Description": true,
-            "HierarchyCode": true,
-            "IsDeleted": true,
-            "ItemNo": true,
-            "MaxSelection": true,
-            "MinSelection": true,
-            "ParentItem": true,
-            "ParentNode": true,
-            "PriceType": true,
-            "SubCode": true,
-            "UnitOfMeasure": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true,
-            "Type": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_item_modifier": {
-        "column": {
-            "repl_item_modifier_id": true,
-            "AlwaysCharge": true,
-            "AmountPercent": true,
-            "Code": true,
-            "Description": true,
-            "ExplanatoryHeaderText": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "MaxSelection": true,
-            "MinSelection": true,
-            "PriceType": true,
-            "Prompt": true,
-            "SubCode": true,
-            "TimeModifierMinutes": true,
-            "TriggerCode": true,
-            "TriggerFunction": true,
-            "Type": true,
-            "UnitOfMeasure": true,
-            "UsageCategory": true,
-            "VariantCode": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true,
-            "GroupMaxSelection": true,
-            "GroupMinSelection": true
         },
         "constraint": {
             "PRIMARY": true,
-            "UNQ_74822A85709C483BCDDDC7E26800F045": true
-        },
-        "index": {
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_NAV_ID": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_VARIANTCODE": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_CODE": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_SUBCODE": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_TRIGGERCODE": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_PROCESSED": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_IS_UPDATED": true,
-            "LS_REPLICATION_REPL_ITEM_MODIFIER_ISDELETED": true
-        }
-    },
-    "ls_replication_repl_item_recipe": {
-        "column": {
-            "repl_item_recipe_id": true,
-            "Description": true,
-            "Exclusion": true,
-            "ExclusionPrice": true,
-            "ImageId": true,
-            "IsDeleted": true,
-            "ItemNo": true,
-            "LineNo": true,
-            "QuantityPer": true,
-            "RecipeNo": true,
-            "UnitOfMeasure": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true,
-            "UNQ_658482CF60AC4CA773D59F8D55AD8586": true
-        },
-        "index": {
-            "LS_REPLICATION_REPL_ITEM_RECIPE_ITEMNO": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_RECIPENO": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_UNITOFMEASURE": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_SCOPE_ID": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_PROCESSED": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_IS_UPDATED": true,
-            "LS_REPLICATION_REPL_ITEM_RECIPE_ISDELETED": true
-        }
-    },
-    "ls_replication_repl_collection": {
-        "column": {
-            "repl_collection_id": true,
-            "IsDeleted": true,
-            "ItemId": true,
-            "Quantity": true,
-            "UnitOfMeasureId": true,
-            "VariantId": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_validation_schedule": {
-        "column": {
-            "repl_validation_schedule_id": true,
-            "Description": true,
-            "nav_id": true,
-            "IsDeleted": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true
-        },
-        "constraint": {
-            "PRIMARY": true
-        }
-    },
-    "ls_replication_repl_item_variant": {
-        "column": {
-            "repl_item_variant_id": true,
-            "Description": true,
-            "Description2": true,
-            "IsDeleted": true,
-            "ItemId": true,
-            "VariantId": true,
-            "scope": true,
-            "scope_id": true,
-            "processed": true,
-            "is_updated": true,
-            "is_failed": true,
-            "checksum": true,
-            "processed_at": true,
-            "created_at": true,
-            "updated_at": true,
-            "ready_to_process": true
-        },
-        "constraint": {
-            "PRIMARY": true
+            "LS_REPLICATION_REPL_INV_STATUS_ITEMID_VARIANTID_STOREID_SCOPE_ID": true
         }
     }
 }

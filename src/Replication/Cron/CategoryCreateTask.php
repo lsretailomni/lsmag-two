@@ -26,6 +26,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Io\File;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  *
@@ -164,7 +165,8 @@ class CategoryCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_CATEGORY_CONFIG_PATH_LAST_EXECUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $hierarchyCode = $this->getHierarchyCode($store);
                     if (empty($hierarchyCode)) {
@@ -178,7 +180,7 @@ class CategoryCreateTask
                     ];
                     $scopeIdFilter               = [
                         'field'          => 'scope_id',
-                        'value'          => $store->getId(),
+                        'value'          => $this->getScopeId(),
                         'condition_type' => 'eq'
                     ];
                     $mediaAttribute              = ['image', 'small_image', 'thumbnail'];
@@ -200,7 +202,9 @@ class CategoryCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_CATEGORY,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('CategoryCreateTask Completed for Store ' . $this->store->getName());
                 }
@@ -301,8 +305,8 @@ class CategoryCreateTask
                     }
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $hierarchyNode->getNavId());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId() . ' for store ' . $this->store->getName());
                 $hierarchyNode->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreStart
@@ -429,8 +433,8 @@ class CategoryCreateTask
                     $hierarchyNodeSub->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $hierarchyNodeSub->getNavId());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while creating ' . $hierarchyNodeSub->getNavId() . ' for store ' . $this->store->getName());
                 $hierarchyNodeSub->setData('is_failed', 1);
             }
             $hierarchyNodeSub->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -450,7 +454,7 @@ class CategoryCreateTask
     {
         $attribute_id = $this->eavAttribute->getIdByCode(Category::ENTITY, 'nav_id');
         $filters      = [
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
             ['field' => 'second.store_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
@@ -480,8 +484,8 @@ class CategoryCreateTask
                         $hierarchyNode->setData('is_failed', 1);
                     }
                 } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $hierarchyNode->getNavId());
                     $this->logger->debug($e->getMessage());
-                    $this->logger->debug('Error while creating ' . $hierarchyNode->getNavId());
                     $hierarchyNode->setData('is_failed', 1);
                 }
                 $hierarchyNode->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -634,7 +638,7 @@ class CategoryCreateTask
     public function updateImagesOnly()
     {
         $filters  = [
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.TableName', 'value' => 'Hierarchy Node%', 'condition_type' => 'like']
         ];
         $criteria = $this->replicationHelper->buildCriteriaGetUpdatedOnly($filters);
@@ -653,6 +657,7 @@ class CategoryCreateTask
                         $this->cronStatus = true;
                     }
                 } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $navId);
                     $this->logger->debug($e->getMessage());
                     $image->setData('is_failed', 1);
                 }
@@ -676,7 +681,7 @@ class CategoryCreateTask
         if (!$this->remainingRecords) {
             $filters                = [
                 ['field' => 'HierarchyCode', 'value' => $this->getHierarchyCode($storeData), 'condition_type' => 'eq'],
-                ['field' => 'scope_id', 'value' => $storeData->getId(), 'condition_type' => 'eq']
+                ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
             $criteria               = $this->replicationHelper->buildCriteriaForArray($filters, -1);
             $this->remainingRecords = $this->replHierarchyNodeRepository->getList($criteria)->getTotalCount();
@@ -694,5 +699,35 @@ class CategoryCreateTask
     {
         $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
         return $this->hierarchyCode;
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store: %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
     }
 }

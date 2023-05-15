@@ -5,7 +5,6 @@
         <ls_mag>
             <replication>
                 <replicate_data_translation_lang_code>Default</replicate_data_translation_lang_code>
-                <manual_cron_grid_default_store>1</manual_cron_grid_default_store>
                 <identical_table_web_service_list>ReplEcommHtmlTranslation</identical_table_web_service_list>
                 <replicate_all_stores_items>0</replicate_all_stores_items>
                 <default_batch_size>2000</default_batch_size>
@@ -27,6 +26,7 @@
                 <debug_on_error>0</debug_on_error>
                 <convert_attribute_to_visual_swatch>0</convert_attribute_to_visual_swatch>
                 <visual_type_attributes>ls_colour,ls_colours</visual_type_attributes>
+                <image_cache_independent_of_store_id>1</image_cache_independent_of_store_id>
                 <item_image_width>0</item_image_width>
                 <item_image_height>0</item_image_height>
                 <cron_expr_configuration>0</cron_expr_configuration>
