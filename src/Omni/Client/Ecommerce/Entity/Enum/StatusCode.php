@@ -260,10 +260,6 @@ class StatusCode extends Enum
 
     public const L_S_KEY_INVALID = 'LSKeyInvalid';
 
-    public const L_S_RECOMMEND_SETUP_MISSING = 'LSRecommendSetupMissing';
-
-    public const L_S_RECOMMEND_ERROR = 'LSRecommendError';
-
     public const PRIMARY_KEY_DUPLICATION = 'PrimaryKeyDuplication';
 
     public const OBJECT_ID_MISSING = 'ObjectIdMissing';
