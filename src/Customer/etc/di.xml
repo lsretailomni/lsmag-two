@@ -53,6 +53,9 @@
     <type name="Ls\Customer\Controller\Order\Shipment">
         <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
+    <type name="Magento\Bundle\Block\Sales\Order\Items\Renderer">
+        <plugin name="bundle-order-item-renderer" type="Ls\Customer\Plugin\Sales\Order\Items\RendererPlugin"/>
+    </type>
     <preference for="Magento\Checkout\Block\Registration"
                 type="Ls\Customer\Block\Registration"/>
 </config>

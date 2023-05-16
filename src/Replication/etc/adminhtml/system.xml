@@ -36,16 +36,16 @@
                     <source_model>Ls\Replication\Model\System\Source\LanguageCode</source_model>
                     <comment>Select the data translation language code</comment>
                 </field>
-                <field id="manual_cron_grid_default_store"
+                <field id="manual_cron_grid_default_website"
                        translate="label"
                        type="select"
                        sortOrder="30"
                        showInDefault="1"
                        showInWebsite="0"
                        showInStore="0">
-                    <label>Manual Cron Grid Default Store</label>
-                    <source_model>Ls\Replication\Model\System\Source\MagStore</source_model>
-                    <comment>Select the default store for manual cron grid</comment>
+                    <label>Manual Cron Grid Default Website</label>
+                    <source_model>Ls\Replication\Model\Websites</source_model>
+                    <comment>Select the default website for manual cron grid</comment>
                 </field>
                 <field id="attribute_sets_mechanism"
                        translate="label"
@@ -191,6 +191,37 @@
                     <depends>
                         <field id="ls_mag/replication/convert_attribute_to_visual_swatch">1</field>
                     </depends>
+                </field>
+                <field id="image_cache_independent_of_store_id"
+                       translate="label"
+                       type="select"
+                       sortOrder="230"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Cache image content independent of store id</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Image cache is build based on image id. If disabled, the cache will be build based on image id as well as store id.</comment>
+                </field>
+                <field id="item_image_width"
+                       translate="label"
+                       type="text"
+                       sortOrder="230"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Item Image Width</label>
+                    <comment>Selected image width will be used in image replication</comment>
+                </field>
+                <field id="item_image_height"
+                       translate="label"
+                       type="text"
+                       sortOrder="240"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Item Image Height</label>
+                    <comment>Selected image height will be used in image replication</comment>
                 </field>
             </group>
             <group id="one_list"

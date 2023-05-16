@@ -131,11 +131,13 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $cronsGroupListing = $this->readCronFile();
         $items             = [];
         $counter           = 1;
-        $storeId           = $this->request->getParam('store');
+        $scope             = $this->request->getParam('website') ? 'website' : 'store';
+        $storeId           = $scope == 'website' ?
+            $this->request->getParam('website') : $this->request->getParam('store');
         $pagingParam       = $this->request->getParam('paging');
 
         if (empty($storeId)) {
-            $storeId = '1';
+            $storeId = $this->getDefaultStoreId();
         }
 
         foreach ($cronsGroupListing as $cronlist) {
@@ -157,12 +159,33 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             foreach ($cronlist['_value']['job'] as $joblist) {
                 $fullReplicationStatus = '0';
                 $cronName              = $joblist['_attribute']['name'];
+                $isTranslationRelatedCron =
+                    $cronName == 'repl_data_translation' ||
+                    $cronName == 'repl_html_translation' ||
+                    $cronName == 'repl_data_translation_lang_code' ||
+                    $cronName == 'repl_data_translation_to_magento';
+
+                if ($scope == 'store') {
+                    if (($cronlist['_attribute']['id'] == 'flat_replication' ||
+                            $cronlist['_attribute']['id'] == 'reset') &&
+                        !$isTranslationRelatedCron
+                    ) {
+                        continue;
+                    }
+                } else {
+                    if (($cronlist['_attribute']['id'] != 'flat_replication' &&
+                        $cronlist['_attribute']['id'] != 'reset') ||
+                        $isTranslationRelatedCron
+                    ) {
+                        continue;
+                    }
+                }
 
                 if ($path != '') {
                     $pathNew               = $path . $cronName;
                     $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                         $pathNew,
-                        ScopeInterface::SCOPE_STORES,
+                        $scope == 'website' ? ScopeInterface::SCOPE_WEBSITES : ScopeInterface::SCOPE_STORES,
                         $storeId
                     );
                 }
@@ -174,7 +197,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $lastExecute           = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                     $this->lsr->getConfigValueFromDb(
                         'ls_mag/replication/last_execute_' . $cronName,
-                        ScopeInterface::SCOPE_STORES,
+                        $scope == 'website' ? ScopeInterface::SCOPE_WEBSITES : ScopeInterface::SCOPE_STORES,
                         $storeId
                     ),
                     'd M, Y h:i:s A'
@@ -189,13 +212,15 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 }
                 $items[] = [
                     'id'                    => $counter,
-                    'store'                 => $this->storeManager->getStoreName($storeId),
+                    'store'                 => $scope == 'website' ?
+                        $this->storeManager->getWebsiteName($storeId) : $this->storeManager->getStoreName($storeId),
                     'storeId'               => $storeId,
                     'fullreplicationstatus' => $statusStr,
                     'label'                 => $cronName,
                     'lastexecuted'          => $lastExecute,
                     'value'                 => $joblist['_attribute']['instance'],
-                    'condition'             => $condition
+                    'condition'             => $condition,
+                    'scope'                 => $scope
                 ];
                 $counter++;
             }
@@ -383,5 +408,22 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         }
 
         return $fullReplicationStatus;
+    }
+
+    /**
+     * Get Default store Id
+     *
+     * @return string
+     */
+    public function getDefaultStoreId()
+    {
+        $storeId = '';
+
+        foreach ($this->storeManager->getStoreCollection() as $store) {
+            $storeId = $store->getId();
+            break;
+        }
+
+        return $storeId;
     }
 }

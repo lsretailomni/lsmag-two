@@ -4,7 +4,7 @@ namespace Ls\Omni\Block\Product\View;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfRecommendedItem;
-use Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LSRecommend as LSRecommendHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
@@ -12,6 +12,7 @@ use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\ProductTypes\ConfigInterface;
 use Magento\Customer\Model\Session\Proxy;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Locale\FormatInterface;
@@ -152,5 +153,30 @@ class Recommend extends \Magento\Catalog\Block\Product\View
     public function getLsCentralItemIdBySku($sku)
     {
         return $this->itemHelper->getLsCentralItemIdBySku($sku);
+    }
+
+    /**
+     * Get product given sku
+     *
+     * @param $sku
+     * @return ProductInterface
+     * @throws NoSuchEntityException
+     */
+    public function getProductGivenSku($sku)
+    {
+        return $this->itemHelper->getProductGivenSku($sku);
+    }
+
+    /**
+     * Get bundle product linked item_ids
+     *
+     * @param $bundleProduct
+     * @return array
+     * @throws NoSuchEntityException
+     * @throws InputException
+     */
+    public function getLinkedProductsItemIds($bundleProduct)
+    {
+        return $this->itemHelper->getLinkedProductsItemIds($bundleProduct);
     }
 }

@@ -67,8 +67,8 @@ type Query {
      store_id: String! @doc(description: "Click and collect store where stock needs to be checked.")
     ): CartItemsAvailabilityInStoreOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\Stock\\CartItemsAvailabilityInStoreOutput") @doc(description: "Get stock information for each item in the cart.")
     return_policy (
-         item_id: String @doc(description: "Get return policy of particular item.")
-         variant_id: String @doc(description: "Get return policy of particular variant.")
+         parent_sku: String @doc(description: "Get return policy of particular item.")
+         child_sku: String @doc(description: "Get return policy of particular variant.")
          store_id: String @doc(description: "Get return policy based on store.")
    ): ReturnPolicyOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\ReturnPolicyOutput") @doc(description: "Get return policy output")
    order_taking_calendar (
@@ -192,7 +192,8 @@ type StoreConfig {
     pickup_time_format: String @doc(description:"Pickup time format.")
     ls_mag_ls_industry_ls_choose_industry: String @doc(description: "To fetch currently configured industry.")
     ls_mag_product_availability: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether to show a link in product detail page for product availability (true) or not (false) based on omni connection online/offline mode.")
-    ls_mag_display_stores: Boolean @doc(description:"Indicates whether to show all the stores (true) or only click and collect stores for product availability (false).")
+    ls_mag_display_stores: Boolean @doc(description:"Indicates whether to show all the stores (true) or only click and collect stores for product availability (false)."),
+    ls_mag_show_return_policy: Boolean @doc(description:"Indicates whether return policy display on pdp is enabled (true) or disabled (false).")
 }
 
 input SetPaymentMethodOnCartInput {

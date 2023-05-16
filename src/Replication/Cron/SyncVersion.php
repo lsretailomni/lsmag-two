@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class SyncVersion
@@ -69,17 +70,20 @@ class SyncVersion
                     $info = [];
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
-                        LSR::SC_VERSION_CONFIG_PATH_LAST_EXECUTE, $this->store->getId()
+                        LSR::SC_VERSION_CONFIG_PATH_LAST_EXECUTE,
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $this->store->getId());
                     $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $this->store->getId());
                     $pong    = $this->helper->omniPing($baseUrl, $lsKey);
                     $this->helper->parsePingResponseAndSaveToConfigData($pong);
-                    $info[] = -1;
-                    return $info;
                 }
                 $this->lsr->setStoreId(null);
             }
+            $info[] = -1;
+
+            return $info;
         }
     }
 

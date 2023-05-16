@@ -71,7 +71,12 @@ class LoyaltyHelper extends AbstractHelperOmni
             return [];
         }
         $storeId  = $this->lsr->getCurrentStoreId();
-        $cacheId  = LSR::IMAGE_CACHE . $image_id . "_" . $storeId;
+        $cacheId  = LSR::IMAGE_CACHE . $image_id;
+
+        if (!$this->imageCacheIndependenOfStoreId()) {
+            $cacheId .= "_" . $storeId;
+        }
+
         $response = $this->cacheHelper->getCachedContent($cacheId);
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
@@ -141,7 +146,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         $points = $this->basketHelper->getMemberPointsFromCheckoutSession();
         $response = null;
 
-        if ($points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($cardId && $points == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             // @codingStandardsIgnoreStart
             $request = new Operation\CardGetPointBalance();
             $entity = new Entity\CardGetPointBalance();
@@ -313,14 +318,19 @@ class LoyaltyHelper extends AbstractHelperOmni
             // @codingStandardsIgnoreEnd
             $storeId         = $this->lsr->getCurrentStoreId();
             $customerGroupId = $this->customerSession->getCustomerGroupId();
-            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $itemId . "_" . $customerGroupId . "_" . $storeId;
+            $cacheItemId = $itemId;
+
+            if (is_array($itemId)) {
+                $cacheItemId = implode('_', $itemId);
+            }
+            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
             $response        = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
                 return $response;
             }
             $group = $this->groupRepository->getById($customerGroupId)->getCode();
-            $string->setString([$itemId]);
+            $string->setString(is_array($itemId) ? $itemId : [$itemId]);
             $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
             try {
                 $response = $request->execute($entity);
@@ -415,16 +425,24 @@ class LoyaltyHelper extends AbstractHelperOmni
             $coupons            = $itemIdentifiers = [];
             /** @var Item $item */
             foreach ($itemsInCart as $item) {
-                list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
-                    $item->getSku(),
-                    $item->getProductId()
-                );
-                $itemIdentifiers[] = [
-                    'itemId' => $itemId,
-                    'variantId' => $variantId,
-                    'uom' => $uom,
-                    'baseUom' => $baseUom
-                ];
+                if ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
+                    $children = $item->getChildren();
+                } else {
+                    $children[] = $item;
+                }
+
+                foreach ($children as $child) {
+                    list($itemId, $variantId, $uom, , , $baseUom) = $this->itemHelper->getComparisonValues(
+                        $child->getSku(),
+                        $child->getProductId()
+                    );
+                    $itemIdentifiers[] = [
+                        'itemId' => $itemId,
+                        'variantId' => $variantId,
+                        'uom' => $uom,
+                        'baseUom' => $baseUom
+                    ];
+                }
             }
 
             if ($publishedOffersObj) {
@@ -573,6 +591,20 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         return $this->lsr->getStoreConfig(
             LSR::SC_LOYALTY_SHOW_COUPON_OFFERS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Image cache is independent of store
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function imageCacheIndependenOfStoreId()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::IMAGE_CACHE_INDEPENDENT_OF_STORE_ID,
             $this->lsr->getCurrentStoreId()
         );
     }

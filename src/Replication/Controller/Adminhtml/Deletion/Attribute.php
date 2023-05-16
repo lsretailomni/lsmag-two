@@ -5,6 +5,7 @@ namespace Ls\Replication\Controller\Adminhtml\Deletion;
 use \Ls\Core\Model\LSR;
 use Ls\Replication\Model\ResourceModel\ReplAttribute\Collection;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class Attribute Deletion
@@ -21,6 +22,7 @@ class Attribute extends AbstractReset
      * Remove Attributes
      *
      * @return ResponseInterface
+     * @throws NoSuchEntityException
      */
     public function execute()
     {
@@ -28,17 +30,18 @@ class Attribute extends AbstractReset
         $where   = [];
 
         if ($scopeId != '') {
+            $websiteId = $this->replicationHelper->getWebsiteIdGivenStoreId($scopeId);
             $this->removeSoftAttributes($scopeId);
             $this->removeHardAttributes($scopeId);
             $where = ['scope_id = ?' => $scopeId];
+            $this->updateAllGivenTablesToUnprocessed(self::LS_ATTRIBUTE_RELATED_TABLES, ['scope_id = ?' => $websiteId]);
         } else {
             $this->replicationHelper->deleteGivenTableDataGivenConditions(
                 $this->replicationHelper->getGivenTableName('eav_attribute'),
                 ['attribute_code like (?)' => 'ls\_%']
             );
+            $this->updateAllGivenTablesToUnprocessed(self::LS_ATTRIBUTE_RELATED_TABLES, $where);
         }
-
-        $this->updateAllGivenTablesToUnprocessed(self::LS_ATTRIBUTE_RELATED_TABLES, $where);
         // Reset Data Translation Table for attributes
         $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE;
         $this->updateDataTranslationTables($where);

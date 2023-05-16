@@ -7,6 +7,7 @@ use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
@@ -85,6 +86,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_DEBUGONERROR = 'ls_mag/replication/debug_on_error';
     const SC_REPLICATION_CRONEXPR_PREFIX = 'ls_mag/replication/cron_expr_{@1}';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
+    const SC_REPLICATION_DEFAULT_ITEM_IMAGE_WIDTH = 'ls_mag/replication/item_image_width';
+    const SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT = 'ls_mag/replication/item_image_height';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
@@ -97,7 +100,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_PRODUCT_ASSIGNMENT_TO_CATEGORY_BATCH_SIZE =
         'ls_mag/replication/product_assignment_to_category_batch_size';
     const SC_REPLICATION_ALL_STORES_ITEMS = 'ls_mag/replication/replicate_all_stores_items';
-    const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_STORE = 'ls_mag/replication/manual_cron_grid_default_store';
+    const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE = 'ls_mag/replication/manual_cron_grid_default_website';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
 
@@ -335,6 +338,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH = 'ls_mag/replication/convert_attribute_to_visual_swatch';
     const VISUAL_TYPE_ATTRIBUTES = 'ls_mag/replication/visual_type_attributes';
 
+    const IMAGE_CACHE_INDEPENDENT_OF_STORE_ID = 'ls_mag/replication/image_cache_independent_of_store_id';
+
     // ORDER STATES
     const ORDER_STATE_NA = 'NOT_AVAILABLE';
     const ORDER_STATE_NC = 'NOT_CREATED';
@@ -487,6 +492,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /** @var StoreInterface[] */
     public $stores;
 
+    public $websites;
+
     /** @var array End Points */
     public $endpoints = [
         ServiceType::ECOMMERCE => 'UCService.svc'
@@ -621,7 +628,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return $this->validateBaseUrlResponse;
         }
 
-        if ($scope == 'website') {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
             $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
         } else {
@@ -773,6 +780,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Return all websites
+     *
+     * @return WebsiteInterface[]
+     */
+    public function getAllWebsites()
+    {
+        /** add it into the object in order to avoid loading multiple time within the same call. */
+        if ($this->websites) {
+            return $this->websites;
+        }
+        $this->websites = $this->storeManager->getWebsites();
+
+        return $this->websites;
+    }
+
+    /**
      * Set Store ID in Magento Session
      * @param $storeId
      */
@@ -882,6 +905,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Get current website id
+     *
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getCurrentWebsiteId()
+    {
+        return $this->storeManager->getStore()->getWebsiteId();
+    }
+
+    /**
      * Config to check if module is enabled or not for given store
      *
      * @param int $storeId
@@ -891,7 +925,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isEnabled($storeId = null, $scope = null)
     {
-        if ($scope == 'website') {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope ==  ScopeInterface::SCOPE_WEBSITE) {
             return $this->getWebsiteConfig(LSR::SC_MODULE_ENABLED, $storeId);
         }
         if ($storeId === null) {
@@ -899,6 +933,21 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
 
         return $this->getStoreConfig(LSR::SC_MODULE_ENABLED, $storeId);
+    }
+
+    /**
+     * Get given config in given scope
+     *
+     * @param $configPath
+     * @param $scopeId
+     * @param $scope
+     * @return array|mixed|string
+     */
+    public function getGivenConfigInGivenScope($configPath, $scope, $scopeId)
+    {
+        return $scope == ScopeInterface::SCOPE_WEBSITES ?
+            $this->getWebsiteConfig($configPath, $scopeId) :
+            $this->getStoreConfig($configPath, $scopeId);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Ls\Replication\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
@@ -25,6 +26,7 @@ use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
+use Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -38,6 +40,9 @@ use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Catalog\Model\ResourceModel\Eav\Attribute;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
+use Magento\CatalogInventory\Api\StockConfigurationInterface;
+use Magento\CatalogInventory\Api\StockItemCriteriaInterfaceFactory;
+use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
@@ -84,6 +89,7 @@ use Magento\InventoryApi\Api\SourceItemRepositoryInterface;
 use Magento\InventoryApi\Api\SourceItemsDeleteInterface;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
+use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
 use Magento\InventorySales\Model\ResourceModel\GetAssignedStockIdForWebsite;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -371,6 +377,26 @@ class ReplicationHelper extends AbstractHelper
     public $getAssignedStockIdForWebsite;
 
     /**
+     * @var StockItemCriteriaInterfaceFactory
+     */
+    public $criteriaInterfaceFactory;
+
+    /**
+     * @var StockItemRepositoryInterface
+     */
+    public $stockItemRepository;
+
+    /**
+     * @var StockConfigurationInterface
+     */
+    public $stockConfiguration;
+
+    /**
+     * @var IsSingleSourceModeInterface
+     */
+    public $isSingleSourceMode;
+
+    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -431,6 +457,10 @@ class ReplicationHelper extends AbstractHelper
      * @param SourceItemRepositoryInterface $sourceItemRepository
      * @param SourceItemsDeleteInterface $sourceItemsDelete
      * @param GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+     * @param StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory
+     * @param StockItemRepositoryInterface $stockItemRepository
+     * @param StockConfigurationInterface $stockConfiguration
+     * @param IsSingleSourceModeInterface $isSingleSourceMode
      */
     public function __construct(
         Context $context,
@@ -492,7 +522,11 @@ class ReplicationHelper extends AbstractHelper
         GetStockSourceLinksInterface $getStockSourceLinks,
         SourceItemRepositoryInterface $sourceItemRepository,
         SourceItemsDeleteInterface $sourceItemsDelete,
-        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite
+        GetAssignedStockIdForWebsite $getAssignedStockIdForWebsite,
+        StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
+        StockItemRepositoryInterface $stockItemRepository,
+        StockConfigurationInterface $stockConfiguration,
+        IsSingleSourceModeInterface $isSingleSourceMode
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -553,6 +587,10 @@ class ReplicationHelper extends AbstractHelper
         $this->sourceItemRepository                      = $sourceItemRepository;
         $this->sourceItemDeleteRepository                = $sourceItemsDelete;
         $this->getAssignedStockIdForWebsite              = $getAssignedStockIdForWebsite;
+        $this->criteriaInterfaceFactory                  = $criteriaInterfaceFactory;
+        $this->stockItemRepository                       = $stockItemRepository;
+        $this->stockConfiguration                        = $stockConfiguration;
+        $this->isSingleSourceMode                        = $isSingleSourceMode;
         parent::__construct(
             $context
         );
@@ -1163,8 +1201,9 @@ class ReplicationHelper extends AbstractHelper
      * @param $path
      * @param bool $storeId
      * @param bool $flushCache
+     * @param string $scope
      */
-    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true)
+    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
 
         /**
@@ -1172,7 +1211,7 @@ class ReplicationHelper extends AbstractHelper
          */
         $existingData = $this->lsr->getConfigValueFromDb(
             $path,
-            ScopeInterface::SCOPE_STORES,
+            $scope,
             $storeId
         );
 
@@ -1186,7 +1225,7 @@ class ReplicationHelper extends AbstractHelper
                 $this->configWriter->save(
                     $path,
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES,
+                    $scope,
                     $storeId
                 );
             } else {
@@ -1228,10 +1267,10 @@ class ReplicationHelper extends AbstractHelper
      * @param $value
      * @param $path
      * @param bool $storeId
+     * @param string $scope
      */
-    public function updateConfigValue($value, $path, $storeId = false)
+    public function updateConfigValue($value, $path, $storeId = false, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
-
         /**
          * Added the condition to update config value based on specific store id.
          */
@@ -1239,7 +1278,7 @@ class ReplicationHelper extends AbstractHelper
             $this->configWriter->save(
                 $path,
                 $value,
-                ScopeInterface::SCOPE_STORES,
+                $scope,
                 $storeId
             );
         } else {
@@ -1379,7 +1418,7 @@ class ReplicationHelper extends AbstractHelper
                 []
             );
         } elseif ($isCatJoin) {
-            $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
+            $hierarchyCode = $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
             $hierarchyCode = $hierarchyCode . ';';
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
@@ -1547,11 +1586,11 @@ class ReplicationHelper extends AbstractHelper
         $aliasNames
     ) {
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
-        isset(self::COLUMNS_MAPPING[$tableName])
+            isset(self::COLUMNS_MAPPING[$tableName])
         ) {
             $mappingColumns = self::COLUMNS_MAPPING[$tableName];
 
-            foreach($aliasNames as $alias) {
+            foreach ($aliasNames as $alias) {
                 foreach ($mappingColumns as $columnName => $newColumnName) {
                     $whereClause = str_replace(
                         "$alias.$columnName",
@@ -1621,8 +1660,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1732,8 +1771,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1803,8 +1842,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1817,6 +1856,46 @@ class ReplicationHelper extends AbstractHelper
          * @codingStandardsIgnoreEnd
          */
         $collection->getSelect()->group("main_table.repl_data_translation_id");
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
+     * Set collection properties and join for hierarchy nodes data translation
+     *
+     * In order to select only processed entries
+     *
+     * @param mixed $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param $websiteId
+     * @param $store
+     */
+    public function setCollectionPropertiesPlusJoinsForHierarchyNodesDataTranslation(
+        &$collection,
+        SearchCriteriaInterface $criteria,
+        $websiteId,
+        $store
+    ) {
+        $this->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'key',
+            'catalog_category_entity_varchar',
+            'value',
+            false,
+            false,
+            true,
+            $websiteId
+        );
+        $rootCategoryId = $store->getRootCategoryId();
+        $collection->getSelect()->joinInner(
+            ['third' => 'catalog_category_entity'],
+            "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+            []
+        );
+
         /** For Xdebug only to check the query $query */
         $query = $collection->getSelect()->__toString();
         $collection->setCurPage($criteria->getCurrentPage());
@@ -2175,7 +2254,7 @@ class ReplicationHelper extends AbstractHelper
         $filters              = [
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
             [
                 'field' => 'nav_id',
                 'value' => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), 'condition_type' => 'eq'
@@ -2199,6 +2278,7 @@ class ReplicationHelper extends AbstractHelper
         }
         if (!empty($resultantCategoryIds)) {
             try {
+                $resultantCategoryIds = array_unique(array_merge($resultantCategoryIds, $product->getCategoryIds()));
                 $this->categoryLinkManagement->assignProductToCategories(
                     $product->getSku(),
                     $resultantCategoryIds
@@ -2489,7 +2569,7 @@ class ReplicationHelper extends AbstractHelper
         foreach ($items->getItems() as $item) {
             $itemId        = $item->getLinkField1();
             $variantId     = $item->getLinkField2();
-            $product       = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 0);
+            $product       = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 'global');
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
@@ -2952,6 +3032,32 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * @param $itemId
+     * @param $storeId
+     * @param $scopeId
+     * @return \Ls\Replication\Model\ItemType|null
+     */
+    public function getInventoryType($itemId, $storeId, $scopeId)
+    {
+        $filters = [
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
+        /** @var ReplItem $item */
+        $item = $this->itemRepository->getList($searchCriteria)->getItems();
+
+        if (!empty($itemRepository)) {
+            return $item->getType();
+
+        }
+
+        return null;
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Update inventory and status
@@ -2968,7 +3074,9 @@ class ReplicationHelper extends AbstractHelper
             $sourceItems        = [];
             $skus               = [$sku];
             foreach ($parentProductsSkus as $parentSku) {
-                $parentSku     = array_shift($parentSku);
+                $productId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus($parentSku);
+                $parentSku = array_shift($parentSku);
+                $this->setStockStatusChangedAuto($productId);
                 $skus[]        = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
                     $parentSku,
@@ -2999,6 +3107,35 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Set stock_status_changed_auto = 1 for configurable product in table cataloginventory_stock_item
+     *
+     * @param $productId
+     * @return void
+     */
+    public function setStockStatusChangedAuto($productId)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems            = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $parentStockItem = array_shift($allItems);
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1);
+
+        if (!$this->isSingleSourceMode->execute()) {
+            $parentStockItem->setIsInStock(1);
+        }
+
+        $this->stockItemRepository->save($parentStockItem);
+    }
+
+    /**
      * Get source item given data
      *
      * @param $sku
@@ -3010,7 +3147,8 @@ class ReplicationHelper extends AbstractHelper
     public function getSourceItemGivenData($sku, $inventory, $status)
     {
         $defaultSourceCode = $this->defaultSourceProviderFactory->create()->getCode();
-        $sourceCode        = $this->getSourceCodeFromWebsiteCode($defaultSourceCode);
+        $websiteId         = $this->storeManager->getStore()->getWebsiteId();
+        $sourceCode        = $this->getSourceCodeFromWebsiteCode($defaultSourceCode, $websiteId);
         if ($sourceCode != $defaultSourceCode) {
             $this->deleteSourceItemsBySku($defaultSourceCode, $sku);
         }
@@ -3048,13 +3186,12 @@ class ReplicationHelper extends AbstractHelper
      * Get source code from website
      *
      * @param $sourceCode
+     * @param $websiteId
      * @return mixed|string|null
      * @throws LocalizedException
-     * @throws NoSuchEntityException
      */
-    public function getSourceCodeFromWebsiteCode($sourceCode)
+    public function getSourceCodeFromWebsiteCode($sourceCode, $websiteId)
     {
-        $websiteId      = $this->storeManager->getStore()->getWebsiteId();
         $websiteCode    = $this->storeManager->getWebsite($websiteId)->getCode();
         $stockId        = $this->getAssignedStockIdForWebsite->execute($websiteCode);
         $searchCriteria = $this->searchCriteriaBuilder->addFilter(StockSourceLinkInterface::STOCK_ID, $stockId)
@@ -3301,6 +3438,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '')
     {
+        $currentStoreId = $this->storeManager->getStore()->getId();
         $searchCriteria = clone $this->searchCriteriaBuilder;
 
         if (!empty($itemId) || $itemId == '0') {
@@ -3316,7 +3454,7 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
-            $scopeId        = ($storeId == '' || $storeId == 'global') ? $this->storeManager->getStore()->getId() : $storeId;
+            $scopeId        = $this->storeManager->getStore()->getWebsiteId();
             $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $scopeId);
             $optionId       = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
@@ -3345,7 +3483,13 @@ class ReplicationHelper extends AbstractHelper
             )->create();
         }
 
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId(0);
+        }
         $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId($currentStoreId);
+        }
         if (!empty($productList)) {
             return array_pop($productList);
         } else {
@@ -3373,5 +3517,37 @@ class ReplicationHelper extends AbstractHelper
     public function isVisualSwatchAttributes($storeId)
     {
         return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
+    }
+
+    /**
+     * item manage stock
+     *
+     * @param $product
+     * @param $itemStock
+     * @param $type
+     * @return mixed
+     */
+    public function manageStock($product, $itemStock, $type)
+    {
+        $useManageStock = 1;
+        $quantity       = 0;
+        $isInStock      = 0;
+
+        if (!empty($type) && $type != ItemType::INVENTORY) {
+            $useManageStock = 0;
+        }
+        if (!empty($itemStock)) {
+            $isInStock = ($itemStock->getQuantity() > 0) ? 1 : 0;
+            $quantity  = $itemStock->getQuantity();
+        }
+
+        $product->setStockData([
+            'use_config_manage_stock' => $useManageStock,
+            'is_in_stock'             => $isInStock,
+            'qty'                     => $quantity
+        ]);
+
+        return $product;
+
     }
 }

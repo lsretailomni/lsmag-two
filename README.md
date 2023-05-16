@@ -1,4 +1,4 @@
-# LS Ecommerce - Magento Integration (V2.2.0)
+# LS Ecommerce - Magento Integration (V2.3.0)
 
 ## Compatibility
 1. Magento Open Source 2.3.5 - current version
@@ -11,7 +11,7 @@ Please visit [ Installation of the LS eCommerce - Magento Extension ](https://he
 
 ## Configuration:
 
-Please visit [ General Configuration ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-Magento/Technical-Manual/General-Configuration.htm "LS eCommerce - Magento Configuration") section on our Online Help for instructions on how to configure the extension.
+Please visit [ General Configuration ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-Magento/Technical-Manual/General-Configuration-Retail.htm "LS eCommerce - Magento Configuration") section on our Online Help for instructions on how to configure the extension.
 
 ## Supported Features:
 

@@ -235,62 +235,71 @@ class DataTranslationTask
                         $store->getId()
                     );
                     $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
-                    if ($langCode != "Default") {
-                        $configurableAttributesValuesStatus    =
-                        $configurableAttributesStatus = $standardConfigurableAttributesValuesStatus = false;
-                        $hierarchyNodesStatus                  = $this->updateHierarchyNode(
-                            $store->getId(),
-                            $langCode,
-                            $store->getWebsiteId()
-                        );
-                        list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
-                        $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
-                        $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
-                            $store->getId(),
-                            $langCode
-                        );
-                        $textBasedAttributesValuesStatus       = $this->updateProductAttributesValues(
-                            $store->getId(),
-                            $langCode
-                        );
-
-                        if ($cronAttributeVariantCheck) {
-                            $configurableAttributesStatus       = $this->updateExtendedVariantAttributes(
+                    try {
+                        if ($langCode != "Default") {
+                            $configurableAttributesValuesStatus    =
+                            $configurableAttributesStatus = $standardConfigurableAttributesValuesStatus = false;
+                            $hierarchyNodesStatus                  = $this->updateHierarchyNode(
+                                $store->getId(),
+                                $langCode,
+                                $store->getWebsiteId()
+                            );
+                            list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
+                            $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
+                            $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
                                 $store->getId(),
                                 $langCode
                             );
-                            $configurableAttributesValuesStatus = $this->updateExtendedVariantAttributesValues(
+                            $textBasedAttributesValuesStatus       = $this->updateProductAttributesValues(
                                 $store->getId(),
                                 $langCode
                             );
+
+                            if ($cronAttributeVariantCheck) {
+                                $configurableAttributesStatus       = $this->updateExtendedVariantAttributes(
+                                    $store->getId(),
+                                    $langCode
+                                );
+                                $configurableAttributesValuesStatus = $this->updateExtendedVariantAttributesValues(
+                                    $store->getId(),
+                                    $langCode
+                                );
+                            }
+
+                            if ($cronAttributeStandardVariantCheck) {
+                                $standardConfigurableAttributesValuesStatus =
+                                    $this->updateStandardVariantAttributeOptionValue($store->getId(), $langCode);
+                            }
+
+                            $this->cronStatus = $hierarchyNodesStatus &&
+                                $itemsStatus &&
+                                $attributesStatus &&
+                                $nonConfigurableAttributesValuesStatus &&
+                                $textBasedAttributesValuesStatus &&
+                                $configurableAttributesStatus &&
+                                $configurableAttributesValuesStatus &&
+                                $standardConfigurableAttributesValuesStatus;
+
+                        } else {
+                            $this->cronStatus = true;
                         }
-
-                        if ($cronAttributeStandardVariantCheck) {
-                            $standardConfigurableAttributesValuesStatus =
-                                $this->updateStandardVariantAttributeOptionValue($store->getId(), $langCode);
-                        }
-
-                        $this->cronStatus = $hierarchyNodesStatus &&
-                            $itemsStatus &&
-                            $attributesStatus &&
-                            $nonConfigurableAttributesValuesStatus &&
-                            $textBasedAttributesValuesStatus &&
-                            $configurableAttributesStatus &&
-                            $configurableAttributesValuesStatus &&
-                            $standardConfigurableAttributesValuesStatus;
-
-                    } else {
-                        $this->cronStatus = true;
+                    } catch (Exception $e) {
+                        $this->logDetailedException(__METHOD__, $this->store->getName(), '');
+                        $this->logger->debug($e->getMessage());
                     }
+
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
-                        $store->getId()
+                        $store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_DATA_TRANSLATION_TO_MAGENTO,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('DataTranslationTask Completed for Store ' . $store->getName());
                 }
@@ -330,8 +339,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -380,8 +389,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->addData(
@@ -426,8 +435,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -465,8 +474,8 @@ class DataTranslationTask
                     $dataTranslation->setData('is_failed', 1);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -519,8 +528,8 @@ class DataTranslationTask
                     $productData->addAttributeUpdate($formattedCode, $dataTranslation->getText(), $storeId);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -554,8 +563,8 @@ class DataTranslationTask
             try {
                 $this->updateAttributeLabel($dataTranslation, $dataTranslation->getKey(), $storeId);
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             // @codingStandardsIgnoreLine
@@ -598,7 +607,7 @@ class DataTranslationTask
         );
         $websiteId = $store->getWebsiteId();
         $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
-
+        $query = $collection->getSelect()->__toString();
         if (!empty($sku)) {
             $collection->addFieldToFilter('main_table.Key', $sku);
         }
@@ -609,7 +618,7 @@ class DataTranslationTask
             try {
                 $sku = $dataTranslation->getKey();
 
-                if (!$productData) {
+                if (!$productData || $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) != $sku) {
                     $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                         $sku,
                         '',
@@ -632,8 +641,8 @@ class DataTranslationTask
                     }
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -653,6 +662,7 @@ class DataTranslationTask
      * @param string $langCode
      * @param int $websiteId
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function updateHierarchyNode($storeId, $langCode, $websiteId = null)
     {
@@ -667,20 +677,15 @@ class DataTranslationTask
             ],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
-            ['field' => 'second.store_id', 'value' => $storeId, 'condition_type' => 'eq']
+            ['field' => 'second.store_id', 'value' => '0', 'condition_type' => 'eq']
         ];
         $criteria     = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
         $collection   = $this->replDataTranslationCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinsForHierarchyNodesDataTranslation(
             $collection,
             $criteria,
-            'key',
-            'catalog_category_entity_varchar',
-            'value',
-            false,
-            false,
-            true,
-            $websiteId
+            $websiteId,
+            $this->store
         );
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {
@@ -693,8 +698,8 @@ class DataTranslationTask
                     $this->categoryRepository->save($categoryExistData);
                 }
             } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $dataTranslation->getKey());
                 $this->logger->debug($e->getMessage());
-                $this->logger->debug('Error while saving data translation ' . $dataTranslation->getKey());
                 $dataTranslation->setData('is_failed', 1);
             }
             $dataTranslation->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -950,5 +955,25 @@ class DataTranslationTask
                 ]
             );
         }
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store: %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
     }
 }

@@ -363,6 +363,17 @@ interface ReplItemInterface
     public function getTaxItemGroupId();
 
     /**
+     * @param ItemType $Type
+     * @return $this
+     */
+    public function setType($Type);
+
+    /**
+     * @return ItemType
+     */
+    public function getType();
+
+    /**
      * @param float $UnitPrice
      * @return $this
      */

@@ -14,6 +14,7 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Api\Data\TaxRateInterface;
 use Magento\Tax\Api\Data\TaxRateInterfaceFactory;
 use Magento\Tax\Api\Data\TaxRuleInterface;
@@ -160,10 +161,11 @@ class TaxRulesCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_TAX_RULES_CONFIG_PATH_LAST_EXECUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
-                    $countryCodes        = $this->getCountryCodes($this->store->getId());
-                    $defaultTaxPostGroup = current($this->getDefaultTaxPostGroup($this->store->getId()));
+                    $countryCodes        = $this->getCountryCodes($this->getScopeId());
+                    $defaultTaxPostGroup = current($this->getDefaultTaxPostGroup($this->getScopeId()));
 
                     if ($defaultTaxPostGroup) {
                         foreach ($countryCodes->getItems() as $countryCode) {
@@ -175,7 +177,7 @@ class TaxRulesCreateTask
                                 }
                                 $rates = $this->getRatesGivenBusinessTaxGroup(
                                     $taxPostGroup,
-                                    $this->store->getId()
+                                    $this->getScopeId()
                                 )->getItems();
 
                                 foreach ($rates as $rate) {
@@ -186,6 +188,14 @@ class TaxRulesCreateTask
                                     $this->createTaxCalculationRuleGivenInfo($taxRate, $taxClass);
                                 }
                             } catch (Exception $e) {
+                                $this->logger->debug(
+                                    sprintf(
+                                        'Exception happened in %s for store: %s, item id: %s',
+                                        __METHOD__,
+                                        $this->store->getName(),
+                                        $taxPostGroup
+                                    )
+                                );
                                 $this->logger->debug($e->getMessage());
                                 $countryCode->setData('is_failed', 1);
                             }
@@ -203,7 +213,9 @@ class TaxRulesCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_TAX_RULES,
-                        $store->getId()
+                        $store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('TaxRulesCreateTask Completed for Store ' . $this->store->getName());
                 }
@@ -237,7 +249,7 @@ class TaxRulesCreateTask
      */
     public function getDefaultTaxPostGroup($scopeId)
     {
-        $storeId  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $scopeId);
+        $storeId  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $this->store->getId());
         $filters  = [
             ['field' => 'nav_id', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
@@ -284,7 +296,7 @@ class TaxRulesCreateTask
             ->setTaxCountryId($countryCode->getCode())
             ->setTaxRegionId(0)
             ->setTaxPostcode('*')
-            ->setCode($countryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup());
+            ->setCode($countryCode->getCode() . '-*-*-' . $rate->getProductTaxGroup() . '-' . $this->getScopeId());
         return $this->taxRateRepository->save($taxRate);
     }
 
@@ -319,9 +331,19 @@ class TaxRulesCreateTask
     public function getRemainingRecords()
     {
         if (!$this->remainingRecords) {
-            $this->remainingRecords = $this->getCountryCodes($this->store->getId())->getTotalCount();
+            $this->remainingRecords = $this->getCountryCodes($this->getScopeId())->getTotalCount();
         }
 
         return $this->remainingRecords;
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
     }
 }

@@ -5,12 +5,13 @@ namespace Ls\Replication\Controller\Adminhtml\Logs;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Response\Http\FileFactory;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
-use Magento\Framework\Filesystem\DirectoryList;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
@@ -21,6 +22,15 @@ use Psr\Log\LoggerInterface;
  */
 class Report extends Action
 {
+    public $allowedFiles = [
+        'omniclient.log',
+        'debug.log',
+        'exception.log',
+        'replication.log',
+        'webhookstatus.log',
+        'system.log'
+    ];
+
     /** @var PageFactory */
     public $resultPageFactory;
 
@@ -31,92 +41,103 @@ class Report extends Action
     public $logger;
 
     /**
-     * @var DirectoryList
-     */
-    public $directoryList;
-
-    /**
-     * @var Registry
-     */
-    public $coreRegistry;
-
-    /**
      * @var Magento\Framework\App\Response\Http\FileFactory
      */
     public $downloader;
 
     /**
-     * Report constructor.
+     * @var File
+     */
+    public $driverFile;
+
+    /**
+     * @var Filesystem
+     */
+    public $fileSystem;
+
+    /**
+     * @var Object
+     */
+    public $logDirectory;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
      * @param LoggerInterface $logger
-     * @param DirectoryList $directoryList
-     * @param Registry $coreRegistry
      * @param FileFactory $fileFactory
+     * @param File $driverFile
+     * @param Filesystem $filesystem
      */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
         ObjectManagerInterface $objectManager,
         LoggerInterface $logger,
-        DirectoryList $directoryList,
-        Registry $coreRegistry,
-        FileFactory $fileFactory
+        FileFactory $fileFactory,
+        File $driverFile,
+        Filesystem $filesystem
     ) {
         $this->resultPageFactory = $resultPageFactory;
         $this->objectManager     = $objectManager;
         $this->logger            = $logger;
-        $this->directoryList     = $directoryList;
-        $this->coreRegistry      = $coreRegistry;
         $this->downloader        = $fileFactory;
+        $this->driverFile        = $driverFile;
+        $this->fileSystem        = $filesystem;
         parent::__construct($context);
     }
 
     /**
+     * Get the log file information
+     *
      * @return ResponseInterface|ResultInterface|Page
      */
     public function execute()
     {
         try {
+            $message    = '';
             $resultPage = $this->resultPageFactory->create();
             $resultPage->getConfig()->getTitle()->prepend(__('Logs '));
             $logFileName = $this->_request->getParam('log_filename');
             $submitType  = $this->_request->getParam('submission');
-            if (!empty($logFileName)) {
-                $path     = $this->directoryList->getPath('var');
-                $fileName = $path . "/log/" . $logFileName;
-                if (file_exists($fileName)) {
+            if (!empty($logFileName) && in_array($logFileName, $this->allowedFiles)) {
+                $this->logDirectory = $this->fileSystem->getDirectoryWrite(DirectoryList::LOG);
+                $fileName           = $this->logDirectory->getAbsolutePath() . $logFileName;
+                if ($this->driverFile->isExists($fileName)) {
                     if ($submitType == "Download") {
                         return $this->downloader->create(
                             $fileName,
-                            @file_get_contents($fileName)
+                            $this->driverFile->fileGetContents($fileName)
                         );
                     }
                     if ($submitType == "Clear") {
-                        $myfile = fopen($fileName, 'w+');
+                        $file = $this->driverFile->fileOpen($fileName, 'w+');
                     } else {
-                        $myfile = fopen($fileName, "r") or die("Unable to open file!");
+                        $file = $this->driverFile->fileOpen($fileName, "r");
                     }
                     if ($submitType == "Clear") {
-                        ftruncate($myfile, 0);
-                        $this->coreRegistry->register('display_log', "");
+                        $this->driverFile->deleteFile($fileName);
                     } else {
-                        if (filesize($fileName) > 0) {
-                            $info = fread($myfile, filesize($fileName));
-                            $this->coreRegistry->register('display_log', $info);
+                        // restrict file to 5MB to open
+                        $size = $this->logDirectory->stat($fileName)['size'];
+                        if ($size >= 5000000) {
+                            $message = __("File size is too large to render. Please download the file");
+                        } elseif ($size > 0) {
+                            $message = $this->driverFile->fileRead($file, $size);
                         } else {
-                            $this->coreRegistry->register('display_log', __("No Data Found File is Empty."));
+                            $message = __("No Data Found File is Empty.");
                         }
                     }
-                    fclose($myfile);
+                    $this->driverFile->fileClose($file);
                 } else {
-                    $this->coreRegistry->register('display_log', __("File Not Found."));
+                    $message = __("File Not Found.");
                 }
             }
-            return $resultPage;
         } catch (Exception $e) {
-            $this->logger->debug($e->getMessage());
+            $message = $e->getMessage();
         }
+        $block = $resultPage->getLayout()->getBlock('ls.replication.report');
+        $block->setData('message', $message);
+        return $resultPage;
     }
 }

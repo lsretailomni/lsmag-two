@@ -12,5 +12,27 @@ use Ls\Omni\Client\RequestInterface;
 
 class GetPointRate implements RequestInterface
 {
+    /**
+     * @property string $currency
+     */
+    protected $currency = null;
+
+    /**
+     * @param string $currency
+     * @return $this
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
 }
 

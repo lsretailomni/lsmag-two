@@ -9,6 +9,7 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Sales\Model\ResourceModel\Order as OrderResourceModel;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 
 /** Syncing order through cron*/
@@ -128,7 +129,8 @@ class SyncOrders
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
                             LSR::SC_CRON_SYNC_ORDERS_CONFIG_PATH_LAST_EXECUTE,
-                            $this->store->getId()
+                            $this->store->getId(),
+                            ScopeInterface::SCOPE_STORES
                         );
                     }
                 }

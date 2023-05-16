@@ -16,6 +16,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Cron responsible to update images for item and variants
@@ -57,7 +58,8 @@ class SyncImages extends ProductCreateTask
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_ITEM_IMAGES_CONFIG_PATH_LAST_EXECUTE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->replicationHelper->setEnvVariables();
                     $this->logger->debug(sprintf('Running SyncImages Task for store %s', $this->store->getName()));
@@ -65,7 +67,9 @@ class SyncImages extends ProductCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_ITEM_IMAGES,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
 
                     $this->logger->debug(
@@ -116,7 +120,7 @@ class SyncImages extends ProductCreateTask
                     }
                     $itemId        = $explodeSku[0];
                     $this->getExistingImageswithHash($itemId);
-                    $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->store->getId());
+                    $uomCodesTotal = $this->replicationHelper->getUomCodes($itemId, $this->getScopeId());
                     if (!empty($uomCodesTotal)) {
                         if (count($uomCodesTotal[$itemId]) > 1) {
                             $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $itemId);
@@ -134,7 +138,12 @@ class SyncImages extends ProductCreateTask
                     }
                 } catch (Exception $e) {
                     $this->logger->debug(
-                        sprintf('Problem with Image Synchronization : %s in %s', $itemImage->getKeyValue(), __METHOD__)
+                        sprintf(
+                            'Exception happened in %s for store: %s, item id: %s',
+                            __METHOD__,
+                            $this->store->getName(),
+                            $itemImage->getKeyValue()
+                        )
                     );
                     $this->logger->debug($e->getMessage());
                     $itemImage->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -145,12 +154,13 @@ class SyncImages extends ProductCreateTask
                     $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
             }
-            $remainingItems = (int)$this->getRemainingRecords($this->store);
-            if ($remainingItems == 0) {
-                $this->cronStatus = true;
-            }
-            $this->replicationHelper->flushByTypeCode('full_page');
         }
+
+        $remainingItems = (int)$this->getRemainingRecords($this->store);
+        if ($remainingItems == 0) {
+            $this->cronStatus = true;
+        }
+        $this->replicationHelper->flushByTypeCode('full_page');
     }
 
     /**
@@ -231,7 +241,11 @@ class SyncImages extends ProductCreateTask
             );
         } catch (Exception $e) {
             $this->logger->debug(
-                sprintf('Problem getting encoded Images in : %s', __METHOD__)
+                sprintf(
+                    'Exception happened in %s for store: %s',
+                    __METHOD__,
+                    $this->store->getName()
+                )
             );
             $this->logger->debug($e->getMessage());
         }
@@ -251,7 +265,11 @@ class SyncImages extends ProductCreateTask
                             );
                         } catch (Exception $e) {
                             $this->logger->debug(
-                                sprintf('Problem getting image using url in : %s', __METHOD__)
+                                sprintf(
+                                    'Exception happened in %s for store: %s',
+                                    __METHOD__,
+                                    $this->store->getName()
+                                )
                             );
                             $this->logger->debug($e->getMessage());
                             continue;
@@ -282,7 +300,11 @@ class SyncImages extends ProductCreateTask
                 $this->removeNoSelection($productData);
             } catch (Exception $e) {
                 $this->logger->debug(
-                    sprintf('Problem while converting the images or Gallery CreateHandler in : %s', __METHOD__)
+                    sprintf(
+                        'Exception happened in %s for store: %s',
+                        __METHOD__,
+                        $this->store->getName()
+                    )
                 );
                 $this->logger->debug($e->getMessage());
             }
@@ -318,7 +340,7 @@ class SyncImages extends ProductCreateTask
         $filtersForAllImages  = [
             ['field' => 'KeyValue', 'value' => $itemImage->getKeyValue(), 'condition_type' => 'eq'],
             ['field' => 'TableName', 'value' => $itemImage->getTableName(), 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $criteriaForAllImages = $this->replicationHelper->buildCriteriaForDirect(
             $filtersForAllImages,
@@ -571,7 +593,7 @@ class SyncImages extends ProductCreateTask
         $filters  = [
             ['field' => 'main_table.TableName', 'value' => 'Item%', 'condition_type' => 'like'],
             ['field' => 'main_table.TableName', 'value' => 'Item Category', 'condition_type' => 'neq'],
-            ['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']
+            ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias(
             $filters,
