@@ -99,7 +99,6 @@ class OrderHelper extends AbstractHelper
      */
     public $timezoneInterface;
 
-
     /**
      * @var Registry
      */
