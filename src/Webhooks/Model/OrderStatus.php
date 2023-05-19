@@ -38,7 +38,7 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set($orderId, $cardId = null, $headerStatus, $msgSubject, $msgDetail, $lines = null)
+    public function set($orderId, $headerStatus, $msgSubject, $msgDetail, $cardId = null, $lines = null, $orderKOTStatus = null)
     {
         try {
             $data = [
@@ -48,6 +48,7 @@ class OrderStatus implements OrderStatusInterface
                 'MsgSubject'     => $msgSubject,
                 'MsgDetail'      => $msgDetail,
                 'Lines'          => $lines,
+                'orderKOTStatus' => $orderKOTStatus
             ];
             $this->logger->info('OrderStatus = ', $data);
             $this->status->process($data);

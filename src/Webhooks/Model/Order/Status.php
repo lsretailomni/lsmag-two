@@ -21,42 +21,42 @@ class Status
     /**
      * @var Data
      */
-    private $helper;
+    public $helper;
 
     /**
      * @var OrderCancel
      */
-    private $orderCancel;
+    public $orderCancel;
 
     /**
      * @var CreditMemo
      */
-    private $creditMemo;
+    public $creditMemo;
 
     /**
      * @var Payment
      */
-    private $payment;
+    public $payment;
 
     /**
      * @var EmailNotification
      */
-    private $emailNotification;
+    public $emailNotification;
 
     /**
      * @var Invoice
      */
-    private $invoice;
+    public $invoice;
 
     /**
      * @var CreditmemoFactory
      */
-    private $creditMemoFactory;
+    public $creditMemoFactory;
 
     /**
      * @var CreditmemoService
      */
-    private $creditMemoService;
+    public $creditMemoService;
 
     /**
      * @param Data $helper
@@ -158,9 +158,7 @@ class Status
                 }
                 break;
             default:
-                if ($isClickAndCollectOrder) {
-                    $orderStatus = $status;
-                }
+                $orderStatus = $status;
                 break;
         }
 
