@@ -17,6 +17,7 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
 use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -94,6 +95,12 @@ class OrderHelper extends AbstractHelper
     public $dateTime;
 
     /**
+     * @var TimezoneInterface
+     */
+    public $timezoneInterface;
+
+
+    /**
      * @var Registry
      */
     public Registry $registry;
@@ -131,6 +138,7 @@ class OrderHelper extends AbstractHelper
      * @param Json $json
      * @param Registry $registry
      * @param DateTime $dateTime
+     * @param TimezoneInterface $timezoneInterface
      * @param StoreManagerInterface $storeManager
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
@@ -148,6 +156,7 @@ class OrderHelper extends AbstractHelper
         Json $json,
         Registry $registry,
         DateTime $dateTime,
+        TimezoneInterface $timezoneInterface,
         StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
         CurrencyFactory $currencyFactory
@@ -164,6 +173,7 @@ class OrderHelper extends AbstractHelper
         $this->json               = $json;
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
+        $this->timezoneInterface  = $timezoneInterface;
         $this->storeManager       = $storeManager;
         $this->storeHelper        = $storeHelper;
         $this->currencyFactory    = $currencyFactory;
@@ -1033,6 +1043,25 @@ class OrderHelper extends AbstractHelper
     public function getDateTimeObject()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * Get formatted order date in local timezone
+     *
+     * @param $date
+     * @return string
+     */
+    public function getFormattedDate($date)
+    {
+        try {
+            $format   = 'd/m/y h:i:s A';
+            $dateTime = $this->timezoneInterface->date($date)->format($format);
+
+            return $dateTime;
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $date;
     }
 
     /**

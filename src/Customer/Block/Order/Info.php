@@ -135,7 +135,7 @@ class Info extends AbstractOrderBlock
      */
     public function getDocRegistraionTime()
     {
-        return $this->orderHelper->getParameterValues($this->getOrder(), "DocumentRegTime");
+        return $this->orderHelper->getFormattedDate($this->orderHelper->getParameterValues($this->getOrder(), "DocumentRegTime"));
     }
 
     /**
