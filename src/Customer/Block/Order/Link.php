@@ -121,6 +121,7 @@ class Link extends Current
             }
 
             if ($this->hasKey()
+                && $this->getOrder()
                 && method_exists($this->getOrder(), 'has' . $this->getKey())
                 && !$this->getOrder()->{'has' . $this->getKey()}()
             ) {
