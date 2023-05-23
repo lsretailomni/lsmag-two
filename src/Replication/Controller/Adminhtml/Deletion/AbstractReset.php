@@ -12,6 +12,7 @@ abstract class AbstractReset extends Action
 {
     public const LS_ITEM_RELATED_TABLES = [
         'ls_replication_repl_item',
+        'ls_replication_repl_item_variant',
         'ls_replication_repl_item_variant_registration',
         'ls_replication_repl_price',
         'ls_replication_repl_barcode',
@@ -117,9 +118,9 @@ abstract class AbstractReset extends Action
             $this->replicationHelper->updateGivenTableDataGivenConditions(
                 $lsTableName,
                 [
-                    'processed' => 0,
-                    'is_updated' => 0,
-                    'is_failed' => 0,
+                    'processed'    => 0,
+                    'is_updated'   => 0,
+                    'is_failed'    => 0,
                     'processed_at' => null
                 ],
                 $where
@@ -141,9 +142,9 @@ abstract class AbstractReset extends Action
         $this->replicationHelper->updateGivenTableDataGivenConditions(
             $lsTableName,
             [
-                'processed' => 0,
-                'is_updated' => 0,
-                'is_failed' => 0,
+                'processed'    => 0,
+                'is_updated'   => 0,
+                'is_failed'    => 0,
                 'processed_at' => null
             ],
             $where

@@ -12,6 +12,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderRepository;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class for cancelling the order
@@ -78,7 +79,7 @@ class OrderManagement
             /**
              * Adding condition to only process if LSR is enabled.
              */
-            if ($this->lsr->isLSR($websiteId, 'website')) {
+            if ($this->lsr->isLSR($websiteId, ScopeInterface::SCOPE_WEBSITE)) {
                 if (!empty($documentId)) {
                     $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
                     $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);

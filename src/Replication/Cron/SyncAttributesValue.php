@@ -53,7 +53,8 @@ class SyncAttributesValue extends ProductCreateTask
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
                             LSR::LAST_EXECUTE_REPL_SYNC_ATTRIBUTES_VALUE,
-                            $this->store->getId()
+                            $this->store->getId(),
+                            ScopeInterface::SCOPE_STORES
                         );
                         $this->logger->debug('Running Sync Attributes Value Task for store ' . $this->store->getName());
                         $this->processAttributesValue();
@@ -67,7 +68,9 @@ class SyncAttributesValue extends ProductCreateTask
                     $this->replicationHelper->updateCronStatus(
                         $this->cronStatus,
                         LSR::SC_SUCCESS_CRON_ATTRIBUTES_VALUE,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        false,
+                        ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('End Sync Attributes Value Task for store ' . $this->store->getName());
                 }
@@ -103,7 +106,7 @@ class SyncAttributesValue extends ProductCreateTask
         /** Get list of only those Attribute Value whose items are already processed */
         $attributeBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $criteria           = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-            [['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']],
+            [['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']],
             $attributeBatchSize,
             false
         );
@@ -147,7 +150,7 @@ class SyncAttributesValue extends ProductCreateTask
                         $variantId,
                         $attributeValue->getCode(),
                         $formattedCode,
-                        $this->store->getId()
+                        $this->getScopeId()
                     );
                 } elseif ($attribute->getFrontendInput() == 'boolean') {
                     if (strtolower($attributeValue->getValue()) == 'yes') {
@@ -173,7 +176,14 @@ class SyncAttributesValue extends ProductCreateTask
                 );
             } catch (Exception $e) {
                 if (!$checkIsVariant) {
-                    $this->logger->debug('Problem with sku: ' . $itemId . ' in ' . __METHOD__);
+                    $this->logger->debug(
+                        sprintf(
+                            'Exception happened in %s for store: %, item id: %s',
+                            __METHOD__,
+                            $this->store->getName(),
+                            $itemId
+                        )
+                    );
                     $this->logger->debug($e->getMessage());
                     $attributeValue->setData('is_failed', 1);
                 }
@@ -201,7 +211,7 @@ class SyncAttributesValue extends ProductCreateTask
         if (!$this->remainingRecords) {
             /** Get list of only those attribute value whose items are already processed */
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
-                [['field' => 'main_table.scope_id', 'value' => $this->store->getId(), 'condition_type' => 'eq']],
+                [['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']],
             );
             $collection = $this->replAttributeValueCollectionFactory->create();
             $this->replicationHelper->setCollectionPropertiesPlusJoinSku(

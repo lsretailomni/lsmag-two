@@ -21,7 +21,6 @@ class IsServiceUpResolver implements ResolverInterface
         'ls_coupons_active'       => LSR::LS_ENABLE_COUPON_ELEMENTS,
         'ls_giftcard_active'      => LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
         'loyalty_points_active'   => LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
-        'ls_recommend'            => LSR::LS_RECOMMEND_ACTIVE,
         'ls_mag_product_availability' => LSR::SC_CART_PRODUCT_AVAILABILITY
     ];
 
@@ -33,7 +32,7 @@ class IsServiceUpResolver implements ResolverInterface
     ) {
         $this->lsr = $lsr;
     }
-    
+
     /**
      * Fetch store configuration value based on omni online/offline status.
      *

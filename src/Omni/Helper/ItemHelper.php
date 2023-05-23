@@ -469,7 +469,7 @@ class ItemHelper extends AbstractHelper
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
 
-            if (!empty($basketData) && method_exists($basketData, 'getPointsRewarded')) {
+            if ($basketData && method_exists($basketData, 'getPointsRewarded')) {
                 $quote->setLsPointsEarn($basketData->getPointsRewarded());
             }
 

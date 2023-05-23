@@ -11,6 +11,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class SyncCustomers
@@ -103,18 +104,21 @@ class SyncCustomers
                         foreach ($customers as $customer) {
                             $this->contactHelper->syncCustomerAndAddress($customer);
                         }
-                        $this->replicationHelper->updateConfigValue(
-                            $this->replicationHelper->getDateTime(),
-                            LSR::SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE,
-                            $this->store->getId()
-                        );
                     }
 
-                    $info[] = -1;
-                    return $info;
+                    $this->replicationHelper->updateConfigValue(
+                        $this->replicationHelper->getDateTime(),
+                        LSR::SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE,
+                        $this->store->getId(),
+                        ScopeInterface::SCOPE_STORES
+                    );
                 }
                 $this->lsr->setStoreId(null);
             }
+
+            $info[] = -1;
+
+            return $info;
         }
     }
 

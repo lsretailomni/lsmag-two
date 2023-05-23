@@ -59,7 +59,12 @@ class Actions extends Column
                     $item[$name]['execute'] = [
                         'href'    => $this->urlBuilder->getUrl(
                             self::URL_PATH_EXECUTE,
-                            ['joburl' => $item['value'], 'jobname' => $item['label'], 'store' => $item['storeId']]
+                            [
+                                'joburl' => $item['value'],
+                                'jobname' => $item['label'],
+                                'store' => $item['storeId'],
+                                'scope' => $item['scope']
+                            ]
                         ),
                         'label'   => __('Execute'),
                         'confirm' => [

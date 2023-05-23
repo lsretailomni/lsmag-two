@@ -404,7 +404,7 @@ class ContactHelper extends AbstractHelper
             // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
             $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
             try {
-                $response    = $request->execute($search);
+                $response = $request->execute($search);
                 if ($response) {
                     $contact_pos = $response->getContactGetResult();
                 }
@@ -566,6 +566,24 @@ class ContactHelper extends AbstractHelper
             ->setPassword($password)
             ->setUserName($customer->getData('lsr_username'))
             ->setAddresses([]);
+
+        if (!empty($customer->getData('gender'))) {
+            $genderValue = '';
+            if ($customer->getData('gender') == 1) {
+                $genderValue = Entity\Enum\Gender::MALE;
+            } else if ($customer->getData('gender') == 2) {
+                $genderValue = Entity\Enum\Gender::FEMALE;
+            } else if ($customer->getData('gender') == 3) {
+                $genderValue = Entity\Enum\Gender::UNKNOWN;
+            }
+            $contact->setGender($genderValue);
+        }
+
+        if (!empty($customer->getData('dob'))) {
+            $dob = $this->date->date("Y-m-d\T00:00:00", $customer->getData('dob'));
+            $contact->setBirthDay($dob);
+        }
+
         $contactCreate->setContact($contact);
         try {
             $response = $request->execute($contactCreate);
@@ -1052,15 +1070,15 @@ class ContactHelper extends AbstractHelper
         }
         try {
             foreach ($itemsCollection as $item) {
-                $buyRequest        = [];
-                $sku               = $item->getItemId();
-                $product           = $this->itemHelper->getProductByIdentificationAttributes($sku);
+                $buyRequest = [];
+                $sku        = $item->getItemId();
+                $product    = $this->itemHelper->getProductByIdentificationAttributes($sku);
 
                 if ($product) {
                     $qty               = $item->getQuantity();
                     $buyRequest['qty'] = $qty;
                     if ($item->getVariantId()) {
-                        $simProduct                    = $this->itemHelper->getProductByIdentificationAttributes(
+                        $simProduct = $this->itemHelper->getProductByIdentificationAttributes(
                             $item->getItemId(),
                             $item->getVariantId()
                         );
@@ -1150,6 +1168,7 @@ class ContactHelper extends AbstractHelper
             ->loadByEmail($customer_email);
         $this->authentication($customer, $websiteId);
         $customer         = $this->setCustomerAttributesValues($result, $customer);
+        $customer         = $this->setCustomerAdditionalValues($result, $customer);
         $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
         $validatePassword = $this->encryptorInterface->validateHash(
             $credentials['password'],
@@ -1461,6 +1480,8 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Set customer attribute values
+     *
      * @param MemberContact $contact
      * @param Customer $customer
      * @return mixed
@@ -1472,13 +1493,6 @@ class ContactHelper extends AbstractHelper
     public function setCustomerAttributesValues($contact, $customer)
     {
         $customer->setData('lsr_id', $contact->getId());
-        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00') {
-            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
-        }
-        if (!empty($contact->getGender())) {
-            $genderValue = ($contact->getGender() == Entity\Enum\Gender::MALE) ? 1 : (($contact->getGender() == Entity\Enum\Gender::FEMALE) ? 2 : '');
-            $customer->setData('gender', $genderValue);
-        }
         if (!empty($contact->getUserName())) {
             $customer->setData('lsr_username', $contact->getUserName());
         }
@@ -1501,6 +1515,39 @@ class ContactHelper extends AbstractHelper
             $customer->setGroupId($customerGroupId);
             $this->customerSession->setCustomerGroupId($customerGroupId);
         }
+
+        return $customer;
+    }
+
+    /**
+     * Saving additional customer values
+     *
+     * @param MemberContact $contact
+     * @param Customer $customer
+     * @return mixed
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function setCustomerAdditionalValues($contact, $customer)
+    {
+        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00'
+            && $contact->getBirthDay() != '1900-01-01T00:00:00') {
+            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
+        }
+        if (!empty($contact->getGender())) {
+            $genderValue = '';
+            if ($contact->getGender() == Entity\Enum\Gender::MALE) {
+                $genderValue = 1;
+            } else if ($contact->getGender() == Entity\Enum\Gender::FEMALE) {
+                $genderValue = 2;
+            } else if ($contact->getGender() == Entity\Enum\Gender::UNKNOWN) {
+                $genderValue = 3;
+            }
+            $customer->setData('gender', $genderValue);
+        }
+
         return $customer;
     }
 

@@ -37,18 +37,20 @@ class Category extends AbstractReset
         $where   = [];
 
         if ($scopeId != '') {
+            $websiteId = $this->replicationHelper->getWebsiteIdGivenStoreId($scopeId);
             $stores = [$this->replicationHelper->storeManager->getStore($scopeId)];
             $this->deleteAllStoresCategoriesUnderRootCategory($stores);
             $where = ['scope_id = ?' => $scopeId];
+            // Update dependent ls tables to not processed
+            $this->updateAllGivenTablesToUnprocessed(self::LS_CATEGORY_RELATED_TABLES, ['scope_id = ?' => $websiteId]);
         } else {
             $stores = $this->replicationHelper->lsr->getAllStores();
             $this->deleteAllStoresCategoriesUnderRootCategory($stores);
             $this->truncateAllGivenTables(self::MAGENTO_CATEGORY_TABLES);
             $this->clearRequiredMediaDirectories();
+            $this->updateAllGivenTablesToUnprocessed(self::LS_CATEGORY_RELATED_TABLES, $where);
         }
 
-        // Update dependent ls tables to not processed
-        $this->updateAllGivenTablesToUnprocessed(self::LS_CATEGORY_RELATED_TABLES, $where);
         // Update translation ls tables to not processed for hierarchy
         $where['TranslationId = ?'] = LSR::SC_TRANSLATION_ID_HIERARCHY_NODE;
         $this->updateDataTranslationTables($where);

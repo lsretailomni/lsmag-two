@@ -39,16 +39,25 @@ class AbstractReplicationTaskPlugin
      */
     public function afterGetRequiredParamsForMakingRequest(AbstractReplicationTask $subject, $result, $lsr, $storeId)
     {
-        $centralType = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $storeId);
+        $centralType = $lsr->getGivenConfigInGivenScope(
+            LSR::SC_REPLICATION_CENTRAL_TYPE,
+            $subject->defaultScope,
+            $storeId
+        );
 
         if (!$centralType) {
             return $result;
         }
-        $olderCompatibility = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_SAAS_COMPATIBILITY, $storeId);
+        $olderCompatibility = $lsr->getGivenConfigInGivenScope(
+            LSR::SC_REPLICATION_CENTRAL_SAAS_COMPATIBILITY,
+            $subject->defaultScope,
+            $storeId
+        );
+
         if ($olderCompatibility) {
             $appId = $lsr->getConfigValueFromDb(
                 $subject->getConfigPathAppId(),
-                ScopeInterface::SCOPE_STORES,
+                ScopeInterface::SCOPE_WEBSITES,
                 $storeId
             );
 
@@ -58,7 +67,11 @@ class AbstractReplicationTaskPlugin
             }
             $result[1] = 0;
         } else {
-            $appId = $lsr->getStoreConfig(LSR::SC_REPLICATION_CENTRAL_SAAS_APP_ID, $storeId);
+            $appId = $lsr->getGivenConfigInGivenScope(
+                LSR::SC_REPLICATION_CENTRAL_SAAS_APP_ID,
+                $subject->defaultScope,
+                $storeId
+            );
         }
 
         $result[6] = $appId;
@@ -79,7 +92,7 @@ class AbstractReplicationTaskPlugin
             $subject->resource_config->saveConfig(
                 $subject->getConfigPathAppId(),
                 $appId,
-                ScopeInterface::SCOPE_STORES,
+                ScopeInterface::SCOPE_WEBSITES,
                 $storeId
             );
         } else {
