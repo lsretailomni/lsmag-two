@@ -60,7 +60,7 @@ class ResetData extends Column
                         $item[$name]['reset'] = [
                             'href'    => $this->urlBuilder->getUrl(
                                 self::URL_PATH_EXECUTE,
-                                ['jobname' => $item['label'], 'store' => $item['storeId']]
+                                ['jobname' => $item['label'], 'store' => $item['storeId'], 'scope' => $item['scope']]
                             ),
                             'label'   => __('Reset'),
                             'confirm' => [

@@ -73,7 +73,7 @@ class Stores extends Template
         try {
             $collection = $this->replStoreFactory->create()
                 ->addFieldToFilter('IsDeleted', 0)
-                ->addFieldToFilter('scope_id', $this->lsr->getCurrentStoreId());
+                ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId());
 
             return $collection;
         } catch (Exception $e) {

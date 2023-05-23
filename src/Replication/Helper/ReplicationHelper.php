@@ -5,6 +5,7 @@ namespace Ls\Replication\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ItemType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
@@ -25,6 +26,7 @@ use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
 use \Ls\Replication\Model\ReplInvStatus;
+use Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -1199,8 +1201,9 @@ class ReplicationHelper extends AbstractHelper
      * @param $path
      * @param bool $storeId
      * @param bool $flushCache
+     * @param string $scope
      */
-    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true)
+    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
 
         /**
@@ -1208,7 +1211,7 @@ class ReplicationHelper extends AbstractHelper
          */
         $existingData = $this->lsr->getConfigValueFromDb(
             $path,
-            ScopeInterface::SCOPE_STORES,
+            $scope,
             $storeId
         );
 
@@ -1222,7 +1225,7 @@ class ReplicationHelper extends AbstractHelper
                 $this->configWriter->save(
                     $path,
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES,
+                    $scope,
                     $storeId
                 );
             } else {
@@ -1264,10 +1267,10 @@ class ReplicationHelper extends AbstractHelper
      * @param $value
      * @param $path
      * @param bool $storeId
+     * @param string $scope
      */
-    public function updateConfigValue($value, $path, $storeId = false)
+    public function updateConfigValue($value, $path, $storeId = false, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
-
         /**
          * Added the condition to update config value based on specific store id.
          */
@@ -1275,7 +1278,7 @@ class ReplicationHelper extends AbstractHelper
             $this->configWriter->save(
                 $path,
                 $value,
-                ScopeInterface::SCOPE_STORES,
+                $scope,
                 $storeId
             );
         } else {
@@ -1415,7 +1418,7 @@ class ReplicationHelper extends AbstractHelper
                 []
             );
         } elseif ($isCatJoin) {
-            $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
+            $hierarchyCode = $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $websiteId);
             $hierarchyCode = $hierarchyCode . ';';
             $collection->getSelect()->joinInner(
                 ['second' => $second_table_name],
@@ -1583,11 +1586,11 @@ class ReplicationHelper extends AbstractHelper
         $aliasNames
     ) {
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
-        isset(self::COLUMNS_MAPPING[$tableName])
+            isset(self::COLUMNS_MAPPING[$tableName])
         ) {
             $mappingColumns = self::COLUMNS_MAPPING[$tableName];
 
-            foreach($aliasNames as $alias) {
+            foreach ($aliasNames as $alias) {
                 foreach ($mappingColumns as $columnName => $newColumnName) {
                     $whereClause = str_replace(
                         "$alias.$columnName",
@@ -1657,8 +1660,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1768,8 +1771,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -1839,8 +1842,8 @@ class ReplicationHelper extends AbstractHelper
             [$variantIdTableAlias => 'catalog_product_entity_varchar'],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
-                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id".
-                " AND $variantIdTableAlias.attribute_id = $variantAttributeId".
+                " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
+                " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
                 'catalog_product_entity_varchar',
                 [$itemIdTableAlias, $variantIdTableAlias]
@@ -2211,7 +2214,7 @@ class ReplicationHelper extends AbstractHelper
         $filters              = [
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $store->getId(), 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
             [
                 'field' => 'nav_id',
                 'value' => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), 'condition_type' => 'eq'
@@ -2526,7 +2529,7 @@ class ReplicationHelper extends AbstractHelper
         foreach ($items->getItems() as $item) {
             $itemId        = $item->getLinkField1();
             $variantId     = $item->getLinkField2();
-            $product       = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 0);
+            $product       = $this->getProductDataByIdentificationAttributes($itemId, $variantId, '', 'global');
             $formattedCode = $this->formatAttributeCode($item->getCode());
             $attribute     = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
 
@@ -2989,6 +2992,32 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting the inventory type from items table
+     *
+     * @param $itemId
+     * @param $scopeId
+     * @return \Ls\Replication\Model\ItemType|null
+     */
+    public function getInventoryType($itemId, $scopeId)
+    {
+        $filters = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
+        /** @var ReplItem $item */
+        $item = $this->itemRepository->getList($searchCriteria)->getItems();
+
+        if (!empty($itemRepository)) {
+            return $item->getType();
+
+        }
+
+        return null;
+    }
+
+    /**
      * This function is overriding in hospitality module
      *
      * Update inventory and status
@@ -3050,7 +3079,7 @@ class ReplicationHelper extends AbstractHelper
 
         $criteria->setProductsFilter($productId);
         $stockItemCollection = $this->stockItemRepository->getList($criteria);
-        $allItems = $stockItemCollection->getItems();
+        $allItems            = $stockItemCollection->getItems();
         if (empty($allItems)) {
             return;
         }
@@ -3369,6 +3398,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '')
     {
+        $currentStoreId = $this->storeManager->getStore()->getId();
         $searchCriteria = clone $this->searchCriteriaBuilder;
 
         if (!empty($itemId) || $itemId == '0') {
@@ -3384,7 +3414,7 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
-            $scopeId        = ($storeId == '' || $storeId == 'global') ? $this->storeManager->getStore()->getId() : $storeId;
+            $scopeId        = ($storeId == '' || $storeId == 'global') ? $currentStoreId : $storeId;
             $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $scopeId);
             $optionId       = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
@@ -3413,7 +3443,13 @@ class ReplicationHelper extends AbstractHelper
             )->create();
         }
 
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId(0);
+        }
         $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId($currentStoreId);
+        }
         if (!empty($productList)) {
             return array_pop($productList);
         } else {
@@ -3441,5 +3477,37 @@ class ReplicationHelper extends AbstractHelper
     public function isVisualSwatchAttributes($storeId)
     {
         return $this->lsr->getStoreConfig(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, $storeId);
+    }
+
+    /**
+     * item manage stock
+     *
+     * @param $product
+     * @param $itemStock
+     * @param $type
+     * @return mixed
+     */
+    public function manageStock($product, $itemStock, $type)
+    {
+        $useManageStock = 1;
+        $quantity       = 0;
+        $isInStock      = 0;
+
+        if (!empty($type) && $type != ItemType::INVENTORY) {
+            $useManageStock = 0;
+        }
+        if (!empty($itemStock)) {
+            $isInStock = ($itemStock->getQuantity() > 0) ? 1 : 0;
+            $quantity  = $itemStock->getQuantity();
+        }
+
+        $product->setStockData([
+            'use_config_manage_stock' => $useManageStock,
+            'is_in_stock'             => $isInStock,
+            'qty'                     => $quantity
+        ]);
+
+        return $product;
+
     }
 }

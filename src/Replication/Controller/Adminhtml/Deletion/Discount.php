@@ -53,7 +53,7 @@ class Discount extends AbstractReset
                 ['rule_id IN (?)' => $parentCollection->getSelect()]
             );
 
-            $where = ['scope_id = ?' => $scopeId];
+            $where = ['scope_id = ?' => $websiteId];
         } else {
             $this->truncateAllGivenTables(self::MAGENTO_DISCOUNT_TABLES);
         }

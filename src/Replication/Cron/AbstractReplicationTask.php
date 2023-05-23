@@ -14,7 +14,9 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use ReflectionClass;
 use ReflectionException;
 use Traversable;
@@ -171,6 +173,8 @@ abstract class AbstractReplicationTask
     /** @var bool */
     public $cronStatus = false;
 
+    public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
+
     /**
      * AbstractReplicationTask constructor.
      * @param ScopeConfigInterface $scope_config
@@ -191,6 +195,7 @@ abstract class AbstractReplicationTask
         $this->logger          = $logger;
         $this->ls_helper       = $helper;
         $this->rep_helper      = $repHelper;
+        $this->setDefaultScope();
     }
 
     /**
@@ -202,19 +207,37 @@ abstract class AbstractReplicationTask
      */
     public function execute($storeData = null)
     {
-        /**
-         * Get all the available stores config in the Magento system
-         */
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if ($this->defaultScope == ScopeInterface::SCOPE_WEBSITES) {
+            /**
+             * Get all the available stores config in the Magento system
+             */
+            if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->getAllWebsites();
+            }
+            if (!empty($stores)) {
+                foreach ($stores as $store) {
+                    if ($this->getLsrModel()->isEnabled($store->getId(), $this->defaultScope)) {
+                        $this->fetchDataGivenStore($store->getId());
+                    }
+                }
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->getAllStores();
-        }
-        if (!empty($stores)) {
-            foreach ($stores as $store) {
-                if ($this->getLsrModel()->isEnabled($store->getId())) {
-                    $this->fetchDataGivenStore($store->getId());
+            /**
+             * Get all the available stores config in the Magento system
+             */
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                /** @var StoreInterface[] $stores */
+                $stores = $this->getAllStores();
+            }
+            if (!empty($stores)) {
+                foreach ($stores as $store) {
+                    if ($this->getLsrModel()->isEnabled($store->getId())) {
+                        $this->fetchDataGivenStore($store->getId());
+                    }
                 }
             }
         }
@@ -240,37 +263,76 @@ abstract class AbstractReplicationTask
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_attribute" ||
             $confPath == "ls_mag/replication/repl_attribute_option_value") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ATTRIBUTE, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                ($storeId) ?: false,
+                false,
+                $this->defaultScope
+            );
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
             $this->rep_helper->updateCronStatus(
                 false,
                 LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
                 ($storeId) ?: false,
-                false
+                false,
+                $this->defaultScope
             );
         } elseif ($confPath == "ls_mag/replication/repl_item_variant") {
             $this->rep_helper->updateCronStatus(
                 false,
                 LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
                 ($storeId) ?: false,
-                false
+                false,
+                $this->defaultScope
             );
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_CATEGORY, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_CATEGORY,
+                ($storeId) ?: false,
+                false,
+                $this->defaultScope
+            );
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_DISCOUNT, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_DISCOUNT,
+                ($storeId) ?: false,
+                false,
+                $this->defaultScope
+            );
         } elseif ($confPath == "ls_mag/replication/repl_item") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_PRODUCT, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_PRODUCT,
+                ($storeId) ?: false,
+                false,
+                $this->defaultScope
+            );
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_ITEM_UPDATES, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
+                ($storeId) ?: false,
+                false,
+                $this->defaultScope
+            );
         } elseif ($confPath == "ls_mag/replication/repl_vendor") {
-            $this->rep_helper->updateCronStatus(false, LSR::SC_SUCCESS_CRON_VENDOR, ($storeId) ?: false, false);
+            $this->rep_helper->updateCronStatus(
+                false,
+                LSR::SC_SUCCESS_CRON_VENDOR,
+                ($storeId) ?: false,
+                false,
+                $this->defaultScope
+            );
         } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
             $this->rep_helper->updateCronStatus(
                 false,
                 LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
                 ($storeId) ?: false,
-                false
+                false,
+                $this->defaultScope
             );
         }
     }
@@ -334,7 +396,7 @@ abstract class AbstractReplicationTask
                     $set_method             = "set$field_name_capitalized";
                     $get_method             = "get$field_name_capitalized";
                 }
-                if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
+                if ($entity && $source && method_exists($entity, $set_method) && method_exists($source, $get_method)) {
                     $entity->{$set_method}($source->{$get_method}());
                 }
             }
@@ -449,7 +511,7 @@ abstract class AbstractReplicationTask
         if ($storeId) {
             return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPath(),
-                ScopeInterface::SCOPE_STORES,
+                $this->defaultScope,
                 $storeId
             );
         } else {
@@ -467,10 +529,11 @@ abstract class AbstractReplicationTask
     public function getMaxKey($storeId = false)
     {
         $lsrModel = $this->getLsrModel();
+
         if ($storeId) {
             return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPathMaxKey(),
-                ScopeInterface::SCOPE_STORES,
+                $this->defaultScope,
                 $storeId
             );
         } else {
@@ -491,7 +554,7 @@ abstract class AbstractReplicationTask
         if ($storeId) {
             return $lsrModel->getConfigValueFromDb(
                 $this->getConfigPathStatus(),
-                ScopeInterface::SCOPE_STORES,
+                $this->defaultScope,
                 $storeId
             );
         } else {
@@ -503,7 +566,7 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param string
+     * @param string $lastKey
      * @param bool $storeId
      */
     public function persistLastKey($lastKey, $storeId = false)
@@ -512,7 +575,7 @@ abstract class AbstractReplicationTask
             $this->resource_config->saveConfig(
                 $this->getConfigPath(),
                 $lastKey,
-                ScopeInterface::SCOPE_STORES,
+                $this->defaultScope,
                 $storeId
             );
         } else {
@@ -526,7 +589,7 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param string
+     * @param string $maxKey
      * @param bool $storeId
      */
     public function persistMaxKey($maxKey, $storeId = false)
@@ -535,7 +598,7 @@ abstract class AbstractReplicationTask
             $this->resource_config->saveConfig(
                 $this->getConfigPathMaxKey(),
                 $maxKey,
-                ScopeInterface::SCOPE_STORES,
+                $this->defaultScope,
                 $storeId
             );
         } else {
@@ -553,7 +616,6 @@ abstract class AbstractReplicationTask
      */
     public function saveReplicationStatus($status = 0, $storeId = false)
     {
-
         if ($storeId) {
             $this->resource_config->saveConfig(
                 $this->getConfigPathStatus(),
@@ -625,7 +687,15 @@ abstract class AbstractReplicationTask
      */
     public function getAllStores()
     {
-        return $this->getObjectManager()->get(\Magento\Store\Model\StoreManagerInterface::class)->getStores();
+        return $this->getObjectManager()->get(StoreManagerInterface::class)->getStores();
+    }
+
+    /**
+     * @return StoreInterface[]
+     */
+    public function getAllWebsites()
+    {
+        return $this->getObjectManager()->get(StoreManagerInterface::class)->getWebsites();
     }
 
     /**
@@ -638,7 +708,9 @@ abstract class AbstractReplicationTask
     public function getBatchSize($lsr, $storeId)
     {
         $batchSize      = 100;
-        $isBatchSizeSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, $storeId);
+        $isBatchSizeSet = $lsr->getStoreConfig(
+            LSR::SC_REPLICATION_DEFAULT_BATCHSIZE
+        );
         if ($isBatchSizeSet && is_numeric($isBatchSizeSet)) {
             $batchSize = $isBatchSizeSet;
         }
@@ -655,17 +727,27 @@ abstract class AbstractReplicationTask
      */
     public function getWebStoreId($lsr, $storeId)
     {
-        $isAllStoresItemsSet = $lsr->getStoreConfig(LSR::SC_REPLICATION_ALL_STORES_ITEMS, $storeId);
-        if ($isAllStoresItemsSet) {
-            $webStoreID = '';
-            if (in_array($this->getConfigPath(), self::$store_id_needed)) {
-                $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-            }
-        } else {
-            $webStoreID = $lsr->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-        }
+        return $lsr->getGivenConfigInGivenScope(
+            LSR::SC_SERVICE_STORE,
+            $this->defaultScope,
+            $storeId
+        );
+    }
 
-        return $webStoreID;
+    /**
+     * Get WebStore ID
+     *
+     * @param $lsr
+     * @param $storeId
+     * @return string
+     */
+    public function getBaseUrl($lsr, $storeId)
+    {
+        return $lsr->getGivenConfigInGivenScope(
+            LSR::SC_SERVICE_BASE_URL,
+            $this->defaultScope,
+            $storeId
+        );
     }
 
     /**
@@ -683,7 +765,7 @@ abstract class AbstractReplicationTask
         $maxKey     = $this->getMaxKey($storeId);
         $batchSize  = $this->getBatchSize($lsr, $storeId);
         $webStoreID = $this->getWebStoreId($lsr, $storeId);
-        $baseUrl    = $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+        $baseUrl    = $this->getBaseUrl($lsr, $storeId);
 
         return [$lastKey, 1, $batchSize, $webStoreID, $maxKey, $baseUrl, ''];
     }
@@ -698,11 +780,12 @@ abstract class AbstractReplicationTask
     {
         $lsr = $this->getLsrModel();
         // Need to check if is_lsr is enabled on each store and only process the relevant store.
-        if ($lsr->isLSR($storeId)) {
+        if ($lsr->isLSR($storeId, $this->defaultScope)) {
             $this->rep_helper->updateConfigValue(
                 $this->rep_helper->getDateTime(),
                 $this->getConfigPathLastExecute(),
-                $storeId
+                $storeId,
+                $this->defaultScope
             );
 
             list($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl, $appId) =
@@ -747,7 +830,7 @@ abstract class AbstractReplicationTask
             $properties = $this->getProperties();
             $response   = $request->execute();
 
-            if (method_exists($response, 'getResult')) {
+            if ($response && method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();
                 $lastKey                = $result->getLastKey();
                 $maxKey                 = $result->getMaxKey();
@@ -760,7 +843,7 @@ abstract class AbstractReplicationTask
                     if (count($traversable) > 0) {
                         foreach ($traversable as $source) {
                             //TODO need to understand this before we modify it.
-                            $source->setScope(ScopeInterface::SCOPE_STORES)
+                            $source->setScope($this->defaultScope)
                                 ->setScopeId($storeId);
 
                             $this->saveSource($properties, $source);
@@ -779,7 +862,8 @@ abstract class AbstractReplicationTask
                         $this->cronStatus,
                         $this->getConfigPathStatus(),
                         $storeId,
-                        false
+                        false,
+                        $this->defaultScope
                     );
                 }
             } else {
@@ -791,6 +875,22 @@ abstract class AbstractReplicationTask
             }
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Set default scope
+     *
+     */
+    public function setDefaultScope()
+    {
+        $confPath = $this->getConfigPath();
+
+        if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
+            $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
+            $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH
+        ) {
+            $this->defaultScope = ScopeInterface::SCOPE_STORES;
         }
     }
 

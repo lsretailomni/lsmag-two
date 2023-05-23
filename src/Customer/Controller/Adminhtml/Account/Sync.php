@@ -8,6 +8,7 @@ use \Ls\Omni\Helper\ContactHelper;
 use Magento\Backend\App\Action;
 use Magento\Customer\Model\CustomerRegistry;
 use Magento\Framework\Message\ManagerInterface;
+use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -75,7 +76,7 @@ class Sync extends Action
         try {
             $customer = $this->customerRegistry->retrieve($customerId);
             $this->lsr->setStoreId($customer->getStoreId());
-            if ($this->lsr->isLSR($customer->getData('website_id'))) {
+            if ($this->lsr->isLSR($customer->getData('website_id'), ScopeInterface::SCOPE_WEBSITE)) {
                 $contact = $this->contactHelper->syncCustomerAndAddress($customer);
                 if ($contact) {
                     $this->messageManager->addSuccessMessage(
