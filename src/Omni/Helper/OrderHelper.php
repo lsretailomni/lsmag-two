@@ -447,7 +447,7 @@ class OrderHelper extends AbstractHelper
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment types.
-            $orderPaymentLoyalty->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+            $orderPaymentLoyalty->setCurrencyCode('LOY')
                 ->setCurrencyFactor($pointRate)
                 ->setLineNumber('2')
                 ->setCardNumber($cardId)
