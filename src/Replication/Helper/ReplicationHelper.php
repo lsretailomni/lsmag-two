@@ -3032,16 +3032,16 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting the inventory type from items table
+     *
      * @param $itemId
-     * @param $storeId
      * @param $scopeId
      * @return \Ls\Replication\Model\ItemType|null
      */
-    public function getInventoryType($itemId, $storeId, $scopeId)
+    public function getInventoryType($itemId, $scopeId)
     {
         $filters = [
-            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
         ];
 

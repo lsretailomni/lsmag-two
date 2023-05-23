@@ -11,11 +11,6 @@
                    template="Ls_Omni::product/view/notification.phtml"
                    ifconfig="ls_mag/ls_discounts/discount_login_register_notice"
                    before="product.info.main"/>
-            <!-- For LS Recommendation. -->
-            <block class="Ls\Omni\Block\Product\View\Recommend"
-                   name="ls.omni.product.recommendation"
-                   template="Ls_Omni::product/recommendation.phtml"
-                   after="product.info.details" ifconfig="ls_mag/ls_recommend/product"/>
         </referenceContainer>
 
         <referenceBlock name="product.info.addtocart" template="Ls_Omni::product/view/addtocart.phtml" />

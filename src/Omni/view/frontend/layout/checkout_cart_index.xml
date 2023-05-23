@@ -2,13 +2,6 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="content">
-            <!-- For LS Recommendation. -->
-            <block class="Ls\Omni\Block\Product\Recommend"
-                   name="ls.omni.product.recommendation"
-                   template="Ls_Omni::checkout/cart/recommendation.phtml"
-                   after="checkout.cart" ifconfig="ls_mag/ls_recommend/cart"/>
-        </referenceContainer>
         <referenceContainer name="cart.discount">
             <block class="Ls\Omni\Block\Cart\LoyaltyPoints" name="checkout.cart.loyaltypoints" as="loyaltypoints"
                    template="Ls_Omni::cart/loyalty-points.phtml" before="-" ifconfig="ls_mag/ls_loyaltypoints/cart"/>

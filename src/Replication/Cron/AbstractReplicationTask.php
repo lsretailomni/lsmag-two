@@ -396,7 +396,7 @@ abstract class AbstractReplicationTask
                     $set_method             = "set$field_name_capitalized";
                     $get_method             = "get$field_name_capitalized";
                 }
-                if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
+                if ($entity && $source && method_exists($entity, $set_method) && method_exists($source, $get_method)) {
                     $entity->{$set_method}($source->{$get_method}());
                 }
             }
@@ -830,7 +830,7 @@ abstract class AbstractReplicationTask
             $properties = $this->getProperties();
             $response   = $request->execute();
 
-            if (method_exists($response, 'getResult')) {
+            if ($response && method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();
                 $lastKey                = $result->getLastKey();
                 $maxKey                 = $result->getMaxKey();
