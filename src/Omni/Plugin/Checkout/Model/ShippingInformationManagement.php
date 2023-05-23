@@ -46,10 +46,8 @@ class ShippingInformationManagement
         ShippingInformationInterface $addressInformation
     ) {
         $extAttributes = $addressInformation->getExtensionAttributes();
-//        $pickupDate = $extAttributes->getPickupDate();
-        $pickupStore = $extAttributes->getPickupStore();
-        $quote       = $this->quoteRepository->getActive($cartId);
-//        $quote->setPickupDate($pickupDate);
+        $pickupStore   = $extAttributes->getPickupStore();
+        $quote         = $this->quoteRepository->getActive($cartId);
         $quote->setPickupStore($pickupStore);
         $pickupDate         = $extAttributes->getPickupDate();
         $pickupTimeslot     = $extAttributes->getPickupTimeslot();

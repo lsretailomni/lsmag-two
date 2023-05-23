@@ -122,9 +122,10 @@ class OrderObserver implements ObserverInterface
                     }
                 }
             }
-            //add condition for free payment method when nothing is required i-e Payment is done through Loyalty Points/Giftcard
+            //add condition for free payment method when nothing is required i-e Payment is done through
+            // Loyalty Points/Giftcard
             if (!empty($oneListCalculation)) {
-                if (($check == true || !empty($transId))) {
+                if (($check || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                     $response = $this->orderHelper->placeOrder($request);
                     try {
