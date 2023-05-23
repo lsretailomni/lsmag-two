@@ -1863,6 +1863,46 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Set collection properties and join for hierarchy nodes data translation
+     *
+     * In order to select only processed entries
+     *
+     * @param mixed $collection
+     * @param SearchCriteriaInterface $criteria
+     * @param $websiteId
+     * @param $store
+     */
+    public function setCollectionPropertiesPlusJoinsForHierarchyNodesDataTranslation(
+        &$collection,
+        SearchCriteriaInterface $criteria,
+        $websiteId,
+        $store
+    ) {
+        $this->setCollectionPropertiesPlusJoin(
+            $collection,
+            $criteria,
+            'key',
+            'catalog_category_entity_varchar',
+            'value',
+            false,
+            false,
+            true,
+            $websiteId
+        );
+        $rootCategoryId = $store->getRootCategoryId();
+        $collection->getSelect()->joinInner(
+            ['third' => 'catalog_category_entity'],
+            "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+            []
+        );
+
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+    }
+
+    /**
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      */
@@ -3414,7 +3454,7 @@ class ReplicationHelper extends AbstractHelper
         }
 
         if ($uom != '') {
-            $scopeId        = ($storeId == '' || $storeId == 'global') ? $currentStoreId : $storeId;
+            $scopeId        = $this->storeManager->getStore()->getWebsiteId();
             $uomDescription = $this->getUomDescriptionGivenCodeAndScopeId($uom, $scopeId);
             $optionId       = $this->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,

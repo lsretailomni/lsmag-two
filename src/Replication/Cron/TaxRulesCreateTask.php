@@ -190,7 +190,7 @@ class TaxRulesCreateTask
                             } catch (Exception $e) {
                                 $this->logger->debug(
                                     sprintf(
-                                        'Exception happened in %s for store: %, item id: %s',
+                                        'Exception happened in %s for store: %s, item id: %s',
                                         __METHOD__,
                                         $this->store->getName(),
                                         $taxPostGroup

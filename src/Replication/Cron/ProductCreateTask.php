@@ -721,7 +721,7 @@ class ProductCreateTask
                                                         'is_updated'   => 0,
                                                         'processed_at' => $this->replicationHelper->getDateTime(),
                                                         'processed'    => 1,
-                                                        'is_failed'    => 1
+                                                        'is_failed'    => 0
                                                     ]
                                                 );
 
@@ -1077,10 +1077,7 @@ class ProductCreateTask
                 (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
 
             if (!empty($itemBarcode->getUnitOfMeasure())) {
-                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemBarcode->getItemId());
-                if ($itemBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
-                    $sku = $sku . '-' . $itemBarcode->getUnitOfMeasure();
-                }
+                $sku = $sku . '-' . $itemBarcode->getUnitOfMeasure();
             }
 
             $allBarCodes[$sku] = $itemBarcode->getNavId();
@@ -1284,7 +1281,7 @@ class ProductCreateTask
                                         'is_updated'   => 0,
                                         'processed_at' => $this->replicationHelper->getDateTime(),
                                         'processed'    => 1,
-                                        'is_failed'    => 1
+                                        'is_failed'    => 0
                                     ]
                                 );
 
@@ -1539,11 +1536,7 @@ class ProductCreateTask
                             $variantId = $replBarcode->getVariantId();
                         }
                         if (!empty($replBarcode->getUnitOfMeasure())) {
-                            // @codingStandardsIgnoreLine
-                            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replBarcode->getItemId());
-                            if ($replBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
-                                $uom = $replBarcode->getUnitOfMeasure();
-                            }
+                            $uom = $replBarcode->getUnitOfMeasure();
                         }
                         $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                             $itemId,
