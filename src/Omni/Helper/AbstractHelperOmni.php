@@ -88,11 +88,6 @@ class AbstractHelperOmni extends AbstractHelper
     public $loyaltyHelper;
 
     /**
-     * @var LSRecommend
-     */
-    public $lsRecommendHelper;
-
-    /**
      * @var OrderHelper
      */
     public $orderHelper;
@@ -121,7 +116,6 @@ class AbstractHelperOmni extends AbstractHelper
      * @param GiftCardHelper $giftCardHelper
      * @param ItemHelper $itemHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param LSRecommend $lsRecommendHelper
      * @param OrderHelper $orderHelper
      * @param SessionHelper $sessionHelper
      * @param StockHelper $stockHelper
@@ -143,7 +137,6 @@ class AbstractHelperOmni extends AbstractHelper
         GiftCardHelper $giftCardHelper,
         ItemHelper $itemHelper,
         LoyaltyHelper $loyaltyHelper,
-        LSRecommend $lsRecommendHelper,
         OrderHelper $orderHelper,
         SessionHelper $sessionHelper,
         StockHelper $stockHelper,
@@ -164,7 +157,6 @@ class AbstractHelperOmni extends AbstractHelper
         $this->giftCardHelper    = $giftCardHelper;
         $this->itemHelper        = $itemHelper;
         $this->loyaltyHelper     = $loyaltyHelper;
-        $this->lsRecommendHelper = $lsRecommendHelper;
         $this->orderHelper       = $orderHelper;
         $this->sessionHelper     = $sessionHelper;
         $this->stockHelper       = $stockHelper;
@@ -316,16 +308,6 @@ class AbstractHelperOmni extends AbstractHelper
     public function getLoyaltyHelper(): LoyaltyHelper
     {
         return $this->loyaltyHelper;
-    }
-
-    /**
-     * GetLsRecommendHelper
-     *
-     * @return LSRecommend
-     */
-    public function getLsRecommendHelper(): LSRecommend
-    {
-        return $this->lsRecommendHelper;
     }
 
     /**
