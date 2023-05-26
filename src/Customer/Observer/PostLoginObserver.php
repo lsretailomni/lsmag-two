@@ -25,6 +25,7 @@ class PostLoginObserver implements ObserverInterface
 
     /**
      * @param ContactHelper $contactHelper
+     * @param LSR $lsr
      */
     public function __construct(
         ContactHelper $contactHelper,
@@ -46,7 +47,7 @@ class PostLoginObserver implements ObserverInterface
     {
         $customer = $observer->getData('customer');
 
-        if ($customer && !$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($customer) {
             $customer = $this->contactHelper->loadCustomerByEmailAndWebsiteId(
                 $customer->getEmail(),
                 $customer->getWebsiteId()
