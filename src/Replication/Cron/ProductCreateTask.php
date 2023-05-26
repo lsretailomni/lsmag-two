@@ -595,14 +595,8 @@ class ProductCreateTask
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 $product   = $this->setProductStatus($productData, $item->getBlockedOnECom());
-                                $itemStock = $this->replicationHelper->getInventoryStatus(
-                                    $item->getNavId(),
-                                    $storeId,
-                                    $this->store->getId()
-                                );
                                 $product   = $this->replicationHelper->manageStock(
                                     $product,
-                                    $itemStock,
                                     $item->getType()
                                 );
                                 try {
@@ -684,7 +678,6 @@ class ProductCreateTask
                                 );
                                 $product   = $this->replicationHelper->manageStock(
                                     $product,
-                                    $itemStock,
                                     $item->getType()
                                 );
                                 try {
@@ -2316,7 +2309,7 @@ class ProductCreateTask
                 $this->getScopeId()
             );
         }
-        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
+        $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
@@ -2488,7 +2481,7 @@ class ProductCreateTask
                 $this->getScopeId()
             );
         }
-        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
+        $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         try {
             /** @var ProductInterface $productSaved */
             // @codingStandardsIgnoreStart
