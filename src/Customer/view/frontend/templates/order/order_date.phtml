@@ -10,7 +10,8 @@
         '<span class="label">Order Date:</span> %1',
         '<date>' . $block->formatDate(
             str_replace('Z','',$block->getDocRegistraionTime()),
-            \IntlDateFormatter::LONG
+            \IntlDateFormatter::LONG,
+            true
         ) . '</date>'
     ) ?>
 </div>
