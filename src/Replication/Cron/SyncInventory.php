@@ -69,7 +69,6 @@ class SyncInventory extends ProductCreateTask
                             if (!empty($uomCodes)) {
                                 if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
                                     $uomCodeStatus = true;
-
                                 }
                             }
                             if (!$uomCodeStatus) {
@@ -81,8 +80,22 @@ class SyncInventory extends ProductCreateTask
                                     $sku,
                                     $replInvStatus
                                 );
-                            }
-                            if ($uomCodeStatus) {
+                            } else {
+                                if (!$replInvStatus->getVariantId()) {
+                                    $product = $this->replicationHelper->
+                                    getProductDataByIdentificationAttributes(
+                                        $replInvStatus->getItemId(),
+                                        '',
+                                        ''
+                                    );
+                                    if ($this->hasAttributesOtherThenUom($product)) {
+                                        $replInvStatus->setData('is_updated', 0);
+                                        $replInvStatus->setData('processed', 1);
+                                        $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
+                                        $this->replInvStatusRepository->save($replInvStatus);
+                                        continue;
+                                    }
+                                }
                                 foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
                                     $sku = $this->replicationHelper->
                                     getProductDataByIdentificationAttributes(
@@ -99,10 +112,11 @@ class SyncInventory extends ProductCreateTask
                         } catch (Exception $e) {
                             $this->logger->debug(
                                 sprintf(
-                                    'Exception happened in %s for store: %, item id: %s',
+                                    'Exception happened in %s for store: %s, item id: %s, variant id: %s',
                                     __METHOD__,
                                     $this->store->getName(),
-                                    $sku
+                                    $replInvStatus->getItemId(),
+                                    $replInvStatus->getVariantId()
                                 )
                             );
                             $this->logger->debug($e->getMessage());
@@ -170,5 +184,26 @@ class SyncInventory extends ProductCreateTask
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;
+    }
+
+    /**
+     * Has attribute other then uom
+     *
+     * @param $product
+     * @return bool
+     */
+    public function hasAttributesOtherThenUom($product)
+    {
+        $exists = false;
+        $options = $product->getTypeInstance()->getConfigurableAttributes($product);
+
+        foreach ($options->getItems() as $attribute) {
+            if ($attribute->getProductAttribute()->getAttributeCode() != 'lsr_uom') {
+                $exists = true;
+                break;
+            }
+        }
+
+        return $exists;
     }
 }
