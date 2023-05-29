@@ -18,6 +18,11 @@ class OrderCreate implements RequestInterface
     protected $request = null;
 
     /**
+     * @property boolean $returnOrderIdOnly
+     */
+    protected $returnOrderIdOnly = null;
+
+    /**
      * @param Order $request
      * @return $this
      */
@@ -33,6 +38,24 @@ class OrderCreate implements RequestInterface
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * @param boolean $returnOrderIdOnly
+     * @return $this
+     */
+    public function setReturnOrderIdOnly($returnOrderIdOnly)
+    {
+        $this->returnOrderIdOnly = $returnOrderIdOnly;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getReturnOrderIdOnly()
+    {
+        return $this->returnOrderIdOnly;
     }
 }
 
