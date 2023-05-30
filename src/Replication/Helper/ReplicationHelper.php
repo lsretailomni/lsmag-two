@@ -3523,31 +3523,21 @@ class ReplicationHelper extends AbstractHelper
      * item manage stock
      *
      * @param $product
-     * @param $itemStock
      * @param $type
      * @return mixed
      */
-    public function manageStock($product, $itemStock, $type)
+    public function manageStock($product, $type)
     {
         $useManageStock = 1;
-        $quantity       = 0;
-        $isInStock      = 0;
 
         if (!empty($type) && $type != ItemType::INVENTORY) {
             $useManageStock = 0;
         }
-        if (!empty($itemStock)) {
-            $isInStock = ($itemStock->getQuantity() > 0) ? 1 : 0;
-            $quantity  = $itemStock->getQuantity();
-        }
 
         $product->setStockData([
-            'use_config_manage_stock' => $useManageStock,
-            'is_in_stock'             => $isInStock,
-            'qty'                     => $quantity
+            'use_config_manage_stock' => $useManageStock
         ]);
 
         return $product;
-
     }
 }
