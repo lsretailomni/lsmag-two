@@ -36,6 +36,11 @@ class ReplDataTranslation
     protected $TranslationId = null;
 
     /**
+     * @property string $URL
+     */
+    protected $URL = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -133,6 +138,24 @@ class ReplDataTranslation
     public function getTranslationId()
     {
         return $this->TranslationId;
+    }
+
+    /**
+     * @param string $URL
+     * @return $this
+     */
+    public function setURL($URL)
+    {
+        $this->URL = $URL;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getURL()
+    {
+        return $this->URL;
     }
 
     /**

@@ -62,6 +62,9 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName AUDKENNI_SECRET()
  * @$method static FeatureFlagName AUDKENNI_MESSAGE_TO_USER()
  * @$method static FeatureFlagName AUDKENNI_LOGIN_ENABLED()
+ * @$method static FeatureFlagName AUDKENNI_TEST_USER_ENABLED()
+ * @$method static FeatureFlagName AUDKENNI_TEST_USER()
+ * @$method static FeatureFlagName AUDKENNI_TEST_CARD_ID()
  * @$method static FeatureFlagName GOOGLE_LOGIN_ENABLED()
  * @$method static FeatureFlagName GOOGLE_IOS_CLIENT_ID()
  * @$method static FeatureFlagName FACEBOOK_LOGIN_ENABLED()
@@ -170,6 +173,12 @@ class FeatureFlagName extends Enum
     public const AUDKENNI_MESSAGE_TO_USER = 'AudkenniMessageToUser';
 
     public const AUDKENNI_LOGIN_ENABLED = 'AudkenniLoginEnabled';
+
+    public const AUDKENNI_TEST_USER_ENABLED = 'AudkenniTestUserEnabled';
+
+    public const AUDKENNI_TEST_USER = 'AudkenniTestUser';
+
+    public const AUDKENNI_TEST_CARD_ID = 'AudkenniTestCardId';
 
     public const GOOGLE_LOGIN_ENABLED = 'GoogleLoginEnabled';
 
