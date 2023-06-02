@@ -850,7 +850,7 @@ class ProductCreateTask
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
-                $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+                 $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
                 if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                     $mimeType = $this->getMimeType($result['image']);
                     if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
@@ -863,6 +863,11 @@ class ProductCreateTask
                             ->setPosition($image->getDisplayOrder())
                             ->setDisabled(false)
                             ->setContent($imageContent);
+
+                        if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                            $this->attributeMediaGalleryEntry
+                                ->setLabel(($image->getImageDescription()) ?: __('Product Image'));
+                        }
 
                         if ($i == 0) {
                             $types = ['image', 'small_image', 'thumbnail'];
@@ -890,6 +895,11 @@ class ProductCreateTask
                 }
             } else {
                 $existentImage = $this->imagesFetched[$image->getImageId()];
+                $existentImage->setLabel(($image->getDescription()) ?: __('Product Image'));
+
+                if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                    $existentImage->setLabel(($image->getImageDescription()) ?: __('Product Image'));
+                }
 
                 if ($i == 0) {
                     $types = ['image', 'small_image', 'thumbnail'];
