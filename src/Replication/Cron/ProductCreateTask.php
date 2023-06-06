@@ -823,7 +823,7 @@ class ProductCreateTask
      * @return array
      * @throws Exception
      */
-    public function getMediaGalleryEntries($productImages)
+    public function getMediaGalleryEntries($productImages, $productData)
     {
         $galleryArray = [];
         /** @var ReplImageLink $image */
@@ -859,14 +859,14 @@ class ProductCreateTask
                             ->setName($this->replicationHelper->oSlug($image->getImageId()))
                             ->setType($mimeType);
                         $this->attributeMediaGalleryEntry->setMediaType('image')
-                            ->setLabel(($image->getDescription()) ?: __('Product Image'))
+                            ->setLabel(($image->getDescription()) ?: $productData->getName())
                             ->setPosition($image->getDisplayOrder())
                             ->setDisabled(false)
                             ->setContent($imageContent);
 
                         if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
                             $this->attributeMediaGalleryEntry
-                                ->setLabel(($image->getImageDescription()) ?: __('Product Image'));
+                                ->setLabel(($image->getImageDescription()) ?: $productData->getName());
                         }
 
                         if ($i == 0) {
@@ -895,10 +895,10 @@ class ProductCreateTask
                 }
             } else {
                 $existentImage = $this->imagesFetched[$image->getImageId()];
-                $existentImage->setLabel(($image->getDescription()) ?: __('Product Image'));
+                $existentImage->setLabel(($image->getDescription()) ?: $productData->getName());
 
                 if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
-                    $existentImage->setLabel(($image->getImageDescription()) ?: __('Product Image'));
+                    $existentImage->setLabel(($image->getImageDescription()) ?: $productData->getName());
                 }
 
                 if ($i == 0) {
