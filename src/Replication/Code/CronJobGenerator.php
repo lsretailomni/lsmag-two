@@ -5,7 +5,7 @@ namespace Ls\Replication\Code;
 
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
-use \Ls\Core\Helper\Data as LsHelper;
+use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
