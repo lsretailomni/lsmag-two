@@ -18,7 +18,10 @@ class StoreInfoOutput implements ResolverInterface
      */
     public $dataHelper;
 
-
+    /**
+     * @param DataHelper $dataHelper
+     * @param CheckoutSession $checkoutSession
+     */
     public function __construct(
         DataHelper $dataHelper,
         CheckoutSession $checkoutSession
