@@ -235,53 +235,59 @@ class DataTranslationTask
                         $store->getId()
                     );
                     $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
-                    if ($langCode != "Default") {
-                        $configurableAttributesValuesStatus    =
-                        $configurableAttributesStatus = $standardConfigurableAttributesValuesStatus = false;
-                        $hierarchyNodesStatus                  = $this->updateHierarchyNode(
-                            $store->getId(),
-                            $langCode,
-                            $store->getWebsiteId()
-                        );
-                        list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
-                        $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
-                        $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
-                            $store->getId(),
-                            $langCode
-                        );
-                        $textBasedAttributesValuesStatus       = $this->updateProductAttributesValues(
-                            $store->getId(),
-                            $langCode
-                        );
-
-                        if ($cronAttributeVariantCheck) {
-                            $configurableAttributesStatus       = $this->updateExtendedVariantAttributes(
+                    try {
+                        if ($langCode != "Default") {
+                            $configurableAttributesValuesStatus    =
+                            $configurableAttributesStatus = $standardConfigurableAttributesValuesStatus = false;
+                            $hierarchyNodesStatus                  = $this->updateHierarchyNode(
+                                $store->getId(),
+                                $langCode,
+                                $store->getWebsiteId()
+                            );
+                            list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
+                            $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
+                            $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
                                 $store->getId(),
                                 $langCode
                             );
-                            $configurableAttributesValuesStatus = $this->updateExtendedVariantAttributesValues(
+                            $textBasedAttributesValuesStatus       = $this->updateProductAttributesValues(
                                 $store->getId(),
                                 $langCode
                             );
+
+                            if ($cronAttributeVariantCheck) {
+                                $configurableAttributesStatus       = $this->updateExtendedVariantAttributes(
+                                    $store->getId(),
+                                    $langCode
+                                );
+                                $configurableAttributesValuesStatus = $this->updateExtendedVariantAttributesValues(
+                                    $store->getId(),
+                                    $langCode
+                                );
+                            }
+
+                            if ($cronAttributeStandardVariantCheck) {
+                                $standardConfigurableAttributesValuesStatus =
+                                    $this->updateStandardVariantAttributeOptionValue($store->getId(), $langCode);
+                            }
+
+                            $this->cronStatus = $hierarchyNodesStatus &&
+                                $itemsStatus &&
+                                $attributesStatus &&
+                                $nonConfigurableAttributesValuesStatus &&
+                                $textBasedAttributesValuesStatus &&
+                                $configurableAttributesStatus &&
+                                $configurableAttributesValuesStatus &&
+                                $standardConfigurableAttributesValuesStatus;
+
+                        } else {
+                            $this->cronStatus = true;
                         }
-
-                        if ($cronAttributeStandardVariantCheck) {
-                            $standardConfigurableAttributesValuesStatus =
-                                $this->updateStandardVariantAttributeOptionValue($store->getId(), $langCode);
-                        }
-
-                        $this->cronStatus = $hierarchyNodesStatus &&
-                            $itemsStatus &&
-                            $attributesStatus &&
-                            $nonConfigurableAttributesValuesStatus &&
-                            $textBasedAttributesValuesStatus &&
-                            $configurableAttributesStatus &&
-                            $configurableAttributesValuesStatus &&
-                            $standardConfigurableAttributesValuesStatus;
-
-                    } else {
-                        $this->cronStatus = true;
+                    } catch (Exception $e) {
+                        $this->logDetailedException(__METHOD__, $this->store->getName(), '');
+                        $this->logger->debug($e->getMessage());
                     }
+
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         LSR::SC_CRON_DATA_TRANSLATION_TO_MAGENTO_CONFIG_PATH_LAST_EXECUTE,
@@ -656,6 +662,7 @@ class DataTranslationTask
      * @param string $langCode
      * @param int $websiteId
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function updateHierarchyNode($storeId, $langCode, $websiteId = null)
     {
@@ -670,20 +677,15 @@ class DataTranslationTask
             ],
             ['field' => 'main_table.key', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
-            ['field' => 'second.store_id', 'value' => $storeId, 'condition_type' => 'eq']
+            ['field' => 'second.store_id', 'value' => '0', 'condition_type' => 'eq']
         ];
         $criteria     = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
         $collection   = $this->replDataTranslationCollectionFactory->create();
-        $this->replicationHelper->setCollectionPropertiesPlusJoin(
+        $this->replicationHelper->setCollectionPropertiesPlusJoinsForHierarchyNodesDataTranslation(
             $collection,
             $criteria,
-            'key',
-            'catalog_category_entity_varchar',
-            'value',
-            false,
-            false,
-            true,
-            $websiteId
+            $websiteId,
+            $this->store
         );
         /** @var ReplDataTranslation $dataTranslation */
         foreach ($collection as $dataTranslation) {

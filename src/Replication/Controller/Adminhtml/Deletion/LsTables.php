@@ -66,9 +66,9 @@ class LsTables extends AbstractReset
         }
 
         if ($scope == 'website') {
-            $arguments = ['website' => $scopeId];
+            $arguments = ['website' => $scopeId, 'scope' => 'website'];
         } else {
-            $arguments = ['store' => $scopeId];
+            $arguments = ['store' => $scopeId, 'scope' => 'store'];
         }
         $this->replicationHelper->getConnection()->endSetup();
         $this->messageManager->addSuccessMessage($message);

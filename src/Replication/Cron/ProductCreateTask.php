@@ -595,14 +595,8 @@ class ProductCreateTask
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 $product   = $this->setProductStatus($productData, $item->getBlockedOnECom());
-                                $itemStock = $this->replicationHelper->getInventoryStatus(
-                                    $item->getNavId(),
-                                    $storeId,
-                                    $this->store->getId()
-                                );
                                 $product   = $this->replicationHelper->manageStock(
                                     $product,
-                                    $itemStock,
                                     $item->getType()
                                 );
                                 try {
@@ -684,7 +678,6 @@ class ProductCreateTask
                                 );
                                 $product   = $this->replicationHelper->manageStock(
                                     $product,
-                                    $itemStock,
                                     $item->getType()
                                 );
                                 try {
@@ -721,7 +714,7 @@ class ProductCreateTask
                                                         'is_updated'   => 0,
                                                         'processed_at' => $this->replicationHelper->getDateTime(),
                                                         'processed'    => 1,
-                                                        'is_failed'    => 1
+                                                        'is_failed'    => 0
                                                     ]
                                                 );
 
@@ -1077,10 +1070,7 @@ class ProductCreateTask
                 (($itemBarcode->getVariantId()) ? '-' . $itemBarcode->getVariantId() : '');
 
             if (!empty($itemBarcode->getUnitOfMeasure())) {
-                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemBarcode->getItemId());
-                if ($itemBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
-                    $sku = $sku . '-' . $itemBarcode->getUnitOfMeasure();
-                }
+                $sku = $sku . '-' . $itemBarcode->getUnitOfMeasure();
             }
 
             $allBarCodes[$sku] = $itemBarcode->getNavId();
@@ -1284,7 +1274,7 @@ class ProductCreateTask
                                         'is_updated'   => 0,
                                         'processed_at' => $this->replicationHelper->getDateTime(),
                                         'processed'    => 1,
-                                        'is_failed'    => 1
+                                        'is_failed'    => 0
                                     ]
                                 );
 
@@ -1539,11 +1529,7 @@ class ProductCreateTask
                             $variantId = $replBarcode->getVariantId();
                         }
                         if (!empty($replBarcode->getUnitOfMeasure())) {
-                            // @codingStandardsIgnoreLine
-                            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($replBarcode->getItemId());
-                            if ($replBarcode->getUnitOfMeasure() != $baseUnitOfMeasure) {
-                                $uom = $replBarcode->getUnitOfMeasure();
-                            }
+                            $uom = $replBarcode->getUnitOfMeasure();
                         }
                         $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                             $itemId,
@@ -2323,7 +2309,7 @@ class ProductCreateTask
                 $this->getScopeId()
             );
         }
-        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
+        $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
@@ -2495,7 +2481,7 @@ class ProductCreateTask
                 $this->getScopeId()
             );
         }
-        $productV = $this->replicationHelper->manageStock($productV, $itemStock, $item->getType());
+        $productV = $this->replicationHelper->manageStock($productV, $item->getType());
         try {
             /** @var ProductInterface $productSaved */
             // @codingStandardsIgnoreStart

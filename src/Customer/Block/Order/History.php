@@ -121,17 +121,25 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * Get the formatted date
+     *
      * @param $date
      * @return string
-     * @throws Exception
      */
     public function getFormattedDate($date)
     {
-        // @codingStandardsIgnoreStart
-        $formattedDate = new DateTime($date);
-        // @codingStandardsIgnoreEnd
-        $result = $formattedDate->format('d/m/y');
-        return $result;
+        return $this->orderHelper->getFormattedDate($date);
+    }
+
+    /**
+     * Get the time stamp
+     *
+     * @param $date
+     * @return string
+     */
+    public function getFormattedDateToTimeStamp($date)
+    {
+        return $this->orderHelper->getDateTimeObject()->timestamp($date);
     }
 
     /**

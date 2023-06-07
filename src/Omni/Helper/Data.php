@@ -681,7 +681,7 @@ class Data extends AbstractHelper
     public function getTenderTypesPaymentMapping()
     {
         $storeTenderTypes     = [];
-        $scopeId              = $this->lsr->getCurrentStoreId();
+        $scopeId              = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
         if (empty($storeTenderTypeArray)) {
             $storeTenderTypeArray = $this->getTenderTypesDirectly($scopeId);

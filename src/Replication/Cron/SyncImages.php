@@ -139,7 +139,7 @@ class SyncImages extends ProductCreateTask
                 } catch (Exception $e) {
                     $this->logger->debug(
                         sprintf(
-                            'Exception happened in %s for store: %, item id: %s',
+                            'Exception happened in %s for store: %s, item id: %s',
                             __METHOD__,
                             $this->store->getName(),
                             $itemImage->getKeyValue()
@@ -609,6 +609,8 @@ class SyncImages extends ProductCreateTask
             $criteria,
             'Item'
         );
+        $websiteId = $this->store->getWebsiteId();
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
         $collection->getSelect()->order('main_table.processed ASC');
 
         $query = $collection->getSelect()->__toString();
