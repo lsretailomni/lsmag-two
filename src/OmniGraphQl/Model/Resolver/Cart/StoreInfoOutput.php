@@ -18,9 +18,14 @@ class StoreInfoOutput implements ResolverInterface
      * @var DataHelper
      */
     public $dataHelper;
+    /**
+     * @var CheckoutSession
+     */
+    private CheckoutSession $checkoutSession;
 
     /**
      * @param DataHelper $dataHelper
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         DataHelper $dataHelper,
@@ -41,7 +46,7 @@ class StoreInfoOutput implements ResolverInterface
      *
      * @return array
      *
-     * @throws NoSuchEntityException|Zend_Log_Exception
+     * @throws NoSuchEntityException|Zend_Log_Exception|\Magento\Framework\Exception\LocalizedException
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */

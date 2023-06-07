@@ -63,7 +63,7 @@ class UpdatePoints implements HttpPostActionInterface
     /**
      * @var RequestInterface
      */
-    private RequestInterface $request;
+    public RequestInterface $request;
 
     /**
      * UpdatePoints constructor.
@@ -110,7 +110,8 @@ class UpdatePoints implements HttpPostActionInterface
     {
         $httpBadRequestCode = 400;
         $resultRaw          = $this->resultRawFactory->create();
-        if ($this->request->getMethod() !== 'POST' || !$this->request->isXmlHttpRequest()) {
+        $isPost             = $this->request->isPost();
+        if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 

@@ -36,6 +36,11 @@ class Coupons implements HttpPostActionInterface
     public $resultRedirectFactory;
 
     /**
+     * @var RequestInterface
+     */
+    public RequestInterface $request;
+
+    /**
      * RecommendationCart constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
@@ -61,7 +66,8 @@ class Coupons implements HttpPostActionInterface
      */
     public function execute()
     {
-        if ($this->request->getMethod() !== 'POST' || !$this->request->isXmlHttpRequest()) {
+        $isPost    = $this->request->isPost();
+        if (!$isPost || !$this->request->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
             return $resultRedirect;

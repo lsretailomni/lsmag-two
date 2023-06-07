@@ -45,7 +45,7 @@ class ProactiveDiscountsAndCoupons implements HttpPostActionInterface
     /**
      * @var RequestInterface
      */
-    private RequestInterface $request;
+    public RequestInterface $request;
 
     /**
      * ProactiveDiscountsAndCoupons constructor.

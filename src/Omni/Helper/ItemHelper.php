@@ -391,10 +391,6 @@ class ItemHelper extends AbstractHelper
     {
         $quoteItemList = $quote->getAllVisibleItems();
 
-//        if (count($quoteItemList) && !empty($basketData)) {
-//            $orderLines = $basketData->getOrderLines()->getOrderLine();
-//        }
-
         foreach ($quoteItemList as $quoteItem) {
             $bundleProduct = $customPrice = $discountAmount = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
             $children = [];

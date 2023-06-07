@@ -222,7 +222,9 @@ class DataHelper extends AbstractHelper
     public function triggerEventForCartChange($quote)
     {
         if ($quote->getBasketResponse()) {
-            $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
+            $this->basketHelper->setOneListCalculationInCheckoutSession(
+                unserialize($quote->getBasketResponse())
+            );
         }
 
         /**
@@ -556,7 +558,6 @@ class DataHelper extends AbstractHelper
      *
      * @param PublishedOffer $coupon
      * @return array|string
-     * @throws NoSuchEntityException
      */
     public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
@@ -584,7 +585,6 @@ class DataHelper extends AbstractHelper
      *
      * @param $date
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getFormattedOfferExpiryDate($date)
     {

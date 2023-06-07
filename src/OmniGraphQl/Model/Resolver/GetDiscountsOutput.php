@@ -241,7 +241,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $sku
      * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
-     * @throws NoSuchEntityException
      */
     public function getCoupons($sku)
     {
@@ -436,13 +435,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
     public function getFormattedOfferExpiryDate($date)
     {
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
             ));
-
-            return $offerExpiryDate;
         } catch (\Exception $e) {
             $this->_logger->error($e->getMessage());
         }

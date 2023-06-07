@@ -78,9 +78,6 @@ class BasketHelper extends AbstractHelper
     /** @var  LSR $lsr */
     public $lsr;
 
-    /** @var array */
-    public $basketDataResponse;
-
     /**
      * @var SessionManagerInterface
      */

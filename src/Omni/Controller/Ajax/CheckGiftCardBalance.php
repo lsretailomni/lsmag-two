@@ -40,7 +40,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
     /**
      * @var RequestInterface
      */
-    private RequestInterface $request;
+    public RequestInterface $request;
 
     /**
      * CheckGiftCardBalance constructor.
@@ -74,7 +74,8 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         $httpBadRequestCode = 400;
         /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
-        if ($this->request->getMethod() !== 'POST' || !$this->request->isXmlHttpRequest()) {
+        $isPost    = $this->request->isPost();
+        if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         /** @var Json $resultJson */
@@ -117,7 +118,5 @@ class CheckGiftCardBalance implements HttpPostActionInterface
             ];
             return $resultJson->setData($response);
         }
-
-        return $resultJson->setData($response);
     }
 }

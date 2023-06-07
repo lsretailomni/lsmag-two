@@ -62,7 +62,6 @@ class GetCustomerCartDiscountsOutput extends View implements ResolverInterface
                 if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
                     $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
                 }
-
             }
         }
 

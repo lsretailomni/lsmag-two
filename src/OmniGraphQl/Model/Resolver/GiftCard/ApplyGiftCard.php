@@ -20,7 +20,7 @@ class ApplyGiftCard extends AbstractGiftCard
             $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             $cartId = $cart->getId();
             $result = $this->giftCardManagement->apply($cartId, $args['input']['code'], $args['input']['amount']);
-            if ($result == true) {
+            if ($result) {
                 $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
                 $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             }
