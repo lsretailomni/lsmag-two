@@ -118,7 +118,7 @@ class Grid extends Action
                     if ($info[0] > 0) {
                         $executeMoreData = $this->_url->getUrl(
                             LSR::URL_PATH_EXECUTE,
-                            ['joburl' => $jobUrl, 'jobname' => $jobName, 'store' => $storeId]
+                            ['joburl' => $jobUrl, 'jobname' => $jobName, 'store' => $storeId, 'scope' => $scope]
                         );
                     }
                     $this->messageManager->addComplexSuccessMessage(

@@ -21,6 +21,11 @@ class ReplImageLink
     protected $DisplayOrder = null;
 
     /**
+     * @property string $ImageDescription
+     */
+    protected $ImageDescription = null;
+
+    /**
      * @property string $ImageId
      */
     protected $ImageId = null;
@@ -84,6 +89,24 @@ class ReplImageLink
     public function getDisplayOrder()
     {
         return $this->DisplayOrder;
+    }
+
+    /**
+     * @param string $ImageDescription
+     * @return $this
+     */
+    public function setImageDescription($ImageDescription)
+    {
+        $this->ImageDescription = $ImageDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageDescription()
+    {
+        return $this->ImageDescription;
     }
 
     /**
