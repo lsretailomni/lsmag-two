@@ -237,7 +237,8 @@ class SyncImages extends ProductCreateTask
         $encodedImages = [];
         try {
             $encodedImages = $this->getMediaGalleryEntries(
-                $imagesToUpdate->getItems()
+                $imagesToUpdate->getItems(),
+                $productData
             );
         } catch (Exception $e) {
             $this->logger->debug(

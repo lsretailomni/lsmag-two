@@ -66,6 +66,17 @@ interface ReplDataTranslationInterface
     public function getTranslationId();
 
     /**
+     * @param string $URL
+     * @return $this
+     */
+    public function setURL($URL);
+
+    /**
+     * @return string
+     */
+    public function getURL();
+
+    /**
      * @param string $scope
      * @return $this
      */

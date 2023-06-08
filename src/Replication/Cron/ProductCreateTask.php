@@ -823,7 +823,7 @@ class ProductCreateTask
      * @return array
      * @throws Exception
      */
-    public function getMediaGalleryEntries($productImages)
+    public function getMediaGalleryEntries($productImages, $productData)
     {
         $galleryArray = [];
         /** @var ReplImageLink $image */
@@ -850,7 +850,7 @@ class ProductCreateTask
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
-                $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+                 $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
                 if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                     $mimeType = $this->getMimeType($result['image']);
                     if ($this->replicationHelper->isMimeTypeValid($mimeType)) {
@@ -859,10 +859,15 @@ class ProductCreateTask
                             ->setName($this->replicationHelper->oSlug($image->getImageId()))
                             ->setType($mimeType);
                         $this->attributeMediaGalleryEntry->setMediaType('image')
-                            ->setLabel(($image->getDescription()) ?: __('Product Image'))
+                            ->setLabel(($image->getDescription()) ?: $productData->getName())
                             ->setPosition($image->getDisplayOrder())
                             ->setDisabled(false)
                             ->setContent($imageContent);
+
+                        if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                            $this->attributeMediaGalleryEntry
+                                ->setLabel(($image->getImageDescription()) ?: $productData->getName());
+                        }
 
                         if ($i == 0) {
                             $types = ['image', 'small_image', 'thumbnail'];
@@ -890,6 +895,11 @@ class ProductCreateTask
                 }
             } else {
                 $existentImage = $this->imagesFetched[$image->getImageId()];
+                $existentImage->setLabel(($image->getDescription()) ?: $productData->getName());
+
+                if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                    $existentImage->setLabel(($image->getImageDescription()) ?: $productData->getName());
+                }
 
                 if ($i == 0) {
                     $types = ['image', 'small_image', 'thumbnail'];
