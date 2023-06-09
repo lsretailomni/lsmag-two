@@ -3,7 +3,6 @@
 namespace Ls\OmniGraphQl\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;

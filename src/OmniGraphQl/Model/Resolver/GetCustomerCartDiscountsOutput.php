@@ -2,7 +2,6 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper;
