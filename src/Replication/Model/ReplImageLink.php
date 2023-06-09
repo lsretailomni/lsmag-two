@@ -31,6 +31,11 @@ class ReplImageLink extends AbstractModel implements ReplImageLinkInterface, Ide
     protected $DisplayOrder = null;
 
     /**
+     * @property string $ImageDescription
+     */
+    protected $ImageDescription = null;
+
+    /**
      * @property string $ImageId
      */
     protected $ImageId = null;
@@ -143,6 +148,26 @@ class ReplImageLink extends AbstractModel implements ReplImageLinkInterface, Ide
     public function getDisplayOrder()
     {
         return $this->getData( 'DisplayOrder' );
+    }
+
+    /**
+     * @param string $ImageDescription
+     * @return $this
+     */
+    public function setImageDescription($ImageDescription)
+    {
+        $this->setData( 'ImageDescription', $ImageDescription );
+        $this->ImageDescription = $ImageDescription;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageDescription()
+    {
+        return $this->getData( 'ImageDescription' );
     }
 
     /**

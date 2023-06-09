@@ -33,6 +33,17 @@ interface ReplImageLinkInterface
     public function getDisplayOrder();
 
     /**
+     * @param string $ImageDescription
+     * @return $this
+     */
+    public function setImageDescription($ImageDescription);
+
+    /**
+     * @return string
+     */
+    public function getImageDescription();
+
+    /**
      * @param string $ImageId
      * @return $this
      */

@@ -10,7 +10,6 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
-use Zend_Log_Exception;
 
 class StoreInfoOutput implements ResolverInterface
 {
@@ -31,12 +30,12 @@ class StoreInfoOutput implements ResolverInterface
         DataHelper $dataHelper,
         CheckoutSession $checkoutSession
     ) {
-        $this->dataHelper       = $dataHelper;
-        $this->checkoutSession  = $checkoutSession;
+        $this->dataHelper      = $dataHelper;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
-     * Add proper swatch image path
+     * Store information
      *
      * @param Field $field
      * @param ContextInterface $context
@@ -45,7 +44,6 @@ class StoreInfoOutput implements ResolverInterface
      * @param array|null $args
      *
      * @return array
-     *
      * @throws NoSuchEntityException|Zend_Log_Exception|\Magento\Framework\Exception\LocalizedException
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -57,32 +55,33 @@ class StoreInfoOutput implements ResolverInterface
         array $value = null,
         array $args = null
     ) {
-
         $storeInfo = [];
-        $cart   = $this->checkoutSession->getQuote();
-        $pickupStoreId = $cart->getPickupStore();
-        $pickupStoreName = ($pickupStoreId) ? $this->dataHelper->getStoreNameById($pickupStoreId) : "";
+        if (isset($value['cart']) && isset($value['cart']['model'])) {
+            $cart            = $value['cart']['model'];
+            $pickupStoreId   = $cart->getPickupStore();
+            $pickupStoreName = ($pickupStoreId) ? $this->dataHelper->getStoreNameById($pickupStoreId) : "";
 
-        if ($pickupStoreId && $cart->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect") {
+            if ($pickupStoreId && $cart->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect") {
 
-            $pickupDate = $pickupTime = "";
-            if ($cart->getPickupDateTimeslot()
-                && count($dateTimeArr = explode(" ", $cart->getPickupDateTimeslot()))>0
-            ) {
-                $pickupDate  = $dateTimeArr[0];
-                if (array_key_exists("1", $dateTimeArr)) {
-                    $pickupTime  = array_key_exists("2", $dateTimeArr) ?
-                        $dateTimeArr["1"]." ".$dateTimeArr["2"]
-                        : $dateTimeArr[1];
+                $pickupDate = $pickupTime = "";
+                if ($cart->getPickupDateTimeslot()
+                    && count($dateTimeArr = explode(" ", $cart->getPickupDateTimeslot())) > 0
+                ) {
+                    $pickupDate = $dateTimeArr[0];
+                    if (array_key_exists("1", $dateTimeArr)) {
+                        $pickupTime = array_key_exists("2", $dateTimeArr) ?
+                            $dateTimeArr["1"] . " " . $dateTimeArr["2"]
+                            : $dateTimeArr[1];
+                    }
+
                 }
 
+                $storeInfo["store_id"]    = $pickupStoreId;
+                $storeInfo["store_name"]  = $pickupStoreName;
+                $storeInfo["pickup_date"] = $pickupDate;
+                $storeInfo["pickup_time"] = $pickupTime;
+
             }
-
-            $storeInfo["store_id"] = $pickupStoreId;
-            $storeInfo["store_name"] = $pickupStoreName;
-            $storeInfo["pickup_date"] = $pickupDate;
-            $storeInfo["pickup_time"] = $pickupTime;
-
         }
 
         return $storeInfo;

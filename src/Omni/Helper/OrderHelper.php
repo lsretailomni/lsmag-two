@@ -275,7 +275,11 @@ class OrderHelper extends AbstractHelper
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
             // @codingStandardsIgnoreLine
             $request = new Entity\OrderCreate();
-            $request->setReturnOrderIdOnly(true);
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                $request->setReturnOrderIdOnly(true);
+            }
+
             $oneListCalculateResponse->setOrderLines($orderLinesArray);
             $request->setRequest($oneListCalculateResponse);
             return $request;

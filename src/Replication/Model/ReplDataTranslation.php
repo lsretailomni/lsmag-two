@@ -46,6 +46,11 @@ class ReplDataTranslation extends AbstractModel implements ReplDataTranslationIn
     protected $TranslationId = null;
 
     /**
+     * @property string $URL
+     */
+    protected $URL = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -198,6 +203,26 @@ class ReplDataTranslation extends AbstractModel implements ReplDataTranslationIn
     public function getTranslationId()
     {
         return $this->getData( 'TranslationId' );
+    }
+
+    /**
+     * @param string $URL
+     * @return $this
+     */
+    public function setURL($URL)
+    {
+        $this->setData( 'URL', $URL );
+        $this->URL = $URL;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getURL()
+    {
+        return $this->getData( 'URL' );
     }
 
     /**
