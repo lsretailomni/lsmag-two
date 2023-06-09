@@ -36,7 +36,6 @@ class Giftcard extends AbstractCart
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->giftCardHelper  = $giftCardHelper;
-        $this->_isScopePrivate = true;
     }
 
     /**
