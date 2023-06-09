@@ -35,11 +35,10 @@ use Magento\Store\Model\App\Emulation;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
 
-
 /**
  * To get discounts in product view page in graphql
  */
-class GetDiscountsOutput extends View implements ResolverInterface
+class GetDiscountsOutput implements ResolverInterface
 {
     /**
      * @var LSR
@@ -116,6 +115,11 @@ class GetDiscountsOutput extends View implements ResolverInterface
     public TimezoneInterface $timeZoneInterface;
 
     /**
+     * @var Session
+     */
+    public Session $customerSession;
+
+    /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param PageFactory $resultPageFactory
@@ -124,7 +128,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param StoreManagerInterface $storeManager
      * @param ItemHelper $itemHelper
      * @param Image $imageHelper
-
      * @param PriceHelper $priceHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param TimezoneInterface $timeZoneInterface

@@ -17,17 +17,22 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 /**
  * To get discounts in cart and checkout view page in graphql
  */
-class GetCustomerCartDiscountsOutput extends View implements ResolverInterface
+class GetCustomerCartDiscountsOutput implements ResolverInterface
 {
     /**
      * @var LoyaltyHelper
      */
-
     private LoyaltyHelper $loyaltyHelper;
+
     /**
      * @var DataHelper
      */
     private DataHelper $dataHelper;
+
+    /**
+     * @var CustomerSession
+     */
+    public CustomerSession $customerSession;
 
     /**
      * @param CustomerSession $customerSession
