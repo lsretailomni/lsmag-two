@@ -122,7 +122,7 @@ class GetDiscountsOutput implements ResolverInterface
     /**
      * @var LoggerInterface
      */
-    private LoggerInterface $logger;
+    public LoggerInterface $logger;
 
     /**
      * @param LSR $lsr
