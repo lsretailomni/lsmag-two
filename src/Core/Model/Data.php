@@ -1,26 +1,27 @@
 <?php
 
-namespace Ls\Core\Helper;
+namespace Ls\Core\Model;
 
 use Exception;
-use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\CacheHelper;
+use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
+use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
+use Psr\Log\LoggerInterface;
 use SoapClient;
 
 /**
  * Magento configuration related class
  */
-class Data extends AbstractHelper
+class Data
 {
     /** @var StoreManagerInterface */
     private $storeManager;
@@ -50,30 +51,49 @@ class Data extends AbstractHelper
     private $cacheHelper;
 
     /**
-     * @param Context $context
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /** @var ConfigCollectionFactory */
+    public $configDataCollectionFactory;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    public $scopeConfig;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
      * @param WriterInterface $configWriter
+     * @param ConfigCollectionFactory $configDataCollectionFactory
      * @param TypeListInterface $cacheTypeList
      * @param CacheHelper $cacheHelper
+     * @param ScopeConfigInterface $scopeConfig
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        Context $context,
         StoreManagerInterface $storeManager,
         TransportBuilder $transportBuilder,
         StateInterface $state,
         WriterInterface $configWriter,
+        ConfigCollectionFactory $configDataCollectionFactory,
         TypeListInterface $cacheTypeList,
-        CacheHelper $cacheHelper
+        CacheHelper $cacheHelper,
+        ScopeConfigInterface $scopeConfig,
+        LoggerInterface $logger
     ) {
-        $this->storeManager      = $storeManager;
-        $this->transportBuilder  = $transportBuilder;
-        $this->inlineTranslation = $state;
-        $this->configWriter      = $configWriter;
-        $this->cacheTypeList     = $cacheTypeList;
-        $this->cacheHelper       = $cacheHelper;
-        parent::__construct($context);
+        $this->storeManager                = $storeManager;
+        $this->transportBuilder            = $transportBuilder;
+        $this->inlineTranslation           = $state;
+        $this->configWriter                = $configWriter;
+        $this->cacheTypeList               = $cacheTypeList;
+        $this->cacheHelper                 = $cacheHelper;
+        $this->scopeConfig                 = $scopeConfig;
+        $this->configDataCollectionFactory = $configDataCollectionFactory;
+        $this->logger                      = $logger;
     }
 
     /**
@@ -124,7 +144,7 @@ class Data extends AbstractHelper
      */
     public function isNotificationEmailSent()
     {
-        return $this->scopeConfig->getValue(
+        return $this->getConfigValueFromDb(
             LSR::LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL_STATUS,
             ScopeInterface::SCOPE_STORES,
             $this->storeManager->getStore()->getId()
@@ -187,12 +207,11 @@ class Data extends AbstractHelper
             if ($soapClient) {
                 if ($this->isNotificationEmailSent()) {
                     $this->setNotificationEmailSent(0);
-                    $this->flushCache('config');
                 }
                 return true;
             }
         } catch (Exception $e) {
-            $this->_logger->critical($e->getMessage());
+            $this->logger->critical($e->getMessage());
             if ($this->checkNotificationEmailEnabled() && !$this->isNotificationEmailSent()) {
                 $this->sendEmail($e->getMessage());
             }
@@ -238,17 +257,30 @@ class Data extends AbstractHelper
             $transport->sendMessage();
             $this->inlineTranslation->resume();
             $this->setNotificationEmailSent(1);
-            $this->flushCache('config');
         } catch (\Exception $e) {
-            $this->_logger->info($e->getMessage());
+            $this->logger->info($e->getMessage());
         }
     }
 
     /**
-     * @param $typeCode
+     * Use this where we want to retrieve non-cached value from core_config_data
+     * i-e like in processing crons.
+     * @param $path
+     * @param string $scope
+     * @param int $scopeId
+     * @return mixed|null
      */
-    public function flushCache($typeCode)
+    public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
     {
-        $this->cacheTypeList->cleanType($typeCode);
+        /** @var ConfigDataCollection $configDataCollection */
+        $configDataCollection = $this->configDataCollectionFactory->create();
+        $configDataCollection->addFieldToFilter('scope', $scope);
+        $configDataCollection->addFieldToFilter('scope_id', $scopeId);
+        $configDataCollection->addFieldToFilter('path', $path);
+        if ($configDataCollection->count() !== 0) {
+            return $configDataCollection->getFirstItem()->getValue();
+        }
+        return null;
     }
+
 }
