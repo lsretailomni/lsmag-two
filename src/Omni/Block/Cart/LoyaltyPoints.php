@@ -35,7 +35,6 @@ class LoyaltyPoints extends AbstractCart
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->loyaltyHelper   = $loyaltyHelper;
-        $this->_isScopePrivate = true;
     }
 
     /**
