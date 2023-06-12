@@ -11,45 +11,45 @@ namespace Ls\Replication\Cron;
 use Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Core\Model\Data as LsHelper;
+use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommItemVariantRegistrations;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use Ls\Replication\Model\ReplItemVariantRegistrationFactory;
-use Ls\Replication\Api\Data\ReplItemVariantRegistrationInterface;
+use Ls\Omni\Client\Ecommerce\Operation\ReplEcommDiscountValidations;
+use Ls\Replication\Api\ReplDiscountValidationRepositoryInterface as ReplDiscountValidationRepository;
+use Ls\Replication\Model\ReplDiscountValidationFactory;
+use Ls\Replication\Api\Data\ReplDiscountValidationInterface;
 
-class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
+class ReplEcommDiscountValidationsTask extends AbstractReplicationTask
 {
-    public const JOB_CODE = 'replication_repl_item_variant_registration';
+    public const JOB_CODE = 'replication_repl_discount_validation';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_item_variant_registration';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_discount_validation';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item_variant_registration';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_discount_validation';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_variant_registration';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_validation';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_item_variant_registration';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_discount_validation';
 
-    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_item_variant_registration';
+    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_discount_validation';
 
     /**
-     * @property ReplItemVariantRegistrationRepository $repository
+     * @property ReplDiscountValidationRepository $repository
      */
     protected $repository = null;
 
     /**
-     * @property ReplItemVariantRegistrationFactory $factory
+     * @property ReplDiscountValidationFactory $factory
      */
     protected $factory = null;
 
     /**
-     * @property ReplItemVariantRegistrationInterface $data_interface
+     * @property ReplDiscountValidationInterface $data_interface
      */
     protected $data_interface = null;
 
     /**
-     * @param ReplItemVariantRegistrationRepository $repository
+     * @param ReplDiscountValidationRepository $repository
      * @return $this
      */
     public function setRepository($repository)
@@ -59,7 +59,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplItemVariantRegistrationRepository
+     * @return ReplDiscountValidationRepository
      */
     public function getRepository()
     {
@@ -67,7 +67,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplItemVariantRegistrationFactory $factory
+     * @param ReplDiscountValidationFactory $factory
      * @return $this
      */
     public function setFactory($factory)
@@ -77,7 +77,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplItemVariantRegistrationFactory
+     * @return ReplDiscountValidationFactory
      */
     public function getFactory()
     {
@@ -85,7 +85,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplItemVariantRegistrationInterface $data_interface
+     * @param ReplDiscountValidationInterface $data_interface
      * @return $this
      */
     public function setDataInterface($data_interface)
@@ -95,14 +95,14 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplItemVariantRegistrationInterface
+     * @return ReplDiscountValidationInterface
      */
     public function getDataInterface()
     {
         return $this->data_interface;
     }
 
-    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplItemVariantRegistrationFactory $factory, ReplItemVariantRegistrationRepository $repository, ReplItemVariantRegistrationInterface $data_interface)
+    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplDiscountValidationFactory $factory, ReplDiscountValidationRepository $repository, ReplDiscountValidationInterface $data_interface)
     {
         parent::__construct($scope_config, $resource_config, $logger, $helper, $repHelper);
         $this->repository = $repository;
@@ -112,7 +112,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
 
     public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
     {
-        $request = new ReplEcommItemVariantRegistrations($baseUrl);
+        $request = new ReplEcommDiscountValidations($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)

@@ -11,45 +11,45 @@ namespace Ls\Replication\Cron;
 use Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Config\Model\ResourceModel\Config;
-use Ls\Core\Model\Data as LsHelper;
+use Ls\Core\Helper\Data as LsHelper;
 use Ls\Replication\Helper\ReplicationHelper;
 use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\ReplEcommItemVariantRegistrations;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
-use Ls\Replication\Model\ReplItemVariantRegistrationFactory;
-use Ls\Replication\Api\Data\ReplItemVariantRegistrationInterface;
+use Ls\Omni\Client\Ecommerce\Operation\ReplEcommDealHtmlTranslation;
+use Ls\Replication\Api\ReplDataTranslationRepositoryInterface as ReplDataTranslationRepository;
+use Ls\Replication\Model\ReplDataTranslationFactory;
+use Ls\Replication\Api\Data\ReplDataTranslationInterface;
 
-class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
+class ReplEcommDealHtmlTranslationTask extends AbstractReplicationTask
 {
-    public const JOB_CODE = 'replication_repl_item_variant_registration';
+    public const JOB_CODE = 'replication_repl_data_translation';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_item_variant_registration';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_data_translation';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_item_variant_registration';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_data_translation';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_item_variant_registration';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_data_translation';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_item_variant_registration';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_data_translation';
 
-    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_item_variant_registration';
+    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_data_translation';
 
     /**
-     * @property ReplItemVariantRegistrationRepository $repository
+     * @property ReplDataTranslationRepository $repository
      */
     protected $repository = null;
 
     /**
-     * @property ReplItemVariantRegistrationFactory $factory
+     * @property ReplDataTranslationFactory $factory
      */
     protected $factory = null;
 
     /**
-     * @property ReplItemVariantRegistrationInterface $data_interface
+     * @property ReplDataTranslationInterface $data_interface
      */
     protected $data_interface = null;
 
     /**
-     * @param ReplItemVariantRegistrationRepository $repository
+     * @param ReplDataTranslationRepository $repository
      * @return $this
      */
     public function setRepository($repository)
@@ -59,7 +59,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplItemVariantRegistrationRepository
+     * @return ReplDataTranslationRepository
      */
     public function getRepository()
     {
@@ -67,7 +67,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplItemVariantRegistrationFactory $factory
+     * @param ReplDataTranslationFactory $factory
      * @return $this
      */
     public function setFactory($factory)
@@ -77,7 +77,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplItemVariantRegistrationFactory
+     * @return ReplDataTranslationFactory
      */
     public function getFactory()
     {
@@ -85,7 +85,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @param ReplItemVariantRegistrationInterface $data_interface
+     * @param ReplDataTranslationInterface $data_interface
      * @return $this
      */
     public function setDataInterface($data_interface)
@@ -95,14 +95,14 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
     }
 
     /**
-     * @return ReplItemVariantRegistrationInterface
+     * @return ReplDataTranslationInterface
      */
     public function getDataInterface()
     {
         return $this->data_interface;
     }
 
-    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplItemVariantRegistrationFactory $factory, ReplItemVariantRegistrationRepository $repository, ReplItemVariantRegistrationInterface $data_interface)
+    public function __construct(ScopeConfigInterface $scope_config, Config $resource_config, Logger $logger, LsHelper $helper, ReplicationHelper $repHelper, ReplDataTranslationFactory $factory, ReplDataTranslationRepository $repository, ReplDataTranslationInterface $data_interface)
     {
         parent::__construct($scope_config, $resource_config, $logger, $helper, $repHelper);
         $this->repository = $repository;
@@ -112,7 +112,7 @@ class ReplEcommItemVariantRegistrationsTask extends AbstractReplicationTask
 
     public function makeRequest($lastKey, $fullReplication = false, $batchSize = 100, $storeId = '', $maxKey = '', $baseUrl = '', $appId = '')
     {
-        $request = new ReplEcommItemVariantRegistrations($baseUrl);
+        $request = new ReplEcommDealHtmlTranslation($baseUrl);
         $request->getOperationInput()
                  ->setReplRequest( ( new ReplRequest() )->setBatchSize($batchSize)
                                                         ->setFullReplication($fullReplication)

@@ -39,7 +39,7 @@
             <schedule>*/2 * * * *</schedule>
         </job>
         <job name="repl_hierarchy" instance="Ls\Replication\Cron\ReplEcommHierarchyTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
+            <schedule>0 10 * * *</schedule>
         </job>
         <job name="repl_hierarchy_node" instance="Ls\Replication\Cron\ReplEcommHierarchyNodeTask" method="execute">
             <schedule>*/4 * * * *</schedule>
@@ -60,27 +60,6 @@
         <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
-        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_loy_vendor_item_mapping" instance="Ls\Replication\Cron\ReplEcommVendorItemMappingTask"
-             method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <job name="repl_country_code" instance="Ls\Replication\Cron\ReplEcommCountryCodeTask"
-             method="execute">
-            <schedule>*/4 * * * *</schedule>
-        </job>
-        <!-- Less Important-->
-        <job name="repl_tax_setup" instance="Ls\Replication\Cron\ReplEcommTaxSetupTask" method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
-        <job name="repl_store_tender_type" instance="Ls\Replication\Cron\ReplEcommStoreTenderTypesTask" method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
-        <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
-            <schedule>*/15 * * * *</schedule>
-        </job>
         <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>
@@ -90,6 +69,28 @@
         <job name="repl_data_translation_lang_code" instance="Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask"
              method="execute">
             <schedule>*/15 * * * *</schedule>
+        </job>
+        <!-- Less Important-->
+        <job name="repl_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
+            <schedule>0 1 * * *</schedule>
+        </job>
+        <job name="repl_loy_vendor_item_mapping" instance="Ls\Replication\Cron\ReplEcommVendorItemMappingTask"
+             method="execute">
+            <schedule>0 2 * * *</schedule>
+        </job>
+        <job name="repl_country_code" instance="Ls\Replication\Cron\ReplEcommCountryCodeTask"
+             method="execute">
+            <schedule>0 3 * * *</schedule>
+        </job>
+        <job name="repl_tax_setup" instance="Ls\Replication\Cron\ReplEcommTaxSetupTask" method="execute">
+            <schedule>0 4 * * *</schedule>
+        </job>
+        <job name="repl_store_tender_type" instance="Ls\Replication\Cron\ReplEcommStoreTenderTypesTask"
+             method="execute">
+            <schedule>0 5 * * *</schedule>
+        </job>
+        <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
+            <schedule>0 6 * * *</schedule>
         </job>
     </group>
     <group id="replication">
@@ -124,7 +125,8 @@
         <job name="repl_attributes_value_sync" instance="Ls\Replication\Cron\SyncAttributesValue" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
-        <job name="repl_vendor_attributes_sync" instance="Ls\Replication\Cron\SyncVendorAttributesValue" method="execute">
+        <job name="repl_vendor_attributes_sync" instance="Ls\Replication\Cron\SyncVendorAttributesValue"
+             method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
     </group>
