@@ -2,6 +2,7 @@
 
 namespace Ls\Webhooks\Model\Order;
 
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\ShipOrderInterface;
 use Magento\Sales\Api\Data\ShipmentItemCreationInterface;
@@ -142,6 +143,7 @@ class Shipment
      * @param $data
      * @return array[]
      * @throws NoSuchEntityException
+     * @throws CouldNotSaveException
      */
     public function createShipment($data)
     {
@@ -155,7 +157,9 @@ class Shipment
         $statusMsg       = '';
         $shipmentDetails = [];
         if (!empty($magOrder)) {
-            if ($magOrder->canShip() && !$this->getShipmentExists($orderId, $lsCentralShippingId)) { //if shipment not exists create shipment
+            if ($magOrder->canShip()
+                && !$this->getShipmentExists($orderId, $lsCentralShippingId)) {
+                //if shipment not exists create shipment
                 $shipItems   = [];
                 $parentItems = [];
                 foreach ($magOrder->getAllItems() as $orderItem) {
@@ -284,8 +288,6 @@ class Shipment
                 __('Could not update Tracking Id, see error log for details')
             );
         }
-
-
         return $status;
     }
 
@@ -296,24 +298,32 @@ class Shipment
      * @param $shipmentId
      * @param $lsCentralShippingId
      * @return array
+     * @throws CouldNotSaveException
      */
     public function getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId)
     {
         $trackDataArray  = [];
         $trackData       = [];
         $shipmentDetails = $magOrder->getTracksCollection();
-        foreach ($shipmentDetails->getItems() as $trackInfo) {
-            if ($shipmentId == $trackInfo->getParentId()) {
-                $trackData ['trackingId']       = $trackInfo->getTrackNumber();
-                $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
-                $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
-                $trackData ['service']          = $trackInfo->getTitle();
+        try {
+            foreach ($shipmentDetails->getItems() as $trackInfo) {
+                if ($shipmentId == $trackInfo->getParentId()) {
+                    $trackData ['trackingId']       = $trackInfo->getTrackNumber();
+                    $trackData ['trackingUrl']      = $this->shippingHelper->getTrackingPopupUrlBySalesModel($magOrder);
+                    $trackData ['shipmentProvider'] = $trackInfo->getCarrierCode();
+                    $trackData ['service']          = $trackInfo->getTitle();
 
-                //Sync LS central shipping Id to shipment track
-                $trackInfo->setLsCentralShippingId($lsCentralShippingId);
-                $trackInfo->save();
+                    //Sync LS central shipping Id to shipment track
+                    $trackInfo->setLsCentralShippingId($lsCentralShippingId);
+                    $trackInfo->save();
+                }
+                $trackDataArray [] = $trackData;
             }
-            $trackDataArray [] = $trackData;
+        } catch (\Exception $e) {
+            $this->logger->critical($e);
+            throw new \Magento\Framework\Exception\CouldNotSaveException(
+                __('Could not update LS Sentral Shipping Id, see error log for details')
+            );
         }
 
         return $trackDataArray;

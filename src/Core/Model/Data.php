@@ -107,7 +107,7 @@ class Data
             ScopeInterface::SCOPE_STORES,
             $this->storeManager->getStore()->getId()
         );
-        return $enabled === '1' or $enabled === 1;
+        return $enabled === '1' || $enabled === 1;
     }
 
     /**
@@ -121,7 +121,7 @@ class Data
             ScopeInterface::SCOPE_STORES,
             $this->storeManager->getStore()->getId()
         );
-        return $enabled === '1' or $enabled === 1;
+        return $enabled === '1' || $enabled === 1;
     }
 
 

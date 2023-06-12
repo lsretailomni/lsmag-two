@@ -68,7 +68,7 @@ class CartItemPricesPlugin
         }
         /** @var Item $cartItem */
         $cartItem = $value['model'];
-        if (isset($result['price']) && isset($result['price']['value'])) {
+        if (isset($result['price']['value'])) {
             $result['price']['value'] = $cartItem->getCustomPrice() ?
                 $cartItem->getCustomPrice() : $cartItem->getPrice();
         }

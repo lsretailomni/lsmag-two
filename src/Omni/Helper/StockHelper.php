@@ -53,8 +53,7 @@ class StockHelper extends AbstractHelper
         CollectionFactory          $storeCollectionFactory,
         LSR                        $lsr,
         ItemHelper                 $itemHelper
-    )
-    {
+    ) {
         $this->productRepository = $productRepository;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->lsr = $lsr;
@@ -435,8 +434,7 @@ class StockHelper extends AbstractHelper
         $quote = null,
         bool $isRemoveItem = false,
         bool $throwException = false
-    )
-    {
+    ) {
         if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
             if (!$item->getHasError()) {
                 $storeId = $this->lsr->getActiveWebStore();

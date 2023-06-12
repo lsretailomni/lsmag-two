@@ -465,6 +465,8 @@ class PayStore extends AbstractExtensibleModel implements
         }
         $billingCountry = $billingCountry ?: $this->directory->getDefaultCountry();
         if (!$this->canUseForCountry($billingCountry)) {
+            $errorMsg = __('Selected Billing Country is not supported.');
+            throw new \Magento\Framework\Exception\LocalizedException($errorMsg);
         }
         return $this;
     }

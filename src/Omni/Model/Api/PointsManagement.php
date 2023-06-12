@@ -8,6 +8,8 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;
 use Magento\Quote\Model\Quote;
+use PHPUnit\Exception;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class PointsManagement
@@ -34,19 +36,27 @@ class PointsManagement implements PointsManagementInterface
     protected $checkoutSession;
 
     /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
      * PointsManagement constructor.
      * @param CartRepositoryInterface $cartRepository
      * @param CartTotalRepositoryInterface $cartTotalRepository
      * @param CheckoutSession $checkoutSession
+     * @param LoggerInterface $logger
      */
     public function __construct(
         CartRepositoryInterface $cartRepository,
         CartTotalRepositoryInterface $cartTotalRepository,
-        CheckoutSession $checkoutSession
+        CheckoutSession $checkoutSession,
+        LoggerInterface $logger
     ) {
         $this->cartRepository      = $cartRepository;
         $this->cartTotalRepository = $cartTotalRepository;
         $this->checkoutSession     = $checkoutSession;
+        $this->logger              = $logger;
     }
 
     /**
@@ -54,13 +64,17 @@ class PointsManagement implements PointsManagementInterface
      */
     public function updatePoints($cartId, $pointSpent)
     {
-        /** @var Quote $quote */
-        $quote = $this->cartRepository->get($cartId);
-        $quote->setLsPointsSpent($pointSpent);
-        $this->validateQuote($quote);
-        $quote->collectTotals();
-        $this->cartRepository->save($quote);
-        return $this->cartTotalRepository->get($quote->getId());
+        try {
+            /** @var Quote $quote */
+            $quote = $this->cartRepository->get($cartId);
+            $quote->setLsPointsSpent($pointSpent);
+            $this->validateQuote($quote);
+            $quote->collectTotals();
+            $this->cartRepository->save($quote);
+            return $this->cartTotalRepository->get($quote->getId());
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
     }
 
     /**

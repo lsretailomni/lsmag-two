@@ -340,7 +340,6 @@ class OrderHelper extends AbstractHelper
      */
     public function placeOrder($request)
     {
-        $response = null;
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
         $response  = $operation->execute($request);
@@ -898,8 +897,12 @@ class OrderHelper extends AbstractHelper
             if (isset($adyenResponse['authResult'])) {
                 $order->getPayment()->setCcStatus($adyenResponse['authResult']);
             }
-            $this->orderRepository->save($order);
-            $order = $this->orderRepository->get($order->getEntityId());
+            try {
+                $this->orderRepository->save($order);
+                $order = $this->orderRepository->get($order->getEntityId());
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
         }
         return $order;
     }

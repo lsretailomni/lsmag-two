@@ -212,6 +212,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
 
     /**
      * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getBaseCurrencyCode()
     {

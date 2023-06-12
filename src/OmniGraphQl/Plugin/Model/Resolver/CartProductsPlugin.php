@@ -56,7 +56,7 @@ class CartProductsPlugin
         $userId    = $context->getUserId();
         $this->dataHelper->setCustomerValuesInSession($userId, $websiteId);
 
-        if (isset($result['cart']) && isset($result['cart']['model'])) {
+        if (isset($result['cart']['model'])) {
             $quote                   = $result['cart']['model'];
             $result['cart']['model'] = $this->dataHelper->triggerEventForCartChange($quote);
         } elseif (isset($result['model'])) {

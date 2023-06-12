@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Controller\Stores;
 
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultInterface;
@@ -13,7 +13,7 @@ use Magento\Framework\View\Result\PageFactory;
  * Class Index
  * @package Ls\Omni\Controller\Stores
  */
-class Index extends Action
+class Index implements HttpGetActionInterface
 {
     /**
      * @var PageFactory
@@ -31,7 +31,6 @@ class Index extends Action
     ) {
 
         $this->resultPageFactory = $resultPageFactory;
-        parent::__construct($context);
     }
 
     /**
@@ -44,6 +43,5 @@ class Index extends Action
             __('Our Stores')
         );
         return $resultPage;
-
     }
 }

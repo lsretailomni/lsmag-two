@@ -23,7 +23,7 @@ class ApplyLoyaltyPoints extends AbstractLoyaltyPoints
                 $cartId,
                 $args['input']['loyalty_points']
             );
-            if ($result == true) {
+            if ($result) {
                 $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             }
         } catch (\Exception $e) {

@@ -5,6 +5,7 @@ namespace Ls\OmniGraphQl\Model\Resolver\Cart;
 
 use \Ls\Omni\Helper\Data as DataHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Query\Resolver\ContextInterface;
@@ -17,6 +18,11 @@ class StoreInfoOutput implements ResolverInterface
      * @var DataHelper
      */
     public $dataHelper;
+
+    /**
+     * @var CheckoutSession
+     */
+    public CheckoutSession $checkoutSession;
 
     /**
      * @param DataHelper $dataHelper
@@ -40,8 +46,7 @@ class StoreInfoOutput implements ResolverInterface
      * @param array|null $args
      *
      * @return array
-     *
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|Zend_Log_Exception|LocalizedException
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
@@ -53,12 +58,14 @@ class StoreInfoOutput implements ResolverInterface
         array $args = null
     ) {
         $storeInfo = [];
-        if (isset($value['cart']) && isset($value['cart']['model'])) {
+        if (isset($value['cart']['model'])) {
             $cart            = $value['cart']['model'];
             $pickupStoreId   = $cart->getPickupStore();
             $pickupStoreName = ($pickupStoreId) ? $this->dataHelper->getStoreNameById($pickupStoreId) : "";
 
-            if ($pickupStoreId && $cart->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect") {
+            if ($pickupStoreId
+                && $cart->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect"
+            ) {
 
                 $pickupDate = $pickupTime = "";
                 if ($cart->getPickupDateTimeslot()

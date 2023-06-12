@@ -4,6 +4,8 @@ namespace Ls\Omni\Controller\Stock;
 
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
@@ -18,7 +20,7 @@ use Laminas\Json\Json as LaminasJson;
 /**
  * Controller to check given item availability in all stores
  */
-class Product extends Action
+class Product implements HttpPostActionInterface
 {
 
     /**
@@ -59,7 +61,7 @@ class Product extends Action
         Context $context,
         JsonFactory $resultJsonFactory,
         PageFactory $resultPageFactory,
-        \Magento\Framework\App\Request\Http\Proxy $request,
+        RequestInterface $request,
         Proxy $session,
         StockHelper $stockHelper
     ) {
@@ -68,7 +70,6 @@ class Product extends Action
         $this->stockHelper       = $stockHelper;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultPageFactory = $resultPageFactory;
-        parent::__construct($context);
     }
 
     /**
@@ -83,7 +84,7 @@ class Product extends Action
         $notAvailableNoticeTitle   = __("Notice");
         $notAvailableNoticeContent = __("This item is only available online.");
         // @codingStandardsIgnoreEnd
-        if ($this->getRequest()->isAjax()) {
+        if ($this->request->isAjax()) {
             $productSku      = $this->request->getParam('sku');
             $simpleProductId = $this->request->getParam('id');
 

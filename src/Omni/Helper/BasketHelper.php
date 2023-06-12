@@ -78,9 +78,6 @@ class BasketHelper extends AbstractHelper
     /** @var  LSR $lsr */
     public $lsr;
 
-    /** @var array */
-    public $basketDataResponse;
-
     /**
      * @var SessionManagerInterface
      */
@@ -241,7 +238,7 @@ class BasketHelper extends AbstractHelper
                 }
             }
 
-            // if found is still false, the item is not presend in the quote
+            // if found is still false, the item is not present in the quote
             if (!$found) {
                 $onlyInOneList[] = $oneListItem;
             }
@@ -358,7 +355,7 @@ class BasketHelper extends AbstractHelper
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
-                $priceIncTax         = $discount = $discountPercentage = null;
+                $priceIncTax         = $discountPercentage = null;
                 $product             = $this->productRepository->get($quoteItem->getSku());
                 $displayRegularPrice = $product->getPriceInfo()->getPrice(
                     RegularPrice::PRICE_CODE
@@ -423,6 +420,7 @@ class BasketHelper extends AbstractHelper
      * @param Entity\OneList $oneList
      * @param $wishlistItems
      * @return Entity\OneList
+     * @throws NoSuchEntityException
      */
     public function addProductToExistingWishlist(Entity\OneList $oneList, $wishlistItems)
     {
@@ -604,7 +602,6 @@ class BasketHelper extends AbstractHelper
      */
     public function setCouponCode($couponCode)
     {
-        $status     = "";
         $couponCode = trim($couponCode);
         if ($couponCode == "") {
             $this->couponCode = '';
@@ -617,7 +614,7 @@ class BasketHelper extends AbstractHelper
                 $this->getBasketSessionValue()
             );
 
-            return $status = '';
+            return null;
         }
         $this->couponCode = $couponCode;
         $status           = $this->update(
@@ -682,13 +679,17 @@ class BasketHelper extends AbstractHelper
      */
     public function setCouponQuote($couponCode)
     {
-        $cartQuote = $this->cart->getQuote();
-        if (!empty($cartQuote->getId())) {
-            $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setCouponCode($couponCode);
-            $cartQuote->collectTotals();
+        try {
+            $cartQuote = $this->cart->getQuote();
+            if (!empty($cartQuote->getId())) {
+                $cartQuote->getShippingAddress()->setCollectShippingRates(true);
+                $cartQuote->setCouponCode($couponCode);
+                $cartQuote->collectTotals();
+            }
+            $this->quoteResourceModel->save($cartQuote);
+        } catch (Exception $e) {
+            $this->_logger->critical($e->getMessage());
         }
-        $this->quoteResourceModel->save($cartQuote);
     }
 
     /**
@@ -716,17 +717,21 @@ class BasketHelper extends AbstractHelper
         if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
             $list->setSalesType(LSR::SALE_TYPE_POS);
         }
-
-        // @codingStandardsIgnoreLine
-        $request = (new Entity\OneListSave())
-            ->setOneList($list)
-            ->setCalculate(true);
-        /** @var Entity\OneListSaveResponse $response */
-        $response = $operation->execute($request);
-        if ($response) {
-            $this->setOneListInCustomerSession($response->getOneListSaveResult());
-            return $response->getOneListSaveResult();
+        try {
+            // @codingStandardsIgnoreLine
+            $request = (new Entity\OneListSave())
+                ->setOneList($list)
+                ->setCalculate(true);
+            /** @var Entity\OneListSaveResponse $response */
+            $response = $operation->execute($request);
+            if ($response) {
+                $this->setOneListInCustomerSession($response->getOneListSaveResult());
+                return $response->getOneListSaveResult();
+            }
+        } catch (Exception $e) {
+            $this->_logger->critical($e->getMessage());
         }
+
         return false;
     }
 
@@ -753,53 +758,57 @@ class BasketHelper extends AbstractHelper
         /** @var Entity\OneListCalculateResponse $response */
         $response = false;
 
-        if (!($oneListItems->getOneListItem() == null)) {
-            /** @var Entity\OneListItem || Entity\OneListItem[] $listItems */
-            $listItems = $oneListItems->getOneListItem();
+        try {
+            if (!($oneListItems->getOneListItem() == null)) {
+                /** @var Entity\OneListItem || Entity\OneListItem[] $listItems */
+                $listItems = $oneListItems->getOneListItem();
 
-            if (!is_array($listItems)) {
-                /** Entity\ArrayOfOneListItem $items */
-                // @codingStandardsIgnoreLine
-                $items = new Entity\ArrayOfOneListItem();
-                $items->setOneListItem($listItems);
-                $listItems = $items;
+                if (!is_array($listItems)) {
+                    /** Entity\ArrayOfOneListItem $items */
+                    // @codingStandardsIgnoreLine
+                    $items = new Entity\ArrayOfOneListItem();
+                    $items->setOneListItem($listItems);
+                    $listItems = $items;
+                }
+                // @codingStandardsIgnoreStart
+                $oneListRequest = (new Entity\OneList())
+                    ->setCardId($cardId)
+                    ->setListType(Entity\Enum\ListType::BASKET)
+                    ->setItems($listItems)
+                    ->setStoreId($storeId);
+
+                if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+                    $oneListRequest
+                        ->setIsHospitality(false)
+                        ->setSalesType(LSR::SALE_TYPE_POS);
+                }
+
+                if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
+                    $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
+                }
+
+                /** @var Entity\OneListCalculate $entity */
+                if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
+                    $offer  = new Entity\OneListPublishedOffer();
+                    $offers = new Entity\ArrayOfOneListPublishedOffer();
+                    $offers->setOneListPublishedOffer($offer);
+                    $offer->setId($this->getCouponCode());
+                    $offer->setType("Coupon");
+                    $oneListRequest->setPublishedOffers($offers);
+                } else {
+                    $oneListRequest->setPublishedOffers($this->_offers());
+                }
+
+                    $entity = new Entity\OneListCalculate();
+                    $entity->setOneList($oneListRequest);
+                    $request = new Operation\OneListCalculate();
+                    // @codingStandardsIgnoreEnd
+
+                    /** @var  Entity\OneListCalculateResponse $response */
+                    $response = $request->execute($entity);
             }
-            // @codingStandardsIgnoreStart
-            $oneListRequest = (new Entity\OneList())
-                ->setCardId($cardId)
-                ->setListType(Entity\Enum\ListType::BASKET)
-                ->setItems($listItems)
-                ->setStoreId($storeId);
-
-            if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
-                $oneListRequest
-                    ->setIsHospitality(false)
-                    ->setSalesType(LSR::SALE_TYPE_POS);
-            }
-
-            if (version_compare($this->lsr->getOmniVersion(), '4.24', '>')) {
-                $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
-            }
-
-            /** @var Entity\OneListCalculate $entity */
-            if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
-                $offer  = new Entity\OneListPublishedOffer();
-                $offers = new Entity\ArrayOfOneListPublishedOffer();
-                $offers->setOneListPublishedOffer($offer);
-                $offer->setId($this->getCouponCode());
-                $offer->setType("Coupon");
-                $oneListRequest->setPublishedOffers($offers);
-            } else {
-                $oneListRequest->setPublishedOffers($this->_offers());
-            }
-
-            $entity = new Entity\OneListCalculate();
-            $entity->setOneList($oneListRequest);
-            $request = new Operation\OneListCalculate();
-            // @codingStandardsIgnoreEnd
-
-            /** @var  Entity\OneListCalculateResponse $response */
-            $response = $request->execute($entity);
+        } catch (Exception $e) {
+            $this->_logger->critical($e->getMessage());
         }
         if (($response == null)) {
             // @codingStandardsIgnoreLine
@@ -832,7 +841,6 @@ class BasketHelper extends AbstractHelper
      */
     public function getOneListAdmin($customerEmail, $websiteId, $isGuest)
     {
-        $list   = null;
         $cardId = '';
 
         if (!$isGuest) {
@@ -905,12 +913,16 @@ class BasketHelper extends AbstractHelper
             }
         }
         if ($id) {
-            $entity = new Entity\OneListGetById();
-            $entity->setId($id);
-            $entity->setIncludeLines(true);
-            $request  = new Operation\OneListGetById();
-            $response = $request->execute($entity);
-            return $response->getOneListGetByIdResult();
+            try {
+                $entity = new Entity\OneListGetById();
+                $entity->setId($id);
+                $entity->setIncludeLines(true);
+                $request  = new Operation\OneListGetById();
+                $response = $request->execute($entity);
+                return $response->getOneListGetByIdResult();
+            } catch (Exception $e) {
+                $this->_logger->critical($e);
+            }
         }
 
         /** If no list found from customer session or registered user then get from omni */

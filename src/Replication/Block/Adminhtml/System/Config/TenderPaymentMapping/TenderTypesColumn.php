@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Context;
 use Magento\Framework\View\Element\Html\Select;
 
@@ -90,6 +91,7 @@ class TenderTypesColumn extends Select
      * Return payment options array
      *
      * @return array
+     * @throws NoSuchEntityException
      */
     private function getSourceOptions(): array
     {
