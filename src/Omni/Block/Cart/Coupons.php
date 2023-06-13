@@ -62,7 +62,6 @@ class Coupons extends Coupon
         LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
-        $this->_isScopePrivate   = true;
         $this->loyaltyHelper     = $loyaltyHelper;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
