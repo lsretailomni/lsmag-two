@@ -6,6 +6,7 @@ namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 use \Ls\Core\Model\LSR;
 use Magento\Checkout\Api\PaymentInformationManagementInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Api\Data\CartInterface;
@@ -71,6 +72,7 @@ class AvailablePaymentMethodsPlugin
      *
      * @param CartInterface $cart
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getPaymentMethodsData(CartInterface $cart): array
     {

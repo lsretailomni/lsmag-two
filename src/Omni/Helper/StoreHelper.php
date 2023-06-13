@@ -158,8 +158,10 @@ class StoreHelper extends AbstractHelper
     /**
      * Get all stores
      *
-     * @param mixed $webStoreId
-     * @return array|Entity\ArrayOfStore|Entity\StoresGetAllResponse|ResponseInterface|null
+     * @param $webStoreId
+     * @return array|Entity\ArrayOfStore|Entity\StoresGetAllResponse|Entity\StoresGetResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
+     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function getAllStores($webStoreId)
     {

@@ -74,7 +74,7 @@ class Command extends SymfonyCommand
 
         // user lSR function to get base url.
         $this->base_url = $input->getOption(self::BASE_URL);
-        !empty($this->base_url) or $this->base_url = $this->getBaseUrl();
+        !empty($this->base_url) || $this->base_url = $this->getBaseUrl();
     }
 
     public function getBaseUrl()

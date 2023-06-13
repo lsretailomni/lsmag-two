@@ -3,7 +3,6 @@
 namespace Ls\OmniGraphQl\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
@@ -34,12 +33,12 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\App\Emulation;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
-
+use Psr\Log\LoggerInterface;
 
 /**
  * To get discounts in product view page in graphql
  */
-class GetDiscountsOutput extends View implements ResolverInterface
+class GetDiscountsOutput implements ResolverInterface
 {
     /**
      * @var LSR
@@ -116,6 +115,16 @@ class GetDiscountsOutput extends View implements ResolverInterface
     public TimezoneInterface $timeZoneInterface;
 
     /**
+     * @var Session
+     */
+    public Session $customerSession;
+
+    /**
+     * @var LoggerInterface
+     */
+    public LoggerInterface $logger;
+
+    /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param PageFactory $resultPageFactory
@@ -124,7 +133,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param StoreManagerInterface $storeManager
      * @param ItemHelper $itemHelper
      * @param Image $imageHelper
-
      * @param PriceHelper $priceHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param TimezoneInterface $timeZoneInterface
@@ -133,6 +141,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param Http $request
      * @param Emulation $appEmulation
      * @param DataHelper $dataHelper
+     * @param LoggerInterface $logger
      */
     public function __construct(
         LSR $lsr,
@@ -150,7 +159,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
         Session $customerSession,
         Http $request,
         Emulation $appEmulation,
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        LoggerInterface $logger
     ) {
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -168,6 +178,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->request           = $request;
         $this->appEmulation      = $appEmulation;
         $this->dataHelper        = $dataHelper;
+        $this->logger            = $logger;
     }
 
     /**
@@ -208,7 +219,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
 
     /**
      * @param $itemId
-     * @return array|DiscountsGetResponse|ProactiveDiscount|ResponseInterface|null
+     * @return array|DiscountsGetResponse|ResponseInterface|null
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -241,7 +252,6 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $sku
      * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
-     * @throws NoSuchEntityException
      */
     public function getCoupons($sku)
     {
@@ -263,7 +273,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
                 return [];
             }
         } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
         return [];
     }
@@ -273,7 +283,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $itemId
      * @param ProactiveDiscount $discount
-     * @return array|string
+     * @return array
      * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
@@ -402,8 +412,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * Format coupon code response
      *
      * @param PublishedOffer $coupon
-     * @return array|string
-     * @throws NoSuchEntityException
+     * @return array
      */
     public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
@@ -431,20 +440,17 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $date
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getFormattedOfferExpiryDate($date)
     {
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
             ));
-
-            return $offerExpiryDate;
         } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
 
         return null;

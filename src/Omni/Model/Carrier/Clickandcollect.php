@@ -14,6 +14,7 @@ use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\Result;
 use Magento\Shipping\Model\Rate\ResultFactory;
+use PHPUnit\Exception;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -85,24 +86,27 @@ class Clickandcollect extends AbstractCarrier implements CarrierInterface
         if (!$this->isActive() || !$this->isValid()) {
             return false;
         }
+        try {
+            /** @var Result $result */
+            $result = $this->rateResultFactory->create();
 
-        /** @var Result $result */
-        $result = $this->rateResultFactory->create();
+            $shippingPrice = $this->getConfigData('price');
 
-        $shippingPrice = $this->getConfigData('price');
+            /** @var Method $method */
+            $method = $this->rateMethodFactory->create()
+                ->setCarrier($this->getCarrierCode())
+                ->setCarrierTitle($this->getConfigData('title'))
+                ->setMethod($this->getCarrierCode())
+                ->setMethodTitle($this->getConfigData('name'))
+                ->setPrice($shippingPrice)
+                ->setCost($shippingPrice);
 
-        /** @var Method $method */
-        $method = $this->rateMethodFactory->create()
-            ->setCarrier($this->getCarrierCode())
-            ->setCarrierTitle($this->getConfigData('title'))
-            ->setMethod($this->getCarrierCode())
-            ->setMethodTitle($this->getConfigData('name'))
-            ->setPrice($shippingPrice)
-            ->setCost($shippingPrice);
+            $result->append($method);
 
-        $result->append($method);
-
-        return $result;
+            return $result;
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
     }
 
     /**

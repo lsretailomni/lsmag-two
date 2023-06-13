@@ -7,6 +7,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Quote\Api\Data\ShippingAssignmentInterface;
 use Magento\Quote\Model\Quote;
@@ -208,6 +209,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     /**
      * @param $quote
      * @return float|int
+     * @throws NoSuchEntityException
      */
     public function getGiftCardLoyaltyDiscount($quote)
     {
