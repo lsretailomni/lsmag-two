@@ -2,8 +2,8 @@
 
 namespace Ls\Customer\Plugin\Controller\Account;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Api\CustomerMetadataInterface;
 use Magento\Customer\Controller\Account\ForgotPasswordPost;
 use Magento\Customer\Model\CustomerFactory;
@@ -79,6 +79,8 @@ class ForgotPasswordPostPlugin
     }
 
     /**
+     * Around plugin to search and create customer in magento in case if needed
+     *
      * @param ForgotPasswordPost $subject
      * @param $proceed
      * @return Redirect|mixed
@@ -128,6 +130,7 @@ class ForgotPasswordPostPlugin
                         __('Unable to reset password.')
                     );
                     $resultRedirect = $this->resultRedirectFactory->create();
+
                     return $resultRedirect->setPath('*/*/forgotpassword');
                 }
             }
