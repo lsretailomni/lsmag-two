@@ -25,6 +25,13 @@ use Psr\Log\LoggerInterface;
  */
 class CronsProvider extends DataProvider implements DataProviderInterface
 {
+    public $translationList = [
+        'repl_data_translation',
+        'repl_html_translation',
+        'repl_data_translation_lang_code',
+        'repl_data_translation_to_magento'
+    ];
+
     /**
      * @var AddFieldToCollectionInterface[]
      */
@@ -157,13 +164,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             }
 
             foreach ($cronlist['_value']['job'] as $joblist) {
-                $fullReplicationStatus = '0';
-                $cronName              = $joblist['_attribute']['name'];
-                $isTranslationRelatedCron =
-                    $cronName == 'repl_data_translation' ||
-                    $cronName == 'repl_html_translation' ||
-                    $cronName == 'repl_data_translation_lang_code' ||
-                    $cronName == 'repl_data_translation_to_magento';
+                $fullReplicationStatus    = '0';
+                $cronName                 = $joblist['_attribute']['name'];
+                $isTranslationRelatedCron = $this->showTranslationRelatedCronJobsAtStoreLevel($cronName);
 
                 if ($scope == 'store') {
                     if (($cronlist['_attribute']['id'] == 'flat_replication' ||
@@ -174,7 +177,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     }
                 } else {
                     if (($cronlist['_attribute']['id'] != 'flat_replication' &&
-                        $cronlist['_attribute']['id'] != 'reset') ||
+                            $cronlist['_attribute']['id'] != 'reset') ||
                         $isTranslationRelatedCron
                     ) {
                         continue;
@@ -425,5 +428,39 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         }
 
         return $storeId;
+    }
+
+    /**
+     * Shows crons related to translation at store level
+     *
+     * @param $cronName
+     * @return bool
+     */
+    public function showTranslationRelatedCronJobsAtStoreLevel($cronName)
+    {
+        if (in_array($cronName, $this->translationList)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Set translation list
+     *
+     * @param $translationList
+     */
+    public function setTranslationList($translationList)
+    {
+        $this->translationList = $translationList;
+    }
+
+    /**
+     * Get translation list
+     *
+     * @return string[]
+     */
+    public function getTranslationList()
+    {
+        return $this->translationList;
     }
 }
