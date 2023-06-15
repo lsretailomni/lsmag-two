@@ -22,7 +22,6 @@
     <type name="Magento\Checkout\Block\Checkout\AttributeMerger">
         <plugin name="shippingAddress" type="Ls\Omni\Plugin\Checkout\Block\Checkout\AttributeMerger\StreetPlugin"/>
     </type>
-    <preference for="Magento\Catalog\Block\Product\View" type="Ls\Omni\Block\Product\View\View"/>
     <type name="Magento\Quote\Api\CartTotalRepositoryInterface">
         <plugin name="loyalty_point_add_quote_data" type="Ls\Omni\Plugin\Quote\CartTotalRepository"/>
     </type>

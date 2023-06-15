@@ -18,6 +18,14 @@
         <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context"
                 sortOrder="15"/>
     </type>
+    <type name="Magento\Framework\App\Action\AbstractAction">
+        <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context"
+                sortOrder="15"/>
+    </type>
+    <type name="Magento\Framework\App\FrontController">
+        <plugin name="sr-customer-app-action-dispatchController-context-plugin" type="Ls\Omni\Plugin\App\Action\Context"
+                sortOrder="15"/>
+    </type>
     <type name="Magento\Customer\Controller\Section\Load">
         <plugin name="ls_omni_session_unblocker" type="Ls\Omni\Plugin\Session\SectionLoadControllerPlugin"/>
     </type>

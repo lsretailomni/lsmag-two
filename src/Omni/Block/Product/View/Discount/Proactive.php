@@ -14,28 +14,22 @@ use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Plugin\App\Action\Context;
 use Magento\Catalog\Api\Data\ProductInterface;
-use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Catalog\Block\Product\Context as ProductContext;
 use Magento\Catalog\Block\Product\View;
-use Magento\Catalog\Helper\Product;
-use Magento\Catalog\Model\ProductTypes\ConfigInterface;
+use Magento\Catalog\Helper\Data;
+use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Json\EncoderInterface;
-use Magento\Framework\Locale\FormatInterface;
-use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Framework\Stdlib\StringUtils;
-use Magento\Framework\Url\EncoderInterface as UrlEncoderInterface;
+use Magento\Framework\UrlInterface;
+use Magento\Framework\View\Element\Template;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Bundle\Api\ProductLinkManagementInterface;
+use Psr\Log\LoggerInterface;
 
-class Proactive extends View
+class Proactive extends Template
 {
     /** @var LSR */
     public $lsr;
@@ -74,16 +68,32 @@ class Proactive extends View
     public $scopeConfig;
 
     /**
-     * @param ProductContext $context
-     * @param UrlEncoderInterface $urlEncoder
-     * @param EncoderInterface $jsonEncoder
-     * @param StringUtils $string
-     * @param Product $productHelper
-     * @param ConfigInterface $productTypeConfig
-     * @param FormatInterface $localeFormat
-     * @param Proxy $customerSession
-     * @param ProductRepositoryInterface $productRepository
-     * @param PriceCurrencyInterface $priceCurrency
+     * @var UrlInterface
+     */
+    public $urlBuilder;
+
+    /**
+     * @var LoggerInterface
+     */
+    public $logger;
+
+    /**
+     * @var Data
+     */
+    public $catalogHelper;
+
+    /**
+     * @var null
+     */
+    public $product = null;
+
+    /**
+     * @var View
+     */
+    public $productBlock;
+
+    /**
+     * @param Template\Context $context
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param ItemHelper $itemHelper
@@ -92,19 +102,14 @@ class Proactive extends View
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
+     * @param UrlInterface $urlBuilder
+     * @param LoggerInterface $logger
+     * @param Data $catalogHelper
+     * @param View $productBlock
      * @param array $data
      */
     public function __construct(
-        ProductContext $context,
-        UrlEncoderInterface $urlEncoder,
-        EncoderInterface $jsonEncoder,
-        StringUtils $string,
-        Product $productHelper,
-        ConfigInterface $productTypeConfig,
-        FormatInterface $localeFormat,
-        Proxy $customerSession,
-        ProductRepositoryInterface $productRepository,
-        PriceCurrencyInterface $priceCurrency,
+        Template\Context $context,
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
         ItemHelper $itemHelper,
@@ -113,21 +118,13 @@ class Proactive extends View
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
+        UrlInterface $urlBuilder,
+        LoggerInterface $logger,
+        Data $catalogHelper,
+        View $productBlock,
         array $data = []
     ) {
-        parent::__construct(
-            $context,
-            $urlEncoder,
-            $jsonEncoder,
-            $string,
-            $productHelper,
-            $productTypeConfig,
-            $localeFormat,
-            $customerSession,
-            $productRepository,
-            $priceCurrency,
-            $data
-        );
+        parent::__construct($context, $data);
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
         $this->itemHelper        = $itemHelper;
@@ -136,6 +133,10 @@ class Proactive extends View
         $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
+        $this->urlBuilder        = $urlBuilder;
+        $this->logger            = $logger;
+        $this->catalogHelper     = $catalogHelper;
+        $this->productBlock      = $productBlock;
     }
 
     /**
@@ -162,8 +163,10 @@ class Proactive extends View
                 }
                 unset($response[$key]);
             }
+
             return $response;
         }
+
         return [];
     }
 
@@ -191,18 +194,23 @@ class Proactive extends View
                         $response[$publishedOffer->getOfferId()] = $publishedOffer;
                     }
                 }
+
                 return $response;
             }
         } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
+
         return [];
     }
 
     /**
+     * Get formatted description for discount
+     *
      * @param $itemId
      * @param ProactiveDiscount $discount
-     * @return array|string
+     * @return string
+     * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
     public function getFormattedDescriptionDiscount(
@@ -266,13 +274,13 @@ class Proactive extends View
                 }
                 $productHtml = '';
                 if (!empty($productInfo)) {
-                    $imageHtml = parent::getImage(
+                    $imageHtml = $this->productBlock->getImage(
                         $productInfo,
                         'product_base_image'
                     )
                         ->toHtml();
                     if (!empty($productInfo->getFinalPrice())) {
-                        $priceHtml = parent::getProductPrice($productInfo);
+                        $priceHtml = $this->productBlock->getProductPrice($productInfo);
                     }
                     if (!empty($productInfo->getProductUrl())) {
                         if (!empty($productInfo->getName())) {
@@ -309,14 +317,15 @@ class Proactive extends View
                 $description[] = $discountText . "</span>";
             }
         }
-        $description = implode('<br/>', $description);
-        return $description;
+
+        return implode('<br/>', $description);
     }
 
     /**
      * Get mix and match product limit
      *
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getMixandMatchProductLimit()
     {
@@ -324,8 +333,10 @@ class Proactive extends View
     }
 
     /**
+     * Get formatted description for coupon
+     *
      * @param PublishedOffer $coupon
-     * @return array|string
+     * @return string
      */
     public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
@@ -349,40 +360,44 @@ class Proactive extends View
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';
             }
         }
-        $description = implode('<br/>', $description);
-        return $description;
+
+        return implode('<br/>', $description);
     }
 
     /**
+     * Get formatted expiry date
+     *
      * @param $date
      * @return string
      */
     public function getFormattedOfferExpiryDate($date)
     {
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
             ));
-
-            return $offerExpiryDate;
         } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
 
         return null;
     }
 
     /**
+     * Get ajax url
+     *
      * @return string
      */
     public function getAjaxUrl()
     {
-        return $this->getUrl('omni/ajax/ProactiveDiscountsAndCoupons');
+        return $this->urlBuilder->getUrl('omni/ajax/ProactiveDiscountsAndCoupons', []);
     }
 
     /**
+     * Get current product sku
+     *
      * @return string|null
      */
     public function getProductSku()
@@ -395,6 +410,8 @@ class Proactive extends View
     }
 
     /**
+     * Check if discount block is enabled in the config
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -407,6 +424,22 @@ class Proactive extends View
     }
 
     /**
+     * Get current product
+     *
+     * @return Product|null
+     */
+    public function getProduct()
+    {
+        if ($this->product === null) {
+            $this->product = $this->catalogHelper->getProduct();
+        }
+
+        return $this->product;
+    }
+
+    /**
+     * Check if commerce service is responding
+     *
      * @return bool|null
      * @throws NoSuchEntityException
      */
