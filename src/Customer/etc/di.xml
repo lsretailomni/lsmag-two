@@ -5,8 +5,6 @@
                 type="Ls\Customer\Block\Order\History"/>
     <preference for="Magento\Checkout\Block\Onepage\Success"
                 type="Ls\Customer\Block\Onepage\Success"/>
-    <preference for="Magento\Customer\Model\AccountManagement"
-                type="Ls\Customer\Model\AccountManagement"/>
     <preference for="Magento\Checkout\Block\Registration"
                 type="Ls\Customer\Block\Registration"/>
     <type name="Magento\Sales\Controller\AbstractController\View">
