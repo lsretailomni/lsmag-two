@@ -25,7 +25,7 @@ use Magento\Framework\Escaper;
             <a class="action view" href="<?= /* @escapeNotVerified */
             $block->getUrl('sales/order/history') ?>">
                 <span><?= /* @escapeNotVerified */
-                    __('View All') ?></span>
+                    $block->escapeHtml(__('View All')) ?></span>
             </a>
         <?php endif; ?>
     </div>
@@ -40,23 +40,23 @@ use Magento\Framework\Escaper;
                     <div class="table-wrapper orders-recent">
                         <table class="data table table-order-items recent" id="my-orders-table">
                             <caption class="table-caption"><?= /* @escapeNotVerified */
-                                __('Recent Orders') ?></caption>
+                                $block->escapeHtml(__('Recent Orders')) ?></caption>
                             <thead>
                             <tr>
                                 <th scope="col" class="col id"><?= /* @escapeNotVerified */
-                                    __('Document ID #') ?></th>
+                                    $block->escapeHtml(__('Document ID #')) ?></th>
                                 <th scope="col" class="col date"><?= /* @escapeNotVerified */
-                                    __('Date') ?></th>
+                                    $block->escapeHtml(__('Date')) ?></th>
                                 <th scope="col" class="col shipping"><?= /* @escapeNotVerified */
-                                    __('Ship To') ?></th>
+                                    $block->escapeHtml(__('Ship To')) ?></th>
                                 <th scope="col" class="col store-name"><?= /* @escapeNotVerified */
-                                    __('Store Name') ?></th>
+                                    $block->escapeHtml(__('Store Name')) ?></th>
                                 <th scope="col" class="col total"><?= /* @escapeNotVerified */
-                                    __('Total') ?></th>
+                                    $block->escapeHtml(__('Order Total')) ?></th>
                                 <th scope="col" class="col status"><?= /* @escapeNotVerified */
-                                    __('Status') ?></th>
+                                    $block->escapeHtml(__('Status')) ?></th>
                                 <th scope="col" class="col actions"><?= /* @escapeNotVerified */
-                                    __('Action') ?></th>
+                                    $block->escapeHtml(__('Action')) ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,20 +67,20 @@ use Magento\Framework\Escaper;
                                 $magOrder = $block->getOrderByDocumentId($_order);
                                 ?>
                                 <tr>
-                                    <td data-th="<?= $escaper->escapeHtml(__('Document ID #')) ?>"
+                                    <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
                                         class="col id"><?= /* @escapeNotVerified */
                                         $_order->getCustomerOrderNo() ? $_order->getCustomerOrderNo() : $_order->getId() ?></td>
-                                    <td data-th="<?= $escaper->escapeHtml(__('Date')) ?>"
+                                    <td data-th="<?= $block->escapeHtml(__('Date')) ?>"
                                         class="col date"><?= /* @escapeNotVerified */
                                         $block->getFormattedDate($_order->getCreateTime()) ?></td>
-                                    <td data-th="<?= $escaper->escapeHtml(__('Ship To')) ?>"
+                                    <td data-th="<?= $block->escapeHtml(__('Ship To')) ?>"
                                         class="col shipping"><?= $_order->getShipToName() ? $block->escapeHtml($_order->getShipToName()) : __('Not Applicable') ?></td>
-                                    <td data-th="<?= $escaper->escapeHtml(__('Store Name')) ?>"
+                                    <td data-th="<?= $block->escapeHtml(__('Store Name')) ?>"
                                         class="col store-name"><?= $_order->getStoreName() ?></td>
-                                    <td data-th="<?= $escaper->escapeHtml(__('Total')) ?>"
+                                    <td data-th="<?= $block->escapeHtml(__('Order Total')) ?>"
                                         class="col total"><?= /* @escapeNotVerified */
                                         $block->getFormattedPrice($_order->getTotalAmount(), $_order->getStoreCurrency(), $_order->getStoreId(), $_order->getIdType()) ?></td>
-                                    <td data-th="<?= $escaper->escapeHtml(__('Status')) ?>"
+                                    <td data-th="<?= $block->escapeHtml(__('Status')) ?>"
                                         class="col status"><?= /* @escapeNotVerified */
                                         $_order->getStatus() ?></td>
                                     <td data-th="<?= $escaper->escapeHtml(__('Actions')) ?>" class="col actions">

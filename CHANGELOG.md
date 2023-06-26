@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0] - 2023-06-26
+
+### Added
+
+- Added support to replicate and process non-inventory items from LS Central. [35631](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35631)
+- Added support to store QR code order information in Magento quote tables. [36093](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/36093)
+- Added support to redeem Gift Card in Multi-currency websites. [34209](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/34209)
+- Added support to optimized response for order create request to handle timeout. [38031](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/38031)
+- Added support to replicate and use ImageDescription field in the image replication as an item image label. [38200](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/38200)
+- Added support for Item HTML for deal types products. [38054](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/38054)
+
+
+### Changed
+- [Major] Changed replication structure from store view to website level for all the data being replicated from LS Central. [25679](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/25679)
+- Changed caching storage from store id to global level for all images replicated from LS Central. [35892](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35892)
+
+
+### Removed
+- [Major] Removed the support for LS Recommend. [34332](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/34332)
+
+
+### Bugs/Fixes
+
+- Fixed issue with inconsistent use of store_id and website_id when calling \Ls\Core\Model\LSR::isLSR() function. [35916](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35916)
+- Fixed issue with order duplication. (this is helpfull when the first order was failed due to timeout from LS Central). [36536](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/36536)
+- Fixed issue with sorting of orders in the centralized order history page. [37195](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/37195)
+- Fixed issue with additional fields in customer registration that were not being processed correctly. [36537](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/36537)
+- Fixed issue related to PHP 8.1, where null values were not permitted in methods like method_exists(), by implementing appropriate fixes. [37130](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/37130)
+- Fixed issue with certain tables were not appearing in the truncate table action, causing data deletion to be incomplete. [37256](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/37256)
+- Fixed issue with parent (configurable) products showing out of stock on frontend. [37969](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/37969)
+- Fixed issue with customer session not populating for "Login as Customer" feature from admin panel. [37727](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/37727)
+- Fixed issue where performance was impacted in cron jobs, resulting in improved execution efficiency. [35917](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/35917)
+
+
+
+
+
+
 ## [2.3.0] - 2023-04-14
 
 ### Added

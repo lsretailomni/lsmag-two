@@ -16,26 +16,26 @@ $transactions = is_array($order) ? $order : [$order];
     <?php foreach($transactions as $trans):?>
         <table class="data table table-order-items"
                id="my-orders-table"
-               summary="<?= /* @noEscape */ __('Items Ordered') ?>">
+               summary="<?= /* @noEscape */ $block->escapeHtml(__('Items Ordered')) ?>">
             <caption class="table-caption">
-                <?= /* @noEscape */ __('Items Ordered') ?>
+                <?= /* @noEscape */ $block->escapeHtml(__('Items Ordered')) ?>
             </caption>
             <thead>
             <tr>
                 <th class="col name">
-                    <?= /* @noEscape */ __('Product Name') ?>
+                    <?= /* @noEscape */ $block->escapeHtml(__('Product Name')) ?>
                 </th>
                 <th class="col sku">
-                    <?= /* @noEscape */ __('SKU') ?>
+                    <?= /* @noEscape */ $block->escapeHtml(__('SKU')) ?>
                 </th>
                 <th class="col price">
-                    <?= /* @noEscape */ __('Price') ?>
+                    <?= /* @noEscape */ $block->escapeHtml(__('Price')) ?>
                 </th>
                 <th class="col qty">
-                    <?= /* @noEscape */ __('Qty') ?>
+                    <?= /* @noEscape */ $block->escapeHtml(__('Qty')) ?>
                 </th>
                 <th class="col subtotal">
-                    <?= /* @noEscape */ __('Subtotal') ?>
+                    <?= /* @noEscape */ $block->escapeHtml(__('Subtotal')) ?>
                 </th>
             </tr>
             </thead>
