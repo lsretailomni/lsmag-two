@@ -5,7 +5,7 @@
         <ls_mag>
             <replication>
                 <replicate_data_translation_lang_code>Default</replicate_data_translation_lang_code>
-                <identical_table_web_service_list>ReplEcommHtmlTranslation</identical_table_web_service_list>
+                <identical_table_web_service_list>ReplEcommHtmlTranslation,ReplEcommDealHtmlTranslation</identical_table_web_service_list>
                 <replicate_all_stores_items>0</replicate_all_stores_items>
                 <default_batch_size>2000</default_batch_size>
                 <product_batch_size>30</product_batch_size>
