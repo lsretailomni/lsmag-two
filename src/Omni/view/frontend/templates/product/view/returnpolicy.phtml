@@ -1,11 +1,13 @@
 <?php
 // @codingStandardsIgnoreFile
-use \Ls\Omni\Block\Product\View\View;
+use Ls\Omni\ViewModel\GeneralViewModel;
+use Magento\Framework\View\Element\Template;
 
-/** @var $block View */
-$_product = $block->getProduct();
+/** @var $viewModel GeneralViewModel */
+/** @var $block Template */
+$viewModel = $block->getViewModel();
 ?>
-<?php if ($block->isValid()) : ?>
+<?php if ($viewModel->isValid()) : ?>
     <div class="return-policy-container">
         <a href="javascript:void()"
            class="return-policy"><?php echo __('Return Policy') ?></a>

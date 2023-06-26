@@ -1,21 +1,23 @@
 <?php
 // @codingStandardsIgnoreFile
-use \Ls\Omni\Block\Product\View\View;
+use Ls\Omni\ViewModel\GeneralViewModel;
+use Magento\Framework\View\Element\Template;
 
-/** @var $block View */
-$_product = $block->getProduct();
+/** @var $viewModel GeneralViewModel */
+/** @var $block Template */
+$viewModel = $block->getViewModel();
 ?>
-<?php if ($block->isValid()) : ?>
+<?php if ($viewModel->isValid()) : ?>
     <div class="availability-link-container">
         <a href="javascript:void()" name="checkavailability"
            class="checkavailability"><?php echo __('Check Availability in Stores') ?></a>
     </div>
     <div id="map-canvas"></div>
     <script type="text/javascript">
-        var googleMapApiKey = "<?php echo $block->getGoogleMapsApiKey();?>";
-        var defaultLat = "<?php echo $block->getDefaultLatitude();?>";
-        var defaultLong = "<?php echo $block->getDefaultLongitude();?>";
-        var defaultZoom = "<?php echo $block->getDefaultZoom();?>";
+        var googleMapApiKey = "<?php echo $viewModel->getGoogleMapsApiKey();?>";
+        var defaultLat = "<?php echo $viewModel->getDefaultLatitude();?>";
+        var defaultLong = "<?php echo $viewModel->getDefaultLongitude();?>";
+        var defaultZoom = "<?php echo $viewModel->getDefaultZoom();?>";
     </script>
 
     <script type="text/x-magento-init">

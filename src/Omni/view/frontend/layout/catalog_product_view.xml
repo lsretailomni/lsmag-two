@@ -13,19 +13,32 @@
                    before="product.info.main"/>
         </referenceContainer>
 
-        <referenceBlock name="product.info.addtocart" template="Ls_Omni::product/view/addtocart.phtml" />
+        <referenceBlock name="product.info.addtocart" template="Ls_Omni::product/view/addtocart.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="product.info.addtocart.additional" template="Ls_Omni::product/view/addtocart.phtml">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+            </arguments>
+        </referenceBlock>
 
-        <referenceBlock name="product.info.addtocart.additional" template="Ls_Omni::product/view/addtocart.phtml" />
-
-        <block class="Ls\Omni\Block\Product\View\View"
-               name="ls.omni.product.availability"
+        <block name="ls.omni.product.availability"
                template="Ls_Omni::product/view/availability.phtml"
-               ifconfig="ls_mag/one_list/product_availability"/>
+               ifconfig="ls_mag/one_list/product_availability">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+            </arguments>
+        </block>
 
-        <block class="Ls\Omni\Block\Product\View\View"
-               name="ls.omni.product.return.policy"
+        <block name="ls.omni.product.return.policy"
                template="Ls_Omni::product/view/returnpolicy.phtml"
-               ifconfig="ls_mag/return_policy/show_return_policy"/>
+               ifconfig="ls_mag/return_policy/show_return_policy">
+            <arguments>
+                <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+            </arguments>
+        </block>
 
         <referenceContainer name="product.info.extrahint">
             <block class="Ls\Omni\Block\Product\View\Discount\Proactive"
