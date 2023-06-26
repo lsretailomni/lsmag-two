@@ -19,6 +19,7 @@ class CronTabGenerator
 
     /**
      * @param Service\Metadata $metadata
+     * @throws \DOMException
      */
     public static function Generate(Service\Metadata $metadata)
     {

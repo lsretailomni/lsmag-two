@@ -186,16 +186,23 @@ class GiftCardManagement
             $cartQuote = $this->quoteRepository->get($cartId);
         } catch (NoSuchEntityException $e) {
             throw new NoSuchEntityException(
-                __('Could not find a cart with ID 2 %1', $cartId)
+                __('Could not find a cart with ID %1', $cartId)
             );
         }
         if ($cartQuote->getLsGiftCardNo()) {
-            $giftCardAmount = 0;
-            $giftCardNo     = null;
-            $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
-            $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
-            $this->quoteRepository->save($cartQuote);
+            try {
+                $giftCardAmount = 0;
+                $giftCardNo     = null;
+                $cartQuote->getShippingAddress()->setCollectShippingRates(true);
+                $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
+                $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
+                $this->quoteRepository->save($cartQuote);
+            } catch (CouldNotSaveException $e) {
+                throw new CouldNotSaveException(
+                    __('Could not save cart with ID %1', $cartId)
+                );
+            }
+
         }
         return true;
     }

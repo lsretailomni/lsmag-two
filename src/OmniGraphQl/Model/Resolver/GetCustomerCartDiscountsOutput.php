@@ -2,7 +2,6 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper;
@@ -17,17 +16,22 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 /**
  * To get discounts in cart and checkout view page in graphql
  */
-class GetCustomerCartDiscountsOutput extends View implements ResolverInterface
+class GetCustomerCartDiscountsOutput implements ResolverInterface
 {
     /**
      * @var LoyaltyHelper
      */
-
     private LoyaltyHelper $loyaltyHelper;
+
     /**
      * @var DataHelper
      */
     private DataHelper $dataHelper;
+
+    /**
+     * @var CustomerSession
+     */
+    public CustomerSession $customerSession;
 
     /**
      * @param CustomerSession $customerSession
@@ -62,7 +66,6 @@ class GetCustomerCartDiscountsOutput extends View implements ResolverInterface
                 if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
                     $couponsArr[] = $this->dataHelper->getFormattedDescriptionCoupon($coupon);
                 }
-
             }
         }
 

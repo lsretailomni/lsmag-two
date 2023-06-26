@@ -81,6 +81,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
         "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
         "ls_mag/replication/repl_html_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_deal_html_translation"      => ["TranslationId", "Key", "LanguageCode", "scope_id"],
         "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
         "ls_mag/replication/repl_discount"                   => [
             "ItemId",
@@ -888,7 +889,8 @@ abstract class AbstractReplicationTask
 
         if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
             $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
-            $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH
+            $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
+            $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
         ) {
             $this->defaultScope = ScopeInterface::SCOPE_STORES;
         }

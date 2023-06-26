@@ -144,12 +144,10 @@ class ReturnPolicyManagement implements ReturnPolicyManagementInterface
                 $entity->setVariantCode("");
                 $entity   = $this->getPrivacyPolicyEntity("", "", $storeId);
                 $response = $this->returnPolicyOperation->execute($entity);
-                $counter = 0;
                 foreach ($response->getReturnPolicyGetResult()->getReturnPolicy() as $result) {
                     if ($result->getItemId() == "") {
                         $response->getReturnPolicyGetResult()->setReturnPolicy([$result]);
                     }
-                    $counter ++;
                 }
             }
         }

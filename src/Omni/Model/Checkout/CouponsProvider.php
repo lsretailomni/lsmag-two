@@ -92,6 +92,8 @@ class CouponsProvider implements ConfigProviderInterface
 
     /**
      * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getAvailableCoupons()
     {

@@ -13,6 +13,7 @@ use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -69,6 +70,10 @@ class Data
      * @var SerializerJson
      */
     public $jsonSerializer;
+    /**
+     * @var ProductRepository
+     */
+    private ProductRepository $productRepository;
 
     /**
      * @param Logger $logger
@@ -80,6 +85,7 @@ class Data
      * @param ItemHelper $itemHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param SerializerJson $jsonSerializer
+     * @param ProductRepository $productRepository
      */
     public function __construct(
         Logger $logger,

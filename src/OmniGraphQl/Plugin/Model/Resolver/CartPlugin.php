@@ -47,10 +47,12 @@ class CartPlugin
         array $args = null
     ) {
         if (isset($result['model'])) {
-           $quote = $result['model'];
+            $quote = $result['model'];
 
             if ($quote->getBasketResponse()) {
-                $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
+                $this->basketHelper->setOneListCalculationInCheckoutSession(
+                    unserialize($quote->getBasketResponse())
+                );
             }
         }
         return $result;

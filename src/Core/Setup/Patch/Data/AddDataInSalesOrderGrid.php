@@ -61,7 +61,11 @@ class AddDataInSalesOrderGrid implements DataPatchInterface, PatchVersionInterfa
         $connection       = $this->moduleDataSetup->getConnection();
         $sourceTable      = $this->moduleDataSetup->getTable('sales_order');
         $destinationTable = $this->moduleDataSetup->getTable('sales_order_grid');
-        if ($connection->tableColumnExists($this->moduleDataSetup->getTable('sales_order_grid'), 'document_id') === true) {
+        if ($connection->tableColumnExists(
+            $this->moduleDataSetup->getTable('sales_order_grid'),
+            'document_id'
+        ) === true
+        ) {
             $connection->query(
                 $connection->updateFromSelect(
                     $connection->select()
