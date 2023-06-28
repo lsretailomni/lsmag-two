@@ -59,6 +59,17 @@ class CacheHelper extends AbstractHelper
     }
 
     /**
+     * Remove cached content
+     *
+     * @param $cacheId
+     * @return bool
+     */
+    public function removeCachedContent($cacheId)
+    {
+        return $this->cache->remove($cacheId);
+    }
+
+    /**
      * @param $cacheId
      * @param $content
      * @param $tag
