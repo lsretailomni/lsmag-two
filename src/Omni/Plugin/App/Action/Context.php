@@ -7,6 +7,8 @@ use Magento\Customer\Model\Session;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class Context
 {
@@ -36,14 +38,18 @@ class Context
     }
 
     /**
+     * Around plugin to add values in httpContext
+     *
      * @param ActionInterface $subject
-     * @param callable $proceed
+     * @param Closure $proceed
      * @param RequestInterface $request
      * @return mixed
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function aroundDispatch(
-        ActionInterface $subject,
+        $subject,
         Closure $proceed,
         RequestInterface $request
     ) {
@@ -66,6 +72,7 @@ class Context
             $customerEmail,
             false
         );
+
         return $proceed($request);
     }
 }

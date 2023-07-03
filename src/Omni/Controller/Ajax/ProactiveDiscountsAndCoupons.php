@@ -5,7 +5,7 @@ namespace Ls\Omni\Controller\Ajax;
 use \Ls\Omni\Block\Product\View\Discount\Proactive;
 use \Ls\Omni\Helper\SessionHelper;
 use Magento\Framework\App\Action\Context;
-use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -19,7 +19,7 @@ use Magento\Framework\Controller\Result\RedirectFactory;
  * Class ProactiveDiscountsAndCoupons
  * @package Ls\Omni\Controller\Ajax
  */
-class ProactiveDiscountsAndCoupons implements HttpPostActionInterface
+class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
 {
 
     /**
@@ -48,7 +48,6 @@ class ProactiveDiscountsAndCoupons implements HttpPostActionInterface
     public RequestInterface $request;
 
     /**
-     * ProactiveDiscountsAndCoupons constructor.
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
@@ -72,6 +71,8 @@ class ProactiveDiscountsAndCoupons implements HttpPostActionInterface
     }
 
     /**
+     * Entry point for this controller
+     *
      * @return ResponseInterface|Json|ResultInterface
      * @throws FileSystemException
      */
@@ -80,6 +81,7 @@ class ProactiveDiscountsAndCoupons implements HttpPostActionInterface
         if (!$this->request->isXmlHttpRequest()) {
             $resultRedirect = $this->resultRedirectFactory->create();
             $resultRedirect->setPath('checkout/cart');
+
             return $resultRedirect;
         }
         $this->sessionHelper->newSessionHandler("lsproactivediscounts");
@@ -99,6 +101,7 @@ class ProactiveDiscountsAndCoupons implements HttpPostActionInterface
             ->setData('data', $data)
             ->toHtml();
         $result->setData(['output' => $block]);
+
         return $result;
     }
 }

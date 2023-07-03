@@ -5,8 +5,6 @@ namespace Ls\Customer\Observer;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Api\CustomerRepositoryInterface;
-use Magento\Customer\Controller\Account\LoginPost\Interceptor;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session\Proxy;
 use Magento\Framework\App\Action\Action;
@@ -16,8 +14,6 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\Registry;
-use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -44,33 +40,21 @@ class ResetPasswordObserver implements ObserverInterface
     /** @var RedirectInterface */
     private $redirectInterface;
 
-    /** @var CustomerRepositoryInterface */
-    private $customerRepository;
-
-    /** @var StoreManagerInterface */
-    private $storeManager;
-
     /** @var LSR @var */
     private $lsr;
-
-    /** @var Registry */
-    private $registry;
 
     /** @var CustomerFactory */
     private $customerFactory;
 
     /**
-     * ResetPasswordObserver constructor.
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
      * @param LoggerInterface $logger
      * @param Proxy $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
-     * @param StoreManagerInterface $storeManager
      * @param CustomerFactory $customerFactory
      * @param LSR $LSR
-     * @param Registry $registry
      */
     public function __construct(
         ContactHelper $contactHelper,
@@ -79,10 +63,8 @@ class ResetPasswordObserver implements ObserverInterface
         Proxy $customerSession,
         RedirectInterface $redirectInterface,
         ActionFlag $actionFlag,
-        StoreManagerInterface $storeManager,
         CustomerFactory $customerFactory,
-        LSR $LSR,
-        Registry $registry
+        LSR $LSR
     ) {
         $this->contactHelper      = $contactHelper;
         $this->messageManager     = $messageManager;
@@ -90,9 +72,7 @@ class ResetPasswordObserver implements ObserverInterface
         $this->customerSession    = $customerSession;
         $this->redirectInterface  = $redirectInterface;
         $this->actionFlag         = $actionFlag;
-        $this->storeManager       = $storeManager;
         $this->lsr                = $LSR;
-        $this->registry           = $registry;
         $this->customerFactory    = $customerFactory;
     }
 
@@ -111,7 +91,6 @@ class ResetPasswordObserver implements ObserverInterface
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
-                /** @var Interceptor $controller_action */
                 $controller_action = $observer->getData('controller_action');
                 $post_param        = $controller_action->getRequest()->getParams();
                 $result            = null;
@@ -123,16 +102,9 @@ class ResetPasswordObserver implements ObserverInterface
                  */
                 $isFailed = $this->customerSession->getRpToken();
                 if (!$isFailed) {
-                    $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                    $email     = $this->registry->registry(LSR::REGISTRY_CURRENT_RESETPASSWORD_EMAIL);
-                    if ($email) {
-                        $customer = $this->customerFactory->create()
-                            ->setWebsiteId($websiteId)
-                            ->loadByEmail($email);
-                    } else {
-                        $customerId = $observer->getRequest()->getQuery('id');
-                        $customer   =  $this->customerFactory->create()->load($customerId);
-                    }
+                    $customerId = $observer->getRequest()->getQuery('id');
+                    $customer   =  $this->customerFactory->create()->load($customerId);
+
                     if ($customer) {
                         $result   = $this->contactHelper->resetPassword($customer, $post_param);
                     }
