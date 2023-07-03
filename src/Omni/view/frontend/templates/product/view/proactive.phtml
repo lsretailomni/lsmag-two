@@ -21,12 +21,12 @@ $coupons = $productData['data']['coupons'];
     if (!empty($discounts) || !(trim($coupons) == '')) {
         ?>
         <div class="discount-dropdown-label">
-            <span><?php echo __("Offers and Promotions:"); ?></span>
+            <span><?php echo $block->escapeHtml(__("Offers and Promotions:")); ?></span>
         </div>
         <div class="discount-dropdown">
             <div data-block="dropdown" class="dropdown-wrapper">
                 <button type="button" class="action primary" data-trigger="trigger">
-                    <span><?php echo __('Find Discounts'); ?></span>
+                    <span><?php echo $block->escapeHtml(__('Find Discounts')); ?></span>
                     <i class="arrow down"></i>
                 </button>
             </div>

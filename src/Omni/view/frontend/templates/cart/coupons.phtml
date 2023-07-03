@@ -13,7 +13,7 @@ $viewModel = $block->getData("view_model");
          data-mage-init='{"collapsible":{"openedState": "active", "saveState": false}}'>
         <div class="title" data-role="title">
             <strong id="block-discount-heading" role="heading" aria-level="2">
-                <?= /* @noEscape */ __('Apply Discount Code') ?>
+                <?= /* @noEscape */ $block->escapeHtml(__('Apply Discount Code')) ?>
             </strong>
         </div>
         <div class="content" data-role="content" aria-labelledby="block-discount-heading">
@@ -28,7 +28,7 @@ $viewModel = $block->getData("view_model");
                     <input type="hidden" name="remove" id="remove-coupon" value="0"/>
                     <div class="field">
                         <label for="coupon_code" class="label">
-                            <span><?= /* @noEscape */ __('Enter discount code') ?></span>
+                            <span><?= /* @noEscape */ $block->escapeHtml(__('Enter discount code')) ?></span>
                         </label>
                         <div class="control">
                             <input type="text"
@@ -45,16 +45,16 @@ $viewModel = $block->getData("view_model");
                             <div class="primary">
                                 <button class="action apply primary"
                                         type="button"
-                                        value="<?= /* @noEscape */ __('Apply Discount') ?>">
-                                    <span><?= /* @noEscape */ __('Apply Discount') ?></span>
+                                        value="<?= /* @noEscape */ $block->escapeHtml(__('Apply Discount')) ?>">
+                                    <span><?= /* @noEscape */ $block->escapeHtml(__('Apply Discount')) ?></span>
                                 </button>
                             </div>
                         <?php else: ?>
                             <div class="primary">
                                 <button type="button"
                                         class="action cancel primary"
-                                        value="<?= /* @noEscape */ __('Cancel Coupon') ?>">
-                                        <span><?= /* @noEscape */ __('Cancel Coupon') ?></span>
+                                        value="<?= /* @noEscape */ $block->escapeHtml(__('Cancel Coupon')) ?>">
+                                        <span><?= /* @noEscape */ $block->escapeHtml(__('Cancel Coupon')) ?></span>
                                 </button>
                             </div>
                         <?php endif; ?>
