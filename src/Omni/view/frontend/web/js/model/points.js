@@ -6,7 +6,7 @@ define(['jquery', 'ko', 'Magento_Checkout/js/model/quote'], function ($, ko, quo
         rateLabel;
 
     var extensionAttributes = quote.getTotals()().extension_attributes;
-    pattern = {single: "{point} point", plural: "{point} points"};
+    pattern = {single: "{point} loyalty point", plural: "{point} loyalty points"};
     if (extensionAttributes && extensionAttributes.loyalty_points) {
         balance = extensionAttributes.loyalty_points.balance;
         rateLabel = extensionAttributes.loyalty_points.rateLabel;

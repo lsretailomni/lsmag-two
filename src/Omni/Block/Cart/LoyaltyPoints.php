@@ -11,6 +11,7 @@ use Magento\Checkout\Model\Session\Proxy;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Framework\Pricing\Helper\Data;
 
 class LoyaltyPoints extends AbstractCart
 {
@@ -20,7 +21,13 @@ class LoyaltyPoints extends AbstractCart
     public $loyaltyHelper;
 
     /**
+     * @var Data
+     */
+    public $priceHelper;
+
+    /**
      * @param LoyaltyHelper $loyaltyHelper
+     * @param Data $priceHelper
      * @param Context $context
      * @param \Magento\Customer\Model\Session\Proxy $customerSession
      * @param Proxy $checkoutSession
@@ -28,6 +35,7 @@ class LoyaltyPoints extends AbstractCart
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
+        Data $priceHelper,
         Context $context,
         \Magento\Customer\Model\Session\Proxy $customerSession,
         Proxy $checkoutSession,
@@ -35,6 +43,7 @@ class LoyaltyPoints extends AbstractCart
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->loyaltyHelper   = $loyaltyHelper;
+        $this->priceHelper = $priceHelper;
     }
 
     /**
@@ -79,5 +88,16 @@ class LoyaltyPoints extends AbstractCart
     public function getLsPointsSpent()
     {
         return $this->getQuote()->getLsPointsSpent();
+    }
+
+    /**
+     * Get formatted price
+     *
+     * @param $price
+     * @return float|string
+     */
+    public function getFormattedPrice($price)
+    {
+        return $this->priceHelper->currency($price, true, false);
     }
 }
