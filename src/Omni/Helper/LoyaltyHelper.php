@@ -616,6 +616,6 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display' => \Zend_Currency::NO_SYMBOL], false);
+        return $this->currencyHelper->format($value, ['display' => 1], false);
     }
 }
