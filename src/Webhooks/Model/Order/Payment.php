@@ -147,7 +147,7 @@ class Payment
                         $item                         = $itemData['item'];
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
-                        if ($isOffline) {
+                        if ($isOffline && $totalAmount == 0) {
                             $totalAmount += $itemData['amount'];
                         }
                     }
