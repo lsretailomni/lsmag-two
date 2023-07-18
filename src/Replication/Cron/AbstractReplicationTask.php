@@ -48,7 +48,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field for delete */
-    private static $deleteJobCodeUniqueFieldArray = [
+    public static $deleteJobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_item_variant_registration" => [
             "ItemId",
             "VariantDimension1",
@@ -63,7 +63,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field */
-    private static $jobCodeUniqueFieldArray = [
+    public static $jobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
         "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
         "ls_mag/replication/repl_attribute_value"            => [
