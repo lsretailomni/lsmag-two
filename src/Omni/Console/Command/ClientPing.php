@@ -44,5 +44,7 @@ class ClientPing extends Command
         }else{
             $this->output->writeln("ERROR: Unable to establish connection with Commerce Service");
         }
+
+        return 0;
     }
 }
