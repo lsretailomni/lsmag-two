@@ -20,21 +20,6 @@ class Account extends Entity
     protected $Blocked = null;
 
     /**
-     * @property string $BlockedBy
-     */
-    protected $BlockedBy = null;
-
-    /**
-     * @property string $BlockedDate
-     */
-    protected $BlockedDate = null;
-
-    /**
-     * @property string $BlockedReason
-     */
-    protected $BlockedReason = null;
-
-    /**
      * @property string $CustomerId
      */
     protected $CustomerId = null;
@@ -75,60 +60,6 @@ class Account extends Entity
     public function getBlocked()
     {
         return $this->Blocked;
-    }
-
-    /**
-     * @param string $BlockedBy
-     * @return $this
-     */
-    public function setBlockedBy($BlockedBy)
-    {
-        $this->BlockedBy = $BlockedBy;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockedBy()
-    {
-        return $this->BlockedBy;
-    }
-
-    /**
-     * @param string $BlockedDate
-     * @return $this
-     */
-    public function setBlockedDate($BlockedDate)
-    {
-        $this->BlockedDate = $BlockedDate;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockedDate()
-    {
-        return $this->BlockedDate;
-    }
-
-    /**
-     * @param string $BlockedReason
-     * @return $this
-     */
-    public function setBlockedReason($BlockedReason)
-    {
-        $this->BlockedReason = $BlockedReason;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockedReason()
-    {
-        return $this->BlockedReason;
     }
 
     /**

@@ -76,6 +76,26 @@ class MemberContact extends Entity
     protected $BirthDay = null;
 
     /**
+     * @property boolean $Blocked
+     */
+    protected $Blocked = null;
+
+    /**
+     * @property string $BlockedBy
+     */
+    protected $BlockedBy = null;
+
+    /**
+     * @property string $BlockedReason
+     */
+    protected $BlockedReason = null;
+
+    /**
+     * @property string $DateBlocked
+     */
+    protected $DateBlocked = null;
+
+    /**
      * @property string $Email
      */
     protected $Email = null;
@@ -354,6 +374,78 @@ class MemberContact extends Entity
     public function getBirthDay()
     {
         return $this->BirthDay;
+    }
+
+    /**
+     * @param boolean $Blocked
+     * @return $this
+     */
+    public function setBlocked($Blocked)
+    {
+        $this->Blocked = $Blocked;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getBlocked()
+    {
+        return $this->Blocked;
+    }
+
+    /**
+     * @param string $BlockedBy
+     * @return $this
+     */
+    public function setBlockedBy($BlockedBy)
+    {
+        $this->BlockedBy = $BlockedBy;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockedBy()
+    {
+        return $this->BlockedBy;
+    }
+
+    /**
+     * @param string $BlockedReason
+     * @return $this
+     */
+    public function setBlockedReason($BlockedReason)
+    {
+        $this->BlockedReason = $BlockedReason;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockedReason()
+    {
+        return $this->BlockedReason;
+    }
+
+    /**
+     * @param string $DateBlocked
+     * @return $this
+     */
+    public function setDateBlocked($DateBlocked)
+    {
+        $this->DateBlocked = $DateBlocked;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateBlocked()
+    {
+        return $this->DateBlocked;
     }
 
     /**
