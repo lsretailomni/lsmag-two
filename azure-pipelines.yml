@@ -41,13 +41,11 @@ steps:
     displayName: 'Use PHP version $(phpVersion)'
 
   - script: |
-      ls -la /home/vsts/work/1/s/
       mkdir ../magento_$(magentoVersion)_$(phpVersion)
       ln -s $PWD ../module
       cd ../magento_$(magentoVersion)_$(phpVersion)
       mkdir -p ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two
       cp -a /home/vsts/work/1/s/. ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/
-      ls -la ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two
       composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "../module", "options": {"symlink": true}}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
       composer config use-include-path true
       composer config --no-plugins allow-plugins true
@@ -55,12 +53,12 @@ steps:
       echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
       composer install
       find var vendor pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
-      ls -la artifacts/lsretail/lsmag-two
+      ls -la dev/tests/unit
     displayName: 'Magento code preparation'
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml ../module
+      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
     displayName: 'Module unit testing'
 
   - task: PublishTestResults@2
