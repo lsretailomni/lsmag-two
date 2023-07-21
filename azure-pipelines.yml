@@ -41,6 +41,16 @@ steps:
     displayName: 'Use PHP version $(phpVersion)'
 
   - script: |
+      wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+      echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+      sudo apt update && sudo apt install openjdk-8-jre-headless
+      export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+      sudo apt update && sudo apt install elasticsearch
+      sudo systemctl start elasticsearch.service
+      sudo curl -XGET 'localhost:9200/'
+    displayName: 'Install elasticsearch'
+
+  - script: |
       mkdir ../magento_$(magentoVersion)_$(phpVersion)
       ln -s $PWD ../module
       cd ../magento_$(magentoVersion)_$(phpVersion)
@@ -55,9 +65,19 @@ steps:
       find var vendor pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
     displayName: 'Magento code preparation'
 
+  - script: mysql -u root -proot -e "CREATE DATABASE $(databaseName)"
+    displayName: 'Magento database creation'
+
+  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=localhost --db-name=$(databaseName) --db-user=root --db-password=root --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=localhost --elasticsearch-port=9200
+    displayName: 'Magento installation testing'
+
+  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
+    displayName: 'Magento production mode testing'
+
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpunit -c ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+      cp ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml ../magento_$(magentoVersion)_$(phpVersion)/dev/test/unit/
+      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
     displayName: 'Module unit testing'
 
   - task: PublishTestResults@2
@@ -66,12 +86,3 @@ steps:
       testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
       searchFolder: '$(System.DefaultWorkingDirectory)'
     displayName: 'Module unit testing results publishing'
-
-  - script: mysql -u root -proot -e "CREATE DATABASE $(databaseName)"
-    displayName: 'Magento database creation'
-
-  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=localhost --db-name=$(databaseName) --db-user=root --db-password=root --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1
-    displayName: 'Magento installation testing'
-
-  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
-    displayName: 'Magento production mode testing'
