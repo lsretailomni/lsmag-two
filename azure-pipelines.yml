@@ -1,8 +1,18 @@
 trigger:
 - master
 
+resources:
+  containers:
+    - container: db
+      image: mariadb:10.1
+      env:
+        MYSQL_DATABASE: my_app_test
+        MYSQL_ROOT_PASSWORD: superSecret123
 pool:
   vmImage: ubuntu-latest
+
+services:
+  db: db
 
 variables:
   composerName: 'lsretail/lsmag-two'
@@ -68,7 +78,7 @@ steps:
 
   - script: |
       telnet 127.0.0.1 3306
-      mysql -h 127.0.0.1 -P 3306 -u root -proot -e "CREATE DATABASE $(databaseName)"
+      mysql -h db -P 3306 -u root -psuperSecret123 -e "CREATE DATABASE $(databaseName)"
     displayName: 'Magento database creation'
 
   - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=localhost --db-name=$(databaseName) --db-user=root --db-password=root --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=localhost --elasticsearch-port=9200
