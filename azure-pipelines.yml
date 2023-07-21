@@ -16,23 +16,23 @@ strategy:
       phpunitVersion: '6.2.0'
       databaseName: 'magento_2_3_1_7_2'
       composerOverride: '{\"require-dev\": {\"allure-framework/allure-phpunit\": \"~1.2.0\"}, \"autoload\": {\"psr-4\": {\"Zend\\\\Mvc\\\\Controller\\\\\": \"setup/src/Zend/Mvc/Controller/\"}}}'
-    magento_2_2_8_php_7_1:
-      phpVersion: '7.1'
-      magentoVersion: '2.2.8'
-      phpunitVersion: '6.2.0'
-      databaseName: 'magento_2_2_8_7_1'
-      composerOverride: '{}'
-    magento_2_1_17_php_7_1:
-      phpVersion: '7.1'
-      magentoVersion: '2.1.17'
-      phpunitVersion: '4.1.0'
-      databaseName: 'magento_2_1_17_7_1'
-      composerOverride: '{}'
+#    magento_2_2_8_php_7_1:
+#     phpVersion: '7.1'
+#      magentoVersion: '2.2.8'
+#      phpunitVersion: '6.2.0'
+#      databaseName: 'magento_2_2_8_7_1'
+#      composerOverride: '{}'
+#    magento_2_1_17_php_7_1:
+#      phpVersion: '7.1'
+#      magentoVersion: '2.1.17'
+#      phpunitVersion: '4.1.0'
+#      databaseName: 'magento_2_1_17_7_1'
+#      composerOverride: '{}'
 
 steps:
 
   - script: |
-      ls -la /usr/bin/php
+      ls -la /usr/bin/
       sudo update-alternatives --set php /usr/bin/php$(phpVersion)
       sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
       sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
