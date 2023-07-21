@@ -6,7 +6,7 @@ pool:
 
 variables:
   composerName: 'lsretail/lsmag-two'
-  composerVersion: '1.0.0-dev'
+  composerVersion: '2.4.0'
 
 strategy:
   matrix:
@@ -32,6 +32,7 @@ strategy:
 steps:
 
   - script: |
+      ls -la /usr/bin/php
       sudo update-alternatives --set php /usr/bin/php$(phpVersion)
       sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
       sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
