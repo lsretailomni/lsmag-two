@@ -1,0 +1,74 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+variables:
+  composerName: 'orba/test-module'
+  composerVersion: '1.0.0-dev'
+
+strategy:
+  matrix:
+    magento_2_3_1_php_7_2:
+      phpVersion: '7.2'
+      magentoVersion: '2.3.2'
+      phpunitVersion: '6.2.0'
+      databaseName: 'magento_2_3_1_7_2'
+      composerOverride: '{\"require-dev\": {\"allure-framework/allure-phpunit\": \"~1.2.0\"}, \"autoload\": {\"psr-4\": {\"Zend\\\\Mvc\\\\Controller\\\\\": \"setup/src/Zend/Mvc/Controller/\"}}}'
+    magento_2_2_8_php_7_1:
+      phpVersion: '7.1'
+      magentoVersion: '2.2.8'
+      phpunitVersion: '6.2.0'
+      databaseName: 'magento_2_2_8_7_1'
+      composerOverride: '{}'
+    magento_2_1_17_php_7_1:
+      phpVersion: '7.1'
+      magentoVersion: '2.1.17'
+      phpunitVersion: '4.1.0'
+      databaseName: 'magento_2_1_17_7_1'
+      composerOverride: '{}'
+
+steps:
+
+  - script: |
+      sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+      sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+      sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+      sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+      sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+      php -version
+    displayName: 'Use PHP version $(phpVersion)'
+
+  - script: |
+      mkdir ../magento_$(magentoVersion)_$(phpVersion)
+      ln -s $PWD ../module
+      cd ../magento_$(magentoVersion)_$(phpVersion)
+      composer init --name=orba/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "../module", "options": {"symlink": true}}' -s alpha -n
+      composer config use-include-path true
+      php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
+      echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
+      composer install
+      find var vendor pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
+    displayName: 'Magento code preparation'
+
+  - script: |
+      cd ../magento_$(magentoVersion)_$(phpVersion)
+      ./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml ../module
+    displayName: 'Module unit testing'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+    displayName: 'Module unit testing results publishing'
+
+  - script: mysql -u root -proot -e "CREATE DATABASE $(databaseName)"
+    displayName: 'Magento database creation'
+
+  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=localhost --db-name=$(databaseName) --db-user=root --db-password=root --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1
+    displayName: 'Magento installation testing'
+
+  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
+    displayName: 'Magento production mode testing'
