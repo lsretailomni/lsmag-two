@@ -45,7 +45,7 @@ steps:
       mkdir ../magento_$(magentoVersion)_$(phpVersion)
       ln -s $PWD ../module
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      mkdir ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two
+      mkdir -p artifacts/lsretail/lsmag-two
       cp -r /home/vsts/work/1/s artifacts/lsretail/lsmag-two/
       composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "../module", "options": {"symlink": true}}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
       composer config use-include-path true
