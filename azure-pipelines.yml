@@ -47,6 +47,7 @@ steps:
       export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
       sudo apt update && sudo apt install elasticsearch
       sudo systemctl start elasticsearch.service
+      sleep 15
       sudo curl -XGET 'localhost:9200/'
     displayName: 'Install elasticsearch'
 
