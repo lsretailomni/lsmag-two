@@ -10,11 +10,11 @@ variables:
 
 strategy:
   matrix:
-    magento_2_3_1_php_7_2:
-      phpVersion: '7.2'
-      magentoVersion: '2.3.2'
-      phpunitVersion: '6.2.0'
-      databaseName: 'magento_2_3_1_7_2'
+    magento_2_4_6_php_8_1:
+      phpVersion: '8.1'
+      magentoVersion: '2.4.6-p1'
+      phpunitVersion: '9'
+      databaseName: 'magento_2_4_6_php_8_1'
       composerOverride: '{\"require-dev\": {\"allure-framework/allure-phpunit\": \"~1.2.0\"}, \"autoload\": {\"psr-4\": {\"Zend\\\\Mvc\\\\Controller\\\\\": \"setup/src/Zend/Mvc/Controller/\"}}}'
 #    magento_2_2_8_php_7_1:
 #     phpVersion: '7.1'
