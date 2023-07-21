@@ -53,14 +53,11 @@ steps:
       echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
       composer install
       find var vendor pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
-      ls -la vendor/lsretail/lsmag-two
-      ls -la dev/tests/unit
-      cat composer.json
     displayName: 'Magento code preparation'
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+      ./vendor/bin/phpunit -c ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit $(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
     displayName: 'Module unit testing'
 
   - task: PublishTestResults@2

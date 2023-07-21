@@ -47,16 +47,5 @@
             "/docs",
             "/README.txt"
         ]
-    },
-    "extra": {
-        "map": [
-            ["dev/tests/unit", "dev/tests/unit"]
-        ],
-        "chmod": [
-            {
-                "mask": "0755",
-                "path": "dev/tests/unit"
-            }
-        ]
     }
 }
