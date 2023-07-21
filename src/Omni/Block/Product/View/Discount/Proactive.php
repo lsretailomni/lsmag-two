@@ -10,16 +10,15 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Plugin\App\Action\Context;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Block\Product\View;
 use Magento\Catalog\Helper\Data;
 use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -43,11 +42,6 @@ class Proactive extends Template
      * @var ItemHelper
      */
     public $itemHelper;
-
-    /**
-     * @var
-     */
-    public $httpContext;
 
     /**
      * @var CustomerFactory
@@ -93,11 +87,16 @@ class Proactive extends Template
     public $productBlock;
 
     /**
+     * @var ContactHelper
+     */
+    public $contactHelper;
+
+    /**
      * @param Template\Context $context
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param ItemHelper $itemHelper
-     * @param HttpContext $httpContext
+     * @param ContactHelper $contactHelper
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
@@ -113,7 +112,7 @@ class Proactive extends Template
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
         ItemHelper $itemHelper,
-        HttpContext $httpContext,
+        ContactHelper $contactHelper,
         CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
@@ -128,7 +127,7 @@ class Proactive extends Template
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
         $this->itemHelper        = $itemHelper;
-        $this->httpContext       = $httpContext;
+        $this->contactHelper     = $contactHelper;
         $this->customerFactory   = $customerFactory;
         $this->storeManager      = $storeManager;
         $this->timeZoneInterface = $timeZoneInterface;
@@ -180,11 +179,8 @@ class Proactive extends Template
     {
         try {
             $storeId = $this->lsr->getActiveWebStore();
-            if ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_ID)) {
-                $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                $email     = $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL);
-                $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
-                $cardId    = $customer->getData('lsr_cardid');
+            if (!empty($this->contactHelper->getCardIdFromCustomerSession())) {
+                $cardId    = $this->contactHelper->getCardIdFromCustomerSession();
                 $response = [];
 
                 foreach ($itemId as $id) {
