@@ -105,6 +105,7 @@ steps:
 
   - script: |
       php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
+      cat ../magento_$(magentoVersion)_$(phpVersion)/var/log/*
     displayName: 'Magento production mode testing'
 
   - script: |
