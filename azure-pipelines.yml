@@ -4,19 +4,19 @@ trigger:
 resources:
   containers:
     - container: elasticsearch
-      image: elasticsearch:7.17.9
+      image: markoshust/magento-elasticsearch:7.9.3-1
       ports:
         - "9200:9200"
         - "9300:9300"
-    - container: db
-      image: mariadb:10.1
-      ports:
-        - '3306:3306'
-      env:
-        MYSQL_DATABASE: users
-        MYSQL_USER: mysql
-        MYSQL_PASSWORD: mysql
-        MYSQL_ROOT_PASSWORD: mysql
+#    - container: db
+#      image: mariadb:10.1
+#      ports:
+#        - '3306:3306'
+#      env:
+#        MYSQL_DATABASE: users
+#        MYSQL_USER: mysql
+#        MYSQL_PASSWORD: mysql
+#        MYSQL_ROOT_PASSWORD: mysql
 pool:
   vmImage: ubuntu-latest
 
