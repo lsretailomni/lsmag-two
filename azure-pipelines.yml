@@ -18,7 +18,7 @@ resources:
         - "9200:9200"
         - "9300:9300"
       env:
-        'discovery.type:single-node'
+        discovery.type: single-node
 pool:
   vmImage: ubuntu-latest
 
