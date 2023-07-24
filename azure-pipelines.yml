@@ -104,6 +104,7 @@ steps:
     displayName: 'Magento installation testing'
 
   - script: |
+      find var vendor pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
       php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
       find ../magento_$(magentoVersion)_$(phpVersion)/var/log/ -type f | xargs tail -n +1
     displayName: 'Magento production mode testing'
