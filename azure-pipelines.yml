@@ -18,8 +18,7 @@ resources:
         - "9200:9200"
         - "9300:9300"
       command-line:
-        env:
-          'discovery.type=single-node'
+        'discovery.type':'single-node'
 pool:
   vmImage: ubuntu-latest
 
@@ -73,7 +72,7 @@ steps:
 
   - script: |
       printf 'Waiting for elasticsearch to accept connections'
-      until curl -XGET '127.0.0.1:9200/'; do
+      until curl -XGET '0.0.0.0:9200/'; do
       printf '.'
       sleep 1;
       done;
