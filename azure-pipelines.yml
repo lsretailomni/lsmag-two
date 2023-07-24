@@ -19,6 +19,9 @@ resources:
         - "9300:9300"
       env:
         discovery.type: single-node
+        ES_JAVA_OPTS: -Xms1g -Xmx1g
+        cluster.routing.allocation.disk.threshold_enabled: false
+        index.blocks.read_only_allow_delete: true
 pool:
   vmImage: ubuntu-latest
 
@@ -95,7 +98,7 @@ steps:
 
   - script: |
       telnet 127.0.0.1 3306
-      mysql --host 127.0.0.1 --user=mysql --password=mysql -e "CREATE DATABASE $(databaseName)"
+      mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
     displayName: 'Magento database creation'
 
   - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=root --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
