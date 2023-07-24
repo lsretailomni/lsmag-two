@@ -4,7 +4,7 @@ trigger:
 resources:
   containers:
     - container: db
-      image: mariadb:10.1
+      image: mariadb:10.2
       ports:
         - '3306:3306'
       env:
