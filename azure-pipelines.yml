@@ -100,7 +100,7 @@ steps:
       mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
     displayName: 'Magento database creation'
 
-  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=root --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
+  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
     displayName: 'Magento installation testing'
 
   - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
