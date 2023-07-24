@@ -21,7 +21,6 @@ resources:
         discovery.type: single-node
         ES_JAVA_OPTS: -Xms1g -Xmx1g
         cluster.routing.allocation.disk.threshold_enabled: false
-        index.blocks.read_only_allow_delete: true
 pool:
   vmImage: ubuntu-latest
 
