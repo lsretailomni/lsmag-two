@@ -5,9 +5,13 @@ resources:
   containers:
     - container: db
       image: mariadb:10.1
+      ports:
+        - '3306:3306'
       env:
-        MYSQL_DATABASE: my_app_test
-        MYSQL_ROOT_PASSWORD: superSecret123
+        MYSQL_DATABASE: users
+        MYSQL_USER: mysql
+        MYSQL_PASSWORD: mysql
+        MYSQL_ROOT_PASSWORD: mysql
 pool:
   vmImage: ubuntu-latest
 
@@ -26,18 +30,6 @@ strategy:
       phpunitVersion: '^9'
       databaseName: 'magento_2_4_6_php_8_1'
       composerOverride: '{\"require-dev\": {\"allure-framework/allure-phpunit\": \"~1.2.0\"}, \"autoload\": {\"psr-4\": {\"Zend\\\\Mvc\\\\Controller\\\\\": \"setup/src/Zend/Mvc/Controller/\"}}}'
-#    magento_2_2_8_php_7_1:
-#     phpVersion: '7.1'
-#      magentoVersion: '2.2.8'
-#      phpunitVersion: '6.2.0'
-#      databaseName: 'magento_2_2_8_7_1'
-#      composerOverride: '{}'
-#    magento_2_1_17_php_7_1:
-#      phpVersion: '7.1'
-#      magentoVersion: '2.1.17'
-#      phpunitVersion: '4.1.0'
-#      databaseName: 'magento_2_1_17_7_1'
-#      composerOverride: '{}'
 
 steps:
 
@@ -51,8 +43,9 @@ steps:
     displayName: 'Use PHP version $(phpVersion)'
 
   - script: |
+      sudo apt-get install default-mysql-client
       printf 'Waiting for MySQL database to accept connections'
-      until mysql --host db --user=root --password=superSecret123 --execute "SHOW DATABASES"; do
+      until mysql --host 127.0.0.1 --user=mysql --password=mysql --execute "SHOW DATABASES"; do
         printf '.'
         sleep 1;
       done;
