@@ -17,6 +17,9 @@ resources:
       ports:
         - "9200:9200"
         - "9300:9300"
+      command-line:
+        env:
+          'discovery.type=single-node'
 pool:
   vmImage: ubuntu-latest
 
@@ -69,8 +72,12 @@ steps:
     displayName: Wait for database to initialise
 
   - script: |
-      sudo curl -XGET '127.0.0.1:9200/'
-    displayName: 'Install elasticsearch'
+      printf 'Waiting for elasticsearch to accept connections'
+      until curl -XGET '127.0.0.1:9200/'; do
+      printf '.'
+      sleep 1;
+      done;
+    displayName: Wait for database to initialise
 
   - script: |
       mkdir ../magento_$(magentoVersion)_$(phpVersion)
