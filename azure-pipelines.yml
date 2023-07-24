@@ -17,7 +17,7 @@ resources:
       ports:
         - "9200:9200"
         - "9300:9300"
-      command-line:
+      env:
         'discovery.type:single-node'
 pool:
   vmImage: ubuntu-latest
@@ -76,7 +76,7 @@ steps:
       printf '.'
       sleep 1;
       done;
-    displayName: Wait for database to initialise
+    displayName: Wait for elasticsearch to initialise
 
   - script: |
       mkdir ../magento_$(magentoVersion)_$(phpVersion)
