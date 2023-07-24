@@ -18,7 +18,7 @@ resources:
         - "9200:9200"
         - "9300:9300"
       command-line:
-        'discovery.type':'single-node'
+        'discovery.type:single-node'
 pool:
   vmImage: ubuntu-latest
 
