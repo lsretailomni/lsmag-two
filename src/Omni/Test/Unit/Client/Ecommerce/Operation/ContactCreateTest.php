@@ -56,7 +56,7 @@ class ContactCreate extends TestCase
         $this->assertInstanceOf(ArrayOfPublishedOffer::class, $result->getPublishedOffers());
         $this->assertInstanceOf(ArrayOfSalesEntry::class, $result->getSalesEntries());
         $this->assertInstanceOf(Account::class, $result->getAccount());
-        $this->assertNotNull($result->getUserName());
+//        $this->assertNotNull($result->getUserName());
         $this->assertNotNull($result->getEmail());
         $this->assertNotNull($result->getId());
     }

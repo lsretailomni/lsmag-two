@@ -52,7 +52,7 @@ class ContactUpdateTest extends TestCase
         $contact->setCards($cardArray);
         $contactUpdate = new ContactUpdate();
         $contactUpdate->setContact($contact);
-
+        $contactUpdate->setGetContact(1);
         $response = $this->client->ContactUpdate($contactUpdate);
         $result   = $response->getResult();
         $this->assertInstanceOf(MemberContact::class, $result);
