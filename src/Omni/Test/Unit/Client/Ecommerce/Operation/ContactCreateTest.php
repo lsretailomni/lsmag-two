@@ -44,7 +44,7 @@ class ContactCreate extends TestCase
 
         $contactCreate = new \Ls\Omni\Client\Ecommerce\Entity\ContactCreate();
         $contactCreate->setContact($contact);
-
+        $contactCreate->setDoLogin(1);
         $response = $this->client->ContactCreate($contactCreate);
         $result   = $response->getResult();
         $this->assertInstanceOf(MemberContact::class, $result);
@@ -56,7 +56,7 @@ class ContactCreate extends TestCase
         $this->assertInstanceOf(ArrayOfPublishedOffer::class, $result->getPublishedOffers());
         $this->assertInstanceOf(ArrayOfSalesEntry::class, $result->getSalesEntries());
         $this->assertInstanceOf(Account::class, $result->getAccount());
-//        $this->assertNotNull($result->getUserName());
+        $this->assertNotNull($result->getUserName());
         $this->assertNotNull($result->getEmail());
         $this->assertNotNull($result->getId());
     }
