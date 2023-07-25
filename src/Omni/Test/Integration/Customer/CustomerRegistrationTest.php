@@ -18,10 +18,9 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\TestCase\AbstractController;
 use Laminas\Uri\UriFactory;
 
-class CustomerRegistrationTest extends AbstractController
+class CustomerRegistrationTest extends \PHPUnit\Framework\TestCase
 {
     /** @var OmniClient */
     public $client;
