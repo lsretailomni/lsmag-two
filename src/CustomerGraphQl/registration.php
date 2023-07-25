@@ -2,8 +2,4 @@
 
 use Magento\Framework\Component\ComponentRegistrar;
 
-ComponentRegistrar::register(
-    ComponentRegistrar::MODULE,
-    'Ls_CustomerGraphQl',
-    isset($file) ? dirname($file) : __DIR__
-);
+ComponentRegistrar::register(ComponentRegistrar::MODULE, 'Ls_CustomerGraphQl', __DIR__);
