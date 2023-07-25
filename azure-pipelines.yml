@@ -92,7 +92,7 @@ steps:
       php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
       echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
       composer install
-      find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
+      find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
       ls -la ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/src/Omni/view/frontend/templates/product
       ls -la ../magento_$(magentoVersion)_$(phpVersion)/vendor/lsretail/lsmag-two/src/Omni/view/frontend/templates/product
     displayName: 'Magento code preparation'
