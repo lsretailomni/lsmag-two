@@ -105,7 +105,6 @@ steps:
     displayName: 'Magento installation testing'
 
   - script: |
-      php bin/magento config:set dev/template/allow_symlink 1
       php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
       find ../magento_$(magentoVersion)_$(phpVersion)/var/log/ -type f | xargs tail -n +1
     displayName: 'Magento production mode testing'
