@@ -32,7 +32,7 @@ class OmniClientSetupTest extends TestCase
     {
         $pong = $this->client->Ping();
         $this->assertStringContainsString(
-            'PONG OK> Successfully connected to [LS Commerce Service DB] & [LS Central DB] & [LS Central WS]',
+            'PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS Central DB] & [LS Central WS]',
             $pong->getResult()
         );
     }
