@@ -16,6 +16,7 @@
         <ini name="error_reporting" value="22527"/>
         <ini name="date.timezone" value="America/Los_Angeles"/>
         <ini name="xdebug.max_nesting_level" value="200"/>
+        <env name="BASE_URL" value="http://13.67.41.234/CommerceService" force="true" />
         <env name="STORE_ID" value="S0013" force="true" />
         <env name="CARD_ID" value="10049" force="true" />
         <env name="CONTACT_ID" value="MSO000010" force="true" />

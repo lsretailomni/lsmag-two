@@ -30,7 +30,7 @@ class ServiceTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $this->baseUrl = $_ENV['BASE_URL'];
+        $this->baseUrl = getenv('BASE_URL');
         $objectManager = new \Magento\Framework\TestFramework\Unit\Helper\ObjectManager($this);
         $this->lsrMock = $this->createMock(LSR::class);
         $this->serviceMock = $this->createMock(Service::class);

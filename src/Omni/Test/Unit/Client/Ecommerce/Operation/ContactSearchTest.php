@@ -21,7 +21,7 @@ class ContactSearchTest extends TestCase
 
     protected function setUp(): void
     {
-        $baseUrl        = $_ENV['BASE_URL'];
+        $baseUrl        = getenv('BASE_URL');
         $this->username = $_ENV['USERNAME'];
         $this->email    = $_ENV['EMAIL'];
         $url            = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);

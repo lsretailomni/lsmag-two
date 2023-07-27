@@ -13,7 +13,7 @@ class PingTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
-        $baseUrl      = $_ENV['BASE_URL'];
+        $baseUrl      = getenv('BASE_URL');
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);
         $uri          = UriFactory::factory($url);
