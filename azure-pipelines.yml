@@ -1,6 +1,10 @@
+trigger:
 pr:
-  - develop
-  - master
+  branches:
+    include:
+      - develop
+      - master
+      - pipeline-test
 
 resources:
   containers:
