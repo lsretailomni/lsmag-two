@@ -33,7 +33,7 @@ class ContactGetByCardIdTest extends TestCase
     {
         $this->assertNotNull($this->client);
         $param    = [
-            'cardId' => $_ENV['CARD_ID']
+            'cardId' => getenv('CARD_ID')
         ];
         $response = $this->client->ContactGetByCardId($param);
         $result   = $response->getResult();

@@ -29,7 +29,7 @@ class ReplicationTest extends TestCase
             'FullReplication' => '1',
             'LastKey'         => '0',
             'MaxKey'          => '0',
-            'StoreId'         => $_ENV['STORE_ID'],
+            'StoreId'         => getenv('STORE_ID'),
             'TerminalId'      => '0'
         ];
     }

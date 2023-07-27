@@ -25,7 +25,7 @@ class StoreGetByIdTest extends TestCase
     {
         $this->assertNotNull($this->client);
         $param    = [
-            'storeId' => $_ENV['STORE_ID']
+            'storeId' => getenv('STORE_ID')
         ];
         $response = $this->client->StoreGetById($param);
         $result   = $response->getResult();
@@ -35,6 +35,6 @@ class StoreGetByIdTest extends TestCase
         $this->assertNotNull($result->getPhone());
         $this->assertNotNull($result->getStoreHours());
         $this->assertNotNull($result->getAddress());
-        $this->assertEquals($_ENV['STORE_ID'], $result->getId());
+        $this->assertEquals(getenv('STORE_ID'), $result->getId());
     }
 }

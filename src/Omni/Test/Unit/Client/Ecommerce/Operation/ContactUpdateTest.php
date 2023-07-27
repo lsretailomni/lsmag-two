@@ -41,12 +41,12 @@ class ContactUpdateTest extends TestCase
         $append  = "test" . chr(rand(97, 122));
         $contact->setFirstName($append . "test");
         $contact->setLastName($append . "test");
-        $contact->setId($_ENV['CONTACT_ID']);
-        $contact->setUserName($_ENV['USERNAME']);
-        $contact->setEmail($_ENV['EMAIL']);
+        $contact->setId(getenv('CONTACT_ID'));
+        $contact->setUserName(getenv('USERNAME'));
+        $contact->setEmail(getenv('EMAIL'));
         $contact->setMiddleName('  ');
         $card = new Card();
-        $card->setId($_ENV['CARD_ID']);
+        $card->setId(getenv('CARD_ID'));
         $cardArray = new ArrayOfCard();
         $cardArray->setCard($card);
         $contact->setCards($cardArray);

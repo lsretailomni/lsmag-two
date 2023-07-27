@@ -47,12 +47,12 @@ class CustomerRegistrationTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertNotNull($this->client);
         $append      = "test4" . chr(rand(97, 122));
-        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $_ENV['USERNAME']), 8, '0', STR_PAD_LEFT);
+        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . getenv('USERNAME')), 8, '0', STR_PAD_LEFT);
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);
-        $contact->setEmail($append . $_ENV['EMAIL']);
-        $contact->setUserName($append . $_ENV['USERNAME']);
-        $contact->setPassword($_ENV['PASSWORD']);
+        $contact->setEmail($append . getenv('EMAIL'));
+        $contact->setUserName($append . getenv('USERNAME'));
+        $contact->setPassword(getenv('PASSWORD'));
         $contact->setFirstName("test");
         $contact->setLastName("test");
 

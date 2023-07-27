@@ -27,9 +27,9 @@ class LoginWebTest extends TestCase
     protected function setUp(): void
     {
         $baseUrl        = getenv('BASE_URL');
-        $this->username = $_ENV['USERNAME'];
-        $this->email    = $_ENV['EMAIL'];
-        $this->password = $_ENV['PASSWORD'];
+        $this->username = getenv('USERNAME');
+        $this->email    = getenv('EMAIL');
+        $this->password = getenv('PASSWORD');
         $url            = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type   = new ServiceType(ServiceType::ECOMMERCE);
         $uri            = UriFactory::factory($url);

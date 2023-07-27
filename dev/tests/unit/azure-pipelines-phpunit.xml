@@ -16,17 +16,6 @@
         <ini name="error_reporting" value="22527"/>
         <ini name="date.timezone" value="America/Los_Angeles"/>
         <ini name="xdebug.max_nesting_level" value="200"/>
-        <env name="STORE_ID" value="S0013" force="true" />
-        <env name="CARD_ID" value="10049" force="true" />
-        <env name="CONTACT_ID" value="MSO000010" force="true" />
-        <env name="USERNAME" value="mc_11271" force="true" />
-        <env name="EMAIL" value="umaryo_retail@lsretail.com" force="true" />
-        <env name="PASSWORD" value="Nmswer123@" force="true" />
-        <env name="GIFTCARDCODE" value="2" force="true" />
-        <env name="ITEM_ID" value="40020" force="true" />
-        <env name="VARIANT_ID" value="000" force="true" />
-        <env name="SIMPLE_ITEM_ID" value="40180" force="true" />
-        <env name="COUPON_CODE" value="COUP0119" force="true" />
     </php>
     <listeners>
         <listener class="Magento\Framework\TestFramework\Unit\Listener\ReplaceObjectManager"/>

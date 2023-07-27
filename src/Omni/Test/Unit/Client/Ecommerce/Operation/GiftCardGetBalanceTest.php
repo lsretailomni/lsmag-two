@@ -26,7 +26,7 @@ class GiftCardGetBalanceTest extends TestCase
     {
         $this->assertNotNull($this->client);
         $entity = new GiftCardGetBalance();
-        $entity->setCardNo($_ENV['GIFTCARDCODE']);
+        $entity->setCardNo(getenv('GIFTCARDCODE'));
         $response = $this->client->GiftCardGetBalance($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(GiftCard::class, $result);
