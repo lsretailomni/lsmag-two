@@ -1,6 +1,7 @@
 trigger:
-- master
-
+  branches:
+    exclude:
+      - '*'
 resources:
   containers:
     - container: db
