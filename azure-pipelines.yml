@@ -40,18 +40,6 @@ strategy:
       phpunitVersion: '^9'
       databaseName: 'magento_2_4_6_php_8_1'
       composerOverride: '{}'
-#    magento_2_2_8_php_7_1:
-#     phpVersion: '7.1'
-#      magentoVersion: '2.2.8'
-#      phpunitVersion: '6.2.0'
-#      databaseName: 'magento_2_2_8_7_1'
-#      composerOverride: '{}'
-#    magento_2_1_17_php_7_1:
-#      phpVersion: '7.1'
-#      magentoVersion: '2.1.17'
-#      phpunitVersion: '4.1.0'
-#      databaseName: 'magento_2_1_17_7_1'
-#      composerOverride: '{}'
 
 steps:
 
