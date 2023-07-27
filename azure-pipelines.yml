@@ -27,10 +27,6 @@ pool:
 services:
   db: db
   elasticsearch: elasticsearch
-variables:
-  composerName: 'lsretail/lsmag-two'
-  composerVersion: '^2.0'
-  DefaultWorkingDirectory: 'var/tests/'
 
 strategy:
   matrix:
@@ -39,7 +35,7 @@ strategy:
       magentoVersion: '2.4.6-p1'
       phpunitVersion: '^9'
       databaseName: 'magento_2_4_6_php_8_1'
-      composerOverride: '{\"require-dev\": {\"allure-framework/allure-phpunit\": \"~1.2.0\"}, \"autoload\": {\"psr-4\": {\"Zend\\\\Mvc\\\\Controller\\\\\": \"setup/src/Zend/Mvc/Controller/\"}}}'
+      composerOverride: '{}'
 #    magento_2_2_8_php_7_1:
 #     phpVersion: '7.1'
 #      magentoVersion: '2.2.8'
