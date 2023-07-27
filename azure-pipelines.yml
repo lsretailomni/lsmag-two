@@ -1,7 +1,5 @@
 trigger:
-  branches:
-    exclude:
-      - *
+  - main
 
 resources:
   containers:
