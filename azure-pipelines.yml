@@ -1,6 +1,5 @@
 trigger:
   branches:
-    include:
     exclude:
       - *
 
