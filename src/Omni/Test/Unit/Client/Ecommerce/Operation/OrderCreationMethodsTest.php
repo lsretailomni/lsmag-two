@@ -87,7 +87,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals(getenv('ITEM_ID'), $inventoryResponse->getItemId());
             $this->assertEquals(getenv('VARIANT_ID'), $inventoryResponse->getVariantId());
             $this->assertEquals(getenv('STORE_ID'), $inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
             $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
         }
     }
@@ -111,7 +111,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals(getenv('ITEM_ID'), $inventoryResponse->getItemId());
             $this->assertEquals(getenv('VARIANT_ID'), $inventoryResponse->getVariantId());
             $this->assertNotNull($inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
             $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
         }
     }
@@ -137,7 +137,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals(getenv('ITEM_ID'), $inventoryResponse->getItemId());
             $this->assertEquals(getenv('VARIANT_ID'), $inventoryResponse->getVariantId());
             $this->assertEquals(getenv('STORE_ID'), $inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
             $this->assertEquals('string', gettype($inventoryResponse->getQtyInventory()));
         }
     }
@@ -163,7 +163,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             $this->assertEquals(getenv('ITEM_ID'), $inventoryResponse->getItemId());
             $this->assertEquals(getenv('VARIANT_ID'), $inventoryResponse->getVariantId());
             $this->assertNotNull($inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
             $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
         }
     }
@@ -224,14 +224,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -257,14 +257,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $response = $this->client->OneListSave($param);
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -292,14 +292,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -318,13 +318,13 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
             $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
-            $this->assertObjectHasAttribute('CreateDate', $oneList);
-            $this->assertObjectHasAttribute('StoreId', $oneList);
-            $this->assertObjectHasAttribute('TotalAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+            $this->assertTrue(property_exists($oneList, 'Id'));
+            $this->assertTrue(property_exists($oneList, 'CreateDate'));
+            $this->assertTrue(property_exists($oneList, 'StoreId'));
+            $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
         }
     }
 
@@ -344,13 +344,13 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
             $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
-            $this->assertObjectHasAttribute('CreateDate', $oneList);
-            $this->assertObjectHasAttribute('StoreId', $oneList);
-            $this->assertObjectHasAttribute('TotalAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+            $this->assertTrue(property_exists($oneList, 'Id'));
+            $this->assertTrue(property_exists($oneList, 'CreateDate'));
+            $this->assertTrue(property_exists($oneList, 'StoreId'));
+            $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
         }
     }
 
@@ -369,7 +369,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result   = $response->getResult();
         foreach ($result as $oneList) {
             $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
+            $this->assertTrue(property_exists($oneList, 'Id'));
             $paramDelete = [
                 'oneListId' => $oneList->getId()
             ];
@@ -394,7 +394,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result   = $response->getResult();
         foreach ($result as $oneList) {
             $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
+            $this->assertTrue(property_exists($oneList, 'Id'));
             $paramDelete = [
                 'oneListId' => $oneList->getId()
             ];
@@ -438,16 +438,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -489,16 +489,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -540,15 +540,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -610,16 +611,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
 
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -689,14 +690,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 }

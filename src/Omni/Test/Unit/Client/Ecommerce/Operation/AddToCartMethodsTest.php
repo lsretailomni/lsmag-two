@@ -120,14 +120,14 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -146,13 +146,13 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
             $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
-            $this->assertObjectHasAttribute('CreateDate', $oneList);
-            $this->assertObjectHasAttribute('StoreId', $oneList);
-            $this->assertObjectHasAttribute('TotalAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+            $this->assertTrue(property_exists($oneList, 'Id'));
+            $this->assertTrue(property_exists($oneList, 'CreateDate'));
+            $this->assertTrue(property_exists($oneList, 'StoreId'));
+            $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
         }
     }
 
@@ -187,14 +187,14 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals(getenv('CARD_ID'), $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('PublishedOffers', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'PublishedOffers'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 }
