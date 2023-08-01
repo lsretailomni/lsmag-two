@@ -9,6 +9,7 @@
         <testsuite name="Ls_Retail_Unit_Tests">
             <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Unit</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Unit</directory>
+            <directory>../../../vendor/lsretail/hospitality/Test/Unit</directory>
         </testsuite>
     </testsuites>
     <php>
