@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\Account;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfAddress;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfCard;
@@ -14,26 +13,9 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Card;
 use \Ls\Omni\Client\Ecommerce\Entity\ContactUpdate;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
-use PHPUnit\Framework\TestCase;
-use Laminas\Uri\UriFactory;
 
-class ContactUpdateTest extends TestCase
+class ContactUpdateTest extends OmniClientSetupTest
 {
-    protected $contact;
-    protected $contactCreate;
-
-    protected function setUp(): void
-    {
-        $baseUrl      = getenv('BASE_URL');
-        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type = new ServiceType(ServiceType::ECOMMERCE);
-        $uri          = UriFactory::factory($url);
-        $this->client = new OmniClient($uri, $service_type);
-        $this->client->setClassmap(ClassMap::getClassMap());
-    }
-
     public function testExecute()
     {
         $this->assertNotNull($this->client);
@@ -41,12 +23,12 @@ class ContactUpdateTest extends TestCase
         $append  = "test" . chr(rand(97, 122));
         $contact->setFirstName($append . "test");
         $contact->setLastName($append . "test");
-        $contact->setId(getenv('CONTACT_ID'));
-        $contact->setUserName(getenv('USERNAME'));
-        $contact->setEmail(getenv('EMAIL'));
+        $contact->setId($this->getEnvironmentVariableValueGivenName('CONTACT_ID'));
+        $contact->setUserName($this->getEnvironmentVariableValueGivenName('USERNAME'));
+        $contact->setEmail($this->getEnvironmentVariableValueGivenName('EMAIL'));
         $contact->setMiddleName('  ');
         $card = new Card();
-        $card->setId(getenv('CARD_ID'));
+        $card->setId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
         $cardArray = new ArrayOfCard();
         $cardArray->setCard($card);
         $contact->setCards($cardArray);

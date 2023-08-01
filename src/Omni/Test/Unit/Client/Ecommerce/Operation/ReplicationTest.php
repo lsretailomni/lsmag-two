@@ -18,7 +18,7 @@ class ReplicationTest extends TestCase
 
     protected function setUp(): void
     {
-        $baseUrl      = getenv('BASE_URL');
+        $baseUrl      = $this->getEnvironmentVariableValueGivenName('BASE_URL');
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);
         $uri          = UriFactory::factory($url);
@@ -29,7 +29,7 @@ class ReplicationTest extends TestCase
             'FullReplication' => '1',
             'LastKey'         => '0',
             'MaxKey'          => '0',
-            'StoreId'         => getenv('STORE_ID'),
+            'StoreId'         => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
             'TerminalId'      => '0'
         ];
     }
@@ -37,5 +37,17 @@ class ReplicationTest extends TestCase
     public function testClient()
     {
         $this->assertNotNull($this->client);
+    }
+
+    /**
+     * Get environment variable value given name
+     *
+     * @param $name
+     * @return array|false|string
+     */
+    public function getEnvironmentVariableValueGivenName($name)
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        return getenv($name);
     }
 }

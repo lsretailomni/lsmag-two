@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\Account;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfAddress;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfCard;
@@ -11,38 +10,25 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfProfile;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\ContactCreate;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
-use PHPUnit\Framework\TestCase;
-use Laminas\Uri\UriFactory;
 
-class ContactCreate extends TestCase
+class ContactCreateTest extends OmniClientSetupTest
 {
-    protected function setUp(): void
-    {
-        $baseUrl      = getenv('BASE_URL');
-        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type = new ServiceType(ServiceType::ECOMMERCE);
-        $uri          = UriFactory::factory($url);
-        $this->client = new OmniClient($uri, $service_type);
-        $this->client->setClassmap(ClassMap::getClassMap());
-    }
-
     public function testExecute()
     {
         $this->assertNotNull($this->client);
         $append      = 'test' . substr(md5(uniqid(rand(), true)), 0, 5);
-        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . getenv('USERNAME')), 8, '0', STR_PAD_LEFT);
+        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $this->getEnvironmentVariableValueGivenName('USERNAME')), 8, '0', STR_PAD_LEFT);
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);
-        $contact->setEmail($append . getenv('EMAIL'));
-        $contact->setUserName($append . getenv('USERNAME'));
-        $contact->setPassword(getenv('PASSWORD'));
+        $contact->setEmail($append . $this->getEnvironmentVariableValueGivenName('EMAIL'));
+        $contact->setUserName($append . $this->getEnvironmentVariableValueGivenName('USERNAME'));
+        $contact->setPassword($this->getEnvironmentVariableValueGivenName('PASSWORD'));
         $contact->setFirstName("test");
         $contact->setLastName("test");
 
-        $contactCreate = new \Ls\Omni\Client\Ecommerce\Entity\ContactCreate();
+        $contactCreate = new ContactCreate();
         $contactCreate->setContact($contact);
         $contactCreate->setDoLogin(1);
         $response = $this->client->ContactCreate($contactCreate);

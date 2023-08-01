@@ -83,6 +83,7 @@ class ReplHierarchyLeafRepository implements ReplHierarchyLeafRepositoryInterfac
         foreach ( $collection as $object_model ) {
             $objects[] = $object_model;
         }
+        $sql = $collection->getSelect()->__toString();
         $results->setItems( $objects );
 
         return $results;

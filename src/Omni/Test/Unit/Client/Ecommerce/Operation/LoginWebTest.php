@@ -2,48 +2,22 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfMemberContact;
 use \Ls\Omni\Client\Ecommerce\Entity\ContactSearchResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\LoginWebResponse;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
-use PHPUnit\Framework\TestCase;
 use SoapFault;
-use Laminas\Uri\UriFactory;
 
-class LoginWebTest extends TestCase
+class LoginWebTest extends OmniClientSetupTest
 {
-    /** @var OmniClient */
-    public $client;
-
-    public $username;
-
-    public $email;
-
-    public $password;
-
-    protected function setUp(): void
-    {
-        $baseUrl        = getenv('BASE_URL');
-        $this->username = getenv('USERNAME');
-        $this->email    = getenv('EMAIL');
-        $this->password = getenv('PASSWORD');
-        $url            = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type   = new ServiceType(ServiceType::ECOMMERCE);
-        $uri            = UriFactory::factory($url);
-        $this->client   = new OmniClient($uri, $service_type);
-        $this->client->setClassmap(ClassMap::getClassMap());
-        $this->assertNotNull($this->client);
-    }
-
     public function testSearchUsername()
     {
+        $username = $this->getEnvironmentVariableValueGivenName('USERNAME');
+
         try {
             $params   = [
                 'searchType' => Entity\Enum\ContactSearchType::USER_NAME,
-                'search'     => $this->username
+                'search'     => $username
             ];
             $response = $this->client->ContactSearch($params);
             $this->assertInstanceOf(ContactSearchResponse::class, $response);
@@ -59,10 +33,13 @@ class LoginWebTest extends TestCase
      */
     public function testLoginUserName()
     {
+        $username    = $this->getEnvironmentVariableValueGivenName('USERNAME');
+        $password = $this->getEnvironmentVariableValueGivenName('PASSWORD');
+
         try {
             $params   = [
-                'userName' => $this->username,
-                'password' => $this->password
+                'userName' => $username,
+                'password' => $password
             ];
             $response = $this->client->LoginWeb($params);
             $this->assertInstanceOf(LoginWebResponse::class, $response);
