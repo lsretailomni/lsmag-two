@@ -20,6 +20,7 @@ class ContactUpdateTest extends OmniClientSetupTest
     {
         $this->assertNotNull($this->client);
         $contact = new MemberContact();
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
         $append  = "test" . chr(rand(97, 122));
         $contact->setFirstName($append . "test");
         $contact->setLastName($append . "test");
