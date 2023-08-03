@@ -452,10 +452,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(Order::class, $result);
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('0');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CASH_TENDER_TYPE'));
         $orderPayments = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
@@ -499,10 +499,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(Order::class, $result);
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('1')
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CREDIT_CARD_TENDER_TYPE'))
             ->setCardType('VISA')
             ->setCardNumber('4111111111111111')
             ->setTokenNumber('1276349812634981234')
@@ -554,10 +554,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setShipToName('test');
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('0');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CASH_TENDER_TYPE'));
         $orderPayments = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
@@ -603,10 +603,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $preApprovedDate   = date('Y-m-d', strtotime('+1 years'));
         $orderPayment      = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('60')
+            ->setAmount($result->getTotalAmount() - 0.1 - 1)
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('0');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CASH_TENDER_TYPE'));
         $orderPaymentArray[] = $orderPayment;
         $orderPaymentLoyalty = new OrderPayment();
         $orderPaymentLoyalty->setCurrencyCode('LOY')
@@ -614,18 +614,18 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setLineNumber('2')
             ->setCardNumber($this->getEnvironmentVariableValueGivenName('CARD_ID'))
             ->setExternalReference('TEST0012345')
-            ->setAmount('50')
+            ->setAmount('1')
             ->setPreApprovedValidDate($preApprovedDate)
-            ->setTenderType('3');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('LOYALTY_POINTS_TENDER_TYPE'));
         $orderPaymentArray[] = $orderPaymentLoyalty;
         $orderPaymentGift    = new OrderPayment();
         $orderPaymentGift->setCurrencyFactor(1)
-            ->setAmount('15')
+            ->setAmount('1')
             ->setLineNumber('3')
             ->setCardNumber($this->getEnvironmentVariableValueGivenName('GIFTCARDCODE'))
             ->setExternalReference('TEST0012345')
             ->setPreApprovedValidDate($preApprovedDate)
-            ->setTenderType('4');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('GIFT_CARD_TENDER_TYPE'));
         $orderPaymentArray[] = $orderPaymentGift;
         $orderPayments       = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment($orderPaymentArray);
@@ -671,10 +671,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(Order::class, $result);
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('1')
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CREDIT_CARD_TENDER_TYPE'))
             ->setCardType('VISA')
             ->setCardNumber('4111111111111111')
             ->setTokenNumber('1276349812634981234')
@@ -693,14 +693,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result
             ->setContactId('')
             ->setCardId('')
-            ->setEmail('testingorder@lsretail.com')
-            ->setShipToEmail('testingorder@lsretail.com')
+            ->setEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
+            ->setShipToEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
             ->setContactName('Testing')
             ->setShipToName('Testing')
             ->setContactAddress($omniAddress)
             ->setShipToAddress($omniAddress)
             ->setShippingStatus('NotYetShipped')
-            ->setStoreId('S0013');
+            ->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderLines        = $result->getOrderLines()->getOrderLine();
         $shipmentOrderLine = new OrderLine();
         $shipmentOrderLine->setPrice('5')
