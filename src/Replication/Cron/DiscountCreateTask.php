@@ -398,6 +398,10 @@ class DiscountCreateTask
             ['ToDate', 'ToDate'],
             [['gteq' => $this->replicationHelper->getCurrentDate()], ['eq' => LSR::NO_TIME_LIMIT]]
         );
+        $collection->addFieldToFilter(
+            'Type',
+            ReplDiscountType::DISC_OFFER
+        );
 
         if ($collection->getSize() > 0) {
             return $collection;
@@ -443,7 +447,7 @@ class DiscountCreateTask
     {
         $websiteIds     = [$this->store->getWebsiteId()];
         $ruleCollection = $this->ruleCollectionFactory->create();
-        $ruleCollection->addFieldToFilter('name', );
+        $ruleCollection->addFieldToFilter('name', $name);
         $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
         try {
             foreach ($ruleCollection as $rule) {
