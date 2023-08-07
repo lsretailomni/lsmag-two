@@ -66,6 +66,11 @@ class AvailabilityResponse
     protected $TimeCaption = null;
 
     /**
+     * @property string $TimeZone
+     */
+    protected $TimeZone = null;
+
+    /**
      * @property string $WeekDay
      */
     protected $WeekDay = null;
@@ -266,6 +271,24 @@ class AvailabilityResponse
     public function getTimeCaption()
     {
         return $this->TimeCaption;
+    }
+
+    /**
+     * @param string $TimeZone
+     * @return $this
+     */
+    public function setTimeZone($TimeZone)
+    {
+        $this->TimeZone = $TimeZone;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimeZone()
+    {
+        return $this->TimeZone;
     }
 
     /**

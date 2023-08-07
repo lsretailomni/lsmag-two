@@ -45,6 +45,9 @@ class Metadata
     public $baseClasses = [];
     /** @var DOMDocument */
     public $wsdl;
+
+    public $xpath;
+
     private $type_blacklist = [
         'anyType',
         'anyURI',
