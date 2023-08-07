@@ -19,7 +19,6 @@ use Psr\Log\LoggerInterface;
  */
 class Cart
 {
-
     /**
      * @var CheckoutSession
      */
@@ -119,17 +118,6 @@ class Cart
                             $result['items'][$key]['product_price']    = $this->itemPriceRenderer->toHtml();
                         }
                     }
-                }
-                $grandTotalAmount = $this->data->getOrderBalance(
-                    $quote->getLsGiftCardAmountUsed(),
-                    $quote->getLsPointsSpent(),
-                    $this->basketHelper->getBasketSessionValue()
-                );
-                if ($grandTotalAmount > 0) {
-                    $result['subtotalAmount'] = $grandTotalAmount;
-                    $result['subtotal']       = isset($grandTotalAmount)
-                        ? $this->checkoutHelper->formatPrice($grandTotalAmount)
-                        : 0;
                 }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());

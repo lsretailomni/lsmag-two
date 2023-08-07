@@ -109,7 +109,7 @@ $this->priceCurrency = $block->getPriceCurrency();
                         <?php if ($_item->getDiscountAmount() > 0): ?>
                             <div class="lsdiscountprice2">
                             <strike>
-                                <?= $this->priceCurrency->format($_item->getPrice() * (int)$block->getQty(), true); ?>
+                                <?= $this->priceCurrency->format($_item->getProduct()->getPrice() * (int)$block->getQty(), true); ?>
                             </strike>
                             </div>
                         <?php endif; ?>
