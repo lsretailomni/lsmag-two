@@ -455,6 +455,10 @@ class Data extends AbstractHelper
                     $versions = explode('OMNI:', $results[1]);
                 }
 
+                if (!empty($versions) && count($versions) < 2) {
+                    $versions = explode('CS:', $results[1]);
+                }
+
                 if (!empty($versions)) {
                     $serviceVersion                 = trim($versions[1]);
                     $bothVersion['service_version'] = $serviceVersion;
