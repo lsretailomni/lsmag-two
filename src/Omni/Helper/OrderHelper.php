@@ -18,8 +18,8 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
-use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -57,12 +57,12 @@ class OrderHelper extends AbstractHelper
     public $storeHelper;
 
     /**
-     * @var CustomerSessionProxy
+     * @var CustomerSession
      */
     public $customerSession;
 
     /**
-     * @var CheckoutSessionProxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -130,8 +130,8 @@ class OrderHelper extends AbstractHelper
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderRepository $orderRepository
-     * @param CustomerSessionProxy $customerSession
-     * @param CheckoutSessionProxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param LSR $lsr
      * @param Order $orderResourceModel
      * @param Json $json
@@ -148,8 +148,8 @@ class OrderHelper extends AbstractHelper
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         Model\OrderRepository $orderRepository,
-        CustomerSessionProxy $customerSession,
-        CheckoutSessionProxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         LSR $lsr,
         Order $orderResourceModel,
         Json $json,

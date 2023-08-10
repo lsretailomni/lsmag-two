@@ -48,7 +48,9 @@ class CustomerRegistrationTest extends \PHPUnit\Framework\TestCase
         $this->assertNotNull($this->client);
         //phpcs:disable
         $append      = "test4" . chr(rand(97, 122));
-        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $this->getEnvironmentVariableValueGivenName('USERNAME')), 8, '0', STR_PAD_LEFT);
+        $alternateId = 'LSM' . str_pad(sha1(
+            rand(500, 600) . $append . $this->getEnvironmentVariableValueGivenName('USERNAME')
+            ), 8, '0', STR_PAD_LEFT);
         //phpcs:enable
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);

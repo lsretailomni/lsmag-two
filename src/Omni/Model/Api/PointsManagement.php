@@ -3,7 +3,7 @@
 namespace Ls\Omni\Model\Api;
 
 use \Ls\Omni\Api\PointsManagementInterface;
-use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Api\CartTotalRepositoryInterface;

@@ -15,10 +15,10 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -46,12 +46,12 @@ class BasketHelper extends AbstractHelper
     public $productRepository;
 
     /**
-     * @var CheckoutProxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
     /**
-     * @var CustomerProxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -130,8 +130,8 @@ class BasketHelper extends AbstractHelper
      * @param Context $context
      * @param Cart $cart
      * @param ProductRepository $productRepository
-     * @param CheckoutProxy $checkoutSession
-     * @param CustomerProxy $customerSession
+     * @param CheckoutSession $checkoutSession
+     * @param CustomerSession $customerSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param ProductFactory $productFactory
@@ -151,8 +151,8 @@ class BasketHelper extends AbstractHelper
         Context $context,
         Cart $cart,
         ProductRepository $productRepository,
-        CheckoutProxy $checkoutSession,
-        CustomerProxy $customerSession,
+        CheckoutSession $checkoutSession,
+        CustomerSession $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
@@ -343,6 +343,7 @@ class BasketHelper extends AbstractHelper
         $discountsArray  = [];
         $itemsArray      = [];
         if (!empty($basketResponse)) {
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $basketData     = unserialize($basketResponse);
             $discountsArray = $basketData->getOrderDiscountLines();
             $itemsArray     = $basketData->getOrderLines();

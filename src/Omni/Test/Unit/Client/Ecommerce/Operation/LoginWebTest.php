@@ -24,6 +24,7 @@ class LoginWebTest extends OmniClientSetupTest
             $this->assertInstanceOf(ArrayOfMemberContact::class, $response->getResult());
             $this->assertGreaterThanOrEqual(1, count($response->getResult()->getMemberContact()));
         } catch (SoapFault $e) {
+            // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
             echo $e->getMessage();
         }
     }
@@ -44,6 +45,7 @@ class LoginWebTest extends OmniClientSetupTest
             $response = $this->client->LoginWeb($params);
             $this->assertInstanceOf(LoginWebResponse::class, $response);
         } catch (SoapFault $e) {
+            // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
             echo $e->getMessage();
         }
     }

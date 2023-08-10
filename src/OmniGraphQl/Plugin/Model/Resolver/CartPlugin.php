@@ -50,9 +50,8 @@ class CartPlugin
             $quote = $result['model'];
 
             if ($quote->getBasketResponse()) {
-                $this->basketHelper->setOneListCalculationInCheckoutSession(
-                    unserialize($quote->getBasketResponse())
-                );
+                // phpcs:ignore Magento2.Security.InsecureFunction
+                $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
             }
         }
         return $result;

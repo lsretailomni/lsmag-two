@@ -41,6 +41,7 @@ class QuoteRepositoryPlugin
             $oneListCalculate = $this->basketHelper->getOneListCalculationFromCheckoutSession();
 
             if ($oneListCalculate) {
+                // phpcs:ignore Magento2.Security.InsecureFunction
                 $quote->setBasketResponse(serialize($oneListCalculate));
             }
         }

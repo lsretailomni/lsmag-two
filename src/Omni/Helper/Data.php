@@ -17,7 +17,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
@@ -54,7 +54,7 @@ class Data extends AbstractHelper
     public $session;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -124,7 +124,7 @@ class Data extends AbstractHelper
      * @param ReplStoreRepositoryInterface $storeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SessionManagerInterface $session
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param ManagerInterface $messageManager
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param LoyaltyHelper $loyaltyHelper
@@ -144,7 +144,7 @@ class Data extends AbstractHelper
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         ManagerInterface $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         LoyaltyHelper $loyaltyHelper,

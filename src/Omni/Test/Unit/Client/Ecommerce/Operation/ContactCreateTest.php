@@ -19,8 +19,10 @@ class ContactCreateTest extends OmniClientSetupTest
     {
         $this->assertNotNull($this->client);
         //phpcs:disable
-        $append      = 'test' . substr(md5(uniqid(rand(), true)), 0, 5);
-        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $this->getEnvironmentVariableValueGivenName('USERNAME')), 8, '0', STR_PAD_LEFT);
+        $append      = 'test' . substr(sha1((uniqid(rand(), true))), 0, 5);
+        $alternateId = 'LSM' . str_pad(sha1(
+            rand(500, 600) . $append . $this->getEnvironmentVariableValueGivenName('USERNAME')
+            ), 8, '0', STR_PAD_LEFT);
         //phpcs:enable
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);

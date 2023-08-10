@@ -5,7 +5,7 @@ namespace Ls\Customer\Observer;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\ResourceModel\Customer;
 use Magento\Framework\Event\Observer;
@@ -23,7 +23,7 @@ class CheckoutRegisterObserver implements ObserverInterface
     /** @var ContactHelper */
     private $contactHelper;
 
-    /** @var Proxy */
+    /** @var CheckoutSession */
     private $checkoutSession;
 
     /** @var OrderRepositoryInterface */
@@ -44,16 +44,17 @@ class CheckoutRegisterObserver implements ObserverInterface
     /**
      * CheckoutRegisterObserver constructor.
      * @param ContactHelper $contactHelper
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param OrderRepositoryInterface $orderRepository
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param Customer $customerResourceModel
+     * @param LSR $LSR
      */
 
     public function __construct(
         ContactHelper $contactHelper,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         OrderRepositoryInterface $orderRepository,
         CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,

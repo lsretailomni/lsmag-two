@@ -35,6 +35,7 @@ class GetCartForUserPlugin
         $result
     ) {
         if ($result && $result->getBasketResponse()) {
+            // phpcs:ignore Magento2.Security.InsecureFunction
             $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($result->getBasketResponse()));
         }
 
