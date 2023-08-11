@@ -73,6 +73,7 @@ use Magento\Framework\App\ProductMetadata;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Select;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -3231,7 +3232,7 @@ class ReplicationHelper extends AbstractHelper
             ->from(['e' => new \Zend_Db_Expr('(' . $childCollection->getSelect() . ')')]);
         $parentCollection
             ->getSelect()
-            ->reset(\Zend_Db_Select::COLUMNS)
+            ->reset(Select::COLUMNS)
             ->columns($columns);
 
         return $parentCollection;
