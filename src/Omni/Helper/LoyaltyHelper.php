@@ -220,7 +220,7 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         if ($result) {
             $startDateTs = Carbon::now();
-            $endDateTs   = $startDateTs->addDays($expiryInterval);
+            $endDateTs   = Carbon::now()->addDays($expiryInterval);
 
             foreach ($result as $res) {
                 $entryType = $res->getEntryType();
