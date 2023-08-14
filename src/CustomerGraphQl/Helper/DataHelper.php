@@ -118,6 +118,19 @@ class DataHelper
                         $schemeArray['club_name']     = $scheme->getClub()->getName();
                         $schemeArray['loyalty_level'] = $scheme->getDescription();
                         $schemeArray['point_balance'] = $result->getAccount()->getPointBalance();
+                        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
+                                LSR::SC_LOYALTY_POINTS_EXPIRY_CHECK,
+                                $this->lsr->getCurrentStoreId()
+                            )) {
+                            $totalExpiryPoints = $this->loyaltyHelper->getPointBalanceExpirySum();
+                            $schemeArray['points_expiry'] = $totalExpiryPoints;
+
+                            $expiryInterval = $this->lsr->getStoreConfig(
+                                LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
+                                $this->lsr->getCurrentStoreId()
+                            );
+                            $schemeArray['points_expiry_interval'] = $expiryInterval;
+                        }
                         $nextSchemeLevel              = $scheme->getNextScheme();
                         if (!empty($nextSchemeLevel)) {
                             $schemeArray['next_level']['club_name']     = $nextSchemeLevel->getClub()->getName();

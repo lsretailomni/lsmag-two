@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Helper;
 
+use Carbon\Carbon;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
@@ -200,6 +201,58 @@ class LoyaltyHelper extends AbstractHelperOmni
         $entity = new Entity\ContactGetByCardId();
         $entity->setCardId($cardId);
         $entity->setNumberOfTransReturned(1);
+        try {
+            $response = $request->execute($entity);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getResult() : $response;
+    }
+
+    public function getPointBalanceExpirySum()
+    {
+        $totalPoints    = 0;
+        $result         = $this->getCardGetPointEntries();
+        $expiryInterval = $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
+            $this->lsr->getCurrentStoreId()
+        );
+
+        if ($result) {
+            $startDateTs = Carbon::now();
+            $endDateTs   = $startDateTs->addDays($expiryInterval);
+
+            foreach ($result as $res) {
+                $entryType = $res->getEntryType();
+                $expirationDate = Carbon::parse($res->getExpirationDate());
+                if($entryType == "Sales" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                    $totalPoints += $res->getPoints();
+                }
+            }
+        }
+
+        return $totalPoints;
+    }
+
+
+    /**
+     * @return Entity\ArrayOfPointEntry|Entity\CardGetPointEntiesResponse|ResponseInterface|null
+     */
+    public function getCardGetPointEntries()
+    {
+        $response = null;
+        $customer = $this->customerSession->getCustomer();
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        // if not set in session then get it from customer database.
+        if (!$cardId) {
+            $cardId = $customer->getData('lsr_cardid');
+        }
+        // @codingStandardsIgnoreLine
+        $request = new Operation\CardGetPointEnties();
+        $request->setToken($customer->getData('lsr_token'));
+        // @codingStandardsIgnoreLine
+        $entity = new Entity\CardGetPointEnties();
+        $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {
