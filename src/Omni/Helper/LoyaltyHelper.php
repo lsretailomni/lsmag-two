@@ -211,9 +211,11 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     public function getPointBalanceExpirySum()
     {
-        $totalPoints    = 0;
-        $result         = $this->getCardGetPointEntries();
-        $expiryInterval = $this->lsr->getStoreConfig(
+        $totalEarnedPoints      = 0;
+        $totalRedemption        = 0;
+        $totalExpiryPoints      = 0;
+        $result                 = $this->getCardGetPointEntries();
+        $expiryInterval         = $this->lsr->getStoreConfig(
             LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
             $this->lsr->getCurrentStoreId()
         );
@@ -226,12 +228,17 @@ class LoyaltyHelper extends AbstractHelperOmni
                 $entryType = $res->getEntryType();
                 $expirationDate = Carbon::parse($res->getExpirationDate());
                 if($entryType == "Sales" && $expirationDate->between($startDateTs,$endDateTs,true)) {
-                    $totalPoints += $res->getPoints();
+                    $totalEarnedPoints += $res->getPoints();
+                } elseif ($entryType == "Redemption" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                    $totalRedemption += $res->getPoints();
                 }
             }
+
+            //Redemption points are negative values, so adding to earned points for calculation.
+            $totalExpiryPoints = $totalEarnedPoints + $totalRedemption;
         }
 
-        return $totalPoints;
+        return $totalExpiryPoints;
     }
 
 
