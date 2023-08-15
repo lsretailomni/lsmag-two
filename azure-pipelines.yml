@@ -71,9 +71,10 @@ steps:
       cd ../magento_$(magentoVersion)_$(phpVersion)
       mkdir -p ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two
       cp -a /home/vsts/work/1/s/. ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/
-      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento-coding-standard:"^31.0" --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
       composer config use-include-path true
       composer config --no-plugins allow-plugins true
+      composer require magento/magento-coding-standard --dev
       php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
       echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
       composer install
@@ -81,8 +82,9 @@ steps:
     displayName: 'Magento code preparation'
 
   - script: |
-      ls -la vendor/bin
-      vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --error-severity=1 --extensions=php artifacts/lsretail/
+      cd ../magento_$(magentoVersion)_$(phpVersion)
+      ls -la /vendor/bin/
+      .vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --error-severity=1 --extensions=php artifacts/lsretail/
     displayName: 'Magento Coding Standards testing'
   - script: |
       telnet 127.0.0.1 3306
