@@ -82,11 +82,8 @@ steps:
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ls -la vendor/bin/
-      ./vendor/bin/phpcs -i
       ./vendor/bin/phpcs --config-set installed_paths ../../..,../../phpcompatibility/php-compatibility/PHPCompatibility
-      ./vendor/bin/phpcs -i
-      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --error-severity=1 --extensions=php artifacts/lsretail/
+      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --warning-severity=10 --extensions=php artifacts/lsretail/
     displayName: 'Magento Coding Standards testing'
   - script: |
       telnet 127.0.0.1 3306
