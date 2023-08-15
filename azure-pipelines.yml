@@ -71,7 +71,8 @@ steps:
       cd ../magento_$(magentoVersion)_$(phpVersion)
       mkdir -p ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two
       cp -a /home/vsts/work/1/s/. ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/
-      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento-coding-standard --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+      composer require magento/magento-coding-standard --dev
       composer config use-include-path true
       composer config --no-plugins allow-plugins true
       php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
