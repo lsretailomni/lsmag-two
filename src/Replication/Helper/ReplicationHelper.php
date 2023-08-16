@@ -2096,16 +2096,6 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @param string $imageName
-     * @return mixed
-     */
-    public function parseImageIdfromFile($imageName = '')
-    {
-        $imageName = pathinfo($imageName);
-        return $imageName['filename'];
-    }
-
-    /**
      * @return string
      */
     public function getDatetime()

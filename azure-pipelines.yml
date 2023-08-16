@@ -34,7 +34,6 @@ strategy:
     magento_2_4_6_php_8_1:
       phpVersion: '8.1'
       magentoVersion: '2.4.6-p1'
-      phpunitVersion: '^9'
       databaseName: 'magento_2_4_6_php_8_1'
       composerOverride: '{}'
 
@@ -47,7 +46,7 @@ steps:
       sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
       sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
       php -version
-    displayName: 'Use PHP version $(phpVersion)'
+    displayName: 'Use PHP Version $(phpVersion)'
 
   - script: |
       sudo apt-get install default-mysql-client
@@ -56,7 +55,7 @@ steps:
         printf '.'
         sleep 1;
       done;
-    displayName: Wait for database to initialise
+    displayName: 'Wait for Database to initialise'
 
   - script: |
       printf 'Waiting for elasticsearch to accept connections'
@@ -64,7 +63,7 @@ steps:
       printf '.'
       sleep 1;
       done;
-    displayName: Wait for elasticsearch to initialise
+    displayName: 'Wait for Elasticsearch to initialise'
 
   - script: |
       mkdir ../magento_$(magentoVersion)_$(phpVersion)
@@ -79,36 +78,34 @@ steps:
       composer install
       composer require magento/magento-coding-standard phpunit/phpunit --dev
       find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
-    displayName: 'Magento code preparation'
+    displayName: 'Magento Code Preparation'
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpcs -i
       ./vendor/bin/phpcs --config-set installed_paths ../../..,../../phpcompatibility/php-compatibility/PHPCompatibility
-      ./vendor/bin/phpcs -i
       ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --warning-severity=8 --extensions=php artifacts/lsretail/
-    displayName: 'Magento Coding Standards testing'
+    displayName: 'Magento2 Coding Standards Validation'
   - script: |
       telnet 127.0.0.1 3306
       mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
-    displayName: 'Magento database creation'
+    displayName: 'Magento Database Creation'
 
   - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
-    displayName: 'Magento installation testing'
+    displayName: 'Magento Installation Testing'
 
   - script: |
       php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
-    displayName: 'Magento production mode testing'
+    displayName: 'Magento Production mode Testing'
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
       cp ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml ../magento_$(magentoVersion)_$(phpVersion)/dev/tests/unit/
       ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
-    displayName: 'Module unit testing'
+    displayName: 'Ls Retail Modules Unit Tests Validation'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
       searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
-    displayName: 'Module unit testing results publishing'
+    displayName: 'Ls Retail Modules Unit Tests results Publishing'
