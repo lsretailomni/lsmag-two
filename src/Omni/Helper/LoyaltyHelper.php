@@ -215,7 +215,6 @@ class LoyaltyHelper extends AbstractHelperOmni
             return false;
         }
 
-
         $totalEarnedPoints      = 0;
         $totalRedemption        = 0;
         $totalExpiryPoints      = 0;
@@ -239,8 +238,12 @@ class LoyaltyHelper extends AbstractHelperOmni
                 }
             }
 
-            //Redemption points are negative values, so adding to earned points for calculation.
-            $totalExpiryPoints = $totalEarnedPoints + $totalRedemption;
+            //Convert to negative redemption points to positive for ease of calculation
+            $totalRedemption = abs($totalRedemption);
+            if ($totalEarnedPoints >= $totalRedemption) {
+                $totalExpiryPoints = $totalEarnedPoints - $totalRedemption;
+            }
+
         }
 
         return $totalExpiryPoints;
