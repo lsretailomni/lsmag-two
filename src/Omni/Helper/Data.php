@@ -598,21 +598,21 @@ class Data extends AbstractHelper
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
-                    LSR::LS_ENABLE_COUPON_ELEMENTS,
-                    $this->lsr->getCurrentStoreId()
-                ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CART,
-                    $this->lsr->getCurrentStoreId()
-                )
+                        LSR::LS_ENABLE_COUPON_ELEMENTS,
+                        $this->lsr->getCurrentStoreId()
+                    ) && $this->lsr->getStoreConfig(
+                        LSR::LS_COUPONS_SHOW_ON_CART,
+                        $this->lsr->getCurrentStoreId()
+                    )
                 );
             }
             return ($this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_COUPON_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) && $this->lsr->getStoreConfig(
-                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
-                $this->lsr->getCurrentStoreId()
-            )
+                    LSR::LS_ENABLE_COUPON_ELEMENTS,
+                    $this->lsr->getCurrentStoreId()
+                ) && $this->lsr->getStoreConfig(
+                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                    $this->lsr->getCurrentStoreId()
+                )
             );
         } else {
             return false;
