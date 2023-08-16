@@ -130,6 +130,7 @@
   <table name="ls_replication_repl_extended_variant_value" resource="default" engine="innodb" comment="ReplEcommExtendedVariants">
     <column xsi:type="int" name="repl_extended_variant_value_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_extended_variant_value_id"/>
     <column xsi:type="varchar" name="Code" length="200" nullable="true" comment="Code"/>
+    <column xsi:type="text" name="CodeDescription" nullable="true" comment="CodeDescription"/>
     <column xsi:type="int" name="DimensionLogicalOrder" padding="11" nullable="true" comment="DimensionLogicalOrder"/>
     <column xsi:type="text" name="Dimensions" nullable="true" comment="Dimensions"/>
     <column xsi:type="varchar" name="FrameworkCode" length="200" nullable="true" comment="FrameworkCode"/>
@@ -138,6 +139,7 @@
     <column xsi:type="int" name="LogicalOrder" padding="11" nullable="true" comment="LogicalOrder"/>
     <column xsi:type="text" name="Timestamp" nullable="true" comment="Timestamp"/>
     <column xsi:type="varchar" name="Value" length="200" nullable="true" comment="Value"/>
+    <column xsi:type="text" name="ValueDescription" nullable="true" comment="ValueDescription"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>

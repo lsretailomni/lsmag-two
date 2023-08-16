@@ -143,6 +143,16 @@
                     <comment>API call for customer dashboard for additional information such as loyalty points.
                     </comment>
                 </field>
+                <field id="enable_loyalty_points_expiry_check" translate="label" type="select" sortOrder="15" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Enable loyalty points expiry check</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="loyalty_points_expiry_interval" translate="label" type="text" sortOrder="15" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Loyalty points expiry interval</label>
+                    <comment>Expiry interval has to be in days.                    </comment>
+                </field>
             </group>
         </section>
     </system>

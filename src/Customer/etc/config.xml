@@ -24,6 +24,8 @@
                 <username_search_by_api>1</username_search_by_api>
                 <email_search_by_api>1</email_search_by_api>
                 <get_contact_by_card_id_api>1</get_contact_by_card_id_api>
+                <enable_loyalty_points_expiry_check>1</enable_loyalty_points_expiry_check>
+                <loyalty_points_expiry_interval>90</loyalty_points_expiry_interval>
             </loyalty>
         </ls_mag>
     </default>
