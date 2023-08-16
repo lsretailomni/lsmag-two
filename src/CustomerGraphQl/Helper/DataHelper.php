@@ -123,13 +123,15 @@ class DataHelper
                                 $this->lsr->getCurrentStoreId()
                             )) {
                             $totalExpiryPoints = $this->loyaltyHelper->getPointBalanceExpirySum();
-                            $schemeArray['points_expiry'] = $totalExpiryPoints;
+                            if ($totalExpiryPoints) {
+                                $schemeArray['points_expiry'] = $totalExpiryPoints;
 
-                            $expiryInterval = $this->lsr->getStoreConfig(
-                                LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
-                                $this->lsr->getCurrentStoreId()
-                            );
-                            $schemeArray['points_expiry_interval'] = $expiryInterval;
+                                $expiryInterval = $this->lsr->getStoreConfig(
+                                    LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
+                                    $this->lsr->getCurrentStoreId()
+                                );
+                                $schemeArray['points_expiry_interval'] = $expiryInterval;
+                            }
                         }
                         $nextSchemeLevel              = $scheme->getNextScheme();
                         if (!empty($nextSchemeLevel)) {

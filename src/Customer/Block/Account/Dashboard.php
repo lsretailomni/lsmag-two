@@ -71,7 +71,6 @@ class Dashboard extends Template
             )) {
             $totalPoints = $this->loyaltyHelper->getPointBalanceExpirySum();
         }
-
         if ($totalPoints) {
             $expiryInterval = $this->lsr->getStoreConfig(
                 LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,

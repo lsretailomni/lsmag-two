@@ -211,6 +211,11 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     public function getPointBalanceExpirySum()
     {
+        if (version_compare($this->lsr->getOmniVersion(), '2023.06', '<')) {
+            return false;
+        }
+
+
         $totalEarnedPoints      = 0;
         $totalRedemption        = 0;
         $totalExpiryPoints      = 0;
