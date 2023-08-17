@@ -48,7 +48,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field for delete */
-    private static $deleteJobCodeUniqueFieldArray = [
+    public static $deleteJobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_item_variant_registration" => [
             "ItemId",
             "VariantDimension1",
@@ -63,7 +63,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field */
-    private static $jobCodeUniqueFieldArray = [
+    public static $jobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
         "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
         "ls_mag/replication/repl_attribute_value"            => [
@@ -264,77 +264,45 @@ abstract class AbstractReplicationTask
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_attribute" ||
             $confPath == "ls_mag/replication/repl_attribute_option_value") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
         } elseif ($confPath == "ls_mag/replication/repl_item_variant") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_CATEGORY,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_CATEGORY);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_DISCOUNT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT);
         } elseif ($confPath == "ls_mag/replication/repl_item") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_PRODUCT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_PRODUCT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
         } elseif ($confPath == "ls_mag/replication/repl_vendor") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_VENDOR,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR);
         } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE);
+        }
+    }
+
+    /**
+     * Update all dependent flat to magento crons status
+     *
+     * @param $websiteId
+     * @param $path
+     * @return void
+     */
+    public function updateAllStoresConfigs($websiteId, $path)
+    {
+        foreach ($this->getAllStores() as $store) {
+            if ($store->getWebsiteId() == $websiteId) {
+                $this->rep_helper->updateCronStatus(
+                    false,
+                    $path,
+                    ($store->getId()) ?: false,
+                    false,
+                    ScopeInterface::SCOPE_STORES
+                );
+            }
         }
     }
 

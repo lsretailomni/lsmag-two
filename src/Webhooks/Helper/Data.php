@@ -429,7 +429,9 @@ class Data
             $itemId    = $line['ItemId'];
             $variantId = $line['VariantId'];
 
-            if ($product->getLsrItemId() == $itemId && $product->getLsrVariantId() == $variantId) {
+            if ($product->getLsrItemId() == $itemId &&
+                $product->getLsrVariantId() == $variantId &&
+                $line['Quantity'] > 0) {
                 $found = true;
                 break;
             }
@@ -456,10 +458,9 @@ class Data
             $variantId = $line['VariantId'];
 
             if ($product->getLsrItemId() == $itemId &&
-                $product->getLsrVariantId() == $variantId &&
-                $orderItem->getQtyOrdered() > $qty
+                $product->getLsrVariantId() == $variantId
             ) {
-                $qty++;
+                $qty += $line['Quantity'];
                 unset($lines[$index]);
             }
         }

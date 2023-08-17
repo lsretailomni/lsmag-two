@@ -785,6 +785,19 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get magento order given entity_id
+     *
+     * @param $entityId
+     * @return OrderInterface
+     * @throws InputException
+     * @throws NoSuchEntityException
+     */
+    public function getMagentoOrderGivenEntityId($entityId)
+    {
+        return $this->orderRepository->get($entityId);
+    }
+
+    /**
      * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
      * @param int $storeId

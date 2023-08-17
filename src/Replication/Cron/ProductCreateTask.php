@@ -820,8 +820,9 @@ class ProductCreateTask
      * Fetching base64 images from Central
      *
      * @param $productImages
+     * @param $productData
      * @return array
-     * @throws Exception
+     * @throws NoSuchEntityException
      */
     public function getMediaGalleryEntries($productImages, $productData)
     {
@@ -830,6 +831,8 @@ class ProductCreateTask
         $i = 0;
         foreach ($productImages as $image) {
             if ($image->getIsDeleted() == 1) {
+                $cacheId = $this->loyaltyHelper->getImageCacheId($image->getImageId());
+                $this->loyaltyHelper->cacheHelper->removeCachedContent($cacheId);
                 $image->setData('processed_at', $this->replicationHelper->getDateTime());
                 $image->setData('processed', 1);
                 $image->setData('is_updated', 0);

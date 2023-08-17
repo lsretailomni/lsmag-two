@@ -70,14 +70,11 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($image_id == null || $image_size == null) {
             return [];
         }
-        $storeId = $this->lsr->getCurrentStoreId();
-        $cacheId = LSR::IMAGE_CACHE . $image_id;
 
-        if (!$this->imageCacheIndependenOfStoreId()) {
-            $cacheId .= "_" . $storeId;
-        }
+        $cacheId = $this->getImageCacheId($image_id);
 
         $response = $this->cacheHelper->getCachedContent($cacheId);
+
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
             return $response;
@@ -114,6 +111,25 @@ class LoyaltyHelper extends AbstractHelperOmni
             ];
         }
         return [];
+    }
+
+    /**
+     * Get image cache id
+     *
+     * @param $imageId
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getImageCacheId($imageId)
+    {
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::IMAGE_CACHE . $imageId;
+
+        if (!$this->imageCacheIndependenOfStoreId()) {
+            $cacheId .= "_" . $storeId;
+        }
+
+        return $cacheId;
     }
 
     /**

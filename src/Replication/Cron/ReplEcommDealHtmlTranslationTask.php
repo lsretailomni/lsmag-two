@@ -21,17 +21,17 @@ use Ls\Replication\Api\Data\ReplDataTranslationInterface;
 
 class ReplEcommDealHtmlTranslationTask extends AbstractReplicationTask
 {
-    public const JOB_CODE = 'replication_repl_deal_html_translation';
+    public const JOB_CODE = 'replication_repl_data_translation';
 
-    public const CONFIG_PATH = 'ls_mag/replication/repl_deal_html_translation';
+    public const CONFIG_PATH = 'ls_mag/replication/repl_data_translation';
 
-    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_deal_html_translation';
+    public const CONFIG_PATH_STATUS = 'ls_mag/replication/status_repl_data_translation';
 
-    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_deal_html_translation';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_data_translation';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_deal_html_translation';
+    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_data_translation';
 
-    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_deal_html_translation';
+    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_data_translation';
 
     /**
      * @property ReplDataTranslationRepository $repository
