@@ -1,0 +1,11 @@
+trigger:
+  branches:
+    include:
+      - sample
+
+steps:
+  - script: TEST1
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
+
+  - script: TEST2
+      ls -la
