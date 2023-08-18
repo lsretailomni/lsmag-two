@@ -6,9 +6,6 @@ steps:
   - checkout: self
     persistCredentials: true
   - script: |
-      git config --global user.email umaryo@lsretail.com & git config --global user.name "umaryo"
-    displayName: 'Check status 1'
-  - script: |
       cd ~
       mkdir release
       cd release
