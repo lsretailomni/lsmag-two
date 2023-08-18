@@ -4,8 +4,12 @@ trigger:
       - sample
 
 steps:
-  - script: TEST1
+  - script: |
+      echo step 1
+    displayName: 'Check status 1'
     condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
-
-  - script: TEST2
-      ls -la
+  - script: |
+      echo step 2
+      echo variables['Build.Reason']
+    displayName: 'Check status 2'
+    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
