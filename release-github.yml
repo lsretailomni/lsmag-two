@@ -3,12 +3,19 @@ trigger:
     include:
       - sample
 steps:
+  - checkout: self
+    persistCredentials: true
   - script: |
-      echo step 1
-      echo '$(Build.BuildNumber)'
-      echo '$(Build.Reason)'
+      git config --global user.email umaryo@lsretail.com & git config --global user.name "umaryo"
     displayName: 'Check status 1'
   - script: |
-      echo step 2
+      cd ~
+      mkdir release
+      cd release
+      git clone https://github.com/lsretailomni/lsmag-two.git .
+      git checkout -b sample
+      git remote -v
+      rm -rf !(*.git)
+      rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      git push --set-upstream origin sample
     displayName: 'Check status 2'
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
