@@ -6,7 +6,7 @@ trigger:
 steps:
   - script: |
       echo step 1
-      echo variables['Build.Reason']
+      echo $[variables['Build.Reason']]
     displayName: 'Check status 1'
   - script: |
       echo step 2
