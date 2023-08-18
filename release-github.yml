@@ -12,7 +12,10 @@ steps:
       git clone https://github.com/lsretailomni/lsmag-two.git .
       git checkout -b sample
       git remote -v
-      rm -rf !(*.git)
+      git rm -rf .
+      git clean -fxd
       rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      git add --all
+      git commit -m "Deploying code"
       git push --set-upstream origin sample
     displayName: 'Check status 2'
