@@ -15,7 +15,9 @@ steps:
       git rm -rf .
       git clean -fxd
       rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      git config --global user.email umaryo@lsretail.com & git config --global user.name "umaryo"
       git add --all
       git commit -m "Deploying code"
-      git push --set-upstream origin sample
+      git push https://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@github.com/umaryo/lsretailomni/lsmag-two.git sample
+
     displayName: 'Check status 2'
