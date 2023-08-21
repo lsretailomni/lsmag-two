@@ -5,8 +5,6 @@ trigger:
 steps:
   - checkout: self
   - script: |
-      cat ~/.gitconfig
-      rm -rf ~/.gitconfig
       mkdir release
       cd release
       git clone https://github.com/$(REPO_NAME).git .
@@ -15,6 +13,8 @@ steps:
       git rm -rf .
       git clean -fxd
       rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      cat ~/.gitconfig
+      rm -rf ~/.gitconfig
       git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
       git add --all
       git commit -m "Deployment $(Build.BuildNumber)"
