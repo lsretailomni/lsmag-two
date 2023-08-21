@@ -1,14 +1,13 @@
 trigger:
   branches:
     include:
-      - sample
+      - $(BRANCH_TO_SYNC)
 steps:
   - checkout: self
   - script: |
-      mkdir release
-      cd release
+      mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
-      git checkout -b sample
+      git checkout -b $(BRANCH_TO_SYNC)
       git remote -v
       git rm -rf .
       git clean -fxd
@@ -16,6 +15,6 @@ steps:
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
       git add --all
       git commit -m "Deployment $(Build.BuildNumber)"
-      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git sample
+      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_TO_SYNC)
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
