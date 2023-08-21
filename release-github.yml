@@ -13,6 +13,7 @@ steps:
       git rm -rf .
       git clean -fxd
       rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      rm -rf ~/.gitconfig
       git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
       git add --all
       git commit -m "Deployment $(Build.BuildNumber)"
