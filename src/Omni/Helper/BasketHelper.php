@@ -799,13 +799,13 @@ class BasketHelper extends AbstractHelper
                     $oneListRequest->setPublishedOffers($this->_offers());
                 }
 
-                    $entity = new Entity\OneListCalculate();
-                    $entity->setOneList($oneListRequest);
-                    $request = new Operation\OneListCalculate();
-                    // @codingStandardsIgnoreEnd
+                $entity = new Entity\OneListCalculate();
+                $entity->setOneList($oneListRequest);
+                $request = new Operation\OneListCalculate();
+                // @codingStandardsIgnoreEnd
 
-                    /** @var  Entity\OneListCalculateResponse $response */
-                    $response = $request->execute($entity);
+                /** @var  Entity\OneListCalculateResponse $response */
+                $response = $request->execute($entity);
             }
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
@@ -1281,18 +1281,32 @@ class BasketHelper extends AbstractHelper
 
     /**
      * @param Entity\OneListCalculateResponse|null $calculation
+     * @throws NoSuchEntityException
      */
     public function setOneListCalculationInCheckoutSession($calculation)
     {
-        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION, $calculation);
+        $this->checkoutSession->setData($this->getOneListCalculationKey(), $calculation);
+    }
+
+    /**
+     * Get unique session key per store
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getOneListCalculationKey()
+    {
+        $storeId = $this->lsr->getCurrentStoreId();
+        return LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION . '_' . $storeId;
     }
 
     /**
      * @return mixed|null
+     * @throws NoSuchEntityException
      */
     public function getOneListCalculationFromCheckoutSession()
     {
-        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION);
+        return $this->checkoutSession->getData($this->getOneListCalculationKey());
     }
 
     /**
@@ -1360,7 +1374,7 @@ class BasketHelper extends AbstractHelper
      */
     public function unSetOneListCalculation()
     {
-        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION);
+        $this->checkoutSession->unsetData($this->getOneListCalculationKey());
     }
 
     /**
