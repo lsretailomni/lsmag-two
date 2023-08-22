@@ -1,9 +1,9 @@
 trigger:
   branches:
     include:
-      - sample
+      - master
 variables:
-  BRANCH_NAME: sample
+  BRANCH_NAME: master
 steps:
   - checkout: self
   - script: |
