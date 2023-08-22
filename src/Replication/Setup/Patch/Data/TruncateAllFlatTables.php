@@ -1,15 +1,15 @@
 <?php
 
-namespace Ls\Replication\Setup\Patch\Schema;
+namespace Ls\Replication\Setup\Patch\Data;
 
 use \Ls\Replication\Helper\ReplicationHelper;
-use Magento\Framework\Setup\Patch\SchemaPatchInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 
 /**
- * Schema patch to truncate all flat tables
+ * Data patch to truncate all flat tables
  */
-class TruncateAllFlatTables implements SchemaPatchInterface
+class TruncateAllFlatTables implements DataPatchInterface
 {
     public const LS_ITEM_RELATED_TABLES = [
         'ls_replication_repl_item',

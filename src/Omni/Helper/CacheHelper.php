@@ -52,6 +52,7 @@ class CacheHelper extends AbstractHelper
     {
         $cachedContent = $this->cache->load($cacheId);
         if ($cachedContent) {
+            // phpcs:disable Magento2.Security.InsecureFunction.FoundWithAlternative
             return unserialize($cachedContent);
         }
 
@@ -77,6 +78,7 @@ class CacheHelper extends AbstractHelper
      */
     public function persistContentInCache($cacheId, $content, $tag, $lifetime = null)
     {
+        // phpcs:disable Magento2.Security.InsecureFunction.FoundWithAlternative
         $serializedContent = serialize($content);
         $this->cache->save(
             $serializedContent,

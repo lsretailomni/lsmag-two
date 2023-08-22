@@ -340,6 +340,7 @@ abstract class AbstractReplicationTask
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
+        // phpcs:ignore Magento2.Security.InsecureFunction
         $checksum    = crc32(serialize($source));
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
         if (!empty($entityArray)) {
@@ -378,10 +379,11 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Get Properties
+     *
      * @return string[]
-     * @throws ReflectionException
      */
-    final public function getProperties()
+    public function getProperties()
     {
         if ($this->properties == null) {
             // @codingStandardsIgnoreStart

@@ -2,13 +2,12 @@
 
 namespace Ls\Customer\Block\Order;
 
-use DateTime;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -38,7 +37,7 @@ class Recent extends Template
     public $searchCriteriaBuilder;
 
     /**
-     * @var Proxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -59,7 +58,7 @@ class Recent extends Template
      * @param PriceCurrencyInterface $priceCurrency
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SortOrderBuilder $sortOrderBuilder
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param LSR $LSR
      * @param array $data
      */
@@ -69,7 +68,7 @@ class Recent extends Template
         PriceCurrencyInterface $priceCurrency,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SortOrderBuilder $sortOrderBuilder,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         LSR $LSR,
         array $data = []
     ) {

@@ -8,7 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \LS\Omni\Helper\ItemHelper;
-use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -38,14 +38,9 @@ class CartObserver implements ObserverInterface
     public $logger;
 
     /**
-     * @var CheckoutProxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
-
-    /**
-     * @var bool
-     */
-    public $watchNextSave = false;
 
     /**
      * @var LSR
@@ -61,7 +56,7 @@ class CartObserver implements ObserverInterface
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
-     * @param CheckoutProxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param LSR $LSR
      * @param Data $data
      */
@@ -69,7 +64,7 @@ class CartObserver implements ObserverInterface
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         LoggerInterface $logger,
-        CheckoutProxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         LSR $LSR,
         Data $data
     ) {

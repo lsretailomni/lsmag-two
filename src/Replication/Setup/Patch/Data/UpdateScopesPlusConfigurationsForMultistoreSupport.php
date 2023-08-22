@@ -9,10 +9,6 @@ use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\Patch\PatchVersionInterface;
 
-/**
- * Class UpdateScopesPlusConfigurationsForMultistoreSupport
- * @package Ls\Core\Setup\Patch\Data
- */
 class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInterface, PatchVersionInterface
 {
     /**
@@ -169,7 +165,6 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
     ];
 
     /**
-     * UpdateScopesPlusConfigurationsForMultistoreSupport constructor.
      * @param ModuleDataSetupInterface $moduleDataSetup
      * @param ResourceConnection $resource
      * @param Logger $logger
@@ -185,7 +180,7 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function getDependencies()
     {
@@ -201,7 +196,7 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function apply()
     {
@@ -217,13 +212,12 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
      */
     private function updateFlatTables()
     {
-        $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $connection = $this->resource->getConnection();
         // Update all
         foreach ($this->lsTables as $lsTable) {
             $lsTableName = $this->resource->getTableName($lsTable);
-            $lsQuery     = "UPDATE $lsTableName SET scope = 'stores', scope_id = 1";
             try {
-                $connection->query($lsQuery);
+                $connection->update($lsTableName, ['scope' => 'stores', 'scope_id' => '1']);
             } catch (Exception $e) {
                 $this->logger->debug($e->getMessage());
             }
@@ -235,21 +229,27 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
      */
     private function updateConfigTable()
     {
-        $connection   = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
+        $connection   = $this->resource->getConnection();
         $lsTableName  = $this->resource->getTableName('core_config_data');
-        $websiteQuery = "UPDATE $lsTableName set scope = 'websites', scope_id = 1 WHERE path IN ('" . implode("','", $this->websiteScopeFields) . "')";
-        $storeQuery   = "UPDATE $lsTableName set scope = 'stores', scope_id = 1 WHERE path IN ('" . implode("','", $this->nonwebsiteScopeFields) . "')";
-        try {
-            $connection->query($websiteQuery);
-            $connection->query($storeQuery);
 
+        try {
+            $connection->update(
+                $lsTableName,
+                ['scope' => 'websites', 'scope_id' => '1'],
+                ['path IN (?)' => $this->websiteScopeFields]
+            );
+            $connection->update(
+                $lsTableName,
+                ['scope' => 'stores', 'scope_id' => '1'],
+                ['path IN (?)' => $this->nonwebsiteScopeFields]
+            );
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getAliases()
     {

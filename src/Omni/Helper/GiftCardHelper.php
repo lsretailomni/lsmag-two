@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -21,7 +21,7 @@ class GiftCardHelper extends AbstractHelper
     const SERVICE_TYPE = 'ecommerce';
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -38,13 +38,13 @@ class GiftCardHelper extends AbstractHelper
     /**
      * GiftCardHelper constructor.
      * @param Context $context
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param Filesystem $filesystem
      * @param LSR $Lsr
      */
     public function __construct(
         Context $context,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         Filesystem $filesystem,
         LSR $Lsr
     ) {

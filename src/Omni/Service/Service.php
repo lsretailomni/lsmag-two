@@ -35,6 +35,7 @@ class Service
         //$this->baseurl = $this->getOmniBaseUrl();
     }
 
+    // @codingStandardsIgnoreStart
     /**
      * @param ServiceType $type
      * @param string $base_url
@@ -57,6 +58,7 @@ class Service
         }
         return UriFactory::factory($url);
     }
+    // @codingStandardsIgnoreEnd
 
     /**
      * @return string

@@ -6,11 +6,9 @@ use \Ls\Core\Model\LSR;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Psr\Log\LoggerInterface;
-use Zend_Validate_Exception;
 
 /**
  * Data patch to create item_id attribute
@@ -91,8 +89,7 @@ class CreateLsItemIdAttribute implements DataPatchInterface
     /**
      * Trigger the install data function for Product
      *
-     * @throws LocalizedException
-     * @throws Zend_Validate_Exception
+     * @return void
      */
     private function createRequiredProductAttribute()
     {

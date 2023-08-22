@@ -7,7 +7,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Controller\Result\Redirect;
@@ -51,7 +51,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
      * GiftCardUsed constructor.
      * @param Context $context
      * @param ScopeConfigInterface $scopeConfig
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param StoreManagerInterface $storeManager
      * @param Validator $formKeyValidator
      * @param Cart $cart
@@ -64,7 +64,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public function __construct(
         Context $context,
         ScopeConfigInterface $scopeConfig,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         StoreManagerInterface $storeManager,
         Validator $formKeyValidator,
         Cart $cart,

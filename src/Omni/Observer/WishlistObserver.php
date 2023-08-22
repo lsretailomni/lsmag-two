@@ -5,12 +5,11 @@ namespace Ls\Omni\Observer;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class CartObserver
@@ -22,7 +21,7 @@ class WishlistObserver implements ObserverInterface
     /** @var BasketHelper */
     private $basketHelper;
 
-    /** @var Proxy $customerSession */
+    /** @var CustomerSession $customerSession */
     private $customerSession;
 
     /**
@@ -38,14 +37,13 @@ class WishlistObserver implements ObserverInterface
     /**
      * WishlistObserver constructor.
      * @param BasketHelper $basketHelper
-     * @param LoggerInterface $logger
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param LSR $LSR
      * @param Wishlist $wishlist
      */
     public function __construct(
         BasketHelper $basketHelper,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         LSR $LSR,
         Wishlist $wishlist
     ) {

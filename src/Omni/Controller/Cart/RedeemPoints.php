@@ -7,7 +7,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Controller\Result\Redirect;
@@ -46,7 +46,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
      * RedeemPoints constructor.
      * @param Context $context
      * @param ScopeConfigInterface $scopeConfig
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param StoreManagerInterface $storeManager
      * @param Validator $formKeyValidator
      * @param Cart $cart
@@ -58,7 +58,7 @@ class RedeemPoints extends \Magento\Checkout\Controller\Cart
     public function __construct(
         Context $context,
         ScopeConfigInterface $scopeConfig,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         StoreManagerInterface $storeManager,
         Validator $formKeyValidator,
         Cart $cart,

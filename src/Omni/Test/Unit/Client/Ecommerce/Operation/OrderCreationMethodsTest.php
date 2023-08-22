@@ -37,8 +37,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     {
         $listItems = new OneListItem();
         $listItems
-            ->setItemId($_ENV['ITEM_ID'])
-            ->setVariantId($_ENV['VARIANT_ID'])
+            ->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'))
+            ->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'))
             ->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
@@ -46,7 +46,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneListRequest
             ->setItems($itemsArray)
             ->setCardId($cardId)
-            ->setStoreId($_ENV['STORE_ID'])
+            ->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'))
             ->setListType(ListType::BASKET);
         $param = [
             'oneList' => $oneListRequest,
@@ -62,8 +62,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemGetbyId()
     {
         $param    = [
-            'itemId' => $_ENV['ITEM_ID'],
-            'storeId' => $_ENV['STORE_ID'],
+            'itemId' => $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+            'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
         ];
         $response = $this->client->ItemGetbyId($param);
         $result   = $response->getResult();
@@ -76,19 +76,28 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemsInStockGet()
     {
         $param    = [
-            'itemId' => $_ENV['ITEM_ID'],
-            'variantId' => $_ENV['VARIANT_ID'],
-            'storeId' => $_ENV['STORE_ID'],
+            'itemId' => $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+            'variantId' => $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
+            'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
         ];
         $response = $this->client->ItemsInStockGet($param);
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
-            $this->assertEquals($_ENV['ITEM_ID'], $inventoryResponse->getItemId());
-            $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
-            $this->assertEquals($_ENV['STORE_ID'], $inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+                $inventoryResponse->getItemId()
+            );
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
+                $inventoryResponse->getVariantId()
+            );
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('STORE_ID'),
+                $inventoryResponse->getStoreId()
+            );
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
+            $this->assertTrue(is_string($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -100,19 +109,25 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemsInStockGetAllStores()
     {
         $param    = [
-            'itemId' => $_ENV['ITEM_ID'],
-            'variantId' => $_ENV['VARIANT_ID'],
+            'itemId' => $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+            'variantId' => $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
             'storeId' => '',
         ];
         $response = $this->client->ItemsInStockGet($param);
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
-            $this->assertEquals($_ENV['ITEM_ID'], $inventoryResponse->getItemId());
-            $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+                $inventoryResponse->getItemId()
+            );
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
+                $inventoryResponse->getVariantId()
+            );
             $this->assertNotNull($inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
+            $this->assertTrue(is_string($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -122,23 +137,32 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemsInStoreGetSingleStore()
     {
         $inventoryRequest = new InventoryRequest();
-        $inventoryRequest->setItemId($_ENV['ITEM_ID']);
-        $inventoryRequest->setVariantId($_ENV['VARIANT_ID']);
+        $inventoryRequest->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $inventoryRequest->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
         $inventoryArrayRequest = new ArrayOfInventoryRequest();
         $inventoryArrayRequest->setInventoryRequest([$inventoryRequest]);
         $param    = [
-            'storeId' => $_ENV['STORE_ID'],
+            'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
             'items' => $inventoryArrayRequest
         ];
         $response = $this->client->ItemsInStoreGet($param);
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
-            $this->assertEquals($_ENV['ITEM_ID'], $inventoryResponse->getItemId());
-            $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
-            $this->assertEquals($_ENV['STORE_ID'], $inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertEquals('string', gettype($inventoryResponse->getQtyInventory()));
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+                $inventoryResponse->getItemId()
+            );
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
+                $inventoryResponse->getVariantId()
+            );
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('STORE_ID'),
+                $inventoryResponse->getStoreId()
+            );
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
+            $this->assertTrue(is_string($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -148,8 +172,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testItemsInStoreGetAllStores()
     {
         $inventoryRequest = new InventoryRequest();
-        $inventoryRequest->setItemId($_ENV['ITEM_ID']);
-        $inventoryRequest->setVariantId($_ENV['VARIANT_ID']);
+        $inventoryRequest->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $inventoryRequest->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
         $inventoryArrayRequest = new ArrayOfInventoryRequest();
         $inventoryArrayRequest->setInventoryRequest([$inventoryRequest]);
         $param    = [
@@ -160,11 +184,17 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
-            $this->assertEquals($_ENV['ITEM_ID'], $inventoryResponse->getItemId());
-            $this->assertEquals($_ENV['VARIANT_ID'], $inventoryResponse->getVariantId());
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
+                $inventoryResponse->getItemId()
+            );
+            $this->assertEquals(
+                $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
+                $inventoryResponse->getVariantId()
+            );
             $this->assertNotNull($inventoryResponse->getStoreId());
-            $this->assertObjectHasAttribute('QtyInventory', $inventoryResponse);
-            $this->assertEquals('string', getType($inventoryResponse->getQtyInventory()));
+            $this->assertTrue(property_exists($inventoryResponse, 'QtyInventory'));
+            $this->assertTrue(is_string($inventoryResponse->getQtyInventory()));
         }
     }
 
@@ -176,25 +206,25 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     {
         $oneListRequest = new OneList();
         $listItems      = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
         $listItems->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
         $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setCardId($_ENV['CARD_ID']);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
+        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $oneListRequest->setListType(ListType::BASKET);
         $entity = new OneListCalculate();
         $entity->setOneList($oneListRequest);
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
-        $this->assertEquals($_ENV['STORE_ID'], $result->getStoreId());
-        $this->assertEquals($_ENV['CARD_ID'], $result->getCardId());
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $result->getStoreId());
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $result->getCardId());
         $this->assertNotNull($result->getTotalAmount());
         $this->assertNotNull($result->getTotalNetAmount());
-        $this->assertEquals('string', getType($result->getOrderType()));
+        $this->assertTrue(is_string($result->getOrderType()));
         $this->assertEquals(OrderType::SALE, $result->getOrderType());
         $this->assertInstanceOf(ArrayOfOrderLine::class, $result->getOrderLines());
     }
@@ -206,15 +236,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListSaveBasket()
     {
         $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
         $listItems->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
         $oneListRequest = new OneList();
         $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setCardId($_ENV['CARD_ID']);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
+        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $oneListRequest->setListType(ListType::BASKET);
         $param    = [
             'oneList' => $oneListRequest,
@@ -223,15 +253,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $response = $this->client->OneListSave($param);
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
-        $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -241,14 +271,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListSaveBasketGuest()
     {
         $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
         $listItems->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
         $oneListRequest = new OneList();
         $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $oneListRequest->setListType(ListType::BASKET);
         $param    = [
             'oneList' => $oneListRequest,
@@ -257,14 +287,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $response = $this->client->OneListSave($param);
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -274,15 +304,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListSaveWish()
     {
         $listItems = new OneListItem();
-        $listItems->setItemId($_ENV['ITEM_ID']);
-        $listItems->setVariantId($_ENV['VARIANT_ID']);
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
+        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
         $listItems->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
         $oneListRequest = new OneList();
         $oneListRequest->setItems($itemsArray);
-        $oneListRequest->setCardId($_ENV['CARD_ID']);
-        $oneListRequest->setStoreId($_ENV['STORE_ID']);
+        $oneListRequest->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
+        $oneListRequest->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $oneListRequest->setListType(ListType::WISH);
         $param    = [
             'oneList' => $oneListRequest,
@@ -291,15 +321,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $response = $this->client->OneListSave($param);
         $oneList  = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneList);
-        $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-        $this->assertObjectHasAttribute('Id', $oneList);
-        $this->assertObjectHasAttribute('ListType', $oneList);
-        $this->assertObjectHasAttribute('CreateDate', $oneList);
-        $this->assertObjectHasAttribute('StoreId', $oneList);
-        $this->assertObjectHasAttribute('TotalAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-        $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+        $this->assertTrue(property_exists($oneList, 'Id'));
+        $this->assertTrue(property_exists($oneList, 'ListType'));
+        $this->assertTrue(property_exists($oneList, 'CreateDate'));
+        $this->assertTrue(property_exists($oneList, 'StoreId'));
+        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
     }
 
     /**
@@ -309,7 +339,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListGetByCardIdBasket()
     {
         $param    = [
-            'cardId' => $_ENV['CARD_ID'],
+            'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID'),
             'listType' => ListType::BASKET,
             'includeLines' => true
         ];
@@ -317,14 +347,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
-            $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
-            $this->assertObjectHasAttribute('CreateDate', $oneList);
-            $this->assertObjectHasAttribute('StoreId', $oneList);
-            $this->assertObjectHasAttribute('TotalAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+            $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+            $this->assertTrue(property_exists($oneList, 'Id'));
+            $this->assertTrue(property_exists($oneList, 'CreateDate'));
+            $this->assertTrue(property_exists($oneList, 'StoreId'));
+            $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
         }
     }
 
@@ -335,7 +365,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListGetByCardIdWish()
     {
         $param    = [
-            'cardId' => $_ENV['CARD_ID'],
+            'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID'),
             'listType' => ListType::WISH,
             'includeLines' => true
         ];
@@ -343,14 +373,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result   = $response->getResult();
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
-            $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
-            $this->assertObjectHasAttribute('CreateDate', $oneList);
-            $this->assertObjectHasAttribute('StoreId', $oneList);
-            $this->assertObjectHasAttribute('TotalAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalDiscAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalNetAmount', $oneList);
-            $this->assertObjectHasAttribute('TotalTaxAmount', $oneList);
+            $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+            $this->assertTrue(property_exists($oneList, 'Id'));
+            $this->assertTrue(property_exists($oneList, 'CreateDate'));
+            $this->assertTrue(property_exists($oneList, 'StoreId'));
+            $this->assertTrue(property_exists($oneList, 'TotalAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
+            $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
         }
     }
 
@@ -361,21 +391,21 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListDeleteByIdBasket()
     {
         $param    = [
-            'cardId' => $_ENV['CARD_ID'],
+            'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID'),
             'listType' => ListType::BASKET,
             'includeLines' => false
         ];
         $response = $this->client->OneListGetByCardId($param);
         $result   = $response->getResult();
         foreach ($result as $oneList) {
-            $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
+            $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+            $this->assertTrue(property_exists($oneList, 'Id'));
             $paramDelete = [
                 'oneListId' => $oneList->getId()
             ];
             $response    = $this->client->OneListDeleteById($paramDelete);
             $result      = $response->getResult();
-            $this->assertEquals('boolean', getType($result));
+            $this->assertTrue(is_bool($result));
         }
     }
 
@@ -386,21 +416,21 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
     public function testOneListDeleteByIdWish()
     {
         $param    = [
-            'cardId' => $_ENV['CARD_ID'],
+            'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID'),
             'listType' => ListType::WISH,
             'includeLines' => false
         ];
         $response = $this->client->OneListGetByCardId($param);
         $result   = $response->getResult();
         foreach ($result as $oneList) {
-            $this->assertEquals($_ENV['CARD_ID'], $oneList->getCardId());
-            $this->assertObjectHasAttribute('Id', $oneList);
+            $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
+            $this->assertTrue(property_exists($oneList, 'Id'));
             $paramDelete = [
                 'oneListId' => $oneList->getId()
             ];
             $response    = $this->client->OneListDeleteById($paramDelete);
             $result      = $response->getResult();
-            $this->assertEquals('boolean', getType($result));
+            $this->assertTrue(is_bool($result));
         }
     }
 
@@ -413,7 +443,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreate()
     {
-        $response       = $this->getOneList($_ENV['CARD_ID']);
+        $response       = $this->getOneList($this->getEnvironmentVariableValueGivenName('CARD_ID'));
         $oneListRequest = $response->getResult();
         $entity         = new OneListCalculate();
         $entity->setOneList($oneListRequest);
@@ -422,10 +452,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(Order::class, $result);
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('0');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CASH_TENDER_TYPE'));
         $orderPayments = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
@@ -438,16 +468,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -459,7 +489,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreateOnlinePayment()
     {
-        $response       = $this->getOneList($_ENV['CARD_ID']);
+        $response       = $this->getOneList($this->getEnvironmentVariableValueGivenName('CARD_ID'));
         $oneListRequest = $response->getResult();
         // Basket calculation
         $entity = new OneListCalculate();
@@ -469,10 +499,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(Order::class, $result);
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('1')
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CREDIT_CARD_TENDER_TYPE'))
             ->setCardType('VISA')
             ->setCardNumber('4111111111111111')
             ->setTokenNumber('1276349812634981234')
@@ -489,16 +519,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -518,16 +548,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
         $result
-            ->setEmail($_ENV['EMAIL'])
-            ->setShipToEmail($_ENV['EMAIL'])
+            ->setEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
+            ->setShipToEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
             ->setContactName('test')
             ->setShipToName('test');
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('0');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CASH_TENDER_TYPE'));
         $orderPayments = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
@@ -540,15 +570,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -559,7 +590,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      */
     public function testOrderCreateWithGiftCardAndLoyalty()
     {
-        $response       = $this->getOneList($_ENV['CARD_ID']);
+        $response       = $this->getOneList($this->getEnvironmentVariableValueGivenName('CARD_ID'));
         $oneListRequest = $response->getResult();
         $this->assertInstanceOf(OneList::class, $oneListRequest);
         // Basket calculation
@@ -572,29 +603,29 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $preApprovedDate   = date('Y-m-d', strtotime('+1 years'));
         $orderPayment      = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('60')
+            ->setAmount($result->getTotalAmount() - 0.1 - 1)
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('0');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CASH_TENDER_TYPE'));
         $orderPaymentArray[] = $orderPayment;
         $orderPaymentLoyalty = new OrderPayment();
         $orderPaymentLoyalty->setCurrencyCode('LOY')
             ->setCurrencyFactor('0.10000000000000000000')
             ->setLineNumber('2')
-            ->setCardNumber($_ENV['CARD_ID'])
+            ->setCardNumber($this->getEnvironmentVariableValueGivenName('CARD_ID'))
             ->setExternalReference('TEST0012345')
-            ->setAmount('50')
+            ->setAmount('1')
             ->setPreApprovedValidDate($preApprovedDate)
-            ->setTenderType('3');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('LOYALTY_POINTS_TENDER_TYPE'));
         $orderPaymentArray[] = $orderPaymentLoyalty;
         $orderPaymentGift    = new OrderPayment();
         $orderPaymentGift->setCurrencyFactor(1)
-            ->setAmount('15')
+            ->setAmount('1')
             ->setLineNumber('3')
-            ->setCardNumber($_ENV['GIFTCARDCODE'])
+            ->setCardNumber($this->getEnvironmentVariableValueGivenName('GIFTCARDCODE'))
             ->setExternalReference('TEST0012345')
             ->setPreApprovedValidDate($preApprovedDate)
-            ->setTenderType('4');
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('GIFT_CARD_TENDER_TYPE'));
         $orderPaymentArray[] = $orderPaymentGift;
         $orderPayments       = new ArrayOfOrderPayment();
         $orderPayments->setOrderPayment($orderPaymentArray);
@@ -610,16 +641,16 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
 
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('CardId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 
     /**
@@ -640,10 +671,10 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertInstanceOf(Order::class, $result);
         $orderPayment = new OrderPayment();
         $orderPayment->setCurrencyFactor(1)
-            ->setAmount('72')
+            ->setAmount($result->getTotalAmount())
             ->setLineNumber('1')
             ->setExternalReference('TEST0012345')
-            ->setTenderType('1')
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CREDIT_CARD_TENDER_TYPE'))
             ->setCardType('VISA')
             ->setCardNumber('4111111111111111')
             ->setTokenNumber('1276349812634981234')
@@ -662,14 +693,14 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $result
             ->setContactId('')
             ->setCardId('')
-            ->setEmail('testingorder@lsretail.com')
-            ->setShipToEmail('testingorder@lsretail.com')
+            ->setEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
+            ->setShipToEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
             ->setContactName('Testing')
             ->setShipToName('Testing')
             ->setContactAddress($omniAddress)
             ->setShipToAddress($omniAddress)
             ->setShippingStatus('NotYetShipped')
-            ->setStoreId('S0013');
+            ->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderLines        = $result->getOrderLines()->getOrderLine();
         $shipmentOrderLine = new OrderLine();
         $shipmentOrderLine->setPrice('5')
@@ -689,14 +720,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
         $resultOrderCreate = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
-        $this->assertObjectHasAttribute('Id', $resultOrderCreate);
-        $this->assertObjectHasAttribute('ExternalId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('StoreId', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalDiscount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('TotalNetAmount', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Status', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Payments', $resultOrderCreate);
-        $this->assertObjectHasAttribute('Lines', $resultOrderCreate);
+        $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'ExternalId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'StoreId'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalDiscount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'TotalNetAmount'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
+        $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
     }
 }

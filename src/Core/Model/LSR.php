@@ -473,7 +473,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const MAX_RECENT_ORDER = 5;
 
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
+
+    // @codingStandardsIgnoreStart
     const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
+    // @codingStandardsIgnoreEnd
 
     /**
      * @var ScopeConfigInterface
