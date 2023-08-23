@@ -211,6 +211,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL = 'ls_mag/loyalty/username_search_by_api';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL = 'ls_mag/loyalty/email_search_by_api';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_CONTACT_BY_CARD_ID_API_CALL = 'ls_mag/loyalty/get_contact_by_card_id_api';
+    const SC_LOYALTY_POINTS_EXPIRY_CHECK = 'ls_mag/loyalty/enable_loyalty_points_expiry_check';
+    const SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL = 'ls_mag/loyalty/loyalty_points_expiry_interval';
     const SC_ORDER_CANCELLATION_PATH = 'ls_mag/loyalty/allow_order_cancellation';
     const SC_MASTER_PASSWORD = 'ls_mag/loyalty/master_password';
 
@@ -471,7 +473,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const MAX_RECENT_ORDER = 5;
 
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
+
+    // @codingStandardsIgnoreStart
     const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
+    // @codingStandardsIgnoreEnd
 
     /**
      * @var ScopeConfigInterface

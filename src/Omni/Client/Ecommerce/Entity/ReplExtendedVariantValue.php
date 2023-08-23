@@ -16,6 +16,11 @@ class ReplExtendedVariantValue
     protected $Code = null;
 
     /**
+     * @property string $CodeDescription
+     */
+    protected $CodeDescription = null;
+
+    /**
      * @property int $DimensionLogicalOrder
      */
     protected $DimensionLogicalOrder = null;
@@ -56,6 +61,11 @@ class ReplExtendedVariantValue
     protected $Value = null;
 
     /**
+     * @property string $ValueDescription
+     */
+    protected $ValueDescription = null;
+
+    /**
      * @property string $scope
      */
     protected $scope = null;
@@ -81,6 +91,24 @@ class ReplExtendedVariantValue
     public function getCode()
     {
         return $this->Code;
+    }
+
+    /**
+     * @param string $CodeDescription
+     * @return $this
+     */
+    public function setCodeDescription($CodeDescription)
+    {
+        $this->CodeDescription = $CodeDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodeDescription()
+    {
+        return $this->CodeDescription;
     }
 
     /**
@@ -225,6 +253,24 @@ class ReplExtendedVariantValue
     public function getValue()
     {
         return $this->Value;
+    }
+
+    /**
+     * @param string $ValueDescription
+     * @return $this
+     */
+    public function setValueDescription($ValueDescription)
+    {
+        $this->ValueDescription = $ValueDescription;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValueDescription()
+    {
+        return $this->ValueDescription;
     }
 
     /**

@@ -15,10 +15,10 @@ use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
 use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -46,12 +46,12 @@ class BasketHelper extends AbstractHelper
     public $productRepository;
 
     /**
-     * @var CheckoutProxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
     /**
-     * @var CustomerProxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -130,8 +130,8 @@ class BasketHelper extends AbstractHelper
      * @param Context $context
      * @param Cart $cart
      * @param ProductRepository $productRepository
-     * @param CheckoutProxy $checkoutSession
-     * @param CustomerProxy $customerSession
+     * @param CheckoutSession $checkoutSession
+     * @param CustomerSession $customerSession
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
      * @param ProductFactory $productFactory
@@ -151,8 +151,8 @@ class BasketHelper extends AbstractHelper
         Context $context,
         Cart $cart,
         ProductRepository $productRepository,
-        CheckoutProxy $checkoutSession,
-        CustomerProxy $customerSession,
+        CheckoutSession $checkoutSession,
+        CustomerSession $customerSession,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
         ProductFactory $productFactory,
@@ -343,6 +343,7 @@ class BasketHelper extends AbstractHelper
         $discountsArray  = [];
         $itemsArray      = [];
         if (!empty($basketResponse)) {
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $basketData     = unserialize($basketResponse);
             $discountsArray = $basketData->getOrderDiscountLines();
             $itemsArray     = $basketData->getOrderLines();
@@ -799,13 +800,13 @@ class BasketHelper extends AbstractHelper
                     $oneListRequest->setPublishedOffers($this->_offers());
                 }
 
-                    $entity = new Entity\OneListCalculate();
-                    $entity->setOneList($oneListRequest);
-                    $request = new Operation\OneListCalculate();
-                    // @codingStandardsIgnoreEnd
+                $entity = new Entity\OneListCalculate();
+                $entity->setOneList($oneListRequest);
+                $request = new Operation\OneListCalculate();
+                // @codingStandardsIgnoreEnd
 
-                    /** @var  Entity\OneListCalculateResponse $response */
-                    $response = $request->execute($entity);
+                /** @var  Entity\OneListCalculateResponse $response */
+                $response = $request->execute($entity);
             }
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
@@ -1281,18 +1282,32 @@ class BasketHelper extends AbstractHelper
 
     /**
      * @param Entity\OneListCalculateResponse|null $calculation
+     * @throws NoSuchEntityException
      */
     public function setOneListCalculationInCheckoutSession($calculation)
     {
-        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION, $calculation);
+        $this->checkoutSession->setData($this->getOneListCalculationKey(), $calculation);
+    }
+
+    /**
+     * Get unique session key per store
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getOneListCalculationKey()
+    {
+        $storeId = $this->lsr->getCurrentStoreId();
+        return LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION . '_' . $storeId;
     }
 
     /**
      * @return mixed|null
+     * @throws NoSuchEntityException
      */
     public function getOneListCalculationFromCheckoutSession()
     {
-        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION);
+        return $this->checkoutSession->getData($this->getOneListCalculationKey());
     }
 
     /**
@@ -1360,7 +1375,7 @@ class BasketHelper extends AbstractHelper
      */
     public function unSetOneListCalculation()
     {
-        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION);
+        $this->checkoutSession->unsetData($this->getOneListCalculationKey());
     }
 
     /**

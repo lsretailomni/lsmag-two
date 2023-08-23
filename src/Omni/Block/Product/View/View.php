@@ -7,7 +7,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Block\Product\Context;
 use Magento\Catalog\Helper\Product;
 use Magento\Catalog\Model\ProductTypes\ConfigInterface;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Json\EncoderInterface;
 use Magento\Framework\Locale\FormatInterface;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -35,7 +35,7 @@ class View extends \Magento\Catalog\Block\Product\View
      * @param Product $productHelper
      * @param ConfigInterface $productTypeConfig
      * @param FormatInterface $localeFormat
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param ProductRepositoryInterface $productRepository
      * @param PriceCurrencyInterface $priceCurrency
      * @param array $data
@@ -49,7 +49,7 @@ class View extends \Magento\Catalog\Block\Product\View
         Product $productHelper,
         ConfigInterface $productTypeConfig,
         FormatInterface $localeFormat,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         ProductRepositoryInterface $productRepository,
         PriceCurrencyInterface $priceCurrency,
         array $data = []

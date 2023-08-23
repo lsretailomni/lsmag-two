@@ -61,4 +61,23 @@ class Dashboard extends Template
         }
         return $account;
     }
+
+    public function getPointBalanceExpiry($account)
+    {
+        $totalPoints = 0;
+        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
+                LSR::SC_LOYALTY_POINTS_EXPIRY_CHECK,
+                $this->lsr->getCurrentStoreId()
+            )) {
+            $totalPoints = $this->loyaltyHelper->getPointBalanceExpirySum();
+        }
+        if ($totalPoints) {
+            $expiryInterval = $this->lsr->getStoreConfig(
+                LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
+                $this->lsr->getCurrentStoreId()
+            );
+            return $totalPoints." to be expired in ".$expiryInterval." days.";
+        }
+        return $totalPoints;
+    }
 }

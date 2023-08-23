@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
@@ -31,7 +31,7 @@ class ResetPasswordObserver implements ObserverInterface
     /** @var LoggerInterface $logger */
     private $logger;
 
-    /** @var Proxy $customerSession */
+    /** @var CustomerSession $customerSession */
     private $customerSession;
 
     /** @var ActionFlag */
@@ -50,7 +50,7 @@ class ResetPasswordObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
      * @param LoggerInterface $logger
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
      * @param CustomerFactory $customerFactory
@@ -60,7 +60,7 @@ class ResetPasswordObserver implements ObserverInterface
         ContactHelper $contactHelper,
         ManagerInterface $messageManager,
         LoggerInterface $logger,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         RedirectInterface $redirectInterface,
         ActionFlag $actionFlag,
         CustomerFactory $customerFactory,

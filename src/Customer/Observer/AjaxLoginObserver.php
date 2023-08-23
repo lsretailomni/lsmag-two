@@ -6,8 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\RequestInterface;
@@ -30,7 +29,7 @@ class AjaxLoginObserver implements ObserverInterface
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var Proxy */
+    /** @var CustomerSession */
     private $customerSession;
 
     /** @var ActionFlag */
@@ -38,9 +37,6 @@ class AjaxLoginObserver implements ObserverInterface
 
     /** @var Data $jsonhelper */
     private $jsonhelper;
-
-    /** @var CustomerFactory */
-    private $customerFactory;
 
     /** @var JsonFactory */
     private $resultJsonFactory;
@@ -52,21 +48,19 @@ class AjaxLoginObserver implements ObserverInterface
      * AjaxLoginObserver constructor.
      * @param ContactHelper $contactHelper
      * @param LoggerInterface $logger
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param Data $jsonhelper
      * @param JsonFactory $resultJsonFactory
      * @param ActionFlag $actionFlag
-     * @param CustomerFactory $customerFactory
      * @param LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
         LoggerInterface $logger,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         Data $jsonhelper,
         JsonFactory $resultJsonFactory,
         ActionFlag $actionFlag,
-        CustomerFactory $customerFactory,
         LSR $LSR
     ) {
         $this->contactHelper     = $contactHelper;
@@ -75,7 +69,6 @@ class AjaxLoginObserver implements ObserverInterface
         $this->resultJsonFactory = $resultJsonFactory;
         $this->jsonhelper        = $jsonhelper;
         $this->actionFlag        = $actionFlag;
-        $this->customerFactory   = $customerFactory;
         $this->lsr               = $LSR;
     }
 

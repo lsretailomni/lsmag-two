@@ -4,7 +4,7 @@ namespace Ls\Customer\Observer;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Psr\Log\LoggerInterface;
@@ -21,7 +21,7 @@ class LogoutObserver implements ObserverInterface
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var Proxy */
+    /** @var CustomerSession */
     private $customerSession;
 
     /** @var LSR @var */
@@ -31,12 +31,13 @@ class LogoutObserver implements ObserverInterface
      * LogoutObserver constructor.
      * @param ContactHelper $contactHelper
      * @param LoggerInterface $logger
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
+     * @param LSR $LSR
      */
     public function __construct(
         ContactHelper $contactHelper,
         LoggerInterface $logger,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         LSR $LSR
     ) {
         $this->contactHelper   = $contactHelper;

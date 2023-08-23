@@ -2,14 +2,13 @@
 
 namespace Ls\Customer\Block\Order;
 
-use DateTime;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -54,7 +53,7 @@ class History extends \Magento\Sales\Block\Order\History
      * History constructor.
      * @param Context $context
      * @param CollectionFactory $orderCollectionFactory
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param Config $orderConfig
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
@@ -66,7 +65,7 @@ class History extends \Magento\Sales\Block\Order\History
     public function __construct(
         Context $context,
         CollectionFactory $orderCollectionFactory,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         Config $orderConfig,
         OrderHelper $orderHelper,
         PriceCurrencyInterface $priceCurrency,

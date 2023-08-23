@@ -18,10 +18,9 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Eav\Api\AttributeRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\TestCase\AbstractController;
 use Laminas\Uri\UriFactory;
 
-class CustomerRegistrationTest extends AbstractController
+class CustomerRegistrationTest extends \PHPUnit\Framework\TestCase
 {
     /** @var OmniClient */
     public $client;
@@ -32,7 +31,7 @@ class CustomerRegistrationTest extends AbstractController
 
     protected function setUp(): void
     {
-        $baseUrl      = $_ENV['BASE_URL'];
+        $baseUrl      = $this->getEnvironmentVariableValueGivenName('BASE_URL');
         $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
         $service_type = new ServiceType(ServiceType::ECOMMERCE);
         $uri          = UriFactory::factory($url);
@@ -47,13 +46,17 @@ class CustomerRegistrationTest extends AbstractController
     protected function customerRegistrationOmni()
     {
         $this->assertNotNull($this->client);
+        //phpcs:disable
         $append      = "test4" . chr(rand(97, 122));
-        $alternateId = 'LSM' . str_pad(md5(rand(500, 600) . $append . $_ENV['USERNAME']), 8, '0', STR_PAD_LEFT);
+        $alternateId = 'LSM' . str_pad(sha1(
+            rand(500, 600) . $append . $this->getEnvironmentVariableValueGivenName('USERNAME')
+            ), 8, '0', STR_PAD_LEFT);
+        //phpcs:enable
         $contact     = new MemberContact();
         $contact->setAlternateId($alternateId);
-        $contact->setEmail($append . $_ENV['EMAIL']);
-        $contact->setUserName($append . $_ENV['USERNAME']);
-        $contact->setPassword($_ENV['PASSWORD']);
+        $contact->setEmail($append . $this->getEnvironmentVariableValueGivenName('EMAIL'));
+        $contact->setUserName($append . $this->getEnvironmentVariableValueGivenName('USERNAME'));
+        $contact->setPassword($this->getEnvironmentVariableValueGivenName('PASSWORD'));
         $contact->setFirstName("test");
         $contact->setLastName("test");
 
@@ -95,5 +98,17 @@ class CustomerRegistrationTest extends AbstractController
     {
         $customerGroupId = $this->contactHelper->getCustomerGroupIdByName($groupName);
         $this->assertNotNull($customerGroupId);
+    }
+
+    /**
+     * Get environment variable value given name
+     *
+     * @param $name
+     * @return array|false|string
+     */
+    public function getEnvironmentVariableValueGivenName($name)
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        return getenv($name);
     }
 }
