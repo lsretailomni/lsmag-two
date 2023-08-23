@@ -26,6 +26,11 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     protected $Code = null;
 
     /**
+     * @property string $CodeDescription
+     */
+    protected $CodeDescription = null;
+
+    /**
      * @property int $DimensionLogicalOrder
      */
     protected $DimensionLogicalOrder = null;
@@ -64,6 +69,11 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
      * @property string $Value
      */
     protected $Value = null;
+
+    /**
+     * @property string $ValueDescription
+     */
+    protected $ValueDescription = null;
 
     /**
      * @property string $scope
@@ -138,6 +148,26 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     public function getCode()
     {
         return $this->getData( 'Code' );
+    }
+
+    /**
+     * @param string $CodeDescription
+     * @return $this
+     */
+    public function setCodeDescription($CodeDescription)
+    {
+        $this->setData( 'CodeDescription', $CodeDescription );
+        $this->CodeDescription = $CodeDescription;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCodeDescription()
+    {
+        return $this->getData( 'CodeDescription' );
     }
 
     /**
@@ -298,6 +328,26 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     public function getValue()
     {
         return $this->getData( 'Value' );
+    }
+
+    /**
+     * @param string $ValueDescription
+     * @return $this
+     */
+    public function setValueDescription($ValueDescription)
+    {
+        $this->setData( 'ValueDescription', $ValueDescription );
+        $this->ValueDescription = $ValueDescription;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValueDescription()
+    {
+        return $this->getData( 'ValueDescription' );
     }
 
     /**

@@ -16,6 +16,8 @@ type Scheme {
     club_name: String @doc(description: "Club Name")
     loyalty_level: String @doc(description: "Loyalty Level")
     point_balance: Float @doc(description: "Loyalty Points Balance")
+    points_expiry: Float @doc(description: "Loyalty Points to be expired.")
+    points_expiry_interval: Int @doc(description: "Loyalty Points expiry interval.")
     next_level: NextLevel
 }
 type NextLevel {

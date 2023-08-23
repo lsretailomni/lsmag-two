@@ -41,6 +41,11 @@ class ActivityRequest
     protected $GroupNo = null;
 
     /**
+     * @property string $GuestType
+     */
+    protected $GuestType = null;
+
+    /**
      * @property string $Location
      */
     protected $Location = null;
@@ -211,6 +216,24 @@ class ActivityRequest
     public function getGroupNo()
     {
         return $this->GroupNo;
+    }
+
+    /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType)
+    {
+        $this->GuestType = $GuestType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuestType()
+    {
+        return $this->GuestType;
     }
 
     /**
