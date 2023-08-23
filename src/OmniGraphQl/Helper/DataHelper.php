@@ -222,9 +222,8 @@ class DataHelper extends AbstractHelper
     public function triggerEventForCartChange($quote)
     {
         if ($quote->getBasketResponse()) {
-            $this->basketHelper->setOneListCalculationInCheckoutSession(
-                unserialize($quote->getBasketResponse())
-            );
+            // phpcs:ignore Magento2.Security.InsecureFunction
+            $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
         }
 
         /**

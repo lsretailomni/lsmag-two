@@ -195,7 +195,9 @@ class Data
                 ))
             ]
         ];
+        // @codingStandardsIgnoreStart
         $context = stream_context_create($opts);
+        // @codingStandardsIgnoreEnd
         try {
             // @codingStandardsIgnoreStart
             $soapClient = new SoapClient(

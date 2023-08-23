@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\RequestInterface;
@@ -42,7 +42,7 @@ class UpdateGiftCard implements HttpPostActionInterface
     public $basketHelper;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -73,7 +73,7 @@ class UpdateGiftCard implements HttpPostActionInterface
      * @param RawFactory $resultRawFactory
      * @param GiftCardHelper $giftCardHelper
      * @param BasketHelper $basketHelper
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param CartRepositoryInterface $cartRepository
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param Data $data
@@ -85,7 +85,7 @@ class UpdateGiftCard implements HttpPostActionInterface
         RawFactory $resultRawFactory,
         GiftCardHelper $giftCardHelper,
         BasketHelper $basketHelper,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         CartRepositoryInterface $cartRepository,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         Data $data,

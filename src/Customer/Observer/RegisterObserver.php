@@ -7,7 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Registry;
@@ -27,7 +27,7 @@ class RegisterObserver implements ObserverInterface
     /** @var LoggerInterface $logger */
     private $logger;
 
-    /** @var Proxy $customerSession */
+    /** @var CustomerSession $customerSession */
     private $customerSession;
 
     /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
@@ -41,7 +41,7 @@ class RegisterObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param Registry $registry
      * @param LoggerInterface $logger
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      * @param LSR $LSR
      */
@@ -49,7 +49,7 @@ class RegisterObserver implements ObserverInterface
         ContactHelper $contactHelper,
         Registry $registry,
         LoggerInterface $logger,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         LSR $LSR
     ) {

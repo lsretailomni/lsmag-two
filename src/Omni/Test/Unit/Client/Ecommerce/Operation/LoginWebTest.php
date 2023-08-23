@@ -2,54 +2,29 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfMemberContact;
 use \Ls\Omni\Client\Ecommerce\Entity\ContactSearchResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\LoginWebResponse;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
-use PHPUnit\Framework\TestCase;
 use SoapFault;
-use Laminas\Uri\UriFactory;
 
-class LoginWebTest extends TestCase
+class LoginWebTest extends OmniClientSetupTest
 {
-    /** @var OmniClient */
-    public $client;
-
-    public $username;
-
-    public $email;
-
-    public $password;
-
-    protected function setUp(): void
-    {
-        $baseUrl        = $_ENV['BASE_URL'];
-        $this->username = $_ENV['USERNAME'];
-        $this->email    = $_ENV['EMAIL'];
-        $this->password = $_ENV['PASSWORD'];
-        $url            = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type   = new ServiceType(ServiceType::ECOMMERCE);
-        $uri            = UriFactory::factory($url);
-        $this->client   = new OmniClient($uri, $service_type);
-        $this->client->setClassmap(ClassMap::getClassMap());
-        $this->assertNotNull($this->client);
-    }
-
     public function testSearchUsername()
     {
+        $username = $this->getEnvironmentVariableValueGivenName('USERNAME');
+
         try {
             $params   = [
                 'searchType' => Entity\Enum\ContactSearchType::USER_NAME,
-                'search'     => $this->username
+                'search'     => $username
             ];
             $response = $this->client->ContactSearch($params);
             $this->assertInstanceOf(ContactSearchResponse::class, $response);
             $this->assertInstanceOf(ArrayOfMemberContact::class, $response->getResult());
             $this->assertGreaterThanOrEqual(1, count($response->getResult()->getMemberContact()));
         } catch (SoapFault $e) {
+            // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
             echo $e->getMessage();
         }
     }
@@ -59,14 +34,18 @@ class LoginWebTest extends TestCase
      */
     public function testLoginUserName()
     {
+        $username    = $this->getEnvironmentVariableValueGivenName('USERNAME');
+        $password = $this->getEnvironmentVariableValueGivenName('PASSWORD');
+
         try {
             $params   = [
-                'userName' => $this->username,
-                'password' => $this->password
+                'userName' => $username,
+                'password' => $password
             ];
             $response = $this->client->LoginWeb($params);
             $this->assertInstanceOf(LoginWebResponse::class, $response);
         } catch (SoapFault $e) {
+            // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
             echo $e->getMessage();
         }
     }

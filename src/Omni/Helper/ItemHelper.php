@@ -17,7 +17,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
@@ -49,7 +49,7 @@ class ItemHelper extends AbstractHelper
     public $quoteRepository;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -87,7 +87,7 @@ class ItemHelper extends AbstractHelper
      * @param ReplBarcodeRepository $barcodeRepository
      * @param ProductRepository $productRepository
      * @param CartRepositoryInterface $quoteRepository
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param Item $itemResourceModel
      * @param LoyaltyHelper $loyaltyHelper
      * @param Cart $cart
@@ -101,7 +101,7 @@ class ItemHelper extends AbstractHelper
         ReplBarcodeRepository $barcodeRepository,
         ProductRepository $productRepository,
         CartRepositoryInterface $quoteRepository,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         Item $itemResourceModel,
         LoyaltyHelper $loyaltyHelper,
         Cart $cart,

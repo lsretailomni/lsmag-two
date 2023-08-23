@@ -7,7 +7,8 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Context;
@@ -41,12 +42,12 @@ class UpdatePoints implements HttpPostActionInterface
     public $basketHelper;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -70,11 +71,11 @@ class UpdatePoints implements HttpPostActionInterface
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param LoyaltyHelper $loyaltyHelper
      * @param BasketHelper $basketHelper
      * @param Data $data
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param CartRepositoryInterface $cartRepository
      * @param RequestInterface $request
      */
@@ -82,11 +83,11 @@ class UpdatePoints implements HttpPostActionInterface
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerSession $customerSession,
         LoyaltyHelper $loyaltyHelper,
         BasketHelper $basketHelper,
         Data $data,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         CartRepositoryInterface $cartRepository,
         RequestInterface $request
     ) {

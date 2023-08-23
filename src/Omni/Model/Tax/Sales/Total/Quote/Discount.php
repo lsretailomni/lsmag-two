@@ -5,7 +5,7 @@ namespace Ls\Omni\Model\Tax\Sales\Total\Quote;
 use Exception;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
@@ -57,7 +57,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      */
     public $loyaltyHelper;
 
-    /** @var Proxy $checkoutSession */
+    /** @var CheckoutSession $checkoutSession */
     public $checkoutSession;
 
     /**
@@ -67,7 +67,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      * @param PriceCurrencyInterface $priceCurrency
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param RuleDiscountInterfaceFactory|null $discountInterfaceFactory
      * @param DiscountDataInterfaceFactory|null $discountDataInterfaceFactory
      */
@@ -78,7 +78,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         PriceCurrencyInterface $priceCurrency,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         RuleDiscountInterfaceFactory $discountInterfaceFactory = null,
         DiscountDataInterfaceFactory $discountDataInterfaceFactory = null
     ) {

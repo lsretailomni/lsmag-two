@@ -3,8 +3,7 @@
 namespace Ls\Omni\Plugin\Checkout\Model;
 
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 
@@ -16,7 +15,7 @@ class UpdateAmountPaypal
     const SUBTOTAL = 'subtotal';
 
     /**
-     * @var Session
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -26,11 +25,11 @@ class UpdateAmountPaypal
     public $loyaltyHelper;
 
     /**
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         LoyaltyHelper $loyaltyHelper
     ) {
         $this->checkoutSession = $checkoutSession;

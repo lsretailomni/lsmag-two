@@ -115,7 +115,7 @@ class Link extends Current
 
             if ($this->getKey() == "Creditmemos" &&
                 !$this->orderHelper->getGivenValueFromRegistry('has_return_sales')
-                && !strpos($this->getCurrentUrl(), "creditmemo")
+                && strpos($this->getCurrentUrl(), "creditmemo") === false
             ) {
                 return '';
             }
