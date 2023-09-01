@@ -2,6 +2,11 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Catalog:etc/catalog_attributes.xsd">
     <group name="quote_item">
         <attribute name="lsr_uom_qty"/>
+        <attribute name="lsr_uom_height"/>
+        <attribute name="lsr_uom_weight"/>
+        <attribute name="lsr_uom_length"/>
+        <attribute name="lsr_uom_width"/>
+        <attribute name="lsr_uom_cubage"/>
         <attribute name="uom"/>
     </group>
 </config>

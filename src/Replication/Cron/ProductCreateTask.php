@@ -2172,6 +2172,11 @@ class ProductCreateTask
             $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
             $productData->setCustomAttribute("uom", $uomCode->getCode());
             $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
+            $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
+            $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_WEIGHT, $uomCode->getWeight());
+            $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_LENGTH, $uomCode->getLength());
+            $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_WIDTH, $uomCode->getWidth());
+            $productData->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_CUBAGE, $uomCode->getCubage());
             $optionId = $this->replicationHelper->_getOptionIDByCode(
                 LSR::LS_UOM_ATTRIBUTE,
                 $uomDescription
