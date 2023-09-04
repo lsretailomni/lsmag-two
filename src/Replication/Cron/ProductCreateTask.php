@@ -2476,6 +2476,11 @@ class ProductCreateTask
         if ($uomCode) {
             $productV->setCustomAttribute('uom', $uomCode->getCode());
             $productV->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
+            $productV->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
+            $productV->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_WEIGHT, $uomCode->getWeight());
+            $productV->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_LENGTH, $uomCode->getLength());
+            $productV->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_WIDTH, $uomCode->getWidth());
+            $productV->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_CUBAGE, $uomCode->getCubage());
         } else {
             $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
         }
