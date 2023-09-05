@@ -1,4 +1,4 @@
-define(['jquery', 'ko', 'Magento_Checkout/js/model/quote'], function ($, ko, quote) {
+define(['jquery', 'ko', 'Magento_Checkout/js/model/quote', 'mage/translate'], function ($, ko, quote, $t) {
     "use strict";
 
     var pattern,
@@ -6,7 +6,7 @@ define(['jquery', 'ko', 'Magento_Checkout/js/model/quote'], function ($, ko, quo
         rateLabel;
 
     var extensionAttributes = quote.getTotals()().extension_attributes;
-    pattern = {single: "{point} point", plural: "{point} points"};
+    pattern = {single: $t("{point} point"), plural: $t("{point} points")};
     if (extensionAttributes && extensionAttributes.loyalty_points) {
         balance = extensionAttributes.loyalty_points.balance;
         rateLabel = extensionAttributes.loyalty_points.rateLabel;
