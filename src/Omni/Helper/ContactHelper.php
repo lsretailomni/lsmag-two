@@ -3,6 +3,7 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
+use Laminas\Stdlib\Parameters;
 use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
@@ -11,6 +12,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
@@ -188,43 +190,43 @@ class ContactHelper extends AbstractHelper
      * @var StockHelper
      */
     public $stockHelper;
-
     /**
-     * ContactHelper constructor.
-     * @param Context $context
-     * @param FilterBuilder $filterBuilder
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param StoreManagerInterface $storeManager
-     * @param AddressInterfaceFactory $addressFactory
-     * @param RegionInterfaceFactory $regionFactory
-     * @param AddressRepositoryInterface $addressRepository
-     * @param CustomerFactory $customerFactory
-     * @param CustomerSession $customerSession
-     * @param CountryFactory $countryFactory
-     * @param CollectionFactory $customerGroupColl
-     * @param GroupRepositoryInterface $groupRepository
-     * @param GroupInterfaceFactory $groupInterfaceFactory
-     * @param BasketHelper $basketHelper
-     * @param ItemHelper $itemHelper
-     * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param CheckoutSession $checkoutSession
-     * @param Registry $registry
-     * @param Country $country
-     * @param RegionFactory $region
-     * @param \Magento\Wishlist\Model\Wishlist $wishlist
-     * @param Wishlist $wishlistResourceModel
-     * @param WishlistFactory $wishlistFactory
-     * @param ProductRepositoryInterface $productRepository
-     * @param CustomerCollection $customerCollection
-     * @param EncryptorInterface $encryptorInterface
-     * @param ValidateEmailAddress $validateEmailAddress
-     * @param LSR $lsr
-     * @param DateTime $date
-     * @param CustomerRegistry $customerRegistry
-     * @param Authentication $authentication
-     * @param AccountConfirmation $accountConfirmation
-     * @param StockHelper $stockHelper
+    * ContactHelper constructor.
+    * @param Context $context
+    * @param FilterBuilder $filterBuilder
+    * @param SearchCriteriaBuilder $searchCriteriaBuilder
+    * @param CustomerRepositoryInterface $customerRepository
+    * @param StoreManagerInterface $storeManager
+    * @param AddressInterfaceFactory $addressFactory
+    * @param RegionInterfaceFactory $regionFactory
+    * @param AddressRepositoryInterface $addressRepository
+    * @param CustomerFactory $customerFactory
+    * @param CustomerSession $customerSession
+    * @param SessionManagerInterface $session
+    * @param CountryFactory $countryFactory
+    * @param CollectionFactory $customerGroupColl
+    * @param GroupRepositoryInterface $groupRepository
+    * @param GroupInterfaceFactory $groupInterfaceFactory
+    * @param BasketHelper $basketHelper
+    * @param ItemHelper $itemHelper
+    * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
+    * @param CheckoutSession $checkoutSession
+    * @param Registry $registry
+    * @param Country $country
+    * @param RegionFactory $region
+    * @param \Magento\Wishlist\Model\Wishlist $wishlist
+    * @param Wishlist $wishlistResourceModel
+    * @param WishlistFactory $wishlistFactory
+    * @param ProductRepositoryInterface $productRepository
+    * @param CustomerCollection $customerCollection
+    * @param EncryptorInterface $encryptorInterface
+    * @param ValidateEmailAddress $validateEmailAddress
+    * @param LSR $lsr
+    * @param DateTime $date
+    * @param CustomerRegistry $customerRegistry
+    * @param Authentication $authentication
+    * @param AccountConfirmation $accountConfirmation
+    * @param StockHelper $stockHelper
      */
     public function __construct(
         Context $context,
@@ -237,6 +239,7 @@ class ContactHelper extends AbstractHelper
         AddressRepositoryInterface $addressRepository,
         CustomerFactory $customerFactory,
         CustomerSession $customerSession,
+        SessionManagerInterface $session,
         CountryFactory $countryFactory,
         CollectionFactory $customerGroupColl,
         GroupRepositoryInterface $groupRepository,
@@ -270,6 +273,7 @@ class ContactHelper extends AbstractHelper
         $this->addressRepository     = $addressRepository;
         $this->regionFactory         = $regionFactory;
         $this->customerFactory       = $customerFactory;
+        $this->session               = $session;
         $this->customerSession       = $customerSession;
         $this->countryFactory        = $countryFactory;
         $this->customerGroupColl     = $customerGroupColl;
@@ -552,6 +556,12 @@ class ContactHelper extends AbstractHelper
         $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact       = new MemberContact();
+
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('im here in ContactCreate');
+
         if (!empty($customer->getData('lsr_password'))) {
             $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
         } else {
@@ -588,6 +598,7 @@ class ContactHelper extends AbstractHelper
         $contactCreate->setContact($contact);
         try {
             $response = $request->execute($contactCreate);
+            $logger->info('im here with Contact Create Response');
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -710,6 +721,124 @@ class ContactHelper extends AbstractHelper
             }
         }
         return false;
+    }
+
+    /**
+     * Sync customer to Central after successful registration in magento.
+     * If error response (other than timeout error) from Central it will block registration in magento.
+     * @param $observer
+     * @param $session
+     * @return $this
+     * @throws \Zend_Log_Exception
+     */
+    public function syncCustomerToCentral($observer,$session)
+    {
+        $parameters = $observer->getRequest()->getParams();
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        $logger->info('im here in syncCustomerToCentral');
+        try {
+            do {
+                $parameters['lsr_username'] = $this->generateRandomUsername();
+            } while ($this->isUsernameExist($parameters['lsr_username']) ||
+            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+                $this->isUsernameExistInLsCentral($parameters['lsr_username']) : false
+            );
+            /** @var Customer $customer */
+            $customer = $session->getCustomer();
+//            if (empty($customer->getId())) {
+//                $customer = $this->getCustomerByEmail($parameters['email']);
+//            }
+            $logger->info('empty email '.$parameters['email']);
+            $logger->info('empty lsr_username '.$parameters['lsr_username']);
+            $logger->info('empty password '.$parameters['password']);
+            $request = $observer->getControllerAction()->getRequest();
+            $request->setPost(new Parameters(["lsr_username",$parameters['lsr_username']]));
+            $logger->info(print_r($parameters,1));
+            if (!empty($parameters['email']) && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
+                $logger->info('im here in lsr_username '.$parameters['lsr_username']);
+                $customer->setData('lsr_username', $parameters['lsr_username']);
+                $customer->setData('email', $parameters['email']);
+                $customer->setData('password', $parameters['password']);
+                $customer->setData('firstname', $parameters['firstname']);
+                $customer->setData('lastname', $parameters['lastname']);
+                $customer->setData('middlename', ($parameters['middlename']) ? $parameters['middlename'] : null);
+                $customer->setData('gender', ($parameters['gender']) ? $parameters['gender'] : null);
+                $customer->setData('dob', ($parameters['dob']) ? $parameters['dob'] : null);
+                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                    $logger->info('im here in isLsr True');
+                    /** @var Entity\MemberContact $contact */
+                    $contact = $this->contact($customer);
+                    if (is_object($contact) && $contact->getId()) {
+                        $logger->info('im here in customer save');
+                        $customer = $this->setCustomerAttributesValues($contact, $customer);
+                        $parameters['lsr_id'] = $customer->getLsrId();
+                        $parameters['lsr_username'] = $customer->getLsrUsername();
+                        $parameters['lsr_token'] = $customer->getLsrToken();
+                        $parameters['lsr_cardid'] = $customer->getLsrCardid();
+                        $parameters['group_id'] = $customer->getGroupId();
+                        $parameters['contact'] = $contact;
+                        $this->customerResourceModel->save($customer);
+//                        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
+//                        $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
+//                        $session->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
+//                        $session->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+                    }
+//                    $loginResult = $this->login(
+//                        $customer->getData('lsr_username'),
+//                        $parameters['password']
+//                    );
+//                    if ($loginResult == false) {
+//                        $logger->info('Login failed');
+//                        $this->logger->error('Invalid Omni login or Omni password');
+//                        return $this;
+//                    } else {
+//                        $logger->info('Login successful.');
+//                        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+//                        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $loginResult);
+//                        $this->updateBasketAndWishlistAfterLogin($loginResult);
+//                    }
+                } else {
+                    $logger->info('Timeout error.');
+//                    $customer->setData('lsr_password', $this->contactHelper->encryptPassword($parameters['password']));
+//                    $this->customerResourceModel->save($customer);
+                }
+            }
+
+            $this->setValue($parameters);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setValue($value)
+    {
+        $this->session->start();
+        $this->session->setLsrParams($value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        $this->session->start();
+        return $this->session->getLsrParams();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function unSetValue()
+    {
+        $this->session->start();
+        return $this->session->unsLsrParams();
     }
 
     /**
@@ -1493,29 +1622,48 @@ class ContactHelper extends AbstractHelper
      */
     public function setCustomerAttributesValues($contact, $customer)
     {
-        $customer->setData('lsr_id', $contact->getId());
-        if (!empty($contact->getUserName())) {
-            $customer->setData('lsr_username', $contact->getUserName());
+        if(!is_array($contact)) {
+            $customer->setData('lsr_id', $contact->getId());
+            if (!empty($contact->getUserName())) {
+                $customer->setData('lsr_username', $contact->getUserName());
+            }
+            if (!empty($contact->getLoggedOnToDevice()) &&
+                !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
+                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                $customer->setData('lsr_token', $token);
+            }
+            if (!empty($contact->getCards()) &&
+                !empty($contact->getCards()->getCard()[0]) &&
+                !empty($contact->getCards()->getCard()[0]->getId())) {
+                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+            }
+            if (!empty($contact->getAccount()) &&
+                !empty($contact->getAccount()->getScheme()) &&
+                !empty($contact->getAccount()->getScheme()->getId())) {
+                $customerGroupId = $this->getCustomerGroupIdByName(
+                    $contact->getAccount()->getScheme()->getId()
+                );
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+            }
+        } else {
+            $customer->setData('lsr_id', $contact['lsr_id']);
+            if (!empty($contact['lsr_username'])) {
+                $customer->setData('lsr_username', $contact['lsr_username']);
+            }
+            if (!empty($contact['lsr_token'])) {
+                $customer->setData('lsr_token', $contact['lsr_token']);
+            }
+            if (!empty($contact['lsr_cardid'])) {
+                $customer->setData('lsr_cardid', $contact['lsr_cardid']);
+            }
+            if (!empty($contact['group_id'])) {
+                $customerGroupId = $contact['group_id'];
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+            }
         }
-        if (!empty($contact->getLoggedOnToDevice()) &&
-            !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
-            $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-            $customer->setData('lsr_token', $token);
-        }
-        if (!empty($contact->getCards()) &&
-            !empty($contact->getCards()->getCard()[0]) &&
-            !empty($contact->getCards()->getCard()[0]->getId())) {
-            $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-        }
-        if (!empty($contact->getAccount()) &&
-            !empty($contact->getAccount()->getScheme()) &&
-            !empty($contact->getAccount()->getScheme()->getId())) {
-            $customerGroupId = $this->getCustomerGroupIdByName(
-                $contact->getAccount()->getScheme()->getId()
-            );
-            $customer->setGroupId($customerGroupId);
-            $this->customerSession->setCustomerGroupId($customerGroupId);
-        }
+
 
         return $customer;
     }

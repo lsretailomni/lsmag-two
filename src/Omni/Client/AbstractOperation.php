@@ -109,6 +109,8 @@ abstract class AbstractOperation implements OperationInterface
             if ($e->getMessage() != "") {
                 if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
                     $response = $e->getMessage();
+                } else if($e->getCode() == 504 && $operation_name == 'ContactCreate') {
+                    $response = null;
                 }
             } else {
                 $response = null;
