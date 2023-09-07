@@ -105,7 +105,6 @@ class CreateLsUomAdditionalAttributes implements DataPatchInterface
     {
         $formattedCodes = [
             LSR::LS_UOM_ATTRIBUTE_HEIGHT => 'Unit Of Measure Height',
-            LSR::LS_UOM_ATTRIBUTE_WEIGHT => 'Unit Of Measure Weight' ,
             LSR::LS_UOM_ATTRIBUTE_LENGTH => 'Unit Of Measure Length',
             LSR::LS_UOM_ATTRIBUTE_WIDTH  => 'Unit Of Measure Width',
             LSR::LS_UOM_ATTRIBUTE_CUBAGE => 'Unit Of Measure Cubage'

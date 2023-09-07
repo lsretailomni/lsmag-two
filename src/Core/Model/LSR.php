@@ -459,7 +459,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_UOM_ATTRIBUTE = 'lsr_uom';
     const LS_UOM_ATTRIBUTE_QTY = 'lsr_uom_qty';
     const LS_UOM_ATTRIBUTE_HEIGHT = 'lsr_uom_height';
-    const LS_UOM_ATTRIBUTE_WEIGHT = 'lsr_uom_weight';
     const LS_UOM_ATTRIBUTE_LENGTH = 'lsr_uom_length';
     const LS_UOM_ATTRIBUTE_WIDTH = 'lsr_uom_width';
     const LS_UOM_ATTRIBUTE_CUBAGE = 'lsr_uom_cubage';
