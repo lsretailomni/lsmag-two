@@ -169,6 +169,11 @@ class ReplItem
     protected $SeasonCode = null;
 
     /**
+     * @property string $TariffNo
+     */
+    protected $TariffNo = null;
+
+    /**
      * @property string $TaxItemGroupId
      */
     protected $TaxItemGroupId = null;
@@ -774,6 +779,24 @@ class ReplItem
     public function getSeasonCode()
     {
         return $this->SeasonCode;
+    }
+
+    /**
+     * @param string $TariffNo
+     * @return $this
+     */
+    public function setTariffNo($TariffNo)
+    {
+        $this->TariffNo = $TariffNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTariffNo()
+    {
+        return $this->TariffNo;
     }
 
     /**

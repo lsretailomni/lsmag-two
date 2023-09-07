@@ -343,6 +343,7 @@
     <column xsi:type="text" name="SalseUnitOfMeasure" nullable="true" comment="SalseUnitOfMeasure"/>
     <column xsi:type="int" name="ScaleItem" padding="11" nullable="true" comment="ScaleItem"/>
     <column xsi:type="text" name="SeasonCode" nullable="true" comment="SeasonCode"/>
+    <column xsi:type="text" name="TariffNo" nullable="true" comment="TariffNo"/>
     <column xsi:type="text" name="TaxItemGroupId" nullable="true" comment="TaxItemGroupId"/>
     <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="decimal" name="UnitPrice" scale="4" precision="20" nullable="true" comment="UnitPrice"/>
@@ -1477,6 +1478,7 @@
     <column xsi:type="text" name="SalesUomId" nullable="true" comment="SalesUomId"/>
     <column xsi:type="boolean" name="ScaleItem" default="0" nullable="true" comment="ScaleItem"/>
     <column xsi:type="text" name="SeasonCode" nullable="true" comment="SeasonCode"/>
+    <column xsi:type="text" name="TariffNo" nullable="true" comment="TariffNo"/>
     <column xsi:type="decimal" name="UnitVolume" scale="4" precision="20" nullable="true" comment="UnitVolume"/>
     <column xsi:type="decimal" name="UnitsPerParcel" scale="4" precision="20" nullable="true" comment="UnitsPerParcel"/>
     <column xsi:type="varchar" name="nav_id" length="200" nullable="true" comment="nav_id"/>
