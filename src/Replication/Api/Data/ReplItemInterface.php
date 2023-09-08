@@ -352,6 +352,17 @@ interface ReplItemInterface
     public function getSeasonCode();
 
     /**
+     * @param string $TariffNo
+     * @return $this
+     */
+    public function setTariffNo($TariffNo);
+
+    /**
+     * @return string
+     */
+    public function getTariffNo();
+
+    /**
      * @param string $TaxItemGroupId
      * @return $this
      */
