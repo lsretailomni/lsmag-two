@@ -128,42 +128,47 @@ class SyncAttributesValue extends ProductCreateTask
                 $checkIsException = false;
                 $itemId           = $attributeValue->getLinkField1();
                 $variantId        = $attributeValue->getLinkField2();
-                $product          = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                $products          = $this->replicationHelper->getProductDataByIdentificationAttributes(
                     $itemId,
                     $variantId,
                     '',
-                    0
+                    0,
+                    true,
+                    true
                 );
                 $formattedCode    = $this->replicationHelper->formatAttributeCode(
                     $attributeValue->getCode()
                 );
-                $attributeSetId   = $product->getAttributeSetId();
-                $this->attributeAssignmentToAttributeSet(
-                    $attributeSetId,
-                    $formattedCode,
-                    LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP
-                );
-                $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
-                if ($attribute->getFrontendInput() == 'multiselect') {
-                    $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
-                        $itemId,
-                        $variantId,
-                        $attributeValue->getCode(),
+                foreach ($products as $product) {
+                    $attributeSetId   = $product->getAttributeSetId();
+                    $this->attributeAssignmentToAttributeSet(
+                        $attributeSetId,
                         $formattedCode,
-                        $this->getScopeId()
+                        LSR::SC_REPLICATION_ATTRIBUTE_SET_SOFT_ATTRIBUTES_GROUP
                     );
-                } elseif ($attribute->getFrontendInput() == 'boolean') {
-                    if (strtolower($attributeValue->getValue()) == 'yes') {
-                        $value = 1;
+                    $attribute = $this->eavConfig->getAttribute('catalog_product', $formattedCode);
+                    if ($attribute->getFrontendInput() == 'multiselect') {
+                        $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
+                            $itemId,
+                            $variantId,
+                            $attributeValue->getCode(),
+                            $formattedCode,
+                            $this->getScopeId()
+                        );
+                    } elseif ($attribute->getFrontendInput() == 'boolean') {
+                        if (strtolower($attributeValue->getValue()) == 'yes') {
+                            $value = 1;
+                        } else {
+                            $value = 0;
+                        }
                     } else {
-                        $value = 0;
+                        $value = $attributeValue->getValue();
                     }
-                } else {
-                    $value = $attributeValue->getValue();
-                }
 
-                $product->setData($formattedCode, $value);
-                $product->getResource()->saveAttribute($product, $formattedCode);
+
+                    $product->setData($formattedCode, $value);
+                    $product->getResource()->saveAttribute($product, $formattedCode);
+                }
 
                 $uomCodes = $this->getUomCodesProcessed($itemId);
                 $this->replicationHelper->processUomAttributes(
