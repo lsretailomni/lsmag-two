@@ -18,9 +18,9 @@ $product          = $_item->getProduct();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
 $basketData       = $block->getOneListCalculateData($_item);
 
-$helper              = $this->helper('Magento\Msrp\Helper\Data');
-$canApplyMsrp        = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
-$this->priceCurrency = $block->getPriceCurrency();
+$helper        = $this->helper('Magento\Msrp\Helper\Data');
+$canApplyMsrp  = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
+$priceCurrency = $block->getPriceCurrency();
 ?>
 <tbody class="cart item">
 <tr class="item-info">
@@ -105,11 +105,11 @@ $this->priceCurrency = $block->getPriceCurrency();
             <?php if (!empty($basketData)): ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                        <?= $this->priceCurrency->format($block->getItemRowTotal($_item), true); ?><br/>
+                        <?= $priceCurrency->format($block->getItemRowTotal($_item), true); ?><br/>
                         <?php if ($_item->getDiscountAmount() > 0): ?>
                             <div class="lsdiscountprice2">
                             <strike>
-                                <?= $this->priceCurrency->format($_item->getPrice() * (int)$block->getQty(), true); ?>
+                                <?= $priceCurrency->format($_item->getProduct()->getPrice() * (int)$block->getQty(), true); ?>
                             </strike>
                             </div>
                         <?php endif; ?>
@@ -117,7 +117,7 @@ $this->priceCurrency = $block->getPriceCurrency();
                 </span>
                 <?php if ($_item->getDiscountAmount() > 0): ?>
                     <div class="lsdiscountamount">
-                        <?= '(' . __($basketData[1]) . ' ' . $this->priceCurrency->format($_item->getDiscountAmount()) . ')';
+                        <?= '(' . __($basketData[1]) . ' ' . $priceCurrency->format($_item->getDiscountAmount()) . ')';
                         ?>
                     </div>
                 <?php endif; ?>
@@ -154,7 +154,7 @@ $this->priceCurrency = $block->getPriceCurrency();
             <?php if (!empty($basketData)): ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                        <?= $this->priceCurrency->format($block->getItemRowTotal($_item), true); ?>
+                        <?= $priceCurrency->format($block->getItemRowTotal($_item), true); ?>
                     </span>
         </span>
             <?php else: ?>

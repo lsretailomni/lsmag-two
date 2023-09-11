@@ -5,9 +5,8 @@ namespace Ls\Omni\Controller\Stock;
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
 use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
-use Magento\Checkout\Model\Session\Proxy;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -22,16 +21,10 @@ use Laminas\Json\Json as LaminasJson;
  */
 class Product implements HttpPostActionInterface
 {
-
     /**
-     * @var \Magento\Framework\App\Request\Http\Proxy
+     * @var Http
      */
     public $request;
-
-    /**
-     * @var Proxy
-     */
-    public $session;
 
     /**
      * @var StockHelper
@@ -53,8 +46,7 @@ class Product implements HttpPostActionInterface
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param PageFactory $resultPageFactory
-     * @param \Magento\Framework\App\Request\Http\Proxy $request
-     * @param Proxy $session
+     * @param Http $request
      * @param StockHelper $stockHelper
      */
     public function __construct(
@@ -62,11 +54,9 @@ class Product implements HttpPostActionInterface
         JsonFactory $resultJsonFactory,
         PageFactory $resultPageFactory,
         RequestInterface $request,
-        Proxy $session,
         StockHelper $stockHelper
     ) {
         $this->request           = $request;
-        $this->session           = $session;
         $this->stockHelper       = $stockHelper;
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultPageFactory = $resultPageFactory;

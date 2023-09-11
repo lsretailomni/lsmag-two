@@ -3,7 +3,6 @@
 namespace Ls\Omni\Observer;
 
 use \Ls\Core\Model\LSR;
-use Magento\Checkout\Model\Session\Proxy;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\BasketHelper;
@@ -24,11 +23,6 @@ use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
  */
 class DataAssignObserver implements ObserverInterface
 {
-    /**
-     * @var Proxy
-     */
-    private $checkoutSession;
-
     /**
      * @var Data
      */
@@ -56,7 +50,6 @@ class DataAssignObserver implements ObserverInterface
     private $quoteIdToMaskedQuoteId;
 
     /**
-     * @param Proxy $checkoutSession
      * @param Data $helper
      * @param BasketHelper $basketHelper
      * @param StoreHelper $storeHelper
@@ -65,7 +58,6 @@ class DataAssignObserver implements ObserverInterface
      * @param QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
      */
     public function __construct(
-        Proxy $checkoutSession,
         Data $helper,
         BasketHelper $basketHelper,
         StoreHelper $storeHelper,
@@ -73,7 +65,6 @@ class DataAssignObserver implements ObserverInterface
         LSR $lsr,
         QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
     ) {
-        $this->checkoutSession      = $checkoutSession;
         $this->helper               = $helper;
         $this->basketHelper         = $basketHelper;
         $this->storeHelper          = $storeHelper;

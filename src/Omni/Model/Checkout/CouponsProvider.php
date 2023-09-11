@@ -7,7 +7,8 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -34,7 +35,7 @@ class CouponsProvider implements ConfigProviderInterface
     public $scopeConfig;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var Proxy
      */
     public $customerSession;
 
@@ -54,9 +55,8 @@ class CouponsProvider implements ConfigProviderInterface
     public $lsr;
 
     /**
-     * CouponsProvider constructor.
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param \Magento\Checkout\Model\Session\Proxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param StoreManagerInterface $storeManager
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
@@ -65,8 +65,8 @@ class CouponsProvider implements ConfigProviderInterface
      * @param LSR $lsr
      */
     public function __construct(
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        Proxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         StoreManagerInterface $storeManager,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
@@ -81,7 +81,7 @@ class CouponsProvider implements ConfigProviderInterface
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;
         $this->logger            = $logger;
-        $this->lsr = $lsr;
+        $this->lsr               = $lsr;
     }
 
     public function getConfig()

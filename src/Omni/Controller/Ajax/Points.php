@@ -4,7 +4,8 @@ namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\ResponseInterface;
@@ -30,12 +31,12 @@ class Points implements HttpGetActionInterface
     private $loyaltyHelper;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -44,17 +45,17 @@ class Points implements HttpGetActionInterface
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerSession $customerSession,
         LoyaltyHelper $loyaltyHelper,
-        Proxy $checkoutSession
+        CheckoutSession $checkoutSession
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;

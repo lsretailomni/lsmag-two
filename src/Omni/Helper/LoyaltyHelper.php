@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Helper;
 
+use Carbon\Carbon;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
@@ -10,6 +11,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Currency\Data\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
@@ -70,14 +72,11 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($image_id == null || $image_size == null) {
             return [];
         }
-        $storeId = $this->lsr->getCurrentStoreId();
-        $cacheId = LSR::IMAGE_CACHE . $image_id;
 
-        if (!$this->imageCacheIndependenOfStoreId()) {
-            $cacheId .= "_" . $storeId;
-        }
+        $cacheId = $this->getImageCacheId($image_id);
 
         $response = $this->cacheHelper->getCachedContent($cacheId);
+
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
             return $response;
@@ -114,6 +113,25 @@ class LoyaltyHelper extends AbstractHelperOmni
             ];
         }
         return [];
+    }
+
+    /**
+     * Get image cache id
+     *
+     * @param $imageId
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getImageCacheId($imageId)
+    {
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::IMAGE_CACHE . $imageId;
+
+        if (!$this->imageCacheIndependenOfStoreId()) {
+            $cacheId .= "_" . $storeId;
+        }
+
+        return $cacheId;
     }
 
     /**
@@ -184,6 +202,73 @@ class LoyaltyHelper extends AbstractHelperOmni
         $entity = new Entity\ContactGetByCardId();
         $entity->setCardId($cardId);
         $entity->setNumberOfTransReturned(1);
+        try {
+            $response = $request->execute($entity);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getResult() : $response;
+    }
+
+    public function getPointBalanceExpirySum()
+    {
+        if (version_compare($this->lsr->getOmniVersion(), '2023.06', '<')) {
+            return false;
+        }
+
+        $totalEarnedPoints      = 0;
+        $totalRedemption        = 0;
+        $totalExpiryPoints      = 0;
+        $result                 = $this->getCardGetPointEntries();
+        $expiryInterval         = $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
+            $this->lsr->getCurrentStoreId()
+        );
+
+        if ($result) {
+            $startDateTs = Carbon::now();
+            $endDateTs   = Carbon::now()->addDays($expiryInterval);
+
+            foreach ($result as $res) {
+                $entryType = $res->getEntryType();
+                $expirationDate = Carbon::parse($res->getExpirationDate());
+                if($entryType == "Sales" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                    $totalEarnedPoints += $res->getPoints();
+                } elseif ($entryType == "Redemption" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                    $totalRedemption += $res->getPoints();
+                }
+            }
+
+            //Convert to negative redemption points to positive for ease of calculation
+            $totalRedemption = abs($totalRedemption);
+            if ($totalEarnedPoints >= $totalRedemption) {
+                $totalExpiryPoints = $totalEarnedPoints - $totalRedemption;
+            }
+
+        }
+
+        return $totalExpiryPoints;
+    }
+
+
+    /**
+     * @return Entity\ArrayOfPointEntry|Entity\CardGetPointEntiesResponse|ResponseInterface|null
+     */
+    public function getCardGetPointEntries()
+    {
+        $response = null;
+        $customer = $this->customerSession->getCustomer();
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        // if not set in session then get it from customer database.
+        if (!$cardId) {
+            $cardId = $customer->getData('lsr_cardid');
+        }
+        // @codingStandardsIgnoreLine
+        $request = new Operation\CardGetPointEnties();
+        $request->setToken($customer->getData('lsr_token'));
+        // @codingStandardsIgnoreLine
+        $entity = new Entity\CardGetPointEnties();
+        $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {
@@ -620,6 +705,6 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display' => \Zend_Currency::NO_SYMBOL], false);
+        return $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL], false);
     }
 }

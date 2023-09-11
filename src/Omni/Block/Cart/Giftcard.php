@@ -4,7 +4,8 @@ namespace Ls\Omni\Block\Cart;
 
 use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
@@ -23,15 +24,15 @@ class Giftcard extends AbstractCart
      * Giftcard constructor.
      * @param GiftCardHelper $giftCardHelper
      * @param Context $context
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param Proxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param array $data
      */
     public function __construct(
         GiftCardHelper $giftCardHelper,
         Context $context,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        Proxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);

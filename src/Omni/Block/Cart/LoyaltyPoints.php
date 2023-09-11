@@ -7,7 +7,8 @@ use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
@@ -29,16 +30,16 @@ class LoyaltyPoints extends AbstractCart
      * @param LoyaltyHelper $loyaltyHelper
      * @param Data $priceHelper
      * @param Context $context
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
-     * @param Proxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param array $data
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
         Data $priceHelper,
         Context $context,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
-        Proxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);

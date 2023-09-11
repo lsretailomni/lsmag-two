@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use \Ls\Omni\Client\Ecommerce\ClassMap;
 use \Ls\Omni\Client\Ecommerce\Entity\Account;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfAddress;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfCard;
@@ -12,28 +11,14 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfProfile;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfPublishedOffer;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client as OmniClient;
-use PHPUnit\Framework\TestCase;
-use Laminas\Uri\UriFactory;
 
-class ContactGetByCardIdTest extends TestCase
+class ContactGetByCardIdTest extends OmniClientSetupTest
 {
-    protected function setUp(): void
-    {
-        $baseUrl      = $_ENV['BASE_URL'];
-        $url          = implode('/', [$baseUrl, 'UCService.svc?singlewsdl']);
-        $service_type = new ServiceType(ServiceType::ECOMMERCE);
-        $uri          = UriFactory::factory($url);
-        $this->client = new OmniClient($uri, $service_type);
-        $this->client->setClassmap(ClassMap::getClassMap());
-    }
-
     public function testExecute()
     {
         $this->assertNotNull($this->client);
         $param    = [
-            'cardId' => $_ENV['CARD_ID']
+            'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID')
         ];
         $response = $this->client->ContactGetByCardId($param);
         $result   = $response->getResult();

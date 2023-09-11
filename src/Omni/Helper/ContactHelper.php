@@ -11,7 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
@@ -30,6 +30,7 @@ use Magento\Customer\Model\Group;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollection;
 use Magento\Customer\Model\ResourceModel\Group\Collection;
 use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\Country;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Directory\Model\RegionFactory;
@@ -85,7 +86,7 @@ class ContactHelper extends AbstractHelper
     /** @var AddressRepositoryInterface */
     public $addressRepository;
 
-    /** @var \Magento\Customer\Model\Session\Proxy */
+    /** @var CustomerSession */
     public $customerSession;
 
     /** @var null */
@@ -112,7 +113,7 @@ class ContactHelper extends AbstractHelper
     /** @var Registry */
     public $registry;
 
-    /** @var Proxy */
+    /** @var CheckoutSession */
     public $checkoutSession;
 
     /** @var Country */
@@ -199,7 +200,7 @@ class ContactHelper extends AbstractHelper
      * @param RegionInterfaceFactory $regionFactory
      * @param AddressRepositoryInterface $addressRepository
      * @param CustomerFactory $customerFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param CountryFactory $countryFactory
      * @param CollectionFactory $customerGroupColl
      * @param GroupRepositoryInterface $groupRepository
@@ -207,7 +208,7 @@ class ContactHelper extends AbstractHelper
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param Registry $registry
      * @param Country $country
      * @param RegionFactory $region
@@ -235,7 +236,7 @@ class ContactHelper extends AbstractHelper
         RegionInterfaceFactory $regionFactory,
         AddressRepositoryInterface $addressRepository,
         CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerSession $customerSession,
         CountryFactory $countryFactory,
         CollectionFactory $customerGroupColl,
         GroupRepositoryInterface $groupRepository,
@@ -243,7 +244,7 @@ class ContactHelper extends AbstractHelper
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         Registry $registry,
         Country $country,
         RegionFactory $region,
@@ -547,7 +548,7 @@ class ContactHelper extends AbstractHelper
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $alternate_id  = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
+        $alternate_id  = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
         $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact       = new MemberContact();

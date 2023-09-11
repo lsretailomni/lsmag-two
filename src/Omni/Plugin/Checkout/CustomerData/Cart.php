@@ -7,7 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use Magento\Catalog\Model\Product\Type;
-use Magento\Checkout\Model\Session\Proxy as CheckoutSession;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
@@ -19,7 +19,6 @@ use Psr\Log\LoggerInterface;
  */
 class Cart
 {
-
     /**
      * @var CheckoutSession
      */
@@ -119,17 +118,6 @@ class Cart
                             $result['items'][$key]['product_price']    = $this->itemPriceRenderer->toHtml();
                         }
                     }
-                }
-                $grandTotalAmount = $this->data->getOrderBalance(
-                    $quote->getLsGiftCardAmountUsed(),
-                    $quote->getLsPointsSpent(),
-                    $this->basketHelper->getBasketSessionValue()
-                );
-                if ($grandTotalAmount > 0) {
-                    $result['subtotalAmount'] = $grandTotalAmount;
-                    $result['subtotal']       = isset($grandTotalAmount)
-                        ? $this->checkoutHelper->formatPrice($grandTotalAmount)
-                        : 0;
                 }
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());

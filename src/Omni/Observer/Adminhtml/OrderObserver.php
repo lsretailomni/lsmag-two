@@ -6,8 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
-use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -46,16 +44,6 @@ class OrderObserver implements ObserverInterface
     private $messageManager;
 
     /**
-     * @var CustomerProxy
-     */
-    private $customerSession;
-
-    /**
-     * @var CheckoutProxy
-     */
-    private $checkoutSession;
-
-    /**
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
@@ -63,15 +51,11 @@ class OrderObserver implements ObserverInterface
      * @param Order $orderResourceModel
      * @param LSR $LSR
      * @param ManagerInterface $messageManager
-     * @param CustomerProxy $customerSession
-     * @param CheckoutProxy $checkoutSession
      */
     public function __construct(
         BasketHelper $basketHelper,
         OrderHelper $orderHelper,
         LoggerInterface $logger,
-        CustomerProxy $customerSession,
-        CheckoutProxy $checkoutSession,
         Order $orderResourceModel,
         LSR $LSR,
         ManagerInterface $messageManager
@@ -79,8 +63,6 @@ class OrderObserver implements ObserverInterface
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
         $this->logger             = $logger;
-        $this->customerSession    = $customerSession;
-        $this->checkoutSession    = $checkoutSession;
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
         $this->messageManager     = $messageManager;

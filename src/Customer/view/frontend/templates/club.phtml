@@ -25,6 +25,14 @@ if ($account = $this->getMembersInfo()) : ?>
                         <?php echo __('Loyalty Points Earned:'); ?>
                     </h6>
                     <?php echo $account->getPointBalance(); ?><br>
+                    <?php if($account->getPointBalance() &&
+                        ($expiry = $this->getPointBalanceExpiry($account))
+                    ): ?>
+                        <h6 class='header-inline'>
+                            <?php echo __('Loyalty Points Expiry:'); ?>
+                        </h6>
+                        <?php echo $expiry; ?><br>
+                    <?php endif; ?>
                     <h6 class='header-inline'>
                         <?php echo __('Loyalty Level:'); ?>
                     </h6>

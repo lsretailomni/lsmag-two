@@ -3,8 +3,9 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use \Ls\Core\Model\LSR;
-use Ls\Replication\Model\ResourceModel\ReplAttribute\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplAttribute\Collection;
 use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\DB\Select;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
@@ -63,7 +64,7 @@ class Attribute extends AbstractReset
         $childCollection = $this->replAttributeCollectionFactory->create();
         $parentCollection = clone $childCollection;
         $childCollection->getSelect()
-            ->reset(\Zend_Db_Select::COLUMNS)
+            ->reset(Select::COLUMNS)
             ->columns('main_table.Code')
             ->group('main_table.Code')
             ->having(new \Zend_Db_Expr('COUNT(main_table.Code)') . ' = 1');
@@ -89,7 +90,7 @@ class Attribute extends AbstractReset
         $childCollection = $this->replExtendedCollectionFactory->create();
         $parentCollection = clone $childCollection;
         $childCollection->getSelect()
-            ->reset(\Zend_Db_Select::COLUMNS)
+            ->reset(Select::COLUMNS)
             ->columns('main_table.Code')
             ->group('main_table.Code')
             ->where('scope_id IN (?)', $storeIds);
