@@ -8,6 +8,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\Entity;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\SetFactory as AttributeSetFactory;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
@@ -103,51 +104,84 @@ class CreateLsUomAdditionalAttributes implements DataPatchInterface
      */
     public function createUomAdditionalAttributes()
     {
-        $formattedCodes = [
-            LSR::LS_UOM_ATTRIBUTE_HEIGHT => 'Unit Of Measure Height',
-            LSR::LS_UOM_ATTRIBUTE_LENGTH => 'Unit Of Measure Length',
-            LSR::LS_UOM_ATTRIBUTE_WIDTH  => 'Unit Of Measure Width',
-            LSR::LS_UOM_ATTRIBUTE_CUBAGE => 'Unit Of Measure Cubage'
-        ];
-
-        foreach ($formattedCodes as $formattedCode => $formattedCodeLabel) {
-            $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
-
-            $defaultAttributeSetId = $this->replicationHelper->getDefaultAttributeSetId();
-
-            $defaultGroupId = $this->replicationHelper->getDefaultGroupIdOfAttributeSet($defaultAttributeSetId);
-
-            if (!$attribute || !$attribute->getAttributeId()) {
-                $attributeData = [
-                    'frontend_label'                => [__($formattedCodeLabel)],
-                    'frontend_input'                => 'text',
-                    'backend_type'                  => 'varchar',
-                    'is_required'                   => '0',
-                    'attribute_code'                => $formattedCode,
-                    'is_global'                     => '1',
-                    'is_user_defined'               => 1,
-                    'is_unique'                     => 0,
-                    'is_searchable'                 => 1,
-                    'is_comparable'                 => 1,
-                    'is_filterable'                 => 0,
-                    'is_visible_in_advanced_search' => 1,
-                    'is_filterable_in_search'       => '0',
-                    'is_used_for_promo_rules'       => '0',
-                    'is_html_allowed_on_front'      => '1',
-                    'used_in_product_listing'       => '1',
-                    'used_for_sort_by'              => '1',
-                    'attribute_set_id'              => $defaultAttributeSetId,
-                    'attribute_group_id'            => $defaultGroupId,
-                    'backend_model'                 => ArrayBackend::class,
-                    'source_model'                  => Table::class,
-                ];
-
-                $this->eavAttributeFactory->create()
-                    ->addData($attributeData)
-                    ->setEntityTypeId($this->eavEntity->setType(Product::ENTITY)->getTypeId())
-                    ->save();
-            }
-        }
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->moduleDataSetup]);
+        $eavSetup->addAttribute(
+            Product::ENTITY,
+            LSR::LS_UOM_ATTRIBUTE_HEIGHT,
+            [
+                'type'                    => 'varchar',
+                'label'                   => 'Height',
+                'input'                   => 'text',
+                'sort_order'              => 9,
+                'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible'                 => true,
+                'required'                => false,
+                'user_defined'            => true,
+                'searchable'              => false,
+                'filterable'              => false,
+                'visible_on_front'        => false,
+                'used_in_product_listing' => false,
+                'default'                 => null,
+                'group'                   => 'General Information',
+            ]
+        )->addAttribute(
+            Product::ENTITY,
+            LSR::LS_UOM_ATTRIBUTE_LENGTH,
+            [
+                'type'                    => 'varchar',
+                'label'                   => 'Length',
+                'input'                   => 'text',
+                'sort_order'              => 10,
+                'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible'                 => true,
+                'required'                => false,
+                'user_defined'            => true,
+                'searchable'              => false,
+                'filterable'              => false,
+                'visible_on_front'        => false,
+                'used_in_product_listing' => false,
+                'default'                 => null,
+                'group'                   => 'General Information',
+            ]
+        )->addAttribute(
+            Product::ENTITY,
+            LSR::LS_UOM_ATTRIBUTE_WIDTH,
+            [
+                'type'                    => 'varchar',
+                'label'                   => 'Width',
+                'input'                   => 'text',
+                'sort_order'              => 11,
+                'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible'                 => true,
+                'required'                => false,
+                'user_defined'            => true,
+                'searchable'              => false,
+                'filterable'              => false,
+                'visible_on_front'        => false,
+                'used_in_product_listing' => false,
+                'default'                 => null,
+                'group'                   => 'General Information',
+            ]
+        )->addAttribute(
+            Product::ENTITY,
+            LSR::LS_UOM_ATTRIBUTE_CUBAGE,
+            [
+                'type'                    => 'varchar',
+                'label'                   => 'Cubage',
+                'input'                   => 'text',
+                'sort_order'              => 12,
+                'global'                  => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'visible'                 => true,
+                'required'                => false,
+                'user_defined'            => true,
+                'searchable'              => false,
+                'filterable'              => false,
+                'visible_on_front'        => false,
+                'used_in_product_listing' => false,
+                'default'                 => null,
+                'group'                   => 'General Information',
+            ]
+        );
     }
 
     /**
