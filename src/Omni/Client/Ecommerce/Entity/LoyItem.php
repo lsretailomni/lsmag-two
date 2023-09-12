@@ -146,6 +146,11 @@ class LoyItem extends Entity
     protected $SelectedVariant = null;
 
     /**
+     * @property string $TariffNo
+     */
+    protected $TariffNo = null;
+
+    /**
      * @property float $UnitVolume
      */
     protected $UnitVolume = null;
@@ -639,6 +644,24 @@ class LoyItem extends Entity
     public function getSelectedVariant()
     {
         return $this->SelectedVariant;
+    }
+
+    /**
+     * @param string $TariffNo
+     * @return $this
+     */
+    public function setTariffNo($TariffNo)
+    {
+        $this->TariffNo = $TariffNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTariffNo()
+    {
+        return $this->TariffNo;
     }
 
     /**

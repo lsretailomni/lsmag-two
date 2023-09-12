@@ -176,6 +176,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $SeasonCode = null;
 
     /**
+     * @property string $TariffNo
+     */
+    protected $TariffNo = null;
+
+    /**
      * @property string $TaxItemGroupId
      */
     protected $TaxItemGroupId = null;
@@ -888,6 +893,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getSeasonCode()
     {
         return $this->getData( 'SeasonCode' );
+    }
+
+    /**
+     * @param string $TariffNo
+     * @return $this
+     */
+    public function setTariffNo($TariffNo)
+    {
+        $this->setData( 'TariffNo', $TariffNo );
+        $this->TariffNo = $TariffNo;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTariffNo()
+    {
+        return $this->getData( 'TariffNo' );
     }
 
     /**

@@ -592,10 +592,14 @@ class ProductCreateTask
                                 }
                                 $productData->setAttributeSetId($productData->getAttributeSetId());
                                 $productData->setCountryOfManufacture($item->getCountryOfOrigin());
+                                $productData->setCustomAttribute(
+                                    LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
+                                    $item->getTariffNo()
+                                );
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-                                $product   = $this->setProductStatus($productData, $item->getBlockedOnECom());
-                                $product   = $this->replicationHelper->manageStock(
+                                $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
+                                $product = $this->replicationHelper->manageStock(
                                     $product,
                                     $item->getType()
                                 );
@@ -636,6 +640,10 @@ class ProductCreateTask
                                 $product->setWeight($item->getGrossWeight());
                                 $product->setDescription($item->getDetails());
                                 $product->setCountryOfManufacture($item->getCountryOfOrigin());
+                                $productData->setCustomAttribute(
+                                    LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
+                                    $item->getTariffNo()
+                                );
                                 if (!empty($taxClass)) {
                                     $product->setTaxClassId($taxClass->getClassId());
                                 }
@@ -853,7 +861,7 @@ class ProductCreateTask
             ];
             $imageSizeObject = $this->loyaltyHelper->getImageSize($imageSize);
             if (!array_key_exists($image->getImageId(), $this->imagesFetched)) {
-                 $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
+                $result = $this->loyaltyHelper->getImageById($image->getImageId(), $imageSizeObject);
                 if (!empty($result) && !empty($result['format']) && !empty($result['image'])) {
                     $mimeType = $this->getMimeType($result['image']);
                     if ($this->replicationHelper->isMimeTypeValid($mimeType)) {

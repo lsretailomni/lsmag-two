@@ -468,6 +468,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_VARIANT_ID_ATTRIBUTE_CODE = 'lsr_variant_id';
     const LS_VARIANT_ID_ATTRIBUTE_LABEL = 'Variant ID';
 
+    const LS_TARIFF_NO_ATTRIBUTE_CODE = 'lsr_tariff_no';
+    const LS_TARIFF_NO_ATTRIBUTE_LABEL = 'Tariff No';
+
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
