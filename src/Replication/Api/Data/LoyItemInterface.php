@@ -308,6 +308,17 @@ interface LoyItemInterface
     public function getSelectedVariant();
 
     /**
+     * @param string $TariffNo
+     * @return $this
+     */
+    public function setTariffNo($TariffNo);
+
+    /**
+     * @return string
+     */
+    public function getTariffNo();
+
+    /**
      * @param float $UnitVolume
      * @return $this
      */
