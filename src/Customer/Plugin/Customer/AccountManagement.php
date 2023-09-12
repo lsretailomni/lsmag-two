@@ -207,14 +207,11 @@ class AccountManagement
         $template,
         $websiteId
     ) {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR($websiteId, 'website')) {
             if ($email) {
                 /** @var ForgotPasswordResponse | null $result */
                 $search = $this->contactHelper->searchWithUsernameOrEmail($email);
                 if ($search) {
-                    if ($websiteId === null) {
-                        $websiteId = $this->storeManager->getStore()->getWebsiteId();
-                    }
                     /** @var Customer $customer */
                     $customer = $this->customerFactory->create()
                         ->setWebsiteId($websiteId)
