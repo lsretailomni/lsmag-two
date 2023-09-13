@@ -3427,7 +3427,7 @@ class ReplicationHelper extends AbstractHelper
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '')
+    public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '', $discardUom = false, $returnArray = false)
     {
         $currentStoreId = $this->storeManager->getStore()->getId();
         $searchCriteria = clone $this->searchCriteriaBuilder;
@@ -3455,7 +3455,7 @@ class ReplicationHelper extends AbstractHelper
             if (isset($optionId)) {
                 $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, $optionId);
             }
-        } else {
+        } else if(!$discardUom){
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
@@ -3481,8 +3481,10 @@ class ReplicationHelper extends AbstractHelper
         if ($storeId === 'global') {
             $this->lsr->setStoreId($currentStoreId);
         }
-        if (!empty($productList)) {
+        if (!empty($productList) && !$returnArray) {
             return array_pop($productList);
+        } elseif (!empty($productList) && $returnArray) {
+            return $productList;
         } else {
             throw new NoSuchEntityException();
         }
