@@ -36,7 +36,7 @@ $availablePoints = (int)$block->getMemberPoints();
                             __(
                                 'You have %1. Each of %2 gets %3 discount.',
                                 '<strong>' . $availablePoints . ' loyalty points</strong>',
-                                '<strong>' . round(1 / $block->getPointsRate(), 2) . ' Points</strong>',
+                                '<strong>' . round(1 / $block->getPointsRate(), 3) . ' Points</strong>',
                                 '<strong>' . $block->getFormattedPrice(1) . '</strong>'
                             ) ?>
                         </span>
