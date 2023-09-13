@@ -82,10 +82,6 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
     {
         $parameters = $observer->getRequest()->getParams();
         $isNotValid = false;
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-        $logger->info('im here in predispatch');
 
         if (!empty($parameters['email']) && $this->contactHelper->isValid($parameters['email'])) {
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
@@ -93,28 +89,23 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
                 $this->lsr->getCurrentStoreId()
             )) {
                 try {
-                    $logger->info('im here in predispatch inside if');
                     if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
                         $this->messageManager->addErrorMessage(__('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.'));
                         $isNotValid = true;
                     } else {
                         $session    = $this->customerSession;
-                        $logger->info('im here in syncCustomerToCentral call');
                         $this->contactHelper->syncCustomerToCentral($observer,$session);
 
                     }
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
-            } else {
-                $logger->info('im here in predispatch outside if');
             }
         } else {
             $this->messageManager->addErrorMessage(__('Your email address is invalid.'));
             $isNotValid = true;
         }
         if ($isNotValid) {
-            $logger->info('im here in predispatch isNoValid '.$isNotValid);
             $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
             $observer->getControllerAction()
                 ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
