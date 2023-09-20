@@ -12,5 +12,6 @@ steps:
         curl ipinfo.io/ip
         composer install
       EOF
+      curl ipinfo.io/ip
     displayName: 'Deploying released version on lsmag2 demo server'
     workingDirectory: $(System.DefaultWorkingDirectory)
