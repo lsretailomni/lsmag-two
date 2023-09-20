@@ -16,3 +16,11 @@ steps:
       EOF
     displayName: 'Deploying released version on lsmag2 demo server'
     workingDirectory: $(System.DefaultWorkingDirectory)
+  - script: |
+      sudo apt-get install sshpass
+      sshpass -p "$(DEMO_SERVER_2_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_2_SSH_USERNAME)@$(DEMO_SERVER_2_SSH_HOSTNAME) << EOF
+        cd $(DEMO_SERVER_2_SSH_DIRECTORY_PATH)
+        pwd
+      EOF
+    displayName: 'Deploying released version on ls-magento demo server'
+    workingDirectory: $(System.DefaultWorkingDirectory)
