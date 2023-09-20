@@ -797,9 +797,9 @@ class ContactHelper extends AbstractHelper
                 $customer->setData('password', $parameters['password']);
                 $customer->setData('firstname', $parameters['firstname']);
                 $customer->setData('lastname', $parameters['lastname']);
-                $customer->setData('middlename', (array_key_exist('middlename',$parameters) && $parameters['middlename']) ? $parameters['middlename'] : null);
-                $customer->setData('gender', (array_key_exist('gender',$parameters) && $parameters['gender']) ? $parameters['gender'] : null);
-                $customer->setData('dob', (array_key_exist('dob',$parameters) && $parameters['dob']) ? $parameters['dob'] : null);
+                $customer->setData('middlename', (array_key_exists('middlename',$parameters) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                $customer->setData('gender', (array_key_exists('gender',$parameters) && $parameters['gender']) ? $parameters['gender'] : null);
+                $customer->setData('dob', (array_key_exists('dob',$parameters) && $parameters['dob']) ? $parameters['dob'] : null);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contact($customer);
