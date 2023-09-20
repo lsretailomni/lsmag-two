@@ -5,7 +5,8 @@ trigger:
 steps:
   - checkout: self
   - script: |
-      curl ipinfo.io/ip
+      curl ipinfo.io
+      echo "I am here"
     displayName: 'Check Public IP'
   - script: |
       sudo apt-get install sshpass
