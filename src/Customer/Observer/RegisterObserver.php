@@ -69,27 +69,22 @@ class RegisterObserver implements ObserverInterface
     {
         try {
             $parameters = $observer->getRequest()->getParams();
+            $additionalParams = $this->contactHelper->getValue();
             $session    = $this->customerSession;
-            do {
-                $parameters['lsr_username'] = $this->contactHelper->generateRandomUsername();
-            } while ($this->contactHelper->isUsernameExist($parameters['lsr_username']) ||
-            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
-                $this->contactHelper->isUsernameExistInLsCentral($parameters['lsr_username']) : false
-            );
             /** @var Customer $customer */
             $customer = $session->getCustomer();
             if (empty($customer->getId())) {
-                $customer = $this->contactHelper->getCustomerByEmail($parameters['email']);
+                $customer = $this->contactHelper->getCustomerByEmail($additionalParams['email']);
             }
-            if ($customer->getId() && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
-                $customer->setData('lsr_username', $parameters['lsr_username']);
-                $customer->setData('password', $parameters['password']);
+            if ($customer->getId() && !empty($additionalParams['lsr_username']) && !empty($additionalParams['password'])) {
+                $customer->setData('lsr_username', $additionalParams['lsr_username']);
+                $customer->setData('password', $additionalParams['password']);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
                     /** @var Entity\MemberContact $contact */
-                    $contact = $this->contactHelper->contact($customer);
-                    if (is_object($contact) && $contact->getId()) {
-                        $customer = $this->contactHelper->setCustomerAttributesValues($contact, $customer);
+                    if (is_array($additionalParams) && $additionalParams['lsr_id']) {
+                        $customer = $this->contactHelper->setCustomerAttributesValues($additionalParams, $customer);
                         $this->customerResourceModel->save($customer);
+                        $contact = $additionalParams['contact'];
                         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $contact);
                         $session->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
                         $session->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
@@ -97,7 +92,7 @@ class RegisterObserver implements ObserverInterface
                     }
                     $loginResult = $this->contactHelper->login(
                         $customer->getData('lsr_username'),
-                        $parameters['password']
+                        $additionalParams['password']
                     );
                     if ($loginResult == false) {
                         $this->logger->error('Invalid Omni login or Omni password');
@@ -108,7 +103,7 @@ class RegisterObserver implements ObserverInterface
                         $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
                     }
                 } else {
-                    $customer->setData('lsr_password', $this->contactHelper->encryptPassword($parameters['password']));
+                    $customer->setData('lsr_password', $this->contactHelper->encryptPassword($additionalParams['password']));
                     $this->customerResourceModel->save($customer);
                 }
             }
