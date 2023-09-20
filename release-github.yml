@@ -9,6 +9,7 @@ steps:
       sshpass -p "$(DEMO_SERVER_1_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_1_SSH_USERNAME)@$(DEMO_SERVER_1_SSH_HOSTNAME) << EOF
         cd $(DEMO_SERVER_1_SSH_DIRECTORY_PATH)
         pwd
+        curl ipinfo.io/ip
         composer install
       EOF
     displayName: 'Deploying released version on lsmag2 demo server'
