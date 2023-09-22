@@ -27,7 +27,7 @@ steps:
       git add --all
       git commit -m "Deployment $(Build.BuildNumber)"
       git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
-      git tag -a $(LAST_TAG_NAME) -m "Release $LAST_TAG_NAME"
+      git tag -a "$(LATEST_TAG_NAME)" -m "Release $LAST_TAG_NAME"
       git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --tags
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
