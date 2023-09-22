@@ -18,7 +18,7 @@ steps:
       mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
       git branch -D $(BRANCH_NAME)
-      git push origin --delete $(BRANCH_NAME)
+      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --delete $(BRANCH_NAME)
       git checkout -b $(BRANCH_NAME)
       git remote -v
       git rm -rf .
