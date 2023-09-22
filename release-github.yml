@@ -26,9 +26,9 @@ steps:
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
       git add --all
       git commit -m "Deployment $(Build.BuildNumber)"
-#      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
-#      git tag -a $(LAST_TAG_NAME) -m "Release $LAST_TAG_NAME"
-#      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --tags
+      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
+      git tag -a $(LAST_TAG_NAME) -m "Release $LAST_TAG_NAME"
+      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --tags
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
 
