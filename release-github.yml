@@ -43,5 +43,5 @@ steps:
         php bin/magento s:up && php bin/magento d:m:se production
         php bin/magento ma:d
       EOF
-    displayName: 'Deploying Newly Released Version on lsmag2 Demo Server'
+    displayName: 'Deploying Newly Released Version on Ls Retail lsmag2 Demo Server'
     workingDirectory: $(System.DefaultWorkingDirectory)
