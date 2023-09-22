@@ -1,9 +1,9 @@
 trigger:
   branches:
     include:
-      - master
+      - release
 variables:
-  BRANCH_NAME: master
+  BRANCH_NAME: release
 steps:
   - checkout: self
   - script: |
