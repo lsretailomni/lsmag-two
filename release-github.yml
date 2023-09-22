@@ -38,7 +38,10 @@ steps:
       sudo apt-get install sshpass
       sshpass -p "$(DEMO_SERVER_1_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_1_SSH_USERNAME)@$(DEMO_SERVER_1_SSH_HOSTNAME) << EOF
         cd $(DEMO_SERVER_1_SSH_DIRECTORY_PATH)
-        composer require $(COMPOSER_REPO_NAME)
+        php bin/magento ma:e
+        composer require $(COMPOSER_REPO_NAME) --no-update && composer update $(COMPOSER_REPO_NAME)
+        php bin/magento s:up && php bin/magento d:m:se production
+        php bin/magento ma:d
       EOF
     displayName: 'Deploying Newly Released Version on lsmag2 Demo Server'
     workingDirectory: $(System.DefaultWorkingDirectory)
