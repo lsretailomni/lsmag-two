@@ -1,9 +1,36 @@
 trigger:
   branches:
-    exclude:
-      - '*'
+    include:
+      - release
+variables:
+  BRANCH_NAME: release
 steps:
   - checkout: self
+  - script: |
+      cd /home/vsts/work/1/s/
+      TAG_NAME=$(git describe --abbrev=0 --tags)
+      echo "Latest Tag name $TAG_NAME"
+      echo "##vso[task.setvariable variable=LAST_TAG_NAME;]$TAG_NAME"
+      echo "Latest Tag name $LAST_TAG_NAME"
+    displayName: 'Setting Latest tag name'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+  - script: |
+      mkdir release && cd release
+      git clone https://github.com/$(REPO_NAME).git .
+      git checkout -b $(BRANCH_NAME)
+      git remote -v
+      git rm -rf .
+      git clean -fxd
+      rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
+      git add --all
+      git commit -m "Deployment $(Build.BuildNumber)"
+#      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
+#      git tag -a $(LAST_TAG_NAME) -m "Release $LAST_TAG_NAME"
+#      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --tags
+    displayName: 'Publishing Changes to Github Repository'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
   - script: |
       sudo apt-get install sshpass
       sshpass -p "$(DEMO_SERVER_1_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_1_SSH_USERNAME)@$(DEMO_SERVER_1_SSH_HOSTNAME) << EOF
