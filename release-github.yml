@@ -14,6 +14,8 @@ steps:
       TAG_NAME=$(git describe --abbrev=0 --tags)
       echo "##vso[task.setvariable variable=LATEST_TAG_NAME]$TAG_NAME"
     displayName: 'Finding Latest Tag Name'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
   - script: |
       mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
@@ -36,7 +38,7 @@ steps:
       sudo apt-get install sshpass
       sshpass -p "$(DEMO_SERVER_1_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_1_SSH_USERNAME)@$(DEMO_SERVER_1_SSH_HOSTNAME) << EOF
         cd $(DEMO_SERVER_1_SSH_DIRECTORY_PATH)
-        pwd
+        composer require $(COMPOSER_REPO_NAME)
       EOF
-    displayName: 'Deploying released version on lsmag2 demo server'
+    displayName: 'Deploying Newly Released Version on lsmag2 Demo Server'
     workingDirectory: $(System.DefaultWorkingDirectory)
