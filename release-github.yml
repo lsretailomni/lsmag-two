@@ -6,6 +6,8 @@ variables:
   BRANCH_NAME: release
 steps:
   - checkout: self
+    fetchTags: true
+    fetchDepth: 0
   - script: |
       cd /home/vsts/work/1/s/
       ls -la
