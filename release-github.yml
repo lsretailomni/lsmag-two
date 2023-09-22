@@ -8,17 +8,19 @@ steps:
   - checkout: self
     fetchTags: true
     fetchDepth: 0
-  - script: |
+  - bash: |
       cd /home/vsts/work/1/s/
-      ls -la
-      git tag
       TAG_NAME=$(git describe --abbrev=0 --tags)
       echo "Latest Tag name $TAG_NAME"
-      echo "##vso[task.setvariable variable=LAST_TAG_NAME;isoutput=true]$(git describe --abbrev=0 --tags)"
-      echo "Latest Tag name $(setOutput.LAST_TAG_NAME)"
-    displayName: 'Setting Latest tag name'
+      echo "##vso[task.setvariable variable=LAST_TAG_NAME;]$TAG_NAME"
+      echo "Latest Tag name $LAST_TAG_NAME"
+    name: FooStep
+  - bash: |
+      echo $(FooStep.TAG_NAME)
+    name: NextScript
     workingDirectory: $(System.DefaultWorkingDirectory)
   - script: |
+      echo $(FooStep.TAG_NAME)
       mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
       git checkout -b $(BRANCH_NAME)
