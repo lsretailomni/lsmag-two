@@ -15,7 +15,7 @@ steps:
       echo "##vso[task.setvariable variable=FOO]$TAG_NAME"
   - bash: |
       echo "$(FOO)"
-  - bash: |
+  - script: |
       cd /home/vsts/work/1/s/
       TAG_NAME=$(git describe --abbrev=0 --tags)
       echo "Latest Tag name $TAG_NAME"
@@ -24,6 +24,7 @@ steps:
     displayName: 'Setting Latest tag name'
     workingDirectory: $(System.DefaultWorkingDirectory)
   - script: |
+      echo "$(FOO)"
       mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
       git checkout -b $(BRANCH_NAME)
