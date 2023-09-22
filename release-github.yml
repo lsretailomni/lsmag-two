@@ -9,22 +9,13 @@ steps:
     fetchTags: true
     fetchDepth: 0
 
-  - bash: |
-      cd /home/vsts/work/1/s/
-      TAG_NAME=$(git describe --abbrev=0 --tags)
-      echo "##vso[task.setvariable variable=FOO]$TAG_NAME"
-  - bash: |
-      echo "$(FOO)"
   - script: |
       cd /home/vsts/work/1/s/
       TAG_NAME=$(git describe --abbrev=0 --tags)
-      echo "Latest Tag name $TAG_NAME"
-      echo "##vso[task.setvariable variable=LAST_TAG_NAME;]$TAG_NAME"
-      echo "Latest Tag name $LAST_TAG_NAME"
-    displayName: 'Setting Latest tag name'
-    workingDirectory: $(System.DefaultWorkingDirectory)
+      echo "##vso[task.setvariable variable=LATEST_TAG_NAME]$TAG_NAME"
+    displayName: 'Setting Latest Tag Name'
   - script: |
-      echo "$(FOO)"
+      echo "$(LATEST_TAG_NAME)"
       mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
       git checkout -b $(BRANCH_NAME)
