@@ -43,6 +43,7 @@ No,No
 "Item Replication","Item Replication"
 "Item Category Replication","Item Category Replication"
 "Item Unit Of Measure","Item Unit Of Measure"
+"Item Variant Replication","Item Variant Replication"
 "Item Variant Registration Replication","Item Variant Registration Replication"
 "Item Vendor","Item Vendor"
 "Item Price Replication","Item Price Replication"
@@ -53,9 +54,9 @@ No,No
 "Unit Of Measure","Unit Of Measure"
 Vendor,Vendor
 "Logs ","Logs "
+"File size is too large to render. Please download the file","File size is too large to render. Please download the file"
 "No Data Found File is Empty.","No Data Found File is Empty."
 "File Not Found.","File Not Found."
-"Product Image","Product Image"
 "<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>.","<strong>LS Retail Setup Incomplete</strong><br/>Please define the LS Retail Service Base URL and Web Store to proceed.<br/>Go to <a href=""%1"">Stores > Configuration > LS Retail > General Configuration</a>."
 Default,Default
 "Quantity Unit Of Measure","Quantity Unit Of Measure"
@@ -97,6 +98,7 @@ Barcode,Barcode
 "Extended Variant Value","Extended Variant Value"
 "Image Link","Image Link"
 "Item Variant Registration","Item Variant Registration"
+"Item Variant","Item Variant"
 Hierarchy,Hierarchy
 "Hierarchy Node","Hierarchy Node"
 "Hierarchy Leaf","Hierarchy Leaf"
@@ -107,7 +109,7 @@ Store,Store
 Replication,Replication
 "Replicate All Stores Items","Replicate All Stores Items"
 "Data Translation Language Code","Data Translation Language Code"
-"Manual Cron Grid Default Store","Manual Cron Grid Default Store"
+"Manual Cron Grid Default Website","Manual Cron Grid Default Website"
 "Create attribute sets on the basis of","Create attribute sets on the basis of"
 "Web Service List","Web Service List"
 "Default Batch Size","Default Batch Size"
@@ -120,6 +122,11 @@ Replication,Replication
 "Product Barcode Batch Size","Product Barcode Batch Size"
 "Variant Batch Size","Variant Batch Size"
 "Product Assignment to Category Batch Size","Product Assignment to Category Batch Size"
+"Convert Attributes To Visual Swatch","Convert Attributes To Visual Swatch"
+"Variant Attributes that Convert to Visual Swatch Type","Variant Attributes that Convert to Visual Swatch Type"
+"Cache image content independent of store id","Cache image content independent of store id"
+"Item Image Width","Item Image Width"
+"Item Image Height","Item Image Height"
 "Item Availability","Item Availability"
 "Availability Check","Availability Check"
 "Product Availability in Stores","Product Availability in Stores"
@@ -142,8 +149,7 @@ Status,Status
 Area,Area
 Action,Action
 "Reset Data","Reset Data"
-"All Store Views","All Store Views"
-"Store View","Store View"
+Website,Website
 Code,Code
 Description,Description
 "Failed Status","Failed Status"
@@ -166,6 +172,8 @@ Blocked,Blocked
 Name,Name
 CustomerNo,CustomerNo
 TaxPostGroup,TaxPostGroup
+"All Store Views","All Store Views"
+"Store View","Store View"
 "Language Code","Language Code"
 Key,Key
 Text,Text
@@ -235,6 +243,7 @@ Timestamp,Timestamp
 Indentation,Indentation
 ParentNode,ParentNode
 "Presentation Order","Presentation Order"
+"Image Description","Image Description"
 "Display Order","Display Order"
 "Key Value","Key Value"
 TableName,TableName
@@ -258,9 +267,18 @@ Quantity,Quantity
 "Vendor Id","Vendor Id"
 "Vendor Item Id","Vendor Item Id"
 "Zero Price ValId","Zero Price ValId"
+"Tariff No","Tariff No"
+"Country Of Origin","Country Of Origin"
 "Price Inc.Tax","Price Inc.Tax"
 Order,Order
 "Quantity Per Unit Of Measure","Quantity Per Unit Of Measure"
+Height,Height
+Weight,Weight
+Length,Length
+Width,Width
+Cubage,Cubage
+Description2,Description2
+"Ready To Process","Ready To Process"
 "Variant Dimension 1","Variant Dimension 1"
 "Variant Dimension 2","Variant Dimension 2"
 "Variant Dimension 3","Variant Dimension 3"
