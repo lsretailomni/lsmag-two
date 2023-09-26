@@ -229,7 +229,7 @@ class Data
      */
     public function getNotificationTemplate($notificationType, $orderStatus, $storeId)
     {
-        $template = '';
+        $template = 'ls_mag_webhooks_template_misc';
 
         if ($notificationType == LSR::LS_NOTIFICATION_EMAIL) {
             $config = $this->lsr->getStoreConfig(LSR::LS_EMAIL_NOTIFICATION_ORDER_STATUS, $storeId);
