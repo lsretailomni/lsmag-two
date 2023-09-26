@@ -58,6 +58,11 @@ class ActivityAvailabilityGet implements RequestInterface
     protected $noOfPersons = null;
 
     /**
+     * @property string $guestType
+     */
+    protected $guestType = null;
+
+    /**
      * @param string $locationNo
      * @return $this
      */
@@ -217,6 +222,24 @@ class ActivityAvailabilityGet implements RequestInterface
     public function getNoOfPersons()
     {
         return $this->noOfPersons;
+    }
+
+    /**
+     * @param string $guestType
+     * @return $this
+     */
+    public function setGuestType($guestType)
+    {
+        $this->guestType = $guestType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuestType()
+    {
+        return $this->guestType;
     }
 }
 

@@ -1,32 +1,32 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Magento\Customer\Api\CustomerRepositoryInterface"
-                type="Magento\Customer\Model\ResourceModel\CustomerRepository"/>
     <preference for="Magento\Sales\Block\Order\History"
                 type="Ls\Customer\Block\Order\History"/>
     <preference for="Magento\Checkout\Block\Onepage\Success"
                 type="Ls\Customer\Block\Onepage\Success"/>
-    <preference for="Magento\Sales\Controller\Order\View"
-                type="Ls\Customer\Controller\Sales\Order\View"/>
-    <preference for="Magento\Sales\Controller\Order\PrintAction"
-                type="Ls\Customer\Controller\Sales\Order\PrintAction"/>
-    <preference for="Magento\Sales\Controller\Order\Invoice"
-                type="Ls\Customer\Controller\Sales\Order\Invoice"/>
-    <preference for="Magento\Sales\Controller\Order\PrintInvoice"
-                type="Ls\Customer\Controller\Sales\Order\PrintInvoice"/>
-    <preference for="Magento\Sales\Controller\Order\PrintShipment"
-                type="Ls\Customer\Controller\Sales\Order\PrintShipment"/>
-    <preference for="Magento\Sales\Controller\Order\Shipment"
-                type="Ls\Customer\Controller\Sales\Order\Shipment"/>
-    <preference for="Magento\Sales\Controller\Order\View"
-                type="Ls\Customer\Controller\Sales\Order\View"/>
-    <preference for="Magento\Sales\Controller\Order\View"
-                type="Ls\Customer\Controller\Sales\Order\View"/>
-    <preference for="Magento\Customer\Model\AccountManagement"
-                type="Ls\Customer\Model\AccountManagement"/>
-    <preference for="Magento\Customer\Controller\Account\ForgotPasswordPost"
-                type="Ls\Customer\Controller\Account\ForgotPasswordPost"/>
+    <preference for="Magento\Checkout\Block\Registration"
+                type="Ls\Customer\Block\Registration"/>
+    <type name="Magento\Sales\Controller\AbstractController\View">
+        <plugin name="redirect_plugin"
+                type="Ls\Customer\Plugin\Controller\AbstractController\ViewPlugin"/>
+    </type>
+    <type name="Magento\Sales\Controller\AbstractController\PrintAction">
+        <plugin name="redirect_plugin_order_print"
+                type="Ls\Customer\Plugin\Controller\AbstractController\ViewPlugin"/>
+    </type>
+    <type name="Magento\Sales\Controller\AbstractController\PrintShipment">
+        <plugin name="redirect_plugin_shipment_print"
+                type="Ls\Customer\Plugin\Controller\AbstractController\ViewPlugin"/>
+    </type>
+    <type name="Magento\Sales\Controller\AbstractController\PrintInvoice">
+        <plugin name="redirect_plugin_invoice_print"
+                type="Ls\Customer\Plugin\Controller\AbstractController\ViewPlugin"/>
+    </type>
+    <type name="Magento\Customer\Controller\Account\ForgotPasswordPost">
+        <plugin name="forgot_password_plugin"
+                type="Ls\Customer\Plugin\Controller\Account\ForgotPasswordPostPlugin"/>
+    </type>
     <type name="Magento\Customer\Block\Widget\Telephone">
         <plugin name="module_customer_block_widget_telephone_override_template"
                 type="Ls\Customer\Plugin\Customer\Block\Widget\Telephone"/>
@@ -36,27 +36,77 @@
                 type="Ls\Customer\Plugin\Customer\Block\Widget\Name"/>
     </type>
     <type name="Ls\Customer\Controller\Order\View">
-        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+        <plugin name="authentication"
+                type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
     <type name="Ls\Customer\Controller\Order\Invoice">
-        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+        <plugin name="authentication"
+                type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
     <type name="Ls\Customer\Controller\Order\PrintAction">
-        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+        <plugin name="authentication"
+                type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
     <type name="Ls\Customer\Controller\Order\PrintInvoice">
-        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+        <plugin name="authentication"
+                type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
     <type name="Ls\Customer\Controller\Order\PrintShipment">
-        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+        <plugin name="authentication"
+                type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
     <type name="Ls\Customer\Controller\Order\Shipment">
-        <plugin name="authentication" type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
+        <plugin name="authentication"
+                type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
     <type name="Magento\Bundle\Block\Sales\Order\Items\Renderer">
-        <plugin name="bundle-order-item-renderer" type="Ls\Customer\Plugin\Sales\Order\Items\RendererPlugin"/>
+        <plugin name="bundle-order-item-renderer"
+                type="Ls\Customer\Plugin\Sales\Order\Items\RendererPlugin"/>
     </type>
-    <preference for="Magento\Checkout\Block\Registration"
-                type="Ls\Customer\Block\Registration"/>
+    <type name="Ls\Customer\Block\Order\Recent">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\CustomerRegisterPreDispatchObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\LogoutObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\LoginObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\AccountEditObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\CheckoutRegisterObserver">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\AjaxLoginObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\ResetPasswordObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ls\Customer\Observer\RegisterObserver">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
 </config>
 

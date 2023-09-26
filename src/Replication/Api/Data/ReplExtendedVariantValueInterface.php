@@ -22,6 +22,17 @@ interface ReplExtendedVariantValueInterface
     public function getCode();
 
     /**
+     * @param string $CodeDescription
+     * @return $this
+     */
+    public function setCodeDescription($CodeDescription);
+
+    /**
+     * @return string
+     */
+    public function getCodeDescription();
+
+    /**
      * @param int $DimensionLogicalOrder
      * @return $this
      */
@@ -108,6 +119,17 @@ interface ReplExtendedVariantValueInterface
      * @return string
      */
     public function getValue();
+
+    /**
+     * @param string $ValueDescription
+     * @return $this
+     */
+    public function setValueDescription($ValueDescription);
+
+    /**
+     * @return string
+     */
+    public function getValueDescription();
 
     /**
      * @param string $scope

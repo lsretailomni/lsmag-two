@@ -4,7 +4,7 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use IteratorAggregate;
-use \Ls\Core\Helper\Data as LsHelper;
+use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\OperationInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -48,7 +48,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field for delete */
-    private static $deleteJobCodeUniqueFieldArray = [
+    public static $deleteJobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_item_variant_registration" => [
             "ItemId",
             "VariantDimension1",
@@ -63,7 +63,7 @@ abstract class AbstractReplicationTask
     ];
 
     /** @var array List of Replication Tables with unique field */
-    private static $jobCodeUniqueFieldArray = [
+    public static $jobCodeUniqueFieldArray = [
         "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
         "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
         "ls_mag/replication/repl_attribute_value"            => [
@@ -81,6 +81,7 @@ abstract class AbstractReplicationTask
         "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
         "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
         "ls_mag/replication/repl_html_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_deal_html_translation"      => ["TranslationId", "Key", "LanguageCode", "scope_id"],
         "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
         "ls_mag/replication/repl_discount"                   => [
             "ItemId",
@@ -263,77 +264,45 @@ abstract class AbstractReplicationTask
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_attribute" ||
             $confPath == "ls_mag/replication/repl_attribute_option_value") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE);
         } elseif ($confPath == "ls_mag/replication/repl_extended_variant_value") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT);
         } elseif ($confPath == "ls_mag/replication/repl_item_variant") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_node") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_CATEGORY,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_CATEGORY);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_DISCOUNT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT);
         } elseif ($confPath == "ls_mag/replication/repl_item") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_PRODUCT,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_PRODUCT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_ITEM_UPDATES,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_ITEM_UPDATES);
         } elseif ($confPath == "ls_mag/replication/repl_vendor") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_VENDOR,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR);
         } elseif ($confPath == "ls_mag/replication/repl_loy_vendor_item_mapping") {
-            $this->rep_helper->updateCronStatus(
-                false,
-                LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE,
-                ($storeId) ?: false,
-                false,
-                $this->defaultScope
-            );
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_VENDOR_ATTRIBUTE);
+        }
+    }
+
+    /**
+     * Update all dependent flat to magento crons status
+     *
+     * @param $websiteId
+     * @param $path
+     * @return void
+     */
+    public function updateAllStoresConfigs($websiteId, $path)
+    {
+        foreach ($this->getAllStores() as $store) {
+            if ($store->getWebsiteId() == $websiteId) {
+                $this->rep_helper->updateCronStatus(
+                    false,
+                    $path,
+                    ($store->getId()) ?: false,
+                    false,
+                    ScopeInterface::SCOPE_STORES
+                );
+            }
         }
     }
 
@@ -371,6 +340,7 @@ abstract class AbstractReplicationTask
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         }
+        // phpcs:ignore Magento2.Security.InsecureFunction
         $checksum    = crc32(serialize($source));
         $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
         if (!empty($entityArray)) {
@@ -396,7 +366,7 @@ abstract class AbstractReplicationTask
                     $set_method             = "set$field_name_capitalized";
                     $get_method             = "get$field_name_capitalized";
                 }
-                if (method_exists($entity, $set_method) && method_exists($source, $get_method)) {
+                if ($entity && $source && method_exists($entity, $set_method) && method_exists($source, $get_method)) {
                     $entity->{$set_method}($source->{$get_method}());
                 }
             }
@@ -409,10 +379,11 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Get Properties
+     *
      * @return string[]
-     * @throws ReflectionException
      */
-    final public function getProperties()
+    public function getProperties()
     {
         if ($this->properties == null) {
             // @codingStandardsIgnoreStart
@@ -830,7 +801,7 @@ abstract class AbstractReplicationTask
             $properties = $this->getProperties();
             $response   = $request->execute();
 
-            if (method_exists($response, 'getResult')) {
+            if ($response && method_exists($response, 'getResult')) {
                 $result                 = $response->getResult();
                 $lastKey                = $result->getLastKey();
                 $maxKey                 = $result->getMaxKey();
@@ -888,7 +859,8 @@ abstract class AbstractReplicationTask
 
         if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
             $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
-            $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH
+            $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
+            $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
         ) {
             $this->defaultScope = ScopeInterface::SCOPE_STORES;
         }

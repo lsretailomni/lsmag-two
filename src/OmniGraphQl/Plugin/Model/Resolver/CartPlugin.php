@@ -47,9 +47,10 @@ class CartPlugin
         array $args = null
     ) {
         if (isset($result['model'])) {
-           $quote = $result['model'];
+            $quote = $result['model'];
 
             if ($quote->getBasketResponse()) {
+                // phpcs:ignore Magento2.Security.InsecureFunction
                 $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
             }
         }

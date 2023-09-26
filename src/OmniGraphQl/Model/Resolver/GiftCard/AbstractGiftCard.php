@@ -56,7 +56,7 @@ abstract class AbstractGiftCard implements ResolverInterface
             throw new GraphQlInputException(__('The module is not enabled'));
         }
 
-        if (!isset($args['input']['cart_id']) || empty($args['input']['cart_id'])) {
+        if (empty($args['input']['cart_id'])) {
             throw new GraphQlInputException(__('Required parameter "cartId" is missing'));
         }
 

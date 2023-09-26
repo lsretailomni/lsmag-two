@@ -7,6 +7,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchy;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Class HierarchyCode
@@ -41,6 +42,7 @@ class HierarchyCode implements OptionSourceInterface
 
     /**
      * @return array
+     * @throws NoSuchEntityException
      */
     public function toOptionArray()
     {

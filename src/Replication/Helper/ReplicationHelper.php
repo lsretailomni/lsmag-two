@@ -73,6 +73,7 @@ use Magento\Framework\App\ProductMetadata;
 use Magento\Framework\App\ProductMetadataInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Select;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -2095,16 +2096,6 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * @param string $imageName
-     * @return mixed
-     */
-    public function parseImageIdfromFile($imageName = '')
-    {
-        $imageName = pathinfo($imageName);
-        return $imageName['filename'];
-    }
-
-    /**
      * @return string
      */
     public function getDatetime()
@@ -3032,16 +3023,16 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Getting the inventory type from items table
+     *
      * @param $itemId
-     * @param $storeId
      * @param $scopeId
      * @return \Ls\Replication\Model\ItemType|null
      */
-    public function getInventoryType($itemId, $storeId, $scopeId)
+    public function getInventoryType($itemId, $scopeId)
     {
         $filters = [
-            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'StoreId', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq']
         ];
 
@@ -3231,7 +3222,7 @@ class ReplicationHelper extends AbstractHelper
             ->from(['e' => new \Zend_Db_Expr('(' . $childCollection->getSelect() . ')')]);
         $parentCollection
             ->getSelect()
-            ->reset(\Zend_Db_Select::COLUMNS)
+            ->reset(Select::COLUMNS)
             ->columns($columns);
 
         return $parentCollection;
@@ -3436,7 +3427,7 @@ class ReplicationHelper extends AbstractHelper
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '')
+    public function getProductDataByIdentificationAttributes($itemId, $variantId = '', $uom = '', $storeId = '', $discardUom = false, $returnArray = false)
     {
         $currentStoreId = $this->storeManager->getStore()->getId();
         $searchCriteria = clone $this->searchCriteriaBuilder;
@@ -3464,7 +3455,7 @@ class ReplicationHelper extends AbstractHelper
             if (isset($optionId)) {
                 $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, $optionId);
             }
-        } else {
+        } else if(!$discardUom){
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
@@ -3490,8 +3481,10 @@ class ReplicationHelper extends AbstractHelper
         if ($storeId === 'global') {
             $this->lsr->setStoreId($currentStoreId);
         }
-        if (!empty($productList)) {
+        if (!empty($productList) && !$returnArray) {
             return array_pop($productList);
+        } elseif (!empty($productList) && $returnArray) {
+            return $productList;
         } else {
             throw new NoSuchEntityException();
         }
@@ -3523,31 +3516,21 @@ class ReplicationHelper extends AbstractHelper
      * item manage stock
      *
      * @param $product
-     * @param $itemStock
      * @param $type
      * @return mixed
      */
-    public function manageStock($product, $itemStock, $type)
+    public function manageStock($product, $type)
     {
         $useManageStock = 1;
-        $quantity       = 0;
-        $isInStock      = 0;
 
         if (!empty($type) && $type != ItemType::INVENTORY) {
             $useManageStock = 0;
         }
-        if (!empty($itemStock)) {
-            $isInStock = ($itemStock->getQuantity() > 0) ? 1 : 0;
-            $quantity  = $itemStock->getQuantity();
-        }
 
         $product->setStockData([
-            'use_config_manage_stock' => $useManageStock,
-            'is_in_stock'             => $isInStock,
-            'qty'                     => $quantity
+            'use_config_manage_stock' => $useManageStock
         ]);
 
         return $product;
-
     }
 }

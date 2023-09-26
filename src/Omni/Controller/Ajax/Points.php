@@ -4,9 +4,10 @@ namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session\Proxy;
-use Magento\Framework\App\Action\Action;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -17,7 +18,7 @@ use Magento\Framework\Controller\ResultInterface;
  * Class Points
  * @package Ls\Omni\Controller\Ajax
  */
-class Points extends Action
+class Points implements HttpGetActionInterface
 {
 
     /** @var JsonFactory */
@@ -30,12 +31,12 @@ class Points extends Action
     private $loyaltyHelper;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -44,19 +45,18 @@ class Points extends Action
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param LoyaltyHelper $loyaltyHelper
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerSession $customerSession,
         LoyaltyHelper $loyaltyHelper,
-        Proxy $checkoutSession
+        CheckoutSession $checkoutSession
     ) {
-        parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -65,7 +65,9 @@ class Points extends Action
     }
 
     /**
-     * @return $this|ResponseInterface|ResultInterface
+     * @return ResponseInterface|Json|ResultInterface
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function execute()
     {

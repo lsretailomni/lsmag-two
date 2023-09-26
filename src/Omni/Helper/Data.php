@@ -17,7 +17,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Api\ReplStoreRepositoryInterface;
 use \Ls\Replication\Api\ReplStoreTenderTypeRepositoryInterface;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
@@ -25,6 +25,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\DirectoryList;
+use Magento\Framework\Filesystem\Driver\File;
 use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
@@ -54,7 +55,7 @@ class Data extends AbstractHelper
     public $session;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -108,15 +109,20 @@ class Data extends AbstractHelper
     /**
      * @var GetCartForUser
      */
-    private GetCartForUser $getCartForUser;
+    public GetCartForUser $getCartForUser;
     /**
      * @var MaskedQuoteIdToQuoteIdInterface
      */
-    private MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
+    public MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId;
     /**
      * @var StockHelper
      */
-    private StockHelper $stockHelper;
+    public StockHelper $stockHelper;
+
+    /**
+     * @var File
+     */
+    public File $fileSystemDriver;
 
     /**
      * Data constructor.
@@ -124,7 +130,7 @@ class Data extends AbstractHelper
      * @param ReplStoreRepositoryInterface $storeRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param SessionManagerInterface $session
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param ManagerInterface $messageManager
      * @param \Magento\Framework\Pricing\Helper\Data $priceHelper
      * @param LoyaltyHelper $loyaltyHelper
@@ -138,13 +144,14 @@ class Data extends AbstractHelper
      * @param GetCartForUser $getCartForUser
      * @param MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId
      * @param ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
+     * @param File $fileSystemDriver
      */
     public function __construct(
         Context $context,
         ReplStoreRepositoryInterface $storeRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         SessionManagerInterface $session,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         ManagerInterface $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
         LoyaltyHelper $loyaltyHelper,
@@ -157,7 +164,8 @@ class Data extends AbstractHelper
         StockHelper $stockHelper,
         GetCartForUser $getCartForUser,
         MaskedQuoteIdToQuoteIdInterface $maskedQuoteIdToQuoteId,
-        ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository
+        ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository,
+        File $fileSystemDriver
     ) {
         $this->storeRepository               = $storeRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
@@ -176,6 +184,7 @@ class Data extends AbstractHelper
         $this->getCartForUser                = $getCartForUser;
         $this->stockHelper                   = $stockHelper;
         $this->replStoreTenderTypeRepository = $storeTenderTypeRepository;
+        $this->fileSystemDriver              = $fileSystemDriver;
         parent::__construct($context);
     }
 
@@ -455,6 +464,10 @@ class Data extends AbstractHelper
                     $versions = explode('OMNI:', $results[1]);
                 }
 
+                if (!empty($versions) && count($versions) < 2) {
+                    $versions = explode('CS:', $results[1]);
+                }
+
                 if (!empty($versions)) {
                     $serviceVersion                 = trim($versions[1]);
                     $bothVersion['service_version'] = $serviceVersion;
@@ -484,7 +497,9 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @return mixed
+     * Get Extension version
+     *
+     * @return mixed|void
      */
     public function getExtensionVersion()
     {
@@ -495,7 +510,7 @@ class Data extends AbstractHelper
             $modulePathApp    = $path . "/" . LSR::EXTENSION_COMPOSER_PATH_APP;
             if ($modulePathVendor) {
                 try {
-                    $content = file_get_contents($modulePathVendor);
+                    $content = $this->fileSystemDriver->fileGetContents($modulePathVendor);
                 } catch (Exception $e) {
                     $this->_logger->debug($e->getMessage());
                 }
@@ -508,7 +523,7 @@ class Data extends AbstractHelper
                 }
                 if (empty($content)) {
                     try {
-                        $content = file_get_contents($modulePathApp);
+                        $content = $this->fileSystemDriver->fileGetContents($modulePathApp);
                     } catch (Exception $e) {
                         $this->_logger->debug($e->getMessage());
                     }
@@ -535,19 +550,24 @@ class Data extends AbstractHelper
      */
     public function omniPing($baseUrl, $lsKey)
     {
-        //@codingStandardsIgnoreStart
-        $result       = null;
-        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type, $baseUrl);
-        $client       = new OmniClient($url, $service_type);
-        $ping         = new Ping();
-        //@codingStandardsIgnoreEnd
-        $ping->setClient($client);
-        $ping->setToken($lsKey);
-        $client->setClassmap($ping->getClassMap());
-        $result = $ping->execute();
-        if (!empty($result)) {
-            return $result->getResult();
+        $result = null;
+        try {
+            //@codingStandardsIgnoreStart
+            $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
+            $url          = OmniService::getUrl($service_type, $baseUrl);
+            $client       = new OmniClient($url, $service_type);
+            $ping         = new Ping();
+            //@codingStandardsIgnoreEnd
+            $ping->setClient($client);
+            $ping->setToken($lsKey);
+            $client->setClassmap($ping->getClassMap());
+            $result = $ping->execute();
+            if (!empty($result)) {
+                return $result->getResult();
+            }
+
+        } catch (Exception $e) {
+            $this->_logger->debug($e->getMessage());
         }
 
         return $result;
@@ -676,7 +696,7 @@ class Data extends AbstractHelper
     public function getTenderTypesPaymentMapping()
     {
         $storeTenderTypes     = [];
-        $scopeId              = $this->lsr->getCurrentStoreId();
+        $scopeId              = $this->lsr->getCurrentWebsiteId();
         $storeTenderTypeArray = $this->getTenderTypes($scopeId);
         if (empty($storeTenderTypeArray)) {
             $storeTenderTypeArray = $this->getTenderTypesDirectly($scopeId);
@@ -737,12 +757,18 @@ class Data extends AbstractHelper
             if ($lsKey == null) {
                 $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
             }
-            $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
-            $result  = $request->execute();
 
-            if ($result != null) {
-                $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
+            try {
+                $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
+                $result  = $request->execute();
+
+                if ($result != null) {
+                    $result = $result->getResult()->getStoreTenderTypes()->getReplStoreTenderType();
+                }
+            } catch (Exception $e) {
+                $this->_logger->critical($e->getMessage());
             }
+
         }
 
         return $result;

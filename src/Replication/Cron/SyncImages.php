@@ -237,7 +237,8 @@ class SyncImages extends ProductCreateTask
         $encodedImages = [];
         try {
             $encodedImages = $this->getMediaGalleryEntries(
-                $imagesToUpdate->getItems()
+                $imagesToUpdate->getItems(),
+                $productData
             );
         } catch (Exception $e) {
             $this->logger->debug(
@@ -250,64 +251,62 @@ class SyncImages extends ProductCreateTask
             $this->logger->debug($e->getMessage());
         }
 
-        if (!empty($encodedImages)) {
-            try {
-                $base64Images = [];
-                foreach ($encodedImages as $encodedImage) {
-                    if (!($encodedImage instanceof Entry)) {
-                        try {
-                            $this->imageService->execute(
-                                $productData,
-                                $encodedImage['location'],
-                                $encodedImage['repl_image_link_id'],
-                                false,
-                                $encodedImage['types']
-                            );
-                        } catch (Exception $e) {
-                            $this->logger->debug(
-                                sprintf(
-                                    'Exception happened in %s for store: %s',
-                                    __METHOD__,
-                                    $this->store->getName()
-                                )
-                            );
-                            $this->logger->debug($e->getMessage());
-                            continue;
-                        }
-                    } else {
-                        $base64Images[] = $encodedImage;
+        try {
+            $base64Images = [];
+            foreach ($encodedImages as $encodedImage) {
+                if (!($encodedImage instanceof Entry)) {
+                    try {
+                        $this->imageService->execute(
+                            $productData,
+                            $encodedImage['location'],
+                            $encodedImage['repl_image_link_id'],
+                            false,
+                            $encodedImage['types']
+                        );
+                    } catch (Exception $e) {
+                        $this->logger->debug(
+                            sprintf(
+                                'Exception happened in %s for store: %s',
+                                __METHOD__,
+                                $this->store->getName()
+                            )
+                        );
+                        $this->logger->debug($e->getMessage());
+                        continue;
                     }
+                } else {
+                    $base64Images[] = $encodedImage;
                 }
-
-                $updatedMediaGallery['images'] = [];
-                $formattedImages = $this->convertToRequiredFormat($base64Images);
-                foreach ($productData->getMediaGallery()['images'] as $i => $image) {
-                    if (!isset($image['value_id'])) {
-                        $formattedImages[] = $image;
-                    } else {
-                        $updatedMediaGallery['images'][$i] = $image;
-                    }
-                }
-
-                $productData->setMediaGallery($updatedMediaGallery);
-
-                $this->mediaGalleryProcessor->processMediaGallery(
-                    $productData,
-                    $formattedImages
-                );
-                $this->updateHandlerFactory->create()->execute($productData);
-
-                $this->removeNoSelection($productData);
-            } catch (Exception $e) {
-                $this->logger->debug(
-                    sprintf(
-                        'Exception happened in %s for store: %s',
-                        __METHOD__,
-                        $this->store->getName()
-                    )
-                );
-                $this->logger->debug($e->getMessage());
             }
+
+            $updatedMediaGallery['images'] = [];
+            $formattedImages = $this->convertToRequiredFormat($base64Images);
+            foreach ($productData->getMediaGallery()['images'] as $i => $image) {
+                if (!isset($image['value_id'])) {
+                    $formattedImages[] = $image;
+                } else {
+                    $updatedMediaGallery['images'][$i] = $image;
+                }
+            }
+
+            $productData->setMediaGallery($updatedMediaGallery);
+
+            $this->mediaGalleryProcessor->processMediaGallery(
+                $productData,
+                $formattedImages
+            );
+            $this->updateHandlerFactory->create()->execute($productData);
+
+            $this->removeNoSelection($productData);
+        } catch (Exception $e) {
+            $this->logger->debug(
+                sprintf(
+                    'Exception happened in %s for store: %s',
+                    __METHOD__,
+                    $this->store->getName()
+                )
+            );
+            $this->logger->debug($e->getMessage());
         }
     }
 
@@ -609,6 +608,8 @@ class SyncImages extends ProductCreateTask
             $criteria,
             'Item'
         );
+        $websiteId = $this->store->getWebsiteId();
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
         $collection->getSelect()->order('main_table.processed ASC');
 
         $query = $collection->getSelect()->__toString();

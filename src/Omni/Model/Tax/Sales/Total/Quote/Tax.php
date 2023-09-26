@@ -110,12 +110,10 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
         } else {
             $taxAmount = 0;
         }
-        $result = null;
-        $result = [
+        return [
             'code'  => $this->getCode(),
             'title' => __('Tax (Inclusive Total)'),
             'value' => $taxAmount,
         ];
-        return $result;
     }
 }

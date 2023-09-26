@@ -11,7 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
@@ -30,6 +30,7 @@ use Magento\Customer\Model\Group;
 use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollection;
 use Magento\Customer\Model\ResourceModel\Group\Collection;
 use Magento\Customer\Model\ResourceModel\Group\CollectionFactory;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\Country;
 use Magento\Directory\Model\CountryFactory;
 use Magento\Directory\Model\RegionFactory;
@@ -85,7 +86,7 @@ class ContactHelper extends AbstractHelper
     /** @var AddressRepositoryInterface */
     public $addressRepository;
 
-    /** @var \Magento\Customer\Model\Session\Proxy */
+    /** @var CustomerSession */
     public $customerSession;
 
     /** @var null */
@@ -112,7 +113,7 @@ class ContactHelper extends AbstractHelper
     /** @var Registry */
     public $registry;
 
-    /** @var Proxy */
+    /** @var CheckoutSession */
     public $checkoutSession;
 
     /** @var Country */
@@ -199,7 +200,7 @@ class ContactHelper extends AbstractHelper
      * @param RegionInterfaceFactory $regionFactory
      * @param AddressRepositoryInterface $addressRepository
      * @param CustomerFactory $customerFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param CountryFactory $countryFactory
      * @param CollectionFactory $customerGroupColl
      * @param GroupRepositoryInterface $groupRepository
@@ -207,7 +208,7 @@ class ContactHelper extends AbstractHelper
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param Registry $registry
      * @param Country $country
      * @param RegionFactory $region
@@ -235,7 +236,7 @@ class ContactHelper extends AbstractHelper
         RegionInterfaceFactory $regionFactory,
         AddressRepositoryInterface $addressRepository,
         CustomerFactory $customerFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerSession $customerSession,
         CountryFactory $countryFactory,
         CollectionFactory $customerGroupColl,
         GroupRepositoryInterface $groupRepository,
@@ -243,7 +244,7 @@ class ContactHelper extends AbstractHelper
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         Registry $registry,
         Country $country,
         RegionFactory $region,
@@ -404,7 +405,7 @@ class ContactHelper extends AbstractHelper
             // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
             $search->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
             try {
-                $response    = $request->execute($search);
+                $response = $request->execute($search);
                 if ($response) {
                     $contact_pos = $response->getContactGetResult();
                 }
@@ -547,7 +548,7 @@ class ContactHelper extends AbstractHelper
     {
         $response = null;
         // @codingStandardsIgnoreStart
-        $alternate_id  = 'LSM' . str_pad(md5(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
+        $alternate_id  = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
         $request       = new Operation\ContactCreate();
         $contactCreate = new Entity\ContactCreate();
         $contact       = new MemberContact();
@@ -566,6 +567,24 @@ class ContactHelper extends AbstractHelper
             ->setPassword($password)
             ->setUserName($customer->getData('lsr_username'))
             ->setAddresses([]);
+
+        if (!empty($customer->getData('gender'))) {
+            $genderValue = '';
+            if ($customer->getData('gender') == 1) {
+                $genderValue = Entity\Enum\Gender::MALE;
+            } else if ($customer->getData('gender') == 2) {
+                $genderValue = Entity\Enum\Gender::FEMALE;
+            } else if ($customer->getData('gender') == 3) {
+                $genderValue = Entity\Enum\Gender::UNKNOWN;
+            }
+            $contact->setGender($genderValue);
+        }
+
+        if (!empty($customer->getData('dob'))) {
+            $dob = $this->date->date("Y-m-d\T00:00:00", $customer->getData('dob'));
+            $contact->setBirthDay($dob);
+        }
+
         $contactCreate->setContact($contact);
         try {
             $response = $request->execute($contactCreate);
@@ -1052,15 +1071,15 @@ class ContactHelper extends AbstractHelper
         }
         try {
             foreach ($itemsCollection as $item) {
-                $buyRequest        = [];
-                $sku               = $item->getItemId();
-                $product           = $this->itemHelper->getProductByIdentificationAttributes($sku);
+                $buyRequest = [];
+                $sku        = $item->getItemId();
+                $product    = $this->itemHelper->getProductByIdentificationAttributes($sku);
 
                 if ($product) {
                     $qty               = $item->getQuantity();
                     $buyRequest['qty'] = $qty;
                     if ($item->getVariantId()) {
-                        $simProduct                    = $this->itemHelper->getProductByIdentificationAttributes(
+                        $simProduct = $this->itemHelper->getProductByIdentificationAttributes(
                             $item->getItemId(),
                             $item->getVariantId()
                         );
@@ -1150,6 +1169,7 @@ class ContactHelper extends AbstractHelper
             ->loadByEmail($customer_email);
         $this->authentication($customer, $websiteId);
         $customer         = $this->setCustomerAttributesValues($result, $customer);
+        $customer         = $this->setCustomerAdditionalValues($result, $customer);
         $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
         $validatePassword = $this->encryptorInterface->validateHash(
             $credentials['password'],
@@ -1461,6 +1481,8 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Set customer attribute values
+     *
      * @param MemberContact $contact
      * @param Customer $customer
      * @return mixed
@@ -1472,13 +1494,6 @@ class ContactHelper extends AbstractHelper
     public function setCustomerAttributesValues($contact, $customer)
     {
         $customer->setData('lsr_id', $contact->getId());
-        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00') {
-            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
-        }
-        if (!empty($contact->getGender())) {
-            $genderValue = ($contact->getGender() == Entity\Enum\Gender::MALE) ? 1 : (($contact->getGender() == Entity\Enum\Gender::FEMALE) ? 2 : '');
-            $customer->setData('gender', $genderValue);
-        }
         if (!empty($contact->getUserName())) {
             $customer->setData('lsr_username', $contact->getUserName());
         }
@@ -1501,6 +1516,39 @@ class ContactHelper extends AbstractHelper
             $customer->setGroupId($customerGroupId);
             $this->customerSession->setCustomerGroupId($customerGroupId);
         }
+
+        return $customer;
+    }
+
+    /**
+     * Saving additional customer values
+     *
+     * @param MemberContact $contact
+     * @param Customer $customer
+     * @return mixed
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function setCustomerAdditionalValues($contact, $customer)
+    {
+        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00'
+            && $contact->getBirthDay() != '1900-01-01T00:00:00') {
+            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
+        }
+        if (!empty($contact->getGender())) {
+            $genderValue = '';
+            if ($contact->getGender() == Entity\Enum\Gender::MALE) {
+                $genderValue = 1;
+            } else if ($contact->getGender() == Entity\Enum\Gender::FEMALE) {
+                $genderValue = 2;
+            } else if ($contact->getGender() == Entity\Enum\Gender::UNKNOWN) {
+                $genderValue = 3;
+            }
+            $customer->setData('gender', $genderValue);
+        }
+
         return $customer;
     }
 

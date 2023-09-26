@@ -19,7 +19,6 @@ class Configurable
         foreach ($subject->getAllowProducts() as $simpleProduct) {
             $jsonResult['uomQty'][$simpleProduct->getId()] = (int)$simpleProduct->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
         }
-        $result = json_encode($jsonResult);
-        return $result;
+        return json_encode($jsonResult);
     }
 }

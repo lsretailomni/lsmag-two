@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Session\Proxy;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
@@ -31,7 +31,7 @@ class LoginObserver implements ObserverInterface
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var Proxy */
+    /** @var CustomerSession */
     private $customerSession;
 
     /** @var RedirectInterface */
@@ -48,7 +48,7 @@ class LoginObserver implements ObserverInterface
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
      * @param LoggerInterface $logger
-     * @param Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
      * @param LSR $LSR
@@ -57,7 +57,7 @@ class LoginObserver implements ObserverInterface
         ContactHelper $contactHelper,
         ManagerInterface $messageManager,
         LoggerInterface $logger,
-        Proxy $customerSession,
+        CustomerSession $customerSession,
         RedirectInterface $redirectInterface,
         ActionFlag $actionFlag,
         LSR $LSR

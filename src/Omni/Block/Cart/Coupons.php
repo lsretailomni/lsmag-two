@@ -7,8 +7,8 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Checkout\Block\Cart\Coupon;
-use Magento\Checkout\Model\Session\Proxy as CheckoutProxy;
-use Magento\Customer\Model\Session\Proxy as CustomerProxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -44,8 +44,8 @@ class Coupons extends Coupon
     /**
      * Coupons constructor.
      * @param Context $context
-     * @param CustomerProxy $customerSession
-     * @param CheckoutProxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
      * @param LSR $lsr
@@ -54,15 +54,14 @@ class Coupons extends Coupon
      */
     public function __construct(
         Context $context,
-        CustomerProxy $customerSession,
-        CheckoutProxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
         array $data = []
     ) {
-        $this->_isScopePrivate   = true;
         $this->loyaltyHelper     = $loyaltyHelper;
         $this->timeZoneInterface = $timeZoneInterface;
         $this->scopeConfig       = $scopeConfig;

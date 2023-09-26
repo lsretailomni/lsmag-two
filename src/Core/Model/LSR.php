@@ -2,7 +2,7 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Core\Helper\Data;
+use \Ls\Core\Model\Data;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -10,8 +10,6 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
-use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
 
 /**
  * LSR Model
@@ -213,6 +211,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL = 'ls_mag/loyalty/username_search_by_api';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL = 'ls_mag/loyalty/email_search_by_api';
     const SC_LOYALTY_CUSTOMER_REGISTRATION_CONTACT_BY_CARD_ID_API_CALL = 'ls_mag/loyalty/get_contact_by_card_id_api';
+    const SC_LOYALTY_POINTS_EXPIRY_CHECK = 'ls_mag/loyalty/enable_loyalty_points_expiry_check';
+    const SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL = 'ls_mag/loyalty/loyalty_points_expiry_interval';
     const SC_ORDER_CANCELLATION_PATH = 'ls_mag/loyalty/allow_order_cancellation';
     const SC_MASTER_PASSWORD = 'ls_mag/loyalty/master_password';
 
@@ -353,13 +353,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Store Hours Format
     const STORE_HOURS_TIME_FORMAT_12HRS = 'h:i A';
     const STORE_HOURS_TIME_FORMAT_24HRS = 'H:i';
-    //LS Recommendation
-    const LS_RECOMMEND_ACTIVE = 'ls_mag/ls_recommend/active';
-    const LS_RECOMMEND_SHOW_ON_PRODUCT = 'ls_mag/ls_recommend/product';
-    const LS_RECOMMEND_SHOW_ON_CART = 'ls_mag/ls_recommend/cart';
-    const LS_RECOMMEND_SHOW_ON_CHECKOUT = 'ls_mag/ls_recommend/checkout';
-    const LS_RECOMMEND_SHOW_ON_HOME = 'ls_mag/ls_recommend/home';
-    const LS_RECOMMEND_PRODUCT_COUNT = 'ls_mag/ls_recommend/productcount';
 
     //Coupons
     const LS_ENABLE_COUPON_ELEMENTS = 'ls_mag/ls_coupons/active';
@@ -394,7 +387,6 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
-    const PRODUCT_RECOMMENDATION_BLOCK_CACHE = 'LS_PRODUCT_RECOMMENDATION_';
     const POINTRATE = 'LS_POINT_RATE_';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
@@ -467,6 +459,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const LS_UOM_ATTRIBUTE = 'lsr_uom';
     const LS_UOM_ATTRIBUTE_QTY = 'lsr_uom_qty';
+    const LS_UOM_ATTRIBUTE_HEIGHT = 'lsr_uom_height';
+    const LS_UOM_ATTRIBUTE_LENGTH = 'lsr_uom_length';
+    const LS_UOM_ATTRIBUTE_WIDTH = 'lsr_uom_width';
+    const LS_UOM_ATTRIBUTE_CUBAGE = 'lsr_uom_cubage';
 
     const LS_VENDOR_ATTRIBUTE = 'lsr_vendor';
     const LS_ITEM_VENDOR_ATTRIBUTE = 'lsr_item_vendor';
@@ -477,12 +473,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_VARIANT_ID_ATTRIBUTE_CODE = 'lsr_variant_id';
     const LS_VARIANT_ID_ATTRIBUTE_LABEL = 'Variant ID';
 
+    const LS_TARIFF_NO_ATTRIBUTE_CODE = 'lsr_tariff_no';
+    const LS_TARIFF_NO_ATTRIBUTE_LABEL = 'Tariff No';
+
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
 
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
+
+    // @codingStandardsIgnoreStart
     const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
+    // @codingStandardsIgnoreEnd
 
     /**
      * @var ScopeConfigInterface
@@ -507,7 +509,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * @var Data
      */
-    public $coreHelper;
+    public $data;
 
     /**
      * @var null
@@ -519,25 +521,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public $validateBaseUrlStoreId = null;
 
-    /** @var ConfigCollectionFactory */
-    public $configDataCollectionFactory;
-
     /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
-     * @param Data $coreHelper
-     * @param ConfigCollectionFactory $configDataCollectionFactory
+     * @param \Ls\Core\Model\Data $data
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         StoreManagerInterface $storeManager,
-        Data $coreHelper,
-        ConfigCollectionFactory $configDataCollectionFactory
+        Data $data
     ) {
         $this->scopeConfig                 = $scopeConfig;
         $this->storeManager                = $storeManager;
-        $this->coreHelper                  = $coreHelper;
-        $this->configDataCollectionFactory = $configDataCollectionFactory;
+        $this->data                        = $data;
     }
 
     /**
@@ -566,15 +562,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
     {
-        /** @var ConfigDataCollection $configDataCollection */
-        $configDataCollection = $this->configDataCollectionFactory->create();
-        $configDataCollection->addFieldToFilter('scope', $scope);
-        $configDataCollection->addFieldToFilter('scope_id', $scopeId);
-        $configDataCollection->addFieldToFilter('path', $path);
-        if ($configDataCollection->count() !== 0) {
-            return $configDataCollection->getFirstItem()->getValue();
-        }
-        return null;
+        return $this->data->getConfigValueFromDb($path, $scope, $scopeId);
     }
 
     /**
@@ -607,7 +595,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return false;
         }
         $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-        return $this->coreHelper->isEndpointResponding($url);
+        return $this->data->isEndpointResponding($url);
     }
 
     /**
@@ -988,5 +976,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         ];
 
         return $colorCodes;
+    }
+
+    /**
+     * Getting current store currency code
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getStoreCurrencyCode()
+    {
+        return $this->storeManager->getStore($this->getCurrentStoreId())->getCurrentCurrencyCode();
     }
 }

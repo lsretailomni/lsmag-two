@@ -49,7 +49,6 @@ class SectionLoadControllerPlugin
     public function beforeExecute(Load $subject)
     {
         $hasMessages     = 0;
-        $updateSectionId = $this->request->getParam('update_section_id');
         $sections        = $this->request->getParam('sections');
         foreach ($this->additionalSessions as $session) {
             if ($session instanceof Session) {

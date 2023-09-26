@@ -3,7 +3,8 @@
 namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Omni\Helper\GiftCardHelper;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\Json;
@@ -17,7 +18,7 @@ use Magento\Framework\Pricing\Helper\Data;
  * Class CheckGiftCardBalance
  * @package Ls\Omni\Controller\Ajax
  */
-class CheckGiftCardBalance extends Action
+class CheckGiftCardBalance implements HttpPostActionInterface
 {
 
     /** @var JsonFactory */
@@ -37,25 +38,32 @@ class CheckGiftCardBalance extends Action
     public $priceHelper;
 
     /**
+     * @var RequestInterface
+     */
+    public RequestInterface $request;
+
+    /**
      * CheckGiftCardBalance constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
      * @param GiftCardHelper $giftCardHelper
      * @param Data $priceHelper
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
         GiftCardHelper $giftCardHelper,
-        Data $priceHelper
+        Data $priceHelper,
+        RequestInterface $request
     ) {
-        parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->giftCardHelper    = $giftCardHelper;
         $this->priceHelper       = $priceHelper;
+        $this->request           = $request;
     }
 
     /**
@@ -66,12 +74,13 @@ class CheckGiftCardBalance extends Action
         $httpBadRequestCode = 400;
         /** @var Raw $resultRaw */
         $resultRaw = $this->resultRawFactory->create();
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        $isPost    = $this->request->isPost();
+        if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
         /** @var Json $resultJson */
         $resultJson   = $this->resultJsonFactory->create();
-        $post         = $this->getRequest()->getContent();
+        $post         = $this->request->getContent();
         $postData     = json_decode($post);
         $giftCardCode = $postData->gift_card_code;
         $data         = [];
@@ -109,7 +118,5 @@ class CheckGiftCardBalance extends Action
             ];
             return $resultJson->setData($response);
         }
-
-        return $resultJson->setData($response);
     }
 }

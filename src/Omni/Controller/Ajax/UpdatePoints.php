@@ -7,8 +7,10 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Checkout\Model\Session\Proxy;
-use Magento\Framework\App\Action\Action;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -22,7 +24,7 @@ use Magento\Quote\Model\Quote;
  * Class UpdatePoints
  * @package Ls\Omni\Controller\Ajax
  */
-class UpdatePoints extends Action
+class UpdatePoints implements HttpPostActionInterface
 {
 
     /** @var JsonFactory */
@@ -40,12 +42,12 @@ class UpdatePoints extends Action
     public $basketHelper;
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
     /**
-     * @var \Magento\Customer\Model\Session\Proxy
+     * @var CustomerSession
      */
     public $customerSession;
 
@@ -60,29 +62,35 @@ class UpdatePoints extends Action
     public $data;
 
     /**
+     * @var RequestInterface
+     */
+    public RequestInterface $request;
+
+    /**
      * UpdatePoints constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
-     * @param \Magento\Customer\Model\Session\Proxy $customerSession
+     * @param CustomerSession $customerSession
      * @param LoyaltyHelper $loyaltyHelper
      * @param BasketHelper $basketHelper
      * @param Data $data
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param CartRepositoryInterface $cartRepository
+     * @param RequestInterface $request
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
         RawFactory $resultRawFactory,
-        \Magento\Customer\Model\Session\Proxy $customerSession,
+        CustomerSession $customerSession,
         LoyaltyHelper $loyaltyHelper,
         BasketHelper $basketHelper,
         Data $data,
-        Proxy $checkoutSession,
-        CartRepositoryInterface $cartRepository
+        CheckoutSession $checkoutSession,
+        CartRepositoryInterface $cartRepository,
+        RequestInterface $request
     ) {
-        parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->resultRawFactory  = $resultRawFactory;
         $this->loyaltyHelper     = $loyaltyHelper;
@@ -91,6 +99,7 @@ class UpdatePoints extends Action
         $this->cartRepository    = $cartRepository;
         $this->basketHelper      = $basketHelper;
         $this->data              = $data;
+        $this->request           = $request;
     }
 
     /**
@@ -102,7 +111,8 @@ class UpdatePoints extends Action
     {
         $httpBadRequestCode = 400;
         $resultRaw          = $this->resultRawFactory->create();
-        if ($this->getRequest()->getMethod() !== 'POST' || !$this->getRequest()->isXmlHttpRequest()) {
+        $isPost             = $this->request->isPost();
+        if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
 
@@ -114,7 +124,7 @@ class UpdatePoints extends Action
             ];
             return $resultJson->setData($response);
         }
-        $post          = $this->getRequest()->getContent();
+        $post          = $this->request->getContent();
         $postData      = json_decode($post);
         $loyaltyPoints = (float)$postData->loyaltyPoints;
         $isPointValid  = $this->loyaltyHelper->isPointsAreValid($loyaltyPoints);

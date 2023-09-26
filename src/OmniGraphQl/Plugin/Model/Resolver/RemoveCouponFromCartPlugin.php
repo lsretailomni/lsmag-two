@@ -52,7 +52,7 @@ class RemoveCouponFromCartPlugin
         array $value = null,
         array $args = null
     ) {
-        if (isset($result['cart']) && isset($result['cart']['model'])) {
+        if (isset($result['cart']['model'])) {
             $maskedCartId             = $args['input']['cart_id'];
             $currentUserId            = $context->getUserId();
             $storeId                  = (int)$context->getExtensionAttributes()->getStore()->getId();

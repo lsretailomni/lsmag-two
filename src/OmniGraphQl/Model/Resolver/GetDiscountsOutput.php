@@ -3,7 +3,6 @@
 namespace Ls\OmniGraphQl\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Block\Product\View\View;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
@@ -11,16 +10,15 @@ use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffersGetByCardIdResponse;
 use \Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use \Ls\Omni\Plugin\App\Action\Context;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Catalog\Helper\Image;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\Http\Context as HttpContext;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -34,98 +32,108 @@ use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\App\Emulation;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Pricing\Helper\Data as PriceHelper;
-
+use Psr\Log\LoggerInterface;
 
 /**
  * To get discounts in product view page in graphql
  */
-class GetDiscountsOutput extends View implements ResolverInterface
+class GetDiscountsOutput implements ResolverInterface
 {
     /**
      * @var LSR
      */
-    public $lsr;
+    public LSR $lsr;
 
     /**
      * @var LoyaltyHelper
      */
+    public LoyaltyHelper $loyaltyHelper;
 
-    private $loyaltyHelper;
-    /**
-     * @var PageFactory
-     */
-
-    private PageFactory $resultPageFactory;
-    /**
-     * @var HttpContext
-     */
-
-    private HttpContext $httpContext;
     /**
      * @var CustomerFactory
      */
+    public CustomerFactory $customerFactory;
 
-    private CustomerFactory $customerFactory;
+    /**
+     * @var PageFactory
+     */
+    public PageFactory $resultPageFactory;
+
     /**
      * @var StoreManagerInterface
      */
-
-    private StoreManagerInterface $storeManager;
+    public StoreManagerInterface $storeManager;
 
     /**
      * @var ItemHelper
      */
-    private $itemHelper;
+    public ItemHelper $itemHelper;
 
     /**
      * @var Image
      */
-    private Image $imageHelper;
+    public Image $imageHelper;
 
-    /**
-     * @var PriceCurrencyInterface
-     */
-    protected $priceCurrency;
-
-    /**
-     * @var ScopeConfigInterface
-     */
-    private ScopeConfigInterface $scopeConfig;
-
-    /**
-     * @var Http
-     */
-    private Http $request;
-
-    /**
-     * @var \Magento\Store\Model\App\Emulation
-     */
-    protected $appEmulation;
-
-    /**
-     * @var DataHelper
-     */
-    public DataHelper $dataHelper;
     /**
      * @var PriceHelper
      */
     public PriceHelper $priceHelper;
+
     /**
      * @var TimezoneInterface
      */
     public TimezoneInterface $timeZoneInterface;
 
     /**
+     * @var PriceCurrencyInterface
+     */
+    public PriceCurrencyInterface $priceCurrency;
+
+    /**
+     * @var ScopeConfigInterface
+     */
+    public ScopeConfigInterface $scopeConfig;
+
+    /**
+     * @var Session
+     */
+    public Session $customerSession;
+
+    /**
+     * @var Http
+     */
+    public Http $request;
+
+    /**
+     * @var DataHelper
+     */
+    public DataHelper $dataHelper;
+
+    /**
+     * @var Emulation
+     */
+    public Emulation $appEmulation;
+
+    /**
+     * @var LoggerInterface
+     */
+    public LoggerInterface $logger;
+
+    /**
+     * @var ContactHelper
+     */
+    public ContactHelper $contactHelper;
+
+    /**
      * @param LSR $lsr
      * @param LoyaltyHelper $loyaltyHelper
      * @param PageFactory $resultPageFactory
-     * @param HttpContext $httpContext
      * @param CustomerFactory $customerFactory
      * @param StoreManagerInterface $storeManager
      * @param ItemHelper $itemHelper
      * @param Image $imageHelper
-
      * @param PriceHelper $priceHelper
+     * @param ContactHelper $contactHelper
      * @param PriceCurrencyInterface $priceCurrency
      * @param TimezoneInterface $timeZoneInterface
      * @param ScopeConfigInterface $scopeConfig
@@ -133,29 +141,30 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * @param Http $request
      * @param Emulation $appEmulation
      * @param DataHelper $dataHelper
+     * @param LoggerInterface $logger
      */
     public function __construct(
         LSR $lsr,
         LoyaltyHelper $loyaltyHelper,
         PageFactory $resultPageFactory,
-        HttpContext $httpContext,
         CustomerFactory $customerFactory,
         StoreManagerInterface $storeManager,
         ItemHelper $itemHelper,
         Image $imageHelper,
         PriceHelper $priceHelper,
+        ContactHelper $contactHelper,
         PriceCurrencyInterface $priceCurrency,
         TimezoneInterface $timeZoneInterface,
         ScopeConfigInterface $scopeConfig,
         Session $customerSession,
         Http $request,
         Emulation $appEmulation,
-        DataHelper $dataHelper
+        DataHelper $dataHelper,
+        LoggerInterface $logger
     ) {
         $this->lsr               = $lsr;
         $this->loyaltyHelper     = $loyaltyHelper;
         $this->resultPageFactory = $resultPageFactory;
-        $this->httpContext       = $httpContext;
         $this->customerFactory   = $customerFactory;
         $this->storeManager      = $storeManager;
         $this->itemHelper        = $itemHelper;
@@ -168,6 +177,8 @@ class GetDiscountsOutput extends View implements ResolverInterface
         $this->request           = $request;
         $this->appEmulation      = $appEmulation;
         $this->dataHelper        = $dataHelper;
+        $this->logger            = $logger;
+        $this->contactHelper     = $contactHelper;
     }
 
     /**
@@ -207,8 +218,10 @@ class GetDiscountsOutput extends View implements ResolverInterface
     }
 
     /**
+     * Get proactive discounts
+     *
      * @param $itemId
-     * @return array|DiscountsGetResponse|ProactiveDiscount|ResponseInterface|null
+     * @return array|DiscountsGetResponse|ResponseInterface|null
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -241,29 +254,25 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $sku
      * @return array|bool|PublishedOffer[]|PublishedOffersGetByCardIdResponse|ResponseInterface
-     * @throws NoSuchEntityException
      */
     public function getCoupons($sku)
     {
         $itemId = $sku;
         try {
             $storeId = $this->lsr->getActiveWebStore();
-            if ($this->customerSession->getCustomerId()
+
+            if (!empty($this->contactHelper->getCardIdFromCustomerSession())
                 && str_contains($this->request->getOriginalPathInfo(), 'graphql')
             ) {
-                $websiteId = $this->storeManager->getWebsite()->getWebsiteId();
-                $email     = ($this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL)) ?
-                    $this->httpContext->getValue(Context::CONTEXT_CUSTOMER_EMAIL) :
-                    $this->customerSession->getCustomerData()->getEmail();
-                $customer  = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($email);
-                $cardId    = $customer->getData('lsr_cardid');
+                $cardId = $this->contactHelper->getCardIdFromCustomerSession();
+
                 if ($response = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $itemId)) {
                     return $response;
                 }
                 return [];
             }
         } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
         return [];
     }
@@ -273,7 +282,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $itemId
      * @param ProactiveDiscount $discount
-     * @return array|string
+     * @return array
      * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreLine
@@ -402,8 +411,7 @@ class GetDiscountsOutput extends View implements ResolverInterface
      * Format coupon code response
      *
      * @param PublishedOffer $coupon
-     * @return array|string
-     * @throws NoSuchEntityException
+     * @return array
      */
     public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
@@ -431,20 +439,17 @@ class GetDiscountsOutput extends View implements ResolverInterface
      *
      * @param $date
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getFormattedOfferExpiryDate($date)
     {
         try {
-            $offerExpiryDate = $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
+            return $this->timeZoneInterface->date($date)->format($this->scopeConfig->getValue(
                 LSR::SC_LOYALTY_EXPIRY_DATE_FORMAT,
                 ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
                 $this->lsr->getActiveWebStore()
             ));
-
-            return $offerExpiryDate;
         } catch (\Exception $e) {
-            $this->_logger->error($e->getMessage());
+            $this->logger->error($e->getMessage());
         }
 
         return null;

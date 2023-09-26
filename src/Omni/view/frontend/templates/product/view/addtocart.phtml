@@ -1,11 +1,14 @@
 <?php
 // @codingStandardsIgnoreFile
-use Ls\Omni\Block\Product\View\View;
+use Ls\Omni\ViewModel\GeneralViewModel;
+use Magento\Framework\View\Element\Template;
 
-/** @var $block View */
+/** @var $viewModel GeneralViewModel */
+/** @var $block Template */
+$viewModel = $block->getViewModel();
 ?>
-<?php $_product = $block->getProduct(); ?>
-<?php $isEnableCheck = $block->isValid(); ?>
+<?php $_product = $viewModel->getProduct(); ?>
+<?php $isEnableCheck = $viewModel->isValid(); ?>
 <?php $buttonTitle = __('Add to Cart'); ?>
 <?php if ($_product->isSaleable()): ?>
     <div class="box-tocart">

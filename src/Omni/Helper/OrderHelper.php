@@ -17,8 +17,9 @@ use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Stdlib\DateTime\DateTime;
-use Magento\Checkout\Model\Session\Proxy as CheckoutSessionProxy;
-use Magento\Customer\Model\Session\Proxy as CustomerSessionProxy;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -56,12 +57,12 @@ class OrderHelper extends AbstractHelper
     public $storeHelper;
 
     /**
-     * @var CustomerSessionProxy
+     * @var CustomerSession
      */
     public $customerSession;
 
     /**
-     * @var CheckoutSessionProxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -94,6 +95,11 @@ class OrderHelper extends AbstractHelper
     public $dateTime;
 
     /**
+     * @var TimezoneInterface
+     */
+    public $timezoneInterface;
+
+    /**
      * @var Registry
      */
     public Registry $registry;
@@ -124,13 +130,14 @@ class OrderHelper extends AbstractHelper
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderRepository $orderRepository
-     * @param CustomerSessionProxy $customerSession
-     * @param CheckoutSessionProxy $checkoutSession
+     * @param CustomerSession $customerSession
+     * @param CheckoutSession $checkoutSession
      * @param LSR $lsr
      * @param Order $orderResourceModel
      * @param Json $json
      * @param Registry $registry
      * @param DateTime $dateTime
+     * @param TimezoneInterface $timezoneInterface
      * @param StoreManagerInterface $storeManager
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
@@ -141,13 +148,14 @@ class OrderHelper extends AbstractHelper
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
         Model\OrderRepository $orderRepository,
-        CustomerSessionProxy $customerSession,
-        CheckoutSessionProxy $checkoutSession,
+        CustomerSession $customerSession,
+        CheckoutSession $checkoutSession,
         LSR $lsr,
         Order $orderResourceModel,
         Json $json,
         Registry $registry,
         DateTime $dateTime,
+        TimezoneInterface $timezoneInterface,
         StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
         CurrencyFactory $currencyFactory
@@ -164,6 +172,7 @@ class OrderHelper extends AbstractHelper
         $this->json               = $json;
         $this->registry           = $registry;
         $this->dateTime           = $dateTime;
+        $this->timezoneInterface  = $timezoneInterface;
         $this->storeManager       = $storeManager;
         $this->storeHelper        = $storeHelper;
         $this->currencyFactory    = $currencyFactory;
@@ -266,6 +275,11 @@ class OrderHelper extends AbstractHelper
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
             // @codingStandardsIgnoreLine
             $request = new Entity\OrderCreate();
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                $request->setReturnOrderIdOnly(true);
+            }
+
             $oneListCalculateResponse->setOrderLines($orderLinesArray);
             $request->setRequest($oneListCalculateResponse);
             return $request;
@@ -326,7 +340,6 @@ class OrderHelper extends AbstractHelper
      */
     public function placeOrder($request)
     {
-        $response = null;
         // @codingStandardsIgnoreLine
         $operation = new Operation\OrderCreate();
         $response  = $operation->execute($request);
@@ -446,7 +459,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreStart
             $orderPaymentLoyalty = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
-            //default values for all payment typoes.
+            //default values for all payment types.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
                 ->setCurrencyFactor($pointRate)
                 ->setLineNumber('2')
@@ -772,6 +785,19 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get magento order given entity_id
+     *
+     * @param $entityId
+     * @return OrderInterface
+     * @throws InputException
+     * @throws NoSuchEntityException
+     */
+    public function getMagentoOrderGivenEntityId($entityId)
+    {
+        return $this->orderRepository->get($entityId);
+    }
+
+    /**
      * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
      * @param int $storeId
@@ -884,8 +910,12 @@ class OrderHelper extends AbstractHelper
             if (isset($adyenResponse['authResult'])) {
                 $order->getPayment()->setCcStatus($adyenResponse['authResult']);
             }
-            $this->orderRepository->save($order);
-            $order = $this->orderRepository->get($order->getEntityId());
+            try {
+                $this->orderRepository->save($order);
+                $order = $this->orderRepository->get($order->getEntityId());
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
         }
         return $order;
     }
@@ -1033,6 +1063,25 @@ class OrderHelper extends AbstractHelper
     public function getDateTimeObject()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * Get formatted order date in local timezone
+     *
+     * @param $date
+     * @return string
+     */
+    public function getFormattedDate($date)
+    {
+        try {
+            $format   = 'd/m/y h:i:s A';
+            $dateTime = $this->timezoneInterface->date($date)->format($format);
+
+            return $dateTime;
+        } catch (\Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $date;
     }
 
     /**

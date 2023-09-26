@@ -39,5 +39,7 @@ class ClientWsdl extends Command
         $client = new Client($wsdl, $this->type);
 
         $this->output->writeln($client->getWsdlXml()->saveXML());
+
+        return 0;
     }
 }

@@ -222,6 +222,7 @@ class DataHelper extends AbstractHelper
     public function triggerEventForCartChange($quote)
     {
         if ($quote->getBasketResponse()) {
+            // phpcs:ignore Magento2.Security.InsecureFunction
             $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
         }
 
@@ -556,7 +557,6 @@ class DataHelper extends AbstractHelper
      *
      * @param PublishedOffer $coupon
      * @return array|string
-     * @throws NoSuchEntityException
      */
     public function getFormattedDescriptionCoupon(PublishedOffer $coupon)
     {
@@ -584,7 +584,6 @@ class DataHelper extends AbstractHelper
      *
      * @param $date
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getFormattedOfferExpiryDate($date)
     {

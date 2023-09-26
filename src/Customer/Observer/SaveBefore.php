@@ -24,6 +24,11 @@ class SaveBefore implements ObserverInterface
     private $lsr;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * SaveBefore constructor.
      * @param ContactHelper $contactHelper
      * @param LoggerInterface $logger

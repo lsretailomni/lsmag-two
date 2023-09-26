@@ -120,6 +120,11 @@
                 sortOrder="1"/>
     </type>
 
+    <type name="Magento\QuoteGraphQl\Model\Resolver\ShippingAddress\SelectedShippingMethod">
+        <plugin name="ls_omnigraphql_selected_shipping_method" type="Ls\OmniGraphQl\Plugin\Model\Resolver\SelectedShippingMethodPlugin"
+                sortOrder="2"/>
+    </type>
+
     <type name="Ls\Omni\Helper\ContactHelper">
         <plugin name="clear_quote_checkout_session"
                 type="Ls\OmniGraphQl\Plugin\Omni\Helper\ContactHelperPlugin"

@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Helper;
 
+use Carbon\Carbon;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
@@ -10,6 +11,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Currency\Data\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
@@ -27,7 +29,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\ProfilesGetAll();
-        $entity  = new Entity\ProfilesGetAll();
+        $entity = new Entity\ProfilesGetAll();
         // @codingStandardsIgnoreEnd
         try {
             $response = $request->execute($entity);
@@ -70,21 +72,18 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($image_id == null || $image_size == null) {
             return [];
         }
-        $storeId  = $this->lsr->getCurrentStoreId();
-        $cacheId  = LSR::IMAGE_CACHE . $image_id;
 
-        if (!$this->imageCacheIndependenOfStoreId()) {
-            $cacheId .= "_" . $storeId;
-        }
+        $cacheId = $this->getImageCacheId($image_id);
 
         $response = $this->cacheHelper->getCachedContent($cacheId);
+
         if ($response) {
             $this->_logger->debug("Found image from cache " . $cacheId);
             return $response;
         }
         // @codingStandardsIgnoreStart
         $request = new Operation\ImageGetById();
-        $entity  = new Entity\ImageGetById();
+        $entity = new Entity\ImageGetById();
         // @codingStandardsIgnoreEnd
         $entity->setId($image_id)
             ->setImageSize($image_size);
@@ -117,17 +116,36 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get image cache id
+     *
+     * @param $imageId
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getImageCacheId($imageId)
+    {
+        $storeId = $this->lsr->getCurrentStoreId();
+        $cacheId = LSR::IMAGE_CACHE . $imageId;
+
+        if (!$this->imageCacheIndependenOfStoreId()) {
+            $cacheId .= "_" . $storeId;
+        }
+
+        return $cacheId;
+    }
+
+    /**
      * @return float|int
      * @throws NoSuchEntityException
      */
     public function convertPointsIntoValues()
     {
-        $points        = $pointRate = $value = 0;
+        $points = $pointRate = $value = 0;
         $memberProfile = $this->getMemberInfo();
-        $pointRate     = $this->getPointRate();
+        $pointRate = $this->getPointRate();
         if ($memberProfile != null && $pointRate != null) {
             $points = $memberProfile->getAccount()->getPointBalance();
-            $value  = $points * $pointRate;
+            $value = $points * $pointRate;
             return $value;
         } else {
             return 0;
@@ -172,7 +190,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         $response = null;
         $customer = $this->customerSession->getCustomer();
-        $cardId   = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         // if not set in session then get it from customer database.
         if (!$cardId) {
             $cardId = $customer->getData('lsr_cardid');
@@ -184,6 +202,73 @@ class LoyaltyHelper extends AbstractHelperOmni
         $entity = new Entity\ContactGetByCardId();
         $entity->setCardId($cardId);
         $entity->setNumberOfTransReturned(1);
+        try {
+            $response = $request->execute($entity);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getResult() : $response;
+    }
+
+    public function getPointBalanceExpirySum()
+    {
+        if (version_compare($this->lsr->getOmniVersion(), '2023.06', '<')) {
+            return false;
+        }
+
+        $totalEarnedPoints      = 0;
+        $totalRedemption        = 0;
+        $totalExpiryPoints      = 0;
+        $result                 = $this->getCardGetPointEntries();
+        $expiryInterval         = $this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
+            $this->lsr->getCurrentStoreId()
+        );
+
+        if ($result) {
+            $startDateTs = Carbon::now();
+            $endDateTs   = Carbon::now()->addDays($expiryInterval);
+
+            foreach ($result as $res) {
+                $entryType = $res->getEntryType();
+                $expirationDate = Carbon::parse($res->getExpirationDate());
+                if($entryType == "Sales" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                    $totalEarnedPoints += $res->getPoints();
+                } elseif ($entryType == "Redemption" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                    $totalRedemption += $res->getPoints();
+                }
+            }
+
+            //Convert to negative redemption points to positive for ease of calculation
+            $totalRedemption = abs($totalRedemption);
+            if ($totalEarnedPoints >= $totalRedemption) {
+                $totalExpiryPoints = $totalEarnedPoints - $totalRedemption;
+            }
+
+        }
+
+        return $totalExpiryPoints;
+    }
+
+
+    /**
+     * @return Entity\ArrayOfPointEntry|Entity\CardGetPointEntiesResponse|ResponseInterface|null
+     */
+    public function getCardGetPointEntries()
+    {
+        $response = null;
+        $customer = $this->customerSession->getCustomer();
+        $cardId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
+        // if not set in session then get it from customer database.
+        if (!$cardId) {
+            $cardId = $customer->getData('lsr_cardid');
+        }
+        // @codingStandardsIgnoreLine
+        $request = new Operation\CardGetPointEnties();
+        $request->setToken($customer->getData('lsr_token'));
+        // @codingStandardsIgnoreLine
+        $entity = new Entity\CardGetPointEnties();
+        $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);
         } catch (Exception $e) {
@@ -222,17 +307,17 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getPointRate()
     {
-        $storeId  = $this->lsr->getCurrentStoreId();
+        $storeId = $this->lsr->getCurrentStoreId();
         $response = null;
         if ($this->lsr->isLSR($storeId)) {
-            $cacheId  = LSR::POINTRATE . $storeId;
+            $cacheId = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 return $response;
             }
             // @codingStandardsIgnoreStart
             $request = new Operation\GetPointRate();
-            $entity  = new Entity\GetPointRate();
+            $entity = new Entity\GetPointRate();
             // @codingStandardsIgnoreEnd
             try {
                 $response = $request->execute($entity);
@@ -282,7 +367,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function isPointsLimitValid($grandTotal, $loyaltyPoints)
     {
-        $pointRate      = $this->getPointRate();
+        $pointRate = $this->getPointRate();
         $requiredAmount = $pointRate * $loyaltyPoints;
 
         return $requiredAmount <= $grandTotal;
@@ -313,18 +398,18 @@ class LoyaltyHelper extends AbstractHelperOmni
             $response = null;
             // @codingStandardsIgnoreStart
             $request = new Operation\DiscountsGet();
-            $entity  = new Entity\DiscountsGet();
-            $string  = new Entity\ArrayOfstring();
+            $entity = new Entity\DiscountsGet();
+            $string = new Entity\ArrayOfstring();
             // @codingStandardsIgnoreEnd
-            $storeId         = $this->lsr->getCurrentStoreId();
+            $storeId = $this->lsr->getCurrentStoreId();
             $customerGroupId = $this->customerSession->getCustomerGroupId();
             $cacheItemId = $itemId;
 
             if (is_array($itemId)) {
                 $cacheItemId = implode('_', $itemId);
             }
-            $cacheId         = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
-            $response        = $this->cacheHelper->getCachedContent($cacheId);
+            $cacheId = LSR::PROACTIVE_DISCOUNTS . $cacheItemId . "_" . $customerGroupId . "_" . $storeId;
+            $response = $this->cacheHelper->getCachedContent($cacheId);
             if ($response) {
                 $this->_logger->debug("Found proactive discounts from cache " . $cacheId);
                 return $response;
@@ -379,7 +464,7 @@ class LoyaltyHelper extends AbstractHelperOmni
 
             // @codingStandardsIgnoreStart
             $request = new Operation\PublishedOffersGetByCardId();
-            $entity  = new Entity\PublishedOffersGetByCardId();
+            $entity = new Entity\PublishedOffersGetByCardId();
             // @codingStandardsIgnoreEnd
             $entity->setCardId($cardId);
             $entity->setItemId($itemId);
@@ -418,11 +503,11 @@ class LoyaltyHelper extends AbstractHelperOmni
     public function getAvailableCouponsForLoggedInCustomers()
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $storeId            = $this->lsr->getActiveWebStore();
-            $cardId             = $this->contactHelper->getCardIdFromCustomerSession();
+            $storeId = $this->lsr->getActiveWebStore();
+            $cardId = $this->contactHelper->getCardIdFromCustomerSession();
             $publishedOffersObj = $this->getPublishedOffers($cardId, $storeId);
-            $itemsInCart        = $this->checkoutSession->getQuote()->getAllVisibleItems();
-            $coupons            = $itemIdentifiers = [];
+            $itemsInCart = $this->checkoutSession->getQuote()->getAllVisibleItems();
+            $coupons = $itemIdentifiers = [];
             /** @var Item $item */
             foreach ($itemsInCart as $item) {
                 if ($item->getProductType() == \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE) {
@@ -616,6 +701,6 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display' => 1], false);
+        return $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL], false);
     }
 }

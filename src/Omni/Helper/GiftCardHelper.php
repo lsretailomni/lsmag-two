@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use Magento\Checkout\Model\Session\Proxy;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -21,7 +21,7 @@ class GiftCardHelper extends AbstractHelper
     const SERVICE_TYPE = 'ecommerce';
 
     /**
-     * @var Proxy
+     * @var CheckoutSession
      */
     public $checkoutSession;
 
@@ -38,13 +38,13 @@ class GiftCardHelper extends AbstractHelper
     /**
      * GiftCardHelper constructor.
      * @param Context $context
-     * @param Proxy $checkoutSession
+     * @param CheckoutSession $checkoutSession
      * @param Filesystem $filesystem
      * @param LSR $Lsr
      */
     public function __construct(
         Context $context,
-        Proxy $checkoutSession,
+        CheckoutSession $checkoutSession,
         Filesystem $filesystem,
         LSR $Lsr
     ) {
@@ -71,6 +71,12 @@ class GiftCardHelper extends AbstractHelper
         try {
             $responseData = $request->execute($entity);
             $response     = $responseData ? $responseData->getResult() : $response;
+            if (!empty($response)) {
+                $currency = $response->getCurrencyCode();
+                if (!empty($currency)) {
+                    $response = ($currency == $this->lsr->getStoreCurrencyCode()) ? $response : null;
+                }
+            }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -102,22 +108,22 @@ class GiftCardHelper extends AbstractHelper
     {
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == 'cart') {
-                return ( $this->lsr->getStoreConfig(
+                return ($this->lsr->getStoreConfig(
+                        LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
+                        $this->lsr->getCurrentStoreId()
+                    ) && $this->lsr->getStoreConfig(
+                        LSR::LS_GIFTCARD_SHOW_ON_CART,
+                        $this->lsr->getCurrentStoreId()
+                    )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_GIFTCARD_SHOW_ON_CART,
+                    LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
                     $this->lsr->getCurrentStoreId()
                 )
-                );
-            }
-            return ( $this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) && $this->lsr->getStoreConfig(
-                LSR::LS_GIFTCARD_SHOW_ON_CHECKOUT,
-                $this->lsr->getCurrentStoreId()
-            )
             );
         } else {
             return false;
