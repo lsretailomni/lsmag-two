@@ -31,6 +31,11 @@ class GiftCard extends Entity
     protected $ExpireDate = null;
 
     /**
+     * @property int $Pin
+     */
+    protected $Pin = null;
+
+    /**
      * @param float $Balance
      * @return $this
      */
@@ -100,6 +105,24 @@ class GiftCard extends Entity
     public function getExpireDate()
     {
         return $this->ExpireDate;
+    }
+
+    /**
+     * @param int $Pin
+     * @return $this
+     */
+    public function setPin($Pin)
+    {
+        $this->Pin = $Pin;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPin()
+    {
+        return $this->Pin;
     }
 }
 

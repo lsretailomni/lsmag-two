@@ -39,6 +39,11 @@ class SalesEntryLine extends Entity
     protected $ExternalId = null;
 
     /**
+     * @property string $ExtraInformation
+     */
+    protected $ExtraInformation = null;
+
+    /**
      * @property string $ItemDescription
      */
     protected $ItemDescription = null;
@@ -206,6 +211,24 @@ class SalesEntryLine extends Entity
     public function getExternalId()
     {
         return $this->ExternalId;
+    }
+
+    /**
+     * @param string $ExtraInformation
+     * @return $this
+     */
+    public function setExtraInformation($ExtraInformation)
+    {
+        $this->ExtraInformation = $ExtraInformation;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtraInformation()
+    {
+        return $this->ExtraInformation;
     }
 
     /**
