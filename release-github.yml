@@ -52,7 +52,7 @@ steps:
         cd $(DEMO_SERVER_2_SSH_DIRECTORY_PATH)
         php bin/magento ma:e
         composer require "$(COMPOSER_REPO_NAME):$(LATEST_TAG_NAME)" --no-update && composer update $(COMPOSER_REPO_NAME)
-        php bin/magento s:up && php bin/magento d:m:se production
+        sudo php bin/magento s:up && sudo php bin/magento d:m:se production
         php bin/magento ma:d
       EOF
     displayName: 'Deploying Newly Released Version on Ls Retail ls-magento Demo Server'
