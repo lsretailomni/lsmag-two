@@ -1,14 +1,25 @@
 trigger:
   branches:
     include:
-      - master
+      - release
 variables:
-  BRANCH_NAME: master
+  BRANCH_NAME: release
 steps:
   - checkout: self
+    fetchTags: true
+    fetchDepth: 0
+
+  - script: |
+      cd /home/vsts/work/1/s/
+      TAG_NAME=$(git describe --abbrev=0 --tags)
+      echo "##vso[task.setvariable variable=LATEST_TAG_NAME]$TAG_NAME"
+    displayName: 'Finding Latest Tag Name'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
   - script: |
       mkdir release && cd release
       git clone https://github.com/$(REPO_NAME).git .
+      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --delete $(BRANCH_NAME)
       git checkout -b $(BRANCH_NAME)
       git remote -v
       git rm -rf .
@@ -18,5 +29,19 @@ steps:
       git add --all
       git commit -m "Deployment $(Build.BuildNumber)"
       git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
+      git tag -a "$(LATEST_TAG_NAME)" -m "Release $LAST_TAG_NAME"
+      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git --tags
     displayName: 'Publishing Changes to Github Repository'
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - script: |
+      sudo apt-get install sshpass
+      sshpass -p "$(DEMO_SERVER_1_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_1_SSH_USERNAME)@$(DEMO_SERVER_1_SSH_HOSTNAME) << EOF
+        cd $(DEMO_SERVER_1_SSH_DIRECTORY_PATH)
+        php bin/magento ma:e
+        composer require "$(COMPOSER_REPO_NAME):$(LATEST_TAG_NAME)" --no-update && composer update $(COMPOSER_REPO_NAME)
+        php bin/magento s:up && php bin/magento d:m:se production
+        php bin/magento ma:d
+      EOF
+    displayName: 'Deploying Newly Released Version on Ls Retail lsmag2 Demo Server'
     workingDirectory: $(System.DefaultWorkingDirectory)
