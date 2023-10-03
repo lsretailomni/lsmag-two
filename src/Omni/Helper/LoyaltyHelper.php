@@ -319,6 +319,10 @@ class LoyaltyHelper extends AbstractHelperOmni
             $request = new Operation\GetPointRate();
             $entity = new Entity\GetPointRate();
             // @codingStandardsIgnoreEnd
+
+            $currency = $this->lsr->getStoreCurrencyCode();
+            $entity->setCurrency($currency);
+
             try {
                 $response = $request->execute($entity);
             } catch (Exception $e) {
