@@ -3,6 +3,7 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
+use Laminas\Stdlib\Parameters;
 use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
@@ -12,6 +13,7 @@ use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
@@ -209,6 +211,7 @@ class ContactHelper extends AbstractHelper
      * @param ItemHelper $itemHelper
      * @param \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel
      * @param CheckoutSession $checkoutSession
+     * @param SessionManagerInterface $session
      * @param Registry $registry
      * @param Country $country
      * @param RegionFactory $region
@@ -245,6 +248,7 @@ class ContactHelper extends AbstractHelper
         ItemHelper $itemHelper,
         \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel,
         CheckoutSession $checkoutSession,
+        SessionManagerInterface $session,
         Registry $registry,
         Country $country,
         RegionFactory $region,
@@ -280,6 +284,7 @@ class ContactHelper extends AbstractHelper
         $this->customerResourceModel = $customerResourceModel;
         $this->registry              = $registry;
         $this->checkoutSession       = $checkoutSession;
+        $this->session               = $session;
         $this->country               = $country;
         $this->region                = $region;
         $this->wishlist              = $wishlist;
@@ -763,6 +768,89 @@ class ContactHelper extends AbstractHelper
         }
         return $response ? $response->getPasswordResetResult() : $response;
     }
+
+    /**
+     * Sync customer to Central after successful registration in magento.
+     * If error response (other than timeout error) from Central it will block registration in magento.
+     * @param $observer
+     * @param $session
+     * @return $this
+     * @throws \Zend_Log_Exception
+     */
+    public function syncCustomerToCentral($observer,$session)
+    {
+        $parameters = $observer->getRequest()->getParams();
+        try {
+            do {
+                $parameters['lsr_username'] = $this->generateRandomUsername();
+            } while ($this->isUsernameExist($parameters['lsr_username']) ||
+            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+                $this->isUsernameExistInLsCentral($parameters['lsr_username']) : false
+            );
+            /** @var Customer $customer */
+            $customer = $session->getCustomer();
+            $request = $observer->getControllerAction()->getRequest();
+            $request->setPostValue('lsr_username',$parameters['lsr_username']);
+            if (!empty($parameters['email']) && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
+                $customer->setData('lsr_username', $parameters['lsr_username']);
+                $customer->setData('email', $parameters['email']);
+                $customer->setData('password', $parameters['password']);
+                $customer->setData('firstname', $parameters['firstname']);
+                $customer->setData('lastname', $parameters['lastname']);
+                $customer->setData('middlename', (array_key_exists('middlename',$parameters) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                $customer->setData('gender', (array_key_exists('gender',$parameters) && $parameters['gender']) ? $parameters['gender'] : null);
+                $customer->setData('dob', (array_key_exists('dob',$parameters) && $parameters['dob']) ? $parameters['dob'] : null);
+                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                    /** @var Entity\MemberContact $contact */
+                    $contact = $this->contact($customer);
+                    if (is_object($contact) && $contact->getId()) {
+                        $customer = $this->setCustomerAttributesValues($contact, $customer);
+                        $parameters['lsr_id'] = $customer->getLsrId();
+                        $parameters['lsr_username'] = $customer->getLsrUsername();
+                        $parameters['lsr_token'] = $customer->getLsrToken();
+                        $parameters['lsr_cardid'] = $customer->getLsrCardid();
+                        $parameters['group_id'] = $customer->getGroupId();
+                        $parameters['contact'] = $contact;
+                    } else {
+                        $logger->info('Timeout error.');
+                    }
+                }
+            }
+            $this->setValue($parameters);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $value
+     */
+    public function setValue($value)
+    {
+        $this->session->start();
+        $this->session->setLsrParams($value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        $this->session->start();
+        return $this->session->getLsrParams();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function unSetValue()
+    {
+        $this->session->start();
+        return $this->session->unsLsrParams();
+    }
+
 
     /**
      * @param $customer
@@ -1493,28 +1581,46 @@ class ContactHelper extends AbstractHelper
      */
     public function setCustomerAttributesValues($contact, $customer)
     {
-        $customer->setData('lsr_id', $contact->getId());
-        if (!empty($contact->getUserName())) {
-            $customer->setData('lsr_username', $contact->getUserName());
-        }
-        if (!empty($contact->getLoggedOnToDevice()) &&
-            !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
-            $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-            $customer->setData('lsr_token', $token);
-        }
-        if (!empty($contact->getCards()) &&
-            !empty($contact->getCards()->getCard()[0]) &&
-            !empty($contact->getCards()->getCard()[0]->getId())) {
-            $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-        }
-        if (!empty($contact->getAccount()) &&
-            !empty($contact->getAccount()->getScheme()) &&
-            !empty($contact->getAccount()->getScheme()->getId())) {
-            $customerGroupId = $this->getCustomerGroupIdByName(
-                $contact->getAccount()->getScheme()->getId()
-            );
-            $customer->setGroupId($customerGroupId);
-            $this->customerSession->setCustomerGroupId($customerGroupId);
+        if(!is_array($contact)) {
+            $customer->setData('lsr_id', $contact->getId());
+            if (!empty($contact->getUserName())) {
+                $customer->setData('lsr_username', $contact->getUserName());
+            }
+            if (!empty($contact->getLoggedOnToDevice()) &&
+                !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
+                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                $customer->setData('lsr_token', $token);
+            }
+            if (!empty($contact->getCards()) &&
+                !empty($contact->getCards()->getCard()[0]) &&
+                !empty($contact->getCards()->getCard()[0]->getId())) {
+                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+            }
+            if (!empty($contact->getAccount()) &&
+                !empty($contact->getAccount()->getScheme()) &&
+                !empty($contact->getAccount()->getScheme()->getId())) {
+                $customerGroupId = $this->getCustomerGroupIdByName(
+                    $contact->getAccount()->getScheme()->getId()
+                );
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+            }
+        } else {
+            $customer->setData('lsr_id', $contact['lsr_id']);
+            if (!empty($contact['lsr_username'])) {
+                $customer->setData('lsr_username', $contact['lsr_username']);
+            }
+            if (!empty($contact['lsr_token'])) {
+                $customer->setData('lsr_token', $contact['lsr_token']);
+            }
+            if (!empty($contact['lsr_cardid'])) {
+                $customer->setData('lsr_cardid', $contact['lsr_cardid']);
+            }
+            if (!empty($contact['group_id'])) {
+                $customerGroupId = $contact['group_id'];
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+            }
         }
 
         return $customer;
