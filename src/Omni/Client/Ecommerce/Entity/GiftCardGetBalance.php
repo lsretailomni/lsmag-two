@@ -18,6 +18,11 @@ class GiftCardGetBalance implements RequestInterface
     protected $cardNo = null;
 
     /**
+     * @property int $pin
+     */
+    protected $pin = null;
+
+    /**
      * @property string $entryType
      */
     protected $entryType = null;
@@ -38,6 +43,24 @@ class GiftCardGetBalance implements RequestInterface
     public function getCardNo()
     {
         return $this->cardNo;
+    }
+
+    /**
+     * @param int $pin
+     * @return $this
+     */
+    public function setPin($pin)
+    {
+        $this->pin = $pin;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPin()
+    {
+        return $this->pin;
     }
 
     /**
