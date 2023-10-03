@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
@@ -926,23 +926,23 @@ class OrderHelper extends AbstractHelper
      * For cancelling the order in LS central
      * @param $documentId
      * @param $storeId
-     * @return OrderCancelResponse|ResponseInterface|string|null
+     * @return OrderCancelExResponse|ResponseInterface|string|null
      */
     public function orderCancel($documentId, $storeId)
     {
         $response = null;
-        $request  = new Entity\OrderCancel();
+        $request  = new Entity\OrderCancelEx();
         $request->setOrderId($documentId);
         $request->setStoreId($storeId);
         $request->setUserId("");
-        $operation = new Operation\OrderCancel();
+        $operation = new Operation\OrderCancelEx();
         try {
             $response = $operation->execute($request);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
 
-        return $response ? $response->getOrderCancelResult() : $response;
+        return $response ? $response->getOrderCancelExResult() : $response;
     }
 
     /**
