@@ -438,6 +438,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_PICKED = 'PICKED'; //Ready to Pick
     const LS_STATE_SHIPPED = 'SHIPPED';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
+    const LS_STATE_MISC = 'MISC';
 
     const LS_NOTIFICATION_EMAIL = 'email';
 
