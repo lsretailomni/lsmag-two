@@ -1,4 +1,4 @@
-define(['jquery', 'ko', 'Magento_Checkout/js/model/quote'], function ($, ko, quote) {
+define(['jquery', 'ko', 'Magento_Checkout/js/model/quote', 'mage/translate'], function ($, ko, quote, $t) {
     "use strict";
 
     var pattern,
