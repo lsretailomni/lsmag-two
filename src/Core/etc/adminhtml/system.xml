@@ -39,12 +39,13 @@
                    translate="label"
                    type="text"
                    sortOrder="20"
-                   showInWebsite="1">
+                   showInWebsite="1"
+                   showInStore="1">
                 <label>Industry</label>
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
-                <field id="ls_choose_industry" translate="label" type="select" sortOrder="2" showInWebsite="1">
+                <field id="ls_choose_industry" translate="label" type="select" sortOrder="2" showInWebsite="1" showInStore="1">
                     <label>Choose Industry</label>
                     <source_model>Ls\Core\Model\Config\Source\Industry</source_model>
                 </field>
