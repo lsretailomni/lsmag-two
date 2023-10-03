@@ -45,3 +45,15 @@ steps:
       EOF
     displayName: 'Deploying Newly Released Version on Ls Retail lsmag2 Demo Server'
     workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - script: |
+      sudo apt-get install sshpass
+      sshpass -p "$(DEMO_SERVER_2_SSH_PASSWORD)" ssh -o StrictHostKeyChecking=no $(DEMO_SERVER_2_SSH_USERNAME)@$(DEMO_SERVER_2_SSH_HOSTNAME) << EOF
+        cd $(DEMO_SERVER_2_SSH_DIRECTORY_PATH)
+        php bin/magento ma:e
+        composer require "$(COMPOSER_REPO_NAME):$(LATEST_TAG_NAME)" --no-update && composer update $(COMPOSER_REPO_NAME)
+        php bin/magento s:up && sudo chown -R AzureUser:AzureUser generated && php bin/magento d:m:se production
+        php bin/magento ma:d
+      EOF
+    displayName: 'Deploying Newly Released Version on Ls Retail ls-magento Demo Server'
+    workingDirectory: $(System.DefaultWorkingDirectory)

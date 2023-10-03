@@ -7,8 +7,9 @@ define([
     'Magento_Checkout/js/model/totals',
     'Ls_Omni/js/action/set-loyalty-points',
     'Ls_Omni/js/action/cancel-points',
-    'mage/translate'
-], function ($, ko, Component, quote, points, totals, setLoyaltyPointsAction, cancelPointsAction, $t) {
+    'mage/translate',
+    'Magento_Catalog/js/price-utils'
+], function ($, ko, Component, quote, points, totals, setLoyaltyPointsAction, cancelPointsAction, $t, priceUtils) {
     'use strict';
 
     var loyaltyPoints = ko.observable(null),
@@ -29,10 +30,10 @@ define([
         },
 
         balanceFormatted: ko.computed(function () {
-            var label = $t('You have %1 loyalty points. Each of 10 Points gets %2 discount.');
-            label = label.replace('%1', '<strong>' + points.format(points.balance) + '</strong>');
-
-            return label.replace('%2', '<strong>' + points.rateLabel + '</strong>');
+            return $t('You have %1. Each of %2 gets %3 discount.')
+                .replace('%1', '<strong>' + points.format(points.balance) + '</strong>')
+                .replace('%2', '<strong>' + points.rateLabel + ' Points</strong>')
+                .replace('%3', '<strong>' + priceUtils.formatPrice(1, quote.getPriceFormat()) + '</strong>');
         }),
 
         loyaltyPoints: loyaltyPoints,

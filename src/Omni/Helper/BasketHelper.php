@@ -788,6 +788,10 @@ class BasketHelper extends AbstractHelper
                     $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
                 }
 
+                if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+                    $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate());
+                }
+
                 /** @var Entity\OneListCalculate $entity */
                 if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
                     $offer  = new Entity\OneListPublishedOffer();
