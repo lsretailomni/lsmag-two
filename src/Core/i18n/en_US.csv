@@ -1,9 +1,19 @@
+Retail,Retail
+Hospitality,Hospitality
 "LS Retail Setup Incomplete","LS Retail Setup Incomplete"
 "Please define the LS Retail Service Base URL and Web Store to proceed","Please define the LS Retail Service Base URL and Web Store to proceed"
 "Go to Stores > Configuration > LS Retail > General Configuration.","Go to Stores > Configuration > LS Retail > General Configuration."
+Hello,Hello
+"Omni Service is currently down and is not reachable. Please
+                                look out the service.","Omni Service is currently down and is not reachable. Please
+                                look out the service."
 "LS Retail","LS Retail"
 "General Configuration","General Configuration"
-"LS Central Order ID","LS Central Order ID"
+Enable,Enable
+"Enable Module","Enable Module"
+Industry,Industry
 "Choose Industry","Choose Industry"
-"Retail","Retail"
-"Hospitality","Hospitality"
+"Single-Store Mode","Single-Store Mode"
+"Enable Single-Store Mode","Enable Single-Store Mode"
+"This setting will not be taken into account if system has more than one store view.","This setting will not be taken into account if system has more than one store view."
+"LS Central Order ID","LS Central Order ID"
