@@ -44,6 +44,11 @@ class OneList extends Entity
     protected $Currency = null;
 
     /**
+     * @property float $CurrencyFactor
+     */
+    protected $CurrencyFactor = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -219,6 +224,24 @@ class OneList extends Entity
     public function getCurrency()
     {
         return $this->Currency;
+    }
+
+    /**
+     * @param float $CurrencyFactor
+     * @return $this
+     */
+    public function setCurrencyFactor($CurrencyFactor)
+    {
+        $this->CurrencyFactor = $CurrencyFactor;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCurrencyFactor()
+    {
+        return $this->CurrencyFactor;
     }
 
     /**
