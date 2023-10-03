@@ -4,7 +4,6 @@ namespace Ls\Omni\Observer;
 
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
-use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -44,7 +43,6 @@ class SalesObserver implements ObserverInterface
         $event              = $observer->getEvent();
         $quote              = $event->getQuote();
         $shippingAssignment = $event->getShippingAssignment();
-        $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
 
         $basketData = $this->basketHelper->getBasketSessionValue();
@@ -57,23 +55,18 @@ class SalesObserver implements ObserverInterface
                 $quote->setLsPointsDiscount($pointDiscount);
             }
 
-            if ($addressType == AbstractAddress::TYPE_SHIPPING) {
-                $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
-                    - $pointDiscount - $giftCardAmount;
-                $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal       = $basketData->getTotalAmount();
-                $total->setTaxAmount($taxAmount)
-                    ->setBaseTaxAmount($taxAmount)
-                    ->setSubtotal($subTotal)
-                    ->setBaseSubtotal($subTotal)
-                    ->setSubtotalInclTax($subTotal)
-                    ->setBaseSubtotalTotalInclTax($subTotal)
-                    ->setGrandTotal($grandTotal)
-                    ->setBaseGrandTotal($grandTotal);
-            } else {
-                $total->setBaseGrandTotal(0);
-                $total->setGrandTotal(0);
-            }
+            $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
+                - $pointDiscount - $giftCardAmount;
+            $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
+            $subTotal       = $basketData->getTotalAmount();
+            $total->setTaxAmount($taxAmount)
+                ->setBaseTaxAmount($taxAmount)
+                ->setSubtotal($subTotal)
+                ->setBaseSubtotal($subTotal)
+                ->setSubtotalInclTax($subTotal)
+                ->setBaseSubtotalTotalInclTax($subTotal)
+                ->setGrandTotal($grandTotal)
+                ->setBaseGrandTotal($grandTotal);
         }
     }
 }
