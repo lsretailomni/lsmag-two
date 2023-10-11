@@ -6,6 +6,7 @@ use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Checkout\Block\Cart\AbstractCart;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
@@ -66,10 +67,28 @@ class Giftcard extends AbstractCart
     }
 
     /**
+     * @return mixed
+     */
+    public function getGiftCardPin()
+    {
+        return $this->getQuote()->getLsGiftCardPin();
+    }
+
+    /**
      * @return string
      */
     public function getGiftCardActive()
     {
         return $this->giftCardHelper->isGiftCardEnabled('cart');
     }
+
+    /**
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function isPinCodeFieldEnable()
+    {
+        return $this->giftCardHelper->isPinCodeFieldEnable();
+    }
+
 }

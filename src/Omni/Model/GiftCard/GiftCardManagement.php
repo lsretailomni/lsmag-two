@@ -78,7 +78,10 @@ class GiftCardManagement
         $giftCardNo    = $quote->getLsGiftCardNo();
         $giftCardArray = [];
         if (!empty($giftCardNo)) {
-            $giftCardArray = ['code' => $giftCardNo, 'amount' => $quote->getLsGiftCardAmountUsed()];
+            $giftCardArray = [
+                'code'   => $giftCardNo,
+                'amount' => $quote->getLsGiftCardAmountUsed(),
+                'pin'    => $quote->getLsGiftCardPin()];
         }
         return $giftCardArray;
     }
@@ -92,7 +95,7 @@ class GiftCardManagement
      * @throws CouldNotSaveException
      * @throws NoSuchEntityException
      */
-    public function apply($cartId, $giftCardNo, $giftCardAmount)
+    public function apply($cartId, $giftCardNo, $giftCardPin, $giftCardAmount)
     {
         $giftCardBalanceAmount = 0;
 
@@ -115,7 +118,7 @@ class GiftCardManagement
             );
         }
         if ($giftCardNo != null) {
-            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo);
+            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
 
             if (is_object($giftCardResponse)) {
                 $giftCardBalanceAmount = $giftCardResponse->getBalance();
@@ -128,8 +131,8 @@ class GiftCardManagement
             throw new CouldNotSaveException(__('The gift card code %1 is not valid.', $giftCardNo));
         }
 
-        $itemsCount   = $cartQuote->getItemsCount();
-        $orderBalance = $this->dataHelper->getOrderBalance(
+        $itemsCount            = $cartQuote->getItemsCount();
+        $orderBalance          = $this->dataHelper->getOrderBalance(
             0,
             $cartQuote->getLsPointsSpent(),
             $this->basketHelper->getBasketSessionValue()
@@ -193,8 +196,10 @@ class GiftCardManagement
             try {
                 $giftCardAmount = 0;
                 $giftCardNo     = null;
+                $giftCardPin    = null;
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-                $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
+                $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo)
+                    ->setLsGiftCardPin($giftCardPin);
                 $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             } catch (CouldNotSaveException $e) {

@@ -6,10 +6,10 @@
         <form method="post" data-role="save"
               data-bind="submit:checkGiftCardBalance">
             <div
-                    data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
-                <div class="field field-email required">
+                data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+                <div class="field required">
                     <label class="label"><span
-                            data-bind="i18n: 'Gift Card Code:'"></span><span style="color:red">*</span></label>
+                        data-bind="i18n: 'Gift Card Code:'"></span><span style="color:red">*</span></label>
                     <div class="control">
                         <input class="input-text"
                                type="text"
@@ -18,15 +18,29 @@
                                data-validate="{'required-entry':true}"
                                data-bind="attr:{placeholder: $t('Enter Gift Card Code')} "/>
                     </div>
+                    <!-- ko if: isPinCodeFieldEnable()-->
+                    <br/>
+                    <label class="label"><span
+                        data-bind="i18n: 'Gift Card Pin:'"></span><span style="color:red">*</span></label>
+                    <div class="control">
+                        <input class="input-text"
+                               type="password"
+                               id="gift_card_pin"
+                               name="gift_card_pin"
+                               data-validate="{'required-entry':true}"
+                               data-bind="attr:{placeholder: $t('Enter Gift Card Pin')} "/>
+                    </div>
+                    <!-- /ko -->
                 </div>
             </div>
+            <br/>
             <div class="actions-toolbar">
                 <div class="primary">
                     <button type="submit" class="action  primary"><span
-                            data-bind="i18n: 'Check Balance'"></span></button>
+                        data-bind="i18n: 'Check Balance'"></span></button>
                     <button type="button" class="action  primary"
                             data-bind="'value': $t('Reset'), click: cancelGiftCardBalance"><span
-                            data-bind="i18n: 'Reset'"></span></button>
+                        data-bind="i18n: 'Reset'"></span></button>
                 </div>
             </div>
         </form>
@@ -36,7 +50,7 @@
                     <!-- ko if: getGiftCardBalance()-->
                     <div>
                         <p><strong><span data-bind="'html': $t('Your balance is: ')"></span><span
-                                data-bind="'html': getGiftCardBalance()"></span></strong></p>
+                            data-bind="'html': getGiftCardBalance()"></span></strong></p>
                     </div>
                     <!-- /ko -->
                     <!-- ko if: getGiftCardExpiryDate()-->

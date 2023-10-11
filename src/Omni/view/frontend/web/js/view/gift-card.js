@@ -7,7 +7,8 @@ define([
     'Ls_Omni/js/action/set-gift-card',
     'Ls_Omni/js/action/cancel-gift-card',
     'mage/translate',
-], function ($, ko, Component, quote, totals, setGiftCardAction, cancelGiftCardAction, $t) {
+    'mage/storage'
+], function ($, ko, Component, quote, totals, setGiftCardAction, cancelGiftCardAction, $t, storage) {
     'use strict';
 
     var giftCardAmount = ko.observable(null),
@@ -16,6 +17,8 @@ define([
     var giftCardNo = ko.observable(null),
         isGiftCardApplied;
 
+    var giftCardPin = ko.observable(null),
+        isGiftCardApplied;
 
     if (totals) {
         var giftAmount = totals.getSegment('ls_gift_card_amount_used');
@@ -29,6 +32,12 @@ define([
             giftCardNo(giftNo.value);
         }
     }
+    if (totals) {
+        var giftPin = totals.getSegment('ls_gift_card_pin');
+        if (giftPin) {
+            giftCardPin(giftPin.value);
+        }
+    }
     isGiftCardApplied = ko.observable(giftCardNo() != null && giftCardAmount() != null);
 
     return Component.extend({
@@ -38,18 +47,33 @@ define([
 
         giftCardNo: giftCardNo,
         giftCardAmount: giftCardAmount,
+        giftCardPin: giftCardPin,
 
         /**
          * Applied flag
          */
         isGiftCardApplied: isGiftCardApplied,
 
+        isPinCodeFieldEnable: function () {
+            storage.get('omni/ajax/CheckPinCodeEnable').done(
+                function (response) {
+                    if (response.success) {
+                        return response.value;
+                    }
+                }
+            ).fail(
+                function (response) {
+                    return response.value;
+                }
+            );
+        },
+
         /**
          * Giftcard apply procedure
          */
         applyGiftCard: function () {
             if (this.validateGiftCard()) {
-                setGiftCardAction(giftCardNo(), giftCardAmount(), isGiftCardApplied);
+                setGiftCardAction(giftCardNo(), giftCardAmount(), giftCardPin(), isGiftCardApplied);
             }
         },
 
@@ -60,6 +84,7 @@ define([
             if (this.validateGiftCard()) {
                 giftCardNo('');
                 giftCardAmount('');
+                giftCardPin('');
                 cancelGiftCardAction(isGiftCardApplied);
             }
         },

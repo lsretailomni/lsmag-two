@@ -482,6 +482,7 @@ class OrderHelper extends AbstractHelper
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
+                ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setTenderType($tenderTypeId);

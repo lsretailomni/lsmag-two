@@ -370,6 +370,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ENABLE_GIFTCARD_ELEMENTS = 'ls_mag/ls_giftcard/active';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
+    const LS_GIFTCARD_SHOW_PIN_CODE_FIELD = 'ls_mag/ls_giftcard/pin_code';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
 
     //Discount Management

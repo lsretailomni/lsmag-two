@@ -16,13 +16,18 @@ class ApplyGiftCard extends AbstractGiftCard
     {
         try {
             $maskedCartId = $args['input']['cart_id'];
-            $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-            $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
-            $cartId = $cart->getId();
-            $result = $this->giftCardManagement->apply($cartId, $args['input']['code'], $args['input']['amount']);
+            $storeId      = (int)$context->getExtensionAttributes()->getStore()->getId();
+            $cart         = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+            $cartId       = $cart->getId();
+            $result       = $this->giftCardManagement->apply(
+                $cartId,
+                $args['input']['code'],
+                $args['input']['pin'],
+                $args['input']['amount']
+            );
             if ($result) {
                 $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-                $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+                $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
             }
         } catch (\Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));

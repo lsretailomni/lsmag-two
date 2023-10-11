@@ -96,6 +96,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public function execute()
     {
         $giftCardNo            = $this->getRequest()->getParam('giftcardno');
+        $giftCardPin            = $this->getRequest()->getParam('giftcardpin');
         $giftCardBalanceAmount = 0;
         $giftCardAmount        = $this->getRequest()->getParam('removegiftcard') == 1
             ? 0
@@ -113,7 +114,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 return $this->_goBack();
             }
             if ($giftCardNo != null) {
-                $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo);
+                $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
 
                 if (is_object($giftCardResponse)) {
                     $giftCardBalanceAmount = $giftCardResponse->getBalance();
@@ -169,6 +170,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
+                $cartQuote->setLsGiftCardPin($giftCardNo)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {

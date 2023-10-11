@@ -123,12 +123,13 @@ class UpdateGiftCard implements HttpPostActionInterface
         $post                  = $this->request->getContent();
         $postData              = json_decode($post);
         $giftCardNo            = $postData->gift_card_no;
+        $giftCardPin           = $postData->gift_card_pin;
         $giftCardAmount        = $postData->gift_card_amount;
         $giftCardBalanceAmount = 0;
         $cartId                = $this->checkoutSession->getQuoteId();
         $quote                 = $this->cartRepository->get($cartId);
         if ($giftCardNo != null && $giftCardAmount != 0) {
-            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo);
+            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
 
             if (is_object($giftCardResponse)) {
                 $giftCardBalanceAmount = $giftCardResponse->getBalance();
@@ -144,6 +145,7 @@ class UpdateGiftCard implements HttpPostActionInterface
                     )
                 ];
                 $quote->setLsGiftCardNo($giftCardNo);
+                $quote->setLsGiftCardPin($giftCardPin);
                 $quote->setLsGiftCardAmountUsed($giftCardAmount);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
@@ -194,6 +196,7 @@ class UpdateGiftCard implements HttpPostActionInterface
         try {
             if ($isGiftCardAmountValid) {
                 $quote->setLsGiftCardNo($giftCardNo);
+                $quote->setLsGiftCardPin($giftCardPin);
                 $quote->setLsGiftCardAmountUsed($giftCardAmount);
                 $this->validateQuote($quote);
                 $quote->collectTotals();

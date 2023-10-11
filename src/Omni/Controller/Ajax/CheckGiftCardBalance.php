@@ -83,9 +83,10 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         $post         = $this->request->getContent();
         $postData     = json_decode($post);
         $giftCardCode = $postData->gift_card_code;
+        $giftCardPin  = $postData->gift_card_pin;
         $data         = [];
         if ($giftCardCode != null) {
-            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode);
+            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin);
             if (is_object($giftCardResponse)) {
                 $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse->getBalance(), true, false);
                 $data['expirydate']      = $giftCardResponse->getExpireDate();

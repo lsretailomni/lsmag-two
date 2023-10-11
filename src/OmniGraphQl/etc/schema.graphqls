@@ -8,6 +8,7 @@ removeLsLoyaltyPoints(input: RemoveLsLoyaltyPointsInput): LsLoyaltyPointsOutput 
 input ApplyLsGiftCardInput {
       cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
       code: String! @doc(description: "Specifies the gift card code.")
+      pin: String @doc(description: "Specifies the gift card pin.")
       amount: Float! @doc(description: "Specifies how much gift card amount will be applied.")
 }
 
@@ -26,6 +27,7 @@ type LsLoyaltyPointsOutput {
 type AppliedGiftCard {
     code: String
     amount: Float
+    pin: String
 }
 
 input ApplyLsLoyaltyPointsInput {
@@ -177,6 +179,7 @@ type StoreConfig {
     ls_giftcard_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether gift card elements display is enabled (true) or disabled (false) in cart and checkout based on omni connection online/offline mode.")
     ls_giftcard_cart: Boolean @doc(description:"Indicates whether giftcard display on cart is enabled (true) or disabled (false).")
     ls_giftcard_checkout: Boolean @doc(description:"Indicates whether giftcard display on checkout is enabled (true) or disabled (false).")
+    ls_giftcard_pin_code: Boolean @doc(description:"Indicates whether giftcard pin code field in enable for redemption.")
     coupon_recommendations: Boolean @doc(description:"Indicates whether coupon recommendations display in cart and checkout is enabled (true) or disabled (false).")
     ls_discount_mixandmatch_limit: Int @doc(description:"Discounted products display limit on PDP.")
     ls_discounts_product_page: Boolean @doc(description:"Indicates whether discounts on product page display is enabled (true) or disabled (false).")
