@@ -202,7 +202,7 @@ class Data
             // @codingStandardsIgnoreStart
             $soapClient = new SoapClient(
                 $url . '?singlewsdl',
-                array_merge(['stream_context' => $context], $this->cacheHelper->getWsdlOptions())
+                array_merge(['stream_context' => $context],['cache_wsdl' => WSDL_CACHE_NONE])
 
             );
             // @codingStandardsIgnoreEnd
