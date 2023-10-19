@@ -58,6 +58,8 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * For getting gift card balance
+     *
      * @param $giftCardNo
      * @param $giftCardPin
      * @return float|GiftCard|null
@@ -69,7 +71,9 @@ class GiftCardHelper extends AbstractHelper
         $request = new Operation\GiftCardGetBalance();
         $entity  = new Entity\GiftCardGetBalance();
         $entity->setCardNo($giftCardNo);
-        $entity->setPin($giftCardPin);
+        if ($giftCardPin) {
+            $entity->setPin($giftCardPin);
+        }
         // @codingStandardsIgnoreEnd
         try {
             $responseData = $request->execute($entity);
@@ -88,6 +92,8 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * Validate gift card amount is valid with order total
+     *
      * @param $grandTotal
      * @param $giftCardAmount
      * @param $giftCardBalanceAmount
@@ -103,6 +109,8 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * Check if gift card is enabled
+     *
      * @param $area
      * @return string
      * @throws NoSuchEntityException

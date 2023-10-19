@@ -22,14 +22,14 @@
                                name="gift_card_no"
                                data-validate="{'required-entry':true}"
                                data-bind="value: giftCardNo, attr:{placeholder: $t('Enter Gift Card Code')} "/>
-                        <!-- ko if: isPinCodeFieldEnable()-->
-                        <input class="input-text"
-                               type="password"
-                               id="gift_card_pin"
-                               name="gift_card_pin"
-                               data-validate="{'required-entry':true}"
-                               data-bind="value: giftCardPin, attr:{placeholder: $t('Enter Gift Card Pin')} "/>
-                        <!-- /ko -->
+                        <div id="pincode" data-bind="visible: isPinCodeFieldEnable()">
+                            <input class="input-text"
+                                   type="password"
+                                   id="gift_card_pin"
+                                   name="gift_card_pin"
+                                   data-validate="{'required-entry':true}"
+                                   data-bind="value: giftCardPin, attr:{placeholder: $t('Enter Gift Card Pin')} "/>
+                        </div>
                         <input class="input-text"
                                type="number"
                                id="gift_card_amount"

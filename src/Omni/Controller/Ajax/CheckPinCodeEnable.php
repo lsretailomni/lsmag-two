@@ -38,6 +38,8 @@ class CheckPinCodeEnable implements HttpGetActionInterface
     }
 
     /**
+     * Getting admin configuration for pin code field is enable or not
+     *
      * @return ResponseInterface|Json|ResultInterface
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
@@ -45,8 +47,7 @@ class CheckPinCodeEnable implements HttpGetActionInterface
     {
         $configValue = $this->giftCardHelper->isPinCodeFieldEnable();
         $response    = [
-            'success' => true,
-            'value'   => (int)$configValue
+            'value'   => (bool)$configValue
         ];
         $resultJson  = $this->resultJsonFactory->create();
         return $resultJson->setData($response);

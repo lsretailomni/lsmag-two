@@ -128,7 +128,7 @@ class GiftCardManagement
         }
 
         if (empty($giftCardResponse)) {
-            throw new CouldNotSaveException(__('The gift card code %1 is not valid.', $giftCardNo));
+            throw new CouldNotSaveException(__('The gift card is not valid.'));
         }
 
         $itemsCount            = $cartQuote->getItemsCount();
@@ -169,7 +169,8 @@ class GiftCardManagement
         }
         if ($itemsCount) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo);
+            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo)
+                ->setLsGiftCardPin($giftCardPin);
             $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
             $this->quoteRepository->save($cartQuote);
         }

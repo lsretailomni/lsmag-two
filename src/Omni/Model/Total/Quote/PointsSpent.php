@@ -13,6 +13,7 @@ use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 class PointsSpent extends AbstractTotal
 {
     /**
+     * For fetching point spent from quote
      *
      * @param Quote $quote
      * @param Total $total

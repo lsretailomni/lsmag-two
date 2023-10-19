@@ -18,13 +18,13 @@ define([
         isPinCodeFieldEnable: function () {
             storage.get('omni/ajax/CheckPinCodeEnable').done(
                 function (response) {
-                    if (response.success) {
-                        return response.value;
+                    if (response.value) {
+                        $('#pincode').show();
                     }
                 }
             ).fail(
                 function (response) {
-                    return response.value;
+                    $('#pincode').hide();
                 }
             );
         },

@@ -161,8 +161,7 @@ class UpdateGiftCard implements HttpPostActionInterface
             $response = [
                 'error'   => 'true',
                 'message' => __(
-                    'The gift card code %1 is not valid.',
-                    $giftCardNo
+                    'The gift card is not valid.'
                 )
             ];
             return $resultJson->setData($response);

@@ -25,19 +25,16 @@ define([
         if (giftAmount) {
             giftCardAmount(giftAmount.value);
         }
-    }
-    if (totals) {
         var giftNo = totals.getSegment('ls_gift_card_no');
         if (giftNo) {
             giftCardNo(giftNo.value);
         }
-    }
-    if (totals) {
         var giftPin = totals.getSegment('ls_gift_card_pin');
         if (giftPin) {
             giftCardPin(giftPin.value);
         }
     }
+
     isGiftCardApplied = ko.observable(giftCardNo() != null && giftCardAmount() != null);
 
     return Component.extend({
@@ -57,13 +54,13 @@ define([
         isPinCodeFieldEnable: function () {
             storage.get('omni/ajax/CheckPinCodeEnable').done(
                 function (response) {
-                    if (response.success) {
-                        return response.value;
+                    if (response.value) {
+                        $('#pincode').show();
                     }
                 }
             ).fail(
                 function (response) {
-                    return response.value;
+                    $('#pincode').hide();
                 }
             );
         },

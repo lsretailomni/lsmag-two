@@ -10,8 +10,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template\Context;
 
 /**
- * Class Giftcard
- * @package Ls\Omni\Block\Cart
+ * Get gift card information for cart
  */
 class Giftcard extends AbstractCart
 {
@@ -37,10 +36,12 @@ class Giftcard extends AbstractCart
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
-        $this->giftCardHelper  = $giftCardHelper;
+        $this->giftCardHelper = $giftCardHelper;
     }
 
     /**
+     * Get gift card balance
+     *
      * @return float|null
      */
     public function getGiftCardBalance()
@@ -49,6 +50,8 @@ class Giftcard extends AbstractCart
     }
 
     /**
+     * Get gift card amount used
+     *
      * @return mixed
      */
     public function getGiftCardAmountUsed()
@@ -59,6 +62,8 @@ class Giftcard extends AbstractCart
     }
 
     /**
+     * Get gift card number
+     *
      * @return mixed
      */
     public function getGiftCardNo()
@@ -67,6 +72,8 @@ class Giftcard extends AbstractCart
     }
 
     /**
+     * Get gift card pin
+     *
      * @return mixed
      */
     public function getGiftCardPin()
@@ -75,7 +82,10 @@ class Giftcard extends AbstractCart
     }
 
     /**
+     * Get gift card is enable on cart page
+     *
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getGiftCardActive()
     {
@@ -83,6 +93,8 @@ class Giftcard extends AbstractCart
     }
 
     /**
+     * Get is pin code field enable
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -90,5 +102,4 @@ class Giftcard extends AbstractCart
     {
         return $this->giftCardHelper->isPinCodeFieldEnable();
     }
-
 }

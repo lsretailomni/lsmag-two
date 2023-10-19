@@ -13,6 +13,8 @@ use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 class GiftCardPin extends AbstractTotal
 {
     /**
+     * For fetching git card pin from quote
+     *
      * @param Quote $quote
      * @param Total $total
      * @return array
