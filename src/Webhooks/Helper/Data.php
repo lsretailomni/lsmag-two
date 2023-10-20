@@ -4,8 +4,13 @@ namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -466,5 +471,27 @@ class Data
         }
 
         return $qty;
+    }
+
+    /**
+     * Get gift card identifiers
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardIdentifiers()
+    {
+        return $this->lsr->getGiftCardIdentifiers();
+    }
+
+    /**
+     * @param $orderId
+     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
+     * @throws InvalidEnumException
+     */
+    public function fetchOrder($orderId)
+    {
+        return $this->orderHelper->fetchOrder($orderId, DocumentIdType::ORDER);
     }
 }

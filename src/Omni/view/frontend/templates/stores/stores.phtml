@@ -16,7 +16,7 @@ if (array_key_exists("data", $block->getData())) {
 $counter = 0;
 $apiKey  = $block->getStoreMapKey();
 
-if ($collection->getSize()) : ?>
+if ($collection && $collection->getSize()) : ?>
     <?php if ($show) : ?>
         <div id="map" style="height: 300px; width: 100%;"></div>
     <?php endif; ?>
