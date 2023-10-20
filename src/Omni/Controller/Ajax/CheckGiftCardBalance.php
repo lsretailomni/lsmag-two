@@ -16,7 +16,6 @@ use Magento\Framework\Pricing\Helper\Data;
 
 /**
  * Class CheckGiftCardBalance
- * @package Ls\Omni\Controller\Ajax
  */
 class CheckGiftCardBalance implements HttpPostActionInterface
 {
@@ -67,6 +66,8 @@ class CheckGiftCardBalance implements HttpPostActionInterface
     }
 
     /**
+     * Entry point for the controller
+     *
      * @return ResponseInterface|Json|Raw|ResultInterface
      */
     public function execute()

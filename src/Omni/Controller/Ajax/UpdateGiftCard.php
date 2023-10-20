@@ -104,6 +104,7 @@ class UpdateGiftCard implements HttpPostActionInterface
 
     /**
      * For updating gift card amount
+     *
      * @return ResponseInterface|Json|Raw|ResultInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -217,6 +218,8 @@ class UpdateGiftCard implements HttpPostActionInterface
     }
 
     /**
+     * Validate Quote
+     *
      * @param Quote $quote
      * @return void
      * @throws LocalizedException

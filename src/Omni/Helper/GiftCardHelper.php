@@ -5,7 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\GiftCard;
+use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Helper\AbstractHelper;

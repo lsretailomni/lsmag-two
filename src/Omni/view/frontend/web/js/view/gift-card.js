@@ -12,24 +12,23 @@ define([
     'use strict';
 
     var giftCardAmount = ko.observable(null),
-        isGiftCardApplied;
-
-    var giftCardNo = ko.observable(null),
-        isGiftCardApplied;
-
-    var giftCardPin = ko.observable(null),
+        giftCardNo = ko.observable(null),
+        giftCardPin = ko.observable(null),
         isGiftCardApplied;
 
     if (totals) {
-        var giftAmount = totals.getSegment('ls_gift_card_amount_used');
+        var giftAmount = totals.getSegment('ls_gift_card_amount_used'),
+            giftNo = totals.getSegment('ls_gift_card_no'),
+            giftPin = totals.getSegment('ls_gift_card_pin');
+
         if (giftAmount) {
             giftCardAmount(giftAmount.value);
         }
-        var giftNo = totals.getSegment('ls_gift_card_no');
+
         if (giftNo) {
             giftCardNo(giftNo.value);
         }
-        var giftPin = totals.getSegment('ls_gift_card_pin');
+
         if (giftPin) {
             giftCardPin(giftPin.value);
         }

@@ -8,7 +8,6 @@ use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 
 /**
  * Class PointsSpent
- * @package Ls\Omni\Model\Total\Quote
  */
 class GiftCardPin extends AbstractTotal
 {

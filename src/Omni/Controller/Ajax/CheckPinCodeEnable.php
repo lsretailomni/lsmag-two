@@ -16,7 +16,6 @@ use Magento\Framework\Controller\ResultInterface;
  */
 class CheckPinCodeEnable implements HttpGetActionInterface
 {
-
     /** @var JsonFactory */
     public $resultJsonFactory;
 

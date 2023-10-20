@@ -91,6 +91,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
 
     /**
      * Add and remove gift card from cart page
+     *
      * @return Redirect
      */
     public function execute()
