@@ -16,7 +16,6 @@ use Magento\Framework\Pricing\Helper\Data;
 
 /**
  * Class CheckGiftCardBalance
- * @package Ls\Omni\Controller\Ajax
  */
 class CheckGiftCardBalance implements HttpPostActionInterface
 {
@@ -67,6 +66,8 @@ class CheckGiftCardBalance implements HttpPostActionInterface
     }
 
     /**
+     * Entry point for the controller
+     *
      * @return ResponseInterface|Json|Raw|ResultInterface
      */
     public function execute()
@@ -83,9 +84,10 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         $post         = $this->request->getContent();
         $postData     = json_decode($post);
         $giftCardCode = $postData->gift_card_code;
+        $giftCardPin  = (isset($postData->gift_card_pin)) ? $postData->gift_card_pin : '';
         $data         = [];
         if ($giftCardCode != null) {
-            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode);
+            $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin);
             if (is_object($giftCardResponse)) {
                 $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse->getBalance(), true, false);
                 $data['expirydate']      = $giftCardResponse->getExpireDate();
@@ -97,8 +99,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
                 $response = [
                     'error'   => 'true',
                     'message' => __(
-                        'The gift card code %1 is not valid.',
-                        $giftCardCode
+                        'The gift card is not valid.'
                     )
                 ];
             } else {
@@ -112,8 +113,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
             $response = [
                 'error'   => 'true',
                 'message' => __(
-                    'The gift card code %1 is not valid.',
-                    $giftCardCode
+                    'The gift card is not valid.'
                 )
             ];
             return $resultJson->setData($response);

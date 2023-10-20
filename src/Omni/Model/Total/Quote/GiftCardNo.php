@@ -13,6 +13,8 @@ use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 class GiftCardNo extends AbstractTotal
 {
     /**
+     * For fetching git card number from quote
+     *
      * @param Quote $quote
      * @param Total $total
      * @return array
