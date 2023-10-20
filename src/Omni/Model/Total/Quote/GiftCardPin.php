@@ -8,26 +8,25 @@ use Magento\Quote\Model\Quote\Address\Total\AbstractTotal;
 
 /**
  * Class PointsSpent
- * @package Ls\Omni\Model\Total\Quote
  */
-class PointsSpent extends AbstractTotal
+class GiftCardPin extends AbstractTotal
 {
     /**
-     * For fetching point spent from quote
+     * For fetching git card pin from quote
      *
      * @param Quote $quote
      * @param Total $total
-     * @return array|null
+     * @return array
      */
     public function fetch(Quote $quote, Total $total)
     {
-        $totals = [];
-        $spent  = $quote->getLsPointsSpent();
-        if ($spent > 0) {
+        $totals         = [];
+        $giftCardNumber = $quote->getLsGiftCardPin();
+        if (!empty($giftCardNumber)) {
             $totals[] = [
                 'code'  => $this->getCode(),
-                'title' => __('You are using'),
-                'value' => $spent,
+                'title' => __('Gift Card Pin'),
+                'value' => $giftCardNumber,
             ];
         }
         return $totals;

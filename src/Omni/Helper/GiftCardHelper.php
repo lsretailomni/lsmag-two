@@ -5,6 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\GiftCard;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -57,16 +58,22 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * For getting gift card balance
+     *
      * @param $giftCardNo
-     * @return float|Entity\GiftCard|null
+     * @param $giftCardPin
+     * @return float|GiftCard|null
      */
-    public function getGiftCardBalance($giftCardNo)
+    public function getGiftCardBalance($giftCardNo, $giftCardPin = null)
     {
         $response = null;
         // @codingStandardsIgnoreStart
         $request = new Operation\GiftCardGetBalance();
         $entity  = new Entity\GiftCardGetBalance();
         $entity->setCardNo($giftCardNo);
+        if ($giftCardPin) {
+            $entity->setPin($giftCardPin);
+        }
         // @codingStandardsIgnoreEnd
         try {
             $responseData = $request->execute($entity);
@@ -85,6 +92,8 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * Validate gift card amount is valid with order total
+     *
      * @param $grandTotal
      * @param $giftCardAmount
      * @param $giftCardBalanceAmount
@@ -100,6 +109,8 @@ class GiftCardHelper extends AbstractHelper
     }
 
     /**
+     * Check if gift card is enabled
+     *
      * @param $area
      * @return string
      * @throws NoSuchEntityException
@@ -128,5 +139,16 @@ class GiftCardHelper extends AbstractHelper
         } else {
             return false;
         }
+    }
+
+    /**
+     * Check pin code field in enable or not in gift card
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function isPinCodeFieldEnable()
+    {
+        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, $this->lsr->getCurrentStoreId());
     }
 }

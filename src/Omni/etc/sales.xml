@@ -8,6 +8,7 @@
             <item name="ls_gift_card_amount_used" instance="Ls\Omni\Model\Total\Quote\GiftCardAmountUsed"
                   sort_order="700"/>
             <item name="ls_gift_card_no" instance="Ls\Omni\Model\Total\Quote\GiftCardNo" sort_order="800"/>
+            <item name="ls_gift_card_pin" instance="Ls\Omni\Model\Total\Quote\GiftCardPin" sort_order="900"/>
         </group>
     </section>
     <section name="order_invoice">
