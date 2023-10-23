@@ -665,7 +665,7 @@ class ProductCreateTask
                                 $product->setWeight($item->getGrossWeight());
                                 $product->setDescription($item->getDetails());
                                 $product->setCountryOfManufacture($item->getCountryOfOrigin());
-                                $productData->setCustomAttribute(
+                                $product->setCustomAttribute(
                                     LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
                                     $item->getTariffNo()
                                 );
@@ -1473,7 +1473,8 @@ class ProductCreateTask
                     $associatedSimpleProduct = $this->replicationHelper->getRelatedVariantGivenConfAttributesValues(
                         $productData,
                         $value,
-                        $this->store->getId()
+                        $this->store->getId(),
+                        true
                     );
 
                     foreach ($associatedSimpleProduct as $item) {
