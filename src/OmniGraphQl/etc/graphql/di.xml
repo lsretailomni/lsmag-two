@@ -84,6 +84,7 @@
                 <item name="coupon_recommendations" xsi:type="string">ls_mag/ls_coupons/coupon_recommendations</item>
                 <item name="ls_giftcard_cart" xsi:type="string">ls_mag/ls_giftcard/cart</item>
                 <item name="ls_giftcard_checkout" xsi:type="string">ls_mag/ls_giftcard/checkout</item>
+                <item name="ls_giftcard_pin_code" xsi:type="string">ls_mag/ls_giftcard/pin_code</item>
                 <item name="ls_discount_mixandmatch_limit" xsi:type="string">ls_mag/ls_discounts/discount_mixandmatch_limit</item>
                 <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
                 <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
