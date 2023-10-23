@@ -200,7 +200,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
     {
         $amount = 0;
         $basketData = $this->basketHelper->getBasketSessionValue();
-        if (isset($basketData)) {
+        if (isset($basketData) && !empty($basketData)) {
             $amount = -$basketData->getTotalDiscount();
         }
         return $amount;

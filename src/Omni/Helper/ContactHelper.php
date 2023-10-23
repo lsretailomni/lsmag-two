@@ -355,11 +355,14 @@ class ContactHelper extends AbstractHelper
 
             try {
                 $response = $request->execute($search);
-                if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                    $contact_pos = $response->getContactGetResult();
-                } else {
-                    $contact_pos = $response->getContactSearchResult();
+                if($response) {
+                    if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                        $contact_pos = $response->getContactGetResult();
+                    } else {
+                        $contact_pos = $response->getContactSearchResult();
+                    }
                 }
+
 
             } catch (Exception $e) {
                 $this->_logger->error($e->getMessage());
