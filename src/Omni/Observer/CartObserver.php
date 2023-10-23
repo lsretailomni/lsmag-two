@@ -104,6 +104,7 @@ class CartObserver implements ObserverInterface
                 if (count($quote->getAllItems()) == 0) {
                     $quote->setLsGiftCardAmountUsed(0);
                     $quote->setLsGiftCardNo(null);
+                    $quote->setLsGiftCardPin(null);
                     $quote->setLsPointsSpent(0);
                     $quote->setLsPointsEarn(0);
                     $quote->setGrandTotal(0);
