@@ -113,11 +113,6 @@ class SyncOrders
                                             $order->setDocumentId($documentId);
                                             $this->orderResourceModel->save($order);
                                         }
-                                        $oneList = $this->basketHelper->getOneListFromCustomerSession();
-
-                                        if ($oneList) {
-                                            $this->basketHelper->delete($oneList);
-                                        }
                                     }
                                 }
                                 $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();

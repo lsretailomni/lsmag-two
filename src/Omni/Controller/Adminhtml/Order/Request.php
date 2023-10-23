@@ -105,11 +105,6 @@ class Request extends Action
                             $order->setDocumentId($documentId);
                             $this->orderRepository->save($order);
                         }
-                        $oneList = $this->basketHelper->getOneListFromCustomerSession();
-
-                        if ($oneList) {
-                            $this->basketHelper->delete($oneList);
-                        }
                         $this->messageManager->addSuccessMessage(
                             __('Order request has been sent to LS Central successfully')
                         );
