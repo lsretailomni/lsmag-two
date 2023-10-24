@@ -104,8 +104,8 @@ abstract class AbstractOperation implements OperationInterface
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $response = $client->{$operation_name}($request_input);
-
-            if ($operation_name == 'OneListCalculate') {
+// Uncomment this block to test gift card basket calculation
+/*            if ($operation_name == 'OneListCalculate') {
                 $result = $response->getResult();
                 $exists = $price = $amount = 0;
                 $orderLines = [];
@@ -146,7 +146,7 @@ abstract class AbstractOperation implements OperationInterface
                         ->setTotalAmount($result->getTotalAmount() + $price)
                         ->setTotalNetAmount($result->getTotalNetAmount() + $amount);
                 }
-            }
+            }*/
         } catch (SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);

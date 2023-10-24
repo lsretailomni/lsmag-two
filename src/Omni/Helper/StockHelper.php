@@ -466,18 +466,38 @@ class StockHelper extends AbstractHelper
         bool $isRemoveItem = false,
         bool $throwException = false
     ) {
-        if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
-            if (!$item->getHasError()) {
-                $storeId = $this->lsr->getActiveWebStore();
-                $children = [];
+        if (!$item->getHasError()) {
+            $storeId = $this->lsr->getActiveWebStore();
+            $children = [];
 
-                if ($item->getProductType() == Type::TYPE_BUNDLE) {
-                    $children = $item->getChildren();
-                } else {
-                    $children[] = $item;
+            if ($item->getProductType() == Type::TYPE_BUNDLE) {
+                $children = $item->getChildren();
+            } else {
+                $children[] = $item;
+            }
+
+            foreach ($children as $child) {
+                list($lsrId) = $this->itemHelper->getComparisonValues($child->getSku());
+
+                if (in_array($lsrId, explode(',', $this->lsr->getGiftCardIdentifiers()))) {
+                    if ($qty > 1) {
+                        $item->setHasError(true);
+                        $item->setMessage(__(
+                            'Max quantity available for item %2 is %1',
+                            1,
+                            $item->getName()
+                        ));
+                    }
+                    if ($throwException == true) {
+                        throw new LocalizedException(__(
+                            'Product %1 is not available.',
+                            $item->getName()
+                        ));
+                    }
+                    continue;
                 }
 
-                foreach ($children as $child) {
+                if ($this->lsr->inventoryLookupBeforeAddToCartEnabled()) {
                     $uomQty = $child->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
 
                     if (!empty($uomQty)) {

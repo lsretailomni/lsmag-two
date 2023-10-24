@@ -676,11 +676,13 @@ class ProductCreateTask
                                         $uomCodes
                                     );
                                     $this->replicationHelper->assignProductToCategories($productSaved, $this->store);
-                                    $this->replicationHelper->assignTaxClassToChildren(
-                                        $productSaved,
-                                        $taxClass,
-                                        $this->store->getId()
-                                    );
+                                    if (!empty($taxClass)) {
+                                        $this->replicationHelper->assignTaxClassToChildren(
+                                            $productSaved,
+                                            $taxClass,
+                                            $this->store->getId()
+                                        );
+                                    }
                                 } catch (Exception $e) {
                                     $this->logDetailedException(
                                         __METHOD__,

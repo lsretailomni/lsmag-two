@@ -324,7 +324,8 @@ class BasketHelper extends AbstractHelper
                         ->setVariantId($variantId)
                         ->setUnitOfMeasureId($uom)
                         ->setAmount($quoteItem->getPrice())
-                        ->setPrice($quoteItem->getPrice());
+                        ->setPrice($quoteItem->getPrice())
+                        ->setImmutable(true);
 
                     $itemsArray[] = $list_item;
                 }

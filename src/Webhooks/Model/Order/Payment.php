@@ -132,9 +132,10 @@ class Payment
      * Generate invoice based on webhook call from Ls Central
      *
      * @param $data
+     * @param bool $linesMerged
      * @return array[]
      */
-    public function generateInvoice($data)
+    public function generateInvoice($data, $linesMerged = true)
     {
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
@@ -152,7 +153,7 @@ class Payment
             $validateInvoice = false;
             $invoice         = null;
             if ($validateOrder['data']['success'] && $order->canInvoice()) {
-                $items = $this->helper->getItems($order, $lines);
+                $items = $this->helper->getItems($order, $lines, $linesMerged);
                 foreach ($items as $itemData) {
                     foreach ($itemData as $itemData) {
                         $item                         = $itemData['item'];
@@ -374,13 +375,15 @@ class Payment
     public function giftCardNotification($order, $itemsToInvoice)
     {
         $salesEntry = $this->helper->fetchOrder($order->getDocumentId());
-        $giftCardOrderItems = $this->getGiftCardOrderItems($order);
+        $giftCardOrderItems = $this->helper->getGiftCardOrderItems($order);
         $salesEntryLines = $salesEntry->getLines();
 
         foreach ($giftCardOrderItems as $giftCardOrderItem) {
             foreach ($salesEntryLines as $salesEntryLine) {
-                if ($giftCardOrderItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE) == $salesEntryLine->getItemId() &&
-                $giftCardOrderItem->getPrice() == $salesEntryLine->getAmount()) {
+                if ($giftCardOrderItem->getQuoteItemId() == $salesEntryLine->getExternalId() &&
+                $giftCardOrderItem->getPrice() == $salesEntryLine->getAmount() &&
+                array_key_exists($giftCardOrderItem->getItemId(), $itemsToInvoice)
+                ) {
                     $this->eventManager->dispatch(
                         'ls_mag_giftcard_recipient_notification',
                         [
@@ -395,28 +398,5 @@ class Payment
                 }
             }
         }
-    }
-
-    /**
-     * Return only gift card items from order
-     *
-     * @param $order
-     * @return array
-     * @throws NoSuchEntityException
-     */
-    private function getGiftCardOrderItems($order): array
-    {
-        $items = [];
-
-        foreach ($order->getAllItems() as $orderItem) {
-            if (in_array(
-                $orderItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
-                explode(',', $this->helper->getGiftCardIdentifiers())
-            )) {
-                $items[] = $orderItem;
-            }
-        }
-
-        return $items;
     }
 }
