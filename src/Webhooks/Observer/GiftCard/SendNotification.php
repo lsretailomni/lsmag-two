@@ -59,9 +59,7 @@ class SendNotification implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        $order = $observer->getEvent()->getOrder();
         $giftCardOrderItem = $observer->getEvent()->getGiftCardOrderItem();
-        $salesEntry = $observer->getEvent()->getSalesEntry();
         $salesEntryLine = $observer->getEvent()->getSalesEntryLine();
         $storeId = $giftCardOrderItem->getStoreId();
         $sender = $giftCardOrderItem->getProductOptionByCode('giftcard_sender_name');

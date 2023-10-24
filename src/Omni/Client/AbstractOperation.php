@@ -4,7 +4,7 @@ namespace Ls\Omni\Client;
 
 use DOMDocument;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
