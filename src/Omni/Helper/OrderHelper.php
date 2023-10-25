@@ -1102,7 +1102,8 @@ class OrderHelper extends AbstractHelper
 
         $status = $order->getStatus();
 
-        return empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+       $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+       return $check;
     }
 
     /**
