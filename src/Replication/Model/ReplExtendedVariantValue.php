@@ -197,9 +197,9 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     public function setDimensions($Dimensions)
     {
         if(trim($Dimensions) != "" && $Dimensions != null) {
-            $this->setData( 'Dimensions', $Dimensions );
-            $this->Dimensions = $Dimensions;
-            $this->setDataChanges( TRUE );
+        	$this->setData( 'Dimensions', $Dimensions );
+        	$this->Dimensions = $Dimensions;
+        	$this->setDataChanges( TRUE );
         }
         return $this;
     }
