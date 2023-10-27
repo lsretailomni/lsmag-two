@@ -336,11 +336,13 @@ class DiscountCreateTask
             ->setIsActive(1)
             ->setCustomerGroupIds($customerGroupIds)
             ->setWebsiteIds($websiteIds)
-            ->setFromDate($replDiscount->getFromDate());
+            ->setFromDate(($replDiscount->getFromDate()) ?: $this->replicationHelper->getCurrentDate());
 
-        if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
+        if (strtolower($replDiscount->getToDate() ?? '') != strtolower('1753-01-01T00:00:00')
+            && !empty($replDiscount->getToDate())) {
             $rule->setToDate($replDiscount->getToDate());
         }
+
 
         /**
          * Default Values for Action Types.
@@ -394,10 +396,6 @@ class DiscountCreateTask
             ->columns('OfferNo')
             ->group('OfferNo');
 
-        $collection->addFieldToFilter(
-            ['ToDate', 'ToDate'],
-            [['gteq' => $this->replicationHelper->getCurrentDate()], ['eq' => LSR::NO_TIME_LIMIT]]
-        );
         $collection->addFieldToFilter(
             'Type',
             ReplDiscountType::DISC_OFFER
