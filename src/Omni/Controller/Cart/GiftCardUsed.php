@@ -91,11 +91,13 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
 
     /**
      * Add and remove gift card from cart page
+     *
      * @return Redirect
      */
     public function execute()
     {
         $giftCardNo            = $this->getRequest()->getParam('giftcardno');
+        $giftCardPin            = $this->getRequest()->getParam('giftcardpin');
         $giftCardBalanceAmount = 0;
         $giftCardAmount        = $this->getRequest()->getParam('removegiftcard') == 1
             ? 0
@@ -113,7 +115,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 return $this->_goBack();
             }
             if ($giftCardNo != null) {
-                $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo);
+                $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
 
                 if (is_object($giftCardResponse)) {
                     $giftCardBalanceAmount = $giftCardResponse->getBalance();
@@ -123,7 +125,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             }
 
             if (empty($giftCardResponse)) {
-                $this->messageManager->addErrorMessage(__('The gift card code %1 is not valid.', $giftCardNo));
+                $this->messageManager->addErrorMessage(__('The gift card is not valid.'));
                 return $this->_goBack();
             }
 
@@ -169,6 +171,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
+                $cartQuote->setLsGiftCardPin($giftCardPin)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {
@@ -199,7 +202,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 }
             } else {
                 if ($giftCardAmount == 0) {
-                    $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->save();
+                    $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->setLsGiftCardPin(null)->save();
                 }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
             }

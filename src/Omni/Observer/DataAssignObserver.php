@@ -65,11 +65,11 @@ class DataAssignObserver implements ObserverInterface
         LSR $lsr,
         QuoteIdToMaskedQuoteIdInterface $quoteIdToMaskedQuoteId
     ) {
-        $this->helper               = $helper;
-        $this->basketHelper         = $basketHelper;
-        $this->storeHelper          = $storeHelper;
-        $this->request              = $request;
-        $this->lsr                  = $lsr;
+        $this->helper                 = $helper;
+        $this->basketHelper           = $basketHelper;
+        $this->storeHelper            = $storeHelper;
+        $this->request                = $request;
+        $this->lsr                    = $lsr;
         $this->quoteIdToMaskedQuoteId = $quoteIdToMaskedQuoteId;
     }
 
@@ -90,6 +90,7 @@ class DataAssignObserver implements ObserverInterface
     {
         $quote              = $observer->getQuote();
         $giftCardNo         = $quote->getLsGiftCardNo();
+        $giftCardPin        = $quote->getLsGiftCardPin();
         $giftCardAmountUsed = $quote->getLsGiftCardAmountUsed();
         $loyaltyPointsSpent = $quote->getLsPointsSpent();
         $errorMessage       = $this->helper->orderBalanceCheck(
@@ -140,6 +141,7 @@ class DataAssignObserver implements ObserverInterface
 
         $order->setLsGiftCardAmountUsed($giftCardAmountUsed);
         $order->setLsGiftCardNo($giftCardNo);
+        $order->setLsGiftCardPin($giftCardPin);
 
         return $this;
     }
@@ -164,14 +166,14 @@ class DataAssignObserver implements ObserverInterface
         if (str_contains($this->request->getOriginalPathInfo(), "graphql")) {
             //Stock validation in graphql based on store configuration
 
-            $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
+            $stockInventoryCheckMsg = ($this->lsr->getStoreConfig(
                 LSR::LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE,
                 $this->lsr->getCurrentStoreId()
             )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId) : '';
 
         } else { //Stock validation in frontend based on store configuration
 
-            $stockInventoryCheckMsg     = ($this->lsr->getStoreConfig(
+            $stockInventoryCheckMsg = ($this->lsr->getStoreConfig(
                 LSR::LSR_STOCK_VALIDATION_ACTIVE,
                 $this->lsr->getCurrentStoreId()
             )) ? $this->storeInventoryCheck($maskedCartId, $userId, $scopeId, $storeId, $quote) : '';
@@ -179,7 +181,7 @@ class DataAssignObserver implements ObserverInterface
 
         $validatePaymentMethod = $this->validatePaymentMethod($quote);
 
-        return $stockInventoryCheckMsg ?? $validatePaymentMethod ;
+        return $stockInventoryCheckMsg ?? $validatePaymentMethod;
     }
 
     /** To validate cart item inventory in store
@@ -233,7 +235,7 @@ class DataAssignObserver implements ObserverInterface
     {
         $shippingMethod        = $quote->getShippingAddress()->getShippingMethod();
         $selectedPaymentMethod = $quote->getPayment()->getMethod();
-        $message = null;
+        $message               = null;
         if ($shippingMethod == "clickandcollect_clickandcollect") {
             $paymentOptionArray = explode(
                 ',',

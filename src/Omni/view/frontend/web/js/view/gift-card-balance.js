@@ -4,7 +4,8 @@ define([
     'uiComponent',
     'Ls_Omni/js/action/get-gift-card-balance',
     'mage/translate',
-], function ($, ko, Component, getGiftCardBalanceAction, $t) {
+    'mage/storage',
+], function ($, ko, Component, getGiftCardBalanceAction, $t, storage) {
     'use strict';
     var giftCardBalance = ko.observable(null);
     var giftCardExpiryDate = ko.observable(null);
@@ -12,6 +13,20 @@ define([
     return Component.extend({
         defaults: {
             template: 'Ls_Omni/gift-card-balance'
+        },
+
+        isPinCodeFieldEnable: function () {
+            storage.get('omni/ajax/CheckPinCodeEnable').done(
+                function (response) {
+                    if (response.value) {
+                        $('#pincode').show();
+                    }
+                }
+            ).fail(
+                function (response) {
+                    $('#pincode').hide();
+                }
+            );
         },
 
         checkGiftCardBalance: function (form) {

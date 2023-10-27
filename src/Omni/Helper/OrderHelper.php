@@ -482,6 +482,7 @@ class OrderHelper extends AbstractHelper
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
+                ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setTenderType($tenderTypeId);
@@ -1101,7 +1102,8 @@ class OrderHelper extends AbstractHelper
 
         $status = $order->getStatus();
 
-        return empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+       $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+       return $check;
     }
 
     /**

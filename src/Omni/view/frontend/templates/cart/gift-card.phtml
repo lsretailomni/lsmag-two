@@ -29,6 +29,15 @@ if ($block->getGiftCardActive()) {
                                    required="required"/>
                         </div>
                     </div>
+                    <?php if ($block->isPinCodeFieldEnable()) : ?>
+                        <div class="field gift-card-code-field">
+                            <div class="control">
+                                <input type="password" class="input-text" id="giftcardpin" name="giftcardpin"
+                                       placeholder="Enter Gift Card Pin" value="<?= $block->getGiftCardPin() ?>"
+                                       required="required"/>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <div class="field gift-card-amount-field">
                         <div class="control">
                             <input type="number" min="0" class="input-text" id="giftcardamount" name="giftcardamount"
@@ -53,5 +62,5 @@ if ($block->getGiftCardActive()) {
             </form>
         </div>
     </div>
-<?php
+    <?php
 } ?>

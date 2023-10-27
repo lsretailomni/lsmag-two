@@ -14,7 +14,7 @@ define([
 ) {
     'use strict';
 
-    return function (gift_card_no, gift_card_amount, isGiftCardApplied) {
+    return function (gift_card_no, gift_card_amount, gift_card_pin, isGiftCardApplied) {
         var quoteId = quote.getQuoteId(),
             url = 'omni/ajax/updateGiftCard',
             message = $t('Gift card successfully applied.');
@@ -23,7 +23,11 @@ define([
 
         return storage.post(
             url,
-            JSON.stringify({'gift_card_no': gift_card_no, 'gift_card_amount': gift_card_amount}),
+            JSON.stringify({
+                'gift_card_no': gift_card_no,
+                'gift_card_amount': gift_card_amount,
+                'gift_card_pin': gift_card_pin
+            }),
             true,
             'application/json'
         ).done(function (response) {

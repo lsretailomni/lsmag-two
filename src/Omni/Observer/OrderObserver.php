@@ -76,16 +76,17 @@ class OrderObserver implements ObserverInterface
         $check              = false;
         $order              = $observer->getEvent()->getData('order');
 
-        if (!$this->orderHelper->isAllowed($order)) {
-            $this->basketHelper->unSetLastDocumentId();
-            return null;
-        }
-
         $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
         if (empty($order->getIncrementId())) {
             $orderIds = $observer->getEvent()->getOrderIds();
             $order    = $this->orderHelper->orderRepository->get($orderIds[0]);
         }
+
+        if (!$this->orderHelper->isAllowed($order)) {
+            $this->basketHelper->unSetLastDocumentId();
+            return null;
+        }
+
         /*
         * Adding condition to only process if LSR is enabled.
         */
