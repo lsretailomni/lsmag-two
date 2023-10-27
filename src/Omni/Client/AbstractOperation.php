@@ -4,12 +4,16 @@ namespace Ls\Omni\Client;
 
 use DOMDocument;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\State;
+use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 use SoapFault;
 
@@ -55,14 +59,21 @@ abstract class AbstractOperation implements OperationInterface
     public $objectManager;
 
     /**
+     * @var State
+     */
+    public $state;
+
+    /**
      * @param ServiceType $service_type
      */
-    public function __construct(ServiceType $service_type)
-    {
+    public function __construct(
+        ServiceType $service_type
+    ) {
         $this->service_type  = $service_type;
         $this->objectManager = ObjectManager::getInstance();
         $this->logger        = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
+        $this->state = $this->objectManager->get(State::class);
     }
 
     /**
@@ -109,7 +120,7 @@ abstract class AbstractOperation implements OperationInterface
             if ($e->getMessage() != "") {
                 if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
                     $response = $e->getMessage();
-                } else if($e->getCode() == 504 && $operation_name == 'ContactCreate') {
+                } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
                     $response = null;
                 }
             } else {
@@ -117,7 +128,9 @@ abstract class AbstractOperation implements OperationInterface
             }
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+
         $this->debugLog($operation_name, $requestTime, $responseTime);
+
         return $response;
     }
     // @codingStandardsIgnoreEnd
@@ -161,13 +174,22 @@ abstract class AbstractOperation implements OperationInterface
      * @param $operation_name
      * @param $requestTime
      * @param $responseTime
+     * @throws LocalizedException
      */
     private function debugLog($operation_name, $requestTime, $responseTime)
     {
         //@codingStandardsIgnoreStart
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
-        $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
+        $disableLog = false;
+        if ($operation_name == 'Ping' &&
+            $this->state &&
+            $this->state->getAreaCode() == Area::AREA_FRONTEND
+        ) {
+            $disableLog = true;
+        }
+
+        $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG) && !$disableLog;
         $timeElapsed = $requestTime->diff($responseTime);
 
         if ($isEnable) {
