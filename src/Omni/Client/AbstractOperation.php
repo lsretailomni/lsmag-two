@@ -3,8 +3,8 @@
 namespace Ls\Omni\Client;
 
 use DOMDocument;
+use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
@@ -13,7 +13,6 @@ use \Ls\Replication\Logger\OmniLogger;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\App\State;
-use Magento\Framework\Exception\LocalizedException;
 use Psr\Log\LoggerInterface;
 use SoapFault;
 
@@ -73,7 +72,7 @@ abstract class AbstractOperation implements OperationInterface
         $this->objectManager = ObjectManager::getInstance();
         $this->logger        = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
-        $this->state = $this->objectManager->get(State::class);
+        $this->state         = $this->objectManager->get(State::class);
     }
 
     /**
@@ -171,22 +170,21 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * Log request, response and time elapsed
      *
-     * @param $operation_name
+     * @param $operationName
      * @param $requestTime
      * @param $responseTime
-     * @throws LocalizedException
+     * @return void
      */
-    private function debugLog($operation_name, $requestTime, $responseTime)
+    private function debugLog($operationName, $requestTime, $responseTime)
     {
         //@codingStandardsIgnoreStart
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
-        $disableLog = false;
-        if ($operation_name == 'Ping' &&
-            $this->state &&
-            $this->state->getAreaCode() == Area::AREA_FRONTEND
-        ) {
-            $disableLog = true;
+        try {
+            $areaCode = $this->state->getAreaCode();
+            $disableLog = $operationName == 'Ping' && $areaCode == Area::AREA_FRONTEND;
+        } catch (Exception $e) {
+            $disableLog = false;
         }
 
         $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG) && !$disableLog;
@@ -197,7 +195,7 @@ abstract class AbstractOperation implements OperationInterface
                 sprintf(
                     "==== REQUEST ==== %s ==== %s ====",
                     $requestTime->format("m-d-Y H:i:s.u"),
-                    $operation_name
+                    $operationName
                 )
             );
 
@@ -209,7 +207,7 @@ abstract class AbstractOperation implements OperationInterface
                 sprintf(
                     "==== RESPONSE ==== %s ==== %s ====",
                     $responseTime->format("m-d-Y H:i:s.u"),
-                    $operation_name
+                    $operationName
                 )
             );
             $seconds = $timeElapsed->s + $timeElapsed->f;
@@ -217,7 +215,7 @@ abstract class AbstractOperation implements OperationInterface
                 sprintf(
                     "==== Time Elapsed ==== %s ==== %s ====",
                     $timeElapsed->format("%i minute(s) " . $seconds . " second(s)"),
-                    $operation_name
+                    $operationName
                 )
             );
 
