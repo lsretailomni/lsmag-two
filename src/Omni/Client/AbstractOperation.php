@@ -91,6 +91,7 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * @param $operation_name
      * @return NavException|NavObjectReferenceNotAnInstanceException|string|null
+     * @throws Exception
      */
     public function makeRequest($operation_name)
     {
@@ -121,6 +122,8 @@ abstract class AbstractOperation implements OperationInterface
                     $response = $e->getMessage();
                 } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
                     $response = null;
+                } elseif ($operation_name == 'Ping') {
+                    throw new Exception('Unable to ping commerce service.');
                 }
             } else {
                 $response = null;
