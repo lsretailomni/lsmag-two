@@ -46,6 +46,12 @@ class GiftCardBalanceOutput implements ResolverInterface
             $currency        = $response->getCurrencyCode();
         }
 
+        if (empty($response)) {
+            return [
+                'error' => __('The gift card is not valid.')
+            ];
+        }
+
         return [
             'currency' => $currency,
             'value'    => $giftCardBalance,

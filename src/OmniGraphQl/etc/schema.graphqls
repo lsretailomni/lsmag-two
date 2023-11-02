@@ -166,6 +166,7 @@ type ReturnPolicyOutput {
 type GiftCardBalanceOutput {
     currency: String @doc(description: "Gift Card Balance currency")
     value: String @doc(description: "Gift Card Balance")
+    error: String @doc(description: "Error Message")
 }
 
 type OrderTakingCalendarOutput {
