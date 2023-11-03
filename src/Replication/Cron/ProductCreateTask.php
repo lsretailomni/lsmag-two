@@ -1457,7 +1457,8 @@ class ProductCreateTask
             ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
 
         ];
-        $variants = $this->getDeletedVariantsOnly($filters);
+        $variants         = $this->getDeletedVariantsOnly($filters);
+        $parentProductIds = [];
 
         if (!empty($variants)) {
             /** @var ReplItemVariantRegistration $value */
@@ -1482,6 +1483,12 @@ class ProductCreateTask
                         // @codingStandardsIgnoreLine
                         $this->productRepository->save($item);
                     }
+
+                    //Create an array of parent products to check saleable status
+                    if (!in_array($productData->getId(), $parentProductIds)) {
+                        $parentProductIds[] = $productData->getId();
+                    }
+
                 } catch (Exception $e) {
                     $this->logDetailedException(
                         __METHOD__,
@@ -1496,6 +1503,22 @@ class ProductCreateTask
                 $value->setData('processed', 1);
                 // @codingStandardsIgnoreLine
                 $this->replItemVariantRegistrationRepository->save($value);
+            }
+
+            //Disable configurable products if all associated products are disabled
+            if (count($parentProductIds) > 0) {
+                $searchCriteria = $this->searchCriteriaBuilder->addFilter(
+                    'entity_id',
+                    $parentProductIds,
+                    'in'
+                )->create();
+                $configProducts = $this->productRepository->getList($searchCriteria)->getItems();
+                foreach ($configProducts as $configProduct) {
+                    if (!$configProduct->isSalable()) {
+                        $this->setProductStatus($configProduct, 1);
+                        $this->productRepository->save($configProduct);
+                    }
+                }
             }
         }
     }

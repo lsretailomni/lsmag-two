@@ -2751,17 +2751,19 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Getting all configurable attribute codes
      *
-     * @param string $itemId
-     * @param string $storeId
+     * @param $itemId
+     * @param $storeId
+     * @param $variantRemoval
      * @return array
      */
     public function _getAttributesCodes($itemId, $storeId, $variantRemoval = false)
     {
         $finalCodes = [];
-        $isDeleted  = ($variantRemoval) ? 1:0; //Filter isDeleted with 1 for variant removal
+        $isDeleted  = ($variantRemoval) ? [0,1]:0; //Filter isDeleted with 1 for variant removal
+        $isDeletedCondition = ($variantRemoval) ? 'in':'eq';
         try {
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-                ->addFilter('isDeleted', $isDeleted, 'eq')
+                ->addFilter('isDeleted', $isDeleted, $isDeletedCondition)
                 ->addFilter('Code', true, 'notnull')
                 ->addFilter('Dimensions', true, 'notnull')
                 ->addFilter('scope_id', $storeId, 'eq')->create();
