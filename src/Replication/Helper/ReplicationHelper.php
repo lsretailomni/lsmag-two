@@ -2751,8 +2751,9 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Getting all configurable attribute codes
      *
-     * @param string $itemId
-     * @param string $storeId
+     * @param $itemId
+     * @param $storeId
+     * @param $variantRemoval
      * @return array
      */
     public function _getAttributesCodes($itemId, $storeId, $variantRemoval = false)

@@ -1485,7 +1485,7 @@ class ProductCreateTask
                     }
 
                     //Create an array of parent products to check saleable status
-                    if(!in_array($productData->getId(),$parentProductIds)) {
+                    if (!in_array($productData->getId(), $parentProductIds)) {
                         $parentProductIds[] = $productData->getId();
                     }
 
@@ -1506,12 +1506,15 @@ class ProductCreateTask
             }
 
             //Disable configurable products if all associated products are disabled
-            if(count($parentProductIds) > 0) {
-                $searchCriteria = $this->searchCriteriaBuilder->addFilter('entity_id',$parentProductIds,'in')
-                    ->create();
+            if (count($parentProductIds) > 0) {
+                $searchCriteria = $this->searchCriteriaBuilder->addFilter(
+                    'entity_id',
+                    $parentProductIds,
+                    'in'
+                )->create();
                 $configProducts = $this->productRepository->getList($searchCriteria)->getItems();
-                foreach($configProducts as $configProduct) {
-                    if(!$configProduct->isSalable()){
+                foreach ($configProducts as $configProduct) {
+                    if (!$configProduct->isSalable()) {
                         $this->setProductStatus($configProduct, 1);
                         $this->productRepository->save($configProduct);
                     }
