@@ -94,25 +94,27 @@ class StoreHelper extends AbstractHelper
     /**
      * Getting sales type
      *
-     * @param mixed $websiteId
-     * @param mixed $webStore
-     * @param mixed $baseUrl
-     * @return array|Store|Entity\StoreGetByIdResponse|ResponseInterface|null
+     * @param $websiteId
+     * @param $webStore
+     * @param $baseUrl
+     * @param $lsKey
+     * @return array|bool|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
      */
-    public function getSalesType($websiteId = '', $webStore = null, $baseUrl = null)
+    public function getSalesType($websiteId = '', $webStore = null, $baseUrl = null, $lsKey = null)
     {
-        return $this->getStore($websiteId, $webStore, $baseUrl);
+        return $this->getStore($websiteId, $webStore, $baseUrl, $lsKey);
     }
 
     /**
-     * Getting store by id
+     * Getting Store By Id
      *
-     * @param mixed $websiteId
-     * @param mixed $webStore
-     * @param mixed $baseUrl
-     * @return array|Store|Entity\StoreGetByIdResponse|ResponseInterface|null
+     * @param $websiteId
+     * @param $webStore
+     * @param $baseUrl
+     * @param $lsKey
+     * @return array|bool|Entity\Store|Entity\StoreGetByIdResponse|ResponseInterface|null
      */
-    public function getStore($websiteId = '', $webStore = null, $baseUrl = null)
+    public function getStore($websiteId = '', $webStore = null, $baseUrl = null, $lsKey = null)
     {
         $response = [];
         if ($webStore == null) {
@@ -120,6 +122,10 @@ class StoreHelper extends AbstractHelper
         }
         if ($baseUrl == null) {
             $baseUrl = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
+        }
+
+        if ($lsKey == null) {
+            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
         }
 
         try {
@@ -133,6 +139,7 @@ class StoreHelper extends AbstractHelper
                 // @codingStandardsIgnoreStart
                 $request   = new Entity\StoreGetById();
                 $operation = new Operation\StoreGetById($baseUrl);
+                $operation->setToken($lsKey);
                 // @codingStandardsIgnoreEnd
 
                 $request->setStoreId($webStore);

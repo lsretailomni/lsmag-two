@@ -56,6 +56,7 @@ class NavStore implements OptionSourceInterface
         // get current Website Id.
         $websiteId = (int)$this->request->getParam('website');
         $baseUrl   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
+        $lsKey   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
 
         if ($this->lsr->validateBaseUrl($baseUrl)) {
             // @codingStandardsIgnoreLine
@@ -65,6 +66,7 @@ class NavStore implements OptionSourceInterface
             } else {
                 $get_nav_stores = new StoresGetAll($baseUrl);
             }
+            $get_nav_stores->setToken($lsKey);
             $result = $get_nav_stores->execute();
 
             if ($result != null) {
