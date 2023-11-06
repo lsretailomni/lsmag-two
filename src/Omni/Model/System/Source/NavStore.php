@@ -3,9 +3,9 @@
 namespace Ls\Omni\Model\System\Source;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\Ecommerce\Entity\Store;
-use Ls\Omni\Client\Ecommerce\Operation\StoresGet;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGet;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use Magento\Framework\Data\OptionSourceInterface;
 
@@ -56,7 +56,7 @@ class NavStore implements OptionSourceInterface
         // get current Website Id.
         $websiteId = (int)$this->request->getParam('website');
         $baseUrl   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
-        $lsKey   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
+        $lsKey     = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
 
         if ($this->lsr->validateBaseUrl($baseUrl)) {
             // @codingStandardsIgnoreLine
