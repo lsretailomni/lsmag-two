@@ -527,7 +527,7 @@ class Data
 
         foreach ($order->getAllItems() as $orderItem) {
             if (in_array(
-                $orderItem->getProduct()->getData(\Ls\Hospitality\Model\LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                $orderItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
                 explode(',', $this->getGiftCardIdentifiers())
             )) {
                 $items[] = $orderItem;
@@ -550,7 +550,7 @@ class Data
 
         foreach ($this->getGiftCardOrderItems($order) as $orderItem) {
             if (in_array(
-                $orderItem->getProduct()->getData(\Ls\Hospitality\Model\LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                $orderItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
                 explode(',', $this->getGiftCardIdentifiers())
             )) {
                 $qty += $orderItem->getQtyOrdered();
