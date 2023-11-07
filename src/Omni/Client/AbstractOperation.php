@@ -101,7 +101,7 @@ abstract class AbstractOperation implements OperationInterface
         $response      = null;
         $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
         if (empty($this->token)) {
-            $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getCurrentStoreId()));
+            $this->setToken($lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getCurrentWebsiteId()));
         }
         //@codingStandardsIgnoreStart
         $client->setStreamContext(
