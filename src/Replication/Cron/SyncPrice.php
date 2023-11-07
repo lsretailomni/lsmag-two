@@ -37,10 +37,12 @@ class SyncPrice extends ProductCreateTask
             /** @var StoreInterface[] $stores */
             $stores = $this->lsr->getAllStores();
         }
+
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
+
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
@@ -70,6 +72,12 @@ class SyncPrice extends ProductCreateTask
                         'VariantId',
                         ['repl_price_id']
                     );
+
+                    $collection
+                        ->setOrder('main_table.ItemId', 'ASC')
+                        ->setOrder('main_table.VariantId', 'ASC')
+                        ->setOrder('main_table.UnitOfMeasure', 'ASC');
+
                     /** @var ReplPrice $replPrice */
                     foreach ($collection as $replPrice) {
                         try {
@@ -84,7 +92,16 @@ class SyncPrice extends ProductCreateTask
                                 $sku = $replPrice->getItemId();
                                 $uom = '';
                             } else {
-                                $uom = $this->replicationHelper->getBaseUnitOfMeasure($replPrice->getItemId());
+                                $totalUomCodes = $this->replicationHelper->getUomCodes(
+                                    $replPrice->getItemId(),
+                                    $this->getScopeId()
+                                );
+
+                                if (count($totalUomCodes[$replPrice->getItemId()]) > 1) {
+                                    $uom = $this->replicationHelper->getBaseUnitOfMeasure($replPrice->getItemId());
+                                } else {
+                                    $uom = '';
+                                }
                                 $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' . $uom;
                             }
                             $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
@@ -93,17 +110,16 @@ class SyncPrice extends ProductCreateTask
                                 $uom,
                                 $this->store->getId()
                             );
+
                             if (isset($productData)) {
-                                if (empty($replPrice->getUnitOfMeasure())) {
+                                $productData->setPrice($replPrice->getUnitPriceInclVat());
+                                $this->productResourceModel->saveAttribute($productData, 'price');
+
+                                if ($productData->getTypeId() == 'configurable') {
                                     $baseUnitOfMeasure = $productData->getData('uom');
                                     $itemPriceCount    = $this->getItemPriceCount($replPrice->getItemId());
-                                    $productData->setPrice($replPrice->getUnitPriceInclVat());
-                                    // @codingStandardsIgnoreStart
-                                    $this->productResourceModel->saveAttribute($productData, 'price');
-                                }
-                                // @codingStandardsIgnoreEnd
-                                if ($productData->getTypeId() == 'configurable') {
                                     $children = $productData->getTypeInstance()->getUsedProducts($productData);
+
                                     foreach ($children as $child) {
                                         $childProductData = $this->productRepository->get($child->getSKU());
                                         if ($this->validateChildPriceUpdate(

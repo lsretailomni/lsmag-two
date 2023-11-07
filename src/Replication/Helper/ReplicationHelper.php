@@ -3455,7 +3455,7 @@ class ReplicationHelper extends AbstractHelper
             if (isset($optionId)) {
                 $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, $optionId);
             }
-        } else if(!$discardUom){
+        } elseif (!$discardUom) {
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
