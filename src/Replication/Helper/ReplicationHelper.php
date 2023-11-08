@@ -1313,11 +1313,13 @@ class ReplicationHelper extends AbstractHelper
 
         $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $base_url = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
+        $lsKey    = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
         // @codingStandardsIgnoreStart
         $hierarchy = new Entity\ReplEcommHierarchy();
 
         $request   = new Entity\ReplRequest();
         $operation = new Operation\ReplEcommHierarchy($base_url);
+        $operation->setToken($lsKey);
         // @codingStandardsIgnoreEnd
 
         $request->setStoreId($webStore)
@@ -3455,7 +3457,7 @@ class ReplicationHelper extends AbstractHelper
             if (isset($optionId)) {
                 $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, $optionId);
             }
-        } else if(!$discardUom){
+        } else if (!$discardUom) {
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
