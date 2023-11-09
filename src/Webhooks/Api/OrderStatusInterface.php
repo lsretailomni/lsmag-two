@@ -16,7 +16,7 @@ interface OrderStatusInterface
      * @param string $MsgSubject
      * @param string $MsgDetail
      * @param string $CardId
-     * @param string $Lines
+     * @param mixed $Lines
      * @param string $OrderKOTStatus
      * @return mixed
      */

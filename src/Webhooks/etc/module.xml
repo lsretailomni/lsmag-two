@@ -5,6 +5,7 @@
         <sequence>
             <module name="Ls_Omni"/>
             <module name="Magento_InventoryInStorePickupSales" />
+            <module name="Magento_GiftCard" />
         </sequence>
     </module>
 </config>

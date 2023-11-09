@@ -1,0 +1,56 @@
+<!--@subject {{trans "You've been sent a gift from %store_name" store_name=$store.frontend_name |raw}} @-->
+<!--@vars {
+"template config_path=\"design\/email\/footer_template\"":"Email Footer Template",
+"template config_path=\"design\/email\/header_template\"":"Email Header Template",
+"var logo_alt":"Email Logo Image Alt",
+"var logo_url":"Email Logo Image URL",
+"var balance":"Gift Card Balance",
+"var name|escape":"Recipient Name",
+"var code|escape":"Gift Card Code",
+"var pin":"Gift Card Pin",
+"var gift_message|escape|nl2br":"Sender Gift Message",
+"var sender_name":"Sender Name",
+"var sender_name_with_email|escape":"Sender Name with Email",
+"var store.frontend_name|escape":"Store Name",
+"store url=\"\"":"Store URL",
+"var this.getUrl($store,'',[_nosid:1])":"Current Store URL",
+} @-->
+
+{{template config_path="design/email/header_template"}}
+
+<p class="greeting">{{trans "%name," name=$name}}</p>
+
+<p>
+    {{trans
+    '%sender has sent you a gift card for use at <a href="%store_url">%store_name</a> and it is now ready to be used for purchases.'
+
+    sender=$sender_name_with_email
+    store_url=$this.getUrl($store,'',[_nosid:1])
+    store_name=$store.frontend_name
+    |raw}}
+</p>
+
+<p>
+    {{trans
+    'The card has a balance of %balance that can be used at <a href="%store_url">%store_name</a>.'
+
+    balance=$balance
+    store_url=$this.getUrl($store,'',[_nosid:1])
+    store_name=$store.frontend_name
+    |raw}}
+</p>
+
+<p>{{trans "Gift Card Code: %code" code=$code}}</p>
+<p>{{trans "Gift Card Pin: %pin" pin=$pin}}</p>
+{{depend gift_message}}
+<table class="message-info" cellspacing="0" cellpadding="0" border="0">
+    <tr>
+        <td>
+            <h3>{{trans "Message from %sender_name:" sender_name=$sender_name}}</h3>
+            {{var gift_message|escape|nl2br}}
+        </td>
+    </tr>
+</table>
+{{/depend}}
+
+{{template config_path="design/email/footer_template"}}

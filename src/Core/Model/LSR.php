@@ -102,7 +102,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE = 'ls_mag/replication/manual_cron_grid_default_website';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
-
+    const GIFT_CARD_IDENTIFIER = 'ls_mag/replication/gift_card_items_list';
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';
@@ -481,6 +481,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
+
+    const GIFT_CARD_RECIPIENT_TEMPLATE = 'ls_mag_webhooks_template_giftcard_recipient';
 
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
 
@@ -995,5 +997,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreCurrencyCode()
     {
         return $this->storeManager->getStore($this->getCurrentStoreId())->getCurrentCurrencyCode();
+    }
+
+    /**
+     * Get gift card identifiers
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardIdentifiers()
+    {
+        return $this->getStoreConfig(self::GIFT_CARD_IDENTIFIER, $this->getCurrentStoreId());
     }
 }

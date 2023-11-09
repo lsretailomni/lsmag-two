@@ -72,7 +72,7 @@ class ItemRenderer implements ArgumentInterface
             $baseUnitOfMeasure = $orderItem->getProduct()->getData('uom');
 
             foreach ($orderLines as $index => $line) {
-                if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                if ($this->itemHelper->isValid($orderItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                     $discount = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
                     break;
                 } else {

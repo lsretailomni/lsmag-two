@@ -2629,7 +2629,29 @@ class ReplicationHelper extends AbstractHelper
             $code
         )->setData('store_id', 0);
 
-        return $attribute->getSource()->getOptionId($value);
+        foreach ($attribute->getSource()->getAllOptions() as $option) {
+            if ($this->mbStrcasecmp($option['label'], $value) == 0) {
+                return $option['value'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Multibyte support strcasecmp function version.
+     *
+     * @param string $str1
+     * @param string $str2
+     * @return int
+     */
+    public function mbStrcasecmp($str1, $str2)
+    {
+        $encoding = mb_internal_encoding();
+        return strcmp(
+            mb_strtoupper($str1, $encoding),
+            mb_strtoupper($str2, $encoding)
+        );
     }
 
     /**
