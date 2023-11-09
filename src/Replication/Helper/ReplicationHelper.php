@@ -1313,11 +1313,13 @@ class ReplicationHelper extends AbstractHelper
 
         $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $base_url = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
+        $lsKey    = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
         // @codingStandardsIgnoreStart
         $hierarchy = new Entity\ReplEcommHierarchy();
 
         $request   = new Entity\ReplRequest();
         $operation = new Operation\ReplEcommHierarchy($base_url);
+        $operation->setToken($lsKey);
         // @codingStandardsIgnoreEnd
 
         $request->setStoreId($webStore)
@@ -2660,12 +2662,13 @@ class ReplicationHelper extends AbstractHelper
      * @param $storeId
      * @return array
      */
-    public function getRelatedVariantGivenConfAttributesValues($parentProduct, $variant, $storeId)
+    public function getRelatedVariantGivenConfAttributesValues($parentProduct, $variant, $storeId, $variantRemoval = false)
     {
         $configurableAttributesFinal = $this->getAllConfigurableAttributesGivenProduct(
             $parentProduct,
             $variant,
-            $storeId
+            $storeId,
+            $variantRemoval
         );
         $availableUnitOfMeasures     = $this->getUomCodes($parentProduct->getSku(), $storeId);
         $simpleProducts              = [];
@@ -2697,7 +2700,7 @@ class ReplicationHelper extends AbstractHelper
      * @param $storeId
      * @return array
      */
-    public function getAllConfigurableAttributesGivenProduct($parentProduct, $variant, $storeId)
+    public function getAllConfigurableAttributesGivenProduct($parentProduct, $variant, $storeId, $variantRemoval = false)
     {
         $d1 = (($variant->getVariantDimension1()) ?: '');
         $d2 = (($variant->getVariantDimension2()) ?: '');
@@ -2706,7 +2709,7 @@ class ReplicationHelper extends AbstractHelper
         $d5 = (($variant->getVariantDimension5()) ?: '');
         $d6 = (($variant->getVariantDimension6()) ?: '');
 
-        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), $storeId);
+        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), $storeId, $variantRemoval);
         $configurableAttributes = [];
 
         foreach ($attributeCodes as $keyCode => $valueCode) {
@@ -2772,16 +2775,19 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Getting all configurable attribute codes
      *
-     * @param string $itemId
-     * @param string $storeId
+     * @param $itemId
+     * @param $storeId
+     * @param $variantRemoval
      * @return array
      */
-    public function _getAttributesCodes($itemId, $storeId)
+    public function _getAttributesCodes($itemId, $storeId, $variantRemoval = false)
     {
         $finalCodes = [];
+        $isDeleted  = ($variantRemoval) ? [0,1]:0; //Filter isDeleted with 1 for variant removal
+        $isDeletedCondition = ($variantRemoval) ? 'in':'eq';
         try {
             $searchCriteria = $this->searchCriteriaBuilder->addFilter('ItemId', $itemId)
-                ->addFilter('isDeleted', 0, 'eq')
+                ->addFilter('isDeleted', $isDeleted, $isDeletedCondition)
                 ->addFilter('Code', true, 'notnull')
                 ->addFilter('Dimensions', true, 'notnull')
                 ->addFilter('scope_id', $storeId, 'eq')->create();
@@ -3477,7 +3483,7 @@ class ReplicationHelper extends AbstractHelper
             if (isset($optionId)) {
                 $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, $optionId);
             }
-        } else if(!$discardUom){
+        } else if (!$discardUom) {
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 

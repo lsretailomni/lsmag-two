@@ -127,14 +127,32 @@ DISCLAIMER;
         if (!array_key_exists('abstract', $options) && !array_key_exists('interface', $options)) {
             if (array_key_exists('model', $options)) {
                 // set & get methods for a magento model
-                $set_method->setBody(
-                    <<<CODE
+
+                //Fix for 44081 - Added additional check for Dimensions variable
+                //to skip making it null.
+                if($variable_field == 'Dimensions') {
+                    $set_method->setBody(
+                        <<<CODE
+if(trim(\$$variable_name) != "" && \$$variable_name != null) {
+\t\$this->setData( '$variable_field', \$$variable_name );
+\t\$this->$variable_field = \$$variable_name;
+\t\$this->setDataChanges( TRUE );
+}
+return \$this;
+CODE
+                    );
+                } else {
+                    $set_method->setBody(
+                        <<<CODE
 \$this->setData( '$variable_field', \$$variable_name );
 \$this->$variable_field = \$$variable_name;
 \$this->setDataChanges( TRUE );
 return \$this;
 CODE
-                );
+                    );
+                }
+
+
                 $get_method->setBody(
                     <<<CODE
 return \$this->getData( '$variable_field' );

@@ -3,7 +3,14 @@
 namespace Ls\Core\Model;
 
 use Exception;
+use \Ls\Omni\Client\Ecommerce\Entity\PingResponse;
+use \Ls\Omni\Client\Ecommerce\Operation\Ping;
+use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Service\Service as OmniService;
+use \Ls\Omni\Service\ServiceType;
+use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
 use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
 use Magento\Framework\App\Area;
@@ -180,33 +187,44 @@ class Data
     }
 
     /**
+     * Function for commerce service ping
+     *
+     * @param $baseUrl
+     * @param $lsKey
+     * @return PingResponse|ResponseInterface
+     */
+    public function omniPing($baseUrl, $lsKey)
+    {
+        //@codingStandardsIgnoreStart
+        $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
+        $url          = OmniService::getUrl($service_type, $baseUrl);
+        $client       = new OmniClient($url, $service_type);
+        $ping         = new Ping();
+        //@codingStandardsIgnoreEnd
+        $ping->setClient($client);
+        $ping->setToken($lsKey);
+        $client->setClassmap($ping->getClassMap());
+
+        return $ping->execute();
+    }
+
+    /**
+     * Checks heartbeats of commerce service
+     *
      * @param $url
+     * @param $lsKey
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isEndpointResponding($url)
+    public function isEndpointResponding($url, $lsKey)
     {
-        $opts    = [
-            'http' => [
-                'timeout' => floatval($this->scopeConfig->getValue(
-                    LSR::SC_SERVICE_TIMEOUT,
-                    ScopeInterface::SCOPE_STORES,
-                    $this->storeManager->getStore()->getId()
-                ))
-            ]
-        ];
-        // @codingStandardsIgnoreStart
-        $context = stream_context_create($opts);
-        // @codingStandardsIgnoreEnd
         try {
-            // @codingStandardsIgnoreStart
-            $soapClient = new SoapClient(
-                $url . '?singlewsdl',
-                array_merge(['stream_context' => $context], $this->cacheHelper->getWsdlOptions())
+            $response = $this->omniPing($url, $lsKey);
 
-            );
-            // @codingStandardsIgnoreEnd
-            if ($soapClient) {
+            if ($response &&
+                strpos($response->getResult(), 'ERROR') === false &&
+                strpos($response->getResult(), 'Failed') === false
+            ) {
                 if ($this->isNotificationEmailSent()) {
                     $this->setNotificationEmailSent(0);
                 }
@@ -218,6 +236,7 @@ class Data
                 $this->sendEmail($e->getMessage());
             }
         }
+
         return false;
     }
 
@@ -284,5 +303,4 @@ class Data
         }
         return null;
     }
-
 }

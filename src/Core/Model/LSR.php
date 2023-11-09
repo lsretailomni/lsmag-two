@@ -3,6 +3,7 @@
 namespace Ls\Core\Model;
 
 use \Ls\Core\Model\Data;
+use Ls\Omni\Client\OperationInterface;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -585,20 +586,26 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * @param null $baseUrl
+     * Validate base url
+     *
+     * @param $baseUrl
+     * @param $lsKey
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null)
+    public function validateBaseUrl($baseUrl = null, $lsKey = null)
     {
         if ($baseUrl == null) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
         }
+        if ($lsKey == null) {
+            $lsKey = $this->getStoreConfig(self::SC_SERVICE_LS_KEY);
+        }
         if (empty($baseUrl)) {
             return false;
         }
-        $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-        return $this->data->isEndpointResponding($url);
+
+        return $this->data->isEndpointResponding($baseUrl, $lsKey);
     }
 
     /**

@@ -832,6 +832,7 @@ class BasketHelper extends AbstractHelper
         if (($response == null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
+            $this->setOneListCalculationInCheckoutSession($response);
             return $oneListCalResponse->getResult();
         }
         if (property_exists($response, "OneListCalculateResult")) {
