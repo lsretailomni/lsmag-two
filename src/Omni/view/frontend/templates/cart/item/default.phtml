@@ -7,20 +7,23 @@
  * @var Renderer $block
  * @var Escaper $escaper
  * @var Data $helper
+ * @var CartViewModel $viewModel
  */
 
-use Ls\Omni\Block\Cart\Item\Renderer;
+use \Magento\Checkout\Block\Cart\Item\Renderer;
+use Ls\Omni\ViewModel\CartViewModel;
 use Magento\Msrp\Helper\Data;
 use Magento\Framework\Escaper;
 
+$viewModel        = $block->getViewModel();
 $_item            = $block->getItem();
 $product          = $_item->getProduct();
 $isVisibleProduct = $product->isVisibleInSiteVisibility();
-$basketData       = $block->getOneListCalculateData($_item);
+$basketData       = $viewModel->getOneListCalculateData($_item);
 
 $helper        = $this->helper('Magento\Msrp\Helper\Data');
 $canApplyMsrp  = $helper->isShowBeforeOrderConfirm($product) && $helper->isMinimalPriceLessMsrp($product);
-$priceCurrency = $block->getPriceCurrency();
+$priceCurrency = $viewModel->getPriceCurrency();
 ?>
 <tbody class="cart item">
 <tr class="item-info">
@@ -105,7 +108,7 @@ $priceCurrency = $block->getPriceCurrency();
             <?php if (!empty($basketData)): ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                        <?= $priceCurrency->format($block->getItemRowTotal($_item), true); ?><br/>
+                        <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?><br/>
                         <?php if ($_item->getDiscountAmount() > 0): ?>
                             <div class="lsdiscountprice2">
                             <strike>
@@ -154,7 +157,7 @@ $priceCurrency = $block->getPriceCurrency();
             <?php if (!empty($basketData)): ?>
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
-                        <?= $priceCurrency->format($block->getItemRowTotal($_item), true); ?>
+                        <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?>
                     </span>
         </span>
             <?php else: ?>

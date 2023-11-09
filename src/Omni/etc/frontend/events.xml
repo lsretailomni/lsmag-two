@@ -45,4 +45,8 @@
     <event name="controller_action_postdispatch_requisition_list_item_addtocart">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
     </event>
+    <!-- hiding payment method on order total zero -->
+    <event name="payment_method_is_active">
+        <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
+    </event>
 </config>

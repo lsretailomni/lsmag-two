@@ -90,6 +90,11 @@ class Shipment
     private $defaultSourceProviderFactory;
 
     /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
      * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface

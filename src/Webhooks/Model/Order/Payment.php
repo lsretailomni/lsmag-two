@@ -3,10 +3,13 @@
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
+use \Ls\Hospitality\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
@@ -79,6 +82,11 @@ class Payment
     private $replicationHelper;
 
     /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
+
+    /**
      * @param Logger $logger
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
@@ -90,6 +98,7 @@ class Payment
      * @param ShipmentRepositoryInterface $shipmentRepository
      * @param DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory
      * @param ReplicationHelper $replicationHelper
+     * @param ManagerInterface $eventManager
      */
     public function __construct(
         Logger $logger,
@@ -102,7 +111,8 @@ class Payment
         ShipmentNotifier $shipmentNotifier,
         ShipmentRepositoryInterface $shipmentRepository,
         DefaultSourceProviderInterfaceFactory $defaultSourceProviderFactory,
-        ReplicationHelper $replicationHelper
+        ReplicationHelper $replicationHelper,
+        ManagerInterface $eventManager
     ) {
         $this->logger                       = $logger;
         $this->invoiceService               = $invoiceService;
@@ -115,15 +125,17 @@ class Payment
         $this->shipmentRepository           = $shipmentRepository;
         $this->defaultSourceProviderFactory = $defaultSourceProviderFactory;
         $this->replicationHelper            = $replicationHelper;
+        $this->eventManager                 = $eventManager;
     }
 
     /**
      * Generate invoice based on webhook call from Ls Central
      *
      * @param $data
+     * @param bool $linesMerged
      * @return array[]
      */
-    public function generateInvoice($data)
+    public function generateInvoice($data, $linesMerged = true)
     {
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
@@ -141,7 +153,7 @@ class Payment
             $validateInvoice = false;
             $invoice         = null;
             if ($validateOrder['data']['success'] && $order->canInvoice()) {
-                $items = $this->helper->getItems($order, $lines);
+                $items = $this->helper->getItems($order, $lines, $linesMerged);
                 foreach ($items as $itemData) {
                     foreach ($itemData as $itemData) {
                         $item                         = $itemData['item'];
@@ -195,6 +207,11 @@ class Payment
                         $this->createShipment($order, $lines);
                     }
 
+                    foreach ($lines as $line) {
+                        if (in_array($line['ItemId'], explode(',', $this->helper->getGiftCardIdentifiers()))) {
+                            $this->giftCardNotification($order, $itemsToInvoice);
+                        }
+                    }
                     return $this->helper->outputMessage(
                         true,
                         'Order posted successfully and invoice sent to customer for document id #' . $documentId
@@ -343,6 +360,43 @@ class Payment
             throw new LocalizedException(
                 __($e->getMessage())
             );
+        }
+    }
+
+    /**
+     * Gift Card notification
+     *
+     * @param $order
+     * @param $itemsToInvoice
+     * @return void
+     * @throws NoSuchEntityException
+     * @throws InvalidEnumException
+     */
+    public function giftCardNotification($order, $itemsToInvoice)
+    {
+        $salesEntry = $this->helper->fetchOrder($order->getDocumentId());
+        $giftCardOrderItems = $this->helper->getGiftCardOrderItems($order);
+        $salesEntryLines = $salesEntry->getLines();
+
+        foreach ($giftCardOrderItems as $giftCardOrderItem) {
+            foreach ($salesEntryLines as $salesEntryLine) {
+                if ($giftCardOrderItem->getQuoteItemId() == $salesEntryLine->getExternalId() &&
+                $giftCardOrderItem->getPrice() == $salesEntryLine->getAmount() &&
+                array_key_exists($giftCardOrderItem->getItemId(), $itemsToInvoice)
+                ) {
+                    $this->eventManager->dispatch(
+                        'ls_mag_giftcard_recipient_notification',
+                        [
+                            'order' => $order,
+                            'gift_card_order_item' => $giftCardOrderItem,
+                            'sales_entry' => $salesEntry,
+                            'sales_entry_line' => $salesEntryLine
+                        ]
+                    );
+
+                    break;
+                }
+            }
         }
     }
 }

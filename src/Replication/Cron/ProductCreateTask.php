@@ -73,6 +73,7 @@ use Magento\Framework\Exception\FileSystemException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
@@ -479,59 +480,10 @@ class ProductCreateTask
                         $store->getId(),
                         ScopeInterface::SCOPE_STORES
                     );
-                    $fullReplicationImageLinkStatus = $this->lsr->getConfigValueFromDb(
-                        ReplEcommImageLinksTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_WEBSITES,
-                        $this->getScopeId()
-                    );
-                    $fullReplicationBarcodeStatus   = $this->lsr->getConfigValueFromDb(
-                        ReplEcommBarcodesTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_WEBSITES,
-                        $this->getScopeId()
-                    );
-                    $fullReplicationPriceStatus     = $this->lsr->getConfigValueFromDb(
-                        ReplEcommPricesTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_WEBSITES,
-                        $this->getScopeId()
-                    );
-                    $fullReplicationInvStatus       = $this->lsr->getConfigValueFromDb(
-                        ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
-                        ScopeInterface::SCOPE_WEBSITES,
-                        $this->getScopeId()
-                    );
-                    $cronCategoryCheck              = $this->lsr->getConfigValueFromDb(
-                        LSR::SC_SUCCESS_CRON_CATEGORY,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
-                    );
-                    $cronAttributeCheck             = $this->lsr->getConfigValueFromDb(
-                        LSR::SC_SUCCESS_CRON_ATTRIBUTE,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
-                    );
-                    $cronAttributeVariantCheck      = $this->lsr->getConfigValueFromDb(
-                        LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-                        ScopeInterface::SCOPE_STORES,
-                        $store->getId()
-                    );
-                    if ($cronCategoryCheck == 1 &&
-                        $cronAttributeCheck == 1 &&
-                        $cronAttributeVariantCheck == 1 &&
-                        $fullReplicationImageLinkStatus == 1 &&
-                        $fullReplicationBarcodeStatus == 1 &&
-                        $fullReplicationPriceStatus == 1 &&
-                        $fullReplicationInvStatus == 1) {
+
+                    if ($this->isReady()) {
                         $this->logger->debug('Running ProductCreateTask for Store ' . $store->getName());
-                        $val1 = ini_get('max_execution_time');
-                        $val2 = ini_get('memory_limit');
-                        $this->logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
-                        // @codingStandardsIgnoreStart
-                        @ini_set('max_execution_time', 3600);
-                        @ini_set('memory_limit', -1);
-                        // @codingStandardsIgnoreEnd
-                        $val1 = ini_get('max_execution_time');
-                        $val2 = ini_get('memory_limit');
-                        $this->logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
+                        $this->setConfigurationDirectives();
                         $this->webStoreId = $this->lsr->getStoreConfig(
                             LSR::SC_SERVICE_STORE,
                             $store->getId()
@@ -648,61 +600,12 @@ class ProductCreateTask
                             } catch (NoSuchEntityException $e) {
                                 /** @var Product $product */
                                 $product = $this->productFactory->create();
-                                if (!empty($item->getTaxItemGroupId())) {
-                                    $taxClass = $this->replicationHelper->getTaxClassGivenName(
-                                        $item->getTaxItemGroupId()
-                                    );
-                                }
-                                $product->setStoreId(0);
-                                $product->setWebsiteIds([$store->getWebsiteId()]);
-                                $product->setName($item->getDescription());
-                                $product->setMetaTitle($item->getDescription());
-                                $product->setSku($item->getNavId());
-                                $product->setUrlKey(
-                                    $this->replicationHelper->oSlug($item->getDescription() . '-' . $item->getNavId())
-                                );
-                                $product->setVisibility(Visibility::VISIBILITY_BOTH);
-                                $product->setWeight($item->getGrossWeight());
-                                $product->setDescription($item->getDetails());
-                                $product->setCountryOfManufacture($item->getCountryOfOrigin());
-                                $product->setCustomAttribute(
-                                    LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
-                                    $item->getTariffNo()
-                                );
-                                if (!empty($taxClass)) {
-                                    $product->setTaxClassId($taxClass->getClassId());
-                                }
+                                $this->populateDefaultProductAttributes($product, $item);
                                 $itemPrice = $this->getItemPrice($item->getNavId());
                                 if (isset($itemPrice)) {
                                     $product->setPrice($itemPrice->getUnitPriceInclVat());
                                 } else {
                                     $product->setPrice($item->getUnitPrice());
-                                }
-                                $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
-                                if ($attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE) {
-                                    $identifier = $item->getItemCategoryCode();
-                                } else {
-                                    $identifier = $item->getProductGroupId();
-                                }
-                                if (!$identifier) {
-                                    $identifier = LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS . '_' .
-                                        $this->store->getId();
-                                }
-                                $attributeSetId = $this->replicationHelper->getAttributeSetId(
-                                    $attributeSetsMechanism,
-                                    'ls_replication_repl_item',
-                                    $this->store->getId(),
-                                    $identifier
-                                );
-                                $product->setAttributeSetId($attributeSetId);
-                                $product = $this->setProductStatus($product, $item->getBlockedOnECom());
-                                $product->setTypeId(Type::TYPE_SIMPLE);
-                                $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
-                                $product->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-                                /** @var ReplBarcodeRepository $itemBarcodes */
-                                $itemBarcodes = $this->_getBarcode($item->getNavId());
-                                if (isset($itemBarcodes[$item->getNavId()])) {
-                                    $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
                                 }
                                 $itemStock = $this->replicationHelper->getInventoryStatus(
                                     $item->getNavId(),
@@ -713,6 +616,19 @@ class ProductCreateTask
                                     $product,
                                     $item->getType()
                                 );
+
+                                $product->setCustomAttribute(
+                                    LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
+                                    $item->getTariffNo()
+                                );
+                                $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                $product->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
+                                /** @var ReplBarcodeRepository $itemBarcodes */
+                                $itemBarcodes = $this->_getBarcode($item->getNavId());
+
+                                if (isset($itemBarcodes[$item->getNavId()])) {
+                                    $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
+                                }
 
                                 // @codingStandardsIgnoreLine
                                 $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
@@ -760,11 +676,13 @@ class ProductCreateTask
                                         $uomCodes
                                     );
                                     $this->replicationHelper->assignProductToCategories($productSaved, $this->store);
-                                    $this->replicationHelper->assignTaxClassToChildren(
-                                        $productSaved,
-                                        $taxClass,
-                                        $this->store->getId()
-                                    );
+                                    if (!empty($taxClass)) {
+                                        $this->replicationHelper->assignTaxClassToChildren(
+                                            $productSaved,
+                                            $taxClass,
+                                            $this->store->getId()
+                                        );
+                                    }
                                 } catch (Exception $e) {
                                     $this->logDetailedException(
                                         __METHOD__,
@@ -817,15 +735,7 @@ class ProductCreateTask
                         }
                         $this->logger->debug('End ProductCreateTask for Store ' . $store->getName());
                     } else {
-                        // @codingStandardsIgnoreLine
-                        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $store->getName() .
-                            "\n Status cron CategoryCheck = " . $cronCategoryCheck .
-                            "\n Status cron AttributeCheck = " . $cronAttributeCheck .
-                            "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
-                            "\n Status full ReplicationImageLinkStatus = " . $fullReplicationImageLinkStatus .
-                            "\n Status full ReplicationBarcodeStatus = " . $fullReplicationBarcodeStatus .
-                            "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
-                            "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
+                        $this->logCronNotReadyReason();
                     }
                     // @codingStandardsIgnoreLine
                     $this->replicationHelper->updateCronStatus(
@@ -854,6 +764,217 @@ class ProductCreateTask
         $this->execute($storeData);
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
+    }
+
+    /**
+     * Check if ready to process items
+     *
+     * @return bool
+     */
+    public function isReady()
+    {
+        list(
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck,
+            $fullReplicationImageLinkStatus,
+            $fullReplicationBarcodeStatus,
+            $fullReplicationPriceStatus,
+            $fullReplicationInvStatus
+            ) = $this->getDependentCronsStatus();
+
+        return $cronCategoryCheck == 1 &&
+            $cronAttributeCheck == 1 &&
+            $cronAttributeVariantCheck == 1 &&
+            $fullReplicationImageLinkStatus == 1 &&
+            $fullReplicationBarcodeStatus == 1 &&
+            $fullReplicationPriceStatus == 1 &&
+            $fullReplicationInvStatus == 1;
+    }
+
+    /**
+     * Get all the dependent crons status
+     *
+     * @return array
+     */
+    public function getDependentCronsStatus()
+    {
+        $fullReplicationImageLinkStatus = $this->lsr->getConfigValueFromDb(
+            ReplEcommImageLinksTask::CONFIG_PATH_STATUS,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->getScopeId()
+        );
+        $fullReplicationBarcodeStatus   = $this->lsr->getConfigValueFromDb(
+            ReplEcommBarcodesTask::CONFIG_PATH_STATUS,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->getScopeId()
+        );
+        $fullReplicationPriceStatus     = $this->lsr->getConfigValueFromDb(
+            ReplEcommPricesTask::CONFIG_PATH_STATUS,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->getScopeId()
+        );
+        $fullReplicationInvStatus       = $this->lsr->getConfigValueFromDb(
+            ReplEcommInventoryStatusTask::CONFIG_PATH_STATUS,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->getScopeId()
+        );
+        $cronCategoryCheck              = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_CATEGORY,
+            ScopeInterface::SCOPE_STORES,
+            $this->store->getId()
+        );
+        $cronAttributeCheck             = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+            ScopeInterface::SCOPE_STORES,
+            $this->store->getId()
+        );
+        $cronAttributeVariantCheck      = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+            ScopeInterface::SCOPE_STORES,
+            $this->store->getId()
+        );
+
+        return [
+            $fullReplicationImageLinkStatus,
+            $fullReplicationBarcodeStatus,
+            $fullReplicationPriceStatus,
+            $fullReplicationInvStatus,
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck
+        ];
+    }
+
+    /**
+     * Setting configuration directives
+     *
+     * @return void
+     */
+    public function setConfigurationDirectives()
+    {
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->logger->debug('ENV Variables Values before:' . $val1 . ' ' . $val2);
+        // @codingStandardsIgnoreStart
+        @ini_set('max_execution_time', 3600);
+        @ini_set('memory_limit', -1);
+        // @codingStandardsIgnoreEnd
+        $val1 = ini_get('max_execution_time');
+        $val2 = ini_get('memory_limit');
+        $this->logger->debug('ENV Variables Values after:' . $val1 . ' ' . $val2);
+    }
+
+    /**
+     * Log cron not ready reason
+     *
+     * @return void
+     */
+    public function logCronNotReadyReason()
+    {
+        list(
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck,
+            $fullReplicationImageLinkStatus,
+            $fullReplicationBarcodeStatus,
+            $fullReplicationPriceStatus,
+            $fullReplicationInvStatus
+            ) = $this->getDependentCronsStatus();
+
+        // @codingStandardsIgnoreLine
+        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $store->getName() .
+            "\n Status cron CategoryCheck = " . $cronCategoryCheck .
+            "\n Status cron AttributeCheck = " . $cronAttributeCheck .
+            "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
+            "\n Status full ReplicationImageLinkStatus = " . $fullReplicationImageLinkStatus .
+            "\n Status full ReplicationBarcodeStatus = " . $fullReplicationBarcodeStatus .
+            "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
+            "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
+    }
+
+    /**
+     * Get identifier based on attribute set mechanism
+     *
+     * @param $item
+     * @param $attributeSetsMechanism
+     * @return mixed
+     */
+    public function getIdentifierBasedOnAttributeSetMechanism($item, $attributeSetsMechanism)
+    {
+        return $attributeSetsMechanism == LSR::SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE ?
+            $item->getItemCategoryCode() : $item->getProductGroupId();
+    }
+
+    /**
+     * This function is overriding in enterprise module
+     *
+     * Get Default Product Type
+     *
+     * @param $item
+     * @return string
+     */
+    public function getDefaultProductType($item)
+    {
+        return Type::TYPE_SIMPLE;
+    }
+
+    /**
+     * This function is overriding in enterprise module
+     *
+     * Populate default product attributes
+     *
+     * @param $product
+     * @param $item
+     * @return void
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws StateException
+     */
+    public function populateDefaultProductAttributes(&$product, $item)
+    {
+        $attributeSetsMechanism = $this->replicationHelper->getAttributeSetsMechanism();
+        $identifier = $this->getIdentifierBasedOnAttributeSetMechanism($item, $attributeSetsMechanism);
+
+        if (!$identifier) {
+            $identifier = LSR::SC_REPLICATION_ATTRIBUTE_SET_EXTRAS . '_' .
+                $this->store->getId();
+        }
+        $attributeSetId = $this->replicationHelper->getAttributeSetId(
+            $attributeSetsMechanism,
+            'ls_replication_repl_item',
+            $this->store->getId(),
+            $identifier
+        );
+
+        $product->setStoreId(0);
+        $product->setWebsiteIds([$this->store->getWebsiteId()]);
+        $product->setName($item->getDescription());
+        $product->setMetaTitle($item->getDescription());
+        $product->setSku($item->getNavId());
+        $product->setUrlKey(
+            $this->replicationHelper->oSlug($item->getDescription() . '-' . $item->getNavId())
+        );
+        $product->setVisibility(Visibility::VISIBILITY_BOTH);
+        $product->setWeight($item->getGrossWeight());
+        $product->setDescription($item->getDetails());
+        $product->setCountryOfManufacture($item->getCountryOfOrigin());
+
+        if (!empty($item->getTaxItemGroupId())) {
+            $taxClass = $this->replicationHelper->getTaxClassGivenName(
+                $item->getTaxItemGroupId()
+            );
+
+            if (!empty($taxClass)) {
+                $product->setTaxClassId($taxClass->getClassId());
+            }
+        }
+
+        $product->setAttributeSetId($attributeSetId);
+        $product = $this->setProductStatus($product, $item->getBlockedOnECom());
+        $typeId = $this->getDefaultProductType($item);
+        $product->setTypeId($typeId);
     }
 
     /**

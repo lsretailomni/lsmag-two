@@ -4,8 +4,13 @@ namespace Ls\Webhooks\Helper;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\GetPointRateResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
@@ -263,13 +268,15 @@ class Data
      * Get items detail
      * @param $order
      * @param $itemsInfo
+     * @param bool $linesMerged
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getItems($order, $itemsInfo)
+    public function getItems($order, $itemsInfo, $linesMerged = true)
     {
         $items = [];
         $globalCounter = 0;
+        $giftCardItemsCounter = 0;
         foreach ($order->getAllVisibleItems() as $orderItem) {
             if ($orderItem->getProductType() == Type::TYPE_BUNDLE) {
                 $children = $orderItem->getChildrenItems();
@@ -286,6 +293,23 @@ class Data
                 foreach ($itemsInfo as $index => $skuValues) {
                     if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
                         $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
+                        if (in_array($skuValues['ItemId'], explode(',', $this->getGiftCardIdentifiers()))
+                        ) {
+                            if ($giftCardItemsCounter < $this->getGiftCardOrderItemsQty($order) &&
+                                $orderItem->getQtyOrdered() - $orderItem->getQtyInvoiced() > 0
+                            ) {
+                                $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
+                                $items[$globalCounter][$itemId]['qty'] = (float)$orderItem->getQtyOrdered();
+                                $items[$globalCounter][$itemId]['amount'] = $orderItem->getPrice();
+                                $items[$globalCounter][$itemId]['item'] = $child;
+                                $giftCardItemsCounter++;
+
+                                if (!$linesMerged) {
+                                    unset($itemsInfo[$index]);
+                                }
+                            }
+                            break;
+                        }
 
                         if ($counter >= $orderItem->getQtyOrdered()) {
                             continue;
@@ -462,6 +486,74 @@ class Data
             ) {
                 $qty += $line['Quantity'];
                 unset($lines[$index]);
+            }
+        }
+
+        return $qty;
+    }
+
+    /**
+     * Get gift card identifiers
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardIdentifiers()
+    {
+        return $this->lsr->getGiftCardIdentifiers();
+    }
+
+    /**
+     * @param $orderId
+     * @return SalesEntry|SalesEntry[]|SalesEntryGetResponse|SalesEntryGetSalesByOrderIdResponse|ResponseInterface|null
+     * @throws NoSuchEntityException
+     * @throws InvalidEnumException
+     */
+    public function fetchOrder($orderId)
+    {
+        return $this->orderHelper->fetchOrder($orderId, DocumentIdType::ORDER);
+    }
+
+    /**
+     * Return only gift card items from order
+     *
+     * @param $order
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardOrderItems($order): array
+    {
+        $items = [];
+
+        foreach ($order->getAllItems() as $orderItem) {
+            if (in_array(
+                $orderItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                explode(',', $this->getGiftCardIdentifiers())
+            )) {
+                $items[] = $orderItem;
+            }
+        }
+
+        return $items;
+    }
+
+    /**
+     * Return only gift card items qty from order
+     *
+     * @param $order
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardOrderItemsQty($order)
+    {
+        $qty = 0;
+
+        foreach ($this->getGiftCardOrderItems($order) as $orderItem) {
+            if (in_array(
+                $orderItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                explode(',', $this->getGiftCardIdentifiers())
+            )) {
+                $qty += $orderItem->getQtyOrdered();
             }
         }
 

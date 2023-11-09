@@ -81,6 +81,9 @@ class ItemHelper extends AbstractHelper
      */
     public $productLinkManagement;
 
+    /** @var  LSR $lsr */
+    public $lsr;
+
     /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -107,7 +110,8 @@ class ItemHelper extends AbstractHelper
         Cart $cart,
         Quote $quoteResourceModel,
         QuoteFactory $quoteFactory,
-        ProductLinkManagementInterface $productLinkManagement
+        ProductLinkManagementInterface $productLinkManagement,
+        LSR $lsr
     ) {
         parent::__construct($context);
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -121,6 +125,7 @@ class ItemHelper extends AbstractHelper
         $this->quoteResourceModel    = $quoteResourceModel;
         $this->quoteFactory          = $quoteFactory;
         $this->productLinkManagement = $productLinkManagement;
+        $this->lsr                   = $lsr;
     }
 
     /**
@@ -266,6 +271,7 @@ class ItemHelper extends AbstractHelper
                 $baseUnitOfMeasure = "";
                 $customPrice = $item->getDiscountAmount();
                 $this->getDiscountInfo(
+                    $item,
                     $orderData,
                     $customPrice,
                     $itemId,
@@ -290,6 +296,7 @@ class ItemHelper extends AbstractHelper
                         $child->getSku()
                     );
                     $this->getDiscountInfo(
+                        $child,
                         $orderData,
                         $customPrice,
                         $itemId,
@@ -314,6 +321,7 @@ class ItemHelper extends AbstractHelper
     /**
      * Get discount related info in the basket coming from Central
      *
+     * @param $quoteItem
      * @param $orderData
      * @param $customPrice
      * @param $itemId
@@ -322,8 +330,10 @@ class ItemHelper extends AbstractHelper
      * @param $baseUnitOfMeasure
      * @param $discountInfo
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getDiscountInfo(
+        $quoteItem,
         $orderData,
         $customPrice,
         $itemId,
@@ -342,7 +352,7 @@ class ItemHelper extends AbstractHelper
         }
 
         foreach ($orderLines as $line) {
-            if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+            if ($this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
                         if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
@@ -410,7 +420,7 @@ class ItemHelper extends AbstractHelper
                 );
 
                 foreach ($orderLines as $index => $line) {
-                    if ($this->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                    if ($this->isValid($child, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                         $unitPrice = $line->getAmount() / $line->getQuantity();
                         $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
                         unset($orderLines[$index]);
@@ -682,16 +692,21 @@ class ItemHelper extends AbstractHelper
     /**
      * Test if same quote_item as given line
      *
+     * @param $quoteItem
      * @param $line
      * @param $itemId
      * @param $variantId
      * @param $uom
      * @param $baseUnitOfMeasure
      * @return bool
+     * @throws NoSuchEntityException
      */
-    public function isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)
+    public function isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)
     {
-        return (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
+        $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
+
+        return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
+            (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
             ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
     }
 }

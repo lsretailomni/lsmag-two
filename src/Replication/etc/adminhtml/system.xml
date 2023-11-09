@@ -52,10 +52,20 @@
                        type="select"
                        sortOrder="40"
                        showInDefault="1"
-                       showInWebsite="0"
+                       showInWebsite="1"
                        showInStore="0">
                     <label>Create attribute sets on the basis of</label>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\AttributeSets</source_model>
+                </field>
+                <field id="gift_card_items_list"
+                       translate="label"
+                       type="text"
+                       sortOrder="41"
+                       showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="0">
+                    <label>Gift Card Item No(s)</label>
+                    <comment>If you are selling gift cards, please provide a comma separated list of gift card item numbers in Central.</comment>
                 </field>
                 <field id="identical_table_web_service_list"
                        translate="label"
