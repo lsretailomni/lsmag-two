@@ -883,7 +883,7 @@ class ProductCreateTask
             ) = $this->getDependentCronsStatus();
 
         // @codingStandardsIgnoreLine
-        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $store->getName() .
+        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName() .
             "\n Status cron CategoryCheck = " . $cronCategoryCheck .
             "\n Status cron AttributeCheck = " . $cronAttributeCheck .
             "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
