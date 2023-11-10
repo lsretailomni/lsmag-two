@@ -427,6 +427,23 @@ class DataHelper extends AbstractHelper
     }
 
     /**
+     * Get all stores for given scope_id
+     *
+     * @param String $scopeId
+     * @return Collection
+     * @throws NoSuchEntityException|LocalizedException
+     */
+    public function getAllStores($scopeId)
+    {
+        $storeCollection = $this->storeCollectionFactory->create();
+
+        $storesData = $storeCollection
+            ->addFieldToFilter('scope_id', $scopeId);
+
+        return $storesData;
+    }
+
+    /**
      * Set pickup store given cart
      *
      * @param mixed $cart

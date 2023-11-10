@@ -3,6 +3,7 @@
 namespace Ls\Omni\Client;
 
 use DOMDocument;
+use Exception;
 use \Ls\Core\Model\LSR;
 use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Exception\NavException;
@@ -10,7 +11,9 @@ use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\State;
 use Psr\Log\LoggerInterface;
 use SoapFault;
 
@@ -56,14 +59,21 @@ abstract class AbstractOperation implements OperationInterface
     public $objectManager;
 
     /**
+     * @var State
+     */
+    public $state;
+
+    /**
      * @param ServiceType $service_type
      */
-    public function __construct(ServiceType $service_type)
-    {
+    public function __construct(
+        ServiceType $service_type
+    ) {
         $this->service_type  = $service_type;
         $this->objectManager = ObjectManager::getInstance();
         $this->logger        = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
+        $this->state         = $this->objectManager->get(State::class);
     }
 
     /**
@@ -82,6 +92,7 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * @param $operation_name
      * @return NavException|NavObjectReferenceNotAnInstanceException|string|null
+     * @throws Exception
      */
     public function makeRequest($operation_name)
     {
@@ -91,7 +102,7 @@ abstract class AbstractOperation implements OperationInterface
         $response      = null;
         $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
         if (empty($this->token)) {
-            $this->setToken($lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getCurrentStoreId()));
+            $this->setToken($lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getCurrentWebsiteId()));
         }
         //@codingStandardsIgnoreStart
         $client->setStreamContext(
@@ -171,15 +182,19 @@ abstract class AbstractOperation implements OperationInterface
             if ($e->getMessage() != "") {
                 if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
                     $response = $e->getMessage();
-                } else if($e->getCode() == 504 && $operation_name == 'ContactCreate') {
+                } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
                     $response = null;
+                } elseif ($operation_name == 'Ping') {
+                    throw new Exception('Unable to ping commerce service.');
                 }
             } else {
                 $response = null;
             }
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+
         $this->debugLog($operation_name, $requestTime, $responseTime);
+
         return $response;
     }
     // @codingStandardsIgnoreEnd
@@ -220,16 +235,24 @@ abstract class AbstractOperation implements OperationInterface
     /**
      * Log request, response and time elapsed
      *
-     * @param $operation_name
+     * @param $operationName
      * @param $requestTime
      * @param $responseTime
+     * @return void
      */
-    private function debugLog($operation_name, $requestTime, $responseTime)
+    private function debugLog($operationName, $requestTime, $responseTime)
     {
         //@codingStandardsIgnoreStart
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
-        $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG);
+        try {
+            $areaCode = $this->state->getAreaCode();
+            $disableLog = $operationName == 'Ping' && $areaCode == Area::AREA_FRONTEND;
+        } catch (Exception $e) {
+            $disableLog = false;
+        }
+
+        $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG) && !$disableLog;
         $timeElapsed = $requestTime->diff($responseTime);
 
         if ($isEnable) {
@@ -237,7 +260,7 @@ abstract class AbstractOperation implements OperationInterface
                 sprintf(
                     "==== REQUEST ==== %s ==== %s ====",
                     $requestTime->format("m-d-Y H:i:s.u"),
-                    $operation_name
+                    $operationName
                 )
             );
 
@@ -249,7 +272,7 @@ abstract class AbstractOperation implements OperationInterface
                 sprintf(
                     "==== RESPONSE ==== %s ==== %s ====",
                     $responseTime->format("m-d-Y H:i:s.u"),
-                    $operation_name
+                    $operationName
                 )
             );
             $seconds = $timeElapsed->s + $timeElapsed->f;
@@ -257,7 +280,7 @@ abstract class AbstractOperation implements OperationInterface
                 sprintf(
                     "==== Time Elapsed ==== %s ==== %s ====",
                     $timeElapsed->format("%i minute(s) " . $seconds . " second(s)"),
-                    $operation_name
+                    $operationName
                 )
             );
 

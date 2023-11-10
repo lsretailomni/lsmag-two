@@ -132,6 +132,7 @@ class DiscountCreateTask
 
     /**
      * Discount Creation
+     *
      * @param null $storeData
      * @throws InputException
      * @throws InvalidTransitionException
@@ -285,12 +286,14 @@ class DiscountCreateTask
     }
 
     /**
-     * @return array
+     * Execute Manually
+     *
+     * @param $storeData
+     * @return int[]
      * @throws InputException
+     * @throws InvalidTransitionException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
-     * @throws Exception
      */
     public function executeManually($storeData = null)
     {
@@ -307,6 +310,7 @@ class DiscountCreateTask
      * @param $customerGroupIds
      * @param $amount
      * @return void
+     * @throws Exception
      */
     public function addSalesRule(ReplDiscount $replDiscount, array $skuArray, $customerGroupIds, $amount = null)
     {
@@ -336,9 +340,10 @@ class DiscountCreateTask
             ->setIsActive(1)
             ->setCustomerGroupIds($customerGroupIds)
             ->setWebsiteIds($websiteIds)
-            ->setFromDate($replDiscount->getFromDate());
+            ->setFromDate(($replDiscount->getFromDate()) ?: $this->replicationHelper->getCurrentDate());
 
-        if (strtolower($replDiscount->getToDate()) != strtolower('1753-01-01T00:00:00')) {
+        if (strtolower($replDiscount->getToDate() ?? '') != strtolower('1753-01-01T00:00:00')
+            && !empty($replDiscount->getToDate())) {
             $rule->setToDate($replDiscount->getToDate());
         }
 
@@ -381,8 +386,10 @@ class DiscountCreateTask
     }
 
     /**
+     * Get unique published offers
+     *
+     * @param $storeId
      * @return array|Collection
-     * @throws Exception
      */
     public function getUniquePublishedOffers($storeId)
     {
@@ -394,10 +401,6 @@ class DiscountCreateTask
             ->columns('OfferNo')
             ->group('OfferNo');
 
-        $collection->addFieldToFilter(
-            ['ToDate', 'ToDate'],
-            [['gteq' => $this->replicationHelper->getCurrentDate()], ['eq' => LSR::NO_TIME_LIMIT]]
-        );
         $collection->addFieldToFilter(
             'Type',
             ReplDiscountType::DISC_OFFER
@@ -441,7 +444,10 @@ class DiscountCreateTask
     }
 
     /**
+     * Delete offer by Name
+     *
      * @param $name
+     * @return void
      */
     public function deleteOfferByName($name)
     {
@@ -460,9 +466,11 @@ class DiscountCreateTask
     }
 
     /**
+     * Get remaining records
+     *
      * @param $storeId
      * @return int
-     * @throws Exception
+     * @throws NoSuchEntityException
      */
     public function getRemainingRecords($storeId)
     {
@@ -471,11 +479,9 @@ class DiscountCreateTask
             $filtersStatus          = [
                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
                 ['field' => 'StoreId', 'value' => $store_id, 'condition_type' => 'eq'],
-                ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
-                ['field' => 'ToDate', 'value' => $this->replicationHelper->getCurrentDate(), 'condition_type' => 'gteq']
+                ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
             ];
-            $parameter              = ['field' => 'ToDate', 'value' => LSR::NO_TIME_LIMIT, 'condition_type' => 'eq'];
-            $criteriaTotal          = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1, $parameter);
+            $criteriaTotal          = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1);
             $this->remainingRecords = $this->replDiscountRepository->getList($criteriaTotal)
                 ->getTotalCount();
         }
