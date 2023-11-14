@@ -565,7 +565,7 @@ class ProductCreateTask
                                 if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
-                                            $this->syncUomAdditionalAttributes($product,$uomCode,$item);
+                                            $this->syncUomAdditionalAttributes($product, $uomCode, $item);
                                         }
                                     }
                                 }
@@ -630,19 +630,19 @@ class ProductCreateTask
                                     $product->setCustomAttribute('barcode', $itemBarcodes[$item->getNavId()]);
                                 }
 
-                                // @codingStandardsIgnoreLine
-                                $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
-                                $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 $totalUomCodes        = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
 
+                                $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
+                                $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
+
                                 //Set UOM attributes for simple products
                                 if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
                                         if (!empty($uomCode)) {
-                                            $this->syncUomAdditionalAttributes($product,$uomCode,$item);
+                                            $this->syncUomAdditionalAttributes($product, $uomCode, $item);
                                         }
                                     }
                                 }
@@ -883,7 +883,7 @@ class ProductCreateTask
             ) = $this->getDependentCronsStatus();
 
         // @codingStandardsIgnoreLine
-        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $store->getName() .
+        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName() .
             "\n Status cron CategoryCheck = " . $cronCategoryCheck .
             "\n Status cron AttributeCheck = " . $cronAttributeCheck .
             "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
@@ -1169,11 +1169,12 @@ class ProductCreateTask
     /**
      * Getting new or updated product uoms
      *
-     * @param int $pageSize
-     * @param null $itemId
+     * @param $pageSize
+     * @param $itemId
+     * @param $needAll
      * @return mixed
      */
-    public function getNewOrUpdatedProductUoms($pageSize = 100, $itemId = null)
+    public function getNewOrUpdatedProductUoms($pageSize = 100, $itemId = null, $needAll = false)
     {
         $filters = [
             ['field' => 'Code', 'value' => true, 'condition_type' => 'notnull'],
@@ -1185,8 +1186,15 @@ class ProductCreateTask
             $filters[] = ['field' => 'ItemId', 'value' => true, 'condition_type' => 'notnull'];
         }
         $collection    = $this->replItemUomCollectionFactory->create();
-        $criteria      = $this->replicationHelper->buildCriteriaForArray($filters, $pageSize);
+
+        if ($needAll) {
+            $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, $pageSize);
+        } else {
+            $criteria = $this->replicationHelper->buildCriteriaForArray($filters, $pageSize);
+        }
+
         $resultFactory = $this->replItemUnitOfMeasureSearchResultsFactory->create();
+
         return $this->replicationHelper->setCollection($collection, $criteria, $resultFactory, "Order");
     }
 
@@ -1423,6 +1431,13 @@ class ProductCreateTask
                         $this->getScopeId()
                     );
                     if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
+                        if (!empty($productVariants) && empty($uomCodesNotProcessed)) {
+                            $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(
+                                -1,
+                                $item,
+                                true
+                            );
+                        }
                         $productVariants = $this->getProductVariants($itemData->getNavId());
                     }
                     if (!empty($productVariants) || count($totalUomCodes[$itemData->getNavId()]) > 1) {
