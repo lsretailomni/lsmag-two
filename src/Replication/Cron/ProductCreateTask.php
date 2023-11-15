@@ -67,6 +67,7 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\CollectionFactory as EavAtt
 use Magento\Framework\Api\ImageContentFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrder;
+use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Exception\FileSystemException;
@@ -293,6 +294,11 @@ class ProductCreateTask
     public $dataTranslationTask;
 
     /**
+     * @var SortOrderBuilder
+     */
+    public $sortOrderBuilder;
+
+    /**
      * @param Config $eavConfig
      * @param ConfigurableProTypeModel $configurable
      * @param Attribute $attribute
@@ -397,7 +403,8 @@ class ProductCreateTask
         ResourceConnection $resourceConnection,
         File $file,
         DataTranslationTask $dataTranslationTask,
-        ImportImageService $imageService
+        ImportImageService $imageService,
+        SortOrderBuilder $sortOrderBuilder
     ) {
         $this->eavConfig                                 = $eavConfig;
         $this->configurable                              = $configurable;
@@ -451,6 +458,7 @@ class ProductCreateTask
         $this->file                                      = $file;
         $this->dataTranslationTask                       = $dataTranslationTask;
         $this->imageService                              = $imageService;
+        $this->sortOrderBuilder                          = $sortOrderBuilder;
     }
 
     /**
