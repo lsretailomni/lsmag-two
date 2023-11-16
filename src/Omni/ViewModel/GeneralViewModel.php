@@ -89,7 +89,11 @@ class GeneralViewModel implements ArgumentInterface
      */
     public function isValid()
     {
-        return  $this->lsr->isLSR($this->lsr->getCurrentStoreId());
+        return $this->lsr->isLSR($this->lsr->getCurrentStoreId()) &&
+            !in_array(
+                $this->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                explode(',', $this->lsr->getGiftCardIdentifiers())
+            );
     }
 
     /**

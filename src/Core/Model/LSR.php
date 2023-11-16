@@ -3,6 +3,7 @@
 namespace Ls\Core\Model;
 
 use \Ls\Core\Model\Data;
+use Ls\Omni\Client\OperationInterface;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -101,7 +102,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE = 'ls_mag/replication/manual_cron_grid_default_website';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
-
+    const GIFT_CARD_IDENTIFIER = 'ls_mag/replication/gift_card_items_list';
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';
@@ -481,6 +482,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const MAX_RECENT_ORDER = 5;
 
+    const GIFT_CARD_RECIPIENT_TEMPLATE = 'ls_mag_webhooks_template_giftcard_recipient';
+
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
 
     // @codingStandardsIgnoreStart
@@ -583,20 +586,26 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * @param null $baseUrl
+     * Validate base url
+     *
+     * @param $baseUrl
+     * @param $lsKey
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null)
+    public function validateBaseUrl($baseUrl = null, $lsKey = null)
     {
         if ($baseUrl == null) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
         }
+        if ($lsKey == null) {
+            $lsKey = $this->getStoreConfig(self::SC_SERVICE_LS_KEY);
+        }
         if (empty($baseUrl)) {
             return false;
         }
-        $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-        return $this->data->isEndpointResponding($url);
+
+        return $this->data->isEndpointResponding($baseUrl, $lsKey);
     }
 
     /**
@@ -988,5 +997,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreCurrencyCode()
     {
         return $this->storeManager->getStore($this->getCurrentStoreId())->getCurrentCurrencyCode();
+    }
+
+    /**
+     * Get gift card identifiers
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardIdentifiers()
+    {
+        return $this->getStoreConfig(self::GIFT_CARD_IDENTIFIER, $this->getCurrentStoreId());
     }
 }

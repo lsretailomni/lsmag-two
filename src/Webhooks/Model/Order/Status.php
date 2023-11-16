@@ -126,7 +126,7 @@ class Status
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $items                      = $this->helper->getItems($magOrder, $itemsInfo);
+        $items                      = $this->helper->getItems($magOrder, $itemsInfo, false);
         $isOffline                  = $magOrder->getPayment()->getMethodInstance()->isOffline();
         $isClickAndCollectOrder     = $this->helper->isClickAndcollectOrder($magOrder);
         $storeId                    = $magOrder->getStoreId();
@@ -148,13 +148,13 @@ class Status
                 if ($isClickAndCollectOrder) {
                     $orderStatus = LSR::LS_STATE_COLLECTED;
                     if ($isOffline) {
-                        $this->payment->generateInvoice($data);
+                        $this->payment->generateInvoice($data, false);
                     }
                 }
                 break;
             case LSR::LS_STATE_SHIPPED:
                 if ($isOffline) {
-                    $this->payment->generateInvoice($data);
+                    $this->payment->generateInvoice($data, false);
                 }
                 break;
             default:
