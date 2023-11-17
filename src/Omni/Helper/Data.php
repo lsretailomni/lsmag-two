@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
@@ -334,7 +335,10 @@ class Data extends AbstractHelper
     }
 
     /**
-     * @param $value
+     * Set message value in session
+     *
+     * @param mixed $value
+     * @return void
      */
     public function setValue($value)
     {
@@ -343,6 +347,8 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Get message value from session
+     *
      * @return mixed
      */
     public function getValue()
@@ -352,6 +358,8 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Unset message from the session
+     *
      * @return mixed
      */
     public function unSetValue()
@@ -544,9 +552,9 @@ class Data extends AbstractHelper
     /**
      * Function for commerce service ping
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @return Entity\PingResponse|\Ls\Omni\Client\ResponseInterface|string|null
+     * @param string $baseUrl
+     * @param string $lsKey
+     * @return Entity\PingResponse|ResponseInterface|string|null
      */
     public function omniPing($baseUrl, $lsKey)
     {
@@ -561,7 +569,9 @@ class Data extends AbstractHelper
             $ping->setClient($client);
             $ping->setToken($lsKey);
             $client->setClassmap($ping->getClassMap());
+            $this->setValue('enable_log');
             $result = $ping->execute();
+            $this->unSetValue();
             if (!empty($result)) {
                 return $result->getResult();
             }

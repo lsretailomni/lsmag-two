@@ -5,15 +5,13 @@ namespace Ls\Omni\Client;
 use DOMDocument;
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
-use Magento\Framework\App\Area;
 use Magento\Framework\App\ObjectManager;
-use Magento\Framework\App\State;
+use Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 use SoapFault;
 
@@ -59,9 +57,9 @@ abstract class AbstractOperation implements OperationInterface
     public $objectManager;
 
     /**
-     * @var State
+     * @var SessionManagerInterface
      */
-    public $state;
+    public $session;
 
     /**
      * @param ServiceType $service_type
@@ -73,7 +71,7 @@ abstract class AbstractOperation implements OperationInterface
         $this->objectManager = ObjectManager::getInstance();
         $this->logger        = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
-        $this->state         = $this->objectManager->get(State::class);
+        $this->session       = $this->objectManager->get(SessionManagerInterface::class);
     }
 
     /**
@@ -246,8 +244,8 @@ abstract class AbstractOperation implements OperationInterface
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
         try {
-            $areaCode = $this->state->getAreaCode();
-            $disableLog = $operationName == 'Ping' && $areaCode == Area::AREA_FRONTEND;
+            $sessionValue = $this->getValue();
+            $disableLog = $operationName == 'Ping' && $sessionValue == null;
         } catch (Exception $e) {
             $disableLog = false;
         }
@@ -332,8 +330,24 @@ abstract class AbstractOperation implements OperationInterface
         }
     }
 
+    /**
+     * Is Tokenized
+     *
+     * @return false
+     */
     protected function isTokenized()
     {
         return false;
+    }
+
+    /**
+     * Get message value from session
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        $this->session->start();
+        return $this->session->getMessage();
     }
 }
