@@ -7,6 +7,7 @@ use DOMDocument;
 use Laminas\Code\Generator\GeneratorInterface;
 use Laminas\Code\Reflection\ClassReflection;
 use \Ls\Omni\Service\Metadata;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\DB\ExpressionConverter;
 use Magento\Framework\Module\Dir\Reader;
@@ -18,7 +19,6 @@ use ReflectionException;
  */
 class SchemaUpdateGenerator implements GeneratorInterface
 {
-
     /** @var array List of Replication Tables indexer for search */
     public static $indexerColumnLists = [
         "ls_replication_repl_attribute"                  => [
@@ -313,89 +313,6 @@ class SchemaUpdateGenerator implements GeneratorInterface
         ]
     ];
 
-    /** @var array List of Replication Tables with unique column */
-    private static $uniqueColumnsArray = [
-        "ls_replication_repl_attribute"                  => ["Code", "scope_id"],
-        "ls_replication_repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
-        "ls_replication_repl_attribute_value"            => [
-            "Code",
-            "LinkField1",
-            "LinkField2",
-            "LinkField3",
-            "Sequence",
-            "scope_id"
-        ],
-        "ls_replication_repl_barcode"                    => ["nav_id", "scope_id"],
-        "ls_replication_repl_country_code"               => ["Name", "scope_id"],
-        "ls_replication_repl_currency"                   => ["CurrencyCode", "scope_id"],
-        "ls_replication_repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
-        "ls_replication_repl_customer"                   => ["AccountNumber", "scope_id"],
-        "ls_replication_repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_replication_repl_data_translation_lang_code" => ["Code", "scope_id"],
-        "ls_replication_repl_discount"                   => [
-            "ItemId",
-            "LoyaltySchemeCode",
-            "OfferNo",
-            "StoreId",
-            "VariantId",
-            "MinimumQuantity",
-            "scope_id"
-        ],
-        "ls_replication_repl_discount_validation"        => ["nav_id", "scope_id"],
-        "ls_replication_repl_extended_variant_value"     => [
-            "Code",
-            "FrameworkCode",
-            "ItemId",
-            "Value",
-            "scope_id"
-        ],
-        "ls_replication_repl_hierarchy"                  => ["nav_id", "scope_id"],
-        "ls_replication_repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
-        "ls_replication_repl_hierarchy_node"             => ["nav_id", "scope_id"],
-        "ls_replication_repl_image"                      => ["nav_id", "scope_id"],
-        "ls_replication_repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
-        "ls_replication_repl_item"                       => ["nav_id", "scope_id"],
-        "ls_replication_repl_item_category"              => ["nav_id", "scope_id"],
-        "ls_replication_repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
-        "ls_replication_repl_item_variant_registration"  => [
-            "ItemId",
-            "VariantId",
-            "scope_id"
-        ],
-        "ls_replication_repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
-        "ls_replication_repl_price"                      => [
-            "ItemId",
-            "VariantId",
-            "StoreId",
-            "QtyPerUnitOfMeasure",
-            "UnitOfMeasure",
-            "scope_id"
-        ],
-        "ls_replication_repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
-        "ls_replication_repl_product_group"              => ["nav_id", "scope_id"],
-        "ls_replication_repl_shipping_agent"             => ["Name", "scope_id"],
-        "ls_replication_repl_store"                      => ["nav_id", "scope_id"],
-        "ls_replication_repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
-        "ls_replication_repl_unit_of_measure"            => ["nav_id", "scope_id"],
-        "ls_replication_repl_vendor"                     => ["Name", "scope_id"],
-        "ls_replication_repl_hierarchy_hosp_deal_line"   => [
-            "DealNo",
-            "ItemNo",
-            "LineNo",
-            "UnitOfMeasure",
-            "scope_id"
-        ],
-        "ls_replication_repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_replication_repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
-        "ls_replication_repl_item_modifier"              => [
-            "nav_id",
-            "VariantCode",
-            "Code",
-            "SubCode",
-            "UnitOfMeasure",
-            "scope_id"
-        ]
-    ];
     /** @var Metadata */
     protected $metadata;
 
@@ -424,7 +341,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             if (strpos($operationName, 'ReplEcomm') !== false) {
                 $replicationOperation = $this->metadata->getReplicationOperationByName($operation->getName());
                 $tableName            = "ls_replication_" . $replicationOperation->getTableName();
-                $tableIncludedInIndex = (array_key_exists($tableName, self::$indexerColumnLists) ? true : false);
+                $tableIncludedInIndex = array_key_exists($tableName, self::$indexerColumnLists);
                 if (!in_array($tableName, $tables)) {
                     $table = $dom->createElement('table');
                     $table->setAttribute('name', $tableName);
@@ -458,6 +375,12 @@ class SchemaUpdateGenerator implements GeneratorInterface
                             'field_type' => 'boolean',
                             'default'    => '0',
                             'comment'    => 'Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully & 1 means failed to add successfully into Magento tables'
+                        ],
+                        [
+                            'name'       => 'identity_value',
+                            'field_type' => 'text',
+                            'default'    => '',
+                            'comment'    => 'Hash value of all unique columns'
                         ],
                         [
                             'name'       => 'checksum',
@@ -614,23 +537,22 @@ class SchemaUpdateGenerator implements GeneratorInterface
                      *       <column name="product_id"/>
                      *  </constraint>
                      */
-                    if (array_key_exists($tableName, self::$uniqueColumnsArray)) {
-                        $uniqueColumns = self::$uniqueColumnsArray[$tableName];
+                    $keyToSearch = str_replace("ls_replication_", "ls_mag/replication/","$tableName");
+                    if (array_key_exists($keyToSearch, ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY)) {
+                        $uniqueColumns = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$keyToSearch];
                         if ($uniqueColumns && !empty($uniqueColumns)) {
                             $uniqueColumnNode = $dom->createElement('constraint');
                             $uniqueColumnNode->setAttribute('xsi:type', 'unique');
-                            $fields      = implode('_', array_values($uniqueColumns));
+                            $fields      = ReplicationHelper::UNIQUE_HASH_COLUMN_NAME;
                             $prefix      = 'unq_';
                             $referenceId = strtoupper(ExpressionConverter::shortenEntityName(
                                 $tableName . '_' . $fields,
                                 $prefix
                             ));
                             $uniqueColumnNode->setAttribute('referenceId', $referenceId);
-                            foreach ($uniqueColumns as $uniqueColumn) {
-                                $column = $dom->createElement('column');
-                                $column->setAttribute('name', $uniqueColumn);
-                                $uniqueColumnNode->appendChild($column);
-                            }
+                            $column = $dom->createElement('column');
+                            $column->setAttribute('name', ReplicationHelper::UNIQUE_HASH_COLUMN_NAME);
+                            $uniqueColumnNode->appendChild($column);
                         }
                         $table->appendChild($uniqueColumnNode);
                     }

@@ -109,6 +109,8 @@ class ReplicationHelper extends AbstractHelper
     public const VARIANT_ID_TABLE_ALIAS = 'variantId_table';
     public const ITEM_ID_TABLE_ALIAS = 'itemId_table';
 
+    public const UNIQUE_HASH_COLUMN_NAME = 'identity_value';
+
     public const COLUMNS_MAPPING = [
         'catalog_product_entity_varchar' => [
             'entity_id' => 'row_id'
@@ -131,6 +133,115 @@ class ReplicationHelper extends AbstractHelper
     public $allowedUrlTypes = [
         'category',
         'product'
+    ];
+
+    /** @var array List of Replication Tables with unique field */
+    public const JOB_CODE_UNIQUE_FIELD_ARRAY = [
+        "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
+        "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
+        "ls_mag/replication/repl_attribute_value"            => [
+            "Code",
+            "LinkField1",
+            "LinkField2",
+            "LinkField3",
+            "Sequence",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_barcode"                    => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_country_code"               => ["Name", "scope_id"],
+        "ls_mag/replication/repl_currency"                   => ["CurrencyCode", "scope_id"],
+        "ls_mag/replication/repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
+        "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
+        "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_html_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_deal_html_translation"      => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
+        "ls_mag/replication/repl_discount"                   => [
+            "ItemId",
+            "LoyaltySchemeCode",
+            "OfferNo",
+            "StoreId",
+            "VariantId",
+            "MinimumQuantity",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_extended_variant_value"     => [
+            "Code",
+            "FrameworkCode",
+            "ItemId",
+            "Value",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_hierarchy"                  => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_node"             => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_image"                      => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
+        "ls_mag/replication/repl_item"                       => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_item_category"              => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
+        "ls_mag/replication/repl_item_variant_registration"  => [
+            "ItemId",
+            "VariantId",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_item_variant"               => [
+            "ItemId",
+            "VariantId",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
+        "ls_mag/replication/repl_price"                      => [
+            "ItemId",
+            "VariantId",
+            "StoreId",
+            "QtyPerUnitOfMeasure",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
+        "ls_mag/replication/repl_product_group"              => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_shipping_agent"             => ["Name", "scope_id"],
+        "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
+        "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => [
+            "DealNo",
+            "ItemNo",
+            "LineNo",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_item_modifier"              => [
+            "nav_id",
+            "VariantCode",
+            "Code",
+            "SubCode",
+            "TriggerCode",
+            "UnitOfMeasure",
+            "scope_id"
+        ],
+        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
+        "ls_mag/replication/repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
+    ];
+
+    /** @var array List of Replication Tables with unique field for delete */
+    public const DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY = [
+        "ls_mag/replication/repl_item_variant_registration" => [
+            "ItemId",
+            "VariantDimension1",
+            "VariantDimension2",
+            "VariantDimension3",
+            "VariantDimension4",
+            "VariantDimension5",
+            "VariantDimension6"
+        ],
+        "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
+
     ];
 
     public $connection;

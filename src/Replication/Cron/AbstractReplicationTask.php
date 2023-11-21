@@ -47,114 +47,6 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_discount'
     ];
 
-    /** @var array List of Replication Tables with unique field for delete */
-    public static $deleteJobCodeUniqueFieldArray = [
-        "ls_mag/replication/repl_item_variant_registration" => [
-            "ItemId",
-            "VariantDimension1",
-            "VariantDimension2",
-            "VariantDimension3",
-            "VariantDimension4",
-            "VariantDimension5",
-            "VariantDimension6"
-        ],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
-
-    ];
-
-    /** @var array List of Replication Tables with unique field */
-    public static $jobCodeUniqueFieldArray = [
-        "ls_mag/replication/repl_attribute"                  => ["Code", "scope_id"],
-        "ls_mag/replication/repl_attribute_option_value"     => ["Code", "Sequence", "scope_id"],
-        "ls_mag/replication/repl_attribute_value"            => [
-            "Code",
-            "LinkField1",
-            "LinkField2",
-            "LinkField3",
-            "Sequence",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_barcode"                    => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_country_code"               => ["Name", "scope_id"],
-        "ls_mag/replication/repl_currency"                   => ["CurrencyCode", "scope_id"],
-        "ls_mag/replication/repl_currency_exch_rate"         => ["CurrencyCode", "scope_id"],
-        "ls_mag/replication/repl_customer"                   => ["AccountNumber", "scope_id"],
-        "ls_mag/replication/repl_data_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_html_translation"           => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_deal_html_translation"      => ["TranslationId", "Key", "LanguageCode", "scope_id"],
-        "ls_mag/replication/repl_data_translation_lang_code" => ["Code", "scope_id"],
-        "ls_mag/replication/repl_discount"                   => [
-            "ItemId",
-            "LoyaltySchemeCode",
-            "OfferNo",
-            "StoreId",
-            "VariantId",
-            "MinimumQuantity",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_extended_variant_value"     => [
-            "Code",
-            "FrameworkCode",
-            "ItemId",
-            "Value",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_hierarchy"                  => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_leaf"             => ["nav_id", "NodeId", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_node"             => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image"                      => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_image_link"                 => ["ImageId", "KeyValue", "scope_id"],
-        "ls_mag/replication/repl_item"                       => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_item_category"              => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_item_unit_of_measure"       => ["Code", "ItemId", "scope_id"],
-        "ls_mag/replication/repl_item_variant_registration"  => [
-            "ItemId",
-            "VariantId",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_item_variant"               => [
-            "ItemId",
-            "VariantId",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_loy_vendor_item_mapping"    => ["NavManufacturerId", "NavProductId", "scope_id"],
-        "ls_mag/replication/repl_price"                      => [
-            "ItemId",
-            "VariantId",
-            "StoreId",
-            "QtyPerUnitOfMeasure",
-            "UnitOfMeasure",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_inv_status"                 => ["ItemId", "VariantId", "StoreId", "scope_id"],
-        "ls_mag/replication/repl_product_group"              => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_shipping_agent"             => ["Name", "scope_id"],
-        "ls_mag/replication/repl_store"                      => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_store_tender_type"          => ["TenderTypeId", "scope_id"],
-        "ls_mag/replication/repl_unit_of_measure"            => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_vendor"                     => ["Name", "scope_id"],
-        "ls_mag/replication/repl_hierarchy_hosp_deal_line"   => [
-            "DealNo",
-            "ItemNo",
-            "LineNo",
-            "UnitOfMeasure",
-            "scope_id"
-        ],
-        "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_item_modifier"              => [
-            "nav_id",
-            "VariantCode",
-            "Code", "SubCode",
-            "TriggerCode",
-            "UnitOfMeasure",
-            "scope_id"
-        ],
-        "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
-        "ls_mag/replication/repl_tax_setup"                  => ["BusinessTaxGroup", "ProductTaxGroup", "scope_id"]
-    ];
-
     /** @var Logger */
     public $logger;
     /** @var ScopeConfigInterface */
@@ -328,53 +220,60 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param $properties
-     * @param $source
+     * Save new source or update already existing source
+     *
+     * @param array $properties
+     * @param mixed $source
      */
     public function saveSource($properties, $source)
     {
         if ($source->getIsDeleted()) {
-            $uniqueAttributes = (array_key_exists($this->getConfigPath(), self::$deleteJobCodeUniqueFieldArray)) ?
-                self::$deleteJobCodeUniqueFieldArray[$this->getConfigPath()] :
-                self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+            $uniqueAttributes = (array_key_exists(
+                $this->getConfigPath(),
+                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY
+            )) ?
+                ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()] :
+                ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
         } else {
-            $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+            $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
         }
-        // phpcs:ignore Magento2.Security.InsecureFunction
-        $checksum    = crc32(serialize($source));
-        $entityArray = $this->checkEntityExistByAttributes($uniqueAttributes, $source);
+        $checksum             = $this->getHashGivenString($source);
+        $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source);
+        $entityArray          = $this->checkEntityExistByAttributes($uniqueAttributes, $source, $uniqueAttributesHash);
+
         if (!empty($entityArray)) {
-            foreach ($entityArray as $value) {
-                $entity = $value;
-            }
+            $entity = reset($entityArray);
             $entity->setIsUpdated(1);
             $entity->setIsFailed(0);
             $entity->setUpdatedAt($this->rep_helper->getDateTime());
+            $entity->setIdentityValue($uniqueAttributesHash);
         } else {
             $entity = $this->getFactory()->create();
         }
+
         if ($entity->getChecksum() != $checksum) {
             $entity->setChecksum($checksum);
+            $entity->setIdentityValue($uniqueAttributesHash);
+
             foreach ($properties as $property) {
                 if ($property === 'nav_id') {
-                    $set_method = 'setNavId';
-                    $get_method = 'getId';
+                    $setMethod = 'setNavId';
+                    $getMethod = 'getId';
                 } else {
-                    $field_name_optimized   = str_replace('_', ' ', $property);
-                    $field_name_capitalized = ucwords($field_name_optimized);
-                    $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
-                    $set_method             = "set$field_name_capitalized";
-                    $get_method             = "get$field_name_capitalized";
+                    $fieldNameCapitalized = str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
+                    $setMethod             = "set$fieldNameCapitalized";
+                    $getMethod             = "get$fieldNameCapitalized";
                 }
-                if ($entity && $source && method_exists($entity, $set_method) && method_exists($source, $get_method)) {
-                    $entity->{$set_method}($source->{$get_method}());
+                if ($entity && $source && method_exists($entity, $setMethod) && method_exists($source, $getMethod)) {
+                    $entity->{$setMethod}($source->{$getMethod}());
                 }
             }
-            try {
-                $this->getRepository()->save($entity);
-            } catch (\Exception $e) {
-                $this->logger->debug($e->getMessage());
-            }
+        }
+
+        try {
+            $this->getRepository()->save($entity);
+        } catch (\Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
     }
 
@@ -400,49 +299,102 @@ abstract class AbstractReplicationTask
 
     /**
      * Check the Entity exist or not
-     * @param $uniqueAttributes
-     * @param $source
-     * @param $notAnArraysObject
-     * @return bool | array
+     *
+     * @param array $uniqueAttributes
+     * @param mixed $source
+     * @param string $uniqueAttributesHash
+     * @return mixed
      */
-    public function checkEntityExistByAttributes($uniqueAttributes, $source, $notAnArraysObject = false)
+    public function checkEntityExistByAttributes($uniqueAttributes, $source, $uniqueAttributesHash)
+    {
+        $criteria = $this->getSearchCriteria();
+        $criteria->addFilter(ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, $uniqueAttributesHash);
+
+        $result = $this->getRepository()->getList($criteria->create())->getItems();
+
+        if (empty($result)) {
+            $criteria = $this->getSearchCriteria();
+
+            foreach ($uniqueAttributes as $attribute) {
+                $sourceValue = $this->getAttributeValue($attribute, $source);
+
+                if ($sourceValue == "") {
+                    $criteria->addFilter($attribute, true, 'null');
+                } else {
+                    $criteria->addFilter($attribute, $sourceValue);
+                }
+            }
+
+            $result = $this->getRepository()->getList($criteria->create())->getItems();
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get search criteria
+     *
+     * @return mixed
+     */
+    public function getSearchCriteria()
     {
         $objectManager = $this->getObjectManager();
         // @codingStandardsIgnoreStart
-        $criteria = $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
+        return $objectManager->get('Magento\Framework\Api\SearchCriteriaBuilder');
         // @codingStandardsIgnoreEnd
-        foreach ($uniqueAttributes as $attribute) {
-            $field_name_optimized   = str_replace('_', ' ', $attribute);
-            $field_name_capitalized = ucwords($field_name_optimized);
-            $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
+    }
 
-            if ($attribute == 'nav_id') {
-                $get_method = 'getId';
-            } else {
-                $get_method = "get$field_name_capitalized";
-            }
+    /**
+     * Generate identity value, a hash string to uniquely identify a record
+     *
+     * @param array $uniqueAttributes
+     * @param mixed $source
+     * @return int
+     */
+    public function generateIdentityValue($uniqueAttributes, $source)
+    {
+        $uniqueAttributesHash = [];
 
-            if ($notAnArraysObject) {
-                foreach ($source as $keyprop => $valueprop) {
-                    if ($get_method == 'get' . $keyprop) {
-                        $sourceValue = $valueprop;
-                        if ($sourceValue != '') {
-                            break;
-                        }
-                    }
-                }
-            } else {
-                $sourceValue = $source->{$get_method}();
-            }
-
-            if ($sourceValue == "") {
-                $criteria->addFilter($attribute, true, 'null');
-            } else {
-                $criteria->addFilter($attribute, $sourceValue);
-            }
+        foreach ($uniqueAttributes as $index => $attribute) {
+            $sourceValue = $this->getAttributeValue($attribute, $source);
+            $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $attribute) . '#' . $index;
         }
-        $result = $this->getRepository()->getList($criteria->create());
-        return $result->getItems();
+
+        $uniqueAttributesHash = implode("$", $uniqueAttributesHash);
+
+        return $this->getHashGivenString($uniqueAttributesHash);
+    }
+
+    /**
+     * Get Attribute value
+     *
+     * @param string $attribute
+     * @param mixed $source
+     * @return mixed
+     */
+    public function getAttributeValue($attribute, $source)
+    {
+        $fieldNameCapitalized = str_replace(' ', '', ucwords(str_replace('_', ' ', $attribute)));
+
+        if ($attribute == 'nav_id') {
+            $getMethod = 'getId';
+        } else {
+            $getMethod = "get$fieldNameCapitalized";
+        }
+
+        return $source->{$getMethod}();
+    }
+
+    /**
+     * Get hash given string
+     *
+     * @param string $value
+     * @return int
+     */
+    public function getHashGivenString($value)
+    {
+        // phpcs:ignore Magento2.Security.InsecureFunction
+        return crc32(serialize($value));
     }
 
     /**
@@ -646,6 +598,7 @@ abstract class AbstractReplicationTask
 
     /**
      * Better to use this function when we need Object Manger in order to Organize all code in single place.
+     *
      * @return ObjectManager
      */
     public function getObjectManager()

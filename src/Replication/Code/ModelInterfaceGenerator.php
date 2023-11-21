@@ -6,6 +6,7 @@ namespace Ls\Replication\Code;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Replication\Helper\ReplicationHelper;
 use ReflectionClass;
 use ReflectionException;
 use Laminas\Code\Generator\PropertyGenerator;
@@ -117,6 +118,12 @@ class ModelInterfaceGenerator extends AbstractGenerator
             'string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'interface' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IdentityValue', 'variable_name' => ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, 'interface' => true]
         );
         $this->createProperty(
             null,
