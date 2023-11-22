@@ -1573,6 +1573,73 @@
       <column name="scope_id"/>
     </constraint>
   </table>
+  <table name="ls_replication_repl_discount_setup" resource="default" engine="innodb" comment="ReplEcommDiscountSetup">
+    <column xsi:type="int" name="repl_discount_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_setup_id"/>
+    <column xsi:type="decimal" name="AmountToTrigger" scale="4" precision="20" nullable="true" comment="AmountToTrigger"/>
+    <column xsi:type="text" name="CouponCode" nullable="true" comment="CouponCode"/>
+    <column xsi:type="decimal" name="CouponQtyNeeded" scale="4" precision="20" nullable="true" comment="CouponQtyNeeded"/>
+    <column xsi:type="text" name="CurrencyCode" nullable="true" comment="CurrencyCode"/>
+    <column xsi:type="text" name="CustomerDiscountGroup" nullable="true" comment="CustomerDiscountGroup"/>
+    <column xsi:type="decimal" name="DealPriceDiscount" scale="4" precision="20" nullable="true" comment="DealPriceDiscount"/>
+    <column xsi:type="decimal" name="DealPriceValue" scale="4" precision="20" nullable="true" comment="DealPriceValue"/>
+    <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
+    <column xsi:type="text" name="Details" nullable="true" comment="Details"/>
+    <column xsi:type="decimal" name="DiscountAmountValue" scale="4" precision="20" nullable="true" comment="DiscountAmountValue"/>
+    <column xsi:type="decimal" name="DiscountValue" scale="4" precision="20" nullable="true" comment="DiscountValue"/>
+    <column xsi:type="text" name="DiscountValueType" nullable="true" comment="DiscountValueType"/>
+    <column xsi:type="boolean" name="Enabled" default="0" nullable="true" comment="Enabled"/>
+    <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="Exclude"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="decimal" name="LineDiscountAmount" scale="4" precision="20" nullable="true" comment="LineDiscountAmount"/>
+    <column xsi:type="decimal" name="LineDiscountAmountInclVAT" scale="4" precision="20" nullable="true" comment="LineDiscountAmountInclVAT"/>
+    <column xsi:type="boolean" name="LineDiscountIsAmount" default="0" nullable="true" comment="LineDiscountIsAmount"/>
+    <column xsi:type="text" name="LineGroup" nullable="true" comment="LineGroup"/>
+    <column xsi:type="decimal" name="LineMemberPoints" scale="4" precision="20" nullable="true" comment="LineMemberPoints"/>
+    <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="LineNumber"/>
+    <column xsi:type="text" name="LinePriceGroup" nullable="true" comment="LinePriceGroup"/>
+    <column xsi:type="text" name="LineType" nullable="true" comment="LineType"/>
+    <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="LoyaltySchemeCode"/>
+    <column xsi:type="decimal" name="MaxDiscountAmount" scale="4" precision="20" nullable="true" comment="MaxDiscountAmount"/>
+    <column xsi:type="text" name="MemberAttribute" nullable="true" comment="MemberAttribute"/>
+    <column xsi:type="decimal" name="MemberPoints" scale="4" precision="20" nullable="true" comment="MemberPoints"/>
+    <column xsi:type="text" name="MemberType" nullable="true" comment="MemberType"/>
+    <column xsi:type="text" name="Number" nullable="true" comment="Number"/>
+    <column xsi:type="int" name="NumberOfItemNeeded" padding="11" nullable="true" comment="NumberOfItemNeeded"/>
+    <column xsi:type="text" name="OfferNo" nullable="true" comment="OfferNo"/>
+    <column xsi:type="decimal" name="OfferPrice" scale="4" precision="20" nullable="true" comment="OfferPrice"/>
+    <column xsi:type="decimal" name="OfferPriceInclVAT" scale="4" precision="20" nullable="true" comment="OfferPriceInclVAT"/>
+    <column xsi:type="text" name="PriceGroup" nullable="true" comment="PriceGroup"/>
+    <column xsi:type="int" name="PriorityNo" padding="11" nullable="true" comment="PriorityNo"/>
+    <column xsi:type="text" name="ProductItemCategory" nullable="true" comment="ProductItemCategory"/>
+    <column xsi:type="boolean" name="PromptForAction" default="0" nullable="true" comment="PromptForAction"/>
+    <column xsi:type="decimal" name="SplitDealPriceDiscount" scale="4" precision="20" nullable="true" comment="SplitDealPriceDiscount"/>
+    <column xsi:type="decimal" name="StandardPrice" scale="4" precision="20" nullable="true" comment="StandardPrice"/>
+    <column xsi:type="decimal" name="StandardPriceInclVAT" scale="4" precision="20" nullable="true" comment="StandardPriceInclVAT"/>
+    <column xsi:type="decimal" name="TenderOffer" scale="4" precision="20" nullable="true" comment="TenderOffer"/>
+    <column xsi:type="decimal" name="TenderOfferAmount" scale="4" precision="20" nullable="true" comment="TenderOfferAmount"/>
+    <column xsi:type="text" name="TenderTypeCode" nullable="true" comment="TenderTypeCode"/>
+    <column xsi:type="text" name="TenderTypeValue" nullable="true" comment="TenderTypeValue"/>
+    <column xsi:type="boolean" name="TriggerPopUp" default="0" nullable="true" comment="TriggerPopUp"/>
+    <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
+    <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
+    <column xsi:type="text" name="ValidFromBeforeExpDate" nullable="true" comment="ValidFromBeforeExpDate"/>
+    <column xsi:type="text" name="ValidToBeforeExpDate" nullable="true" comment="ValidToBeforeExpDate"/>
+    <column xsi:type="int" name="ValidationPeriodId" padding="11" nullable="true" comment="ValidationPeriodId"/>
+    <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
+    <column xsi:type="int" name="VariantType" padding="11" nullable="true" comment="VariantType"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_discount_setup_id"/>
+    </constraint>
+  </table>
   <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="ReplEcommDiscountValidations">
     <column xsi:type="int" name="repl_discount_validation_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_discount_validation_id"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
@@ -1693,6 +1760,7 @@
     <column xsi:type="text" name="Country" nullable="true" comment="Country"/>
     <column xsi:type="text" name="County" nullable="true" comment="County"/>
     <column xsi:type="text" name="Currency" nullable="true" comment="Currency"/>
+    <column xsi:type="text" name="DiscountGroup" nullable="true" comment="DiscountGroup"/>
     <column xsi:type="text" name="Email" nullable="true" comment="Email"/>
     <column xsi:type="text" name="FirstName" nullable="true" comment="FirstName"/>
     <column xsi:type="text" name="nav_id" nullable="true" comment="nav_id"/>
@@ -1703,10 +1771,13 @@
     <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
     <column xsi:type="text" name="NamePrefix" nullable="true" comment="NamePrefix"/>
     <column xsi:type="text" name="NameSuffix" nullable="true" comment="NameSuffix"/>
+    <column xsi:type="text" name="PaymentTerms" nullable="true" comment="PaymentTerms"/>
     <column xsi:type="text" name="PhoneLocal" nullable="true" comment="PhoneLocal"/>
+    <column xsi:type="text" name="PriceGroup" nullable="true" comment="PriceGroup"/>
     <column xsi:type="text" name="ReceiptEmail" nullable="true" comment="ReceiptEmail"/>
     <column xsi:type="int" name="ReceiptOption" padding="11" nullable="true" comment="ReceiptOption"/>
     <column xsi:type="text" name="SchemeCode" nullable="true" comment="SchemeCode"/>
+    <column xsi:type="text" name="ShippingLocation" nullable="true" comment="ShippingLocation"/>
     <column xsi:type="text" name="State" nullable="true" comment="State"/>
     <column xsi:type="text" name="Street" nullable="true" comment="Street"/>
     <column xsi:type="text" name="TaxGroup" nullable="true" comment="TaxGroup"/>

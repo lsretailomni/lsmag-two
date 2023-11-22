@@ -110,6 +110,17 @@ interface ReplCustomerInterface
     public function getCurrency();
 
     /**
+     * @param string $DiscountGroup
+     * @return $this
+     */
+    public function setDiscountGroup($DiscountGroup);
+
+    /**
+     * @return string
+     */
+    public function getDiscountGroup();
+
+    /**
      * @param string $Email
      * @return $this
      */
@@ -220,6 +231,17 @@ interface ReplCustomerInterface
     public function getNameSuffix();
 
     /**
+     * @param string $PaymentTerms
+     * @return $this
+     */
+    public function setPaymentTerms($PaymentTerms);
+
+    /**
+     * @return string
+     */
+    public function getPaymentTerms();
+
+    /**
      * @param string $PhoneLocal
      * @return $this
      */
@@ -229,6 +251,17 @@ interface ReplCustomerInterface
      * @return string
      */
     public function getPhoneLocal();
+
+    /**
+     * @param string $PriceGroup
+     * @return $this
+     */
+    public function setPriceGroup($PriceGroup);
+
+    /**
+     * @return string
+     */
+    public function getPriceGroup();
 
     /**
      * @param string $ReceiptEmail
@@ -262,6 +295,17 @@ interface ReplCustomerInterface
      * @return string
      */
     public function getSchemeCode();
+
+    /**
+     * @param string $ShippingLocation
+     * @return $this
+     */
+    public function setShippingLocation($ShippingLocation);
+
+    /**
+     * @return string
+     */
+    public function getShippingLocation();
 
     /**
      * @param string $State

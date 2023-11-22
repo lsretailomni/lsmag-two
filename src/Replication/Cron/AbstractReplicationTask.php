@@ -44,7 +44,8 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_hierarchy_node',
         'ls_mag/replication/repl_hierarchy_leaf',
         'ls_mag/replication/repl_store_tender_type',
-        'ls_mag/replication/repl_discount'
+        'ls_mag/replication/repl_discount',
+        'ls_mag/replication/repl_discount_setup',
     ];
 
     /** @var array List of Replication Tables with unique field for delete */
@@ -90,6 +91,15 @@ abstract class AbstractReplicationTask
             "StoreId",
             "VariantId",
             "MinimumQuantity",
+            "scope_id"
+        ],
+        "ls_mag/replication/repl_discount_setup"             => [
+            "Number",
+            "LoyaltySchemeCode",
+            "OfferNo",
+            "Type",
+            "Enabled",
+            "VariantId",
             "scope_id"
         ],
         "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],
@@ -212,6 +222,7 @@ abstract class AbstractReplicationTask
             /**
              * Get all the available stores config in the Magento system
              */
+            $lsr = $this->getLsrModel();
             if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                 $stores = [$storeData];
             } else {
@@ -220,6 +231,10 @@ abstract class AbstractReplicationTask
             if (!empty($stores)) {
                 foreach ($stores as $store) {
                     if ($this->getLsrModel()->isEnabled($store->getId(), $this->defaultScope)) {
+
+                        if ($this->executeDiscountReplicationOnCentralType($lsr, $store)) {
+                            continue;
+                        }
                         $this->fetchDataGivenStore($store->getId());
                     }
                 }
@@ -273,6 +288,10 @@ abstract class AbstractReplicationTask
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_CATEGORY);
         } elseif ($confPath == "ls_mag/replication/repl_discount") {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT);
+        } elseif ($confPath == "ls_mag/replication/repl_discount_setup") {
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP);
+        } elseif ($confPath == "ls_mag/replication/repl_discount_validation") {
+            $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_DISCOUNT_VALIDATION);
         } elseif ($confPath == "ls_mag/replication/repl_item") {
             $this->updateAllStoresConfigs($storeId, LSR::SC_SUCCESS_CRON_PRODUCT);
         } elseif ($confPath == "ls_mag/replication/repl_hierarchy_leaf") {
@@ -339,6 +358,27 @@ abstract class AbstractReplicationTask
                 self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
         } else {
             $uniqueAttributes = self::$jobCodeUniqueFieldArray[$this->getConfigPath()];
+        }
+        $confPath = $this->getConfigPath();
+        if ($confPath == "ls_mag/replication/repl_discount_validation") {
+            $source->setStartDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
+                $source->getStartDate(),
+                LSR::DATE_FORMAT
+            ));
+
+            $source->setStartTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
+                $source->getStartTime(),
+                LSR::TIME_FORMAT
+            ));
+            $source->setEndDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
+                $source->getEndDate(),
+                LSR::DATE_FORMAT
+            ));
+
+            $source->setEndTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
+                $source->getEndTime(),
+                LSR::TIME_FORMAT
+            ));
         }
         // phpcs:ignore Magento2.Security.InsecureFunction
         $checksum    = crc32(serialize($source));
@@ -864,6 +904,26 @@ abstract class AbstractReplicationTask
         ) {
             $this->defaultScope = ScopeInterface::SCOPE_STORES;
         }
+    }
+
+    /**
+     * Execute discount replication for central type saas or on-prem
+     *
+     */
+    public function executeDiscountReplicationOnCentralType($lsr, $store)
+    {
+        $configPath = $this->getConfigPath();
+
+        if ($configPath == "ls_mag/replication/repl_discount_setup") {
+            return !in_array('discountSetup', $lsr->validateForOlderVersion($store));
+        }
+
+        if ($configPath == "ls_mag/replication/repl_discount") {
+            return !in_array('discount', $lsr->validateForOlderVersion($store));
+        }
+
+        return false;
+
     }
 
     /**

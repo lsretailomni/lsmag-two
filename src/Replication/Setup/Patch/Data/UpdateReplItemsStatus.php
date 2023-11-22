@@ -11,7 +11,7 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 /**
  * Data patch to update all repl_items
  */
-class UpdateReplItems implements DataPatchInterface
+class UpdateReplItemsStatus implements DataPatchInterface
 {
     /**
      * @var ModuleDataSetupInterface

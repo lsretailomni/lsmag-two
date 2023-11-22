@@ -60,6 +60,12 @@
         <job name="repl_discount" instance="Ls\Replication\Cron\ReplEcommDiscountsTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
+        <job name="repl_discount_setup" instance="Ls\Replication\Cron\ReplEcommDiscountSetupTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
+        <job name="repl_discount_validation" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask" method="execute">
+            <schedule>*/4 * * * *</schedule>
+        </job>
         <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>
@@ -109,6 +115,9 @@
         <job name="repl_discount_create" instance="Ls\Replication\Cron\DiscountCreateTask" method="execute">
             <schedule>*/5 * * * *</schedule>
         </job>
+        <job name="repl_discount_create_setup" instance="Ls\Replication\Cron\DiscountCreateSetupTask" method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
         <job name="repl_data_translation_to_magento" instance="Ls\Replication\Cron\DataTranslationTask"
              method="execute">
             <schedule>*/5 * * * *</schedule>
@@ -144,6 +153,10 @@
             <schedule>0 0 * * *</schedule>
         </job>
         <job name="repl_discount_status_reset" instance="Ls\Replication\Cron\ResetReplDiscountStatusTask"
+             method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+        <job name="repl_discount_setup_status_reset" instance="Ls\Replication\Cron\ResetReplDiscountSetupStatusTask"
              method="execute">
             <schedule>0 0 * * *</schedule>
         </job>

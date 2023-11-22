@@ -347,6 +347,15 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             return $fullReplicationStatus;
         }
 
+        if ($cronName == 'repl_discount_create_setup') {
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
+
         if ($cronName == 'repl_price_sync') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,

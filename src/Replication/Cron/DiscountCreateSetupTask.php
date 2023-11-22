@@ -1,0 +1,634 @@
+<?php
+
+namespace Ls\Replication\Cron;
+
+use Exception;
+use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
+use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Logger\Logger;
+use \Ls\Replication\Model\ReplDiscountSearchResults;
+use Ls\Replication\Model\ReplDiscountSetup;
+use Ls\Replication\Model\ReplDiscountValidation;
+use \Ls\Replication\Model\ResourceModel\ReplDiscountSetup\Collection;
+use \Ls\Replication\Model\ResourceModel\ReplDiscountSetup\CollectionFactory;
+use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
+use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
+use Magento\CatalogRule\Model\Rule\Condition\Combine;
+use Magento\CatalogRule\Model\Rule\Condition\Product;
+use Magento\CatalogRule\Model\Rule\Job;
+use Magento\CatalogRule\Model\RuleFactory;
+use Magento\Framework\DataObject;
+use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\State\InvalidTransitionException;
+use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Model\ScopeInterface;
+
+/**
+ * Discount creation for discount offers support items, item category, product group, All
+ */
+class DiscountCreateSetupTask
+{
+    /**
+     * @var CatalogRuleRepositoryInterface
+     */
+    public $catalogRule;
+
+    /**
+     * @var RuleFactory
+     */
+    public $ruleFactory;
+
+    /**
+     * @var RuleCollectionFactory
+     */
+    public $ruleCollectionFactory;
+
+    /**
+     * @var Job
+     */
+    public $jobApply;
+
+    /**
+     * @var ReplDiscountSetupRepositoryInterface
+     */
+    public $replDiscountRepository;
+
+    /**
+     * @var ReplDiscountValidationRepositoryInterface
+     */
+    public $discountValidationRepository;
+
+    /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
+     * @var Logger
+     */
+    public $logger;
+
+    /**
+     * @var ReplicationHelper
+     */
+    public $replicationHelper;
+
+    /**
+     * @var ContactHelper
+     */
+    public $contactHelper;
+
+    /**
+     * @var CollectionFactory
+     */
+    public $replDiscountCollection;
+
+    /** @var int */
+    public $remainingRecords;
+
+    /**
+     * @var StoreInterface
+     */
+    public $store;
+
+    /**
+     * @param CatalogRuleRepositoryInterface $catalogRule
+     * @param RuleFactory $ruleFactory
+     * @param RuleCollectionFactory $ruleCollectionFactory
+     * @param Job $jobApply
+     * @param ReplDiscountSetupRepositoryInterface $replDiscountRepository
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
+     * @param ReplicationHelper $replicationHelper
+     * @param LSR $LSR
+     * @param CollectionFactory $replDiscountCollection
+     * @param ContactHelper $contactHelper
+     * @param Logger $logger
+     */
+    public function __construct(
+        CatalogRuleRepositoryInterface $catalogRule,
+        RuleFactory $ruleFactory,
+        RuleCollectionFactory $ruleCollectionFactory,
+        Job $jobApply,
+        ReplDiscountSetupRepositoryInterface $replDiscountRepository,
+        ReplDiscountValidationRepositoryInterface $discountValidationRepository,
+        ReplicationHelper $replicationHelper,
+        LSR $LSR,
+        CollectionFactory $replDiscountCollection,
+        ContactHelper $contactHelper,
+        Logger $logger
+    ) {
+        $this->catalogRule                  = $catalogRule;
+        $this->ruleFactory                  = $ruleFactory;
+        $this->ruleCollectionFactory        = $ruleCollectionFactory;
+        $this->jobApply                     = $jobApply;
+        $this->replDiscountRepository       = $replDiscountRepository;
+        $this->discountValidationRepository = $discountValidationRepository;
+        $this->replicationHelper            = $replicationHelper;
+        $this->contactHelper                = $contactHelper;
+        $this->lsr                          = $LSR;
+        $this->replDiscountCollection       = $replDiscountCollection;
+        $this->logger                       = $logger;
+    }
+
+    /**
+     * Discount Creation
+     *
+     * @param null $storeData
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws Exception
+     */
+    public function execute($storeData = null)
+    {
+
+        /**
+         * Get all Unique Publish offer so that we can create catalog rules based on that.
+         * And the web store is being set in the Magento.
+         * And we need to apply only those rules which are associated to the store assigned to it.
+         */
+        if (!empty($storeData) && $storeData instanceof StoreInterface) {
+            $stores = [$storeData];
+        } else {
+            /** @var StoreInterface[] $stores */
+            $stores = $this->lsr->getAllStores();
+        }
+        if (!empty($stores)) {
+            foreach ($stores as $store) {
+                if (!in_array('discountSetup', $this->lsr->validateForOlderVersion($store))) {
+                    continue;
+                }
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
+                if ($this->lsr->isLSR($this->store->getId())) {
+                    $fullReplicationDiscountValidationStatus = $this->lsr->getConfigValueFromDb(
+                        ReplEcommDiscountValidationsTask::CONFIG_PATH_STATUS,
+                        ScopeInterface::SCOPE_WEBSITES,
+                        $this->getScopeId()
+                    );
+                    if ($fullReplicationDiscountValidationStatus) {
+                        $this->logger->debug('Running DiscountCreateTask for store ' . $this->store->getName());
+                        $this->replicationHelper->updateConfigValue(
+                            $this->replicationHelper->getDateTime(),
+                            LSR::SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE_SETUP,
+                            $this->store->getId(),
+                            ScopeInterface::SCOPE_STORES
+                        );
+                        $storeId                  = $this->getScopeId();
+                        $publishedOfferCollection = $this->getUniquePublishedOffers($storeId);
+                        if (!empty($publishedOfferCollection)) {
+                            $reindexRules = false;
+                            /** @var ReplDiscountSetup $item */
+                            foreach ($publishedOfferCollection as $item) {
+                                $filters  = [
+                                    ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+                                    ['field' => 'nav_id', 'value' => $item->getValidationPeriodId(), 'condition_type' => 'eq']
+                                ];
+                                $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1, 1);
+                                /** @var ReplDiscountValidation $replDiscountValidation */
+                                $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+                                $filters                = [
+                                    ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+                                    ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
+                                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
+                                ];
+
+                                $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1, 1);
+                                /** @var ReplDiscountSearchResults $replDiscounts */
+                                $replDiscounts            = $this->replDiscountRepository->getList($criteria);
+                                $skuAmountArray           = [];
+                                $categoryGroupAmountArray = [];
+                                if ($item->getLoyaltySchemeCode() == '' ||
+                                    $item->getLoyaltySchemeCode() == null
+                                ) {
+                                    $useAllGroupIds   = true;
+                                    $customerGroupIds = $this->contactHelper->getAllCustomerGroupIds();
+                                } else {
+                                    $useAllGroupIds   = false;
+                                    $customerGroupIds = [];
+                                }
+                                if ($replDiscounts->getTotalCount() > 0) {
+                                    /** We check if offer exist */
+                                    $this->deleteOfferByName($item->getOfferNo());
+                                }
+                                /** @var ReplDiscountSetup $replDiscount */
+                                foreach ($replDiscounts->getItems() as $replDiscount) {
+                                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
+                                        $replDiscount->getLoyaltySchemeCode()
+                                    );
+
+                                    // To check if discounts groups are specific for any Member Scheme.
+                                    if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
+                                        $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
+                                            $replDiscount->getLoyaltySchemeCode()
+                                        );
+                                    }
+                                    $discountValue = (string)$replDiscount->getDiscountValue();
+                                    $lineType      = (string)$replDiscount->getLineType();
+
+                                    if ($lineType == OfferDiscountLineType::ITEM) {
+                                        $appendUom = '';
+                                        if (!empty($replDiscount->getUnitOfMeasureId())) {
+                                            // @codingStandardsIgnoreLine
+                                            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure(
+                                                $replDiscount->getNumber()
+                                            );
+                                            if (($baseUnitOfMeasure != $replDiscount->getUnitOfMeasureId()) ||
+                                                ($replDiscount->getVariantId() == '' ||
+                                                    $replDiscount->getVariantId() == null)) {
+                                                $appendUom = '-' . $replDiscount->getUnitOfMeasureId();
+                                            }
+                                        }
+
+                                        if ($replDiscount->getVariantId() == '' ||
+                                            $replDiscount->getVariantId() == null
+                                        ) {
+                                            $skuAmountArray[$discountValue][] = $replDiscount->getNumber() . $appendUom;
+                                        } else {
+                                            $skuAmountArray[$discountValue][] = $replDiscount->getNumber() . '-' .
+                                                $replDiscount->getVariantId() . $appendUom;
+                                        }
+                                    } else {
+
+                                        $categoryGroupAmountArray[$discountValue] =
+                                            $lineType . '|' . $replDiscount->getNumber();
+                                    }
+                                    $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
+                                    $replDiscount->setData('processed', '1');
+                                    $replDiscount->setData('is_updated', '0');
+                                    // @codingStandardsIgnoreStart
+                                    $this->replDiscountRepository->save($replDiscount);
+                                    // @codingStandardsIgnoreEnd
+                                }
+
+                                if (!empty($skuAmountArray)) {
+                                    foreach ($skuAmountArray as $value => $key) {
+                                        $this->addSalesRule(
+                                            $item,
+                                            array_unique($key),
+                                            $customerGroupIds,
+                                            $replDiscountValidation,
+                                            (float)$value
+                                        );
+                                    }
+                                    $reindexRules = true;
+                                }
+                                if (!empty($categoryGroupAmountArray)) {
+                                    foreach ($categoryGroupAmountArray as $value => $key) {
+                                        $this->addSalesRule(
+                                            $item,
+                                            $key,
+                                            $customerGroupIds,
+                                            $replDiscountValidation,
+                                            (float)$value
+                                        );
+                                    }
+                                    $reindexRules = true;
+                                }
+                            }
+                            if ($reindexRules) {
+                                $this->jobApply->applyAll();
+                            }
+                            if ($this->getRemainingRecords($this->store->getId()) == 0) {
+                                $this->replicationHelper->updateCronStatus(
+                                    true,
+                                    LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
+                                    $this->store->getId(),
+                                    false,
+                                    ScopeInterface::SCOPE_STORES
+                                );
+                            } else {
+                                $this->replicationHelper->updateCronStatus(
+                                    false,
+                                    LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
+                                    $this->store->getId(),
+                                    false,
+                                    ScopeInterface::SCOPE_STORES
+                                );
+                            }
+                        } else {
+                            // set the status to success if there is nothing to process.
+                            $this->replicationHelper->updateCronStatus(
+                                true,
+                                LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
+                                $this->store->getId(),
+                                false,
+                                ScopeInterface::SCOPE_STORES
+                            );
+                        }
+                        /* Delete the IsDeleted offers */
+                        $this->deleteOffers();
+                        $this->logger->debug('End DiscountCreateTask for store ' . $this->store->getName());
+                    }
+                }
+                $this->lsr->setStoreId(null);
+            }
+        }
+    }
+
+    /**
+     * Execute Manually
+     *
+     * @param $storeData
+     * @return int[]
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function executeManually($storeData = null)
+    {
+        $this->execute($storeData);
+        $discountsLeftToProcess = $this->getRemainingRecords($storeData->getId());
+        return [$discountsLeftToProcess];
+    }
+
+    /**
+     * Add new catalog rule
+     *
+     * @param ReplDiscountSetup $replDiscount
+     * @param array $key
+     * @param $customerGroupIds
+     * @param $discountValidation
+     * @param null $amount
+     * @return void
+     * @throws Exception
+     */
+    public function addSalesRule(
+        ReplDiscountSetup $replDiscount,
+        $key,
+        $customerGroupIds,
+        $discountValidation,
+        $amount = null
+    ) {
+        $websiteIds = [$replDiscount->getScopeId()];
+        if ($amount == null) {
+            $amount = $replDiscount->getDiscountValue();
+        }
+        $conditions = $this->getConditions($key);
+        $rule       = $this->ruleFactory->create();
+        if (!empty($discountValidation)) {
+            foreach ($discountValidation->getItems() as $disValidation) {
+                $fromDate = trim($disValidation->getStartDate() . ' ' . $disValidation->getStartTime());
+                $toDate   = trim($disValidation->getEndDate() . ' ' . $disValidation->getEndTime());
+            }
+        }
+        $rule->setName($replDiscount->getOfferNo())
+            ->setDescription($replDiscount->getDescription())
+            ->setIsActive(1)
+            ->setCustomerGroupIds($customerGroupIds)
+            ->setWebsiteIds($websiteIds)
+            ->setFromDate(($fromDate) ?: $this->replicationHelper->getCurrentDate());
+
+        if (strtolower($toDate ?? '') != strtolower('1753-01-01T00:00:00')
+            && !empty($toDate)) {
+            $rule->setToDate($toDate);
+        }
+
+        /**
+         * Default Values for Action Types.
+         * by_percent
+         * by_fixed
+         * to_percent
+         * to_fixed
+         */
+        if ($replDiscount->getDiscountValueType() == 'Amount') {
+            $type = 'by_fixed';
+        } else {
+            $type = 'by_percent';
+        }
+        $rule->setSimpleAction($type)
+            ->setDiscountAmount($amount)
+            ->setStopRulesProcessing(1)
+            ->setSortOrder($replDiscount->getPriorityNo());
+        $rule->setData('conditions', $conditions);
+        // @codingStandardsIgnoreLine
+        $validateResult = $rule->validateData(new DataObject($rule->getData()));
+
+        if ($validateResult !== true) {
+            foreach ($validateResult as $errorMessage) {
+                $this->logger->debug($errorMessage);
+            }
+            return;
+        }
+        try {
+            $rule->loadPost($rule->getData());
+            $this->catalogRule->save($rule);
+        } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
+            $this->logger->debug($e->getMessage());
+            $replDiscount->setData('is_failed', 1);
+            // @codingStandardsIgnoreLine
+            $this->replDiscountRepository->save($replDiscount);
+        }
+    }
+
+    /**
+     * Get unique published offers
+     *
+     * @param $storeId
+     * @return array|Collection
+     */
+    public function getUniquePublishedOffers($storeId)
+    {
+        $publishedOfferIds = [];
+        /** @var  Collection $collection */
+        $collection = $this->replDiscountCollection->create();
+        $collection->addFieldToFilter('scope_id', $storeId);
+        $collection->getSelect()
+            ->columns(['OfferNo', 'ValidationPeriodId'])
+            ->group('OfferNo');
+
+        $collection->addFieldToFilter(
+            'Type',
+            ReplDiscountType::DISC_OFFER
+        );
+
+        $collection->addFieldToFilter(
+            'Enabled',
+            1
+        );
+
+        if ($collection->getSize() > 0) {
+            return $collection;
+        }
+        return $publishedOfferIds;
+    }
+
+    /**
+     * Delete all the Offers by OfferNo with IsDeleted = 1
+     */
+    public function deleteOffers()
+    {
+        $filters  = [];
+        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, -1);
+        /** @var ReplDiscountSearchResults $replDiscounts */
+        $replDiscounts = $this->replDiscountRepository->getList($criteria);
+        /** @var ReplDiscountSetup $replDiscount */
+        foreach ($replDiscounts->getItems() as $replDiscount) {
+            /** @var RuleCollectionFactory $ruleCollection */
+            $ruleCollection = $this->ruleCollectionFactory->create();
+            $ruleCollection->addFieldToFilter('name', $replDiscount->getOfferNo());
+            try {
+                foreach ($ruleCollection as $rule) {
+                    $this->catalogRule->deleteById($rule->getId());
+                }
+            } catch (Exception $e) {
+                $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
+                $this->logger->debug($e->getMessage());
+                $replDiscount->setData('is_failed', 1);
+            }
+            $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
+            $replDiscount->setData('processed', 1);
+            $replDiscount->setData('is_updated', 0);
+            // @codingStandardsIgnoreLine
+            $this->replDiscountRepository->save($replDiscount);
+        }
+    }
+
+    /**
+     * Delete offer by Name
+     *
+     * @param $name
+     * @return void
+     */
+    public function deleteOfferByName($name)
+    {
+        $websiteIds     = [$this->store->getWebsiteId()];
+        $ruleCollection = $this->ruleCollectionFactory->create();
+        $ruleCollection->addFieldToFilter('name', $name);
+        $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+        try {
+            foreach ($ruleCollection as $rule) {
+                $this->catalogRule->deleteById($rule->getId());
+            }
+        } catch (Exception $e) {
+            $this->logDetailedException(__METHOD__, $this->store->getName(), $name);
+            $this->logger->debug($e->getMessage());
+        }
+    }
+
+    /**
+     * Get remaining records
+     *
+     * @param $storeId
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getRemainingRecords($storeId)
+    {
+        if (!$this->remainingRecords) {
+            $filtersStatus          = [
+                ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+                ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
+                ['field' => 'Enabled', 'value' => 1, 'condition_type' => 'eq']
+            ];
+            $criteriaTotal          = $this->replicationHelper->buildCriteriaForArray($filtersStatus, 2, 1);
+            $this->remainingRecords = $this->replDiscountRepository->getList($criteriaTotal)
+                ->getTotalCount();
+        }
+        return $this->remainingRecords;
+    }
+
+    /**
+     * Log Detailed exception
+     *
+     * @param $method
+     * @param $storeName
+     * @param $itemId
+     * @return void
+     */
+    public function logDetailedException($method, $storeName, $itemId)
+    {
+        $this->logger->debug(
+            sprintf(
+                'Exception happened in %s for store %s, item id: %s',
+                $method,
+                $storeName,
+                $itemId
+            )
+        );
+    }
+
+    /**
+     * Get conditions based on line type
+     *
+     * @param $key
+     * @return array
+     */
+    public function getConditions($key)
+    {
+
+        $lineType = '';
+        $number   = '';
+
+        if (!is_array($key)) {
+            if (strpos($key, '|') !== false) {
+                $keyArray = explode('|', $key);
+                $lineType = reset($keyArray);
+                $number   = end($keyArray);
+            }
+        }
+
+        if (is_array($key)) {
+            $lineType = OfferDiscountLineType::ITEM;
+        }
+
+        // Create root conditions to match with all child conditions
+        $conditions['1'] =
+            [
+                'type'       => Combine::class,
+                'aggregator' => 'all',
+                'value'      => 1,
+                'new_child'  => ''
+            ];
+        if ($lineType == OfferDiscountLineType::ITEM_CATEGORY) {
+            $conditions['1--1'] =
+                [
+                    'type'      => Product::class,
+                    'attribute' => LSR::LS_ITEM_CATEGORY,
+                    'operator'  => '==',
+                    'value'     => $number
+                ];
+
+        } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP) {
+
+            $conditions['1--1'] =
+                [
+                    'type'      => Product::class,
+                    'attribute' => LSR::LS_ITEM_PRODUCT_GROUP,
+                    'operator'  => '==',
+                    'value'     => $number
+                ];
+
+        } elseif ($lineType == OfferDiscountLineType::ITEM) {
+            $conditions['1--1'] =
+                [
+                    'type'      => Product::class,
+                    'attribute' => 'sku',
+                    'operator'  => '()',
+                    'value'     => implode(',', $key)
+                ];
+        }
+
+        return $conditions;
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
+    }
+}

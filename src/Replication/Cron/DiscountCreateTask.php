@@ -142,6 +142,8 @@ class DiscountCreateTask
      */
     public function execute($storeData = null)
     {
+
+
         /**
          * Get all Unique Publish offer so that we can create catalog rules based on that.
          * And the web store is being set in the Magento.
@@ -155,6 +157,9 @@ class DiscountCreateTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
+                if (!in_array('discount', $this->lsr->validateForOlderVersion($store))) {
+                    continue;
+                }
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
