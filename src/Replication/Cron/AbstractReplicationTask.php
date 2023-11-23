@@ -98,7 +98,6 @@ abstract class AbstractReplicationTask
             "LoyaltySchemeCode",
             "OfferNo",
             "Type",
-            "Enabled",
             "VariantId",
             "scope_id"
         ],
@@ -909,21 +908,23 @@ abstract class AbstractReplicationTask
     /**
      * Execute discount replication for central type saas or on-prem
      *
+     * @param mixed $lsr
+     * @param mixed $store
+     * @return bool
      */
     public function executeDiscountReplicationOnCentralType($lsr, $store)
     {
         $configPath = $this->getConfigPath();
 
         if ($configPath == "ls_mag/replication/repl_discount_setup") {
-            return !in_array('discountSetup', $lsr->validateForOlderVersion($store));
+            return !$lsr->validateForOlderVersion($store)['discountSetup'];
         }
 
         if ($configPath == "ls_mag/replication/repl_discount") {
-            return !in_array('discount', $lsr->validateForOlderVersion($store));
+            return !$lsr->validateForOlderVersion($store)['discount'];
         }
 
         return false;
-
     }
 
     /**

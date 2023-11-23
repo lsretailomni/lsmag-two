@@ -6,8 +6,10 @@ use \Ls\Core\Model\LSR;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Validator\ValidateException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -90,6 +92,8 @@ class CreateLsProductGroupAttribute implements DataPatchInterface
      * Trigger the install data function for Product
      *
      * @return void
+     * @throws LocalizedException
+     * @throws ValidateException
      */
     private function createRequiredProductAttribute()
     {
@@ -112,7 +116,10 @@ class CreateLsProductGroupAttribute implements DataPatchInterface
                 'used_in_product_listing' => true,
                 'default'                 => null,
                 'used_for_promo_rules'    => true,
-                'group'                   => 'General Information',
+                'is_used_in_grid'         => true,
+                'is_visible_in_grid'      => true,
+                'is_filterable_in_grid'   => true,
+                'group'                   => 'General Information'
             ]
         );
     }

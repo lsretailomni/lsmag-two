@@ -140,16 +140,15 @@ class DiscountCreateSetupTask
     /**
      * Discount Creation
      *
-     * @param null $storeData
+     * @param mixed $storeData
+     * @return void
      * @throws InputException
      * @throws InvalidTransitionException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws Exception
      */
     public function execute($storeData = null)
     {
-
         /**
          * Get all Unique Publish offer so that we can create catalog rules based on that.
          * And the web store is being set in the Magento.
@@ -163,7 +162,7 @@ class DiscountCreateSetupTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                if (!in_array('discountSetup', $this->lsr->validateForOlderVersion($store))) {
+                if (!$this->lsr->validateForOlderVersion($store)['discountSetup']) {
                     continue;
                 }
                 $this->lsr->setStoreId($store->getId());
@@ -190,7 +189,11 @@ class DiscountCreateSetupTask
                             foreach ($publishedOfferCollection as $item) {
                                 $filters  = [
                                     ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-                                    ['field' => 'nav_id', 'value' => $item->getValidationPeriodId(), 'condition_type' => 'eq']
+                                    [
+                                        'field' => 'nav_id',
+                                        'value' => $item->getValidationPeriodId(),
+                                        'condition_type' => 'eq'
+                                    ]
                                 ];
                                 $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1, 1);
                                 /** @var ReplDiscountValidation $replDiscountValidation */
@@ -198,7 +201,11 @@ class DiscountCreateSetupTask
                                 $filters                = [
                                     ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
                                     ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
-                                    ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq']
+                                    [
+                                        'field' => 'Type',
+                                        'value' => ReplDiscountType::DISC_OFFER,
+                                        'condition_type' => 'eq'
+                                    ]
                                 ];
 
                                 $criteria = $this->replicationHelper->buildCriteriaForArray($filters, -1, 1);
@@ -215,10 +222,7 @@ class DiscountCreateSetupTask
                                     $useAllGroupIds   = false;
                                     $customerGroupIds = [];
                                 }
-                                if ($replDiscounts->getTotalCount() > 0) {
-                                    /** We check if offer exist */
-                                    $this->deleteOfferByName($item->getOfferNo());
-                                }
+
                                 /** @var ReplDiscountSetup $replDiscount */
                                 foreach ($replDiscounts->getItems() as $replDiscount) {
                                     $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
@@ -257,8 +261,7 @@ class DiscountCreateSetupTask
                                                 $replDiscount->getVariantId() . $appendUom;
                                         }
                                     } else {
-
-                                        $categoryGroupAmountArray[$discountValue] =
+                                        $categoryGroupAmountArray[$discountValue][] =
                                             $lineType . '|' . $replDiscount->getNumber();
                                     }
                                     $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
@@ -282,14 +285,16 @@ class DiscountCreateSetupTask
                                     $reindexRules = true;
                                 }
                                 if (!empty($categoryGroupAmountArray)) {
-                                    foreach ($categoryGroupAmountArray as $value => $key) {
-                                        $this->addSalesRule(
-                                            $item,
-                                            $key,
-                                            $customerGroupIds,
-                                            $replDiscountValidation,
-                                            (float)$value
-                                        );
+                                    foreach ($categoryGroupAmountArray as $value => $keys) {
+                                        foreach ($keys as $key) {
+                                            $this->addSalesRule(
+                                                $item,
+                                                $key,
+                                                $customerGroupIds,
+                                                $replDiscountValidation,
+                                                (float)$value
+                                            );
+                                        }
                                     }
                                     $reindexRules = true;
                                 }
@@ -337,7 +342,7 @@ class DiscountCreateSetupTask
     /**
      * Execute Manually
      *
-     * @param $storeData
+     * @param mixed $storeData
      * @return int[]
      * @throws InputException
      * @throws InvalidTransitionException
@@ -355,10 +360,10 @@ class DiscountCreateSetupTask
      * Add new catalog rule
      *
      * @param ReplDiscountSetup $replDiscount
-     * @param array $key
-     * @param $customerGroupIds
-     * @param $discountValidation
-     * @param null $amount
+     * @param mixed $key
+     * @param mixed $customerGroupIds
+     * @param mixed $discountValidation
+     * @param mixed $amount
      * @return void
      * @throws Exception
      */
@@ -434,7 +439,7 @@ class DiscountCreateSetupTask
     /**
      * Get unique published offers
      *
-     * @param $storeId
+     * @param string $storeId
      * @return array|Collection
      */
     public function getUniquePublishedOffers($storeId)
@@ -468,24 +473,23 @@ class DiscountCreateSetupTask
      */
     public function deleteOffers()
     {
-        $filters  = [];
-        $criteria = $this->replicationHelper->buildCriteriaGetDeletedOnly($filters, -1);
+        $filters  = [
+            ['field' => 'is_updated', 'value' => 1, 'condition_type' => 'eq'],
+            ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect(
+            $filters,
+            -1,
+            false,
+            ['field' => 'Enabled', 'value' => 0, 'condition_type' => 'eq'],
+            ['field' => 'IsDeleted', 'value' => 1, 'condition_type' => 'eq'],
+        );
         /** @var ReplDiscountSearchResults $replDiscounts */
         $replDiscounts = $this->replDiscountRepository->getList($criteria);
         /** @var ReplDiscountSetup $replDiscount */
         foreach ($replDiscounts->getItems() as $replDiscount) {
-            /** @var RuleCollectionFactory $ruleCollection */
-            $ruleCollection = $this->ruleCollectionFactory->create();
-            $ruleCollection->addFieldToFilter('name', $replDiscount->getOfferNo());
-            try {
-                foreach ($ruleCollection as $rule) {
-                    $this->catalogRule->deleteById($rule->getId());
-                }
-            } catch (Exception $e) {
-                $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
-                $this->logger->debug($e->getMessage());
-                $replDiscount->setData('is_failed', 1);
-            }
+            $this->deleteOfferByName($replDiscount->getOfferNo());
             $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
             $replDiscount->setData('processed', 1);
             $replDiscount->setData('is_updated', 0);
@@ -497,7 +501,7 @@ class DiscountCreateSetupTask
     /**
      * Delete offer by Name
      *
-     * @param $name
+     * @param string $name
      * @return void
      */
     public function deleteOfferByName($name)
@@ -519,7 +523,7 @@ class DiscountCreateSetupTask
     /**
      * Get remaining records
      *
-     * @param $storeId
+     * @param string $storeId
      * @return int
      * @throws NoSuchEntityException
      */
@@ -541,9 +545,9 @@ class DiscountCreateSetupTask
     /**
      * Log Detailed exception
      *
-     * @param $method
-     * @param $storeName
-     * @param $itemId
+     * @param string $method
+     * @param string$storeName
+     * @param string $itemId
      * @return void
      */
     public function logDetailedException($method, $storeName, $itemId)
@@ -561,12 +565,11 @@ class DiscountCreateSetupTask
     /**
      * Get conditions based on line type
      *
-     * @param $key
+     * @param mixed $key
      * @return array
      */
     public function getConditions($key)
     {
-
         $lineType = '';
         $number   = '';
 

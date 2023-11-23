@@ -133,17 +133,15 @@ class DiscountCreateTask
     /**
      * Discount Creation
      *
-     * @param null $storeData
+     * @param mixed $storeData
+     * @return void
      * @throws InputException
      * @throws InvalidTransitionException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws Exception
      */
     public function execute($storeData = null)
     {
-
-
         /**
          * Get all Unique Publish offer so that we can create catalog rules based on that.
          * And the web store is being set in the Magento.
@@ -157,7 +155,7 @@ class DiscountCreateTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                if (!in_array('discount', $this->lsr->validateForOlderVersion($store))) {
+                if (!$this->lsr->validateForOlderVersion($store)['discount']) {
                     continue;
                 }
                 $this->lsr->setStoreId($store->getId());

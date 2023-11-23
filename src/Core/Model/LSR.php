@@ -142,7 +142,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
     const SC_SUCCESS_CRON_DISCOUNT_SETUP = 'ls_mag/replication/success_repl_discount_setup';
     const SC_SUCCESS_CRON_DISCOUNT_VALIDATION = 'ls_mag/replication/success_repl_discount_validation';
-    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE_SETUP = 'ls_mag/replication/last_execute_repl_discount_setup_create';
+    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE_SETUP = 'ls_mag/replication/last_execute_repl_discount_create_setup';
 
     //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
@@ -1026,6 +1026,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * To keep running discount replication for commerce service older version and running discount replication for saas
      *
+     * @param mixed $store
      * @return array
      * @throws NoSuchEntityException
      */
@@ -1033,11 +1034,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $status = ['discountSetup' => false, 'discount' => true];
         if (version_compare($this->getOmniVersion(), '2023.10', '>')) {
-            if ($this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE,
-                    $store->getWebsiteId()) == LSR::OnPremise) {
+            if ($this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $store->getWebsiteId()) == LSR::OnPremise) {
                 $status = ['discountSetup' => true, 'discount' => false];
             }
         }
+
         return $status;
     }
 }

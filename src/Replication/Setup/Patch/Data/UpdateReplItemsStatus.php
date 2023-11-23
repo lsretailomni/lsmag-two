@@ -42,7 +42,7 @@ class UpdateReplItemsStatus implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function getDependencies()
     {
@@ -50,7 +50,7 @@ class UpdateReplItemsStatus implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function apply()
     {
@@ -74,7 +74,7 @@ class UpdateReplItemsStatus implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getAliases()
     {
