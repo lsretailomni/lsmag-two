@@ -94,10 +94,8 @@ abstract class AbstractReplicationTask
             "scope_id"
         ],
         "ls_mag/replication/repl_discount_setup"             => [
-            "Number",
-            "LoyaltySchemeCode",
             "OfferNo",
-            "Type",
+            "LineNumber",
             "VariantId",
             "scope_id"
         ],

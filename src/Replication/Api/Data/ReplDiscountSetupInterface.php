@@ -176,6 +176,17 @@ interface ReplDiscountSetupInterface
     public function getIsDeleted();
 
     /**
+     * @param boolean $IsPercentage
+     * @return $this
+     */
+    public function setIsPercentage($IsPercentage);
+
+    /**
+     * @return boolean
+     */
+    public function getIsPercentage();
+
+    /**
      * @param float $LineDiscountAmount
      * @return $this
      */
@@ -196,17 +207,6 @@ interface ReplDiscountSetupInterface
      * @return float
      */
     public function getLineDiscountAmountInclVAT();
-
-    /**
-     * @param boolean $LineDiscountIsAmount
-     * @return $this
-     */
-    public function setLineDiscountIsAmount($LineDiscountIsAmount);
-
-    /**
-     * @return boolean
-     */
-    public function getLineDiscountIsAmount();
 
     /**
      * @param string $LineGroup

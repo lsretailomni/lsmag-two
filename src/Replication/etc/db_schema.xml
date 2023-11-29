@@ -1,5 +1,52 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="ReplEcommInventoryStatus">
+    <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
+    <column xsi:type="decimal" name="Quantity" scale="4" precision="20" nullable="true" comment="Quantity"/>
+    <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
+    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="VariantId"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_inv_status_id"/>
+    </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID">
+      <column name="ItemId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_VARIANTID">
+      <column name="VariantId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_STOREID">
+      <column name="StoreId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID_VARIANTID_STOREID_SCOPE_ID">
+      <column name="ItemId"/>
+      <column name="VariantId"/>
+      <column name="StoreId"/>
+      <column name="scope_id"/>
+    </constraint>
+  </table>
   <table name="ls_replication_repl_barcode" resource="default" engine="innodb" comment="ReplEcommBarcodes">
     <column xsi:type="int" name="repl_barcode_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_barcode_id"/>
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="Blocked"/>
@@ -1590,9 +1637,9 @@
     <column xsi:type="boolean" name="Enabled" default="0" nullable="true" comment="Enabled"/>
     <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="Exclude"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="boolean" name="IsPercentage" default="0" nullable="true" comment="IsPercentage"/>
     <column xsi:type="decimal" name="LineDiscountAmount" scale="4" precision="20" nullable="true" comment="LineDiscountAmount"/>
     <column xsi:type="decimal" name="LineDiscountAmountInclVAT" scale="4" precision="20" nullable="true" comment="LineDiscountAmountInclVAT"/>
-    <column xsi:type="boolean" name="LineDiscountIsAmount" default="0" nullable="true" comment="LineDiscountIsAmount"/>
     <column xsi:type="text" name="LineGroup" nullable="true" comment="LineGroup"/>
     <column xsi:type="decimal" name="LineMemberPoints" scale="4" precision="20" nullable="true" comment="LineMemberPoints"/>
     <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="LineNumber"/>
@@ -1917,53 +1964,6 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_tax_setup_id"/>
-    </constraint>
-  </table>
-  <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="ReplEcommInventoryStatus">
-    <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>
-    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
-    <column xsi:type="decimal" name="Quantity" scale="4" precision="20" nullable="true" comment="Quantity"/>
-    <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
-    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="VariantId"/>
-    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
-    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
-    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
-    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
-    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
-    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
-    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
-    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_inv_status_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID">
-      <column name="ItemId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_VARIANTID">
-      <column name="VariantId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_STOREID">
-      <column name="StoreId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID_VARIANTID_STOREID_SCOPE_ID">
-      <column name="ItemId"/>
-      <column name="VariantId"/>
-      <column name="StoreId"/>
-      <column name="scope_id"/>
     </constraint>
   </table>
 </schema>

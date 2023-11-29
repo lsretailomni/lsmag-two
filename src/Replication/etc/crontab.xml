@@ -63,7 +63,8 @@
         <job name="repl_discount_setup" instance="Ls\Replication\Cron\ReplEcommDiscountSetupTask" method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
-        <job name="repl_discount_validation" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask" method="execute">
+        <job name="repl_discount_validation" instance="Ls\Replication\Cron\ReplEcommDiscountValidationsTask"
+             method="execute">
             <schedule>*/4 * * * *</schedule>
         </job>
         <job name="repl_data_translation" instance="Ls\Replication\Cron\ReplEcommDataTranslationTask" method="execute">

@@ -96,6 +96,11 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $IsDeleted = null;
 
     /**
+     * @property boolean $IsPercentage
+     */
+    protected $IsPercentage = null;
+
+    /**
      * @property float $LineDiscountAmount
      */
     protected $LineDiscountAmount = null;
@@ -104,11 +109,6 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
      * @property float $LineDiscountAmountInclVAT
      */
     protected $LineDiscountAmountInclVAT = null;
-
-    /**
-     * @property boolean $LineDiscountIsAmount
-     */
-    protected $LineDiscountIsAmount = null;
 
     /**
      * @property string $LineGroup
@@ -636,6 +636,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param boolean $IsPercentage
+     * @return $this
+     */
+    public function setIsPercentage($IsPercentage)
+    {
+        $this->setData( 'IsPercentage', $IsPercentage );
+        $this->IsPercentage = $IsPercentage;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPercentage()
+    {
+        return $this->getData( 'IsPercentage' );
+    }
+
+    /**
      * @param float $LineDiscountAmount
      * @return $this
      */
@@ -673,26 +693,6 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getLineDiscountAmountInclVAT()
     {
         return $this->getData( 'LineDiscountAmountInclVAT' );
-    }
-
-    /**
-     * @param boolean $LineDiscountIsAmount
-     * @return $this
-     */
-    public function setLineDiscountIsAmount($LineDiscountIsAmount)
-    {
-        $this->setData( 'LineDiscountIsAmount', $LineDiscountIsAmount );
-        $this->LineDiscountIsAmount = $LineDiscountIsAmount;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getLineDiscountIsAmount()
-    {
-        return $this->getData( 'LineDiscountIsAmount' );
     }
 
     /**
