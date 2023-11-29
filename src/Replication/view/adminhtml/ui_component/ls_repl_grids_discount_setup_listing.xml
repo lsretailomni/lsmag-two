@@ -169,14 +169,36 @@
                 </item>
             </argument>
         </column>
-        <column name="DiscountValue">
+        <column name="DealPriceDiscount">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Discount Value</item>
+                    <item name="label" xsi:type="string" translate="true">Discount Percentage</item>
                     <item name="sortOrder" xsi:type="number">50</item>
+                </item>
+            </argument>
+        </column>
+        <column name="LineDiscountAmountInclVAT">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Line Discount Amount</item>
+                    <item name="sortOrder" xsi:type="number">60</item>
+                </item>
+            </argument>
+        </column>
+        <column name="DiscountValidationId">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Discount Validation Id</item>
+                    <item name="sortOrder" xsi:type="number">70</item>
                 </item>
             </argument>
         </column>
@@ -187,7 +209,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Offer No</item>
-                    <item name="sortOrder" xsi:type="number">90</item>
+                    <item name="sortOrder" xsi:type="number">80</item>
                 </item>
             </argument>
         </column>
@@ -198,7 +220,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Priority No</item>
-                    <item name="sortOrder" xsi:type="number">100</item>
+                    <item name="sortOrder" xsi:type="number">90</item>
                 </item>
             </argument>
         </column>
@@ -209,7 +231,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Line Type</item>
-                    <item name="sortOrder" xsi:type="number">110</item>
+                    <item name="sortOrder" xsi:type="number">100</item>
                 </item>
             </argument>
         </column>
@@ -220,7 +242,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Enabled</item>
-                    <item name="sortOrder" xsi:type="number">120</item>
+                    <item name="sortOrder" xsi:type="number">110</item>
                 </item>
             </argument>
         </column>
@@ -231,7 +253,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Currency Code</item>
-                    <item name="sortOrder" xsi:type="number">130</item>
+                    <item name="sortOrder" xsi:type="number">120</item>
                 </item>
             </argument>
         </column>
@@ -242,7 +264,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Customer Discount Group</item>
-                    <item name="sortOrder" xsi:type="number">140</item>
+                    <item name="sortOrder" xsi:type="number">130</item>
                 </item>
             </argument>
         </column>
@@ -254,7 +276,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Details</item>
-                    <item name="sortOrder" xsi:type="number">150</item>
+                    <item name="sortOrder" xsi:type="number">140</item>
                 </item>
             </argument>
         </column>
@@ -265,7 +287,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Loyalty Scheme Code</item>
-                    <item name="sortOrder" xsi:type="number">160</item>
+                    <item name="sortOrder" xsi:type="number">150</item>
                 </item>
             </argument>
         </column>
@@ -276,7 +298,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Modify Date</item>
-                    <item name="sortOrder" xsi:type="number">170</item>
+                    <item name="sortOrder" xsi:type="number">160</item>
                 </item>
             </argument>
         </column>
@@ -287,7 +309,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Unit Of Measure ID</item>
-                    <item name="sortOrder" xsi:type="number">180</item>
+                    <item name="sortOrder" xsi:type="number">170</item>
                 </item>
             </argument>
         </column>
@@ -298,7 +320,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Variant ID</item>
-                    <item name="sortOrder" xsi:type="number">190</item>
+                    <item name="sortOrder" xsi:type="number">180</item>
                 </item>
             </argument>
         </column>

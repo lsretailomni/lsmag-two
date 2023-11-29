@@ -237,7 +237,7 @@ class DiscountCreateSetupTask
                                         $replDiscount->setDiscountValueType(
                                             DiscountValueType::PERCENT
                                         );
-                                        $discountValue     = $replDiscount->getData('DealPriceDiscount');
+                                        $discountValue     = $replDiscount->getDealPriceDiscount();
                                     }
                                     $this->deleteOfferByName($replDiscount);
                                     $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
