@@ -191,13 +191,13 @@
                 </item>
             </argument>
         </column>
-        <column name="DiscountValidationId">
+        <column name="ValidationPeriodId">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Discount Validation Id</item>
+                    <item name="label" xsi:type="string" translate="true">Validation Period Id</item>
                     <item name="sortOrder" xsi:type="number">70</item>
                 </item>
             </argument>
