@@ -27,7 +27,8 @@ class Discount extends AbstractReset
     ];
 
     public const DEPENDENT_CRONS = [
-        LSR::SC_SUCCESS_CRON_DISCOUNT
+        LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
+        LSR::SC_SUCCESS_CRON_DISCOUNT,
     ];
 
     /**

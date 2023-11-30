@@ -56,6 +56,11 @@ class ReplCustomer
     protected $Currency = null;
 
     /**
+     * @property string $DiscountGroup
+     */
+    protected $DiscountGroup = null;
+
+    /**
      * @property string $Email
      */
     protected $Email = null;
@@ -106,9 +111,19 @@ class ReplCustomer
     protected $NameSuffix = null;
 
     /**
+     * @property string $PaymentTerms
+     */
+    protected $PaymentTerms = null;
+
+    /**
      * @property string $PhoneLocal
      */
     protected $PhoneLocal = null;
+
+    /**
+     * @property string $PriceGroup
+     */
+    protected $PriceGroup = null;
 
     /**
      * @property string $ReceiptEmail
@@ -124,6 +139,11 @@ class ReplCustomer
      * @property string $SchemeCode
      */
     protected $SchemeCode = null;
+
+    /**
+     * @property string $ShippingLocation
+     */
+    protected $ShippingLocation = null;
 
     /**
      * @property string $State
@@ -328,6 +348,24 @@ class ReplCustomer
     }
 
     /**
+     * @param string $DiscountGroup
+     * @return $this
+     */
+    public function setDiscountGroup($DiscountGroup)
+    {
+        $this->DiscountGroup = $DiscountGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountGroup()
+    {
+        return $this->DiscountGroup;
+    }
+
+    /**
      * @param string $Email
      * @return $this
      */
@@ -508,6 +546,24 @@ class ReplCustomer
     }
 
     /**
+     * @param string $PaymentTerms
+     * @return $this
+     */
+    public function setPaymentTerms($PaymentTerms)
+    {
+        $this->PaymentTerms = $PaymentTerms;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentTerms()
+    {
+        return $this->PaymentTerms;
+    }
+
+    /**
      * @param string $PhoneLocal
      * @return $this
      */
@@ -523,6 +579,24 @@ class ReplCustomer
     public function getPhoneLocal()
     {
         return $this->PhoneLocal;
+    }
+
+    /**
+     * @param string $PriceGroup
+     * @return $this
+     */
+    public function setPriceGroup($PriceGroup)
+    {
+        $this->PriceGroup = $PriceGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroup()
+    {
+        return $this->PriceGroup;
     }
 
     /**
@@ -577,6 +651,24 @@ class ReplCustomer
     public function getSchemeCode()
     {
         return $this->SchemeCode;
+    }
+
+    /**
+     * @param string $ShippingLocation
+     * @return $this
+     */
+    public function setShippingLocation($ShippingLocation)
+    {
+        $this->ShippingLocation = $ShippingLocation;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingLocation()
+    {
+        return $this->ShippingLocation;
     }
 
     /**
