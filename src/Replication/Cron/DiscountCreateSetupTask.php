@@ -227,17 +227,12 @@ class DiscountCreateSetupTask
 
                                 /** @var ReplDiscountSetup $replDiscount */
                                 foreach ($replDiscounts->getItems() as $replDiscount) {
-                                    $dicountValueTypeOrginal = $replDiscount->getDiscountValueType();
                                     if (!$replDiscount->getIsPercentage()) {
-                                        $replDiscount->setDiscountValueType(
-                                            DiscountValueType::AMOUNT
-                                        );
-                                        $discountValue = $replDiscount->getLineDiscountAmountInclVAT();
+                                        $discountValueType = DiscountValueType::AMOUNT;
+                                        $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
                                     } else {
-                                        $replDiscount->setDiscountValueType(
-                                            DiscountValueType::PERCENT
-                                        );
-                                        $discountValue = $replDiscount->getDealPriceDiscount();
+                                        $discountValueType = DiscountValueType::PERCENT;
+                                        $discountValue     = $replDiscount->getDealPriceDiscount();
                                     }
                                     $this->deleteOfferByName($replDiscount);
                                     $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
@@ -250,8 +245,8 @@ class DiscountCreateSetupTask
                                             $replDiscount->getLoyaltySchemeCode()
                                         );
                                     }
-                                    $lineType          = (string)$replDiscount->getLineType();
-                                    $discountValueType = (string)$replDiscount->getDiscountValueType();
+
+                                    $lineType = (string)$replDiscount->getLineType();
 
                                     if ($lineType == OfferDiscountLineType::ITEM) {
                                         $appendUom = '';
@@ -283,7 +278,6 @@ class DiscountCreateSetupTask
                                     $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
                                     $replDiscount->setData('processed', '1');
                                     $replDiscount->setData('is_updated', '0');
-                                    $replDiscount->setDiscountValueType($dicountValueTypeOrginal);
                                     // @codingStandardsIgnoreStart
                                     $this->replDiscountRepository->save($replDiscount);
                                     // @codingStandardsIgnoreEnd
@@ -407,7 +401,7 @@ class DiscountCreateSetupTask
 
         if ($key instanceof ReplDiscountSetup) {
             $name              = $key->getOfferNo() . '-' . $key->getLineNumber();
-            $discountValueType = $key->getDiscountValueType();
+            $discountValueType = (!$key->getIsPercentage()) ? DiscountValueType::AMOUNT : DiscountValueType::PERCENT;
         } else {
             $name = $replDiscount->getOfferNo();
         }
