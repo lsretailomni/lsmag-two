@@ -4,7 +4,7 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use \Ls\Omni\Helper\ContactHelper;
@@ -232,12 +232,12 @@ class DiscountCreateSetupTask
                                         $replDiscount->setDiscountValueType(
                                             DiscountValueType::AMOUNT
                                         );
-                                        $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
+                                        $discountValue = $replDiscount->getLineDiscountAmountInclVAT();
                                     } else {
                                         $replDiscount->setDiscountValueType(
                                             DiscountValueType::PERCENT
                                         );
-                                        $discountValue     = $replDiscount->getDealPriceDiscount();
+                                        $discountValue = $replDiscount->getDealPriceDiscount();
                                     }
                                     $this->deleteOfferByName($replDiscount);
                                     $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
@@ -409,7 +409,7 @@ class DiscountCreateSetupTask
             $name              = $key->getOfferNo() . '-' . $key->getLineNumber();
             $discountValueType = $key->getDiscountValueType();
         } else {
-            $name = $replDiscount->getOfferNo() . '-' . $discountValueType;
+            $name = $replDiscount->getOfferNo();
         }
 
         $conditions = $this->getConditions($key);
@@ -575,7 +575,7 @@ class DiscountCreateSetupTask
                 if ($replDiscount->getLineType() != OfferDiscountLineType::ITEM) {
                     $name = $replDiscount->getOfferNo() . '-' . $replDiscount->getLineNumber();
                 } else {
-                    $name = $replDiscount->getOfferNo() . '-' . $replDiscount->getDiscountValueType();
+                    $name = $replDiscount->getOfferNo();
                 }
                 $websiteIds     = [$this->store->getWebsiteId()];
                 $ruleCollection = $this->ruleCollectionFactory->create();
@@ -626,7 +626,7 @@ class DiscountCreateSetupTask
         if ($replDiscount->getLineType() != OfferDiscountLineType::ITEM) {
             $name = $replDiscount->getOfferNo() . '-' . $replDiscount->getLineNumber();
         } else {
-            $name   = $replDiscount->getOfferNo() . '-' . $replDiscount->getDiscountValueType();
+            $name   = $replDiscount->getOfferNo();
             $isItem = true;
         }
         $websiteIds     = [$this->store->getWebsiteId()];
@@ -635,10 +635,22 @@ class DiscountCreateSetupTask
         $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
         try {
             foreach ($ruleCollection as $rule) {
-                $this->catalogRule->deleteById($rule->getId());
                 if ($isItem) {
+                    $conditions      = $rule->getConditions();
+                    $conditionsArray = $conditions->getConditions();
+                    foreach ($conditionsArray as $condition) {
+                        if ($condition->getAttribute() == 'sku') {
+                            if (in_array($replDiscount->getNumber(), explode(',', $condition->getValue()))) {
+                                $this->catalogRule->deleteById($rule->getId());
+                            }
+                        }
+                    }
+                } else {
+                    $this->catalogRule->deleteById($rule->getId());
+                }
+                if ($isItem && ($replDiscount->isDeleted() == 1 || $replDiscount->getIsUpdated() == 1)) {
                     $filters  = [
-                        ['field' => 'LintType', 'value' => OfferDiscountLineType::ITEM, 'condition_type' => 'eq'],
+                        ['field' => 'LineType', 'value' => OfferDiscountLineType::ITEM, 'condition_type' => 'eq'],
                         ['field' => 'OfferNo', 'value' => $replDiscount->getOfferNo(), 'condition_type' => 'eq'],
                         ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
                         ['field' => 'Enabled', 'value' => 1, 'condition_type' => 'eq'],
