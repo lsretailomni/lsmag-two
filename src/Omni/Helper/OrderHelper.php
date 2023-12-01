@@ -608,7 +608,10 @@ class OrderHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
         if ($response && $response->getSalesEntryGetSalesExtByOrderIdResult()) {
-            if (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getShipments()->getSalesEntryShipment())) {
+            if (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry())) {
+                return $response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry();
+            } elseif (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getShipments()
+                ->getSalesEntryShipment())) {
                 $result          = $response->getSalesEntryGetSalesExtByOrderIdResult();
                 $cardId          = $result->getCardId();
                 $orderId         = $result->getOrderId();
@@ -644,7 +647,7 @@ class OrderHelper extends AbstractHelper
                 }
                 return $salesEntryArray;
             } else {
-                return $response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry();
+                return $response;
             }
         }
 
