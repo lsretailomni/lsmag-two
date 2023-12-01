@@ -7,6 +7,7 @@ use Ls\Customer\Block\Order\Info;
 ?>
 <?php $_order = $block->getOrder();
 $formattedLoyaltyPoints = $block->getFormattedLoyaltyPoints();
+if (!empty($_order->getStoreName())):
 ?>
 <div class="block block-order-details-view-loyalty">
     <div class="block-title">
@@ -60,3 +61,4 @@ $formattedLoyaltyPoints = $block->getFormattedLoyaltyPoints();
         <?php endif; ?>
     </div>
 </div>
+<?php endif; ?>

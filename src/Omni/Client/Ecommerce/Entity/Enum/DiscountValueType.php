@@ -14,6 +14,8 @@ use MyCLabs\Enum\Enum;
  * @$method static DiscountValueType DEAL_PRICE()
  * @$method static DiscountValueType PERCENT()
  * @$method static DiscountValueType AMOUNT()
+ * @$method static DiscountValueType LEAST_EXPENSIVE()
+ * @$method static DiscountValueType LINE_SPEC()
  */
 class DiscountValueType extends Enum
 {
@@ -22,5 +24,9 @@ class DiscountValueType extends Enum
     public const PERCENT = 'Percent';
 
     public const AMOUNT = 'Amount';
+
+    public const LEAST_EXPENSIVE = 'LeastExpensive';
+
+    public const LINE_SPEC = 'LineSpec';
 }
 

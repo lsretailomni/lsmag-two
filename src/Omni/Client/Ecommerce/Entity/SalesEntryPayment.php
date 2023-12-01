@@ -19,6 +19,11 @@ class SalesEntryPayment
     protected $Amount = null;
 
     /**
+     * @property string $AuthorizationCode
+     */
+    protected $AuthorizationCode = null;
+
+    /**
      * @property string $CardNo
      */
     protected $CardNo = null;
@@ -39,6 +44,11 @@ class SalesEntryPayment
     protected $CurrencyFactor = null;
 
     /**
+     * @property string $ExternalReference
+     */
+    protected $ExternalReference = null;
+
+    /**
      * @property int $LineNumber
      */
     protected $LineNumber = null;
@@ -47,6 +57,11 @@ class SalesEntryPayment
      * @property string $TenderType
      */
     protected $TenderType = null;
+
+    /**
+     * @property string $TokenNumber
+     */
+    protected $TokenNumber = null;
 
     /**
      * @property PaymentType $Type
@@ -69,6 +84,24 @@ class SalesEntryPayment
     public function getAmount()
     {
         return $this->Amount;
+    }
+
+    /**
+     * @param string $AuthorizationCode
+     * @return $this
+     */
+    public function setAuthorizationCode($AuthorizationCode)
+    {
+        $this->AuthorizationCode = $AuthorizationCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorizationCode()
+    {
+        return $this->AuthorizationCode;
     }
 
     /**
@@ -144,6 +177,24 @@ class SalesEntryPayment
     }
 
     /**
+     * @param string $ExternalReference
+     * @return $this
+     */
+    public function setExternalReference($ExternalReference)
+    {
+        $this->ExternalReference = $ExternalReference;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalReference()
+    {
+        return $this->ExternalReference;
+    }
+
+    /**
      * @param int $LineNumber
      * @return $this
      */
@@ -177,6 +228,24 @@ class SalesEntryPayment
     public function getTenderType()
     {
         return $this->TenderType;
+    }
+
+    /**
+     * @param string $TokenNumber
+     * @return $this
+     */
+    public function setTokenNumber($TokenNumber)
+    {
+        $this->TokenNumber = $TokenNumber;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenNumber()
+    {
+        return $this->TokenNumber;
     }
 
     /**

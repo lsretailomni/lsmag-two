@@ -191,38 +191,41 @@ class Info extends AbstractOrderBlock
         $paymentLines      = $this->getOrderPayments();
         $methods           = $giftCardInfo = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
-        foreach ($paymentLines as $line) {
-            /**
-             * Payments line can include multiple payment types
-             * i-e Refunds etc, but we only need to show Payment Type
-             * whose type == Payment and Pre Authorization
-             */
-            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
-                || $line->getType() === PaymentType::NONE) {
-                $tenderTypeId = $line->getTenderType();
-                if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
-                    $method    = $tenderTypeMapping[$tenderTypeId];
-                    $methods[] = __($method);
-                    if (!empty($line->getCardNo())) {
-                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-                        if ($giftCardTenderId == $tenderTypeId) {
-                            $giftCardInfo[0] = $line->getCardNo();
-                            $giftCardInfo[1] = $line->getAmount();
+        if($paymentLines) {
+            foreach ($paymentLines as $line) {
+                /**
+                 * Payments line can include multiple payment types
+                 * i-e Refunds etc, but we only need to show Payment Type
+                 * whose type == Payment and Pre Authorization
+                 */
+                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+                    || $line->getType() === PaymentType::NONE) {
+                    $tenderTypeId = $line->getTenderType();
+                    if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
+                        $method    = $tenderTypeMapping[$tenderTypeId];
+                        $methods[] = __($method);
+                        if (!empty($line->getCardNo())) {
+                            $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                            if ($giftCardTenderId == $tenderTypeId) {
+                                $giftCardInfo[0] = $line->getCardNo();
+                                $giftCardInfo[1] = $line->getAmount();
+                            }
                         }
+                    } else {
+                        $methods[] = __('Unknown');
                     }
-                } else {
-                    $methods[] = __('Unknown');
                 }
             }
-        }
 
-        $methods = array_unique($methods);
-        if (empty($paymentLines->getSalesEntryPayment())) {
-            $magOrder = $this->getMagOrder();
-            if ($magOrder != null) {
-                $magPaymentMethod = $this->getMagOrder()->getPayment()->getMethodInstance()->getTitle();
-                $methods[]        = $magPaymentMethod;
+            $methods = array_unique($methods);
+            if (empty($paymentLines->getSalesEntryPayment())) {
+                $magOrder = $this->getMagOrder();
+                if ($magOrder != null) {
+                    $magPaymentMethod = $this->getMagOrder()->getPayment()->getMethodInstance()->getTitle();
+                    $methods[]        = $magPaymentMethod;
+                }
             }
+
         }
 
         return [implode(', ', $methods), $giftCardInfo];
