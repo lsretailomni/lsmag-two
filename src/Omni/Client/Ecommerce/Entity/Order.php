@@ -9,7 +9,6 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ShippingStatus;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class Order extends Entity
@@ -115,6 +114,11 @@ class Order extends Entity
     protected $RequestedDeliveryDate = null;
 
     /**
+     * @property boolean $ShipCACOrder
+     */
+    protected $ShipCACOrder = null;
+
+    /**
      * @property Address $ShipToAddress
      */
     protected $ShipToAddress = null;
@@ -138,11 +142,6 @@ class Order extends Entity
      * @property string $ShippingAgentServiceCode
      */
     protected $ShippingAgentServiceCode = null;
-
-    /**
-     * @property ShippingStatus $ShippingStatus
-     */
-    protected $ShippingStatus = null;
 
     /**
      * @property string $StoreId
@@ -535,6 +534,24 @@ class Order extends Entity
     }
 
     /**
+     * @param boolean $ShipCACOrder
+     * @return $this
+     */
+    public function setShipCACOrder($ShipCACOrder)
+    {
+        $this->ShipCACOrder = $ShipCACOrder;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShipCACOrder()
+    {
+        return $this->ShipCACOrder;
+    }
+
+    /**
      * @param Address $ShipToAddress
      * @return $this
      */
@@ -622,34 +639,6 @@ class Order extends Entity
     public function getShippingAgentServiceCode()
     {
         return $this->ShippingAgentServiceCode;
-    }
-
-    /**
-     * @param ShippingStatus|string $ShippingStatus
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setShippingStatus($ShippingStatus)
-    {
-        if ( ! $ShippingStatus instanceof ShippingStatus ) {
-            if ( ShippingStatus::isValid( $ShippingStatus ) )
-                $ShippingStatus = new ShippingStatus( $ShippingStatus );
-            elseif ( ShippingStatus::isValidKey( $ShippingStatus ) )
-                $ShippingStatus = new ShippingStatus( constant( "ShippingStatus::$ShippingStatus" ) );
-            elseif ( ! $ShippingStatus instanceof ShippingStatus )
-                throw new InvalidEnumException();
-        }
-        $this->ShippingStatus = $ShippingStatus->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return ShippingStatus
-     */
-    public function getShippingStatus()
-    {
-        return $this->ShippingStatus;
     }
 
     /**

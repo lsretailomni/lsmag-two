@@ -21,6 +21,11 @@ class SalesEntryList
     protected $Shipments = null;
 
     /**
+     * @property string $CardId
+     */
+    protected $CardId = null;
+
+    /**
      * @property string $OrderId
      */
     protected $OrderId = null;
@@ -59,6 +64,24 @@ class SalesEntryList
     public function getShipments()
     {
         return $this->Shipments;
+    }
+
+    /**
+     * @param string $CardId
+     * @return $this
+     */
+    public function setCardId($CardId)
+    {
+        $this->CardId = $CardId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardId()
+    {
+        return $this->CardId;
     }
 
     /**

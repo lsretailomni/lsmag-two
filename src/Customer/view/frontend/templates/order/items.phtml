@@ -7,59 +7,77 @@ $order = $block->getMagOrder();
 
 use \Ls\Customer\Block\Order\Items;
 use Magento\Sales\Model\Order\Item;
-$order = $block->getOrder(true);
-$transactions = is_array($order) ? $order : [$order];
+
+$order           = $block->getOrder(true);
+$transactions    = is_array($order) ? $order : [$order];
+$checkIsShipment = $block->checkIsShipment();
 
 ?>
 <div class="table-wrapper order-items">
-    <?php foreach($transactions as $trans):?>
+    <?php foreach ($transactions as $trans): ?>
         <div class="order-title">
-            <strong><?= /* @noEscape */ $block->getIdBasedOnDetail($trans);?></strong>
+            <strong><?= /* @noEscape */
+                $block->getIdBasedOnDetail($trans); ?></strong>
         </div>
         <table class="data table table-order-items"
                id="my-orders-table"
-               summary="<?= /* @noEscape */ $block->escapeHtml(__('Items Ordered')) ?>">
+               summary="<?= /* @noEscape */
+               $block->escapeHtml(__('Items Ordered')) ?>">
             <caption class="table-caption">
-                <?= /* @noEscape */ $block->escapeHtml(__('Items Ordered')) ?>
+                <?= /* @noEscape */
+                $block->escapeHtml(__('Items Ordered')) ?>
             </caption>
             <thead>
             <tr>
                 <th class="col name">
-                    <?= /* @noEscape */ $block->escapeHtml(__('Product Name')) ?>
+                    <?= /* @noEscape */
+                    $block->escapeHtml(__('Product Name')) ?>
                 </th>
                 <th class="col sku">
-                    <?= /* @noEscape */ $block->escapeHtml(__('SKU')) ?>
+                    <?= /* @noEscape */
+                    $block->escapeHtml(__('SKU')) ?>
                 </th>
-                <th class="col price">
-                    <?= /* @noEscape */ $block->escapeHtml(__('Price')) ?>
-                </th>
+                <?php if (!$checkIsShipment): ?>
+                    <th class="col price">
+                        <?= /* @noEscape */
+                        $block->escapeHtml(__('Price')) ?>
+                    </th>
+                <?php endif; ?>
                 <th class="col qty">
-                    <?= /* @noEscape */ $block->escapeHtml(__('Qty')) ?>
+                    <?= /* @noEscape */
+                    $block->escapeHtml(__('Qty')) ?>
                 </th>
-                <th class="col subtotal">
-                    <?= /* @noEscape */ $block->escapeHtml(__('Subtotal')) ?>
-                </th>
+                <?php if (!$checkIsShipment): ?>
+                    <th class="col subtotal">
+                        <?= /* @noEscape */
+                        $block->escapeHtml(__('Subtotal')) ?>
+                    </th>
+                <?php endif; ?>
             </tr>
             </thead>
-                <?php $items = $block->getItems($trans); ?>
-                <?php $giftMessage = '' ?>
-                <?php foreach ($items as $item):
-                    if ($item instanceof Item && $item->getParentItem()) :
-                        continue;
-                    endif;
-                    ?>
-                    <tbody>
-                    <?php if ($item instanceof Item): ?>
-                        <?= /* @noEscape */ $block->getItemHtml($item) ?>
-                    <?php else: ?>
-                        <?= /* @noEscape */ $block->getCustomItemRenderer($item); ?>
-                    <?php endif; ?>
-                    </tbody>
-                <?php endforeach; ?>
-
-            <tfoot>
-            <?= /* @noEscape */ $block->getChildBlock('custom_order_totals')->setCurrentOrder($trans)->toHtml() ?>
-            </tfoot>
+            <?php $items = $block->getItems($trans); ?>
+            <?php $giftMessage = '' ?>
+            <?php foreach ($items as $item):
+                if ($item instanceof Item && $item->getParentItem()) :
+                    continue;
+                endif;
+                ?>
+                <tbody>
+                <?php if ($item instanceof Item): ?>
+                    <?= /* @noEscape */
+                    $block->getItemHtml($item) ?>
+                <?php else: ?>
+                    <?= /* @noEscape */
+                    $block->getCustomItemRenderer($item); ?>
+                <?php endif; ?>
+                </tbody>
+            <?php endforeach; ?>
+            <?php if (!$checkIsShipment): ?>
+                <tfoot>
+                <?= /* @noEscape */
+                $block->getChildBlock('custom_order_totals')->setCurrentOrder($trans)->toHtml() ?>
+                </tfoot>
+            <?php endif; ?>
         </table>
     <?php endforeach; ?>
 </div>
