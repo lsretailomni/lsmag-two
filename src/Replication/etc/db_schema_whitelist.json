@@ -125,8 +125,12 @@
             "created_at": true,
             "updated_at": true,
             "CodeDescription": true,
+<<<<<<< HEAD
             "ValueDescription": true,
             "identity_value": true
+=======
+            "ValueDescription": true
+>>>>>>> origin/44282
         },
         "index": {
             "LS_REPLICATION_REPL_EXTENDED_VARIANT_VALUE_CODE": true,
@@ -162,8 +166,12 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true,
+<<<<<<< HEAD
             "ImageDescription": true,
             "identity_value": true
+=======
+            "ImageDescription": true
+>>>>>>> origin/44282
         },
         "index": {
             "LS_REPLICATION_REPL_IMAGE_LINK_IMAGEID": true,
@@ -295,8 +303,12 @@
             "created_at": true,
             "updated_at": true,
             "TariffNo": true,
+<<<<<<< HEAD
             "Type": true,
             "identity_value": true
+=======
+            "Type": true
+>>>>>>> origin/44282
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_NAV_ID": true,
@@ -799,8 +811,12 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true,
+<<<<<<< HEAD
             "URL": true,
             "identity_value": true
+=======
+            "URL": true
+>>>>>>> origin/44282
         },
         "index": {
             "LS_REPLICATION_REPL_DATA_TRANSLATION_TRANSLATIONID": true,
@@ -1197,8 +1213,12 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true,
+<<<<<<< HEAD
             "TariffNo": true,
             "identity_value": true
+=======
+            "TariffNo": true
+>>>>>>> origin/44282
         },
         "index": {
             "LS_REPLICATION_LOY_ITEM_NAV_ID": true
@@ -1336,8 +1356,12 @@
             "DiscountGroup": true,
             "PaymentTerms": true,
             "PriceGroup": true,
+<<<<<<< HEAD
             "ShippingLocation": true,
             "identity_value": true
+=======
+            "ShippingLocation": true
+>>>>>>> origin/44282
         },
         "index": {
             "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER": true,
@@ -1616,6 +1640,137 @@
         "constraint": {
             "PRIMARY": true,
             "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IDENTITY_VALUE": true
+        }
+    },
+    "ls_replication_repl_discount_setup": {
+        "column": {
+            "repl_discount_setup_id": true,
+            "AmountToTrigger": true,
+            "CouponCode": true,
+            "CouponQtyNeeded": true,
+            "CurrencyCode": true,
+            "CustomerDiscountGroup": true,
+            "DealPriceDiscount": true,
+            "DealPriceValue": true,
+            "Description": true,
+            "Details": true,
+            "DiscountAmountValue": true,
+            "DiscountValue": true,
+            "DiscountValueType": true,
+            "Enabled": true,
+            "Exclude": true,
+            "IsDeleted": true,
+            "IsPercentage": true,
+            "LineDiscountAmount": true,
+            "LineDiscountAmountInclVAT": true,
+            "LineGroup": true,
+            "LineMemberPoints": true,
+            "LineNumber": true,
+            "LinePriceGroup": true,
+            "LineType": true,
+            "LoyaltySchemeCode": true,
+            "MaxDiscountAmount": true,
+            "MemberAttribute": true,
+            "MemberPoints": true,
+            "MemberType": true,
+            "Number": true,
+            "NumberOfItemNeeded": true,
+            "OfferNo": true,
+            "OfferPrice": true,
+            "OfferPriceInclVAT": true,
+            "PriceGroup": true,
+            "PriorityNo": true,
+            "ProductItemCategory": true,
+            "PromptForAction": true,
+            "SplitDealPriceDiscount": true,
+            "StandardPrice": true,
+            "StandardPriceInclVAT": true,
+            "TenderOffer": true,
+            "TenderOfferAmount": true,
+            "TenderTypeCode": true,
+            "TenderTypeValue": true,
+            "TriggerPopUp": true,
+            "Type": true,
+            "UnitOfMeasureId": true,
+            "ValidFromBeforeExpDate": true,
+            "ValidToBeforeExpDate": true,
+            "ValidationPeriodId": true,
+            "VariantId": true,
+            "VariantType": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ls_replication_repl_discount_validation": {
+        "column": {
+            "repl_discount_validation_id": true,
+            "Description": true,
+            "EndAfterMidnight": true,
+            "EndDate": true,
+            "EndTime": true,
+            "FridayEnd": true,
+            "FridayEndAfterMidnight": true,
+            "FridayStart": true,
+            "FridayWithinBounds": true,
+            "nav_id": true,
+            "IsDeleted": true,
+            "MondayEnd": true,
+            "MondayEndAfterMidnight": true,
+            "MondayStart": true,
+            "MondayWithinBounds": true,
+            "SaturdayEnd": true,
+            "SaturdayEndAfterMidnight": true,
+            "SaturdayStart": true,
+            "SaturdayWithinBounds": true,
+            "StartDate": true,
+            "StartTime": true,
+            "SundayEnd": true,
+            "SundayEndAfterMidnight": true,
+            "SundayStart": true,
+            "SundayWithinBounds": true,
+            "ThursdayEnd": true,
+            "ThursdayEndAfterMidnight": true,
+            "ThursdayStart": true,
+            "ThursdayWithinBounds": true,
+            "TimeWithinBounds": true,
+            "TuesdayEnd": true,
+            "TuesdayEndAfterMidnight": true,
+            "TuesdayStart": true,
+            "TuesdayWithinBounds": true,
+            "WednesdayEnd": true,
+            "WednesdayEndAfterMidnight": true,
+            "WednesdayStart": true,
+            "WednesdayWithinBounds": true,
+            "scope": true,
+            "scope_id": true,
+            "processed": true,
+            "is_updated": true,
+            "is_failed": true,
+            "checksum": true,
+            "processed_at": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_SCOPE_ID": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_PROCESSED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_IS_UPDATED": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_ISDELETED": true
+        },
+        "constraint": {
+            "PRIMARY": true,
+            "LS_REPLICATION_REPL_DISCOUNT_VALIDATION_NAV_ID_SCOPE_ID": true
         }
     }
 }

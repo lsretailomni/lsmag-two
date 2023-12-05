@@ -1609,6 +1609,7 @@
     <column xsi:type="boolean" name="Enabled" default="0" nullable="true" comment="Enabled"/>
     <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="Exclude"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="boolean" name="IsPercentage" default="0" nullable="true" comment="IsPercentage"/>
     <column xsi:type="decimal" name="LineDiscountAmount" scale="4" precision="20" nullable="true" comment="LineDiscountAmount"/>
     <column xsi:type="decimal" name="LineDiscountAmountInclVAT" scale="4" precision="20" nullable="true" comment="LineDiscountAmountInclVAT"/>
     <column xsi:type="boolean" name="LineDiscountIsAmount" default="0" nullable="true" comment="LineDiscountIsAmount"/>
@@ -1658,6 +1659,9 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_discount_setup_id"/>
+    </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_DISCOUNT_SETUP_IDENTITY_VALUE">
+      <column name="identity_value"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_discount_validation" resource="default" engine="innodb" comment="ReplEcommDiscountValidations">

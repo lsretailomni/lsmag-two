@@ -556,6 +556,14 @@ class ProductCreateTask
                                     LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
                                     $item->getTariffNo()
                                 );
+                                $productData->setCustomAttribute(
+                                    LSR::LS_ITEM_PRODUCT_GROUP,
+                                    $item->getProductGroupId()
+                                );
+                                $productData->setCustomAttribute(
+                                    LSR::LS_ITEM_CATEGORY,
+                                    $item->getItemCategoryCode()
+                                );
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
@@ -628,6 +636,14 @@ class ProductCreateTask
                                 $product->setCustomAttribute(
                                     LSR::LS_TARIFF_NO_ATTRIBUTE_CODE,
                                     $item->getTariffNo()
+                                );
+                                $product->setCustomAttribute(
+                                    LSR::LS_ITEM_PRODUCT_GROUP,
+                                    $item->getProductGroupId()
+                                );
+                                $product->setCustomAttribute(
+                                    LSR::LS_ITEM_CATEGORY,
+                                    $item->getItemCategoryCode()
                                 );
                                 $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $product->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());

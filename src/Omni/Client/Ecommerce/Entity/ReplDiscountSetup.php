@@ -92,6 +92,11 @@ class ReplDiscountSetup
     protected $IsDeleted = null;
 
     /**
+     * @property boolean $IsPercentage
+     */
+    protected $IsPercentage = null;
+
+    /**
      * @property float $LineDiscountAmount
      */
     protected $LineDiscountAmount = null;
@@ -100,11 +105,6 @@ class ReplDiscountSetup
      * @property float $LineDiscountAmountInclVAT
      */
     protected $LineDiscountAmountInclVAT = null;
-
-    /**
-     * @property boolean $LineDiscountIsAmount
-     */
-    protected $LineDiscountIsAmount = null;
 
     /**
      * @property string $LineGroup
@@ -567,6 +567,24 @@ class ReplDiscountSetup
     }
 
     /**
+     * @param boolean $IsPercentage
+     * @return $this
+     */
+    public function setIsPercentage($IsPercentage)
+    {
+        $this->IsPercentage = $IsPercentage;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPercentage()
+    {
+        return $this->IsPercentage;
+    }
+
+    /**
      * @param float $LineDiscountAmount
      * @return $this
      */
@@ -600,24 +618,6 @@ class ReplDiscountSetup
     public function getLineDiscountAmountInclVAT()
     {
         return $this->LineDiscountAmountInclVAT;
-    }
-
-    /**
-     * @param boolean $LineDiscountIsAmount
-     * @return $this
-     */
-    public function setLineDiscountIsAmount($LineDiscountIsAmount)
-    {
-        $this->LineDiscountIsAmount = $LineDiscountIsAmount;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getLineDiscountIsAmount()
-    {
-        return $this->LineDiscountIsAmount;
     }
 
     /**

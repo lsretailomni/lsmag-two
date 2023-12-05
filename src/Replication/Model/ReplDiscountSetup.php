@@ -96,6 +96,11 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $IsDeleted = null;
 
     /**
+     * @property boolean $IsPercentage
+     */
+    protected $IsPercentage = null;
+
+    /**
      * @property float $LineDiscountAmount
      */
     protected $LineDiscountAmount = null;
@@ -638,6 +643,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getIsDeleted()
     {
         return $this->getData( 'IsDeleted' );
+    }
+
+    /**
+     * @param boolean $IsPercentage
+     * @return $this
+     */
+    public function setIsPercentage($IsPercentage)
+    {
+        $this->setData( 'IsPercentage', $IsPercentage );
+        $this->IsPercentage = $IsPercentage;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPercentage()
+    {
+        return $this->getData( 'IsPercentage' );
     }
 
     /**
