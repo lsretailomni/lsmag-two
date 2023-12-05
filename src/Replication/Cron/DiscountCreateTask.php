@@ -133,12 +133,12 @@ class DiscountCreateTask
     /**
      * Discount Creation
      *
-     * @param null $storeData
+     * @param mixed $storeData
+     * @return void
      * @throws InputException
      * @throws InvalidTransitionException
      * @throws LocalizedException
      * @throws NoSuchEntityException
-     * @throws Exception
      */
     public function execute($storeData = null)
     {
@@ -155,6 +155,9 @@ class DiscountCreateTask
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
+                if (!$this->lsr->validateForOlderVersion($store)['discount']) {
+                    continue;
+                }
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {

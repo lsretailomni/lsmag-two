@@ -160,6 +160,7 @@ class UpdateScopesPlusConfigurationsForMultistoreSupport implements DataPatchInt
         "ls_mag/replication/last_execute_repl_attributes_value_sync",
         "ls_mag/replication/last_execute_repl_price_sync",
         "ls_mag/replication/last_execute_repl_discount_status_reset",
+        "ls_mag/replication/last_execute_repl_discount_setup_status_reset",
         "ls_mag/replication/last_execute_repl_inv_status_reset",
         "ls_mag/replication/last_execute_repl_price_status_reset"
     ];

@@ -21,6 +21,11 @@ class Customer extends Entity
     protected $Currency = null;
 
     /**
+     * @property string $DiscountGroup
+     */
+    protected $DiscountGroup = null;
+
+    /**
      * @property string $Email
      */
     protected $Email = null;
@@ -66,6 +71,16 @@ class Customer extends Entity
     protected $NameSuffix = null;
 
     /**
+     * @property string $PaymentTerms
+     */
+    protected $PaymentTerms = null;
+
+    /**
+     * @property string $PriceGroup
+     */
+    protected $PriceGroup = null;
+
+    /**
      * @property string $ReceiptEmail
      */
     protected $ReceiptEmail = null;
@@ -74,6 +89,11 @@ class Customer extends Entity
      * @property int $ReceiptOption
      */
     protected $ReceiptOption = null;
+
+    /**
+     * @property string $ShippingLocation
+     */
+    protected $ShippingLocation = null;
 
     /**
      * @property string $TaxGroup
@@ -119,6 +139,24 @@ class Customer extends Entity
     public function getCurrency()
     {
         return $this->Currency;
+    }
+
+    /**
+     * @param string $DiscountGroup
+     * @return $this
+     */
+    public function setDiscountGroup($DiscountGroup)
+    {
+        $this->DiscountGroup = $DiscountGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountGroup()
+    {
+        return $this->DiscountGroup;
     }
 
     /**
@@ -284,6 +322,42 @@ class Customer extends Entity
     }
 
     /**
+     * @param string $PaymentTerms
+     * @return $this
+     */
+    public function setPaymentTerms($PaymentTerms)
+    {
+        $this->PaymentTerms = $PaymentTerms;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentTerms()
+    {
+        return $this->PaymentTerms;
+    }
+
+    /**
+     * @param string $PriceGroup
+     * @return $this
+     */
+    public function setPriceGroup($PriceGroup)
+    {
+        $this->PriceGroup = $PriceGroup;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroup()
+    {
+        return $this->PriceGroup;
+    }
+
+    /**
      * @param string $ReceiptEmail
      * @return $this
      */
@@ -317,6 +391,24 @@ class Customer extends Entity
     public function getReceiptOption()
     {
         return $this->ReceiptOption;
+    }
+
+    /**
+     * @param string $ShippingLocation
+     * @return $this
+     */
+    public function setShippingLocation($ShippingLocation)
+    {
+        $this->ShippingLocation = $ShippingLocation;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingLocation()
+    {
+        return $this->ShippingLocation;
     }
 
     /**
