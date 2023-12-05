@@ -5,7 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -14,7 +14,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use Ls\Webhooks\Model\Order\Status;
+use \Ls\Webhooks\Model\Order\Status;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -660,8 +660,7 @@ class OrderHelper extends AbstractHelper
      * @param $docId
      * @return SalesEntry[]|Entity\SalesEntryGetReturnSalesResponse|ResponseInterface|null
      */
-    public
-    function getReturnDetailsAgainstId(
+    public function getReturnDetailsAgainstId(
         $docId
     ) {
         $response = null;
@@ -684,8 +683,7 @@ class OrderHelper extends AbstractHelper
      * @param $order
      * @return bool
      */
-    public
-    function isAuthorizedForOrder(
+    public function isAuthorizedForOrder(
         $order
     ) {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
@@ -702,10 +700,8 @@ class OrderHelper extends AbstractHelper
      * @param $order
      * @return bool
      */
-    public
-    function isAuthorizedForReturnOrder(
-        $order
-    ): bool {
+    public function isAuthorizedForReturnOrder($order): bool
+    {
         $orderCardId = null;
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         foreach ($order as $ordItem) {
@@ -731,14 +727,14 @@ class OrderHelper extends AbstractHelper
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public
-    function fetchOrder(
-        $docId, $type
-    ) {
+    public function fetchOrder($docId, $type)
+    {
         if (version_compare($this->lsr->getOmniVersion(), '2022.5.1', '>=') &&
             $type == DocumentIdType::RECEIPT
         ) {
-            if (version_compare($this->lsr->getOmniVersion(), '2023.10', '>')) {
+            if (version_compare($this->lsr->getOmniVersion(), '2023.10', '>')
+                && $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->lsr->getCurrentWebsiteId())
+                == LSR::OnPremise) {
                 $response = $this->getSalesOrderByOrderIdNew($docId, $type);
             } else {
                 $response = $this->getSalesOrderByOrderId($docId);
@@ -757,10 +753,8 @@ class OrderHelper extends AbstractHelper
      * Set LS Central order details in registry.
      * @param $order
      */
-    public
-    function setOrderInRegistry(
-        $order
-    ) {
+    public function setOrderInRegistry($order)
+    {
         if (!$this->getGivenValueFromRegistry('current_order')) {
             $this->registerGivenValueInRegistry('current_order', $order);
         }
@@ -771,10 +765,8 @@ class OrderHelper extends AbstractHelper
      *
      * @param $salesEntry
      */
-    public
-    function setCurrentMagOrderInRegistry(
-        $salesEntry
-    ) {
+    public function setCurrentMagOrderInRegistry($salesEntry)
+    {
         $order = $this->getOrderByDocumentId($salesEntry);
         $this->registerGivenValueInRegistry('current_mag_order', $order);
     }
@@ -786,10 +778,8 @@ class OrderHelper extends AbstractHelper
      * @param $value
      * @return void
      */
-    public
-    function registerGivenValueInRegistry(
-        $key, $value
-    ) {
+    public function registerGivenValueInRegistry($key, $value)
+    {
         if ($this->registry->registry($key)) {
             $this->registry->unregister($key);
         }
@@ -803,10 +793,8 @@ class OrderHelper extends AbstractHelper
      * @param $key
      * @return mixed|null
      */
-    public
-    function getGivenValueFromRegistry(
-        $key
-    ) {
+    public function getGivenValueFromRegistry($key)
+    {
         return $this->registry->registry($key);
     }
 
@@ -816,10 +804,8 @@ class OrderHelper extends AbstractHelper
      * @param $all
      * @return false|mixed|null
      */
-    public
-    function getOrder(
-        $all = false
-    ) {
+    public function getOrder($all = false)
+    {
         if ($all) {
             return $this->registry->registry('current_order');
         }
@@ -833,10 +819,8 @@ class OrderHelper extends AbstractHelper
      * @param $salesEntry
      * @return array|OrderInterface
      */
-    public
-    function getOrderByDocumentId(
-        $salesEntry
-    ) {
+    public function getOrderByDocumentId($salesEntry)
+    {
         $order = [];
         try {
             $documentId = $this->getDocumentIdGivenSalesEntry($salesEntry);
@@ -864,10 +848,8 @@ class OrderHelper extends AbstractHelper
      * @param string $documentId
      * @return false|mixed|null
      */
-    public
-    function getMagentoOrderGivenDocumentId(
-        $documentId
-    ) {
+    public function getMagentoOrderGivenDocumentId($documentId)
+    {
         $order     = null;
         $orderList = $this->orderRepository->getList(
             $this->basketHelper->getSearchCriteriaBuilder()->
@@ -889,10 +871,8 @@ class OrderHelper extends AbstractHelper
      * @throws InputException
      * @throws NoSuchEntityException
      */
-    public
-    function getMagentoOrderGivenEntityId(
-        $entityId
-    ) {
+    public function getMagentoOrderGivenEntityId($entityId)
+    {
         return $this->orderRepository->get($entityId);
     }
 
@@ -907,8 +887,7 @@ class OrderHelper extends AbstractHelper
      * @return OrderInterface[]|null
      * @throws NoSuchEntityException
      */
-    public
-    function getOrders(
+    public function getOrders(
         $storeId = null,
         $pageSize = -1,
         $filterOptions = true,
@@ -965,8 +944,7 @@ class OrderHelper extends AbstractHelper
      * @return string
      * @throws NoSuchEntityException
      */
-    public
-    function getActiveWebStore()
+    public function getActiveWebStore()
     {
         return $this->lsr->getActiveWebStore();
     }
@@ -976,10 +954,8 @@ class OrderHelper extends AbstractHelper
      * @param $order
      * @throws AlreadyExistsException
      */
-    public
-    function disasterRecoveryHandler(
-        $order
-    ) {
+    public function disasterRecoveryHandler($order)
+    {
         $this->_logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
         $order->addCommentToStatusHistory(__('The service is currently unavailable. Please try again later.'));
         try {
@@ -1000,10 +976,8 @@ class OrderHelper extends AbstractHelper
      * @throws NoSuchEntityException
      * @throws \Magento\Framework\Exception\InputException
      */
-    public
-    function setAdyenParameters(
-        $adyenResponse, $order
-    ) {
+    public function setAdyenParameters($adyenResponse, $order)
+    {
         if (!empty($adyenResponse)) {
             if (isset($adyenResponse['pspReference'])) {
                 $order->getPayment()->setLastTransId($adyenResponse['pspReference']);
@@ -1033,10 +1007,8 @@ class OrderHelper extends AbstractHelper
      * @param $storeId
      * @return OrderCancelExResponse|ResponseInterface|string|null
      */
-    public
-    function orderCancel(
-        $documentId, $storeId
-    ) {
+    public function orderCancel($documentId, $storeId)
+    {
         $response = null;
         $request  = new Entity\OrderCancelEx();
         $request->setOrderId($documentId);
@@ -1065,10 +1037,8 @@ class OrderHelper extends AbstractHelper
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public
-    function formulateOrderCancelResponse(
-        $response, $order
-    ) {
+    public function formulateOrderCancelResponse($response, $order)
+    {
         if (version_compare($this->lsr->getOmniVersion(), '2022.12.0', '>')) {
             if (!$response) {
                 $this->formulateException($order);
@@ -1089,10 +1059,8 @@ class OrderHelper extends AbstractHelper
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public
-    function formulateException(
-        $order
-    ) {
+    public function formulateException($order)
+    {
         $message = __('Order could not be canceled from LS Central. Try again later.');
         $order->addCommentToStatusHistory($message);
         $this->orderRepository->save($order);
@@ -1108,10 +1076,8 @@ class OrderHelper extends AbstractHelper
      * @return mixed
      * @throws NoSuchEntityException
      */
-    public
-    function getDocumentIdGivenSalesEntry(
-        $salesEntry
-    ) {
+    public function getDocumentIdGivenSalesEntry($salesEntry)
+    {
         // This is to support backward compatibility of Omni
         if (version_compare($this->lsr->getOmniVersion(), '4.6.0', '>')) {
             $customerOrderNo = $this->getParameterValues($salesEntry, "CustomerOrderNo");
@@ -1127,8 +1093,7 @@ class OrderHelper extends AbstractHelper
      * @return mixed
      * @throws NoSuchEntityException
      */
-    public
-    function getPaymentTenderMapping()
+    public function getPaymentTenderMapping()
     {
         if ($this->tendertypesArray) {
             return $this->tendertypesArray;
@@ -1158,10 +1123,8 @@ class OrderHelper extends AbstractHelper
      * @return int|mixed
      * @throws NoSuchEntityException
      */
-    public
-    function getPaymentTenderTypeId(
-        $code
-    ) {
+    public function getPaymentTenderTypeId($code)
+    {
         $tenderTypeId            = 0;
         $paymentTenderTypesArray = $this->getPaymentTenderMapping();
         if (array_key_exists($code, $paymentTenderTypesArray)) {
@@ -1176,8 +1139,7 @@ class OrderHelper extends AbstractHelper
      *
      * @return DateTime
      */
-    public
-    function getDateTimeObject()
+    public function getDateTimeObject()
     {
         return $this->dateTime;
     }
@@ -1188,10 +1150,8 @@ class OrderHelper extends AbstractHelper
      * @param $date
      * @return string
      */
-    public
-    function getFormattedDate(
-        $date
-    ) {
+    public function getFormattedDate($date)
+    {
         try {
             $format   = 'd/m/y h:i:s A';
             $dateTime = $this->timezoneInterface->date($date)->format($format);
@@ -1210,10 +1170,8 @@ class OrderHelper extends AbstractHelper
      * @return bool
      * @throws NoSuchEntityException
      */
-    public
-    function isAllowed(
-        $order
-    ) {
+    public function isAllowed($order)
+    {
         $websiteId     = $this->storeManager->getStore($order->getStoreId())->getWebsiteId();
         $orderStatuses = $this->lsr->getWebsiteConfig(
             LSR::LSR_RESTRICTED_ORDER_STATUSES,
@@ -1236,10 +1194,8 @@ class OrderHelper extends AbstractHelper
      * @param $orderType
      * @return mixed
      */
-    public
-    function getPriceWithCurrency(
-        $priceCurrency, $amount, $currency, $storeId, $orderType = null
-    ) {
+    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
+    {
         $currencyObject = null;
 
         if (empty($currency) && empty($storeId) && !$this->currentOrder) {
