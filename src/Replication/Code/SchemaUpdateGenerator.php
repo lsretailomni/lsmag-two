@@ -378,8 +378,9 @@ class SchemaUpdateGenerator implements GeneratorInterface
                         ],
                         [
                             'name'       => 'identity_value',
-                            'field_type' => 'text',
+                            'field_type' => 'varchar',
                             'default'    => '',
+                            'length'     => '200',
                             'comment'    => 'Hash value of all unique columns'
                         ],
                         [

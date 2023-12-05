@@ -12,7 +12,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -59,7 +59,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -106,7 +106,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -145,7 +145,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -190,7 +190,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -240,7 +240,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -287,7 +287,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -324,7 +324,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -398,7 +398,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -453,7 +453,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -502,7 +502,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -544,7 +544,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -584,7 +584,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -634,7 +634,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -690,7 +690,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -720,7 +720,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -759,7 +759,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -787,7 +787,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -828,7 +828,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -870,7 +870,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -913,7 +913,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -963,7 +963,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1006,7 +1006,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1048,7 +1048,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1085,7 +1085,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1109,7 +1109,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1152,7 +1152,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1208,7 +1208,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1266,7 +1266,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1324,7 +1324,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1377,7 +1377,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1438,7 +1438,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1505,7 +1505,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1547,7 +1547,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1651,7 +1651,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1704,7 +1704,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1743,7 +1743,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1809,7 +1809,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1848,7 +1848,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1902,7 +1902,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
@@ -1931,7 +1931,7 @@
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
     <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
     <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="text" name="identity_value" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
     <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
     <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
     <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
