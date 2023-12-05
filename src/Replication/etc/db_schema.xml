@@ -1612,7 +1612,6 @@
     <column xsi:type="boolean" name="IsPercentage" default="0" nullable="true" comment="IsPercentage"/>
     <column xsi:type="decimal" name="LineDiscountAmount" scale="4" precision="20" nullable="true" comment="LineDiscountAmount"/>
     <column xsi:type="decimal" name="LineDiscountAmountInclVAT" scale="4" precision="20" nullable="true" comment="LineDiscountAmountInclVAT"/>
-    <column xsi:type="boolean" name="LineDiscountIsAmount" default="0" nullable="true" comment="LineDiscountIsAmount"/>
     <column xsi:type="text" name="LineGroup" nullable="true" comment="LineGroup"/>
     <column xsi:type="decimal" name="LineMemberPoints" scale="4" precision="20" nullable="true" comment="LineMemberPoints"/>
     <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="LineNumber"/>

@@ -111,11 +111,6 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $LineDiscountAmountInclVAT = null;
 
     /**
-     * @property boolean $LineDiscountIsAmount
-     */
-    protected $LineDiscountIsAmount = null;
-
-    /**
      * @property string $LineGroup
      */
     protected $LineGroup = null;
@@ -703,26 +698,6 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getLineDiscountAmountInclVAT()
     {
         return $this->getData( 'LineDiscountAmountInclVAT' );
-    }
-
-    /**
-     * @param boolean $LineDiscountIsAmount
-     * @return $this
-     */
-    public function setLineDiscountIsAmount($LineDiscountIsAmount)
-    {
-        $this->setData( 'LineDiscountIsAmount', $LineDiscountIsAmount );
-        $this->LineDiscountIsAmount = $LineDiscountIsAmount;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getLineDiscountIsAmount()
-    {
-        return $this->getData( 'LineDiscountIsAmount' );
     }
 
     /**

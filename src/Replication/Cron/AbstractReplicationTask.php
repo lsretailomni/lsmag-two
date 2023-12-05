@@ -38,16 +38,6 @@ abstract class AbstractReplicationTask
         'ls_mag/replication/repl_inv_status'
     ];
 
-    /** @var array Config path which needed web store id instead of empty */
-    private static $store_id_needed = [
-        'ls_mag/replication/repl_hierarchy',
-        'ls_mag/replication/repl_hierarchy_node',
-        'ls_mag/replication/repl_hierarchy_leaf',
-        'ls_mag/replication/repl_store_tender_type',
-        'ls_mag/replication/repl_discount',
-        'ls_mag/replication/repl_discount_setup',
-    ];
-
     /** @var Logger */
     public $logger;
     /** @var ScopeConfigInterface */
@@ -247,7 +237,6 @@ abstract class AbstractReplicationTask
         } else {
             $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
         }
-
         $confPath = $this->getConfigPath();
         if ($confPath == "ls_mag/replication/repl_discount_validation") {
             $source->setStartDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(

@@ -209,17 +209,6 @@ interface ReplDiscountSetupInterface
     public function getLineDiscountAmountInclVAT();
 
     /**
-     * @param boolean $LineDiscountIsAmount
-     * @return $this
-     */
-    public function setLineDiscountIsAmount($LineDiscountIsAmount);
-
-    /**
-     * @return boolean
-     */
-    public function getLineDiscountIsAmount();
-
-    /**
      * @param string $LineGroup
      * @return $this
      */
