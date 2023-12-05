@@ -140,6 +140,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
     const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
+    const SC_SUCCESS_CRON_DISCOUNT_SETUP = 'ls_mag/replication/success_repl_discount_setup';
+    const SC_SUCCESS_CRON_DISCOUNT_VALIDATION = 'ls_mag/replication/success_repl_discount_validation';
+    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE_SETUP = 'ls_mag/replication/last_execute_repl_discount_create_setup';
 
     //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
@@ -398,6 +401,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     // Date format to be used in fetching the data.
     const DATE_FORMAT = 'Y-m-d';
+    const TIME_FORMAT = 'h:i:s A';
 
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
@@ -478,6 +482,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_TARIFF_NO_ATTRIBUTE_CODE = 'lsr_tariff_no';
     const LS_TARIFF_NO_ATTRIBUTE_LABEL = 'Tariff No';
 
+    const LS_ITEM_CATEGORY = 'lsr_item_category';
+    const LS_ITEM_CATEGORY_LABEL = 'Item Category';
+    const LS_ITEM_PRODUCT_GROUP = 'lsr_item_product_group';
+    const LS_ITEM_PRODUCT_GROUP_LABEL = 'Product Group';
+
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
@@ -489,6 +498,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // @codingStandardsIgnoreStart
     const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
     // @codingStandardsIgnoreEnd
+
+    const SC_REPLICATION_CENTRAL_TYPE = 'ls_mag/service/central_type';
+    const OnPremise = '0';
+    const Saas = '1';
 
     /**
      * @var ScopeConfigInterface
@@ -535,9 +548,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         StoreManagerInterface $storeManager,
         Data $data
     ) {
-        $this->scopeConfig                 = $scopeConfig;
-        $this->storeManager                = $storeManager;
-        $this->data                        = $data;
+        $this->scopeConfig  = $scopeConfig;
+        $this->storeManager = $storeManager;
+        $this->data         = $data;
     }
 
     /**
@@ -923,7 +936,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isEnabled($storeId = null, $scope = null)
     {
-        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope ==  ScopeInterface::SCOPE_WEBSITE) {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             return $this->getWebsiteConfig(LSR::SC_MODULE_ENABLED, $storeId);
         }
         if ($storeId === null) {
@@ -1008,5 +1021,24 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getGiftCardIdentifiers()
     {
         return $this->getStoreConfig(self::GIFT_CARD_IDENTIFIER, $this->getCurrentStoreId());
+    }
+
+    /**
+     * To keep running discount replication for commerce service older version and running discount replication for saas
+     *
+     * @param mixed $store
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function validateForOlderVersion($store)
+    {
+        $status = ['discountSetup' => false, 'discount' => true];
+        if (version_compare($this->getOmniVersion(), '2023.10', '>')) {
+            if ($this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $store->getWebsiteId()) == LSR::OnPremise) {
+                $status = ['discountSetup' => true, 'discount' => false];
+            }
+        }
+
+        return $status;
     }
 }
