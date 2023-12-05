@@ -351,6 +351,7 @@ class ProductCreateTask
      * @param File $file
      * @param DataTranslationTask $dataTranslationTask
      * @param ImportImageService $imageService
+     * @param SortOrderBuilder $sortOrderBuilder
      * @throws FileSystemException
      */
     public function __construct(
