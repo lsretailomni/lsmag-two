@@ -11,7 +11,7 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 /**
  * Data patch to update all repl_items
  */
-class UpdateReplItems implements DataPatchInterface
+class UpdateReplItemsStatus implements DataPatchInterface
 {
     /**
      * @var ModuleDataSetupInterface
@@ -42,7 +42,7 @@ class UpdateReplItems implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function getDependencies()
     {
@@ -50,7 +50,7 @@ class UpdateReplItems implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function apply()
     {
@@ -74,7 +74,7 @@ class UpdateReplItems implements DataPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getAliases()
     {
