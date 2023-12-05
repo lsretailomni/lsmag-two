@@ -7,8 +7,12 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
+use Magento\CatalogRule\Model\ResourceModel\Rule\Collection as RuleCollection;
+use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 
 /**
  * Class ResetReplPriceStatusTask
@@ -22,19 +26,6 @@ class ResetReplDiscountStatusTask
 
     /** @var string */
     const DISCOUNT_TABLE_NAME = 'ls_replication_repl_discount';
-
-    /** @var array List of all the Discount tables */
-    public $magento_discount_tables = [
-        "catalogrule",
-        "catalogrule_customer_group",
-        "catalogrule_group_website",
-        "catalogrule_group_website_replica",
-        "catalogrule_product_price",
-        "catalogrule_product_price_replica",
-        "catalogrule_product",
-        "catalogrule_product_replica",
-        "catalogrule_website"
-    ];
 
     /** @var ReplicationHelper */
     public $replicationHelper;
@@ -53,6 +44,19 @@ class ResetReplDiscountStatusTask
     public $resource;
 
     /**
+     * @var CatalogRuleRepositoryInterface
+     */
+    public $catalogRuleRepository;
+
+    /**
+     * @var RuleCollectionFactory
+     */
+    public $ruleCollectionFactory;
+
+    /** @var StoreInterface $store */
+    public $store;
+
+    /**
      * @var string
      */
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
@@ -62,17 +66,23 @@ class ResetReplDiscountStatusTask
      * @param LSR $LSR
      * @param Logger $logger
      * @param ResourceConnection $resource
+     * @param CatalogRuleRepositoryInterface $catalogRuleRepository
+     * @param RuleCollectionFactory $ruleCollectionFactory
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         Logger $logger,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        CatalogRuleRepositoryInterface $catalogRuleRepository,
+        RuleCollectionFactory $ruleCollectionFactory
     ) {
-        $this->replicationHelper = $replicationHelper;
-        $this->lsr               = $LSR;
-        $this->logger            = $logger;
-        $this->resource          = $resource;
+        $this->replicationHelper     = $replicationHelper;
+        $this->lsr                   = $LSR;
+        $this->logger                = $logger;
+        $this->resource              = $resource;
+        $this->catalogRuleRepository = $catalogRuleRepository;
+        $this->ruleCollectionFactory = $ruleCollectionFactory;
     }
 
     /**
@@ -91,6 +101,8 @@ class ResetReplDiscountStatusTask
 
         if (!empty($stores)) {
             foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
                     $this->logger->debug('Running ResetReplDiscountStatusTask Task ');
 
@@ -135,10 +147,13 @@ class ResetReplDiscountStatusTask
                     }
                     // Process for Magento tables.
                     // deleting the catalog rules data
-                    foreach ($this->magento_discount_tables as $discountTable) {
-                        $tableName = $this->resource->getTableName($discountTable);
+                    /** @var RuleCollection $ruleCollection */
+                    $ruleCollection = $this->ruleCollectionFactory->create()->addWebsiteFilter(
+                        $this->store->getWebsiteId()
+                    );
+                    foreach ($ruleCollection as $rule) {
                         try {
-                            $connection->truncateTable($tableName);
+                            $this->catalogRuleRepository->deleteById($rule->getId());
                         } catch (\Exception $e) {
                             $this->logger->debug('Something wrong while deleting the catalog rule');
                             $this->logger->debug($e->getMessage());
@@ -153,6 +168,7 @@ class ResetReplDiscountStatusTask
                     );
                     $this->logger->debug('End ResetReplDiscountStatusTask task');
                 }
+                $this->lsr->setStoreId(null);
             }
         }
     }
