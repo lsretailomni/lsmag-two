@@ -111,6 +111,11 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     protected $updated_at = null;
 
     /**
+     * @property string $identity_value
+     */
+    protected $identity_value = null;
+
+    /**
      * @property string $checksum
      */
     protected $checksum = null;
@@ -490,6 +495,26 @@ class ReplExtendedVariantValue extends AbstractModel implements ReplExtendedVari
     public function getUpdatedAt()
     {
         return $this->getData( 'updated_at' );
+    }
+
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value)
+    {
+        $this->setData( 'identity_value', $identity_value );
+        $this->identity_value = $identity_value;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentityValue()
+    {
+        return $this->getData( 'identity_value' );
     }
 
     /**
