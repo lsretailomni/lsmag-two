@@ -699,7 +699,6 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setShipToName('Testing')
             ->setContactAddress($omniAddress)
             ->setShipToAddress($omniAddress)
-            ->setShippingStatus('NotYetShipped')
             ->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderLines        = $result->getOrderLines()->getOrderLine();
         $shipmentOrderLine = new OrderLine();
