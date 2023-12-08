@@ -312,7 +312,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($this->lsr->isLSR($storeId)) {
             $cacheId = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
-            if ($response) {
+            if ($response !== false) {
                 return $response;
             }
             // @codingStandardsIgnoreStart
