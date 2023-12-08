@@ -7,6 +7,7 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
@@ -22,19 +23,6 @@ class ResetReplDiscountStatusTask
 
     /** @var string */
     const DISCOUNT_TABLE_NAME = 'ls_replication_repl_discount';
-
-    /** @var array List of all the Discount tables */
-    public $magento_discount_tables = [
-        "catalogrule",
-        "catalogrule_customer_group",
-        "catalogrule_group_website",
-        "catalogrule_group_website_replica",
-        "catalogrule_product_price",
-        "catalogrule_product_price_replica",
-        "catalogrule_product",
-        "catalogrule_product_replica",
-        "catalogrule_website"
-    ];
 
     /** @var ReplicationHelper */
     public $replicationHelper;
@@ -52,6 +40,9 @@ class ResetReplDiscountStatusTask
      */
     public $resource;
 
+    /** @var StoreInterface $store */
+    public $store;
+
     /**
      * @var string
      */
@@ -62,6 +53,8 @@ class ResetReplDiscountStatusTask
      * @param LSR $LSR
      * @param Logger $logger
      * @param ResourceConnection $resource
+     * @param CatalogRuleRepositoryInterface $catalogRuleRepository
+     * @param RuleCollectionFactory $ruleCollectionFactory
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
@@ -69,10 +62,10 @@ class ResetReplDiscountStatusTask
         Logger $logger,
         ResourceConnection $resource
     ) {
-        $this->replicationHelper = $replicationHelper;
-        $this->lsr               = $LSR;
-        $this->logger            = $logger;
-        $this->resource          = $resource;
+        $this->replicationHelper     = $replicationHelper;
+        $this->lsr                   = $LSR;
+        $this->logger                = $logger;
+        $this->resource              = $resource;
     }
 
     /**
@@ -91,6 +84,8 @@ class ResetReplDiscountStatusTask
 
         if (!empty($stores)) {
             foreach ($stores as $store) {
+                $this->lsr->setStoreId($store->getId());
+                $this->store = $store;
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
                     $this->logger->debug('Running ResetReplDiscountStatusTask Task ');
 
@@ -122,29 +117,28 @@ class ResetReplDiscountStatusTask
                         false,
                         $this->defaultScope
                     );
-                    // Process for Flat tables.
-                    // truncating the discount table.
-                    $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-                    $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-                    $tableName = $this->resource->getTableName(self::DISCOUNT_TABLE_NAME);
+
+                    $websiteId  = $this->store->getWebsiteId();
+                    // deleting the catalog rules data and delete flat table discount data
                     try {
-                        $connection->truncateTable($tableName);
+                        $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId($websiteId);
+                        $parentCollection = $this->replicationHelper->getGivenColumnsFromGivenCollection(
+                            $childCollection,
+                            ['rule_id']
+                        );
+                        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                            $this->replicationHelper->getGivenTableName('catalogrule'),
+                            ['rule_id IN (?)' => $parentCollection->getSelect()]
+                        );
+
+                        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                            self::DISCOUNT_TABLE_NAME,
+                            ['scope_id = ?' => $websiteId]
+                        );
                     } catch (\Exception $e) {
                         $this->logger->debug('Something wrong while truncating the discount table');
                         $this->logger->debug($e->getMessage());
                     }
-                    // Process for Magento tables.
-                    // deleting the catalog rules data
-                    foreach ($this->magento_discount_tables as $discountTable) {
-                        $tableName = $this->resource->getTableName($discountTable);
-                        try {
-                            $connection->truncateTable($tableName);
-                        } catch (\Exception $e) {
-                            $this->logger->debug('Something wrong while deleting the catalog rule');
-                            $this->logger->debug($e->getMessage());
-                        }
-                    }
-                    $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
                     // reset the status for cron status job
                     $this->replicationHelper->updateCronStatus(
                         false,
@@ -153,6 +147,7 @@ class ResetReplDiscountStatusTask
                     );
                     $this->logger->debug('End ResetReplDiscountStatusTask task');
                 }
+                $this->lsr->setStoreId(null);
             }
         }
     }
