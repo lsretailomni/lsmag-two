@@ -5,6 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -13,6 +14,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Webhooks\Model\Order\Status;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -256,7 +258,6 @@ class OrderHelper extends AbstractHelper
                 $oneListCalculateResponse->setShippingAgentCode($carrierCode);
                 $method = ($method) ? substr($method, 0, 10) : "";
                 $oneListCalculateResponse->setShippingAgentServiceCode($method);
-                $oneListCalculateResponse->setShippingStatus(Entity\Enum\ShippingStatus::NOT_YET_SHIPPED);
             }
             $pickupDateTimeslot = $order->getPickupDateTimeslot();
             if (!empty($pickupDateTimeslot)) {
@@ -385,6 +386,7 @@ class OrderHelper extends AbstractHelper
      */
     public function getParameterValues($orderObj, $param)
     {
+        $value    = null;
         $getParam = 'get' . $param;
         if (!property_exists($orderObj, $param)) {
             foreach ($orderObj as $order) {
@@ -585,13 +587,82 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * Get sales order by order id
+     *
+     * @param $docId
+     * @param $type
+     * @return SalesEntry[]|Entity\SalesEntryGetSalesExtByOrderIdResponse|ResponseInterface
+     * @throws InvalidEnumException
+     */
+    public function getSalesOrderByOrderIdNew($docId, $type)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request = new Operation\SalesEntryGetSalesExtByOrderId();
+        $order   = new Entity\SalesEntryGetSalesExtByOrderId();
+        $order->setOrderId($docId);
+        // @codingStandardsIgnoreEnd
+        try {
+            $response = $request->execute($order);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if ($response && $response->getSalesEntryGetSalesExtByOrderIdResult()) {
+            if (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry())) {
+                return $response->getSalesEntryGetSalesExtByOrderIdResult()->getSalesEntries()->getSalesEntry();
+            } elseif (!empty($response->getSalesEntryGetSalesExtByOrderIdResult()->getShipments()
+                ->getSalesEntryShipment())) {
+                $result          = $response->getSalesEntryGetSalesExtByOrderIdResult();
+                $cardId          = $result->getCardId();
+                $orderId         = $result->getOrderId();
+                $response        = $result->getShipments()->getSalesEntryShipment();
+                $salesEntryArray = [];
+                foreach ($response as $shipment) {
+                    $salesEntry          = new SalesEntry();
+                    $salesEntryLineArray = new Entity\ArrayOfSalesEntryLine();
+                    $salesEntryLines     = [];
+                    $salesEntry->setId($shipment->getId());
+                    $salesEntry->setIdType($type);
+                    $salesEntry->setShipToAddress($shipment->getAddress());
+                    $salesEntry->setCustomerOrderNo($orderId);
+                    $salesEntry->setDocumentRegTime($shipment->getShipmentDate());
+                    $salesEntry->setStatus(Entity\Enum\SalesEntryStatus::PROCESSING);
+                    $salesEntry->setId($shipment->getId());
+                    $salesEntry->setCardId($cardId);
+                    $salesEntry->setShippingAgentCode($shipment->getAgentCode());
+                    $salesEntry->setContactName($shipment->getName());
+                    foreach ($shipment->getLines() as $line) {
+                        $salesEntryLine = new Entity\SalesEntryLine();
+                        $salesEntryLine->setItemId($line->getItemId());
+                        $salesEntryLine->setLineNumber($line->getLineNumber());
+                        $salesEntryLine->setItemDescription($line->getItemDescription());
+                        $salesEntryLine->setUomId($line->getUomId());
+                        $salesEntryLine->setVariantId($line->getVariantId());
+                        $salesEntryLine->setQuantity($line->getQuantity());
+                        $salesEntryLines[] = $salesEntryLine;
+                    }
+                    $salesEntryLineArray->setSalesEntryLine($salesEntryLines);
+                    $salesEntry->setLines($salesEntryLineArray);
+                    $salesEntryArray[] = $salesEntry;
+                }
+                return $salesEntryArray;
+            } else {
+                return $response;
+            }
+        }
+
+        return $response;
+    }
+
+    /**
      * Get sales return details
      *
      * @param $docId
      * @return SalesEntry[]|Entity\SalesEntryGetReturnSalesResponse|ResponseInterface|null
      */
-    public function getReturnDetailsAgainstId($docId)
-    {
+    public function getReturnDetailsAgainstId(
+        $docId
+    ) {
         $response = null;
         // @codingStandardsIgnoreStart
         $returnRequest = new Operation\SalesEntryGetReturnSales();
@@ -612,8 +683,9 @@ class OrderHelper extends AbstractHelper
      * @param $order
      * @return bool
      */
-    public function isAuthorizedForOrder($order)
-    {
+    public function isAuthorizedForOrder(
+        $order
+    ) {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $order       = $this->getOrder();
         $orderCardId = $order->getCardId();
@@ -660,7 +732,13 @@ class OrderHelper extends AbstractHelper
         if (version_compare($this->lsr->getOmniVersion(), '2022.5.1', '>=') &&
             $type == DocumentIdType::RECEIPT
         ) {
-            $response = $this->getSalesOrderByOrderId($docId);
+            if (version_compare($this->lsr->getOmniVersion(), '2023.10', '>')
+                && $this->lsr->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $this->lsr->getCurrentWebsiteId())
+                == LSR::OnPremise) {
+                $response = $this->getSalesOrderByOrderIdNew($docId, $type);
+            } else {
+                $response = $this->getSalesOrderByOrderId($docId);
+            }
             if (empty($response)) {
                 $response = $this->getOrderDetailsAgainstId($docId, $type);
             }
@@ -1102,8 +1180,8 @@ class OrderHelper extends AbstractHelper
 
         $status = $order->getStatus();
 
-       $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
-       return $check;
+        $check = empty($orderStatuses) || !(in_array($status, explode(',', $orderStatuses)));
+        return $check;
     }
 
     /**
