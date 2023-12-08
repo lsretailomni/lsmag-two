@@ -104,9 +104,9 @@ class Totals extends AbstractOrderBlock
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(
-                LSR::LSR_SHIPMENT_ITEM_ID,
-                $this->lsr->getCurrentStoreId()
-            )) {
+                    LSR::LSR_SHIPMENT_ITEM_ID,
+                    $this->lsr->getCurrentStoreId()
+                )) {
                 $fee = $line->getAmount();
                 break;
             }
@@ -143,25 +143,27 @@ class Totals extends AbstractOrderBlock
         $giftCardInfo      = [];
         $loyaltyInfo       = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
-        foreach ($paymentLines as $line) {
-            if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
-                || $line->getType() === PaymentType::NONE) {
-                $tenderTypeId = $line->getTenderType();
-                if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
-                    $method    = $tenderTypeMapping[$tenderTypeId];
-                    $methods[] = __($method);
+        if ($paymentLines) {
+            foreach ($paymentLines as $line) {
+                if ($line->getType() === PaymentType::PAYMENT || $line->getType() === PaymentType::PRE_AUTHORIZATION
+                    || $line->getType() === PaymentType::NONE) {
+                    $tenderTypeId = $line->getTenderType();
+                    if (array_key_exists($tenderTypeId, $tenderTypeMapping)) {
+                        $method    = $tenderTypeMapping[$tenderTypeId];
+                        $methods[] = __($method);
 
-                    $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-                    if ($giftCardTenderId == $tenderTypeId) {
-                        $this->giftCardAmount = $line->getAmount();
-                    }
+                        $giftCardTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                        if ($giftCardTenderId == $tenderTypeId) {
+                            $this->giftCardAmount = $line->getAmount();
+                        }
 
-                    $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-                    if ($loyaltyTenderId == $tenderTypeId) {
-                        $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
+                        $loyaltyTenderId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
+                        if ($loyaltyTenderId == $tenderTypeId) {
+                            $this->loyaltyPointAmount = $this->convertLoyaltyPointsToAmount($line->getAmount());
+                        }
+                    } else {
+                        $methods[] = __('Unknown');
                     }
-                } else {
-                    $methods[] = __('Unknown');
                 }
             }
         }

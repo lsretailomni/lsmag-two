@@ -128,4 +128,14 @@ class Items extends AbstractItems
 
         return $id;
     }
+
+    /**
+     * For checking is shipment tab
+     *
+     * @return bool
+     */
+    public function checkIsShipment()
+    {
+        return ($this->orderHelper->getGivenValueFromRegistry('current_detail') == 'shipment');
+    }
 }
