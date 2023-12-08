@@ -5,9 +5,6 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
-use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
-use Magento\CatalogRule\Model\ResourceModel\Rule\Collection as RuleCollection;
-use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
@@ -49,16 +46,6 @@ class ResetReplDiscountSetupStatusTask
      */
     public $resource;
 
-    /**
-     * @var CatalogRuleRepositoryInterface
-     */
-    public $catalogRuleRepository;
-
-    /**
-     * @var RuleCollectionFactory
-     */
-    public $ruleCollectionFactory;
-
     /** @var StoreInterface $store */
     public $store;
 
@@ -77,16 +64,12 @@ class ResetReplDiscountSetupStatusTask
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         Logger $logger,
-        ResourceConnection $resource,
-        CatalogRuleRepositoryInterface $catalogRuleRepository,
-        RuleCollectionFactory $ruleCollectionFactory
+        ResourceConnection $resource
     ) {
         $this->replicationHelper     = $replicationHelper;
         $this->lsr                   = $LSR;
         $this->logger                = $logger;
         $this->resource              = $resource;
-        $this->catalogRuleRepository = $catalogRuleRepository;
-        $this->ruleCollectionFactory = $ruleCollectionFactory;
     }
 
     /**
@@ -167,40 +150,30 @@ class ResetReplDiscountSetupStatusTask
                         false,
                         $this->defaultScope
                     );
-                    // Process for Flat tables.
-                    // truncating the discount table.
-                    $connection = $this->resource->getConnection(ResourceConnection::DEFAULT_CONNECTION);
-                    $connection->query('SET FOREIGN_KEY_CHECKS = 0;');
-                    $tableName = $this->resource->getTableName(self::DISCOUNT_TABLE_NAME);
+                    $websiteId = $this->store->getWebsiteId();
+                    // deleting the catalog rules data and delete flat table discount data
                     try {
-                        $connection->truncateTable($tableName);
+                        $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId($websiteId);
+                        $parentCollection = $this->replicationHelper->getGivenColumnsFromGivenCollection(
+                            $childCollection,
+                            ['rule_id']
+                        );
+                        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                            $this->replicationHelper->getGivenTableName('catalogrule'),
+                            ['rule_id IN (?)' => $parentCollection->getSelect()]
+                        );
+                        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                            self::DISCOUNT_TABLE_NAME,
+                            ['scope_id = ?' => $websiteId]
+                        );
+                        $this->replicationHelper->deleteGivenTableDataGivenConditions(
+                            self::DISCOUNT_VALIDATION_TABLE,
+                            ['scope_id = ?' => $websiteId]
+                        );
                     } catch (\Exception $e) {
                         $this->logger->debug('Something wrong while truncating the discount table');
                         $this->logger->debug($e->getMessage());
                     }
-                    // truncating the discount validation table.
-                    $tableName = $this->resource->getTableName(self::DISCOUNT_VALIDATION_TABLE);
-                    try {
-                        $connection->truncateTable($tableName);
-                    } catch (\Exception $e) {
-                        $this->logger->debug('Something wrong while truncating the discount validation table');
-                        $this->logger->debug($e->getMessage());
-                    }
-                    // Process for Magento tables.
-                    // deleting the catalog rules data
-                    /** @var RuleCollection $ruleCollection */
-                    $ruleCollection = $this->ruleCollectionFactory->create()->addWebsiteFilter(
-                        $this->store->getWebsiteId()
-                    );
-                    foreach ($ruleCollection as $rule) {
-                        try {
-                            $this->catalogRuleRepository->deleteById($rule->getId());
-                        } catch (\Exception $e) {
-                            $this->logger->debug('Something wrong while deleting the catalog rule');
-                            $this->logger->debug($e->getMessage());
-                        }
-                    }
-                    $connection->query('SET FOREIGN_KEY_CHECKS = 1;');
                     // reset the status for cron status job
                     $this->replicationHelper->updateCronStatus(
                         false,
