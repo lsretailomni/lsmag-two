@@ -6,6 +6,7 @@ namespace Ls\Replication\Code;
 use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Model\AbstractModel;
 use ReflectionClass;
@@ -159,6 +160,12 @@ class ModelGenerator extends AbstractGenerator
             'string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'model' => true]
+        );
+        $this->createProperty(
+            null,
+            'string',
+            [PropertyGenerator::FLAG_PROTECTED],
+            ['pascal_name' => 'IdentityValue', 'variable_name' => ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, 'model' => true]
         );
         $this->createProperty(
             null,

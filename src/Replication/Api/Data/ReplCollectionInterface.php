@@ -143,6 +143,17 @@ interface ReplCollectionInterface
     public function getUpdatedAt();
 
     /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value);
+
+    /**
+     * @return string
+     */
+    public function getIdentityValue();
+
+    /**
      * @param string $checksum
      * @return $this
      */
