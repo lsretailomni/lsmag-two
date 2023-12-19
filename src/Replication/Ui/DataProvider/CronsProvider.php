@@ -169,7 +169,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $isTranslationRelatedCron = $this->showTranslationRelatedCronJobsAtStoreLevel($cronName);
 
                 if (!$this->lsr->isSSM()) {
-                    if ($scope == 'store') {
+                    if ($scope == ScopeInterface::SCOPE_STORES) {
                         if (($cronlist['_attribute']['id'] == 'flat_replication' ||
                                 $cronlist['_attribute']['id'] == 'reset') &&
                             !$isTranslationRelatedCron
@@ -185,7 +185,6 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                         }
                     }
                 }
-
 
                 if ($path != '') {
                     $pathNew               = $path . $cronName;

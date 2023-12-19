@@ -93,8 +93,9 @@ class Grid extends Action
             $jobName   = $this->_request->getParam('jobname');
             $scopeId   = $this->_request->getParam('scope_id');
             $scope     = $this->_request->getParam('scope');
+            $storeId   = $this->_request->getParam('store');
+            $websiteId = $this->_request->getParam('website');
             $storeData = null;
-
 
             if (empty($scope) && empty($scopeId)) {
                 if (!$this->lsr->isSSM()) {
@@ -111,6 +112,38 @@ class Grid extends Action
                 );
 
                 return $resultRedirect;
+            }
+
+            if (!$this->lsr->isSSM()) {
+                if ($websiteId !== null &&
+                    ($scope != ScopeInterface::SCOPE_WEBSITES || $websiteId != $scopeId)
+                ) {
+                    $resultRedirect->setPath(
+                        'ls_repl/cron/grid',
+                        [
+                            'scope_id' => $this->_request->getParam('website'),
+                            '_current' => true,
+                            'scope' => ScopeInterface::SCOPE_WEBSITES
+                        ]
+                    );
+
+                    return $resultRedirect;
+                }
+
+                if ($storeId !== null &&
+                    ($scope != ScopeInterface::SCOPE_STORES || $storeId != $scopeId)
+                ) {
+                    $resultRedirect->setPath(
+                        'ls_repl/cron/grid',
+                        [
+                            'scope_id' => $this->_request->getParam('store'),
+                            '_current' => true,
+                            'scope' => ScopeInterface::SCOPE_STORES
+                        ]
+                    );
+
+                    return $resultRedirect;
+                }
             }
 
             if ($jobUrl != "") {
