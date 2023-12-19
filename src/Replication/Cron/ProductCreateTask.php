@@ -77,6 +77,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Filesystem\Driver\File;
@@ -472,10 +473,14 @@ class ProductCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->replicationHelper->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
 
         if (!empty($stores)) {
@@ -801,10 +806,10 @@ class ProductCreateTask
         list(
             $cronCategoryCheck,
             $cronAttributeCheck,
+            $fullReplicationPriceStatus,
             $cronAttributeVariantCheck,
             $fullReplicationImageLinkStatus,
             $fullReplicationBarcodeStatus,
-            $fullReplicationPriceStatus,
             $fullReplicationInvStatus
             ) = $this->getDependentCronsStatus();
 
@@ -898,13 +903,13 @@ class ProductCreateTask
     public function logCronNotReadyReason()
     {
         list(
-            $cronCategoryCheck,
-            $cronAttributeCheck,
-            $cronAttributeVariantCheck,
             $fullReplicationImageLinkStatus,
             $fullReplicationBarcodeStatus,
             $fullReplicationPriceStatus,
-            $fullReplicationInvStatus
+            $fullReplicationInvStatus,
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
 
         // @codingStandardsIgnoreLine

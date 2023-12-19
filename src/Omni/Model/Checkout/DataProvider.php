@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
+use Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Model\Product\Type;
@@ -64,6 +65,8 @@ class DataProvider implements ConfigProviderInterface
      */
     public $storeHelper;
 
+    public $replicationHelper;
+
     /**
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
@@ -82,7 +85,8 @@ class DataProvider implements ConfigProviderInterface
         LSR $lsr,
         Session $checkoutSession,
         StockHelper $stockHelper,
-        StoreHelper $storeHelper
+        StoreHelper $storeHelper,
+        ReplicationHelper $replicationHelper
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
@@ -92,6 +96,7 @@ class DataProvider implements ConfigProviderInterface
         $this->checkoutSession        = $checkoutSession;
         $this->stockHelper            = $stockHelper;
         $this->storeHelper            = $storeHelper;
+        $this->replicationHelper      = $replicationHelper;
     }
 
     /**
@@ -191,6 +196,8 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get stores
      *
      * @return Collection
@@ -201,8 +208,11 @@ class DataProvider implements ConfigProviderInterface
         $storeHoursArray = [];
         $storesData      = $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId())
-            ->addFieldToFilter('ClickAndCollect', 1);
+            ->addFieldToFilter('scope_id',
+                !$this->replicationHelper->isSSM() ?
+                $this->lsr->getCurrentWebsiteId() :
+                $this->lsr->getAdminStore()->getWebsiteId()
+            )->addFieldToFilter('ClickAndCollect', 1);
 
         if ($this->lsr->isPickupTimeslotsEnabled()) {
             $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
@@ -390,7 +400,12 @@ class DataProvider implements ConfigProviderInterface
     {
         return $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId())
+            ->addFieldToFilter(
+                'scope_id',
+                !$this->replicationHelper->isSSM() ?
+                    $this->lsr->getCurrentWebsiteId() :
+                    $this->lsr->getAdminStore()->getWebsiteId()
+            )
             ->addFieldToFilter('nav_id', ['in' => $responseItems]);
     }
 

@@ -1322,7 +1322,6 @@ class ReplicationHelper extends AbstractHelper
      */
     public function updateCronStatus($data, $path, $storeId = false, $flushCache = true, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
-
         /**
          * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
@@ -1335,24 +1334,8 @@ class ReplicationHelper extends AbstractHelper
         if ($existingData == $data) {
             return;
         } else {
-            /**
-             * Added the condition to update config value based on specific store id.
-             */
-            if ($storeId) {
-                $this->configWriter->save(
-                    $path,
-                    ($data) ? 1 : 0,
-                    $scope,
-                    $storeId
-                );
-            } else {
-                $this->configWriter->save(
-                    $path,
-                    ($data) ? 1 : 0,
-                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                    0
-                );
-            }
+            $this->updateConfigValue(($data) ? 1 : 0, $path, $storeId, $scope);
+
             if ($flushCache) {
                 $this->flushByTypeCode('config');
             }
@@ -1391,7 +1374,7 @@ class ReplicationHelper extends AbstractHelper
         /**
          * Added the condition to update config value based on specific store id.
          */
-        if ($storeId) {
+        if ($storeId && !$this->isSSM()) {
             $this->configWriter->save(
                 $path,
                 $value,
@@ -1401,9 +1384,7 @@ class ReplicationHelper extends AbstractHelper
         } else {
             $this->configWriter->save(
                 $path,
-                $value,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
+                $value
             );
         }
     }
@@ -1608,9 +1589,14 @@ class ReplicationHelper extends AbstractHelper
      * @param $collection
      * @param $websiteId
      * @return void
+     * @throws LocalizedException
      */
     public function applyProductWebsiteJoin(&$collection, $websiteId)
     {
+        if ($this->isSSM()) {
+            $websiteId = $this->storeManager->getDefaultStoreView()->getWebsiteId();
+        }
+
         $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
 
         $collection->getSelect()->joinInner(
@@ -2419,11 +2405,14 @@ class ReplicationHelper extends AbstractHelper
      */
     public function findCategoryIdFromFactory($productGroupId, $store)
     {
+        $rootCategoryId = !$this->isSSM() ?
+            $store->getRootCategoryId() :
+            $this->storeManager->getDefaultStoreView()->getRootCategoryId();
         $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
             'nav_id',
             $productGroupId
         )
-            ->addPathsFilter('1/' . $store->getRootCategoryId() . '/')
+            ->addPathsFilter('1/' . $rootCategoryId . '/')
             ->setPageSize(1);
         if ($categoryCollection->getSize()) {
             // @codingStandardsIgnoreStart
@@ -3676,5 +3665,15 @@ class ReplicationHelper extends AbstractHelper
         ]);
 
         return $product;
+    }
+
+    /**
+     * Is single store mode
+     *
+     * @return bool
+     */
+    public function isSSM()
+    {
+        return $this->storeManager->isSingleStoreMode();
     }
 }

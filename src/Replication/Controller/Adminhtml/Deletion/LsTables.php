@@ -3,8 +3,10 @@
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
 use \Ls\Core\Model\LSR;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class LsTables for truncating all flat tables
@@ -50,7 +52,7 @@ class LsTables extends AbstractReset
     public function execute()
     {
         $jobName             = $this->_request->getParam('jobname');
-        $scopeId             = $this->_request->getParam('store');
+        $scopeId             = $this->_request->getParam('scope_id');
         $scope               = $this->_request->getParam('scope');
         $coreConfigTableName = $this->replicationHelper->getGivenTableName('core_config_data');
         $this->replicationHelper->getConnection()->startSetup();
@@ -65,10 +67,12 @@ class LsTables extends AbstractReset
             $redirectPath = 'adminhtml/system_config/edit/section/ls_mag';
         }
 
-        if ($scope == 'website') {
-            $arguments = ['website' => $scopeId, 'scope' => 'website'];
+        if ($scope == ScopeInterface::SCOPE_WEBSITES) {
+            $arguments = ['scope_id' => $scopeId, 'scope' => 'website'];
+        } elseif ($scope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT) {
+            $arguments = ['scope_id' => $scopeId, 'scope' => ScopeConfigInterface::SCOPE_TYPE_DEFAULT];
         } else {
-            $arguments = ['store' => $scopeId, 'scope' => 'store'];
+            $arguments = ['scope_id' => $scopeId, 'scope' => 'store'];
         }
         $this->replicationHelper->getConnection()->endSetup();
         $this->messageManager->addSuccessMessage($message);

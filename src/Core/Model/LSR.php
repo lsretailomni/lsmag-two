@@ -577,7 +577,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param int $scopeId
      * @return mixed|null
      */
-    public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
+    public function getConfigValueFromDb($path, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0)
     {
         return $this->data->getConfigValueFromDb($path, $scope, $scopeId);
     }
@@ -804,6 +804,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         $this->websites = $this->storeManager->getWebsites();
 
         return $this->websites;
+    }
+
+    /**
+     * Get admin store
+     *
+     * @return StoreInterface|null
+     */
+    public function getAdminStore()
+    {
+        $adminStore = null;
+
+        foreach ($this->storeManager->getStores(true, true) as $store) {
+            if ($store->getCode() == 'admin') {
+                $adminStore = $store;
+                break;
+            }
+        }
+
+        return $adminStore;
     }
 
     /**

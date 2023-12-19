@@ -11,15 +11,15 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class SyncCustomers
- * @package Ls\Replication\Cron
+ * Cron responsible for syncing customer in magento
  */
 class SyncCustomers
 {
-
     /**
      * @var ReplicationHelper
      */
@@ -53,14 +53,17 @@ class SyncCustomers
      */
     public $cartRepository;
 
+    /** @var StoreManagerInterface */
+    public $storeManager;
+
     /**
-     * SyncCustomers constructor.
      * @param LSR $lsr
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $eventManager
      * @param CartRepositoryInterface $cartRepository
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         LSR $lsr,
@@ -68,38 +71,49 @@ class SyncCustomers
         ReplicationHelper $replicationHelper,
         ContactHelper $contactHelper,
         ManagerInterface $eventManager,
-        CartRepositoryInterface $cartRepository
+        CartRepositoryInterface $cartRepository,
+        StoreManagerInterface $storeManager
     ) {
-
         $this->lsr               = $lsr;
         $this->helper            = $helper;
         $this->replicationHelper = $replicationHelper;
         $this->contactHelper     = $contactHelper;
         $this->eventManager      = $eventManager;
         $this->cartRepository    = $cartRepository;
+        $this->storeManager      = $storeManager;
     }
 
     /**
-     * @param null $storeData
-     * @return array
+     * Entry point for cron
+     *
+     * @param $storeData
+     * @return array|void
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
         $info = [];
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+
+        if (!$this->replicationHelper->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $customers = $this->contactHelper->getAllCustomers($this->store->getWebsiteId());
+                    $customers = $this->contactHelper->getAllCustomers(
+                        !$this->replicationHelper->isSSM() ?
+                        $this->store->getWebsiteId() :
+                            $this->storeManager->getDefaultStoreView()->getWebsiteId()
+                    );
                     if (!empty($customers)) {
                         foreach ($customers as $customer) {
                             $this->contactHelper->syncCustomerAndAddress($customer);
@@ -123,10 +137,12 @@ class SyncCustomers
     }
 
     /**
-     * @param null $storeData
-     * @return array
-     * @throws NoSuchEntityException
+     * Execute manually
+     *
+     * @param $storeData
+     * @return array|null
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {

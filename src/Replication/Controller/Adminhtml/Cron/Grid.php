@@ -4,15 +4,18 @@ namespace Ls\Replication\Controller\Adminhtml\Cron;
 
 use Exception;
 use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManager;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\System\Store;
@@ -50,6 +53,11 @@ class Grid extends Action
     public $systemStoreManager;
 
     /**
+     * @var ReplicationHelper
+     */
+    public $repHelper;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
@@ -57,6 +65,7 @@ class Grid extends Action
      * @param StoreManager $storeManager
      * @param LSR $lsr
      * @param Store $systemStoreManager
+     * @param ReplicationHelper $repHelper
      */
     public function __construct(
         Context $context,
@@ -65,7 +74,8 @@ class Grid extends Action
         Logger $logger,
         StoreManager $storeManager,
         LSR $lsr,
-        Store $systemStoreManager
+        Store $systemStoreManager,
+        ReplicationHelper $repHelper
     ) {
         $this->resultPageFactory  = $resultPageFactory;
         $this->objectManager      = $objectManager;
@@ -73,6 +83,7 @@ class Grid extends Action
         $this->storeManager       = $storeManager;
         $this->lsr                = $lsr;
         $this->systemStoreManager = $systemStoreManager;
+        $this->repHelper          = $repHelper;
         parent::__construct($context);
     }
 
@@ -89,15 +100,23 @@ class Grid extends Action
             $resultPage->getConfig()->getTitle()->prepend(__('Cron Listing'));
             $jobUrl    = $this->_request->getParam('joburl');
             $jobName   = $this->_request->getParam('jobname');
-            $storeId   = $this->_request->getParam('store');
+            $scopeId   = $this->_request->getParam('scope_id');
             $scope     = $this->_request->getParam('scope');
             $storeData = null;
 
-            if (empty($scope) && empty($storeId)) {
-                $storeId = $this->getDefaultWebsiteId();
+
+            if (empty($scope) && empty($scopeId)) {
+                if (!$this->repHelper->isSSM()) {
+                    $scopeId = $this->getDefaultWebsiteId();
+                    $scope = ScopeInterface::SCOPE_WEBSITES;
+                } else {
+                    $scopeId = '0';
+                    $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+                }
+
                 $resultRedirect->setPath(
                     'ls_repl/cron/grid',
-                    ['website' => $storeId, '_current' => true, 'scope' => 'website']
+                    ['scope_id' => $scopeId, '_current' => true, 'scope' => $scope]
                 );
 
                 return $resultRedirect;
@@ -107,10 +126,10 @@ class Grid extends Action
                 // @codingStandardsIgnoreStart
                 $cron = $this->objectManager->create($jobUrl);
                 // @codingStandardsIgnoreEnd
-                if (!empty($storeId)) {
-                    $storeData = $scope == 'website' ?
-                        $this->storeManager->getWebsite($storeId) :
-                        $this->storeManager->getStore($storeId);
+                if (!empty($scopeId) || $scopeId === '0') {
+                    $storeData = $scope == ScopeInterface::SCOPE_WEBSITES ?
+                        $this->storeManager->getWebsite($scopeId) :
+                        $this->storeManager->getStore($scopeId);
                 }
                 $info = $cron->executeManually($storeData);
                 if (!empty($info)) {
@@ -118,7 +137,7 @@ class Grid extends Action
                     if ($info[0] > 0) {
                         $executeMoreData = $this->_url->getUrl(
                             LSR::URL_PATH_EXECUTE,
-                            ['joburl' => $jobUrl, 'jobname' => $jobName, 'store' => $storeId, 'scope' => $scope]
+                            ['joburl' => $jobUrl, 'jobname' => $jobName, 'scope_id' => $scopeId, 'scope' => $scope]
                         );
                     }
                     $this->messageManager->addComplexSuccessMessage(
