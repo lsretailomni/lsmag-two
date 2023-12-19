@@ -168,7 +168,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $cronName                 = $joblist['_attribute']['name'];
                 $isTranslationRelatedCron = $this->showTranslationRelatedCronJobsAtStoreLevel($cronName);
 
-                if (!$this->rep_helper->isSSM()) {
+                if (!$this->lsr->isSSM()) {
                     if ($scope == 'store') {
                         if (($cronlist['_attribute']['id'] == 'flat_replication' ||
                                 $cronlist['_attribute']['id'] == 'reset') &&
@@ -219,7 +219,12 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $items[] = [
                     'id'                    => $counter,
                     'store'                 => $scope == ScopeInterface::SCOPE_WEBSITES ?
-                        $this->storeManager->getWebsiteName($scopeId) : $this->storeManager->getStoreName($scopeId),
+                        $this->storeManager->getWebsiteName($scopeId) :
+                        (
+                            $scope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT ?
+                            $this->lsr->getAdminStore()->getName() :
+                            $this->storeManager->getStoreName($scopeId)
+                        ),
                     'scope_id'               => $scopeId,
                     'fullreplicationstatus' => $statusStr,
                     'label'                 => $cronName,

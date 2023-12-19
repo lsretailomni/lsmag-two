@@ -154,7 +154,7 @@ class CategoryCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!$this->replicationHelper->isSSM()) {
+        if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof StoreInterface) {
                 $stores = [$storeData];
             } else {
@@ -717,7 +717,7 @@ class CategoryCreateTask
      */
     public function getRootCategoryId()
     {
-        return !$this->replicationHelper->isSSM() ?
+        return !$this->lsr->isSSM() ?
             $this->store->getRootCategoryId() :
             $this->storeManager->getDefaultStoreView()->getRootCategoryId();
     }

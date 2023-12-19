@@ -18,7 +18,6 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ResetReplDiscountStatusTask
 {
-
     /** @var string */
     const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_status_reset';
 
@@ -82,7 +81,7 @@ class ResetReplDiscountStatusTask
      */
     public function execute($storeData = null)
     {
-        if (!$this->replicationHelper->isSSM()) {
+        if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                 $stores = [$storeData];
             } else {
@@ -132,7 +131,7 @@ class ResetReplDiscountStatusTask
                     // deleting the catalog rules data and delete flat table discount data
                     try {
                         $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId(
-                            !$this->replicationHelper->isSSM() ?
+                            !$this->lsr->isSSM() ?
                                 $websiteId :
                                 $this->storeManager->getDefaultStoreView()->getWebsiteId()
                         );
@@ -185,7 +184,7 @@ class ResetReplDiscountStatusTask
      */
     public function setDefaultScope()
     {
-        if ($this->replicationHelper->isSSM()) {
+        if ($this->lsr->isSSM()) {
             $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         }
     }

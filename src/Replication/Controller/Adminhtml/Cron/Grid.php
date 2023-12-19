@@ -3,8 +3,7 @@
 namespace Ls\Replication\Controller\Adminhtml\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
 use \Ls\Replication\Logger\Logger;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -53,11 +52,6 @@ class Grid extends Action
     public $systemStoreManager;
 
     /**
-     * @var ReplicationHelper
-     */
-    public $repHelper;
-
-    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param ObjectManagerInterface $objectManager
@@ -65,7 +59,6 @@ class Grid extends Action
      * @param StoreManager $storeManager
      * @param LSR $lsr
      * @param Store $systemStoreManager
-     * @param ReplicationHelper $repHelper
      */
     public function __construct(
         Context $context,
@@ -74,8 +67,7 @@ class Grid extends Action
         Logger $logger,
         StoreManager $storeManager,
         LSR $lsr,
-        Store $systemStoreManager,
-        ReplicationHelper $repHelper
+        Store $systemStoreManager
     ) {
         $this->resultPageFactory  = $resultPageFactory;
         $this->objectManager      = $objectManager;
@@ -83,7 +75,6 @@ class Grid extends Action
         $this->storeManager       = $storeManager;
         $this->lsr                = $lsr;
         $this->systemStoreManager = $systemStoreManager;
-        $this->repHelper          = $repHelper;
         parent::__construct($context);
     }
 
@@ -106,7 +97,7 @@ class Grid extends Action
 
 
             if (empty($scope) && empty($scopeId)) {
-                if (!$this->repHelper->isSSM()) {
+                if (!$this->lsr->isSSM()) {
                     $scopeId = $this->getDefaultWebsiteId();
                     $scope = ScopeInterface::SCOPE_WEBSITES;
                 } else {

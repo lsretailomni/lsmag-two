@@ -88,7 +88,7 @@ class ResetReplDiscountSetupStatusTask
      */
     public function execute($storeData = null)
     {
-        if (!$this->replicationHelper->isSSM()) {
+        if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                 $stores = [$storeData];
             } else {
@@ -166,7 +166,7 @@ class ResetReplDiscountSetupStatusTask
                     // deleting the catalog rules data and delete flat table discount data
                     try {
                         $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId(
-                            !$this->replicationHelper->isSSM() ?
+                            !$this->lsr->isSSM() ?
                                 $websiteId :
                                 $this->storeManager->getDefaultStoreView()->getWebsiteId()
                         );
@@ -227,7 +227,7 @@ class ResetReplDiscountSetupStatusTask
      */
     public function setDefaultScope()
     {
-        if ($this->replicationHelper->isSSM()) {
+        if ($this->lsr->isSSM()) {
             $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         }
     }

@@ -55,7 +55,7 @@ class ResetReplPriceStatusTask
      */
     public function execute($storeData = null)
     {
-        if (!$this->replicationHelper->isSSM()) {
+        if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                 $stores = [$storeData];
             } else {
@@ -119,7 +119,7 @@ class ResetReplPriceStatusTask
      */
     public function setDefaultScope()
     {
-        if ($this->replicationHelper->isSSM()) {
+        if ($this->lsr->isSSM()) {
             $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         }
     }

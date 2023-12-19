@@ -95,7 +95,7 @@ class SyncCustomers
     {
         $info = [];
 
-        if (!$this->replicationHelper->isSSM()) {
+        if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof StoreInterface) {
                 $stores = [$storeData];
             } else {
@@ -110,7 +110,7 @@ class SyncCustomers
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $customers = $this->contactHelper->getAllCustomers(
-                        !$this->replicationHelper->isSSM() ?
+                        !$this->lsr->isSSM() ?
                         $this->store->getWebsiteId() :
                             $this->storeManager->getDefaultStoreView()->getWebsiteId()
                     );

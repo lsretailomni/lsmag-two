@@ -45,7 +45,7 @@ class SyncImages extends ProductCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!$this->replicationHelper->isSSM()) {
+        if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof StoreInterface) {
                 $stores = [$storeData];
             } else {

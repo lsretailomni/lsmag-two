@@ -2,8 +2,6 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Core\Model\Data;
-use Ls\Omni\Client\OperationInterface;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -1059,5 +1057,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         }
 
         return $status;
+    }
+
+    /**
+     * Is single store mode
+     *
+     * @return bool
+     */
+    public function isSSM()
+    {
+        return $this->storeManager->isSingleStoreMode();
     }
 }

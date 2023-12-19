@@ -96,7 +96,7 @@ abstract class AbstractReplicationTask
         ) {
             $lsr = $this->getLsrModel();
 
-            if (!$this->rep_helper->isSSM()) {
+            if (!$lsr->isSSM()) {
                 if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                     $stores = [$storeData];
                 } else {
@@ -777,7 +777,9 @@ abstract class AbstractReplicationTask
      */
     public function setDefaultScope()
     {
-        if ($this->rep_helper->isSSM()) {
+        $lsr = $this->getLsrModel();
+
+        if ($lsr->isSSM()) {
             $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         } else {
             $confPath = $this->getConfigPath();

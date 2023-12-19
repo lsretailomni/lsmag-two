@@ -1374,7 +1374,7 @@ class ReplicationHelper extends AbstractHelper
         /**
          * Added the condition to update config value based on specific store id.
          */
-        if ($storeId && !$this->isSSM()) {
+        if ($storeId && !$this->lsr->isSSM()) {
             $this->configWriter->save(
                 $path,
                 $value,
@@ -1593,7 +1593,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function applyProductWebsiteJoin(&$collection, $websiteId)
     {
-        if ($this->isSSM()) {
+        if ($this->lsr->isSSM()) {
             $websiteId = $this->storeManager->getDefaultStoreView()->getWebsiteId();
         }
 
@@ -2405,7 +2405,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function findCategoryIdFromFactory($productGroupId, $store)
     {
-        $rootCategoryId = !$this->isSSM() ?
+        $rootCategoryId = !$this->lsr->isSSM() ?
             $store->getRootCategoryId() :
             $this->storeManager->getDefaultStoreView()->getRootCategoryId();
         $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
@@ -3665,15 +3665,5 @@ class ReplicationHelper extends AbstractHelper
         ]);
 
         return $product;
-    }
-
-    /**
-     * Is single store mode
-     *
-     * @return bool
-     */
-    public function isSSM()
-    {
-        return $this->storeManager->isSingleStoreMode();
     }
 }

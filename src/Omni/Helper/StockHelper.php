@@ -351,7 +351,12 @@ class StockHelper extends AbstractHelper
     {
         $stores = $this->storeCollectionFactory->create()
             ->addFieldToFilter('nav_id', ['in' => $storesNavIds])
-            ->addFieldToFilter('scope_id', ['eq' => $this->lsr->getCurrentWebsiteId()]);
+            ->addFieldToFilter(
+                'scope_id',
+                ['eq' => !$this->lsr->isSSM() ?
+                    $this->lsr->getCurrentWebsiteId() :
+                    $this->lsr->getAdminStore()->getWebsiteId()]
+            );
         $displayStores = $this->lsr->getStoreConfig(LSR::SC_CART_DISPLAY_STORES);
 
         if (!$displayStores) {

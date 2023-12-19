@@ -65,6 +65,9 @@ class DataProvider implements ConfigProviderInterface
      */
     public $storeHelper;
 
+    /**
+     * @var ReplicationHelper
+     */
     public $replicationHelper;
 
     /**
@@ -76,6 +79,7 @@ class DataProvider implements ConfigProviderInterface
      * @param Session $checkoutSession
      * @param StockHelper $stockHelper
      * @param StoreHelper $storeHelper
+     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -209,7 +213,7 @@ class DataProvider implements ConfigProviderInterface
         $storesData      = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter('scope_id',
-                !$this->replicationHelper->isSSM() ?
+                !$this->lsr->isSSM() ?
                 $this->lsr->getCurrentWebsiteId() :
                 $this->lsr->getAdminStore()->getWebsiteId()
             )->addFieldToFilter('ClickAndCollect', 1);
@@ -402,7 +406,7 @@ class DataProvider implements ConfigProviderInterface
             ->create()
             ->addFieldToFilter(
                 'scope_id',
-                !$this->replicationHelper->isSSM() ?
+                !$this->lsr->isSSM() ?
                     $this->lsr->getCurrentWebsiteId() :
                     $this->lsr->getAdminStore()->getWebsiteId()
             )
