@@ -1352,11 +1352,11 @@ class ReplicationHelper extends AbstractHelper
         $stores = $this->lsr->getAllStores();
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->configWriter->save(
-                    $path,
+                $this->updateConfigValue(
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES,
-                    $store->getId()
+                    $path,
+                    $store->getId(),
+                    ScopeInterface::SCOPE_STORES
                 );
             }
         }
