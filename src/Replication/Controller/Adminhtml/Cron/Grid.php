@@ -101,14 +101,21 @@ class Grid extends Action
                 if (!$this->lsr->isSSM()) {
                     $scopeId = $this->getDefaultWebsiteId();
                     $scope = ScopeInterface::SCOPE_WEBSITES;
+                    $parameters = [
+                        'scope_id' => $scopeId,
+                        '_current' => true,
+                        'scope' => $scope,
+                        'website' => $scopeId
+                    ];
                 } else {
                     $scopeId = '0';
                     $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+                    $parameters = ['scope_id' => $scopeId, '_current' => true, 'scope' => $scope];
                 }
 
                 $resultRedirect->setPath(
                     'ls_repl/cron/grid',
-                    ['scope_id' => $scopeId, '_current' => true, 'scope' => $scope]
+                    $parameters
                 );
 
                 return $resultRedirect;
