@@ -759,6 +759,10 @@ class BasketHelper extends AbstractHelper
      */
     public function calculate(Entity\OneList $oneList)
     {
+        if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            return null;
+        }
+
         if (empty($this->getCouponCode()) && $this->calculateBasket == 1
             && empty($this->getOneListCalculationFromCheckoutSession())) {
             return null;
@@ -829,13 +833,13 @@ class BasketHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
         }
-        if (($response == null)) {
+        if (($response === null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
             $this->setOneListCalculationInCheckoutSession($response);
             return $oneListCalResponse->getResult();
         }
-        if (property_exists($response, "OneListCalculateResult")) {
+        if ($response && property_exists($response, "OneListCalculateResult")) {
             // @codingStandardsIgnoreLine
             $this->setOneListCalculationInCheckoutSession($response->getResult());
             return $response->getResult();
