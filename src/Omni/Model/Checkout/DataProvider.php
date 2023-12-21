@@ -7,7 +7,6 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
-use Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Model\Product\Type;
@@ -66,11 +65,6 @@ class DataProvider implements ConfigProviderInterface
     public $storeHelper;
 
     /**
-     * @var ReplicationHelper
-     */
-    public $replicationHelper;
-
-    /**
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -79,7 +73,6 @@ class DataProvider implements ConfigProviderInterface
      * @param Session $checkoutSession
      * @param StockHelper $stockHelper
      * @param StoreHelper $storeHelper
-     * @param ReplicationHelper $replicationHelper
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -89,8 +82,7 @@ class DataProvider implements ConfigProviderInterface
         LSR $lsr,
         Session $checkoutSession,
         StockHelper $stockHelper,
-        StoreHelper $storeHelper,
-        ReplicationHelper $replicationHelper
+        StoreHelper $storeHelper
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
@@ -100,7 +92,6 @@ class DataProvider implements ConfigProviderInterface
         $this->checkoutSession        = $checkoutSession;
         $this->stockHelper            = $stockHelper;
         $this->storeHelper            = $storeHelper;
-        $this->replicationHelper      = $replicationHelper;
     }
 
     /**

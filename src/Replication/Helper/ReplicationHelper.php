@@ -25,8 +25,7 @@ use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use \Ls\Replication\Model\ReplInvStatus;
-use Ls\Replication\Model\ReplItem;
+use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -64,7 +63,6 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\App\Cache\TypeListInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -1352,11 +1350,11 @@ class ReplicationHelper extends AbstractHelper
         $stores = $this->lsr->getAllStores();
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->configWriter->save(
-                    $path,
+                $this->updateConfigValue(
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES,
-                    $store->getId()
+                    $path,
+                    $store->getId(),
+                    ScopeInterface::SCOPE_STORES
                 );
             }
         }

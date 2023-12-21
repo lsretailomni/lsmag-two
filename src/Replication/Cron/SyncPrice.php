@@ -8,7 +8,6 @@ use \Ls\Replication\Model\ReplPrice;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -76,6 +75,9 @@ class SyncPrice extends ProductCreateTask
                         'VariantId',
                         ['ItemId']
                     );
+
+                    $websiteId = $this->store->getWebsiteId();
+                    $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
 
                     foreach ($collection as $itemPrice) {
                         /** @var ReplPrice $replPrice */
@@ -298,8 +300,7 @@ class SyncPrice extends ProductCreateTask
         if (!$this->remainingRecords) {
             /** Get list of only those prices whose items are already processed */
             $filters = [
-                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
-                ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
 
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -311,8 +312,11 @@ class SyncPrice extends ProductCreateTask
                 $criteria,
                 'ItemId',
                 'VariantId',
-                ['repl_price_id']
+                ['ItemId']
             );
+
+            $websiteId = $this->store->getWebsiteId();
+            $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;

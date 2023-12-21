@@ -9,7 +9,6 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**

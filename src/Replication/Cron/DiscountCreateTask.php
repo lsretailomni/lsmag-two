@@ -25,7 +25,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**

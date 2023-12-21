@@ -77,7 +77,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\StateException;
 use Magento\Framework\Filesystem;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Filesystem\Driver\File;

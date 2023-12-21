@@ -14,7 +14,6 @@ use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Tax\Api\Data\TaxRateInterface;
 use Magento\Tax\Api\Data\TaxRateInterfaceFactory;
