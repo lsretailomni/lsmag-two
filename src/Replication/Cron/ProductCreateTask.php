@@ -804,13 +804,13 @@ class ProductCreateTask
     public function isReady()
     {
         list(
-            $cronCategoryCheck,
-            $cronAttributeCheck,
-            $fullReplicationPriceStatus,
-            $cronAttributeVariantCheck,
             $fullReplicationImageLinkStatus,
             $fullReplicationBarcodeStatus,
-            $fullReplicationInvStatus
+            $fullReplicationPriceStatus,
+            $fullReplicationInvStatus,
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
 
         return $cronCategoryCheck == 1 &&
