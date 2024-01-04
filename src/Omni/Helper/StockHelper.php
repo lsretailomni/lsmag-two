@@ -487,12 +487,12 @@ class StockHelper extends AbstractHelper
                             1,
                             $item->getName()
                         ));
-                    }
-                    if ($throwException == true) {
-                        throw new LocalizedException(__(
-                            'Product %1 is not available.',
-                            $item->getName()
-                        ));
+                        if ($throwException == true) {
+                            throw new LocalizedException(__(
+                                'Product %1 is not available.',
+                                $item->getName()
+                            ));
+                        }
                     }
                     continue;
                 }
