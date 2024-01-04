@@ -46,6 +46,8 @@
                 <sync_order_statuses>canceled,fraud,payment_review</sync_order_statuses>
                 <stock_validation_active>0</stock_validation_active>
                 <graphql_stock_validation_active>0</graphql_stock_validation_active>
+                <discount_validation_active>1</discount_validation_active>
+                <graphql_discount_validation_active>1</graphql_discount_validation_active>
             </ls_order_management>
             <ls_delivery_pickup_date_time>
                 <pickup_date_time_slot>0</pickup_date_time_slot>
