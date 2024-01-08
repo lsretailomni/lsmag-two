@@ -775,7 +775,7 @@ class BasketHelper extends AbstractHelper
         $oneListItems = $oneList->getItems();
 
         /** @var Entity\OneListCalculateResponse $response */
-        $response = false;
+        $response = null;
 
         try {
             if (!($oneListItems->getOneListItem() == null)) {
