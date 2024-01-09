@@ -84,37 +84,34 @@ class CartObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /*
-          * Adding condition to only process if LSR is enabled.
-          */
-            try {
-                $salesQuoteItems = $observer->getItems();
-                if (!empty($salesQuoteItems)) {
-                    $salesQuoteItem = reset($salesQuoteItems);
-                    $quote          = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
-                } else {
-                    $quote = $this->checkoutSession->getQuote();
-                }
-                // This will create one list if not created and will return onelist if its already created.
-                /** @var OneList|null $oneList */
-                $oneList = $this->basketHelper->get();
-                // add items from the quote to the oneList and return the updated onelist
-                $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-                if (count($quote->getAllItems()) == 0) {
-                    $quote->setLsGiftCardAmountUsed(0);
-                    $quote->setLsGiftCardNo(null);
-                    $quote->setLsGiftCardPin(null);
-                    $quote->setLsPointsSpent(0);
-                    $quote->setLsPointsEarn(0);
-                    $quote->setGrandTotal(0);
-                    $quote->setBaseGrandTotal(0);
-                    $this->basketHelper->quoteRepository->save($quote);
-                    $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-                }
-                $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
-            } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
+        try {
+            $salesQuoteItems = $observer->getItems();
+            if (!empty($salesQuoteItems)) {
+                $salesQuoteItem = reset($salesQuoteItems);
+                $quote          = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
+            } else {
+                $quote = $this->checkoutSession->getQuote();
             }
+            // This will create one list if not created and will return onelist if its already created.
+            /** @var OneList|null $oneList */
+            $oneList = $this->basketHelper->get();
+            // add items from the quote to the oneList and return the updated onelist
+            $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+            if (count($quote->getAllItems()) == 0) {
+                $quote->setLsGiftCardAmountUsed(0);
+                $quote->setLsGiftCardNo(null);
+                $quote->setLsGiftCardPin(null);
+                $quote->setLsPointsSpent(0);
+                $quote->setLsPointsEarn(0);
+                $quote->setGrandTotal(0);
+                $quote->setBaseGrandTotal(0);
+                $this->basketHelper->quoteRepository->save($quote);
+                $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+            }
+            $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
         return $this;
     }
 }
