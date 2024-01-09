@@ -191,6 +191,8 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get stores
      *
      * @return Collection
@@ -201,8 +203,11 @@ class DataProvider implements ConfigProviderInterface
         $storeHoursArray = [];
         $storesData      = $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId())
-            ->addFieldToFilter('ClickAndCollect', 1);
+            ->addFieldToFilter('scope_id',
+                !$this->lsr->isSSM() ?
+                $this->lsr->getCurrentWebsiteId() :
+                $this->lsr->getAdminStore()->getWebsiteId()
+            )->addFieldToFilter('ClickAndCollect', 1);
 
         if ($this->lsr->isPickupTimeslotsEnabled()) {
             $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
@@ -390,7 +395,12 @@ class DataProvider implements ConfigProviderInterface
     {
         return $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id', $this->lsr->getCurrentWebsiteId())
+            ->addFieldToFilter(
+                'scope_id',
+                !$this->lsr->isSSM() ?
+                    $this->lsr->getCurrentWebsiteId() :
+                    $this->lsr->getAdminStore()->getWebsiteId()
+            )
             ->addFieldToFilter('nav_id', ['in' => $responseItems]);
     }
 

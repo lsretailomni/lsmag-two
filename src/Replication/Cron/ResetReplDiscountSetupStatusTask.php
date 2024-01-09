@@ -5,15 +5,16 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class ResetReplPriceStatusTask
- * @package Ls\Replication\Cron
+ * Cron responsible to reset the relevant counters to do replication again
  */
 class ResetReplDiscountSetupStatusTask
 {
@@ -54,22 +55,29 @@ class ResetReplDiscountSetupStatusTask
      */
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
+    /** @var StoreManagerInterface */
+    public $storeManager;
+
     /**
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
      * @param Logger $logger
      * @param ResourceConnection $resource
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         Logger $logger,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        StoreManagerInterface $storeManager
     ) {
         $this->replicationHelper     = $replicationHelper;
         $this->lsr                   = $LSR;
         $this->logger                = $logger;
         $this->resource              = $resource;
+        $this->storeManager          = $storeManager;
+        $this->setDefaultScope();
     }
 
     /**
@@ -80,10 +88,14 @@ class ResetReplDiscountSetupStatusTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllWebsites();
+            }
         } else {
-            $stores = $this->lsr->getAllWebsites();
+            $stores = [$this->lsr->getAdminStore()];
         }
 
         if (!empty($stores)) {
@@ -153,7 +165,11 @@ class ResetReplDiscountSetupStatusTask
                     $websiteId = $this->store->getWebsiteId();
                     // deleting the catalog rules data and delete flat table discount data
                     try {
-                        $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId($websiteId);
+                        $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId(
+                            !$this->lsr->isSSM() ?
+                                $websiteId :
+                                $this->storeManager->getDefaultStoreView()->getWebsiteId()
+                        );
                         $parentCollection = $this->replicationHelper->getGivenColumnsFromGivenCollection(
                             $childCollection,
                             ['rule_id']
@@ -203,5 +219,16 @@ class ResetReplDiscountSetupStatusTask
     {
         $this->execute($storeData);
         return [0];
+    }
+
+    /**
+     * Set default scope
+     *
+     */
+    public function setDefaultScope()
+    {
+        if ($this->lsr->isSSM()) {
+            $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+        }
     }
 }

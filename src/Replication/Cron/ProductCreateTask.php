@@ -472,10 +472,14 @@ class ProductCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
 
         if (!empty($stores)) {
@@ -799,13 +803,13 @@ class ProductCreateTask
     public function isReady()
     {
         list(
-            $cronCategoryCheck,
-            $cronAttributeCheck,
-            $cronAttributeVariantCheck,
             $fullReplicationImageLinkStatus,
             $fullReplicationBarcodeStatus,
             $fullReplicationPriceStatus,
-            $fullReplicationInvStatus
+            $fullReplicationInvStatus,
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
 
         return $cronCategoryCheck == 1 &&
@@ -898,13 +902,13 @@ class ProductCreateTask
     public function logCronNotReadyReason()
     {
         list(
-            $cronCategoryCheck,
-            $cronAttributeCheck,
-            $cronAttributeVariantCheck,
             $fullReplicationImageLinkStatus,
             $fullReplicationBarcodeStatus,
             $fullReplicationPriceStatus,
-            $fullReplicationInvStatus
+            $fullReplicationInvStatus,
+            $cronCategoryCheck,
+            $cronAttributeCheck,
+            $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
 
         // @codingStandardsIgnoreLine

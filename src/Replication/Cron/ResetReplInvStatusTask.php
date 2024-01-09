@@ -5,13 +5,13 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Class ResetReplInvStatusTask
- * @package Ls\Replication\Cron
+ * Cron responsible to reset the relevant counters to do replication again
  */
 class ResetReplInvStatusTask
 {
@@ -46,6 +46,7 @@ class ResetReplInvStatusTask
         $this->replicationHelper = $replicationHelper;
         $this->lsr = $LSR;
         $this->logger = $logger;
+        $this->setDefaultScope();
     }
 
     /**
@@ -56,10 +57,14 @@ class ResetReplInvStatusTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllWebsites();
+            }
         } else {
-            $stores = $this->lsr->getAllWebsites();
+            $stores = [$this->lsr->getAdminStore()];
         }
 
         if (!empty($stores)) {
@@ -108,5 +113,16 @@ class ResetReplInvStatusTask
     {
         $this->execute($storeData);
         return [0];
+    }
+
+    /**
+     * Set default scope
+     *
+     */
+    public function setDefaultScope()
+    {
+        if ($this->lsr->isSSM()) {
+            $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+        }
     }
 }

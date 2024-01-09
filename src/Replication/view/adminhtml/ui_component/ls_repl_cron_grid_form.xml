@@ -20,8 +20,8 @@
                 <item name="config" xsi:type="array">
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="filter_url_params" xsi:type="array">
-                        <item name="store" xsi:type="string">*</item>
-                        <item name="website" xsi:type="string">*</item>
+                        <item name="scope" xsi:type="string">*</item>
+                        <item name="scope_id" xsi:type="string">*</item>
                     </item>
                     <item name="storageConfig" xsi:type="array">
                         <item name="indexField" xsi:type="string">id</item>

@@ -91,20 +91,24 @@ abstract class AbstractReplicationTask
      */
     public function execute($storeData = null)
     {
-        if ($this->defaultScope == ScopeInterface::SCOPE_WEBSITES) {
-            /**
-             * Get all the available stores config in the Magento system
-             */
+        if ($this->defaultScope == ScopeInterface::SCOPE_WEBSITES ||
+            $this->defaultScope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        ) {
             $lsr = $this->getLsrModel();
-            if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
-                $stores = [$storeData];
+
+            if (!$lsr->isSSM()) {
+                if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
+                    $stores = [$storeData];
+                } else {
+                    $stores = $this->getAllWebsites();
+                }
             } else {
-                $stores = $this->getAllWebsites();
+                $stores = [$lsr->getAdminStore()];
             }
+
             if (!empty($stores)) {
                 foreach ($stores as $store) {
                     if ($this->getLsrModel()->isEnabled($store->getId(), $this->defaultScope)) {
-
                         if ($this->executeDiscountReplicationOnCentralType($lsr, $store)) {
                             continue;
                         }
@@ -224,6 +228,7 @@ abstract class AbstractReplicationTask
      *
      * @param array $properties
      * @param mixed $source
+     * @throws Exception
      */
     public function saveSource($properties, $source)
     {
@@ -446,135 +451,78 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param bool $storeId
-     * @return string
+     * Get last key
+     *
+     * @param $storeId
+     * @return mixed|null
      */
-    public function getLastKey($storeId = false)
-    {
-        $lsrModel = $this->getLsrModel();
-        if ($storeId) {
-            return $lsrModel->getConfigValueFromDb(
-                $this->getConfigPath(),
-                $this->defaultScope,
-                $storeId
-            );
-        } else {
-            return $lsrModel->getConfigValueFromDb(
-                $this->getConfigPath(),
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-            );
-        }
-    }
-
-    /**
-     * @param bool $storeId
-     * @return string
-     */
-    public function getMaxKey($storeId = false)
+    public function getLastKey($storeId)
     {
         $lsrModel = $this->getLsrModel();
 
-        if ($storeId) {
-            return $lsrModel->getConfigValueFromDb(
-                $this->getConfigPathMaxKey(),
-                $this->defaultScope,
-                $storeId
-            );
-        } else {
-            return $lsrModel->getConfigValueFromDb(
-                $this->getConfigPathMaxKey(),
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-            );
-        }
+        return $lsrModel->getConfigValueFromDb(
+            $this->getConfigPath(),
+            $this->defaultScope,
+            $storeId
+        );
     }
 
     /**
-     * @param bool $storeId
-     * @return string
+     * Get max key
+     *
+     * @param $storeId
+     * @return mixed|null
      */
-    public function isFirstTime($storeId = false)
+    public function getMaxKey($storeId)
     {
         $lsrModel = $this->getLsrModel();
-        if ($storeId) {
-            return $lsrModel->getConfigValueFromDb(
-                $this->getConfigPathStatus(),
-                $this->defaultScope,
-                $storeId
-            );
-        } else {
-            return $lsrModel->getConfigValueFromDb(
-                $this->getConfigPathStatus(),
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-            );
-        }
+
+        return $lsrModel->getConfigValueFromDb(
+            $this->getConfigPathMaxKey(),
+            $this->defaultScope,
+            $storeId
+        );
     }
 
     /**
-     * @param string $lastKey
-     * @param bool $storeId
+     * Check to see if running first time
+     *
+     * @param $storeId
+     * @return mixed|null
      */
-    public function persistLastKey($lastKey, $storeId = false)
+    public function isFirstTime($storeId)
     {
-        if ($storeId) {
-            $this->resource_config->saveConfig(
-                $this->getConfigPath(),
-                $lastKey,
-                $this->defaultScope,
-                $storeId
-            );
-        } else {
-            $this->resource_config->saveConfig(
-                $this->getConfigPath(),
-                $lastKey,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
-            );
-        }
+        $lsrModel = $this->getLsrModel();
+
+        return $lsrModel->getConfigValueFromDb(
+            $this->getConfigPathStatus(),
+            $this->defaultScope,
+            $storeId
+        );
     }
 
     /**
-     * @param string $maxKey
-     * @param bool $storeId
+     * Persist last key
+     *
+     * @param $lastKey
+     * @param $storeId
+     * @return void
      */
-    public function persistMaxKey($maxKey, $storeId = false)
+    public function persistLastKey($lastKey, $storeId)
     {
-        if ($storeId) {
-            $this->resource_config->saveConfig(
-                $this->getConfigPathMaxKey(),
-                $maxKey,
-                $this->defaultScope,
-                $storeId
-            );
-        } else {
-            $this->resource_config->saveConfig(
-                $this->getConfigPathMaxKey(),
-                $maxKey,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
-            );
-        }
+        $this->rep_helper->updateConfigValue($lastKey, $this->getConfigPath(), $storeId, $this->defaultScope);
     }
 
     /**
-     * @param int $status
+     * Persist max key
+     *
+     * @param $maxKey
+     * @param $storeId
+     * @return void
      */
-    public function saveReplicationStatus($status = 0, $storeId = false)
+    public function persistMaxKey($maxKey, $storeId)
     {
-        if ($storeId) {
-            $this->resource_config->saveConfig(
-                $this->getConfigPathStatus(),
-                $status,
-                ScopeInterface::SCOPE_STORES,
-                $storeId
-            );
-        } else {
-            $this->resource_config->saveConfig(
-                $this->getConfigPathStatus(),
-                $status,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
-            );
-        }
+        $this->rep_helper->updateConfigValue($maxKey, $this->getConfigPathMaxKey(), $storeId, $this->defaultScope);
     }
 
     /**
@@ -829,14 +777,20 @@ abstract class AbstractReplicationTask
      */
     public function setDefaultScope()
     {
-        $confPath = $this->getConfigPath();
+        $lsr = $this->getLsrModel();
 
-        if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
-            $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
-            $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
-            $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
-        ) {
-            $this->defaultScope = ScopeInterface::SCOPE_STORES;
+        if ($lsr->isSSM()) {
+            $this->defaultScope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+        } else {
+            $confPath = $this->getConfigPath();
+
+            if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
+                $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
+                $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
+                $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
+            ) {
+                $this->defaultScope = ScopeInterface::SCOPE_STORES;
+            }
         }
     }
 
