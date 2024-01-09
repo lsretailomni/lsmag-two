@@ -62,7 +62,7 @@ class Actions extends Column
                             [
                                 'joburl' => $item['value'],
                                 'jobname' => $item['label'],
-                                'store' => $item['storeId'],
+                                'scope_id' => $item['scope_id'],
                                 'scope' => $item['scope']
                             ]
                         ),

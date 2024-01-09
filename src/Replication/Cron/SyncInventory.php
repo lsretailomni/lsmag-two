@@ -31,12 +31,16 @@ class SyncInventory extends ProductCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
+
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
@@ -60,6 +64,9 @@ class SyncInventory extends ProductCreateTask
                     );
                     $collection                = $this->replInvStatusCollectionFactory->create();
                     $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
+                    $websiteId = $this->store->getWebsiteId();
+                    $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
+
                     /** @var ReplInvStatus $replInvStatus */
                     foreach ($collection as $replInvStatus) {
                         try {
@@ -91,7 +98,10 @@ class SyncInventory extends ProductCreateTask
                                     if ($this->hasAttributesOtherThenUom($product)) {
                                         $replInvStatus->setData('is_updated', 0);
                                         $replInvStatus->setData('processed', 1);
-                                        $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
+                                        $replInvStatus->setData(
+                                            'processed_at',
+                                            $this->replicationHelper->getDateTime()
+                                        );
                                         $this->replInvStatusRepository->save($replInvStatus);
                                         continue;
                                     }
@@ -181,6 +191,8 @@ class SyncInventory extends ProductCreateTask
             );
             $collection = $this->replInvStatusCollectionFactory->create();
             $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
+            $websiteId = $this->store->getWebsiteId();
+            $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;

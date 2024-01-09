@@ -25,8 +25,7 @@ use \Ls\Replication\Model\ReplAttributeValue;
 use \Ls\Replication\Model\ReplAttributeValueSearchResults;
 use \Ls\Replication\Model\ReplExtendedVariantValue;
 use \Ls\Replication\Model\ReplImageLinkSearchResults;
-use \Ls\Replication\Model\ReplInvStatus;
-use Ls\Replication\Model\ReplItem;
+use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Model\ResourceModel\ReplAttributeValue\CollectionFactory as ReplAttributeValueCollectionFactory;
 use \Ls\Replication\Model\ResourceModel\ReplExtendedVariantValue\CollectionFactory as ReplExtendedVariantValueCollectionFactory;
 use Magento\Catalog\Api\AttributeSetRepositoryInterface;
@@ -64,7 +63,6 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\App\Cache\TypeListInterface;
-use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -1322,7 +1320,6 @@ class ReplicationHelper extends AbstractHelper
      */
     public function updateCronStatus($data, $path, $storeId = false, $flushCache = true, $scope = ScopeInterface::SCOPE_WEBSITES)
     {
-
         /**
          * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
@@ -1335,24 +1332,8 @@ class ReplicationHelper extends AbstractHelper
         if ($existingData == $data) {
             return;
         } else {
-            /**
-             * Added the condition to update config value based on specific store id.
-             */
-            if ($storeId) {
-                $this->configWriter->save(
-                    $path,
-                    ($data) ? 1 : 0,
-                    $scope,
-                    $storeId
-                );
-            } else {
-                $this->configWriter->save(
-                    $path,
-                    ($data) ? 1 : 0,
-                    ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                    0
-                );
-            }
+            $this->updateConfigValue(($data) ? 1 : 0, $path, $storeId, $scope);
+
             if ($flushCache) {
                 $this->flushByTypeCode('config');
             }
@@ -1369,11 +1350,11 @@ class ReplicationHelper extends AbstractHelper
         $stores = $this->lsr->getAllStores();
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->configWriter->save(
-                    $path,
+                $this->updateConfigValue(
                     ($data) ? 1 : 0,
-                    ScopeInterface::SCOPE_STORES,
-                    $store->getId()
+                    $path,
+                    $store->getId(),
+                    ScopeInterface::SCOPE_STORES
                 );
             }
         }
@@ -1391,7 +1372,7 @@ class ReplicationHelper extends AbstractHelper
         /**
          * Added the condition to update config value based on specific store id.
          */
-        if ($storeId) {
+        if ($storeId && !$this->lsr->isSSM()) {
             $this->configWriter->save(
                 $path,
                 $value,
@@ -1401,9 +1382,7 @@ class ReplicationHelper extends AbstractHelper
         } else {
             $this->configWriter->save(
                 $path,
-                $value,
-                ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
-                0
+                $value
             );
         }
     }
@@ -1608,9 +1587,14 @@ class ReplicationHelper extends AbstractHelper
      * @param $collection
      * @param $websiteId
      * @return void
+     * @throws LocalizedException
      */
     public function applyProductWebsiteJoin(&$collection, $websiteId)
     {
+        if ($this->lsr->isSSM()) {
+            $websiteId = $this->storeManager->getDefaultStoreView()->getWebsiteId();
+        }
+
         $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
 
         $collection->getSelect()->joinInner(
@@ -2419,11 +2403,14 @@ class ReplicationHelper extends AbstractHelper
      */
     public function findCategoryIdFromFactory($productGroupId, $store)
     {
+        $rootCategoryId = !$this->lsr->isSSM() ?
+            $store->getRootCategoryId() :
+            $this->storeManager->getDefaultStoreView()->getRootCategoryId();
         $categoryCollection = $this->categoryCollectionFactory->create()->addAttributeToFilter(
             'nav_id',
             $productGroupId
         )
-            ->addPathsFilter('1/' . $store->getRootCategoryId() . '/')
+            ->addPathsFilter('1/' . $rootCategoryId . '/')
             ->setPageSize(1);
         if ($categoryCollection->getSize()) {
             // @codingStandardsIgnoreStart

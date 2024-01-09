@@ -27,6 +27,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Io\File;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  *
@@ -88,8 +89,10 @@ class CategoryCreateTask
     /** @var StoreInterface $store */
     public $store;
 
+    /** @var StoreManagerInterface */
+    public $storeManager;
+
     /**
-     * CategoryCreateTask constructor.
      * @param CategoryFactory $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param ReplHierarchyNodeRepository $replHierarchyNodeRepository
@@ -104,6 +107,7 @@ class CategoryCreateTask
      * @param ProductRepositoryInterface $productRepository
      * @param ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory
      * @param Attribute $eavAttribute
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         CategoryFactory $categoryFactory,
@@ -119,7 +123,8 @@ class CategoryCreateTask
         CategoryLinkRepositoryInterface $categoryLinkRepositoryInterface,
         ProductRepositoryInterface $productRepository,
         ReplHierarchyNodeCollectionFactory $replHierarchyCollectionFactory,
-        Attribute $eavAttribute
+        Attribute $eavAttribute,
+        StoreManagerInterface $storeManager
     ) {
         $this->categoryFactory                    = $categoryFactory;
         $this->categoryRepository                 = $categoryRepository;
@@ -135,6 +140,7 @@ class CategoryCreateTask
         $this->productRepository                  = $productRepository;
         $this->replHierarchyNodeCollectionFactory = $replHierarchyCollectionFactory;
         $this->eavAttribute                       = $eavAttribute;
+        $this->storeManager                       = $storeManager;
     }
 
     /**
@@ -147,15 +153,16 @@ class CategoryCreateTask
      */
     public function execute($storeData = null)
     {
-        /**
-         * Get all the available stores config in the Magento system
-         */
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
+
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
@@ -260,7 +267,7 @@ class CategoryCreateTask
                     /** @var Category $category */
                     $category = $this->categoryFactory->create();
                     $data     = [
-                        'parent_id'       => $this->store->getRootCategoryId(),
+                        'parent_id'       => $this->getRootCategoryId(),
                         'name'            => ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId(),
                         'url_key'         => $this->oSlug($hierarchyNode->getNavId()),
                         'is_active'       => true,
@@ -367,7 +374,7 @@ class CategoryCreateTask
                 /** @var CollectionFactory $collection */
                 $collection           = $this->collectionFactory->create()
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
-                    ->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/')
+                    ->addPathsFilter('1/' . $this->getRootCategoryId() . '/')
                     ->setPageSize(1);
                 $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), true);
                 if ($collection->getSize() > 0) {
@@ -568,7 +575,7 @@ class CategoryCreateTask
             ->addAttributeToFilter('nav_id', $nav_id);
 
         if ($store) {
-            $collection->addPathsFilter('1/' . $this->store->getRootCategoryId() . '/');
+            $collection->addPathsFilter('1/' . $this->getRootCategoryId() . '/');
         }
         $collection->setPageSize(1);
         if ($collection->getSize()) {
@@ -699,6 +706,19 @@ class CategoryCreateTask
     {
         $this->hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $storeData->getId());
         return $this->hierarchyCode;
+    }
+
+    /**
+     * Get root category id
+     *
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getRootCategoryId()
+    {
+        return !$this->lsr->isSSM() ?
+            $this->store->getRootCategoryId() :
+            $this->storeManager->getDefaultStoreView()->getRootCategoryId();
     }
 
     /**
