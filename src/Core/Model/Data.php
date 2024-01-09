@@ -291,8 +291,12 @@ class Data
      * @param int $scopeId
      * @return mixed|null
      */
-    public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
+    public function getConfigValueFromDb($path, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0)
     {
+        if ($this->storeManager->isSingleStoreMode()) {
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+            $scopeId = 0;
+        }
         /** @var ConfigDataCollection $configDataCollection */
         $configDataCollection = $this->configDataCollectionFactory->create();
         $configDataCollection->addFieldToFilter('scope', $scope);

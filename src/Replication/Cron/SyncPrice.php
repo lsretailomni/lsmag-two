@@ -31,11 +31,14 @@ class SyncPrice extends ProductCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
 
         if (!empty($stores)) {
@@ -72,6 +75,9 @@ class SyncPrice extends ProductCreateTask
                         'VariantId',
                         ['ItemId']
                     );
+
+                    $websiteId = $this->store->getWebsiteId();
+                    $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
 
                     foreach ($collection as $itemPrice) {
                         /** @var ReplPrice $replPrice */
@@ -294,8 +300,7 @@ class SyncPrice extends ProductCreateTask
         if (!$this->remainingRecords) {
             /** Get list of only those prices whose items are already processed */
             $filters = [
-                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
-                ['field' => 'main_table.QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
 
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
@@ -307,8 +312,11 @@ class SyncPrice extends ProductCreateTask
                 $criteria,
                 'ItemId',
                 'VariantId',
-                ['repl_price_id']
+                ['ItemId']
             );
+
+            $websiteId = $this->store->getWebsiteId();
+            $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
             $this->remainingRecords = $collection->getSize();
         }
         return $this->remainingRecords;

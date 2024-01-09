@@ -9,7 +9,9 @@ use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Sales\Model\ResourceModel\Order as OrderResourceModel;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /** Syncing order through cron*/
@@ -46,14 +48,17 @@ class SyncOrders
      */
     public $logger;
 
+    /** @var StoreManagerInterface */
+    public $storeManager;
+
     /**
-     * SyncOrders constructor.
      * @param LSR $lsr
      * @param ReplicationHelper $replicationHelper
      * @param OrderHelper $orderHelper
      * @param BasketHelper $basketHelper
      * @param OrderResourceModel $orderResourceModel
      * @param LoggerInterface $logger
+     * @param StoreManagerInterface $storeManager
      */
     public function __construct(
         LSR $lsr,
@@ -61,7 +66,8 @@ class SyncOrders
         OrderHelper $orderHelper,
         BasketHelper $basketHelper,
         OrderResourceModel $orderResourceModel,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        StoreManagerInterface $storeManager
     ) {
         $this->lsr                = $lsr;
         $this->replicationHelper  = $replicationHelper;
@@ -69,6 +75,7 @@ class SyncOrders
         $this->basketHelper       = $basketHelper;
         $this->orderResourceModel = $orderResourceModel;
         $this->logger             = $logger;
+        $this->storeManager       = $storeManager;
     }
 
     /**
@@ -82,11 +89,14 @@ class SyncOrders
     {
         $info = [];
 
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
 
         if (!empty($stores)) {
@@ -95,7 +105,7 @@ class SyncOrders
                 $this->store = $store;
 
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $orders = $this->orderHelper->getOrders($this->store->getId());
+                    $orders = $this->orderHelper->getOrders($this->storeManager->getDefaultStoreView()->getId());
 
                     if (!empty($orders)) {
                         foreach ($orders as $order) {

@@ -5,16 +5,16 @@ namespace Ls\Replication\Cron;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
- * Class SyncVersion
- * @package Ls\Replication\Cron
+ * Cron responsible to check version of commerce service and save necessary values
  */
 class SyncVersion
 {
-
     /**
      * @var ReplicationHelper
      */
@@ -51,17 +51,24 @@ class SyncVersion
     }
 
     /**
-     * @param null $storeData
-     * @return array
+     * Entry point for cron
+     *
+     * @param $storeData
+     * @return array|void
+     * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
+
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
@@ -88,8 +95,11 @@ class SyncVersion
     }
 
     /**
-     * @param null $storeData
-     * @return array
+     * Execute manually
+     *
+     * @param $storeData
+     * @return array|null
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
