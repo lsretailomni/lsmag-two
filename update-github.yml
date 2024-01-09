@@ -7,13 +7,13 @@ variables:
 steps:
   - checkout: self
   - script: |
-      git branch --show-current
+      sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
+      git rev-parse --abbrev-ref HEAD
       git remote rm origin
       git remote add origin https://github.com/$(REPO_NAME).git
       git remote -v
       git config pull.rebase false
       git pull origin staging --allow-unrelated-histories
-      sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
       git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
