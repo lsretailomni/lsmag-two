@@ -13,7 +13,7 @@ steps:
       git remote add origin https://github.com/$(REPO_NAME).git
       git remote -v
       git config pull.rebase false
-      git pull origin staging --allow-unrelated-histories
+      git pull origin staging --strategy=ours --allow-unrelated-histories
       git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
