@@ -8,6 +8,7 @@ steps:
   - checkout: self
   - script: |
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
+      git checkout $(BRANCH_NAME)
       git branch
       git remote rm origin
       git remote add origin https://github.com/$(REPO_NAME).git
