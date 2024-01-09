@@ -1,22 +1,20 @@
 trigger:
   branches:
     include:
-      - master
+      - staging
 variables:
-  BRANCH_NAME: master
+  BRANCH_NAME: staging
 steps:
   - checkout: self
   - script: |
-      mkdir release && cd release
-      git clone https://github.com/$(REPO_NAME).git .
-      git checkout -b $(BRANCH_NAME)
+      cd /home/vsts/work/1/s/
+      git status
       git remote -v
-      git rm -rf .
-      git clean -fxd
-      rsync -rv --exclude=.git /home/vsts/work/1/s/ .
+      git remote add github https://github.com/$(REPO_NAME).git
+      git remote -v
+      git config pull.rebase false
+      git pull github staging --strategy=ours
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
-      git add --all
-      git commit -m "Deployment $(Build.BuildNumber)"
-      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
+#      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
