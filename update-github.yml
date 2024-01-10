@@ -1,9 +1,9 @@
 trigger:
   branches:
     include:
-      - master
+      - staging
 variables:
-  BRANCH_NAME: master
+  BRANCH_NAME: staging
 steps:
   - script: |
       CORE_MODULE_REPO_URL=$(AZURE_MODULE_REPO_URL)
@@ -12,11 +12,11 @@ steps:
       cd release
       git status
       git remote rm origin
-      git remote add origin https://github.com/$(REPO_NAME).git
+      git remote add origin https://github.com/$(GITHUB_REPO_NAME).git
       git remote -v
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
       git config pull.rebase false
       git pull origin $(BRANCH_NAME) --strategy=ours --allow-unrelated-histories
-      git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
+      git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git $(BRANCH_NAME)
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
