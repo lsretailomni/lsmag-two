@@ -78,6 +78,9 @@
                         <resource id="Ls_Replication::discount_grid" title="Discount Replication"
                                   translate="title"
                                   sortOrder="10"/>
+                        <resource id="Ls_Replication::discount_setup_grid" title="Discount Setup Replication"
+                                  translate="title"
+                                  sortOrder="10"/>
                         <resource id="Ls_Replication::itemcategory_grid" title="Item Category Replication"
                                   translate="title" sortOrder="10"/>
                         <resource id="Ls_Replication::productgroup_grid" title="Product Group Replication"

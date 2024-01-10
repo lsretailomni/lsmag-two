@@ -16,6 +16,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -44,12 +45,16 @@ class SyncImages extends ProductCreateTask
      */
     public function execute($storeData = null)
     {
-        if (!empty($storeData) && $storeData instanceof StoreInterface) {
-            $stores = [$storeData];
+        if (!$this->lsr->isSSM()) {
+            if (!empty($storeData) && $storeData instanceof StoreInterface) {
+                $stores = [$storeData];
+            } else {
+                $stores = $this->lsr->getAllStores();
+            }
         } else {
-            /** @var StoreInterface[] $stores */
-            $stores = $this->lsr->getAllStores();
+            $stores = [$this->lsr->getAdminStore()];
         }
+
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());

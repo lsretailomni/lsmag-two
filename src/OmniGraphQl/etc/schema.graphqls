@@ -8,6 +8,7 @@ removeLsLoyaltyPoints(input: RemoveLsLoyaltyPointsInput): LsLoyaltyPointsOutput 
 input ApplyLsGiftCardInput {
       cart_id: String! @doc(description: "Specifies the quote id and set the gift card code.")
       code: String! @doc(description: "Specifies the gift card code.")
+      pin: String @doc(description: "Specifies the gift card pin.")
       amount: Float! @doc(description: "Specifies how much gift card amount will be applied.")
 }
 
@@ -26,6 +27,7 @@ type LsLoyaltyPointsOutput {
 type AppliedGiftCard {
     code: String
     amount: Float
+    pin: String
 }
 
 input ApplyLsLoyaltyPointsInput {
@@ -62,6 +64,7 @@ type Query {
      sku: String! @doc(description: "Item Sku whose availability is required.")
     ): ItemAvailabilityOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\Stock\\ItemAvailabilityOutput") @doc(description: "Get list of all the stores where given item is available.")
     click_and_collect_stores: ClickAndCollectStoresOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\ClickAndCollectStoresOutput") @doc(description: "Get list of all the stores which support click and collect.")
+    get_all_stores: StoresOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\StoresOutput") @doc(description: "Get list of all the stores.")
     cart_items_availability_in_store (
      cart_id: String! @doc(description: "Valid cart Id.")
      store_id: String! @doc(description: "Click and collect store where stock needs to be checked.")
@@ -71,6 +74,10 @@ type Query {
          child_sku: String @doc(description: "Get return policy of particular variant.")
          store_id: String @doc(description: "Get return policy based on store.")
    ): ReturnPolicyOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\ReturnPolicyOutput") @doc(description: "Get return policy output")
+   get_gift_card_balance (
+            gift_card_no: String @doc(description: "Get return policy of particular item.")
+            gift_card_pin: String @doc(description: "Get return policy of particular variant.")
+      ): GiftCardBalanceOutput @resolver( class: "Ls\\OmniGraphQl\\Model\\Resolver\\GiftCardBalanceOutput") @doc(description: "Get gift card balance output")
    order_taking_calendar (
     store_id: String! @doc(description: "Store ID.")
    ): OrderTakingCalendarOutput @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\OrderTakingCalendarOutput") @doc(description: "Get Order taking calender.")
@@ -100,6 +107,10 @@ type ItemAvailabilityOutput {
 }
 
 type ClickAndCollectStoresOutput {
+    stores: [StoreData] @doc(description: "Array of all stores Data.")
+}
+
+type StoresOutput {
     stores: [StoreData] @doc(description: "Array of all stores Data.")
 }
 
@@ -152,6 +163,12 @@ type ReturnPolicyOutput {
     text: String @doc(description: "Return policy output text")
 }
 
+type GiftCardBalanceOutput {
+    currency: String @doc(description: "Gift Card Balance currency")
+    value: String @doc(description: "Gift Card Balance")
+    error: String @doc(description: "Error Message")
+}
+
 type OrderTakingCalendarOutput {
     dates: [DatesData] @doc(description: "Array of all order taking dates data.")
 }
@@ -177,6 +194,7 @@ type StoreConfig {
     ls_giftcard_active: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether gift card elements display is enabled (true) or disabled (false) in cart and checkout based on omni connection online/offline mode.")
     ls_giftcard_cart: Boolean @doc(description:"Indicates whether giftcard display on cart is enabled (true) or disabled (false).")
     ls_giftcard_checkout: Boolean @doc(description:"Indicates whether giftcard display on checkout is enabled (true) or disabled (false).")
+    ls_giftcard_pin_code: Boolean @doc(description:"Indicates whether giftcard pin code field in enable for redemption.")
     coupon_recommendations: Boolean @doc(description:"Indicates whether coupon recommendations display in cart and checkout is enabled (true) or disabled (false).")
     ls_discount_mixandmatch_limit: Int @doc(description:"Discounted products display limit on PDP.")
     ls_discounts_product_page: Boolean @doc(description:"Indicates whether discounts on product page display is enabled (true) or disabled (false).")

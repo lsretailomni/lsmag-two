@@ -206,4 +206,16 @@ class Renderer extends DefaultRenderer
     {
         return __("Save");
     }
+
+
+    /**
+     * For checking is shipment tab
+     *
+     * @return bool
+     */
+    public function checkIsShipment()
+    {
+        return ($this->orderHelper->getGivenValueFromRegistry('current_detail') == 'shipment');
+    }
+
 }

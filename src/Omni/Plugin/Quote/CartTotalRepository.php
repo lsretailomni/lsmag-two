@@ -72,8 +72,8 @@ class CartTotalRepository
         $quote = $this->quoteRepository->get($cartId);
         if ($this->lsr->isLSR($quote->getStoreId())) {
             $pointsConfig = [
-                'rateLabel' => $quote->getBaseCurrencyCode() . ' ' . round(
-                    $this->loyaltyHelper->getPointRate() * 10,
+                'rateLabel' => round(
+                    1 / $this->loyaltyHelper->getPointRate(),
                     2
                 ),
                 'balance'   => $this->loyaltyHelper->getLoyaltyPointsAvailableToCustomer(),

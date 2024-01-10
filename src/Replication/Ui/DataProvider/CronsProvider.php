@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\Search\SearchCriteriaBuilder;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Module\Dir\Reader;
@@ -138,13 +139,12 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $cronsGroupListing = $this->readCronFile();
         $items             = [];
         $counter           = 1;
-        $scope             = $this->request->getParam('website') ? 'website' : 'store';
-        $storeId           = $scope == 'website' ?
-            $this->request->getParam('website') : $this->request->getParam('store');
+        $scope             = $this->request->getParam('scope');
+        $scopeId           = $this->request->getParam('scope_id');
         $pagingParam       = $this->request->getParam('paging');
 
-        if (empty($storeId)) {
-            $storeId = $this->getDefaultStoreId();
+        if ($scopeId === null) {
+            $scopeId = $this->getDefaultStoreId();
         }
 
         foreach ($cronsGroupListing as $cronlist) {
@@ -168,19 +168,21 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $cronName                 = $joblist['_attribute']['name'];
                 $isTranslationRelatedCron = $this->showTranslationRelatedCronJobsAtStoreLevel($cronName);
 
-                if ($scope == 'store') {
-                    if (($cronlist['_attribute']['id'] == 'flat_replication' ||
-                            $cronlist['_attribute']['id'] == 'reset') &&
-                        !$isTranslationRelatedCron
-                    ) {
-                        continue;
-                    }
-                } else {
-                    if (($cronlist['_attribute']['id'] != 'flat_replication' &&
-                            $cronlist['_attribute']['id'] != 'reset') ||
-                        $isTranslationRelatedCron
-                    ) {
-                        continue;
+                if (!$this->lsr->isSSM()) {
+                    if ($scope == ScopeInterface::SCOPE_STORES) {
+                        if (($cronlist['_attribute']['id'] == 'flat_replication' ||
+                                $cronlist['_attribute']['id'] == 'reset') &&
+                            !$isTranslationRelatedCron
+                        ) {
+                            continue;
+                        }
+                    } else {
+                        if (($cronlist['_attribute']['id'] != 'flat_replication' &&
+                                $cronlist['_attribute']['id'] != 'reset') ||
+                            $isTranslationRelatedCron
+                        ) {
+                            continue;
+                        }
                     }
                 }
 
@@ -188,20 +190,20 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     $pathNew               = $path . $cronName;
                     $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                         $pathNew,
-                        $scope == 'website' ? ScopeInterface::SCOPE_WEBSITES : ScopeInterface::SCOPE_STORES,
-                        $storeId
+                        $scope,
+                        $scopeId
                     );
                 }
 
                 /**
                  * We need this so that we can add plugin into the hospitality modules for the new crons.
                  */
-                $fullReplicationStatus = $this->getStatusByCronCode($cronName, $storeId, $fullReplicationStatus);
+                $fullReplicationStatus = $this->getStatusByCronCode($cronName, $scopeId, $fullReplicationStatus);
                 $lastExecute           = $this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                     $this->lsr->getConfigValueFromDb(
                         'ls_mag/replication/last_execute_' . $cronName,
-                        $scope == 'website' ? ScopeInterface::SCOPE_WEBSITES : ScopeInterface::SCOPE_STORES,
-                        $storeId
+                        $scope,
+                        $scopeId
                     ),
                     'd M, Y h:i:s A'
                 );
@@ -215,9 +217,14 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 }
                 $items[] = [
                     'id'                    => $counter,
-                    'store'                 => $scope == 'website' ?
-                        $this->storeManager->getWebsiteName($storeId) : $this->storeManager->getStoreName($storeId),
-                    'storeId'               => $storeId,
+                    'store'                 => $scope == ScopeInterface::SCOPE_WEBSITES ?
+                        $this->storeManager->getWebsiteName($scopeId) :
+                        (
+                            $scope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT ?
+                            $this->lsr->getAdminStore()->getName() :
+                            $this->storeManager->getStoreName($scopeId)
+                        ),
+                    'scope_id'               => $scopeId,
                     'fullreplicationstatus' => $statusStr,
                     'label'                 => $cronName,
                     'lastexecuted'          => $lastExecute,
@@ -270,9 +277,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
             if ('*' == $paramValue) {
                 $paramValue = $this->request->getParam($paramName);
             }
-            if ($paramValue) {
+            if ($paramValue !== null) {
                 $this->data['config']['update_url'] = sprintf(
-                    '%s%s/%s',
+                    '%s%s/%s/',
                     $this->data['config']['update_url'],
                     $paramName,
                     $paramValue
@@ -341,6 +348,15 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         if ($cronName == 'repl_discount_create') {
             $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
                 LSR::SC_SUCCESS_CRON_DISCOUNT,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            );
+            return $fullReplicationStatus;
+        }
+
+        if ($cronName == 'repl_discount_create_setup') {
+            $fullReplicationStatus = $this->lsr->getConfigValueFromDb(
+                LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
                 ScopeInterface::SCOPE_STORES,
                 $storeId
             );

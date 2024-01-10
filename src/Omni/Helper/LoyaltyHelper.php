@@ -312,13 +312,17 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($this->lsr->isLSR($storeId)) {
             $cacheId = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
-            if ($response) {
+            if ($response !== false) {
                 return $response;
             }
             // @codingStandardsIgnoreStart
             $request = new Operation\GetPointRate();
             $entity = new Entity\GetPointRate();
             // @codingStandardsIgnoreEnd
+
+            $currency = $this->lsr->getStoreCurrencyCode();
+            $entity->setCurrency($currency);
+
             try {
                 $response = $request->execute($entity);
             } catch (Exception $e) {

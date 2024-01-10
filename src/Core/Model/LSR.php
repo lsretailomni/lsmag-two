@@ -2,7 +2,6 @@
 
 namespace Ls\Core\Model;
 
-use \Ls\Core\Model\Data;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -101,7 +100,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_MANUAL_CRON_GRID_DEFAULT_WEBSITE = 'ls_mag/replication/manual_cron_grid_default_website';
     const SC_REPLICATION_IDENTICAL_TABLE_WEB_SERVICE_LIST = 'ls_mag/replication/identical_table_web_service_list';
     const SC_REPLICATION_ATTRIBUTE_SETS_MECHANISM = 'ls_mag/replication/attribute_sets_mechanism';
-
+    const GIFT_CARD_IDENTIFIER = 'ls_mag/replication/gift_card_items_list';
     //Attribute Set
     const SC_REPLICATION_ATTRIBUTE_SET_ITEM_CATEGORY_CODE = 'ITEM_CATEGORY_CODE';
     const SC_REPLICATION_ATTRIBUTE_SET_PRODUCT_GROUP_ID = 'PRODUCT_GROUP_ID';
@@ -139,6 +138,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //check for Discount
     const SC_SUCCESS_CRON_DISCOUNT = 'ls_mag/replication/success_repl_discount';
     const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_create';
+    const SC_SUCCESS_CRON_DISCOUNT_SETUP = 'ls_mag/replication/success_repl_discount_setup';
+    const SC_SUCCESS_CRON_DISCOUNT_VALIDATION = 'ls_mag/replication/success_repl_discount_validation';
+    const SC_CRON_DISCOUNT_CONFIG_PATH_LAST_EXECUTE_SETUP = 'ls_mag/replication/last_execute_repl_discount_create_setup';
 
     //check for Product Assignment to Categories
     const SC_SUCCESS_CRON_ITEM_UPDATES = 'ls_mag/replication/success_sync_item_updates';
@@ -370,6 +372,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ENABLE_GIFTCARD_ELEMENTS = 'ls_mag/ls_giftcard/active';
     const LS_GIFTCARD_SHOW_ON_CART = 'ls_mag/ls_giftcard/cart';
     const LS_GIFTCARD_SHOW_ON_CHECKOUT = 'ls_mag/ls_giftcard/checkout';
+    const LS_GIFTCARD_SHOW_PIN_CODE_FIELD = 'ls_mag/ls_giftcard/pin_code';
     const LS_GIFTCARD_TENDER_TYPE = 'giftcard';
 
     //Discount Management
@@ -396,6 +399,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     // Date format to be used in fetching the data.
     const DATE_FORMAT = 'Y-m-d';
+    const TIME_FORMAT = 'h:i:s A';
 
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
@@ -438,6 +442,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_PICKED = 'PICKED'; //Ready to Pick
     const LS_STATE_SHIPPED = 'SHIPPED';
     const LS_STATE_SHORTAGE = 'SHORTAGE';
+    const LS_STATE_MISC = 'MISC';
 
     const LS_NOTIFICATION_EMAIL = 'email';
 
@@ -475,15 +480,26 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_TARIFF_NO_ATTRIBUTE_CODE = 'lsr_tariff_no';
     const LS_TARIFF_NO_ATTRIBUTE_LABEL = 'Tariff No';
 
+    const LS_ITEM_CATEGORY = 'lsr_item_category';
+    const LS_ITEM_CATEGORY_LABEL = 'Item Category';
+    const LS_ITEM_PRODUCT_GROUP = 'lsr_item_product_group';
+    const LS_ITEM_PRODUCT_GROUP_LABEL = 'Product Group';
+
     const SALE_TYPE_POS = 'POS';
 
     const MAX_RECENT_ORDER = 5;
+
+    const GIFT_CARD_RECIPIENT_TEMPLATE = 'ls_mag_webhooks_template_giftcard_recipient';
 
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
 
     // @codingStandardsIgnoreStart
     const LS_STANDARD_VARIANT_ATTRIBUTE_LABEL = 'Select Variant';
     // @codingStandardsIgnoreEnd
+
+    const SC_REPLICATION_CENTRAL_TYPE = 'ls_mag/service/central_type';
+    const OnPremise = '0';
+    const Saas = '1';
 
     /**
      * @var ScopeConfigInterface
@@ -530,9 +546,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         StoreManagerInterface $storeManager,
         Data $data
     ) {
-        $this->scopeConfig                 = $scopeConfig;
-        $this->storeManager                = $storeManager;
-        $this->data                        = $data;
+        $this->scopeConfig  = $scopeConfig;
+        $this->storeManager = $storeManager;
+        $this->data         = $data;
     }
 
     /**
@@ -559,7 +575,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @param int $scopeId
      * @return mixed|null
      */
-    public function getConfigValueFromDb($path, $scope = 'default', $scopeId = 0)
+    public function getConfigValueFromDb($path, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0)
     {
         return $this->data->getConfigValueFromDb($path, $scope, $scopeId);
     }
@@ -581,20 +597,26 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * @param null $baseUrl
+     * Validate base url
+     *
+     * @param $baseUrl
+     * @param $lsKey
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null)
+    public function validateBaseUrl($baseUrl = null, $lsKey = null)
     {
         if ($baseUrl == null) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
         }
+        if ($lsKey == null) {
+            $lsKey = $this->getStoreConfig(self::SC_SERVICE_LS_KEY);
+        }
         if (empty($baseUrl)) {
             return false;
         }
-        $url = implode('/', [$baseUrl, $this->endpoints[ServiceType::ECOMMERCE]]);
-        return $this->data->isEndpointResponding($url);
+
+        return $this->data->isEndpointResponding($baseUrl, $lsKey);
     }
 
     /**
@@ -783,6 +805,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Get admin store
+     *
+     * @return StoreInterface|null
+     */
+    public function getAdminStore()
+    {
+        $adminStore = null;
+
+        foreach ($this->storeManager->getStores(true, true) as $store) {
+            if ($store->getCode() == 'admin') {
+                $adminStore = $store;
+                break;
+            }
+        }
+
+        return $adminStore;
+    }
+
+    /**
      * Set Store ID in Magento Session
      * @param $storeId
      */
@@ -912,7 +953,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isEnabled($storeId = null, $scope = null)
     {
-        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope ==  ScopeInterface::SCOPE_WEBSITE) {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             return $this->getWebsiteConfig(LSR::SC_MODULE_ENABLED, $storeId);
         }
         if ($storeId === null) {
@@ -986,5 +1027,45 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStoreCurrencyCode()
     {
         return $this->storeManager->getStore($this->getCurrentStoreId())->getCurrentCurrencyCode();
+    }
+
+    /**
+     * Get gift card identifiers
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardIdentifiers()
+    {
+        return $this->getStoreConfig(self::GIFT_CARD_IDENTIFIER, $this->getCurrentStoreId());
+    }
+
+    /**
+     * To keep running discount replication for commerce service older version and running discount replication for saas
+     *
+     * @param mixed $store
+     * @return array
+     * @throws NoSuchEntityException
+     */
+    public function validateForOlderVersion($store)
+    {
+        $status = ['discountSetup' => false, 'discount' => true];
+        if (version_compare($this->getOmniVersion(), '2023.10', '>')) {
+            if ($this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $store->getWebsiteId()) == LSR::OnPremise) {
+                $status = ['discountSetup' => true, 'discount' => false];
+            }
+        }
+
+        return $status;
+    }
+
+    /**
+     * Is single store mode
+     *
+     * @return bool
+     */
+    public function isSSM()
+    {
+        return $this->storeManager->isSingleStoreMode();
     }
 }

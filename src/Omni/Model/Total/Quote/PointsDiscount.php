@@ -32,6 +32,8 @@ class PointsDiscount extends AbstractTotal
 
     /**
      *
+     * For fetching ls point discount
+     *
      * @param Quote $quote
      * @param Total $total
      * @return array|null

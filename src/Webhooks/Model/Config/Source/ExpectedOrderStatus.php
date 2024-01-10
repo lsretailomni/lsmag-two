@@ -19,7 +19,8 @@ class ExpectedOrderStatus implements OptionSourceInterface
             ['value' => '', 'label' => __('-- Please Select --')],
             ['value' => LSR::LS_STATE_PICKED, 'label' => __('Order Pickup for Click and Collect')],
             ['value' => LSR::LS_STATE_COLLECTED, 'label' => __('Order Collected for Click and Collect')],
-            ['value' => LSR::LS_STATE_CANCELED, 'label' => __('Order Cancelled')]
+            ['value' => LSR::LS_STATE_CANCELED, 'label' => __('Order Cancelled')],
+            ['value' => LSR::LS_STATE_MISC, 'label' => __('Miscellaneous')]
         ];
     }
 }

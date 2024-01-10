@@ -4,17 +4,19 @@
 Loyalty,Loyalty
 "Go To Product","Go To Product"
 "Go To Category","Go To Category"
-"Order # %1","Order # %1"
-"Back to My Orders","Back to My Orders"
-"View Another Order","View Another Order"
+"Items Ordered","Items Ordered"
+Shipments,Shipments
+Invoices,Invoices
+Refunds,Refunds
 Order,Order
 "%1 # %2","%1 # %2"
 "Click and Collect","Click and Collect"
 Unknown,Unknown
 Save,Save
-"There is no account found with the provided email/username.","There is no account found with the provided email/username."
-"We're unable to send the password reset email.","We're unable to send the password reset email."
-"Please enter your email.","Please enter your email."
+"Order Transaction # %1","Order Transaction # %1"
+"Shipment # %1","Shipment # %1"
+"Invoice # %1","Invoice # %1"
+"Refund # %1","Refund # %1"
 "Customer request has been sent to LS Central successfully.","Customer request has been sent to LS Central successfully."
 "Something went wrong while creating a customer. Please refer log for details.","Something went wrong while creating a customer. Please refer log for details."
 "Omni service is down.","Omni service is down."
@@ -43,7 +45,9 @@ Save,Save
                              please proceed to login or use different email address.","There is already an account with this email address.
                              If you are sure that it is your email address,
                              please proceed to login or use different email address."
+"Unable to reset password.","Unable to reset password."
 "Cannot set the customer's password","Cannot set the customer's password"
+"There is no account found with the provided email/username.","There is no account found with the provided email/username."
 "Membership Information","Membership Information"
 "Member Contact No.:","Member Contact No.:"
 "Member Card No.:","Member Card No.:"
@@ -63,6 +67,7 @@ City,City
 "Member Information","Member Information"
 "Club Name:","Club Name:"
 "Loyalty Points Earned:","Loyalty Points Earned:"
+"Loyalty Points Expiry:","Loyalty Points Expiry:"
 "Loyalty Level:","Loyalty Level:"
 "Next Level","Next Level"
 Level:,Level:
@@ -82,19 +87,16 @@ Password,Password
 "Offer Type: ","Offer Type: "
 "Expiry: ","Expiry: "
 "No offers","No offers"
-"Print All Refunds","Print All Refunds"
-"Refund #","Refund #"
-"Items Refunded","Items Refunded"
 "Product Name","Product Name"
 SKU,SKU
 Price,Price
 Qty,Qty
 Subtotal,Subtotal
-"Useful Information","Useful Information"
-"Store Name:","Store Name:"
-"Click & Collect:","Click & Collect:"
-"Loyalty Points Rewarded:","Loyalty Points Rewarded:"
-"Gift Card Code:","Gift Card Code:"
+"Print Invoice","Print Invoice"
+"Print Shipment","Print Shipment"
+"Tracking Number(s):","Tracking Number(s):"
+"Track this shipment","Track this shipment"
+"Print Refunds","Print Refunds"
 Orders,Orders
 "Doc ID","Doc ID"
 Date,Date
@@ -118,21 +120,29 @@ Cancel,Cancel
 "Billing Address","Billing Address"
 "Payment Method","Payment Method"
 "Print Order","Print Order"
+Quantity,Quantity
 Ordered,Ordered
 Shipped,Shipped
 Canceled,Canceled
 Refunded,Refunded
-Invoiced,Invoiced
-"Items Ordered","Items Ordered"
 "<span class=""label"">Order Date:</span> %1","<span class=""label"">Order Date:</span> %1"
 "Recent Orders","Recent Orders"
 "View All","View All"
+"Order Total","Order Total"
 "Qty Shipped","Qty Shipped"
+"Subtotal (Inc.Tax)","Subtotal (Inc.Tax)"
+"Gift Card Redeemed","Gift Card Redeemed"
+"Loyalty Points Redeemed","Loyalty Points Redeemed"
+"Total Discount","Total Discount"
+"Shipment & Handling","Shipment & Handling"
+Tax,Tax
+"Useful Information","Useful Information"
+"Store Name:","Store Name:"
+"Click & Collect:","Click & Collect:"
+Yes,Yes
+"Loyalty Points Rewarded:","Loyalty Points Rewarded:"
+"Gift Card Code:","Gift Card Code:"
 "Requested Delivery Date:","Requested Delivery Date:"
-"Print Invoice","Print Invoice"
-"Print Shipment","Print Shipment"
-"Tracking Number(s):","Tracking Number(s):"
-"Track this shipment","Track this shipment"
 Name,Name
 "Phone Number","Phone Number"
 or,or
@@ -152,8 +162,11 @@ or,or
 "Customer username prefix","Customer username prefix"
 "Allow Order Cancellation on Frontend","Allow Order Cancellation on Frontend"
 "Master Password","Master Password"
+"Enable search by username API call on customer registration","Enable search by username API call on customer registration"
+"Enable search by email API on customer registration","Enable search by email API on customer registration"
+"Enable get contact by card id API call cn customer registration","Enable get contact by card id API call cn customer registration"
+"Enable loyalty points expiry check","Enable loyalty points expiry check"
+"Loyalty points expiry interval","Loyalty points expiry interval"
 "Member Card No.","Member Card No."
 "Member Username","Member Username"
-Invoices,Invoices
 "Order Shipments","Order Shipments"
-Refunds,Refunds

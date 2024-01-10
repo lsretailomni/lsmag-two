@@ -66,6 +66,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $Currency = null;
 
     /**
+     * @property string $DiscountGroup
+     */
+    protected $DiscountGroup = null;
+
+    /**
      * @property string $Email
      */
     protected $Email = null;
@@ -116,9 +121,19 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $NameSuffix = null;
 
     /**
+     * @property string $PaymentTerms
+     */
+    protected $PaymentTerms = null;
+
+    /**
      * @property string $PhoneLocal
      */
     protected $PhoneLocal = null;
+
+    /**
+     * @property string $PriceGroup
+     */
+    protected $PriceGroup = null;
 
     /**
      * @property string $ReceiptEmail
@@ -134,6 +149,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
      * @property string $SchemeCode
      */
     protected $SchemeCode = null;
+
+    /**
+     * @property string $ShippingLocation
+     */
+    protected $ShippingLocation = null;
 
     /**
      * @property string $State
@@ -199,6 +219,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
      * @property string $updated_at
      */
     protected $updated_at = null;
+
+    /**
+     * @property string $identity_value
+     */
+    protected $identity_value = null;
 
     /**
      * @property string $checksum
@@ -398,6 +423,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getCurrency()
     {
         return $this->getData( 'Currency' );
+    }
+
+    /**
+     * @param string $DiscountGroup
+     * @return $this
+     */
+    public function setDiscountGroup($DiscountGroup)
+    {
+        $this->setData( 'DiscountGroup', $DiscountGroup );
+        $this->DiscountGroup = $DiscountGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDiscountGroup()
+    {
+        return $this->getData( 'DiscountGroup' );
     }
 
     /**
@@ -601,6 +646,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     }
 
     /**
+     * @param string $PaymentTerms
+     * @return $this
+     */
+    public function setPaymentTerms($PaymentTerms)
+    {
+        $this->setData( 'PaymentTerms', $PaymentTerms );
+        $this->PaymentTerms = $PaymentTerms;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentTerms()
+    {
+        return $this->getData( 'PaymentTerms' );
+    }
+
+    /**
      * @param string $PhoneLocal
      * @return $this
      */
@@ -618,6 +683,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getPhoneLocal()
     {
         return $this->getData( 'PhoneLocal' );
+    }
+
+    /**
+     * @param string $PriceGroup
+     * @return $this
+     */
+    public function setPriceGroup($PriceGroup)
+    {
+        $this->setData( 'PriceGroup', $PriceGroup );
+        $this->PriceGroup = $PriceGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroup()
+    {
+        return $this->getData( 'PriceGroup' );
     }
 
     /**
@@ -678,6 +763,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getSchemeCode()
     {
         return $this->getData( 'SchemeCode' );
+    }
+
+    /**
+     * @param string $ShippingLocation
+     * @return $this
+     */
+    public function setShippingLocation($ShippingLocation)
+    {
+        $this->setData( 'ShippingLocation', $ShippingLocation );
+        $this->ShippingLocation = $ShippingLocation;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShippingLocation()
+    {
+        return $this->getData( 'ShippingLocation' );
     }
 
     /**
@@ -938,6 +1043,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getUpdatedAt()
     {
         return $this->getData( 'updated_at' );
+    }
+
+    /**
+     * @param string $identity_value
+     * @return $this
+     */
+    public function setIdentityValue($identity_value)
+    {
+        $this->setData( 'identity_value', $identity_value );
+        $this->identity_value = $identity_value;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIdentityValue()
+    {
+        return $this->getData( 'identity_value' );
     }
 
     /**

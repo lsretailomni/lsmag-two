@@ -56,13 +56,6 @@
                 </argument>
             </arguments>
         </referenceBlock>
-        <referenceBlock name="checkout.cart.form">
-            <block class="Magento\Framework\View\Element\RendererList" name="checkout.cart.item.renderers.override"
-                   as="renderer.list.custom"/>
-            <arguments>
-                <argument name="renderer_list_name" xsi:type="string">checkout.cart.item.renderers.override</argument>
-            </arguments>
-        </referenceBlock>
         <referenceBlock name="checkout.cart.coupon" template="Ls_Omni::cart/coupons.phtml">
             <arguments>
                 <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\CouponsViewModel</argument>

@@ -27,6 +27,7 @@
                 <active>1</active>
                 <cart>1</cart>
                 <checkout>1</checkout>
+                <pin_code>0</pin_code>
             </ls_giftcard>
             <ls_discounts>
                 <discount>1</discount>

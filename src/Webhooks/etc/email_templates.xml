@@ -7,4 +7,8 @@
               file="order_collected.html" type="html" module="Ls_Webhooks" area="frontend"/>
     <template id="ls_mag_webhooks_template_cancel" label="Order Cancellation Email"
               file="order_cancel.html" type="html" module="Ls_Webhooks" area="frontend"/>
+    <template id="ls_mag_webhooks_template_misc" label="Misc Order Status"
+              file="order_misc.html" type="html" module="Ls_Webhooks" area="frontend"/>
+    <template id="ls_mag_webhooks_template_giftcard_recipient" label="Gift Card Recipient Email"
+              file="gift_card_recipient.html" type="html" module="Ls_Webhooks" area="frontend"/>
 </config>

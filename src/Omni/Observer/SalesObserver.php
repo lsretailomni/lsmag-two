@@ -57,7 +57,8 @@ class SalesObserver implements ObserverInterface
                 $quote->setLsPointsDiscount($pointDiscount);
             }
 
-            if ($addressType == AbstractAddress::TYPE_SHIPPING) {
+            if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
+                (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
                 $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
@@ -70,9 +71,6 @@ class SalesObserver implements ObserverInterface
                     ->setBaseSubtotalTotalInclTax($subTotal)
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($grandTotal);
-            } else {
-                $total->setBaseGrandTotal(0);
-                $total->setGrandTotal(0);
             }
         }
     }

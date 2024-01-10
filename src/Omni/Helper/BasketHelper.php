@@ -290,16 +290,27 @@ class BasketHelper extends AbstractHelper
                     $child->getSku()
                 );
                 $match = false;
+                $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
-                foreach ($itemsArray as $itemArray) {
-                    if ($itemArray->getItemId() == $itemId &&
-                        $itemArray->getVariantId() == $variantId &&
-                        $itemArray->getUnitOfMeasureId() == $uom &&
-                        $itemArray->getBarcodeId() == $barCode
-                    ) {
-                        $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                        $match = true;
-                        break;
+                if (in_array($itemId, explode(',', $giftCardIdentifier))) {
+                    foreach ($itemsArray as $itemArray) {
+                        if ($itemArray->getId() == $child->getItemId()) {
+                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                            $match = true;
+                            break;
+                        }
+                    }
+                } else {
+                    foreach ($itemsArray as $itemArray) {
+                        if ($itemArray->getItemId() == $itemId &&
+                            $itemArray->getVariantId() == $variantId &&
+                            $itemArray->getUnitOfMeasureId() == $uom &&
+                            $itemArray->getBarcodeId() == $barCode
+                        ) {
+                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                            $match = true;
+                            break;
+                        }
                     }
                 }
 
@@ -308,10 +319,13 @@ class BasketHelper extends AbstractHelper
                     $list_item = (new Entity\OneListItem())
                         ->setQuantity($quoteItem->getData('qty'))
                         ->setItemId($itemId)
-                        ->setId('')
+                        ->setId($quoteItem->getItemId())
                         ->setBarcodeId($barCode)
                         ->setVariantId($variantId)
-                        ->setUnitOfMeasureId($uom);
+                        ->setUnitOfMeasureId($uom)
+                        ->setAmount($quoteItem->getPrice())
+                        ->setPrice($quoteItem->getPrice())
+                        ->setImmutable(true);
 
                     $itemsArray[] = $list_item;
                 }
@@ -788,6 +802,10 @@ class BasketHelper extends AbstractHelper
                     $oneListRequest->setShipToCountryCode($oneList->getShipToCountryCode());
                 }
 
+                if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+                    $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate());
+                }
+
                 /** @var Entity\OneListCalculate $entity */
                 if ($this->getCouponCode() != "" and $this->getCouponCode() != null) {
                     $offer  = new Entity\OneListPublishedOffer();
@@ -814,6 +832,7 @@ class BasketHelper extends AbstractHelper
         if (($response == null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
+            $this->setOneListCalculationInCheckoutSession($response);
             return $oneListCalResponse->getResult();
         }
         if (property_exists($response, "OneListCalculateResult")) {
@@ -1022,7 +1041,7 @@ class BasketHelper extends AbstractHelper
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
             foreach ($orderLines as $line) {
-                if ($this->itemHelper->isValid($line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
                     $rowTotal = $line->getQuantity() == $item->getQty() ? $line->getAmount()
                         : ($line->getAmount() / $line->getQuantity()) * $item->getQty();
                     break;
