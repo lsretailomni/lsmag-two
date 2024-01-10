@@ -1,22 +1,22 @@
 trigger:
   branches:
     include:
-      - master
+      - staging
 variables:
-  BRANCH_NAME: master
+  BRANCH_NAME: staging
 steps:
-  - checkout: self
   - script: |
-      mkdir release && cd release
-      git clone https://github.com/$(REPO_NAME).git .
-      git checkout -b $(BRANCH_NAME)
+      CORE_MODULE_REPO_URL=$(AZURE_MODULE_REPO_URL)
+      AUTH=$(echo -n ":$(AZURE_PERSONAL_ACCESS_TOKEN)" | openssl base64 | tr -d '\n')
+      git -c http.$CORE_MODULE_REPO_URL.extraheader="AUTHORIZATION: basic $AUTH" clone $CORE_MODULE_REPO_URL --branch $(BRANCH_NAME) release
+      cd release
+      git status
+      git remote rm origin
+      git remote add origin https://github.com/$(GITHUB_REPO_NAME).git
       git remote -v
-      git rm -rf .
-      git clean -fxd
-      rsync -rv --exclude=.git /home/vsts/work/1/s/ .
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
-      git add --all
-      git commit -m "Deployment $(Build.BuildNumber)"
-      git push https://$(USERNAME):$(PERSONAL_ACCESS_TOKEN)@github.com/$(REPO_NAME).git $(BRANCH_NAME)
+      git config pull.rebase false
+      git pull origin $(BRANCH_NAME) --strategy=ours --allow-unrelated-histories
+      git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git $(BRANCH_NAME)
     displayName: 'Publishing Changes to Github Repository'
     workingDirectory: $(System.DefaultWorkingDirectory)
