@@ -26,17 +26,7 @@ steps:
       git remote add origin https://github.com/$(GITHUB_REPO_NAME).git
       git remote -v
       sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
-
-#      git clone https://github.com/$(REPO_NAME).git .
       git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git --delete $(BRANCH_NAME)
-#      git checkout -b $(BRANCH_NAME)
-#      git remote -v
-#      git rm -rf .
-#      git clean -fxd
-#      rsync -rv --exclude=.git /home/vsts/work/1/s/ .
-#      sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
-#      git add --all
-#      git commit -m "Deployment $(Build.BuildNumber)"
       git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git $(BRANCH_NAME)
       git tag -a "$(LATEST_TAG_NAME)" -m "Release $LAST_TAG_NAME"
       git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git --tags
