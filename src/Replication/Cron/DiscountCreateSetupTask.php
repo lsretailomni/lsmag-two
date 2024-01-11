@@ -608,7 +608,6 @@ class DiscountCreateSetupTask
         if ($index) {
             $this->jobApply->applyAll();
         }
-
     }
 
     /**
@@ -657,7 +656,8 @@ class DiscountCreateSetupTask
                     $criteria = $this->replicationHelper->buildCriteriaForDirect(
                         $filters,
                         -1,
-                        true);
+                        true
+                    );
                     /** @var ReplDiscountSearchResults $replDiscountsOffer */
                     $replDiscountsOffer = $this->replDiscountRepository->getList($criteria);
                     /** @var ReplDiscountSetup $replDiscountOffer */
@@ -707,7 +707,9 @@ class DiscountCreateSetupTask
      * @return void
      */
     public function logDetailedException(
-        $method, $storeName, $itemId
+        $method,
+        $storeName,
+        $itemId
     ) {
         $this->logger->debug(
             sprintf(
@@ -757,7 +759,8 @@ class DiscountCreateSetupTask
                     'value'     => $number
                 ];
 
-        } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP) {
+        } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP
+            || $lineType == OfferDiscountLineType::SPECIAL_GROUP) {
 
             $conditions['1--1'] =
                 [
