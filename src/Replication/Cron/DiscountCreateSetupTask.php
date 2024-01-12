@@ -759,8 +759,7 @@ class DiscountCreateSetupTask
                     'value'     => $number
                 ];
 
-        } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP
-            || $lineType == OfferDiscountLineType::SPECIAL_GROUP) {
+        } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP) {
 
             $conditions['1--1'] =
                 [
@@ -768,6 +767,16 @@ class DiscountCreateSetupTask
                     'attribute' => LSR::LS_ITEM_PRODUCT_GROUP,
                     'operator'  => '==',
                     'value'     => $number
+                ];
+
+        } elseif ($lineType == OfferDiscountLineType::SPECIAL_GROUP) {
+
+            $conditions['1--1'] =
+                [
+                    'type'      => Product::class,
+                    'attribute' => LSR::LS_ITEM_SPECIAL_GROUP,
+                    'operator'  => '{}',
+                    'value'     =>  $number.';'
                 ];
 
         } elseif ($lineType == OfferDiscountLineType::ITEM) {

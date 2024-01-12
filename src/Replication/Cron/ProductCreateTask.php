@@ -569,6 +569,10 @@ class ProductCreateTask
                                     LSR::LS_ITEM_CATEGORY,
                                     $item->getItemCategoryCode()
                                 );
+                                $productData->setCustomAttribute(
+                                    LSR::LS_ITEM_SPECIAL_GROUP,
+                                    $item->getSpecialGroups()
+                                );
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
@@ -649,6 +653,10 @@ class ProductCreateTask
                                 $product->setCustomAttribute(
                                     LSR::LS_ITEM_CATEGORY,
                                     $item->getItemCategoryCode()
+                                );
+                                $product->setCustomAttribute(
+                                    LSR::LS_ITEM_SPECIAL_GROUP,
+                                    $item->getSpecialGroups()
                                 );
                                 $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $product->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());

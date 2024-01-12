@@ -484,6 +484,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_ITEM_CATEGORY_LABEL = 'Item Category';
     const LS_ITEM_PRODUCT_GROUP = 'lsr_item_product_group';
     const LS_ITEM_PRODUCT_GROUP_LABEL = 'Product Group';
+    const LS_ITEM_SPECIAL_GROUP = 'lsr_item_special_group';
+    const LS_ITEM_SPECIAL_GROUP_LABEL = 'Special Group';
 
     const SALE_TYPE_POS = 'POS';
 
