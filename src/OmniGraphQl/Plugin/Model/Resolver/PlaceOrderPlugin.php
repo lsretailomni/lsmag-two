@@ -100,7 +100,7 @@ class PlaceOrderPlugin
         if ($this->lsr->isGraphqlDiscountValidationEnabled() &&
             !$this->discountManagement->checkDiscountValidity($args['input']['cart_id'])
         ) {
-            throw new LocalizedException(
+            throw new GraphQlInputException(
                 __('Unfortunately since your discount is no longer valid your grand total has been updated.')
             );
         }
