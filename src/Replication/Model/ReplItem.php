@@ -176,6 +176,11 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     protected $SeasonCode = null;
 
     /**
+     * @property string $SpecialGroups
+     */
+    protected $SpecialGroups = null;
+
+    /**
      * @property string $TariffNo
      */
     protected $TariffNo = null;
@@ -898,6 +903,26 @@ class ReplItem extends AbstractModel implements ReplItemInterface, IdentityInter
     public function getSeasonCode()
     {
         return $this->getData( 'SeasonCode' );
+    }
+
+    /**
+     * @param string $SpecialGroups
+     * @return $this
+     */
+    public function setSpecialGroups($SpecialGroups)
+    {
+        $this->setData( 'SpecialGroups', $SpecialGroups );
+        $this->SpecialGroups = $SpecialGroups;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpecialGroups()
+    {
+        return $this->getData( 'SpecialGroups' );
     }
 
     /**
