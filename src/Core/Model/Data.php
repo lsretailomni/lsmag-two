@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\CacheHelper;
+use Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
@@ -187,6 +188,21 @@ class Data
     }
 
     /**
+     * Get commerce service heartbeat timeout
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function getCommerceServiceHeartbeatTimeout()
+    {
+        return $this->scopeConfig->getValue(
+            LSR::SC_SERVICE_HEART_BEAT_TIMEOUT,
+            ScopeInterface::SCOPE_STORES,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
      * Function for commerce service ping
      *
      * @param $baseUrl
@@ -209,7 +225,7 @@ class Data
     }
 
     /**
-     * Checks heartbeats of commerce service
+     * Checks heartbeat of commerce service
      *
      * @param $url
      * @param $lsKey
@@ -219,12 +235,26 @@ class Data
     public function isEndpointResponding($url, $lsKey)
     {
         try {
+            $cacheId       = LSR::PING_RESPONSE_CACHE . $this->storeManager->getWebsite()->getId();
+            $cachedContent = $this->cacheHelper->getCachedContent($cacheId);
+
+            if (!empty($cachedContent)) {
+                return true;
+            }
+
             $response = $this->omniPing($url, $lsKey);
 
             if ($response &&
                 strpos($response->getResult(), 'ERROR') === false &&
                 strpos($response->getResult(), 'Failed') === false
             ) {
+                $this->cacheHelper->persistContentInCache(
+                    $cacheId,
+                    $response->getResult(),
+                    [Type::CACHE_TAG],
+                    $this->getCommerceServiceHeartbeatTimeout()
+                );
+
                 if ($this->isNotificationEmailSent()) {
                     $this->setNotificationEmailSent(0);
                 }
