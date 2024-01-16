@@ -3,8 +3,8 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ContactHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
@@ -93,8 +93,9 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
                         $this->messageManager->addErrorMessage(__('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.'));
                         $isNotValid = true;
                     } else {
-                        $session    = $this->customerSession;
-                        $this->contactHelper->syncCustomerToCentral($observer,$session);
+                        //do nothing
+//                        $session    = $this->customerSession;
+//                        $this->contactHelper->syncCustomerToCentral($observer,$session);
 
                     }
                 } catch (Exception $e) {

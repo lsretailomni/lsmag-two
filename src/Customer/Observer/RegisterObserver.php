@@ -3,9 +3,9 @@
 namespace Ls\Customer\Observer;
 
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Helper\ContactHelper;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\Observer;
@@ -69,10 +69,13 @@ class RegisterObserver implements ObserverInterface
     {
         try {
             $parameters = $observer->getRequest()->getParams();
-            $additionalParams = $this->contactHelper->getValue();
             $session    = $this->customerSession;
+            $customer   = $session->getCustomer();
+            $this->contactHelper->syncCustomerToCentral($observer, $session);
+            $additionalParams = $this->contactHelper->getValue();
+
             /** @var Customer $customer */
-            $customer = $session->getCustomer();
+
             if (empty($customer->getId())) {
                 $customer = $this->contactHelper->getCustomerByEmail($additionalParams['email']);
             }
@@ -103,7 +106,10 @@ class RegisterObserver implements ObserverInterface
                         $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
                     }
                 } else {
-                    $customer->setData('lsr_password', $this->contactHelper->encryptPassword($additionalParams['password']));
+                    $customer->setData(
+                        'lsr_password',
+                        $this->contactHelper->encryptPassword($additionalParams['password'])
+                    );
                     $this->customerResourceModel->save($customer);
                 }
             }
