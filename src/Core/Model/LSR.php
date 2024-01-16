@@ -414,6 +414,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
+    const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
+    const LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_discount_validation_active';
     const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
         = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
@@ -929,6 +931,36 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->scopeConfig->getValue(
             self::PICKUP_TIMESLOTS_ENABLED,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
+
+    /**
+     * Discount validation before order placement is enabled or not
+     *
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function isDiscountValidationEnabled()
+    {
+        return $this->scopeConfig->getValue(
+            self::LSR_DISCOUNT_VALIDATION_ACTIVE,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
+
+    /**
+     * Graphql Discount validation before order placement is enabled or not
+     *
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function isGraphqlDiscountValidationEnabled()
+    {
+        return $this->scopeConfig->getValue(
+            self::LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );

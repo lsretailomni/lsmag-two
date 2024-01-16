@@ -88,7 +88,7 @@ class LayoutProcessorPlugin
             unset($payment['children']['afterMethods']['children']['gift-card']);
             $sideBar['children']['summary']['children']['cart_items']['children']['details']['component'] =
                 'Magento_Checkout/js/view/summary/item/details';
-
+            unset($payment['children']['additional-payment-validators']['children']['discount-validator']);
             return $jsLayout;
         }
 
@@ -112,6 +112,10 @@ class LayoutProcessorPlugin
 
         if (!($this->lsr->isPickupTimeslotsEnabled() && $this->lsr->isLSR($this->lsr->getCurrentStoreId()))) {
             unset($shippingAdditional['children']['ls-pickup-additional-options-wrapper']);
+        }
+
+        if (!$this->lsr->isDiscountValidationEnabled()) {
+            unset($payment['children']['additional-payment-validators']['children']['discount-validator']);
         }
 
         if (isset($shippingAdditional['children'])) {
