@@ -8,14 +8,13 @@ use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\CacheHelper;
-use Ls\Omni\Model\Cache\Type;
+use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use Magento\Config\Model\ResourceModel\Config\Data\CollectionFactory as ConfigCollectionFactory;
 use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataCollection;
 use Magento\Framework\App\Area;
-use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -24,7 +23,6 @@ use Magento\Framework\Translate\Inline\StateInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use SoapClient;
 
 /**
  * Magento configuration related class
@@ -47,11 +45,6 @@ class Data
      * @var WriterInterface
      */
     private $configWriter;
-
-    /**
-     * @var TypeListInterface
-     */
-    private $cacheTypeList;
 
     /**
      * @var CacheHelper
@@ -77,7 +70,6 @@ class Data
      * @param StateInterface $state
      * @param WriterInterface $configWriter
      * @param ConfigCollectionFactory $configDataCollectionFactory
-     * @param TypeListInterface $cacheTypeList
      * @param CacheHelper $cacheHelper
      * @param ScopeConfigInterface $scopeConfig
      * @param LoggerInterface $logger
@@ -88,7 +80,6 @@ class Data
         StateInterface $state,
         WriterInterface $configWriter,
         ConfigCollectionFactory $configDataCollectionFactory,
-        TypeListInterface $cacheTypeList,
         CacheHelper $cacheHelper,
         ScopeConfigInterface $scopeConfig,
         LoggerInterface $logger
@@ -97,7 +88,6 @@ class Data
         $this->transportBuilder            = $transportBuilder;
         $this->inlineTranslation           = $state;
         $this->configWriter                = $configWriter;
-        $this->cacheTypeList               = $cacheTypeList;
         $this->cacheHelper                 = $cacheHelper;
         $this->scopeConfig                 = $scopeConfig;
         $this->configDataCollectionFactory = $configDataCollectionFactory;
