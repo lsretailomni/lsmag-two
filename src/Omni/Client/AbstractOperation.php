@@ -7,7 +7,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
-use Ls\Omni\Helper\CacheHelper;
+use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
