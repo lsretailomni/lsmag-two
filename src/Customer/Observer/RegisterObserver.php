@@ -62,6 +62,8 @@ class RegisterObserver implements ObserverInterface
     }
 
     /**
+     * Observer execute
+     *
      * @param Observer $observer
      * @return $this|void
      */
@@ -79,7 +81,9 @@ class RegisterObserver implements ObserverInterface
             if (empty($customer->getId())) {
                 $customer = $this->contactHelper->getCustomerByEmail($additionalParams['email']);
             }
-            if ($customer->getId() && !empty($additionalParams['lsr_username']) && !empty($additionalParams['password'])) {
+            if ($customer->getId() && !empty($additionalParams['lsr_username'])
+                && !empty($additionalParams['password'])
+            ) {
                 $customer->setData('lsr_username', $additionalParams['lsr_username']);
                 $customer->setData('password', $additionalParams['password']);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
@@ -97,7 +101,7 @@ class RegisterObserver implements ObserverInterface
                         $customer->getData('lsr_username'),
                         $additionalParams['password']
                     );
-                    if ($loginResult == false) {
+                    if (!$loginResult) {
                         $this->logger->error('Invalid Omni login or Omni password');
                         return $this;
                     } else {

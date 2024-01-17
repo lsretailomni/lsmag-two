@@ -73,6 +73,8 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
     }
 
     /**
+     * Observer execute
+     *
      * @param Observer $observer
      * @return $this
      * @throws LocalizedException
@@ -90,13 +92,11 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
             )) {
                 try {
                     if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
-                        $this->messageManager->addErrorMessage(__('There is already an account with this email address. If you are sure that it is your email address, please proceed to login or use different email address.'));
+                        $this->messageManager->addErrorMessage(
+                            __('There is already an account with this email address. If you are sure that it is
+                            your email address, please proceed to login or use different email address.')
+                        );
                         $isNotValid = true;
-                    } else {
-                        //do nothing
-//                        $session    = $this->customerSession;
-//                        $this->contactHelper->syncCustomerToCentral($observer,$session);
-
                     }
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
