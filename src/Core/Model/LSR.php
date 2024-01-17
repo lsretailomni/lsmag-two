@@ -70,6 +70,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
     const SC_SERVICE_VERSION = 'ls_mag/service/version';
     const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
+    const SC_SERVICE_HEART_BEAT_TIMEOUT = 'ls_mag/service/heart_beat_timeout';
 
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
@@ -396,6 +397,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const STORE = 'LS_STORE_';
     const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
+    const PING_RESPONSE_CACHE = 'PING_RESPONSE_' ;
 
     // Date format to be used in fetching the data.
     const DATE_FORMAT = 'Y-m-d';

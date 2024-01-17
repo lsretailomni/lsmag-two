@@ -60,13 +60,19 @@
                        showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>Debug Mode for Omni Client</comment>
+                    <comment>Debug Mode for Commerce Service Client</comment>
                 </field>
                 <field id="timeout" translate="label comment" type="text" sortOrder="110" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Service Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
-                    <comment>Max time in seconds to wait for omni response</comment>
+                    <comment>Max time in seconds to wait for commerce service response</comment>
+                </field>
+                <field id="heart_beat_timeout" translate="label comment" type="text" sortOrder="110" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Commerce Service Heartbeat Cache Timeout</label>
+                    <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
+                    <comment>Commerce service heartbeat cache timeout in seconds. Make sure LS eCommerce Cache is enabled in order to use this.</comment>
                 </field>
             </group>
             <group id="ls_disaster_recovery"
