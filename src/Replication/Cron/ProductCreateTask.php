@@ -1746,7 +1746,7 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
-        $itemId           = $variantId = $uom = '';
+        $itemId = '';
         $cronProductCheck = $this->lsr->getConfigValueFromDb(
             LSR::SC_SUCCESS_CRON_PRODUCT,
             ScopeInterface::SCOPE_STORES,
@@ -1766,18 +1766,27 @@ class ProductCreateTask
                 /** @var ReplBarcode $replBarcode */
                 foreach ($replBarcodes->getItems() as $replBarcode) {
                     try {
+                        $variantId = $uom = '';
                         $itemId = $replBarcode->getItemId();
                         if ($replBarcode->getVariantId()) {
                             $variantId = $replBarcode->getVariantId();
                         }
                         if (!empty($replBarcode->getUnitOfMeasure())) {
-                            $uom = $replBarcode->getUnitOfMeasure();
+                            $totalUomCodes = $this->replicationHelper->getUomCodes(
+                                $replBarcode->getItemId(),
+                                $this->getScopeId()
+                            );
+
+                            if (count($totalUomCodes[$replBarcode->getItemId()]) > 1) {
+                                $uom = $replBarcode->getUnitOfMeasure();
+                            }
+
                         }
                         $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                             $itemId,
                             $variantId,
                             $uom,
-                            $this->store->getId()
+                            'global'
                         );
                         if (isset($productData)) {
                             $productData->setBarcode($replBarcode->getNavId());
@@ -1788,14 +1797,20 @@ class ProductCreateTask
                         $this->logDetailedException(
                             __METHOD__,
                             $this->store->getName(),
-                            $itemId
+                            $itemId,
+                            $variantId,
+                            $uom
                         );
                         $this->logger->debug($e->getMessage());
                         $replBarcode->setData('is_failed', 1);
                     }
-                    $replBarcode->setData('is_updated', 0);
-                    $replBarcode->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $replBarcode->setData('processed', 1);
+                    $replBarcode->addData(
+                        [
+                            'is_updated'   => 0,
+                            'processed_at' => $this->replicationHelper->getDateTime(),
+                            'processed'    => 1
+                        ]
+                    );
                     $this->replBarcodeRepository->save($replBarcode);
                 }
             }
