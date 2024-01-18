@@ -7,8 +7,8 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Captcha\Observer\CheckUserCreateObserver;
 use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
+use Magento\Framework\App\ActionInterface;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Exception\LocalizedException;
@@ -92,8 +92,7 @@ class CheckUserCreate
         object $result,
         \Magento\Framework\Event\Observer $observer
     ) {
-        $this->logger->info("Inside around execute");
-        if (!$this->actionFlag->get('', 'no-dispatch')) {
+        if (!$this->actionFlag->get('', ActionInterface::FLAG_NO_DISPATCH)) {
             $this->customerRegisterationOnCentral($observer);
         }
     }
@@ -137,7 +136,7 @@ class CheckUserCreate
             $isNotValid = true;
         }
         if ($isNotValid) {
-            $this->actionFlag->set('', Action::FLAG_NO_DISPATCH, true);
+            $this->actionFlag->set('', ActionInterface::FLAG_NO_DISPATCH, true);
             $observer->getControllerAction()
                 ->getResponse()->setRedirect($this->redirectInterface->getRefererUrl());
             $this->customerSession->setCustomerFormData($parameters);
