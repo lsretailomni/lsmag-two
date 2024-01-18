@@ -3194,34 +3194,32 @@ class ReplicationHelper extends AbstractHelper
         try {
             $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
             $sourceItems        = [];
-            $skus               = [$sku];
+
             foreach ($parentProductsSkus as $parentSku) {
-                $productId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus($parentSku);
                 $parentSku = array_shift($parentSku);
-                $this->setStockStatusChangedAuto($productId);
-                $skus[]        = $parentSku;
                 $sourceItems[] = $this->getSourceItemGivenData(
                     $parentSku,
                     0,
                     ($replInvStatus->getQuantity() > 0) ? 1 : 0
                 );
+
+                $this->setStockStatusChangedAuto(
+                    $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]),
+                    0
+                );
             }
+
             $sourceItems[] = $this->getSourceItemGivenData(
                 $sku,
                 $replInvStatus->getQuantity(),
                 ($replInvStatus->getQuantity() > 0) ? 1 : 0
             );
             $this->sourceItemsSave->execute($sourceItems);
+            $this->setStockStatusChangedAuto(
+                $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$sku]),
+                $replInvStatus->getQuantity()
+            );
             $this->parentItemProcessor->process($this->productRepository->get($sku));
-            $productIds = array_values($this->getProductIdsBySkus->execute($skus));
-
-            /**
-             * Deleting relevant records from cataloginventory_stock_status
-             * in order to get the correct values on next reindex
-             */
-            foreach ($productIds as $id) {
-                $this->stockStatusRepository->deleteById($id);
-            }
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
@@ -3229,12 +3227,13 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Set stock_status_changed_auto = 1 for configurable product in table cataloginventory_stock_item
+     * Set stock_status_changed_auto = 1 in table cataloginventory_stock_item
      *
      * @param $productId
+     * @param $qty
      * @return void
      */
-    public function setStockStatusChangedAuto($productId)
+    public function setStockStatusChangedAuto($productId, $qty)
     {
         $criteria = $this->criteriaInterfaceFactory->create();
         $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
@@ -3248,7 +3247,8 @@ class ReplicationHelper extends AbstractHelper
         $parentStockItem = array_shift($allItems);
         $parentStockItem
             ->setStockStatusChangedAuto(1)
-            ->setStockStatusChangedAutomaticallyFlag(1);
+            ->setStockStatusChangedAutomaticallyFlag(1)
+            ->setQty($qty);
 
         if (!$this->isSingleSourceMode->execute()) {
             $parentStockItem->setIsInStock(1);

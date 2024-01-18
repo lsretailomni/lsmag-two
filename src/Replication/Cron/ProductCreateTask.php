@@ -2219,8 +2219,8 @@ class ProductCreateTask
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
 
-        if ($configProduct->getExtensionAttributes()->getStockItem()) {
-            $configProduct->getExtensionAttributes()->getStockItem()->setStockStatusChangedAutomaticallyFlag(true);
+        if ($stockItem = $configProduct->getExtensionAttributes()->getStockItem()) {
+            $stockItem->setIsInStock(1)->setStockStatusChangedAutomaticallyFlag(1);
         }
         try {
             $this->productRepository->save($configProduct);
