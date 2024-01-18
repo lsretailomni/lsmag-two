@@ -59,10 +59,19 @@
         <plugin name="authentication"
                 type="Magento\Sales\Controller\Order\Plugin\Authentication"/>
     </type>
+
+    <type name="Magento\Captcha\Observer\CheckUserCreateObserver">
+        <plugin name="CheckUserCreateObserver_ObserverClass_Plugin" sortOrder="10" type="Ls\Customer\Plugin\Customer\Captcha\Observer\CheckUserCreate"/>
+    </type>
+
     <type name="Magento\Bundle\Block\Sales\Order\Items\Renderer">
         <plugin name="bundle-order-item-renderer"
                 type="Ls\Customer\Plugin\Sales\Order\Items\RendererPlugin"/>
     </type>
+    <type name="Magento\Captcha\Observer\CheckUserCreateObserver">
+        <plugin name="CheckUserCreateObserver_ObserverClass_Plugin" sortOrder="10" type="Ls\Customer\Plugin\Customer\Captcha\Observer\CheckUserCreate"/>
+    </type>
+
     <type name="Ls\Customer\Block\Order\Recent">
         <arguments>
             <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>

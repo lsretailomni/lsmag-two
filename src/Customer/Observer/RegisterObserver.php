@@ -20,24 +20,20 @@ class RegisterObserver implements ObserverInterface
 {
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
-
     /** @var Registry $registry */
     private $registry;
-
     /** @var LoggerInterface $logger */
     private $logger;
-
     /** @var CustomerSession $customerSession */
     private $customerSession;
-
     /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
     private $customerResourceModel;
-
     /** @var LSR @var */
     private $lsr;
 
     /**
      * RegisterObserver constructor.
+     *
      * @param ContactHelper $contactHelper
      * @param Registry $registry
      * @param LoggerInterface $logger
@@ -70,10 +66,8 @@ class RegisterObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
-            $parameters = $observer->getRequest()->getParams();
-            $session    = $this->customerSession;
-            $customer   = $session->getCustomer();
-            $this->contactHelper->syncCustomerToCentral($observer, $session);
+            $session          = $this->customerSession;
+            $customer         = $session->getCustomer();
             $additionalParams = $this->contactHelper->getValue();
 
             /** @var Customer $customer */

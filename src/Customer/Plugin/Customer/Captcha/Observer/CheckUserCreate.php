@@ -1,75 +1,101 @@
 <?php
 
-namespace Ls\Customer\Observer;
+namespace Ls\Customer\Plugin\Customer\Captcha\Observer;
 
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
+use Magento\Captcha\Observer\CheckUserCreateObserver;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\Response\RedirectInterface;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class CustomerRegisterPreDispatchObserver
- * We need to check if email is already exist or not,
- * If exist redirect back to registration with error message that email already exist.
+ * Plugin to sync customer to central after captcha validation
  */
-class CustomerRegisterPreDispatchObserver implements ObserverInterface
+class CheckUserCreate
 {
-    /** @var ContactHelper */
-    private $contactHelper;
-
-    /** @var ManagerInterface */
-    private $messageManager;
-
-    /** @var LoggerInterface */
-    private $logger;
-
-    /** @var CustomerSession */
-    private $customerSession;
-
-    /** @var RedirectInterface */
-    private $redirectInterface;
-
-    /** @var ActionFlag */
-    private $actionFlag;
-
-    /** @var LSR @var */
-    private $lsr;
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+    /**
+     * @var ContactHelper
+     */
+    private ContactHelper $contactHelper;
+    /**
+     * @var ManagerInterface
+     */
+    private ManagerInterface $messageManager;
+    /**
+     * @var CustomerSession
+     */
+    private CustomerSession $customerSession;
+    /**
+     * @var LSR
+     */
+    private LSR $lsr;
+    /**
+     * @var RedirectInterface
+     */
+    private RedirectInterface $redirectInterface;
+    /**
+     * @var ActionFlag
+     */
+    private ActionFlag $actionFlag;
 
     /**
-     * UsernameObserver constructor.
+     * @param LoggerInterface $logger
      * @param ContactHelper $contactHelper
      * @param ManagerInterface $messageManager
-     * @param LoggerInterface $logger
      * @param CustomerSession $customerSession
      * @param RedirectInterface $redirectInterface
      * @param ActionFlag $actionFlag
      * @param LSR $LSR
      */
     public function __construct(
+        LoggerInterface $logger,
         ContactHelper $contactHelper,
         ManagerInterface $messageManager,
-        LoggerInterface $logger,
         CustomerSession $customerSession,
         RedirectInterface $redirectInterface,
         ActionFlag $actionFlag,
         LSR $LSR
     ) {
+        $this->logger            = $logger;
         $this->contactHelper     = $contactHelper;
         $this->messageManager    = $messageManager;
-        $this->logger            = $logger;
         $this->customerSession   = $customerSession;
         $this->redirectInterface = $redirectInterface;
         $this->actionFlag        = $actionFlag;
         $this->lsr               = $LSR;
+    }
+
+    /**
+     * Around plugin for execute
+     *
+     * @param CheckUserCreateObserver $subject
+     * @param object $result
+     * @param Observer $observer
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function afterExecute(
+        \Magento\Captcha\Observer\CheckUserCreateObserver $subject,
+        object $result,
+        \Magento\Framework\Event\Observer $observer
+    ) {
+        $this->logger->info("Inside around execute");
+        if (!$this->actionFlag->get('', 'no-dispatch')) {
+            $this->customerRegisterationOnCentral($observer);
+        }
     }
 
     /**
@@ -80,9 +106,8 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function execute(Observer $observer)
+    public function customerRegisterationOnCentral($observer)
     {
-
         $parameters = $observer->getRequest()->getParams();
         $isNotValid = false;
 
@@ -100,7 +125,7 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
                         $isNotValid = true;
                     } else {
                         $session = $this->customerSession;
-                        $this->logger->info("pre dispatch observer");
+                        $this->logger->info("pre dispatch observer plugin");
                         $this->contactHelper->syncCustomerToCentral($observer, $session);
                     }
                 } catch (Exception $e) {
