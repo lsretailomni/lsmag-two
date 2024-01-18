@@ -3,17 +3,15 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use Laminas\Stdlib\Parameters;
 use Laminas\Validator\EmailAddress as ValidateEmailAddress;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Exception\InvalidEnumException;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\MemberContact;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Api\Data\AddressInterfaceFactory;
@@ -50,8 +48,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\ExpiredException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Framework\Exception\State\UserLockedException;
+use Magento\Framework\Message\ManagerInterface;
 use Magento\Framework\Phrase;
 use Magento\Framework\Registry;
+use Magento\Framework\Session\SessionManagerInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Wishlist\Model\ResourceModel\Wishlist;
@@ -233,6 +233,7 @@ class ContactHelper extends AbstractHelper
      * @param Authentication $authentication
      * @param AccountConfirmation $accountConfirmation
      * @param StockHelper $stockHelper
+     * @param ManagerInterface $messageManager
      */
     public function __construct(
         Context $context,
@@ -269,7 +270,8 @@ class ContactHelper extends AbstractHelper
         CustomerRegistry $customerRegistry,
         Authentication $authentication,
         AccountConfirmation $accountConfirmation,
-        StockHelper $stockHelper
+        StockHelper $stockHelper,
+        ManagerInterface $messageManager
     ) {
         $this->filterBuilder         = $filterBuilder;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -305,93 +307,16 @@ class ContactHelper extends AbstractHelper
         $this->authentication        = $authentication;
         $this->accountConfirmation   = $accountConfirmation;
         $this->stockHelper           = $stockHelper;
+        $this->messageManager        = $messageManager;
         parent::__construct(
             $context
         );
     }
 
     /**
-     * @param $email
-     * @return MemberContact[]|null
-     * @throws InvalidEnumException
-     * @throws LocalizedException
-     */
-    public function search($email)
-    {
-        $is_email = $this->isValid($email);
-        // load customer data from magento customer database based on lsr_username if we didn't get an email
-        if (!$is_email) {
-            $filters = [
-                $this->filterBuilder
-                    ->setField('lsr_username')
-                    ->setConditionType('like')
-                    ->setValue($email)
-                    ->create()
-            ];
-            $this->searchCriteriaBuilder->addFilters($filters);
-            $searchCriteria = $this->searchCriteriaBuilder->create();
-            $searchResults  = $this->customerRepository->getList($searchCriteria);
-            if ($searchResults->getTotalCount() == 1) {
-                /** @var Customer $customer */
-                $customer = $searchResults->getItems()[0];
-                if ($customer->getId()) {
-                    $is_email = true;
-                    $email    = $customer->getData('email');
-                }
-            }
-        }
-
-        if ($is_email) {
-            /** @var Operation\ContactGetById $request */
-            // @codingStandardsIgnoreStart
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                $request = new Operation\ContactGet();
-                $search  = new Entity\ContactGet();
-            } else {
-                $request = new Operation\ContactSearch();
-                $search  = new Entity\ContactSearch();
-                $search->setMaxNumberOfRowsReturned(1);
-            }
-            // @codingStandardsIgnoreEnd
-            $search->setSearch($email);
-
-            // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
-            $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
-
-            try {
-                $response = $request->execute($search);
-                if($response) {
-                    if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                        $contact_pos = $response->getContactGetResult();
-                    } else {
-                        $contact_pos = $response->getContactSearchResult();
-                    }
-                }
-
-
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-        } else {
-            // we cannot search by username in Omni as the API does not offer this information. So we quit.
-            return null;
-        }
-
-        if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
-            if (is_array($contact_pos->getMemberContact())) {
-                return $contact_pos->getMemberContact()[0];
-            } else {
-                return $contact_pos->getMemberContact();
-            }
-        } elseif ($contact_pos instanceof MemberContact) {
-            return $contact_pos;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param $param
+     * Search in central with username or email
+     *
+     * @param array $param
      * @return Entity\ArrayOfMemberContact|MemberContact[]|null
      * @throws InvalidEnumException
      * @throws LocalizedException
@@ -442,9 +367,113 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param $user
-     * @param $pass
-     * @return Entity\LoginWebResponse|MemberContact|ResponseInterface|null
+     * For validating email address is correct or not
+     *
+     * @param string $email
+     * @return bool
+     */
+    public function isValid($email)
+    {
+        return $this->validateEmailAddress->isValid($email) && strlen($email) < 80;
+    }
+
+    /**
+     * Search by email
+     *
+     * @param string $email
+     * @return MemberContact[]|null
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     */
+    public function search($email)
+    {
+        $is_email = $this->isValid($email);
+        // load customer data from magento customer database based on lsr_username if we didn't get an email
+        if (!$is_email) {
+            $filters = [
+                $this->filterBuilder
+                    ->setField('lsr_username')
+                    ->setConditionType('like')
+                    ->setValue($email)
+                    ->create()
+            ];
+            $this->searchCriteriaBuilder->addFilters($filters);
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchResults  = $this->customerRepository->getList($searchCriteria);
+            if ($searchResults->getTotalCount() == 1) {
+                /** @var Customer $customer */
+                $customer = $searchResults->getItems()[0];
+                if ($customer->getId()) {
+                    $is_email = true;
+                    $email    = $customer->getData('email');
+                }
+            }
+        }
+
+        if ($is_email) {
+            /** @var Operation\ContactGetById $request */
+            // @codingStandardsIgnoreStart
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                $request = new Operation\ContactGet();
+                $search  = new Entity\ContactGet();
+            } else {
+                $request = new Operation\ContactSearch();
+                $search  = new Entity\ContactSearch();
+                $search->setMaxNumberOfRowsReturned(1);
+            }
+            // @codingStandardsIgnoreEnd
+            $search->setSearch($email);
+
+            // enabling this causes the segfault if ContactSearchType is in the classMap of the SoapClient
+            $search->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
+
+            try {
+                $response = $request->execute($search);
+                if ($response) {
+                    if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                        $contact_pos = $response->getContactGetResult();
+                    } else {
+                        $contact_pos = $response->getContactSearchResult();
+                    }
+                }
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+        } else {
+            // we cannot search by username in Omni as the API does not offer this information. So we quit.
+            return null;
+        }
+
+        if ($contact_pos instanceof Entity\ArrayOfMemberContact && !empty($contact_pos->getMemberContact())) {
+            if (is_array($contact_pos->getMemberContact())) {
+                return $contact_pos->getMemberContact()[0];
+            } else {
+                return $contact_pos->getMemberContact();
+            }
+        } elseif ($contact_pos instanceof MemberContact) {
+            return $contact_pos;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Set lsr params in session
+     *
+     * @param string $value
+     */
+    public function setValue($value)
+    {
+        $this->session->start();
+        $this->session->setLsrParams($value);
+    }
+
+    /**
+     * Customer login
+     *
+     * @param string $user
+     * @param string $pass
+     * @return Entity\LoginResponse|MemberContact|ResponseInterface|null
      */
     public function login($user, $pass)
     {
@@ -469,8 +498,618 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Check email exist in LS Central or not
+     *
+     * @param string $email
+     * @return bool
+     * @throws InvalidEnumException
+     */
+    public function isEmailExistInLsCentral($email)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+            $request       = new Operation\ContactGet();
+            $contactSearch = new Entity\ContactGet();
+        } else {
+            $request       = new Operation\ContactSearch();
+            $contactSearch = new Entity\ContactSearch();
+        }
+        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
+        $contactSearch->setSearch($email);
+        try {
+            $response = $request->execute($contactSearch);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+            if (!empty($response) && !empty($response->getContactGetResult())) {
+                if ($response->getContactGetResult()->getEmail() === $email) {
+                    return true;
+                }
+            }
+        } else {
+            if (!empty($response) && !empty($response->getContactSearchResult())) {
+                foreach ($response->getContactSearchResult() as $contact) {
+                    if ($contact->getEmail() === $email) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Function to change password
+     *
+     * @param $customer
+     * @param $customer_post
+     * @return bool|Entity\PasswordChangeResponse|ResponseInterface|null
+     */
+    public function changePassword($customer, $customer_post)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $request        = new Operation\PasswordChange();
+        $changepassword = new Entity\PasswordChange();
+        // @codingStandardsIgnoreEnd
+
+        $request->setToken($customer->getData('lsr_token'));
+
+        $changepassword->setUserName($customer->getData('lsr_username'))
+            ->setOldPassword($customer_post['current_password'])
+            ->setNewPassword($customer_post['password'])
+            ->setToken('');
+
+        try {
+            $response = $request->execute($changepassword);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response ? $response->getPasswordChangeResult() : $response;
+    }
+
+    /**
+     * Sync customer to Central after successful registration in magento.
+     * If error response (other than timeout error) from Central it will block registration in magento.
+     *
+     * @param object $observer
+     * @param object $session
+     * @return $this
+     * @throws \Zend_Log_Exception
+     */
+    public function syncCustomerToCentral($observer, $session)
+    {
+        $parameters = $observer->getRequest()->getParams();
+        try {
+            do {
+                $parameters['lsr_username'] = $this->generateRandomUsername();
+            } while ($this->isUsernameExist($parameters['lsr_username']) ||
+            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
+                $this->isUsernameExistInLsCentral($parameters['lsr_username']) : false
+            );
+            /** @var Customer $customer */
+            $customer = $session->getCustomer();
+            $request  = $observer->getControllerAction()->getRequest();
+            $request->setPostValue('lsr_username', $parameters['lsr_username']);
+            if (!empty($parameters['email']) && !empty($parameters['lsr_username'])
+                && !empty($parameters['password'])
+            ) {
+                $customer->setData('lsr_username', $parameters['lsr_username']);
+                $customer->setData('email', $parameters['email']);
+                $customer->setData('password', $parameters['password']);
+                $customer->setData('firstname', $parameters['firstname']);
+                $customer->setData('lastname', $parameters['lastname']);
+                $customer->setData('middlename', (array_key_exists(
+                    'middlename',
+                    $parameters
+                ) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                $customer->setData(
+                    'gender',
+                    (array_key_exists('gender', $parameters) && $parameters['gender']) ? $parameters['gender'] : null
+                );
+                $customer->setData(
+                    'dob',
+                    (array_key_exists('dob', $parameters) && $parameters['dob']) ? $parameters['dob'] : null
+                );
+                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                    /** @var Entity\MemberContact $contact */
+                    $contact = $this->contact($customer);
+                    if (is_object($contact) && $contact->getId()) {
+                        $customer                   = $this->setCustomerAttributesValues($contact, $customer);
+                        $parameters['lsr_id']       = $customer->getLsrId();
+                        $parameters['lsr_username'] = $customer->getLsrUsername();
+                        $parameters['lsr_token']    = $customer->getLsrToken();
+                        $parameters['lsr_cardid']   = $customer->getLsrCardid();
+                        $parameters['group_id']     = $customer->getGroupId();
+                        $parameters['contact']      = $contact;
+                    } else {
+                        $this->_logger->info("Timeout error.");
+                        $this->messageManager->addErrorMessage(
+                            "Something went wrong during customer registration. Please try after sometime."
+                        );
+
+                    }
+                }
+            }
+            $this->setValue($parameters);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $this;
+    }
+
+    /**
+     * Function to generate random username
+     *
+     * @param int $length
+     * @return mixed|string
+     * @throws LocalizedException
+     */
+    public function generateRandomUsername($length = 5)
+    {
+        $randomString = $this->lsr->getWebsiteConfig(
+            LSR::SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH,
+            $this->storeManager->getWebsite()->getWebsiteId()
+        );
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= rand(0, 9);
+        }
+        return $randomString;
+    }
+
+    /**
+     * Function to check if username exist
+     *
+     * @param string $username
+     * @return bool
+     * @throws LocalizedException
+     */
+    public function isUsernameExist($username)
+    {
+        // Creating search filter to apply for.
+        $filters = [
+            $this->filterBuilder
+                ->setField('lsr_username')
+                ->setConditionType('eq')
+                ->setValue($username)
+                ->create()
+        ];
+        // generating where statement to apply for.
+        $searchCriteria = $this->searchCriteriaBuilder->addFilters($filters)->create();
+
+        // applying the where statement clause to the customer repository.
+        $searchResults = $this->customerRepository->getList($searchCriteria);
+
+        if ($searchResults->getTotalCount() > 0) {
+            // if username already exist
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Check username exist in LS Central or not
+     *
+     * @param string $username
+     * @return bool
+     * @throws InvalidEnumException
+     */
+    public function isUsernameExistInLsCentral($username)
+    {
+        if ($this->lsr->getStoreConfig(
+            LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
+            $this->lsr->getCurrentStoreId()
+        )) {
+            $response = null;
+            // @codingStandardsIgnoreStart
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                $request       = new Operation\ContactGet();
+                $contactSearch = new Entity\ContactGet();
+            } else {
+                $request       = new Operation\ContactSearch();
+                $contactSearch = new Entity\ContactSearch();
+            }
+            $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
+            $contactSearch->setSearch($username);
+            try {
+                $response = $request->execute($contactSearch);
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
+            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
+                if (!empty($response) && !empty($response->getContactGetResult())) {
+                    if ($response->getContactGetResult()->getUserName() === $username) {
+                        return true;
+                    }
+                }
+            } else {
+                if (!empty($response) && !empty($response->getContactSearchResult())) {
+                    foreach ($response->getContactSearchResult() as $contact) {
+                        if ($contact->getUserName() === $username) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Sync customer to central
+     *
+     * @param Customer $customer
+     * @return Entity\ContactCreateResponse|MemberContact|ResponseInterface|null
+     * @throws InvalidEnumException
+     */
+    public function contact(Customer $customer)
+    {
+        $response = null;
+        // @codingStandardsIgnoreStart
+        $alternate_id  = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
+        $request       = new Operation\ContactCreate();
+        $contactCreate = new Entity\ContactCreate();
+        $contact       = new MemberContact();
+        if (!empty($customer->getData('lsr_password'))) {
+            $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
+        } else {
+            $lsrPassword = null;
+        }
+        $password = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
+        // @codingStandardsIgnoreEnd
+        $contact->setAlternateId($alternate_id)
+            ->setEmail($customer->getData('email'))
+            ->setFirstName($customer->getData('firstname'))
+            ->setLastName($customer->getData('lastname'))
+            ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : null)
+            ->setPassword($password)
+            ->setUserName($customer->getData('lsr_username'))
+            ->setAddresses([]);
+
+        if (!empty($customer->getData('gender'))) {
+            $genderValue = '';
+            if ($customer->getData('gender') == 1) {
+                $genderValue = Entity\Enum\Gender::MALE;
+            } else {
+                if ($customer->getData('gender') == 2) {
+                    $genderValue = Entity\Enum\Gender::FEMALE;
+                } else {
+                    if ($customer->getData('gender') == 3) {
+                        $genderValue = Entity\Enum\Gender::UNKNOWN;
+                    }
+                }
+            }
+            $contact->setGender($genderValue);
+        }
+
+        if (!empty($customer->getData('dob'))) {
+            $dob = $this->date->date("Y-m-d\T00:00:00", $customer->getData('dob'));
+            $contact->setBirthDay($dob);
+        }
+
+        $contactCreate->setContact($contact);
+        try {
+            $response = $request->execute($contactCreate);
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+        return $response ? $response->getContactCreateResult() : $response;
+    }
+
+    /**
+     * Set customer addresss
+     *
+     * @param null $address
+     * @return Entity\ArrayOfAddress|null
+     */
+    public function setAddresses($address = null)
+    {
+        // @codingStandardsIgnoreLine
+        $addresses = new Entity\ArrayOfAddress();
+        // only process if the pass object in the instance of customer address
+        if ($address instanceof Entity\Address) {
+            $addresses->setAddress($address);
+            return $addresses;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Set address
+     *
+     * @param null $customerAddress
+     * @return Entity\Address|null
+     * @throws InvalidEnumException
+     */
+    private function setAddress($customerAddress = null)
+    {
+        // @codingStandardsIgnoreLine
+        $address = new Entity\Address();
+        // only process if the pass object in the instance of customer address
+        if ($customerAddress instanceof Address) {
+            $street = $customerAddress->getStreet();
+            // check if street is in the form of array or string
+            if (is_array($street)) {
+                // set address 1
+                $address->setAddress1($street[0]);
+                // check if the pass data are more than 1 then set address 2 as well
+                if (count($street) > 1) {
+                    $address->setAddress2($street[1]);
+                } else {
+                    $address->setAddress2('');
+                }
+            } else {
+                $address->setAddress1($street);
+                $address->setAddress2('');
+            }
+            $region = $customerAddress->getRegion() ? substr($customerAddress->getRegion(), 0, 30) : null;
+            $address->setCity($customerAddress->getCity())
+                ->setCountry($customerAddress->getCountryId())
+                ->setPostCode($customerAddress->getPostcode())
+                ->setPhoneNumber($customerAddress->getTelephone())
+                ->setType(Entity\Enum\AddressType::RESIDENTIAL);
+            $region ? $address->setCounty($region)
+                : $address->setCounty('');
+            return $address;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Return the Country name by Country Id
+     *
+     * Default Country Id = US
+     *
+     * @param string $countryName
+     * @return mixed
+     */
+    public function getCountryId($countryName)
+    {
+        if ($countryName && strlen($countryName) == 2) {
+            return $countryName;
+        }
+
+        $countryName       = $countryName ?? '';
+        $countryName       = ucwords(strtolower($countryName));
+        $countryId         = 'US';
+        $countryCollection = $this->country->getCollection();
+        foreach ($countryCollection as $country) {
+            if ($countryName == $country->getName()) {
+                $countryId = $country->getCountryId();
+                break;
+            }
+        }
+        return $countryId;
+    }
+
+    /**
+     * Set customer attribute values
+     *
      * @param MemberContact $contact
-     * @param $password
+     * @param Customer $customer
+     * @return mixed
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function setCustomerAttributesValues($contact, $customer)
+    {
+        if (!is_array($contact)) {
+            $customer->setData('lsr_id', $contact->getId());
+            if (!empty($contact->getUserName())) {
+                $customer->setData('lsr_username', $contact->getUserName());
+            }
+            if (!empty($contact->getLoggedOnToDevice()) &&
+                !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
+                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                $customer->setData('lsr_token', $token);
+            }
+            if (!empty($contact->getCards()) &&
+                !empty($contact->getCards()->getCard()[0]) &&
+                !empty($contact->getCards()->getCard()[0]->getId())) {
+                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+            }
+            if (!empty($contact->getAccount()) &&
+                !empty($contact->getAccount()->getScheme()) &&
+                !empty($contact->getAccount()->getScheme()->getId())) {
+                $customerGroupId = $this->getCustomerGroupIdByName(
+                    $contact->getAccount()->getScheme()->getId()
+                );
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+            }
+        } else {
+            $customer->setData('lsr_id', $contact['lsr_id']);
+            if (!empty($contact['lsr_username'])) {
+                $customer->setData('lsr_username', $contact['lsr_username']);
+            }
+            if (!empty($contact['lsr_token'])) {
+                $customer->setData('lsr_token', $contact['lsr_token']);
+            }
+            if (!empty($contact['lsr_cardid'])) {
+                $customer->setData('lsr_cardid', $contact['lsr_cardid']);
+            }
+            if (!empty($contact['group_id'])) {
+                $customerGroupId = $contact['group_id'];
+                $customer->setGroupId($customerGroupId);
+                $this->customerSession->setCustomerGroupId($customerGroupId);
+            }
+        }
+
+        return $customer;
+    }
+
+    /**
+     * Get customer group id by name
+     *
+     * @param string $groupname
+     * @return bool|mixed
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
+     */
+
+    public function getCustomerGroupIdByName($groupname = '')
+    {
+        if ($groupname == null || $groupname == '') {
+            return false;
+        }
+
+        /** @var Collection $customerGroups */
+        $customerGroups = $this->customerGroupColl->create()
+            ->addFieldToFilter('customer_group_code', $groupname);
+
+        if ($customerGroups->getSize() > 0) {
+
+            /** @var Group $customerGroup */
+            foreach ($customerGroups as $customerGroup) {
+                return $customerGroup->getId();
+            }
+        } else {
+            // If customer group does not exist in Magento, then create new one.
+            $this->createCustomerGroupByName($groupname);
+
+            return $this->getCustomerGroupIdByName($groupname);
+        }
+    }
+
+    /**
+     *  Create new Customer group based on customer name.
+     *
+     * @param string $groupname
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
+     */
+
+    private function createCustomerGroupByName($groupname = '')
+    {
+        /** @var Group $group */
+        $group = $this->groupInterfaceFactory->create()
+            ->setCode($groupname)
+            // Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
+            ->setTaxClassId(3);
+        $this->groupRepository->save($group);
+    }
+
+    /**
+     * Get lsr session value
+     *
+     * @return mixed
+     */
+    public function getValue()
+    {
+        $this->session->start();
+        return $this->session->getLsrParams();
+    }
+
+    /**
+     * Unset lsr session value
+     *
+     * @return mixed
+     */
+    public function unSetValue()
+    {
+        $this->session->start();
+        return $this->session->unsLsrParams();
+    }
+
+    /**
+     * Get all customer group ids
+     *
+     * @return array
+     */
+    public function getAllCustomerGroupIds()
+    {
+        $customerGroupsIds = [];
+        $customerGroups    = $this->customerGroupColl->create()
+            ->toOptionArray();
+        foreach ($customerGroups as $group) {
+            $customerGroupsIds[] = $group['value'];
+        }
+        return $customerGroupsIds;
+    }
+
+    /**
+     * This function is overriding in OmniGraphQl module
+     *
+     * Process customer login
+     *
+     * @param MemberContact $result
+     * @param array $credentials
+     * @param string $is_email
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
+     */
+    public function processCustomerLogin(MemberContact $result, $credentials, $is_email)
+    {
+        $filters = [
+            $this->filterBuilder
+                ->setField('email')
+                ->setConditionType('eq')
+                ->setValue($result->getEmail())
+                ->create()
+        ];
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $searchResults  = $this->customerRepository->getList($searchCriteria);
+        $customer       = null;
+        if ($searchResults->getTotalCount() == 0) {
+            $customer = $this->createNewCustomerAgainstProvidedInformation($result, $credentials['password']);
+        } else {
+            foreach ($searchResults->getItems() as $match) {
+                $customer = $this->customerRepository->getById($match->getId());
+                break;
+            }
+        }
+        $customer_email = $customer->getEmail();
+        $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
+        $customer       = $this->customerFactory->create()
+            ->setWebsiteId($websiteId)
+            ->loadByEmail($customer_email);
+        $this->authentication($customer, $websiteId);
+        $customer         = $this->setCustomerAttributesValues($result, $customer);
+        $customer         = $this->setCustomerAdditionalValues($result, $customer);
+        $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
+        $validatePassword = $this->encryptorInterface->validateHash(
+            $credentials['password'],
+            $customerSecure->getPasswordHash()
+        );
+        if (!$validatePassword) {
+            $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
+            $customerSecure->setRpToken(null);
+            $customerSecure->setRpTokenCreatedAt(null);
+            $customerSecure->setPasswordHash($passwordHash);
+            $customer->setPasswordHash($passwordHash);
+        }
+        $this->customerResourceModel->save($customer);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+        $this->basketHelper->unSetOneList();
+        $this->basketHelper->unSetOneListCalculation();
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+        $this->customerSession->setCustomerAsLoggedIn($customer);
+    }
+
+    /**
+     * Crete customer in Magento
+     *
+     * @param MemberContact $contact
+     * @param string $password
      * @return Customer
      * @throws Exception
      * @throws LocalizedException
@@ -529,169 +1168,275 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * Return the Country name by Country Id
-     * default Country Id = US
-     * @param $countryName
-     * @return mixed
+     * To authenticate user login
+     *
+     * @param object $customer
+     * @param null $websiteId
+     * @throws EmailNotConfirmedException
+     * @throws UserLockedException
      */
-    public function getCountryId($countryName)
+    public function authentication($customer, $websiteId = null)
     {
-        if ($countryName && strlen($countryName) == 2) {
-            return $countryName;
+        $customerId = $customer->getId();
+        if ($this->authentication->isLocked($customerId)) {
+            throw new UserLockedException(__('The account is locked.'));
         }
-
-        $countryName       = $countryName ?? '';
-        $countryName       = ucwords(strtolower($countryName));
-        $countryId         = 'US';
-        $countryCollection = $this->country->getCollection();
-        foreach ($countryCollection as $country) {
-            if ($countryName == $country->getName()) {
-                $countryId = $country->getCountryId();
-                break;
-            }
-        }
-        return $countryId;
-    }
-
-    /**
-     * @param Customer $customer
-     * @return Entity\ContactCreateResponse|MemberContact|ResponseInterface|null
-     */
-    public function contact(Customer $customer)
-    {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $alternate_id  = 'LSM' . str_pad(sha1(rand(500, 600) . $customer->getId()), 8, '0', STR_PAD_LEFT);
-        $request       = new Operation\ContactCreate();
-        $contactCreate = new Entity\ContactCreate();
-        $contact       = new MemberContact();
-        if (!empty($customer->getData('lsr_password'))) {
-            $lsrPassword = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
-        } else {
-            $lsrPassword = null;
-        }
-        $password = (!empty($lsrPassword)) ? $lsrPassword : $customer->getData('password');
-        // @codingStandardsIgnoreEnd
-        $contact->setAlternateId($alternate_id)
-            ->setEmail($customer->getData('email'))
-            ->setFirstName($customer->getData('firstname'))
-            ->setLastName($customer->getData('lastname'))
-            ->setMiddleName($customer->getData('middlename') ? $customer->getData('middlename') : null)
-            ->setPassword($password)
-            ->setUserName($customer->getData('lsr_username'))
-            ->setAddresses([]);
-
-        if (!empty($customer->getData('gender'))) {
-            $genderValue = '';
-            if ($customer->getData('gender') == 1) {
-                $genderValue = Entity\Enum\Gender::MALE;
-            } else if ($customer->getData('gender') == 2) {
-                $genderValue = Entity\Enum\Gender::FEMALE;
-            } else if ($customer->getData('gender') == 3) {
-                $genderValue = Entity\Enum\Gender::UNKNOWN;
-            }
-            $contact->setGender($genderValue);
-        }
-
-        if (!empty($customer->getData('dob'))) {
-            $dob = $this->date->date("Y-m-d\T00:00:00", $customer->getData('dob'));
-            $contact->setBirthDay($dob);
-        }
-
-        $contactCreate->setContact($contact);
-        try {
-            $response = $request->execute($contactCreate);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        return $response ? $response->getContactCreateResult() : $response;
-    }
-
-    /**
-     * @param $username
-     * @return bool
-     * @throws LocalizedException
-     */
-    public function isUsernameExist($username)
-    {
-        // Creating search filter to apply for.
-        $filters = [
-            $this->filterBuilder
-                ->setField('lsr_username')
-                ->setConditionType('eq')
-                ->setValue($username)
-                ->create()
-        ];
-        // generating where statement to apply for.
-        $searchCriteria = $this->searchCriteriaBuilder->addFilters($filters)->create();
-
-        // applying the where statement clause to the customer repository.
-        $searchResults = $this->customerRepository->getList($searchCriteria);
-
-        if ($searchResults->getTotalCount() > 0) {
-            // if username already exist
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Check username exist in LS Central or not
-     * @param $username
-     * @return bool
-     * @throws InvalidEnumException
-     */
-    public function isUsernameExistInLsCentral($username)
-    {
-        if ($this->lsr->getStoreConfig(
-            LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_USERNAME_API_CALL,
-            $this->lsr->getCurrentStoreId()
+        if ($customer->getConfirmation() && $this->accountConfirmation->isConfirmationRequired(
+            $websiteId,
+            $customerId,
+            $customer->getEmail()
         )) {
-            $response = null;
-            // @codingStandardsIgnoreStart
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                $request       = new Operation\ContactGet();
-                $contactSearch = new Entity\ContactGet();
+            throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
+        }
+    }
+
+    /**
+     * Saving additional customer values
+     *
+     * @param MemberContact $contact
+     * @param Customer $customer
+     * @return mixed
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function setCustomerAdditionalValues($contact, $customer)
+    {
+        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00'
+            && $contact->getBirthDay() != '1900-01-01T00:00:00') {
+            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
+        }
+        if (!empty($contact->getGender())) {
+            $genderValue = '';
+            if ($contact->getGender() == Entity\Enum\Gender::MALE) {
+                $genderValue = 1;
             } else {
-                $request       = new Operation\ContactSearch();
-                $contactSearch = new Entity\ContactSearch();
-            }
-            $contactSearch->setSearchType(Entity\Enum\ContactSearchType::USER_NAME);
-            $contactSearch->setSearch($username);
-            try {
-                $response = $request->execute($contactSearch);
-            } catch (Exception $e) {
-                $this->_logger->error($e->getMessage());
-            }
-            if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-                if (!empty($response) && !empty($response->getContactGetResult())) {
-                    if ($response->getContactGetResult()->getUserName() === $username) {
-                        return true;
+                if ($contact->getGender() == Entity\Enum\Gender::FEMALE) {
+                    $genderValue = 2;
+                } else {
+                    if ($contact->getGender() == Entity\Enum\Gender::UNKNOWN) {
+                        $genderValue = 3;
                     }
                 }
+            }
+            $customer->setData('gender', $genderValue);
+        }
+
+        return $customer;
+    }
+
+    /**
+     * Function to login customer if omni service down
+     *
+     * @param string $isEmail
+     * @param string $userNameOrEmail
+     * @param object $request
+     * @param false $isAjax
+     * @param false $isGraphQl
+     * @return string
+     * @throws LocalizedException
+     */
+    public function loginCustomerIfOmniServiceDown(
+        $isEmail,
+        $userNameOrEmail,
+        $request,
+        $isAjax = false,
+        $isGraphQl = false
+    ) {
+        if (!$isEmail) {
+            $filters = [
+                $this->filterBuilder
+                    ->setField('lsr_username')
+                    ->setConditionType('like')
+                    ->setValue($userNameOrEmail)
+                    ->create()
+            ];
+            $this->searchCriteriaBuilder->addFilters($filters);
+            $searchCriteria = $this->searchCriteriaBuilder->create();
+            $searchResults  = $this->customerRepository->getList($searchCriteria);
+            if ($searchResults->getTotalCount() == 1) {
+                $customerRepository = $searchResults->getItems()[0];
+                $email              = $customerRepository->getEmail();
+                if ($isAjax == true) {
+                    $credentials             = json_decode($request->getContent(), true);
+                    $credentials['username'] = $email;
+                    $request->setContent(json_encode($credentials));
+                } elseif ($isGraphQl == true) {
+                    return $email;
+                } else {
+                    $login             = $request->getPost("login");
+                    $login['username'] = $email;
+                    $request->setPostValue("login", $login);
+                }
+            }
+        }
+    }
+
+    /**
+     * Search customer by email
+     *
+     * @param string $email
+     * @return CustomerSearchResultsInterface
+     * @throws LocalizedException
+     */
+    public function searchCustomerByEmail($email)
+    {
+        $filters = [
+            $this->filterBuilder
+                ->setField('email')
+                ->setConditionType('eq')
+                ->setValue($email)
+                ->create()
+        ];
+        $this->searchCriteriaBuilder->addFilters($filters);
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        return $this->customerRepository->getList($searchCriteria);
+    }
+
+    /**
+     * @param null $websiteId
+     * @return DataObject[]
+     * @throws LocalizedException
+     */
+    public function getAllCustomers($websiteId = null)
+    {
+        $collection = $this->customerCollection->create()
+            ->addAttributeToSelect("*")
+            ->addAttributeToFilter("lsr_id", ['null' => true])
+            ->addAttributeToFilter("website_id", ['eq' => $websiteId])
+            ->load();
+
+        return $collection->getItems();
+    }
+
+    /**
+     * Returns customer against the provided rptoken
+     *
+     * @param string $rpToken
+     * @return CustomerInterface
+     * @throws LocalizedException
+     */
+    public function matchCustomerByRpToken(string $rpToken): CustomerInterface
+    {
+        $this->searchCriteriaBuilder->addFilter(
+            'rp_token',
+            $rpToken
+        );
+        $this->searchCriteriaBuilder->setPageSize(1);
+        $found = $this->customerRepository->getList(
+            $this->searchCriteriaBuilder->create()
+        );
+
+        if ($found->getTotalCount() > 1) {
+            // @codingStandardsIgnoreStart
+            //Failed to generated unique RP token
+            throw new ExpiredException(
+                new Phrase('Reset password token expired.')
+            );
+            // @codingStandardsIgnoreEnd
+        }
+        if ($found->getTotalCount() === 0) {
+            //Customer with such token not found.
+            throw NoSuchEntityException::singleField(
+                'rp_token',
+                $rpToken
+            );
+        }
+        return $found->getItems()[0];
+    }
+
+    /**
+     * To sync customer details and address to LS Central
+     *
+     * @param Customer $customer
+     * @return bool
+     */
+    public function syncCustomerAndAddress(Customer $customer)
+    {
+        try {
+            $userName = $customer->getData('lsr_username');
+            if (empty($userName)) {
+                do {
+                    $userName = $this->generateRandomUsername();
+                } while ($this->isUsernameExist($userName) ?
+                    $this->isUsernameExistInLsCentral($userName) : false
+                );
+                $customer->setData('lsr_username', $userName);
+            }
+            //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
+            // Setting username as password.
+            if (empty($customer->getData('lsr_password'))) {
+                $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
+            }
+            $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
+                $customer->getData('lsr_username'),
+                Entity\Enum\ContactSearchType::USER_NAME
+            );
+            $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
+                $customer->getEmail(),
+                Entity\Enum\ContactSearchType::EMAIL
+            );
+            if (!empty($contactUserName) && !empty($contactEmail)) {
+                $contact  = $contactUserName;
+                $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
+                if (!empty($password)) {
+                    $customerPost['password'] = $password;
+                    $resetCode                = $this->forgotPassword($userName);
+                    $customer->setData('lsr_resetcode', $resetCode);
+                    $this->resetPassword($customer, $customerPost);
+                    $customer->setData('lsr_resetcode', null);
+                }
             } else {
-                if (!empty($response) && !empty($response->getContactSearchResult())) {
-                    foreach ($response->getContactSearchResult() as $contact) {
-                        if ($contact->getUserName() === $username) {
-                            return true;
+                $contact = $this->contact($customer);
+            }
+
+            if (is_object($contact) && $contact->getId()) {
+                if (!empty($contact->getLoggedOnToDevice())) {
+                    $token = $contact->getLoggedOnToDevice()->getSecurityToken();
+                    $customer->setData('lsr_token', $token);
+                }
+                $customer->setData('lsr_id', $contact->getId());
+                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
+                $customer->setData('lsr_password', null);
+                if ($contact->getAccount()->getScheme()->getId()) {
+                    $customerGroupId = $this->getCustomerGroupIdByName(
+                        $contact->getAccount()->getScheme()->getId()
+                    );
+                    $customer->setGroupId($customerGroupId);
+                }
+                $this->customerResourceModel->save($customer);
+                if (!empty($customer->getAddresses())) {
+                    $customerAddress = [];
+                    foreach ($customer->getAddresses() as $address) {
+                        if ($this->isBillingAddress($address)) {
+                            // We only saving one address for now
+                            $this->updateCustomerAccount($customer, $customerAddress);
                         }
                     }
                 }
+                return true;
             }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
         }
+
         return false;
     }
 
     /**
-     * Check email exist in LS Central or not
-     * @param $email
-     * @return bool
+     * Get customer by username or email from ls central
+     *
+     * @param $paramValue
+     * @param $type
+     * @return MemberContact|null
      * @throws InvalidEnumException
      */
-    public function isEmailExistInLsCentral($email)
+    public function getCustomerByUsernameOrEmailFromLsCentral($paramValue, $type)
     {
         $response = null;
+        $contact  = null;
+
         // @codingStandardsIgnoreStart
         if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
             $request       = new Operation\ContactGet();
@@ -699,9 +1444,10 @@ class ContactHelper extends AbstractHelper
         } else {
             $request       = new Operation\ContactSearch();
             $contactSearch = new Entity\ContactSearch();
+            $contactSearch->setMaxNumberOfRowsReturned(1);
         }
-        $contactSearch->setSearchType(Entity\Enum\ContactSearchType::EMAIL);
-        $contactSearch->setSearch($email);
+        $contactSearch->setSearchType($type);
+        $contactSearch->setSearch($paramValue);
         try {
             $response = $request->execute($contactSearch);
         } catch (Exception $e) {
@@ -709,53 +1455,23 @@ class ContactHelper extends AbstractHelper
         }
         if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
             if (!empty($response) && !empty($response->getContactGetResult())) {
-                if ($response->getContactGetResult()->getEmail() === $email) {
-                    return true;
-                }
+                return $response->getContactGetResult();
             }
         } else {
             if (!empty($response) && !empty($response->getContactSearchResult())) {
                 foreach ($response->getContactSearchResult() as $contact) {
-                    if ($contact->getEmail() === $email) {
-                        return true;
-                    }
+                    return $contact;
                 }
             }
         }
-        return false;
+
+        return $contact;
     }
 
     /**
-     * @param $customer
-     * @param $customer_post
-     * @return bool|Entity\PasswordChangeResponse|ResponseInterface|null
-     */
-    public function changePassword($customer, $customer_post)
-    {
-        $response = null;
-        // @codingStandardsIgnoreStart
-        $request        = new Operation\PasswordChange();
-        $changepassword = new Entity\PasswordChange();
-        // @codingStandardsIgnoreEnd
-
-        $request->setToken($customer->getData('lsr_token'));
-
-        $changepassword->setUserName($customer->getData('lsr_username'))
-            ->setOldPassword($customer_post['current_password'])
-            ->setNewPassword($customer_post['password'])
-            ->setToken('');
-
-        try {
-            $response = $request->execute($changepassword);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $response ? $response->getPasswordChangeResult() : $response;
-    }
-
-    /**
-     * @param $customer
+     * Forgot password
+     *
+     * @param object $customer
      * @return Entity\PasswordResetResponse|ResponseInterface|string|null
      */
     public function forgotPassword($userName)
@@ -778,91 +1494,10 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * Sync customer to Central after successful registration in magento.
-     * If error response (other than timeout error) from Central it will block registration in magento.
-     * @param $observer
-     * @param $session
-     * @return $this
-     * @throws \Zend_Log_Exception
-     */
-    public function syncCustomerToCentral($observer,$session)
-    {
-        $parameters = $observer->getRequest()->getParams();
-        try {
-            do {
-                $parameters['lsr_username'] = $this->generateRandomUsername();
-            } while ($this->isUsernameExist($parameters['lsr_username']) ||
-            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
-                $this->isUsernameExistInLsCentral($parameters['lsr_username']) : false
-            );
-            /** @var Customer $customer */
-            $customer = $session->getCustomer();
-            $request = $observer->getControllerAction()->getRequest();
-            $request->setPostValue('lsr_username',$parameters['lsr_username']);
-            if (!empty($parameters['email']) && !empty($parameters['lsr_username']) && !empty($parameters['password'])) {
-                $customer->setData('lsr_username', $parameters['lsr_username']);
-                $customer->setData('email', $parameters['email']);
-                $customer->setData('password', $parameters['password']);
-                $customer->setData('firstname', $parameters['firstname']);
-                $customer->setData('lastname', $parameters['lastname']);
-                $customer->setData('middlename', (array_key_exists('middlename',$parameters) && $parameters['middlename']) ? $parameters['middlename'] : null);
-                $customer->setData('gender', (array_key_exists('gender',$parameters) && $parameters['gender']) ? $parameters['gender'] : null);
-                $customer->setData('dob', (array_key_exists('dob',$parameters) && $parameters['dob']) ? $parameters['dob'] : null);
-                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-                    /** @var Entity\MemberContact $contact */
-                    $contact = $this->contact($customer);
-                    if (is_object($contact) && $contact->getId()) {
-                        $customer = $this->setCustomerAttributesValues($contact, $customer);
-                        $parameters['lsr_id'] = $customer->getLsrId();
-                        $parameters['lsr_username'] = $customer->getLsrUsername();
-                        $parameters['lsr_token'] = $customer->getLsrToken();
-                        $parameters['lsr_cardid'] = $customer->getLsrCardid();
-                        $parameters['group_id'] = $customer->getGroupId();
-                        $parameters['contact'] = $contact;
-                    } else {
-                        $logger->info('Timeout error.');
-                    }
-                }
-            }
-            $this->setValue($parameters);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param $value
-     */
-    public function setValue($value)
-    {
-        $this->session->start();
-        $this->session->setLsrParams($value);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        $this->session->start();
-        return $this->session->getLsrParams();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function unSetValue()
-    {
-        $this->session->start();
-        return $this->session->unsLsrParams();
-    }
-
-
-    /**
-     * @param $customer
-     * @param $customer_post
+     * Reset password
+     *
+     * @param object $customer
+     * @param object $customer_post
      * @return bool|Entity\PasswordChangeResponse|ResponseInterface|null
      */
     public function resetPassword($customer, $customer_post)
@@ -888,9 +1523,23 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Validate if given customer address is a billing_address
+     *
+     * @param object $customerAddress
+     * @return bool
+     */
+    public function isBillingAddress($customerAddress)
+    {
+        $defaultBillingAddress = $customerAddress->getCustomer()->getDefaultBillingAddress();
+
+        return $customerAddress->getData('is_default_billing') ||
+            ($defaultBillingAddress && $defaultBillingAddress->getId() == $customerAddress->getId());
+    }
+
+    /**
      * Syncing updated customer information to central side
      *
-     * @param $customer
+     * @param object $customer
      * @param null $customerAddress
      * @return Entity\ContactUpdateResponse|MemberContact|ResponseInterface|null
      * @throws InvalidEnumException
@@ -930,16 +1579,6 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param $id
-     * @return string
-     */
-    public function getGenderStringById($id)
-    {
-        return ($id == 1) ? Entity\Enum\Gender::MALE :
-            (($id == 2) ? Entity\Enum\Gender::FEMALE : Entity\Enum\Gender::UNKNOWN);
-    }
-
-    /**
      * @param null $card
      * @return Entity\ArrayOfCard|null
      */
@@ -950,23 +1589,6 @@ class ContactHelper extends AbstractHelper
         if ($card instanceof Entity\Card) {
             $cards->setCard($card);
             return $cards;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param null $address
-     * @return Entity\ArrayOfAddress|null
-     */
-    public function setAddresses($address = null)
-    {
-        // @codingStandardsIgnoreLine
-        $addresses = new Entity\ArrayOfAddress();
-        // only process if the pass object in the instance of customer address
-        if ($address instanceof Entity\Address) {
-            $addresses->setAddress($address);
-            return $addresses;
         } else {
             return null;
         }
@@ -985,116 +1607,94 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param null $customerAddress
-     * @return Entity\Address|null
+     * @param $id
+     * @return string
+     */
+    public function getGenderStringById($id)
+    {
+        return ($id == 1) ? Entity\Enum\Gender::MALE :
+            (($id == 2) ? Entity\Enum\Gender::FEMALE : Entity\Enum\Gender::UNKNOWN);
+    }
+
+    /**
+     * Function to encrypt password
+     *
+     * @param string $password
+     * @return string
+     */
+    public function encryptPassword($password)
+    {
+        return $this->encryptorInterface->encrypt($password);
+    }
+
+    /**
+     * Update both basket and wishlist after login given login result
+     *
+     * @param object $result
      * @throws InvalidEnumException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws Exception
      */
-    private function setAddress($customerAddress = null)
+    public function updateBasketAndWishlistAfterLogin($result)
     {
-        // @codingStandardsIgnoreLine
-        $address = new Entity\Address();
-        // only process if the pass object in the instance of customer address
-        if ($customerAddress instanceof Address) {
-            $street = $customerAddress->getStreet();
-            // check if street is in the form of array or string
-            if (is_array($street)) {
-                // set address 1
-                $address->setAddress1($street[0]);
-                // check if the pass data are more than 1 then set address 2 as well
-                if (count($street) > 1) {
-                    $address->setAddress2($street[1]);
-                } else {
-                    $address->setAddress2('');
+        $quote = $this->checkoutSession->getQuote();
+        $items = $quote->getAllVisibleItems();
+        foreach ($items as $item) {
+            $this->stockHelper->validateQty($item->getQty(), $item, $quote, true);
+        }
+
+        $oneListBasket = $this->getOneListTypeObject(
+            $result->getOneLists()->getOneList(),
+            Entity\Enum\ListType::BASKET
+        );
+        /** Update Basket to Omni */
+        $this->updateBasketAfterLogin(
+            $oneListBasket,
+            $result->getCards()->getCard()[0]->getId()
+        );
+        $oneListWish = $this->getOneListTypeObject(
+            $result->getOneLists()->getOneList(),
+            Entity\Enum\ListType::WISH
+        );
+        if ($oneListWish) {
+            /** Update Wishlist to Omni */
+            $this->updateWishlistAfterLogin(
+                $oneListWish
+            );
+        }
+
+        $this->setBasketUpdateChecking();
+    }
+
+    /**
+     * Get one list type
+     *
+     * @param object $arrayOneLists
+     * @param string $type
+     * @return Entity\OneList|null
+     * @throws NoSuchEntityException
+     */
+    public function getOneListTypeObject($arrayOneLists, $type)
+    {
+        if (is_array($arrayOneLists)) {
+            /** @var Entity\OneList $oneList */
+            foreach ($arrayOneLists as $oneList) {
+                if ($oneList->getListType() == $type &&
+                    $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()
+                ) {
+                    return $oneList;
                 }
-            } else {
-                $address->setAddress1($street);
-                $address->setAddress2('');
             }
-            $region = $customerAddress->getRegion() ? substr($customerAddress->getRegion(), 0, 30) : null;
-            $address->setCity($customerAddress->getCity())
-                ->setCountry($customerAddress->getCountryId())
-                ->setPostCode($customerAddress->getPostcode())
-                ->setPhoneNumber($customerAddress->getTelephone())
-                ->setType(Entity\Enum\AddressType::RESIDENTIAL);
-            $region ? $address->setCounty($region)
-                : $address->setCounty('');
-            return $address;
-        } else {
-            return null;
         }
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllCustomerGroupIds()
-    {
-        $customerGroupsIds = [];
-        $customerGroups    = $this->customerGroupColl->create()
-            ->toOptionArray();
-        foreach ($customerGroups as $group) {
-            $customerGroupsIds[] = $group['value'];
-        }
-        return $customerGroupsIds;
-    }
-
-    /**
-     * @param string $groupname
-     * @return bool|mixed
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
-     */
-
-    public function getCustomerGroupIdByName($groupname = '')
-    {
-        if ($groupname == null || $groupname == '') {
-            return false;
-        }
-
-        /** @var Collection $customerGroups */
-        $customerGroups = $this->customerGroupColl->create()
-            ->addFieldToFilter('customer_group_code', $groupname);
-
-        if ($customerGroups->getSize() > 0) {
-
-            /** @var Group $customerGroup */
-            foreach ($customerGroups as $customerGroup) {
-                return $customerGroup->getId();
-            }
-        } else {
-            // If customer group does not exist in Magento, then create new one.
-            $this->createCustomerGroupByName($groupname);
-
-            return $this->getCustomerGroupIdByName($groupname);
-        }
-    }
-
-    /**
-     *  Create new Customer group based on customer name.
-     * @param string $groupname
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
-     */
-
-    private function createCustomerGroupByName($groupname = '')
-    {
-        /** @var Group $group */
-        $group = $this->groupInterfaceFactory->create()
-            ->setCode($groupname)
-            // Default Tax Class ID for retail customers, please check tax_class table of magento2 database.
-            ->setTaxClassId(3);
-        $this->groupRepository->save($group);
+        return null;
     }
 
     /**
      * Update basket after login, if oneListBasket is null then recreate it
      *
      * @param Entity\OneList $oneListBasket
-     * @param $cardId
+     * @param string $cardId
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1210,7 +1810,9 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * @param $wishlist
+     * Function to remove wishlist
+     *
+     * @param object $wishlist
      */
     public function removeWishlist(&$wishlist)
     {
@@ -1224,491 +1826,17 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * This function is overriding in OmniGraphQl module
-     *
-     * Process customer login
-     *
-     * @param MemberContact $result
-     * @param array $credentials
-     * @param string $is_email
-     * @throws AlreadyExistsException
-     * @throws InputException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws InvalidTransitionException
+     * Update basket data checking after login
      */
-    public function processCustomerLogin(MemberContact $result, $credentials, $is_email)
+    public function setBasketUpdateChecking()
     {
-        $filters = [
-            $this->filterBuilder
-                ->setField('email')
-                ->setConditionType('eq')
-                ->setValue($result->getEmail())
-                ->create()
-        ];
-        $this->searchCriteriaBuilder->addFilters($filters);
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $searchResults  = $this->customerRepository->getList($searchCriteria);
-        $customer       = null;
-        if ($searchResults->getTotalCount() == 0) {
-            $customer = $this->createNewCustomerAgainstProvidedInformation($result, $credentials['password']);
-        } else {
-            foreach ($searchResults->getItems() as $match) {
-                $customer = $this->customerRepository->getById($match->getId());
-                break;
-            }
-        }
-        $customer_email = $customer->getEmail();
-        $websiteId      = $this->storeManager->getWebsite()->getWebsiteId();
-        $customer       = $this->customerFactory->create()
-            ->setWebsiteId($websiteId)
-            ->loadByEmail($customer_email);
-        $this->authentication($customer, $websiteId);
-        $customer         = $this->setCustomerAttributesValues($result, $customer);
-        $customer         = $this->setCustomerAdditionalValues($result, $customer);
-        $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
-        $validatePassword = $this->encryptorInterface->validateHash(
-            $credentials['password'],
-            $customerSecure->getPasswordHash()
-        );
-        if (!$validatePassword) {
-            $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
-            $customerSecure->setRpToken(null);
-            $customerSecure->setRpTokenCreatedAt(null);
-            $customerSecure->setPasswordHash($passwordHash);
-            $customer->setPasswordHash($passwordHash);
-        }
-        $this->customerResourceModel->save($customer);
-        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-        $this->basketHelper->unSetOneList();
-        $this->basketHelper->unSetOneListCalculation();
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_SECURITYTOKEN, $customer->getData('lsr_token'));
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
-        $this->customerSession->setCustomerAsLoggedIn($customer);
-    }
-
-    /**
-     * @param $isEmail
-     * @param $userNameOrEmail
-     * @param $request
-     * @param false $isAjax
-     * @param false $isGraphQl
-     * @return string
-     * @throws LocalizedException
-     */
-    public function loginCustomerIfOmniServiceDown(
-        $isEmail,
-        $userNameOrEmail,
-        $request,
-        $isAjax = false,
-        $isGraphQl = false
-    ) {
-        if (!$isEmail) {
-            $filters = [
-                $this->filterBuilder
-                    ->setField('lsr_username')
-                    ->setConditionType('like')
-                    ->setValue($userNameOrEmail)
-                    ->create()
-            ];
-            $this->searchCriteriaBuilder->addFilters($filters);
-            $searchCriteria = $this->searchCriteriaBuilder->create();
-            $searchResults  = $this->customerRepository->getList($searchCriteria);
-            if ($searchResults->getTotalCount() == 1) {
-                $customerRepository = $searchResults->getItems()[0];
-                $email              = $customerRepository->getEmail();
-                if ($isAjax == true) {
-                    $credentials             = json_decode($request->getContent(), true);
-                    $credentials['username'] = $email;
-                    $request->setContent(json_encode($credentials));
-                } elseif ($isGraphQl == true) {
-                    return $email;
-                } else {
-                    $login             = $request->getPost("login");
-                    $login['username'] = $email;
-                    $request->setPostValue("login", $login);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param $email
-     * @return CustomerSearchResultsInterface
-     * @throws LocalizedException
-     */
-    public function searchCustomerByEmail($email)
-    {
-        $filters = [
-            $this->filterBuilder
-                ->setField('email')
-                ->setConditionType('eq')
-                ->setValue($email)
-                ->create()
-        ];
-        $this->searchCriteriaBuilder->addFilters($filters);
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        return $this->customerRepository->getList($searchCriteria);
-    }
-
-    /**
-     * @param null $websiteId
-     * @return DataObject[]
-     * @throws LocalizedException
-     */
-    public function getAllCustomers($websiteId = null)
-    {
-        $collection = $this->customerCollection->create()
-            ->addAttributeToSelect("*")
-            ->addAttributeToFilter("lsr_id", ['null' => true])
-            ->addAttributeToFilter("website_id", ['eq' => $websiteId])
-            ->load();
-
-        return $collection->getItems();
-    }
-
-    /**
-     * Returns customer against the provided rptoken
-     * @param string $rpToken
-     * @return CustomerInterface
-     * @throws LocalizedException
-     */
-    public function matchCustomerByRpToken(string $rpToken): CustomerInterface
-    {
-        $this->searchCriteriaBuilder->addFilter(
-            'rp_token',
-            $rpToken
-        );
-        $this->searchCriteriaBuilder->setPageSize(1);
-        $found = $this->customerRepository->getList(
-            $this->searchCriteriaBuilder->create()
-        );
-
-        if ($found->getTotalCount() > 1) {
-            // @codingStandardsIgnoreStart
-            //Failed to generated unique RP token
-            throw new ExpiredException(
-                new Phrase('Reset password token expired.')
-            );
-            // @codingStandardsIgnoreEnd
-        }
-        if ($found->getTotalCount() === 0) {
-            //Customer with such token not found.
-            throw NoSuchEntityException::singleField(
-                'rp_token',
-                $rpToken
-            );
-        }
-        return $found->getItems()[0];
-    }
-
-    /**
-     * @param $arrayOneLists
-     * @param $type
-     * @return Entity\OneList|null
-     */
-    public function getOneListTypeObject($arrayOneLists, $type)
-    {
-        if (is_array($arrayOneLists)) {
-            /** @var Entity\OneList $oneList */
-            foreach ($arrayOneLists as $oneList) {
-                if ($oneList->getListType() == $type && $oneList->getStoreId() == $this->basketHelper->getDefaultWebStore()) {
-                    return $oneList;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * To sync customer details and address to LS Central
-     * @param Customer $customer
-     * @return bool
-     */
-    public function syncCustomerAndAddress(Customer $customer)
-    {
-        try {
-            $userName = $customer->getData('lsr_username');
-            if (empty($userName)) {
-                do {
-                    $userName = $this->generateRandomUsername();
-                } while ($this->isUsernameExist($userName) ?
-                    $this->isUsernameExistInLsCentral($userName) : false
-                );
-                $customer->setData('lsr_username', $userName);
-            }
-            //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
-            // Setting username as password.
-            if (empty($customer->getData('lsr_password'))) {
-                $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
-            }
-            $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
-                $customer->getData('lsr_username'),
-                Entity\Enum\ContactSearchType::USER_NAME
-            );
-            $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
-                $customer->getEmail(),
-                Entity\Enum\ContactSearchType::EMAIL
-            );
-            if (!empty($contactUserName) && !empty($contactEmail)) {
-                $contact  = $contactUserName;
-                $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
-                if (!empty($password)) {
-                    $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($userName);
-                    $customer->setData('lsr_resetcode', $resetCode);
-                    $this->resetPassword($customer, $customerPost);
-                    $customer->setData('lsr_resetcode', null);
-                }
-            } else {
-                $contact = $this->contact($customer);
-            }
-
-            if (is_object($contact) && $contact->getId()) {
-                if (!empty($contact->getLoggedOnToDevice())) {
-                    $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                    $customer->setData('lsr_token', $token);
-                }
-                $customer->setData('lsr_id', $contact->getId());
-                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-                $customer->setData('lsr_password', null);
-                if ($contact->getAccount()->getScheme()->getId()) {
-                    $customerGroupId = $this->getCustomerGroupIdByName(
-                        $contact->getAccount()->getScheme()->getId()
-                    );
-                    $customer->setGroupId($customerGroupId);
-                }
-                $this->customerResourceModel->save($customer);
-                if (!empty($customer->getAddresses())) {
-                    $customerAddress = [];
-                    foreach ($customer->getAddresses() as $address) {
-                        if ($this->isBillingAddress($address)) {
-                            // We only saving one address for now
-                            $this->updateCustomerAccount($customer, $customerAddress);
-                        }
-                    }
-                }
-                return true;
-            }
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $paramValue
-     * @param $type
-     * @return MemberContact|null
-     * @throws InvalidEnumException
-     */
-    public function getCustomerByUsernameOrEmailFromLsCentral($paramValue, $type)
-    {
-        $response = null;
-        $contact  = null;
-
-        // @codingStandardsIgnoreStart
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            $request       = new Operation\ContactGet();
-            $contactSearch = new Entity\ContactGet();
-        } else {
-            $request       = new Operation\ContactSearch();
-            $contactSearch = new Entity\ContactSearch();
-            $contactSearch->setMaxNumberOfRowsReturned(1);
-        }
-        $contactSearch->setSearchType($type);
-        $contactSearch->setSearch($paramValue);
-        try {
-            $response = $request->execute($contactSearch);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
-        if (version_compare($this->lsr->getOmniVersion(), '2022.6.0', '>=')) {
-            if (!empty($response) && !empty($response->getContactGetResult())) {
-                return $response->getContactGetResult();
-            }
-        } else {
-            if (!empty($response) && !empty($response->getContactSearchResult())) {
-                foreach ($response->getContactSearchResult() as $contact) {
-                    return $contact;
-                }
-            }
-        }
-
-        return $contact;
-    }
-
-    /**
-     * @param $password
-     * @return string
-     */
-    public function encryptPassword($password)
-    {
-        return $this->encryptorInterface->encrypt($password);
-    }
-
-    /**
-     * For validating email address is correct or not
-     * @param $email
-     * @return bool
-     */
-    public function isValid($email)
-    {
-        return $this->validateEmailAddress->isValid($email) && strlen($email) < 80;
-    }
-
-    /**
-     * @param int $length
-     * @return mixed|string
-     * @throws LocalizedException
-     */
-    public function generateRandomUsername($length = 5)
-    {
-        $randomString = $this->lsr->getWebsiteConfig(
-            LSR::SC_LOYALTY_CUSTOMER_USERNAME_PREFIX_PATH,
-            $this->storeManager->getWebsite()->getWebsiteId()
-        );
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= rand(0, 9);
-        }
-        return $randomString;
-    }
-
-    /**
-     * Set customer attribute values
-     *
-     * @param MemberContact $contact
-     * @param Customer $customer
-     * @return mixed
-     * @throws InputException
-     * @throws InvalidTransitionException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     */
-    public function setCustomerAttributesValues($contact, $customer)
-    {
-        if(!is_array($contact)) {
-            $customer->setData('lsr_id', $contact->getId());
-            if (!empty($contact->getUserName())) {
-                $customer->setData('lsr_username', $contact->getUserName());
-            }
-            if (!empty($contact->getLoggedOnToDevice()) &&
-                !empty($contact->getLoggedOnToDevice()->getSecurityToken())) {
-                $token = $contact->getLoggedOnToDevice()->getSecurityToken();
-                $customer->setData('lsr_token', $token);
-            }
-            if (!empty($contact->getCards()) &&
-                !empty($contact->getCards()->getCard()[0]) &&
-                !empty($contact->getCards()->getCard()[0]->getId())) {
-                $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
-            }
-            if (!empty($contact->getAccount()) &&
-                !empty($contact->getAccount()->getScheme()) &&
-                !empty($contact->getAccount()->getScheme()->getId())) {
-                $customerGroupId = $this->getCustomerGroupIdByName(
-                    $contact->getAccount()->getScheme()->getId()
-                );
-                $customer->setGroupId($customerGroupId);
-                $this->customerSession->setCustomerGroupId($customerGroupId);
-            }
-        } else {
-            $customer->setData('lsr_id', $contact['lsr_id']);
-            if (!empty($contact['lsr_username'])) {
-                $customer->setData('lsr_username', $contact['lsr_username']);
-            }
-            if (!empty($contact['lsr_token'])) {
-                $customer->setData('lsr_token', $contact['lsr_token']);
-            }
-            if (!empty($contact['lsr_cardid'])) {
-                $customer->setData('lsr_cardid', $contact['lsr_cardid']);
-            }
-            if (!empty($contact['group_id'])) {
-                $customerGroupId = $contact['group_id'];
-                $customer->setGroupId($customerGroupId);
-                $this->customerSession->setCustomerGroupId($customerGroupId);
-            }
-        }
-
-        return $customer;
-    }
-
-    /**
-     * Saving additional customer values
-     *
-     * @param MemberContact $contact
-     * @param Customer $customer
-     * @return mixed
-     * @throws InputException
-     * @throws InvalidTransitionException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     */
-    public function setCustomerAdditionalValues($contact, $customer)
-    {
-        if (!empty($contact->getBirthDay()) && $contact->getBirthDay() != '1753-01-01T00:00:00'
-            && $contact->getBirthDay() != '1900-01-01T00:00:00') {
-            $customer->setData('dob', $this->date->date("Y-m-d", strtotime($contact->getBirthDay())));
-        }
-        if (!empty($contact->getGender())) {
-            $genderValue = '';
-            if ($contact->getGender() == Entity\Enum\Gender::MALE) {
-                $genderValue = 1;
-            } else if ($contact->getGender() == Entity\Enum\Gender::FEMALE) {
-                $genderValue = 2;
-            } else if ($contact->getGender() == Entity\Enum\Gender::UNKNOWN) {
-                $genderValue = 3;
-            }
-            $customer->setData('gender', $genderValue);
-        }
-
-        return $customer;
-    }
-
-    /**
-     * Update both basket and wishlist after login given login result
-     *
-     * @param $result
-     * @throws InvalidEnumException
-     * @throws LocalizedException
-     * @throws NoSuchEntityException
-     * @throws Exception
-     */
-    public function updateBasketAndWishlistAfterLogin($result)
-    {
-        $quote = $this->checkoutSession->getQuote();
-        $items = $quote->getAllVisibleItems();
-        foreach ($items as $item) {
-            $this->stockHelper->validateQty($item->getQty(), $item, $quote, true);
-        }
-
-        $oneListBasket = $this->getOneListTypeObject(
-            $result->getOneLists()->getOneList(),
-            Entity\Enum\ListType::BASKET
-        );
-        /** Update Basket to Omni */
-        $this->updateBasketAfterLogin(
-            $oneListBasket,
-            $result->getCards()->getCard()[0]->getId()
-        );
-        $oneListWish = $this->getOneListTypeObject(
-            $result->getOneLists()->getOneList(),
-            Entity\Enum\ListType::WISH
-        );
-        if ($oneListWish) {
-            /** Update Wishlist to Omni */
-            $this->updateWishlistAfterLogin(
-                $oneListWish
-            );
-        }
-
-        $this->setBasketUpdateChecking();
+        return $this->customerSession->setData('isBasketUpdate', 1);
     }
 
     /**
      * Get customer by email
-     * @param $email
+     *
+     * @param string $email
      * @return mixed
      * @throws LocalizedException
      */
@@ -1721,32 +1849,10 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * To authenticate user login
-     * @param $customer
-     * @param null $websiteId
-     * @throws EmailNotConfirmedException
-     * @throws UserLockedException
-     */
-    public function authentication($customer, $websiteId = null)
-    {
-        $customerId = $customer->getId();
-        if ($this->authentication->isLocked($customerId)) {
-            throw new UserLockedException(__('The account is locked.'));
-        }
-        if ($customer->getConfirmation() && $this->accountConfirmation->isConfirmationRequired(
-                $websiteId,
-                $customerId,
-                $customer->getEmail()
-            )) {
-            throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
-        }
-    }
-
-    /**
      * Loading customer with all custom attributes given email and website_id
      *
-     * @param $email
-     * @param $websiteId
+     * @param string $email
+     * @param int $websiteId
      * @return Customer
      * @throws LocalizedException
      */
@@ -1758,23 +1864,9 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
-     * Validate if given customer address is a billing_address
-     *
-     * @param $customerAddress
-     * @return bool
-     */
-    public function isBillingAddress($customerAddress)
-    {
-        $defaultBillingAddress = $customerAddress->getCustomer()->getDefaultBillingAddress();
-
-        return $customerAddress->getData('is_default_billing') ||
-            ($defaultBillingAddress && $defaultBillingAddress->getId() == $customerAddress->getId());
-    }
-
-    /**
      * Setting current card_id in customer session
      *
-     * @param $cardId
+     * @param string $cardId
      */
     public function setCardIdInCustomerSession($cardId)
     {
@@ -1784,7 +1876,7 @@ class ContactHelper extends AbstractHelper
     /**
      * Setting current lsr_id in customer session
      *
-     * @param $lsrId
+     * @param int $lsrId
      */
     public function setLsrIdInCustomerSession($lsrId)
     {
@@ -1794,7 +1886,7 @@ class ContactHelper extends AbstractHelper
     /**
      * Setting current security_token in customer session
      *
-     * @param $token
+     * @param string $token
      */
     public function setSecurityTokenInCustomerSession($token)
     {
@@ -1823,6 +1915,34 @@ class ContactHelper extends AbstractHelper
     public function getSecurityTokenFromCustomerSession()
     {
         return $this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN);
+    }
+
+    /**
+     * Get basket data checking
+     */
+    public function getBasketUpdateChecking()
+    {
+        return $this->customerSession->getData('isBasketUpdate');
+    }
+
+    /**
+     * Unset basket data checking
+     */
+    public function unsetBasketUpdateChecking()
+    {
+        return $this->customerSession->unsetData('isBasketUpdate');
+    }
+
+    /**
+     * Clear all required values from customer session
+     */
+    public function unSetRequiredDataFromCustomerSessions()
+    {
+        $this->unsetCardIdFromCustomerSession();
+        $this->unsetLsrIdFromCustomerSession();
+        $this->unsetSecurityTokenFromCustomerSession();
+        $this->unsetCustomerGroupIdFromCustomerSession();
+        $this->unsetCustomerIdFromCustomerSession();
     }
 
     /**
@@ -1863,41 +1983,5 @@ class ContactHelper extends AbstractHelper
     public function unsetCustomerIdFromCustomerSession()
     {
         return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_ID);
-    }
-
-    /**
-     * Update basket data checking after login
-     */
-    public function setBasketUpdateChecking()
-    {
-        return $this->customerSession->setData('isBasketUpdate', 1);
-    }
-
-    /**
-     * get basket data checking
-     */
-    public function getBasketUpdateChecking()
-    {
-        return $this->customerSession->getData('isBasketUpdate');
-    }
-
-    /**
-     * Unset basket data checking
-     */
-    public function unsetBasketUpdateChecking()
-    {
-        return $this->customerSession->unsetData('isBasketUpdate');
-    }
-
-    /**
-     * Clear all required values from customer session
-     */
-    public function unSetRequiredDataFromCustomerSessions()
-    {
-        $this->unsetCardIdFromCustomerSession();
-        $this->unsetLsrIdFromCustomerSession();
-        $this->unsetSecurityTokenFromCustomerSession();
-        $this->unsetCustomerGroupIdFromCustomerSession();
-        $this->unsetCustomerIdFromCustomerSession();
     }
 }
