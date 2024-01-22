@@ -291,6 +291,17 @@
                 </item>
             </argument>
         </column>
+        <column name="SpecialGroups">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Special Groups</item>
+                    <item name="sortOrder" xsi:type="number">18</item>
+                </item>
+            </argument>
+        </column>
         <column name="SalseUnitOfMeasure">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -298,7 +309,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Salse Unit Of Measure</item>
-                    <item name="sortOrder" xsi:type="number">18</item>
+                    <item name="sortOrder" xsi:type="number">19</item>
                 </item>
             </argument>
         </column>
@@ -309,7 +320,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Scale Item</item>
-                    <item name="sortOrder" xsi:type="number">19</item>
+                    <item name="sortOrder" xsi:type="number">20</item>
                 </item>
             </argument>
         </column>
@@ -320,7 +331,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Tax Item Group ID</item>
-                    <item name="sortOrder" xsi:type="number">20</item>
+                    <item name="sortOrder" xsi:type="number">21</item>
                 </item>
             </argument>
         </column>
@@ -331,7 +342,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Unit Volume</item>
-                    <item name="sortOrder" xsi:type="number">21</item>
+                    <item name="sortOrder" xsi:type="number">22</item>
                 </item>
             </argument>
         </column>
@@ -342,7 +353,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Units Per Parcel</item>
-                    <item name="sortOrder" xsi:type="number">22</item>
+                    <item name="sortOrder" xsi:type="number">23</item>
                 </item>
             </argument>
         </column>
@@ -353,7 +364,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Vendor Id</item>
-                    <item name="sortOrder" xsi:type="number">23</item>
+                    <item name="sortOrder" xsi:type="number">24</item>
                 </item>
             </argument>
         </column>
@@ -364,7 +375,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Vendor Item Id</item>
-                    <item name="sortOrder" xsi:type="number">24</item>
+                    <item name="sortOrder" xsi:type="number">25</item>
                 </item>
             </argument>
         </column>
@@ -375,7 +386,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Zero Price ValId</item>
-                    <item name="sortOrder" xsi:type="number">25</item>
+                    <item name="sortOrder" xsi:type="number">26</item>
                 </item>
             </argument>
         </column>
@@ -386,7 +397,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Type</item>
-                    <item name="sortOrder" xsi:type="number">26</item>
+                    <item name="sortOrder" xsi:type="number">27</item>
                 </item>
             </argument>
         </column>
@@ -397,7 +408,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Tariff No</item>
-                    <item name="sortOrder" xsi:type="number">27</item>
+                    <item name="sortOrder" xsi:type="number">28</item>
                 </item>
             </argument>
         </column>
@@ -408,7 +419,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/column</item>
                     <item name="dataType" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Country Of Origin</item>
-                    <item name="sortOrder" xsi:type="number">28</item>
+                    <item name="sortOrder" xsi:type="number">29</item>
                 </item>
             </argument>
         </column>

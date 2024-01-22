@@ -8,7 +8,6 @@ use \Ls\Replication\Logger\Logger;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -19,10 +18,10 @@ use Magento\Store\Model\StoreManagerInterface;
 class ResetReplDiscountStatusTask
 {
     /** @var string */
-    const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_status_reset';
+    public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_discount_status_reset';
 
     /** @var string */
-    const DISCOUNT_TABLE_NAME = 'ls_replication_repl_discount';
+    public const DISCOUNT_TABLE_NAME = 'ls_replication_repl_discount';
 
     /** @var ReplicationHelper */
     public $replicationHelper;
@@ -39,9 +38,6 @@ class ResetReplDiscountStatusTask
      * @var ResourceConnection
      */
     public $resource;
-
-    /** @var StoreInterface $store */
-    public $store;
 
     /**
      * @var string
@@ -76,7 +72,7 @@ class ResetReplDiscountStatusTask
     /**
      * Entry point for cron jobs
      *
-     * @param null $storeData
+     * @param mixed $storeData
      * @throws NoSuchEntityException
      */
     public function execute($storeData = null)
@@ -93,8 +89,6 @@ class ResetReplDiscountStatusTask
 
         if (!empty($stores)) {
             foreach ($stores as $store) {
-                $this->lsr->setStoreId($store->getId());
-                $this->store = $store;
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
                     $this->logger->debug('Running ResetReplDiscountStatusTask Task ');
 
@@ -127,7 +121,7 @@ class ResetReplDiscountStatusTask
                         $this->defaultScope
                     );
 
-                    $websiteId  = $this->store->getWebsiteId();
+                    $websiteId  = $store->getId();
                     // deleting the catalog rules data and delete flat table discount data
                     try {
                         $childCollection  = $this->replicationHelper->getCatalogRulesCollectionGivenWebsiteId(
@@ -160,7 +154,6 @@ class ResetReplDiscountStatusTask
                     );
                     $this->logger->debug('End ResetReplDiscountStatusTask task');
                 }
-                $this->lsr->setStoreId(null);
             }
         }
     }
@@ -168,7 +161,7 @@ class ResetReplDiscountStatusTask
     /**
      * Entry point for manually run cron jobs
      *
-     * @param null $storeData
+     * @param mixed $storeData
      * @return array
      * @throws NoSuchEntityException
      */
@@ -180,7 +173,6 @@ class ResetReplDiscountStatusTask
 
     /**
      * Set default scope
-     *
      */
     public function setDefaultScope()
     {
