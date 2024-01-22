@@ -7,4 +7,10 @@
             <resource ref="anonymous"/>
         </resources>
     </route>
+    <route url="/V1/check-discount-validity" method="POST">
+        <service class="Ls\Omni\Api\DiscountManagementInterface" method="checkDiscountValidity"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
 </routes>
