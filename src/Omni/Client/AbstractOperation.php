@@ -7,6 +7,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
+use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
@@ -62,6 +63,11 @@ abstract class AbstractOperation implements OperationInterface
     public $session;
 
     /**
+     * @var CacheHelper
+     */
+    public $cacheHelper;
+
+    /**
      * @param ServiceType $service_type
      */
     public function __construct(
@@ -72,6 +78,7 @@ abstract class AbstractOperation implements OperationInterface
         $this->logger        = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
         $this->session       = $this->objectManager->get(SessionManagerInterface::class);
+        $this->cacheHelper   = $this->objectManager->get(CacheHelper::class);
     }
 
     /**
@@ -188,6 +195,8 @@ abstract class AbstractOperation implements OperationInterface
             } else {
                 $response = null;
             }
+            $cacheId = LSR::PING_RESPONSE_CACHE . $lsr->getCurrentWebsiteId();
+            $this->cacheHelper->removeCachedContent($cacheId);
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
 

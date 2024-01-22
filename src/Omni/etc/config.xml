@@ -8,6 +8,7 @@
                 <debug>0</debug>
                 <advanced>0</advanced>
                 <timeout>10</timeout>
+                <heart_beat_timeout>120</heart_beat_timeout>
             </service>
             <return_policy>
                 <show_return_policy>0</show_return_policy>
