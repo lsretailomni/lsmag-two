@@ -209,7 +209,7 @@ class Payment
 
                     foreach ($lines as $line) {
                         if (in_array($line['ItemId'], explode(',', $this->helper->getGiftCardIdentifiers()))) {
-                            $this->giftCardNotification($order, $itemsToInvoice);
+                            $this->giftCardNotification($order, $itemsToInvoice, $line);
                         }
                     }
                     return $this->helper->outputMessage(
@@ -368,11 +368,12 @@ class Payment
      *
      * @param $order
      * @param $itemsToInvoice
+     * @param $line
      * @return void
-     * @throws NoSuchEntityException
      * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
-    public function giftCardNotification($order, $itemsToInvoice)
+    public function giftCardNotification($order, $itemsToInvoice, $line)
     {
         $salesEntry = $this->helper->fetchOrder($order->getDocumentId());
         $giftCardOrderItems = $this->helper->getGiftCardOrderItems($order);
@@ -381,8 +382,9 @@ class Payment
         foreach ($giftCardOrderItems as $giftCardOrderItem) {
             foreach ($salesEntryLines as $salesEntryLine) {
                 if ($giftCardOrderItem->getQuoteItemId() == $salesEntryLine->getExternalId() &&
-                $giftCardOrderItem->getPrice() == $salesEntryLine->getAmount() &&
-                array_key_exists($giftCardOrderItem->getItemId(), $itemsToInvoice)
+                    $giftCardOrderItem->getPrice() == $salesEntryLine->getAmount() &&
+                    array_key_exists($giftCardOrderItem->getItemId(), $itemsToInvoice) &&
+                    $line['LineNo'] == $salesEntryLine->getLineNumber()
                 ) {
                     $this->eventManager->dispatch(
                         'ls_mag_giftcard_recipient_notification',
