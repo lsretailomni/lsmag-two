@@ -82,7 +82,6 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-
         $parameters = $observer->getRequest()->getParams();
         $isNotValid = false;
 
@@ -100,7 +99,6 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
                         $isNotValid = true;
                     } else {
                         $session = $this->customerSession;
-                        $this->logger->info("pre dispatch observer");
                         $this->contactHelper->syncCustomerToCentral($observer, $session);
                     }
                 } catch (Exception $e) {

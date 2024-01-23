@@ -197,6 +197,11 @@ class ContactHelper extends AbstractHelper
     public $session;
 
     /**
+     * @var ManagerInterface
+     */
+    private $messageManager;
+
+    /**
      * ContactHelper constructor.
      * @param Context $context
      * @param FilterBuilder $filterBuilder

@@ -124,7 +124,6 @@ class CheckUserCreate
                         $isNotValid = true;
                     } else {
                         $session = $this->customerSession;
-                        $this->logger->info("pre dispatch observer plugin");
                         $this->contactHelper->syncCustomerToCentral($observer, $session);
                     }
                 } catch (Exception $e) {
