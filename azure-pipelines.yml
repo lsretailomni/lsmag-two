@@ -83,7 +83,6 @@ steps:
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-#      ./vendor/bin/phpcs --config-set installed_paths ../../..,../../phpcompatibility/php-compatibility/PHPCompatibility
       ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --warning-severity=8 --extensions=php artifacts/lsretail/
     displayName: 'Magento2 Coding Standards Validation'
   - script: |
