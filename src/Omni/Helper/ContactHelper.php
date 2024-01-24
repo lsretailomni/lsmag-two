@@ -199,7 +199,7 @@ class ContactHelper extends AbstractHelper
     /**
      * @var ManagerInterface
      */
-    private $messageManager;
+    public $messageManager;
 
     /**
      * ContactHelper constructor.
