@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class ConatctBlock implements RequestInterface
+class ContactBlock implements RequestInterface
 {
     /**
      * @property string $accountId

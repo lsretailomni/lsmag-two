@@ -41,6 +41,11 @@ class Reservation extends Entity
     protected $Email = null;
 
     /**
+     * @property string $EventNo
+     */
+    protected $EventNo = null;
+
+    /**
      * @property int $Internalstatus
      */
     protected $Internalstatus = null;
@@ -201,6 +206,24 @@ class Reservation extends Entity
     public function getEmail()
     {
         return $this->Email;
+    }
+
+    /**
+     * @param string $EventNo
+     * @return $this
+     */
+    public function setEventNo($EventNo)
+    {
+        $this->EventNo = $EventNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEventNo()
+    {
+        return $this->EventNo;
     }
 
     /**
