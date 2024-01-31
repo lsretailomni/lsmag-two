@@ -495,7 +495,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const MAX_RECENT_ORDER = 5;
 
-    const GIFT_CARD_RECIPIENT_TEMPLATE = 'ls_mag_webhooks_template_giftcard_recipient';
+    const GIFT_CARD_RECIPIENT_TEMPLATE = 'giftcard_email_template';
 
     const LS_STANDARD_VARIANT_ATTRIBUTE_CODE = 'Standard Variant';
 
