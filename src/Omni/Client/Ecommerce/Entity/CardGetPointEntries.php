@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class CardGetPointEnties implements RequestInterface
+class CardGetPointEntries implements RequestInterface
 {
     /**
      * @property string $cardId

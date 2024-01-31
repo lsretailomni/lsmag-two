@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Currency\Data\Currency;
 use Magento\Framework\Exception\LocalizedException;
@@ -22,6 +22,8 @@ use Magento\Quote\Model\Quote\Item;
 class LoyaltyHelper extends AbstractHelperOmni
 {
     /**
+     * To fetch all profiles
+     *
      * @return Entity\ArrayOfProfile|Entity\ProfilesGetAllResponse|ResponseInterface|null
      */
     public function getAllProfiles()
@@ -40,6 +42,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To get all customer offers
+     *
      * @return Entity\ArrayOfPublishedOffer|Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
      */
     public function getOffers()
@@ -62,8 +66,10 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param null $image_id
-     * @param null $image_size
+     * Get image by id
+     *
+     * @param mixed $image_id
+     * @param mixed $image_size
      * @return array|bool
      * @throws NoSuchEntityException
      */
@@ -118,7 +124,7 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Get image cache id
      *
-     * @param $imageId
+     * @param string $imageId
      * @return string
      * @throws NoSuchEntityException
      */
@@ -135,6 +141,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To convert points to values
+     *
      * @return float|int
      * @throws NoSuchEntityException
      */
@@ -184,6 +192,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To get contact by card id
+     *
      * @return Entity\ContactGetByCardIdResponse|Entity\MemberContact|ResponseInterface|null
      */
     public function getMemberInfo()
@@ -210,6 +220,12 @@ class LoyaltyHelper extends AbstractHelperOmni
         return $response ? $response->getResult() : $response;
     }
 
+    /**
+     * To get point balance expiry sum
+     *
+     * @return false|float|int
+     * @throws NoSuchEntityException
+     */
     public function getPointBalanceExpirySum()
     {
         if (version_compare($this->lsr->getOmniVersion(), '2023.06', '<')) {
@@ -232,9 +248,9 @@ class LoyaltyHelper extends AbstractHelperOmni
             foreach ($result as $res) {
                 $entryType = $res->getEntryType();
                 $expirationDate = Carbon::parse($res->getExpirationDate());
-                if($entryType == "Sales" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                if ($entryType == "Sales" && $expirationDate->between($startDateTs, $endDateTs, true)) {
                     $totalEarnedPoints += $res->getPoints();
-                } elseif ($entryType == "Redemption" && $expirationDate->between($startDateTs,$endDateTs,true)) {
+                } elseif ($entryType == "Redemption" && $expirationDate->between($startDateTs, $endDateTs, true)) {
                     $totalRedemption += $res->getPoints();
                 }
             }
@@ -250,9 +266,10 @@ class LoyaltyHelper extends AbstractHelperOmni
         return $totalExpiryPoints;
     }
 
-
     /**
-     * @return Entity\ArrayOfPointEntry|Entity\CardGetPointEntiesResponse|ResponseInterface|null
+     * To fetch card point entry details
+     *
+     * @return Entity\ArrayOfPointEntry|Entity\CardGetPointEntriesResponse|ResponseInterface|null
      */
     public function getCardGetPointEntries()
     {
@@ -264,10 +281,10 @@ class LoyaltyHelper extends AbstractHelperOmni
             $cardId = $customer->getData('lsr_cardid');
         }
         // @codingStandardsIgnoreLine
-        $request = new Operation\CardGetPointEnties();
+        $request = new Operation\CardGetPointEntries();
         $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
-        $entity = new Entity\CardGetPointEnties();
+        $entity = new Entity\CardGetPointEntries();
         $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);
@@ -278,6 +295,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To get memeber points
+     *
      * @return int|null
      * @throws NoSuchEntityException
      */
@@ -302,6 +321,7 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     /**
      * Convert Point Rate into Values
+     *
      * @return float|Entity\GetPointRateResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
@@ -342,7 +362,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param null $size
+     * To get image size
+     *
+     * @param mixed $size
      * @return Entity\ImageSize
      */
     public function getImageSize($size = null)
@@ -355,6 +377,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * Get media path to store
+     *
      * @return string
      */
     public function getMediaPathtoStore()
@@ -364,8 +388,9 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     /**
      * Check the discount is not crossing the grand total amount
-     * @param $grandTotal
-     * @param $loyaltyPoints
+     *
+     * @param float $grandTotal
+     * @param int $loyaltyPoints
      * @return bool
      * @throws NoSuchEntityException
      */
@@ -379,8 +404,10 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     /**
      * Check user have enough points or not
-     * @param $loyaltyPoints
+     *
+     * @param int $loyaltyPoints
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function isPointsAreValid($loyaltyPoints)
     {
@@ -390,8 +417,10 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param $itemId
-     * @param $webStore
+     * Fetch discounts
+     *
+     * @param string $itemId
+     * @param int $webStore
      * @return bool|Entity\DiscountsGetResponse|Entity\ProactiveDiscount[]|ResponseInterface|null
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -446,9 +475,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     /**
      * Get published offers for given card_id, store_id, item_id
      *
-     * @param $cardId
-     * @param $storeId
-     * @param $itemId
+     * @param int $cardId
+     * @param int $storeId
+     * @param string $itemId
      * @return bool|Entity\PublishedOffer[]|Entity\PublishedOffersGetByCardIdResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
@@ -590,7 +619,9 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
-     * @param $area
+     * To check if loyalty points enabled
+     *
+     * @param string $area
      * @return string
      * @throws NoSuchEntityException
      */
@@ -613,6 +644,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To check if loyalty elements enabled
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -625,6 +658,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To check if enabled to show loyalty offers
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -637,6 +672,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To check if enabled to show point offers
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -649,6 +686,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To check if enabled to show member offers
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -661,6 +700,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To check if enabled to show general offers
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -673,6 +714,8 @@ class LoyaltyHelper extends AbstractHelperOmni
     }
 
     /**
+     * To check if enabled to show coupon offers
+     *
      * @return string
      * @throws NoSuchEntityException
      */
@@ -700,7 +743,8 @@ class LoyaltyHelper extends AbstractHelperOmni
 
     /**
      * Format value to two decimal places
-     * @param $value
+     *
+     * @param float $value
      * @return float|string
      */
     public function formatValue($value)
