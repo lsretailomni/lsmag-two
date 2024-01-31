@@ -397,7 +397,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const STORE = 'LS_STORE_';
     const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
-    const PING_RESPONSE_CACHE = 'PING_RESPONSE_' ;
+    const PING_RESPONSE_CACHE = 'PING_RESPONSE_';
 
     // Date format to be used in fetching the data.
     const DATE_FORMAT = 'Y-m-d';
@@ -839,17 +839,45 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * @param null $storeId
-     * @return string
+     * Get the commerce service version
+     *
+     * @param $storeId
+     * @param $scope
+     * @return array|string
      * @throws NoSuchEntityException
      */
-    public function getOmniVersion($storeId = null)
+    public function getOmniVersion($storeId = null, $scope = null)
     {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
+            return $this->getWebsiteConfig(self::SC_SERVICE_VERSION, $storeId);
+        }
+
         //If StoreID is not passed they retrieve it from the global area.
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
         return $this->getStoreConfig(self::SC_SERVICE_VERSION, $storeId);
+    }
+
+    /**
+     * Get the central type
+     *
+     * @param $storeId
+     * @param $scope
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getCentralType($storeId = null, $scope = null)
+    {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
+            return $this->getWebsiteConfig(self::SC_REPLICATION_CENTRAL_TYPE, $storeId);
+        }
+
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+        return $this->getStoreConfig(self::SC_REPLICATION_CENTRAL_TYPE, $storeId);
     }
 
     /**
@@ -1079,15 +1107,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * To keep running discount replication for commerce service older version and running discount replication for saas
      *
-     * @param mixed $store
+     * @param $store
+     * @param $scope
      * @return array
      * @throws NoSuchEntityException
      */
-    public function validateForOlderVersion($store)
+    public function validateForOlderVersion($store, $scope = null)
     {
         $status = ['discountSetup' => false, 'discount' => true];
-        if (version_compare($this->getOmniVersion(), '2023.10', '>')) {
-            if ($this->getWebsiteConfig(LSR::SC_REPLICATION_CENTRAL_TYPE, $store->getWebsiteId()) == LSR::OnPremise) {
+        if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
+            if ($this->getCentralType($store->getId(), $scope) == LSR::OnPremise) {
                 $status = ['discountSetup' => true, 'discount' => false];
             }
         }
