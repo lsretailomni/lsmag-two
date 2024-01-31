@@ -11,6 +11,11 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 class Store extends Entity
 {
     /**
+     * @property ArrayOfRetailAttribute $Attributes
+     */
+    protected $Attributes = null;
+
+    /**
      * @property ArrayOfSalesType $HospSalesTypes
      */
     protected $HospSalesTypes = null;
@@ -124,6 +129,24 @@ class Store extends Entity
      * @property string $WebOmniTerminal
      */
     protected $WebOmniTerminal = null;
+
+    /**
+     * @param ArrayOfRetailAttribute $Attributes
+     * @return $this
+     */
+    public function setAttributes($Attributes)
+    {
+        $this->Attributes = $Attributes;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfRetailAttribute
+     */
+    public function getAttributes()
+    {
+        return $this->Attributes;
+    }
 
     /**
      * @param ArrayOfSalesType $HospSalesTypes

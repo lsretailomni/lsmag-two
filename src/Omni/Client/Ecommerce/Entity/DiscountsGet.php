@@ -13,9 +13,9 @@ use Ls\Omni\Client\RequestInterface;
 class DiscountsGet implements RequestInterface
 {
     /**
-     * @property ArrayOfstring $itemiIds
+     * @property ArrayOfstring $itemIds
      */
-    protected $itemiIds = null;
+    protected $itemIds = null;
 
     /**
      * @property string $storeId
@@ -28,21 +28,21 @@ class DiscountsGet implements RequestInterface
     protected $loyaltySchemeCode = null;
 
     /**
-     * @param ArrayOfstring $itemiIds
+     * @param ArrayOfstring $itemIds
      * @return $this
      */
-    public function setItemiIds($itemiIds)
+    public function setItemIds($itemIds)
     {
-        $this->itemiIds = $itemiIds;
+        $this->itemIds = $itemIds;
         return $this;
     }
 
     /**
      * @return ArrayOfstring
      */
-    public function getItemiIds()
+    public function getItemIds()
     {
-        return $this->itemiIds;
+        return $this->itemIds;
     }
 
     /**
