@@ -4,12 +4,12 @@ namespace Ls\Omni\Helper;
 
 use Carbon\Carbon;
 use Exception;
-use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
-use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\ResponseInterface;
-use \Ls\Omni\Model\Cache\Type;
+use Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Operation;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Currency\Data\Currency;
 use Magento\Framework\Exception\LocalizedException;
@@ -243,8 +243,8 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         if ($result) {
             $startDateTs = Carbon::now();
-            $endDateTs   = Carbon::now()->addDays($expiryInterval);
-
+            $endDateTs   = Carbon::now()->addDays((int)$expiryInterval);
+            
             foreach ($result as $res) {
                 $entryType = $res->getEntryType();
                 $expirationDate = Carbon::parse($res->getExpirationDate());
