@@ -286,32 +286,35 @@ class BasketHelper extends AbstractHelper
             }
 
             foreach ($children as $child) {
-                list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                    $child->getSku()
-                );
-                $match = false;
-                $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
+                if ($child->getProduct()->isInStock()) {
+                    list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                        $child->getSku()
+                    );
+                    $match              = false;
+                    $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
-                if (in_array($itemId, explode(',', $giftCardIdentifier))) {
-                    foreach ($itemsArray as $itemArray) {
-                        if ($itemArray->getId() == $child->getItemId()) {
-                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                            $match = true;
-                            break;
+                    if (in_array($itemId, explode(',', $giftCardIdentifier))) {
+                        foreach ($itemsArray as $itemArray) {
+                            if ($itemArray->getId() == $child->getItemId()) {
+                                $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                                $match = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        foreach ($itemsArray as $itemArray) {
+                            if ($itemArray->getItemId() == $itemId &&
+                                $itemArray->getVariantId() == $variantId &&
+                                $itemArray->getUnitOfMeasureId() == $uom &&
+                                $itemArray->getBarcodeId() == $barCode
+                            ) {
+                                $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                                $match = true;
+                                break;
+                            }
                         }
                     }
-                } else {
-                    foreach ($itemsArray as $itemArray) {
-                        if ($itemArray->getItemId() == $itemId &&
-                            $itemArray->getVariantId() == $variantId &&
-                            $itemArray->getUnitOfMeasureId() == $uom &&
-                            $itemArray->getBarcodeId() == $barCode
-                        ) {
-                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                            $match = true;
-                            break;
-                        }
-                    }
+
                 }
 
                 if (!$match) {
