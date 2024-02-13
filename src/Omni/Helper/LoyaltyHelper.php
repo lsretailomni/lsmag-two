@@ -281,10 +281,10 @@ class LoyaltyHelper extends AbstractHelperOmni
             $cardId = $customer->getData('lsr_cardid');
         }
         // @codingStandardsIgnoreLine
-        $request = new Operation\CardGetPointEnties();
+        $request = new Operation\CardGetPointEntries();
         $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
-        $entity = new Entity\CardGetPointEnties();
+        $entity = new Entity\CardGetPointEntries();
         $entity->setCardId($cardId);
         try {
             $response = $request->execute($entity);

@@ -15,12 +15,12 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\CardGetPointEnties as CardGetPointEntiesRequest;
-use Ls\Omni\Client\Ecommerce\Entity\CardGetPointEntiesResponse as CardGetPointEntiesResponse;
+use Ls\Omni\Client\Ecommerce\Entity\CardGetPointEntries as CardGetPointEntriesRequest;
+use Ls\Omni\Client\Ecommerce\Entity\CardGetPointEntriesResponse as CardGetPointEntriesResponse;
 
-class CardGetPointEnties extends AbstractOperation
+class CardGetPointEntries extends AbstractOperation
 {
-    public const OPERATION_NAME = 'CARD_GET_POINT_ENTIES';
+    public const OPERATION_NAME = 'CARD_GET_POINT_ENTRIES';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -30,12 +30,12 @@ class CardGetPointEnties extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property CardGetPointEntiesRequest $request
+     * @property CardGetPointEntriesRequest $request
      */
     protected $request = null;
 
     /**
-     * @property CardGetPointEntiesResponse $response
+     * @property CardGetPointEntriesResponse $response
      */
     protected $response = null;
 
@@ -64,24 +64,24 @@ class CardGetPointEnties extends AbstractOperation
     }
 
     /**
-     * @param CardGetPointEntiesRequest $request
-     * @return ResponseInterface|CardGetPointEntiesResponse
+     * @param CardGetPointEntriesRequest $request
+     * @return ResponseInterface|CardGetPointEntriesResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'CardGetPointEnties' );
+        return $this->makeRequest( 'CardGetPointEntries' );
     }
 
     /**
-     * @return CardGetPointEntiesRequest
+     * @return CardGetPointEntriesRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new CardGetPointEntiesRequest();
+            $this->request = new CardGetPointEntriesRequest();
         }
         return $this->request;
     }
@@ -118,7 +118,7 @@ class CardGetPointEnties extends AbstractOperation
     }
 
     /**
-     * @param CardGetPointEntiesRequest $request
+     * @param CardGetPointEntriesRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -128,7 +128,7 @@ class CardGetPointEnties extends AbstractOperation
     }
 
     /**
-     * @return CardGetPointEntiesRequest
+     * @return CardGetPointEntriesRequest
      */
     public function getRequest()
     {
@@ -136,7 +136,7 @@ class CardGetPointEnties extends AbstractOperation
     }
 
     /**
-     * @param CardGetPointEntiesResponse $response
+     * @param CardGetPointEntriesResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -146,7 +146,7 @@ class CardGetPointEnties extends AbstractOperation
     }
 
     /**
-     * @return CardGetPointEntiesResponse
+     * @return CardGetPointEntriesResponse
      */
     public function getResponse()
     {

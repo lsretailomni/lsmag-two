@@ -21,11 +21,6 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $_eventPrefix = 'ls_replication_repl_discount_setup';
 
     /**
-     * @property ArrayOfReplDiscountSetupLine $Lines
-     */
-    protected $Lines = null;
-
-    /**
      * @property float $AmountToTrigger
      */
     protected $AmountToTrigger = null;
@@ -41,9 +36,19 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $CouponQtyNeeded = null;
 
     /**
+     * @property string $CurrencyCode
+     */
+    protected $CurrencyCode = null;
+
+    /**
      * @property string $CustomerDiscountGroup
      */
     protected $CustomerDiscountGroup = null;
+
+    /**
+     * @property float $DealPriceDiscount
+     */
+    protected $DealPriceDiscount = null;
 
     /**
      * @property float $DealPriceValue
@@ -81,9 +86,54 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $Enabled = null;
 
     /**
+     * @property boolean $Exclude
+     */
+    protected $Exclude = null;
+
+    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
+
+    /**
+     * @property boolean $IsPercentage
+     */
+    protected $IsPercentage = null;
+
+    /**
+     * @property float $LineDiscountAmount
+     */
+    protected $LineDiscountAmount = null;
+
+    /**
+     * @property float $LineDiscountAmountInclVAT
+     */
+    protected $LineDiscountAmountInclVAT = null;
+
+    /**
+     * @property string $LineGroup
+     */
+    protected $LineGroup = null;
+
+    /**
+     * @property float $LineMemberPoints
+     */
+    protected $LineMemberPoints = null;
+
+    /**
+     * @property int $LineNumber
+     */
+    protected $LineNumber = null;
+
+    /**
+     * @property string $LinePriceGroup
+     */
+    protected $LinePriceGroup = null;
+
+    /**
+     * @property ReplDiscountLineType $LineType
+     */
+    protected $LineType = null;
 
     /**
      * @property string $LoyaltySchemeCode
@@ -111,9 +161,29 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $MemberType = null;
 
     /**
+     * @property string $Number
+     */
+    protected $Number = null;
+
+    /**
+     * @property int $NumberOfItemNeeded
+     */
+    protected $NumberOfItemNeeded = null;
+
+    /**
      * @property string $OfferNo
      */
     protected $OfferNo = null;
+
+    /**
+     * @property float $OfferPrice
+     */
+    protected $OfferPrice = null;
+
+    /**
+     * @property float $OfferPriceInclVAT
+     */
+    protected $OfferPriceInclVAT = null;
 
     /**
      * @property string $PriceGroup
@@ -126,9 +196,29 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $PriorityNo = null;
 
     /**
+     * @property string $ProductItemCategory
+     */
+    protected $ProductItemCategory = null;
+
+    /**
      * @property boolean $PromptForAction
      */
     protected $PromptForAction = null;
+
+    /**
+     * @property float $SplitDealPriceDiscount
+     */
+    protected $SplitDealPriceDiscount = null;
+
+    /**
+     * @property float $StandardPrice
+     */
+    protected $StandardPrice = null;
+
+    /**
+     * @property float $StandardPriceInclVAT
+     */
+    protected $StandardPriceInclVAT = null;
 
     /**
      * @property float $TenderOffer
@@ -151,14 +241,44 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $TenderTypeValue = null;
 
     /**
+     * @property boolean $TriggerPopUp
+     */
+    protected $TriggerPopUp = null;
+
+    /**
      * @property ReplDiscountType $Type
      */
     protected $Type = null;
 
     /**
+     * @property string $UnitOfMeasureId
+     */
+    protected $UnitOfMeasureId = null;
+
+    /**
+     * @property string $ValidFromBeforeExpDate
+     */
+    protected $ValidFromBeforeExpDate = null;
+
+    /**
+     * @property string $ValidToBeforeExpDate
+     */
+    protected $ValidToBeforeExpDate = null;
+
+    /**
      * @property int $ValidationPeriodId
      */
     protected $ValidationPeriodId = null;
+
+    /**
+     * @property string $VariantId
+     */
+    protected $VariantId = null;
+
+    /**
+     * @property int $VariantType
+     */
+    protected $VariantType = null;
 
     /**
      * @property string $scope
@@ -218,26 +338,6 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getIdentities()
     {
         return [ self::CACHE_TAG . '_' . $this->getId() ];
-    }
-
-    /**
-     * @param ArrayOfReplDiscountSetupLine $Lines
-     * @return $this
-     */
-    public function setLines($Lines)
-    {
-        $this->setData( 'Lines', $Lines );
-        $this->Lines = $Lines;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfReplDiscountSetupLine
-     */
-    public function getLines()
-    {
-        return $this->getData( 'Lines' );
     }
 
     /**
@@ -301,6 +401,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param string $CurrencyCode
+     * @return $this
+     */
+    public function setCurrencyCode($CurrencyCode)
+    {
+        $this->setData( 'CurrencyCode', $CurrencyCode );
+        $this->CurrencyCode = $CurrencyCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrencyCode()
+    {
+        return $this->getData( 'CurrencyCode' );
+    }
+
+    /**
      * @param string $CustomerDiscountGroup
      * @return $this
      */
@@ -318,6 +438,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getCustomerDiscountGroup()
     {
         return $this->getData( 'CustomerDiscountGroup' );
+    }
+
+    /**
+     * @param float $DealPriceDiscount
+     * @return $this
+     */
+    public function setDealPriceDiscount($DealPriceDiscount)
+    {
+        $this->setData( 'DealPriceDiscount', $DealPriceDiscount );
+        $this->DealPriceDiscount = $DealPriceDiscount;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDealPriceDiscount()
+    {
+        return $this->getData( 'DealPriceDiscount' );
     }
 
     /**
@@ -461,6 +601,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param boolean $Exclude
+     * @return $this
+     */
+    public function setExclude($Exclude)
+    {
+        $this->setData( 'Exclude', $Exclude );
+        $this->Exclude = $Exclude;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getExclude()
+    {
+        return $this->getData( 'Exclude' );
+    }
+
+    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -478,6 +638,166 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getIsDeleted()
     {
         return $this->getData( 'IsDeleted' );
+    }
+
+    /**
+     * @param boolean $IsPercentage
+     * @return $this
+     */
+    public function setIsPercentage($IsPercentage)
+    {
+        $this->setData( 'IsPercentage', $IsPercentage );
+        $this->IsPercentage = $IsPercentage;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPercentage()
+    {
+        return $this->getData( 'IsPercentage' );
+    }
+
+    /**
+     * @param float $LineDiscountAmount
+     * @return $this
+     */
+    public function setLineDiscountAmount($LineDiscountAmount)
+    {
+        $this->setData( 'LineDiscountAmount', $LineDiscountAmount );
+        $this->LineDiscountAmount = $LineDiscountAmount;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLineDiscountAmount()
+    {
+        return $this->getData( 'LineDiscountAmount' );
+    }
+
+    /**
+     * @param float $LineDiscountAmountInclVAT
+     * @return $this
+     */
+    public function setLineDiscountAmountInclVAT($LineDiscountAmountInclVAT)
+    {
+        $this->setData( 'LineDiscountAmountInclVAT', $LineDiscountAmountInclVAT );
+        $this->LineDiscountAmountInclVAT = $LineDiscountAmountInclVAT;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLineDiscountAmountInclVAT()
+    {
+        return $this->getData( 'LineDiscountAmountInclVAT' );
+    }
+
+    /**
+     * @param string $LineGroup
+     * @return $this
+     */
+    public function setLineGroup($LineGroup)
+    {
+        $this->setData( 'LineGroup', $LineGroup );
+        $this->LineGroup = $LineGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLineGroup()
+    {
+        return $this->getData( 'LineGroup' );
+    }
+
+    /**
+     * @param float $LineMemberPoints
+     * @return $this
+     */
+    public function setLineMemberPoints($LineMemberPoints)
+    {
+        $this->setData( 'LineMemberPoints', $LineMemberPoints );
+        $this->LineMemberPoints = $LineMemberPoints;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLineMemberPoints()
+    {
+        return $this->getData( 'LineMemberPoints' );
+    }
+
+    /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber)
+    {
+        $this->setData( 'LineNumber', $LineNumber );
+        $this->LineNumber = $LineNumber;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNumber()
+    {
+        return $this->getData( 'LineNumber' );
+    }
+
+    /**
+     * @param string $LinePriceGroup
+     * @return $this
+     */
+    public function setLinePriceGroup($LinePriceGroup)
+    {
+        $this->setData( 'LinePriceGroup', $LinePriceGroup );
+        $this->LinePriceGroup = $LinePriceGroup;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinePriceGroup()
+    {
+        return $this->getData( 'LinePriceGroup' );
+    }
+
+    /**
+     * @param ReplDiscountLineType $LineType
+     * @return $this
+     */
+    public function setLineType($LineType)
+    {
+        $this->setData( 'LineType', $LineType );
+        $this->LineType = $LineType;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return ReplDiscountLineType
+     */
+    public function getLineType()
+    {
+        return $this->getData( 'LineType' );
     }
 
     /**
@@ -581,6 +901,46 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param string $Number
+     * @return $this
+     */
+    public function setNumber($Number)
+    {
+        $this->setData( 'Number', $Number );
+        $this->Number = $Number;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNumber()
+    {
+        return $this->getData( 'Number' );
+    }
+
+    /**
+     * @param int $NumberOfItemNeeded
+     * @return $this
+     */
+    public function setNumberOfItemNeeded($NumberOfItemNeeded)
+    {
+        $this->setData( 'NumberOfItemNeeded', $NumberOfItemNeeded );
+        $this->NumberOfItemNeeded = $NumberOfItemNeeded;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberOfItemNeeded()
+    {
+        return $this->getData( 'NumberOfItemNeeded' );
+    }
+
+    /**
      * @param string $OfferNo
      * @return $this
      */
@@ -598,6 +958,46 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getOfferNo()
     {
         return $this->getData( 'OfferNo' );
+    }
+
+    /**
+     * @param float $OfferPrice
+     * @return $this
+     */
+    public function setOfferPrice($OfferPrice)
+    {
+        $this->setData( 'OfferPrice', $OfferPrice );
+        $this->OfferPrice = $OfferPrice;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOfferPrice()
+    {
+        return $this->getData( 'OfferPrice' );
+    }
+
+    /**
+     * @param float $OfferPriceInclVAT
+     * @return $this
+     */
+    public function setOfferPriceInclVAT($OfferPriceInclVAT)
+    {
+        $this->setData( 'OfferPriceInclVAT', $OfferPriceInclVAT );
+        $this->OfferPriceInclVAT = $OfferPriceInclVAT;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getOfferPriceInclVAT()
+    {
+        return $this->getData( 'OfferPriceInclVAT' );
     }
 
     /**
@@ -641,6 +1041,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param string $ProductItemCategory
+     * @return $this
+     */
+    public function setProductItemCategory($ProductItemCategory)
+    {
+        $this->setData( 'ProductItemCategory', $ProductItemCategory );
+        $this->ProductItemCategory = $ProductItemCategory;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductItemCategory()
+    {
+        return $this->getData( 'ProductItemCategory' );
+    }
+
+    /**
      * @param boolean $PromptForAction
      * @return $this
      */
@@ -658,6 +1078,66 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getPromptForAction()
     {
         return $this->getData( 'PromptForAction' );
+    }
+
+    /**
+     * @param float $SplitDealPriceDiscount
+     * @return $this
+     */
+    public function setSplitDealPriceDiscount($SplitDealPriceDiscount)
+    {
+        $this->setData( 'SplitDealPriceDiscount', $SplitDealPriceDiscount );
+        $this->SplitDealPriceDiscount = $SplitDealPriceDiscount;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSplitDealPriceDiscount()
+    {
+        return $this->getData( 'SplitDealPriceDiscount' );
+    }
+
+    /**
+     * @param float $StandardPrice
+     * @return $this
+     */
+    public function setStandardPrice($StandardPrice)
+    {
+        $this->setData( 'StandardPrice', $StandardPrice );
+        $this->StandardPrice = $StandardPrice;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getStandardPrice()
+    {
+        return $this->getData( 'StandardPrice' );
+    }
+
+    /**
+     * @param float $StandardPriceInclVAT
+     * @return $this
+     */
+    public function setStandardPriceInclVAT($StandardPriceInclVAT)
+    {
+        $this->setData( 'StandardPriceInclVAT', $StandardPriceInclVAT );
+        $this->StandardPriceInclVAT = $StandardPriceInclVAT;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getStandardPriceInclVAT()
+    {
+        return $this->getData( 'StandardPriceInclVAT' );
     }
 
     /**
@@ -741,6 +1221,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param boolean $TriggerPopUp
+     * @return $this
+     */
+    public function setTriggerPopUp($TriggerPopUp)
+    {
+        $this->setData( 'TriggerPopUp', $TriggerPopUp );
+        $this->TriggerPopUp = $TriggerPopUp;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getTriggerPopUp()
+    {
+        return $this->getData( 'TriggerPopUp' );
+    }
+
+    /**
      * @param ReplDiscountType $Type
      * @return $this
      */
@@ -761,6 +1261,66 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
+     * @param string $UnitOfMeasureId
+     * @return $this
+     */
+    public function setUnitOfMeasureId($UnitOfMeasureId)
+    {
+        $this->setData( 'UnitOfMeasureId', $UnitOfMeasureId );
+        $this->UnitOfMeasureId = $UnitOfMeasureId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUnitOfMeasureId()
+    {
+        return $this->getData( 'UnitOfMeasureId' );
+    }
+
+    /**
+     * @param string $ValidFromBeforeExpDate
+     * @return $this
+     */
+    public function setValidFromBeforeExpDate($ValidFromBeforeExpDate)
+    {
+        $this->setData( 'ValidFromBeforeExpDate', $ValidFromBeforeExpDate );
+        $this->ValidFromBeforeExpDate = $ValidFromBeforeExpDate;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidFromBeforeExpDate()
+    {
+        return $this->getData( 'ValidFromBeforeExpDate' );
+    }
+
+    /**
+     * @param string $ValidToBeforeExpDate
+     * @return $this
+     */
+    public function setValidToBeforeExpDate($ValidToBeforeExpDate)
+    {
+        $this->setData( 'ValidToBeforeExpDate', $ValidToBeforeExpDate );
+        $this->ValidToBeforeExpDate = $ValidToBeforeExpDate;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidToBeforeExpDate()
+    {
+        return $this->getData( 'ValidToBeforeExpDate' );
+    }
+
+    /**
      * @param int $ValidationPeriodId
      * @return $this
      */
@@ -778,6 +1338,46 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getValidationPeriodId()
     {
         return $this->getData( 'ValidationPeriodId' );
+    }
+
+    /**
+     * @param string $VariantId
+     * @return $this
+     */
+    public function setVariantId($VariantId)
+    {
+        $this->setData( 'VariantId', $VariantId );
+        $this->VariantId = $VariantId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantId()
+    {
+        return $this->getData( 'VariantId' );
+    }
+
+    /**
+     * @param int $VariantType
+     * @return $this
+     */
+    public function setVariantType($VariantType)
+    {
+        $this->setData( 'VariantType', $VariantType );
+        $this->VariantType = $VariantType;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVariantType()
+    {
+        return $this->getData( 'VariantType' );
     }
 
     /**

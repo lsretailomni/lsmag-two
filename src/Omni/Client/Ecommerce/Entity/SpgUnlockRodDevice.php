@@ -10,12 +10,12 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class ConatctBlock implements RequestInterface
+class SpgUnlockRodDevice implements RequestInterface
 {
     /**
-     * @property string $accountId
+     * @property string $storeId
      */
-    protected $accountId = null;
+    protected $storeId = null;
 
     /**
      * @property string $cardId
@@ -23,21 +23,21 @@ class ConatctBlock implements RequestInterface
     protected $cardId = null;
 
     /**
-     * @param string $accountId
+     * @param string $storeId
      * @return $this
      */
-    public function setAccountId($accountId)
+    public function setStoreId($storeId)
     {
-        $this->accountId = $accountId;
+        $this->storeId = $storeId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAccountId()
+    public function getStoreId()
     {
-        return $this->accountId;
+        return $this->storeId;
     }
 
     /**

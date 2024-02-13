@@ -17,6 +17,7 @@ use MyCLabs\Enum\Enum;
  * @$method static AttributeLinkType CUSTOMER()
  * @$method static AttributeLinkType STORE()
  * @$method static AttributeLinkType DEAL()
+ * @$method static AttributeLinkType RESERVATION()
  * @$method static AttributeLinkType UNKNOWN()
  */
 class AttributeLinkType extends Enum
@@ -32,6 +33,8 @@ class AttributeLinkType extends Enum
     public const STORE = 'Store';
 
     public const DEAL = 'Deal';
+
+    public const RESERVATION = 'Reservation';
 
     public const UNKNOWN = 'Unknown';
 }
