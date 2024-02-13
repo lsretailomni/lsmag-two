@@ -3011,7 +3011,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getUomCodeGivenDescription($description)
     {
-        $uomDescription    = '';
+        $uomCode    = '';
         $filters           = [
             ['field' => 'description', 'value' => $description, 'condition_type' => 'eq']
         ];

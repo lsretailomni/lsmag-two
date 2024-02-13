@@ -129,7 +129,7 @@ class SyncPrice extends ProductCreateTask
                     true
                 );
                 if (isset($productDataArray)) {
-                    $this->processProductPrice($productDataArray, $replPrice, $collection);
+                    $this->processProductPrice($productDataArray, $replPrice);
                 }
             } catch (Exception $e) {
                 $this->logger->debug(
@@ -138,7 +138,7 @@ class SyncPrice extends ProductCreateTask
                         __METHOD__,
                         $this->store->getName(),
                         $replPrice->getItemId(),
-                        $replPrice->variantId(),
+                        $replPrice->getVariantId(),
                         $replPrice->getUnitOfMeasure()
                     )
                 );
@@ -155,11 +155,10 @@ class SyncPrice extends ProductCreateTask
      *
      * @param array $productDataArray
      * @param object $replPrice
-     * @param Collection $collection
      * @return void
      * @throws Exception
      */
-    public function processProductPrice($productDataArray, $replPrice, $collection)
+    public function processProductPrice($productDataArray, $replPrice)
     {
         /** @var ReplPrice $replPrice */
         $replItemPriceList = null;
@@ -167,25 +166,26 @@ class SyncPrice extends ProductCreateTask
             $replItemPriceList = $this->getItemPriceList($replPrice->getItemId());
         }
         foreach ($productDataArray as $productData) {
+            $price = $replPrice;
             if (!empty($replItemPriceList)) {
                 $replItemPrice = $this->getPrice($productData, $replItemPriceList);
                 if (!empty($replItemPrice)) {
-                    $replPrice = $replItemPrice;
+                    $price = $replItemPrice;
                 }
             }
-            if ($productData->getPrice() != $replPrice->getUnitPriceInclVat()) {
-                $productData->setPrice($replPrice->getUnitPriceInclVat());
+            if ($productData->getPrice() != $price->getUnitPriceInclVat()) {
+                $productData->setPrice($price->getUnitPriceInclVat());
                 $this->productResourceModel->saveAttribute($productData, 'price');
             }
-            $replPrice->addData(
+            $price->addData(
                 [
                     'is_updated'   => 0,
                     'processed'    => 1,
                     'processed_at' => $this->replicationHelper->getDateTime()
                 ]
             );
-            $this->replPriceRepository->save($replPrice);
-            $this->processed[$replPrice->getId()] = $replPrice->getId();
+            $this->replPriceRepository->save($price);
+            $this->processed[$price->getId()] = $price->getId();
         }
     }
 
@@ -219,7 +219,7 @@ class SyncPrice extends ProductCreateTask
         if ($uom) {
             $attr = $productData->getResource()->getAttribute(LSR::LS_UOM_ATTRIBUTE);
             if ($attr->usesSource()) {
-                $uom = $attr->getSource()->getOptionText($uom);
+                $uom = $this->replicationHelper->getUomCodeGivenDescription($attr->getSource()->getOptionText($uom));
             }
         }
         $key = $itemId . '-' . $variantId . '-' . $uom;
@@ -229,7 +229,6 @@ class SyncPrice extends ProductCreateTask
         if ($uom) {
             $variantId         = '';
             $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
-            $uom               = $this->replicationHelper->getUomCodeGivenDescription($uom);
             if ($uom == $baseUnitOfMeasure) {
                 $uom = '';
             }
@@ -249,7 +248,6 @@ class SyncPrice extends ProductCreateTask
      */
     public function getItemPriceList($itemId)
     {
-        $replItemPriceList      = null;
         $replItemPriceListArray = [];
         $webStoreId             = $this->lsr->getStoreConfig(
             LSR::SC_SERVICE_STORE,
