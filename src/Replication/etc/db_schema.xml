@@ -1,50 +1,5 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-  <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="ReplEcommInventoryStatus">
-    <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>
-    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
-    <column xsi:type="decimal" name="Quantity" scale="4" precision="20" nullable="true" comment="Quantity"/>
-    <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
-    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="VariantId"/>
-    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
-    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
-    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
-    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
-    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
-    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
-    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
-    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
-    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_inv_status_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID">
-      <column name="ItemId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_VARIANTID">
-      <column name="VariantId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_STOREID">
-      <column name="StoreId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID">
-      <column name="scope_id"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_PROCESSED">
-      <column name="processed"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED">
-      <column name="is_updated"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
-      <column name="IsDeleted"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_INV_STATUS_IDENTITY_VALUE">
-      <column name="identity_value"/>
-    </constraint>
-  </table>
   <table name="ls_replication_repl_barcode" resource="default" engine="innodb" comment="ReplEcommBarcodes">
     <column xsi:type="int" name="repl_barcode_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_barcode_id"/>
     <column xsi:type="int" name="Blocked" padding="11" nullable="true" comment="Blocked"/>
@@ -384,7 +339,6 @@
     <column xsi:type="text" name="SalseUnitOfMeasure" nullable="true" comment="SalseUnitOfMeasure"/>
     <column xsi:type="int" name="ScaleItem" padding="11" nullable="true" comment="ScaleItem"/>
     <column xsi:type="text" name="SeasonCode" nullable="true" comment="SeasonCode"/>
-    <column xsi:type="text" name="SpecialGroups" nullable="true" comment="SpecialGroups"/>
     <column xsi:type="text" name="TariffNo" nullable="true" comment="TariffNo"/>
     <column xsi:type="text" name="TaxItemGroupId" nullable="true" comment="TaxItemGroupId"/>
     <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
@@ -1499,7 +1453,6 @@
     <column xsi:type="text" name="SalesUomId" nullable="true" comment="SalesUomId"/>
     <column xsi:type="boolean" name="ScaleItem" default="0" nullable="true" comment="ScaleItem"/>
     <column xsi:type="text" name="SeasonCode" nullable="true" comment="SeasonCode"/>
-    <column xsi:type="text" name="SpecialGroups" nullable="true" comment="SpecialGroups"/>
     <column xsi:type="text" name="TariffNo" nullable="true" comment="TariffNo"/>
     <column xsi:type="decimal" name="UnitVolume" scale="4" precision="20" nullable="true" comment="UnitVolume"/>
     <column xsi:type="decimal" name="UnitsPerParcel" scale="4" precision="20" nullable="true" comment="UnitsPerParcel"/>
@@ -1599,9 +1552,7 @@
     <column xsi:type="decimal" name="AmountToTrigger" scale="4" precision="20" nullable="true" comment="AmountToTrigger"/>
     <column xsi:type="text" name="CouponCode" nullable="true" comment="CouponCode"/>
     <column xsi:type="decimal" name="CouponQtyNeeded" scale="4" precision="20" nullable="true" comment="CouponQtyNeeded"/>
-    <column xsi:type="text" name="CurrencyCode" nullable="true" comment="CurrencyCode"/>
     <column xsi:type="text" name="CustomerDiscountGroup" nullable="true" comment="CustomerDiscountGroup"/>
-    <column xsi:type="decimal" name="DealPriceDiscount" scale="4" precision="20" nullable="true" comment="DealPriceDiscount"/>
     <column xsi:type="decimal" name="DealPriceValue" scale="4" precision="20" nullable="true" comment="DealPriceValue"/>
     <column xsi:type="text" name="Description" nullable="true" comment="Description"/>
     <column xsi:type="text" name="Details" nullable="true" comment="Details"/>
@@ -1609,45 +1560,22 @@
     <column xsi:type="decimal" name="DiscountValue" scale="4" precision="20" nullable="true" comment="DiscountValue"/>
     <column xsi:type="text" name="DiscountValueType" nullable="true" comment="DiscountValueType"/>
     <column xsi:type="boolean" name="Enabled" default="0" nullable="true" comment="Enabled"/>
-    <column xsi:type="boolean" name="Exclude" default="0" nullable="true" comment="Exclude"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="boolean" name="IsPercentage" default="0" nullable="true" comment="IsPercentage"/>
-    <column xsi:type="decimal" name="LineDiscountAmount" scale="4" precision="20" nullable="true" comment="LineDiscountAmount"/>
-    <column xsi:type="decimal" name="LineDiscountAmountInclVAT" scale="4" precision="20" nullable="true" comment="LineDiscountAmountInclVAT"/>
-    <column xsi:type="text" name="LineGroup" nullable="true" comment="LineGroup"/>
-    <column xsi:type="decimal" name="LineMemberPoints" scale="4" precision="20" nullable="true" comment="LineMemberPoints"/>
-    <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="LineNumber"/>
-    <column xsi:type="text" name="LinePriceGroup" nullable="true" comment="LinePriceGroup"/>
-    <column xsi:type="text" name="LineType" nullable="true" comment="LineType"/>
     <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="LoyaltySchemeCode"/>
     <column xsi:type="decimal" name="MaxDiscountAmount" scale="4" precision="20" nullable="true" comment="MaxDiscountAmount"/>
     <column xsi:type="text" name="MemberAttribute" nullable="true" comment="MemberAttribute"/>
     <column xsi:type="decimal" name="MemberPoints" scale="4" precision="20" nullable="true" comment="MemberPoints"/>
     <column xsi:type="text" name="MemberType" nullable="true" comment="MemberType"/>
-    <column xsi:type="text" name="Number" nullable="true" comment="Number"/>
-    <column xsi:type="int" name="NumberOfItemNeeded" padding="11" nullable="true" comment="NumberOfItemNeeded"/>
     <column xsi:type="text" name="OfferNo" nullable="true" comment="OfferNo"/>
-    <column xsi:type="decimal" name="OfferPrice" scale="4" precision="20" nullable="true" comment="OfferPrice"/>
-    <column xsi:type="decimal" name="OfferPriceInclVAT" scale="4" precision="20" nullable="true" comment="OfferPriceInclVAT"/>
     <column xsi:type="text" name="PriceGroup" nullable="true" comment="PriceGroup"/>
     <column xsi:type="int" name="PriorityNo" padding="11" nullable="true" comment="PriorityNo"/>
-    <column xsi:type="text" name="ProductItemCategory" nullable="true" comment="ProductItemCategory"/>
     <column xsi:type="boolean" name="PromptForAction" default="0" nullable="true" comment="PromptForAction"/>
-    <column xsi:type="decimal" name="SplitDealPriceDiscount" scale="4" precision="20" nullable="true" comment="SplitDealPriceDiscount"/>
-    <column xsi:type="decimal" name="StandardPrice" scale="4" precision="20" nullable="true" comment="StandardPrice"/>
-    <column xsi:type="decimal" name="StandardPriceInclVAT" scale="4" precision="20" nullable="true" comment="StandardPriceInclVAT"/>
     <column xsi:type="decimal" name="TenderOffer" scale="4" precision="20" nullable="true" comment="TenderOffer"/>
     <column xsi:type="decimal" name="TenderOfferAmount" scale="4" precision="20" nullable="true" comment="TenderOfferAmount"/>
     <column xsi:type="text" name="TenderTypeCode" nullable="true" comment="TenderTypeCode"/>
     <column xsi:type="text" name="TenderTypeValue" nullable="true" comment="TenderTypeValue"/>
-    <column xsi:type="boolean" name="TriggerPopUp" default="0" nullable="true" comment="TriggerPopUp"/>
     <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
-    <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
-    <column xsi:type="text" name="ValidFromBeforeExpDate" nullable="true" comment="ValidFromBeforeExpDate"/>
-    <column xsi:type="text" name="ValidToBeforeExpDate" nullable="true" comment="ValidToBeforeExpDate"/>
     <column xsi:type="int" name="ValidationPeriodId" padding="11" nullable="true" comment="ValidationPeriodId"/>
-    <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
-    <column xsi:type="int" name="VariantType" padding="11" nullable="true" comment="VariantType"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
     <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
@@ -1945,6 +1873,51 @@
       <column name="repl_tax_setup_id"/>
     </constraint>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_TAX_SETUP_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_inv_status" resource="default" engine="innodb" comment="ReplEcommInventoryStatus">
+    <column xsi:type="int" name="repl_inv_status_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_inv_status_id"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
+    <column xsi:type="decimal" name="Quantity" scale="4" precision="20" nullable="true" comment="Quantity"/>
+    <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
+    <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="VariantId"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_inv_status_id"/>
+    </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ITEMID">
+      <column name="ItemId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_VARIANTID">
+      <column name="VariantId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_STOREID">
+      <column name="StoreId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_SCOPE_ID">
+      <column name="scope_id"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_PROCESSED">
+      <column name="processed"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_IS_UPDATED">
+      <column name="is_updated"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_INV_STATUS_ISDELETED">
+      <column name="IsDeleted"/>
+    </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_INV_STATUS_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
   </table>

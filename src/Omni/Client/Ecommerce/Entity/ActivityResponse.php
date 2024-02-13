@@ -41,11 +41,6 @@ class ActivityResponse extends Entity
     protected $LineDiscount = null;
 
     /**
-     * @property int $NoOfActivities
-     */
-    protected $NoOfActivities = null;
-
-    /**
      * @property float $Quantity
      */
     protected $Quantity = null;
@@ -171,24 +166,6 @@ class ActivityResponse extends Entity
     public function getLineDiscount()
     {
         return $this->LineDiscount;
-    }
-
-    /**
-     * @param int $NoOfActivities
-     * @return $this
-     */
-    public function setNoOfActivities($NoOfActivities)
-    {
-        $this->NoOfActivities = $NoOfActivities;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNoOfActivities()
-    {
-        return $this->NoOfActivities;
     }
 
     /**

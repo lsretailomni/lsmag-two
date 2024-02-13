@@ -15,12 +15,12 @@ use Ls\Omni\Service\Service as OmniService;
 use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
-use Ls\Omni\Client\Ecommerce\Entity\ContactBlock as ContactBlockRequest;
-use Ls\Omni\Client\Ecommerce\Entity\ContactBlockResponse as ContactBlockResponse;
+use Ls\Omni\Client\Ecommerce\Entity\ConatctBlock as ConatctBlockRequest;
+use Ls\Omni\Client\Ecommerce\Entity\ConatctBlockResponse as ConatctBlockResponse;
 
-class ContactBlock extends AbstractOperation
+class ConatctBlock extends AbstractOperation
 {
-    public const OPERATION_NAME = 'CONTACT_BLOCK';
+    public const OPERATION_NAME = 'CONATCT_BLOCK';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -30,12 +30,12 @@ class ContactBlock extends AbstractOperation
     protected $client = null;
 
     /**
-     * @property ContactBlockRequest $request
+     * @property ConatctBlockRequest $request
      */
     protected $request = null;
 
     /**
-     * @property ContactBlockResponse $response
+     * @property ConatctBlockResponse $response
      */
     protected $response = null;
 
@@ -64,24 +64,24 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @param ContactBlockRequest $request
-     * @return ResponseInterface|ContactBlockResponse
+     * @param ConatctBlockRequest $request
+     * @return ResponseInterface|ConatctBlockResponse
      */
     public function execute(RequestInterface $request = null)
     {
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'ContactBlock' );
+        return $this->makeRequest( 'ConatctBlock' );
     }
 
     /**
-     * @return ContactBlockRequest
+     * @return ConatctBlockRequest
      */
     public function & getOperationInput()
     {
         if ( is_null( $this->request ) ) {
-            $this->request = new ContactBlockRequest();
+            $this->request = new ConatctBlockRequest();
         }
         return $this->request;
     }
@@ -118,7 +118,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @param ContactBlockRequest $request
+     * @param ConatctBlockRequest $request
      * @return $this
      */
     public function setRequest($request)
@@ -128,7 +128,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @return ContactBlockRequest
+     * @return ConatctBlockRequest
      */
     public function getRequest()
     {
@@ -136,7 +136,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @param ContactBlockResponse $response
+     * @param ConatctBlockResponse $response
      * @return $this
      */
     public function setResponse($response)
@@ -146,7 +146,7 @@ class ContactBlock extends AbstractOperation
     }
 
     /**
-     * @return ContactBlockResponse
+     * @return ConatctBlockResponse
      */
     public function getResponse()
     {

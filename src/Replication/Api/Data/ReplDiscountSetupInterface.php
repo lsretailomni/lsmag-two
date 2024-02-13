@@ -11,6 +11,17 @@ namespace Ls\Replication\Api\Data;
 interface ReplDiscountSetupInterface
 {
     /**
+     * @param ArrayOfReplDiscountSetupLine $Lines
+     * @return $this
+     */
+    public function setLines($Lines);
+
+    /**
+     * @return ArrayOfReplDiscountSetupLine
+     */
+    public function getLines();
+
+    /**
      * @param float $AmountToTrigger
      * @return $this
      */
@@ -44,17 +55,6 @@ interface ReplDiscountSetupInterface
     public function getCouponQtyNeeded();
 
     /**
-     * @param string $CurrencyCode
-     * @return $this
-     */
-    public function setCurrencyCode($CurrencyCode);
-
-    /**
-     * @return string
-     */
-    public function getCurrencyCode();
-
-    /**
      * @param string $CustomerDiscountGroup
      * @return $this
      */
@@ -64,17 +64,6 @@ interface ReplDiscountSetupInterface
      * @return string
      */
     public function getCustomerDiscountGroup();
-
-    /**
-     * @param float $DealPriceDiscount
-     * @return $this
-     */
-    public function setDealPriceDiscount($DealPriceDiscount);
-
-    /**
-     * @return float
-     */
-    public function getDealPriceDiscount();
 
     /**
      * @param float $DealPriceValue
@@ -154,17 +143,6 @@ interface ReplDiscountSetupInterface
     public function getEnabled();
 
     /**
-     * @param boolean $Exclude
-     * @return $this
-     */
-    public function setExclude($Exclude);
-
-    /**
-     * @return boolean
-     */
-    public function getExclude();
-
-    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -174,94 +152,6 @@ interface ReplDiscountSetupInterface
      * @return boolean
      */
     public function getIsDeleted();
-
-    /**
-     * @param boolean $IsPercentage
-     * @return $this
-     */
-    public function setIsPercentage($IsPercentage);
-
-    /**
-     * @return boolean
-     */
-    public function getIsPercentage();
-
-    /**
-     * @param float $LineDiscountAmount
-     * @return $this
-     */
-    public function setLineDiscountAmount($LineDiscountAmount);
-
-    /**
-     * @return float
-     */
-    public function getLineDiscountAmount();
-
-    /**
-     * @param float $LineDiscountAmountInclVAT
-     * @return $this
-     */
-    public function setLineDiscountAmountInclVAT($LineDiscountAmountInclVAT);
-
-    /**
-     * @return float
-     */
-    public function getLineDiscountAmountInclVAT();
-
-    /**
-     * @param string $LineGroup
-     * @return $this
-     */
-    public function setLineGroup($LineGroup);
-
-    /**
-     * @return string
-     */
-    public function getLineGroup();
-
-    /**
-     * @param float $LineMemberPoints
-     * @return $this
-     */
-    public function setLineMemberPoints($LineMemberPoints);
-
-    /**
-     * @return float
-     */
-    public function getLineMemberPoints();
-
-    /**
-     * @param int $LineNumber
-     * @return $this
-     */
-    public function setLineNumber($LineNumber);
-
-    /**
-     * @return int
-     */
-    public function getLineNumber();
-
-    /**
-     * @param string $LinePriceGroup
-     * @return $this
-     */
-    public function setLinePriceGroup($LinePriceGroup);
-
-    /**
-     * @return string
-     */
-    public function getLinePriceGroup();
-
-    /**
-     * @param ReplDiscountLineType $LineType
-     * @return $this
-     */
-    public function setLineType($LineType);
-
-    /**
-     * @return ReplDiscountLineType
-     */
-    public function getLineType();
 
     /**
      * @param string $LoyaltySchemeCode
@@ -319,28 +209,6 @@ interface ReplDiscountSetupInterface
     public function getMemberType();
 
     /**
-     * @param string $Number
-     * @return $this
-     */
-    public function setNumber($Number);
-
-    /**
-     * @return string
-     */
-    public function getNumber();
-
-    /**
-     * @param int $NumberOfItemNeeded
-     * @return $this
-     */
-    public function setNumberOfItemNeeded($NumberOfItemNeeded);
-
-    /**
-     * @return int
-     */
-    public function getNumberOfItemNeeded();
-
-    /**
      * @param string $OfferNo
      * @return $this
      */
@@ -350,28 +218,6 @@ interface ReplDiscountSetupInterface
      * @return string
      */
     public function getOfferNo();
-
-    /**
-     * @param float $OfferPrice
-     * @return $this
-     */
-    public function setOfferPrice($OfferPrice);
-
-    /**
-     * @return float
-     */
-    public function getOfferPrice();
-
-    /**
-     * @param float $OfferPriceInclVAT
-     * @return $this
-     */
-    public function setOfferPriceInclVAT($OfferPriceInclVAT);
-
-    /**
-     * @return float
-     */
-    public function getOfferPriceInclVAT();
 
     /**
      * @param string $PriceGroup
@@ -396,17 +242,6 @@ interface ReplDiscountSetupInterface
     public function getPriorityNo();
 
     /**
-     * @param string $ProductItemCategory
-     * @return $this
-     */
-    public function setProductItemCategory($ProductItemCategory);
-
-    /**
-     * @return string
-     */
-    public function getProductItemCategory();
-
-    /**
      * @param boolean $PromptForAction
      * @return $this
      */
@@ -416,39 +251,6 @@ interface ReplDiscountSetupInterface
      * @return boolean
      */
     public function getPromptForAction();
-
-    /**
-     * @param float $SplitDealPriceDiscount
-     * @return $this
-     */
-    public function setSplitDealPriceDiscount($SplitDealPriceDiscount);
-
-    /**
-     * @return float
-     */
-    public function getSplitDealPriceDiscount();
-
-    /**
-     * @param float $StandardPrice
-     * @return $this
-     */
-    public function setStandardPrice($StandardPrice);
-
-    /**
-     * @return float
-     */
-    public function getStandardPrice();
-
-    /**
-     * @param float $StandardPriceInclVAT
-     * @return $this
-     */
-    public function setStandardPriceInclVAT($StandardPriceInclVAT);
-
-    /**
-     * @return float
-     */
-    public function getStandardPriceInclVAT();
 
     /**
      * @param float $TenderOffer
@@ -495,17 +297,6 @@ interface ReplDiscountSetupInterface
     public function getTenderTypeValue();
 
     /**
-     * @param boolean $TriggerPopUp
-     * @return $this
-     */
-    public function setTriggerPopUp($TriggerPopUp);
-
-    /**
-     * @return boolean
-     */
-    public function getTriggerPopUp();
-
-    /**
      * @param ReplDiscountType $Type
      * @return $this
      */
@@ -517,39 +308,6 @@ interface ReplDiscountSetupInterface
     public function getType();
 
     /**
-     * @param string $UnitOfMeasureId
-     * @return $this
-     */
-    public function setUnitOfMeasureId($UnitOfMeasureId);
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasureId();
-
-    /**
-     * @param string $ValidFromBeforeExpDate
-     * @return $this
-     */
-    public function setValidFromBeforeExpDate($ValidFromBeforeExpDate);
-
-    /**
-     * @return string
-     */
-    public function getValidFromBeforeExpDate();
-
-    /**
-     * @param string $ValidToBeforeExpDate
-     * @return $this
-     */
-    public function setValidToBeforeExpDate($ValidToBeforeExpDate);
-
-    /**
-     * @return string
-     */
-    public function getValidToBeforeExpDate();
-
-    /**
      * @param int $ValidationPeriodId
      * @return $this
      */
@@ -559,28 +317,6 @@ interface ReplDiscountSetupInterface
      * @return int
      */
     public function getValidationPeriodId();
-
-    /**
-     * @param string $VariantId
-     * @return $this
-     */
-    public function setVariantId($VariantId);
-
-    /**
-     * @return string
-     */
-    public function getVariantId();
-
-    /**
-     * @param int $VariantType
-     * @return $this
-     */
-    public function setVariantType($VariantType);
-
-    /**
-     * @return int
-     */
-    public function getVariantType();
 
     /**
      * @param string $scope

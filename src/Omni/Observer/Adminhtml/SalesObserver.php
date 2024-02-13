@@ -68,7 +68,8 @@ class SalesObserver implements ObserverInterface
                     ->setSubtotalInclTax($subTotal)
                     ->setBaseSubtotalTotalInclTax($subTotal)
                     ->setGrandTotal($grandTotal)
-                    ->setBaseGrandTotal($grandTotal);
+                    ->setBaseGrandTotal($grandTotal)
+                    ->setSubtotalWithDiscount($subTotal);
             } else {
                 $total->setBaseGrandTotal(0);
                 $total->setGrandTotal(0);

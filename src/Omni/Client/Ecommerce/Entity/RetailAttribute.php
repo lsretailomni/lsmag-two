@@ -55,9 +55,9 @@ class RetailAttribute
     protected $LinkType = null;
 
     /**
-     * @property float $NumericValue
+     * @property float $NumbericValue
      */
-    protected $NumericValue = null;
+    protected $NumbericValue = null;
 
     /**
      * @property int $Sequence
@@ -229,21 +229,21 @@ class RetailAttribute
     }
 
     /**
-     * @param float $NumericValue
+     * @param float $NumbericValue
      * @return $this
      */
-    public function setNumericValue($NumericValue)
+    public function setNumbericValue($NumbericValue)
     {
-        $this->NumericValue = $NumericValue;
+        $this->NumbericValue = $NumbericValue;
         return $this;
     }
 
     /**
      * @return float
      */
-    public function getNumericValue()
+    public function getNumbericValue()
     {
-        return $this->NumericValue;
+        return $this->NumbericValue;
     }
 
     /**

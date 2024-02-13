@@ -445,7 +445,7 @@ class ItemHelper extends AbstractHelper
 
             if ($bundleProduct == 1) {
                 $quoteItem->setCustomPrice($customPrice);
-                $quoteItem->setDiscountAmount($discountAmount);
+//                $quoteItem->setDiscountAmount($discountAmount);
                 $quoteItem->setRowTotal($rowTotal);
                 $quoteItem->setRowTotalInclTax($rowTotalIncTax);
                 $quoteItem->setTaxAmount($taxAmount);
@@ -476,9 +476,9 @@ class ItemHelper extends AbstractHelper
             if (isset($basketData)) {
                 $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
-                $quote->getShippingAddress()->setGrandTotal(
-                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
-                );
+                $quote->getShippingAddress()
+                    ->setGrandTotal(
+                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount);
             }
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
@@ -540,10 +540,11 @@ class ItemHelper extends AbstractHelper
                 ($line->getAmount() / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal = $line->getPrice() * $line->getQuantity();
+        $rowTotal = $line->getNetPrice() * $line->getQuantity();
+        $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem->setCustomPrice($customPrice)
-            ->setDiscountAmount($discountAmount)
+//            ->setDiscountAmount($discountAmount)
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
             ->setBaseTaxAmount($taxAmount)
@@ -551,8 +552,8 @@ class ItemHelper extends AbstractHelper
             ->setBasePriceInclTax($unitPrice)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
-            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotal)
-            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotal);
+            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)
+            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax);
     }
 
     /**

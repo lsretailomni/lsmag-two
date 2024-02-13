@@ -658,10 +658,13 @@ class Data extends AbstractHelper
             $totalItemsQuantities = $totalItemsInvoice = 0;
             $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
-
+            $allItems = $invoiceCreditMemo->getOrder()->getAllItems();
+            $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
             /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
-            foreach ($invoiceCreditMemo->getOrder()->getAllVisibleItems() as $item) {
-                $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
+            foreach ($allVisibleItems as $item) {
+                if (!$item->getParentItem()) {
+                    $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
+                }
             }
 
             foreach ($invoiceCreditMemo->getAllItems() as $item) {

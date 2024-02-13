@@ -146,11 +146,6 @@ class LoyItem extends Entity
     protected $SelectedVariant = null;
 
     /**
-     * @property string $SpecialGroups
-     */
-    protected $SpecialGroups = null;
-
-    /**
      * @property string $TariffNo
      */
     protected $TariffNo = null;
@@ -649,24 +644,6 @@ class LoyItem extends Entity
     public function getSelectedVariant()
     {
         return $this->SelectedVariant;
-    }
-
-    /**
-     * @param string $SpecialGroups
-     * @return $this
-     */
-    public function setSpecialGroups($SpecialGroups)
-    {
-        $this->SpecialGroups = $SpecialGroups;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSpecialGroups()
-    {
-        return $this->SpecialGroups;
     }
 
     /**

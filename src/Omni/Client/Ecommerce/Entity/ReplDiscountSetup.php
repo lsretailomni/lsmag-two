@@ -9,13 +9,17 @@
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountLineType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use Ls\Omni\Exception\InvalidEnumException;
 
 class ReplDiscountSetup
 {
+    /**
+     * @property ArrayOfReplDiscountSetupLine $Lines
+     */
+    protected $Lines = null;
+
     /**
      * @property float $AmountToTrigger
      */
@@ -32,19 +36,9 @@ class ReplDiscountSetup
     protected $CouponQtyNeeded = null;
 
     /**
-     * @property string $CurrencyCode
-     */
-    protected $CurrencyCode = null;
-
-    /**
      * @property string $CustomerDiscountGroup
      */
     protected $CustomerDiscountGroup = null;
-
-    /**
-     * @property float $DealPriceDiscount
-     */
-    protected $DealPriceDiscount = null;
 
     /**
      * @property float $DealPriceValue
@@ -82,54 +76,9 @@ class ReplDiscountSetup
     protected $Enabled = null;
 
     /**
-     * @property boolean $Exclude
-     */
-    protected $Exclude = null;
-
-    /**
      * @property boolean $IsDeleted
      */
     protected $IsDeleted = null;
-
-    /**
-     * @property boolean $IsPercentage
-     */
-    protected $IsPercentage = null;
-
-    /**
-     * @property float $LineDiscountAmount
-     */
-    protected $LineDiscountAmount = null;
-
-    /**
-     * @property float $LineDiscountAmountInclVAT
-     */
-    protected $LineDiscountAmountInclVAT = null;
-
-    /**
-     * @property string $LineGroup
-     */
-    protected $LineGroup = null;
-
-    /**
-     * @property float $LineMemberPoints
-     */
-    protected $LineMemberPoints = null;
-
-    /**
-     * @property int $LineNumber
-     */
-    protected $LineNumber = null;
-
-    /**
-     * @property string $LinePriceGroup
-     */
-    protected $LinePriceGroup = null;
-
-    /**
-     * @property ReplDiscountLineType $LineType
-     */
-    protected $LineType = null;
 
     /**
      * @property string $LoyaltySchemeCode
@@ -157,29 +106,9 @@ class ReplDiscountSetup
     protected $MemberType = null;
 
     /**
-     * @property string $Number
-     */
-    protected $Number = null;
-
-    /**
-     * @property int $NumberOfItemNeeded
-     */
-    protected $NumberOfItemNeeded = null;
-
-    /**
      * @property string $OfferNo
      */
     protected $OfferNo = null;
-
-    /**
-     * @property float $OfferPrice
-     */
-    protected $OfferPrice = null;
-
-    /**
-     * @property float $OfferPriceInclVAT
-     */
-    protected $OfferPriceInclVAT = null;
 
     /**
      * @property string $PriceGroup
@@ -192,29 +121,9 @@ class ReplDiscountSetup
     protected $PriorityNo = null;
 
     /**
-     * @property string $ProductItemCategory
-     */
-    protected $ProductItemCategory = null;
-
-    /**
      * @property boolean $PromptForAction
      */
     protected $PromptForAction = null;
-
-    /**
-     * @property float $SplitDealPriceDiscount
-     */
-    protected $SplitDealPriceDiscount = null;
-
-    /**
-     * @property float $StandardPrice
-     */
-    protected $StandardPrice = null;
-
-    /**
-     * @property float $StandardPriceInclVAT
-     */
-    protected $StandardPriceInclVAT = null;
 
     /**
      * @property float $TenderOffer
@@ -237,44 +146,14 @@ class ReplDiscountSetup
     protected $TenderTypeValue = null;
 
     /**
-     * @property boolean $TriggerPopUp
-     */
-    protected $TriggerPopUp = null;
-
-    /**
      * @property ReplDiscountType $Type
      */
     protected $Type = null;
 
     /**
-     * @property string $UnitOfMeasureId
-     */
-    protected $UnitOfMeasureId = null;
-
-    /**
-     * @property string $ValidFromBeforeExpDate
-     */
-    protected $ValidFromBeforeExpDate = null;
-
-    /**
-     * @property string $ValidToBeforeExpDate
-     */
-    protected $ValidToBeforeExpDate = null;
-
-    /**
      * @property int $ValidationPeriodId
      */
     protected $ValidationPeriodId = null;
-
-    /**
-     * @property string $VariantId
-     */
-    protected $VariantId = null;
-
-    /**
-     * @property int $VariantType
-     */
-    protected $VariantType = null;
 
     /**
      * @property string $scope
@@ -285,6 +164,24 @@ class ReplDiscountSetup
      * @property int $scope_id
      */
     protected $scope_id = null;
+
+    /**
+     * @param ArrayOfReplDiscountSetupLine $Lines
+     * @return $this
+     */
+    public function setLines($Lines)
+    {
+        $this->Lines = $Lines;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfReplDiscountSetupLine
+     */
+    public function getLines()
+    {
+        return $this->Lines;
+    }
 
     /**
      * @param float $AmountToTrigger
@@ -341,24 +238,6 @@ class ReplDiscountSetup
     }
 
     /**
-     * @param string $CurrencyCode
-     * @return $this
-     */
-    public function setCurrencyCode($CurrencyCode)
-    {
-        $this->CurrencyCode = $CurrencyCode;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCurrencyCode()
-    {
-        return $this->CurrencyCode;
-    }
-
-    /**
      * @param string $CustomerDiscountGroup
      * @return $this
      */
@@ -374,24 +253,6 @@ class ReplDiscountSetup
     public function getCustomerDiscountGroup()
     {
         return $this->CustomerDiscountGroup;
-    }
-
-    /**
-     * @param float $DealPriceDiscount
-     * @return $this
-     */
-    public function setDealPriceDiscount($DealPriceDiscount)
-    {
-        $this->DealPriceDiscount = $DealPriceDiscount;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getDealPriceDiscount()
-    {
-        return $this->DealPriceDiscount;
     }
 
     /**
@@ -531,24 +392,6 @@ class ReplDiscountSetup
     }
 
     /**
-     * @param boolean $Exclude
-     * @return $this
-     */
-    public function setExclude($Exclude)
-    {
-        $this->Exclude = $Exclude;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getExclude()
-    {
-        return $this->Exclude;
-    }
-
-    /**
      * @param boolean $IsDeleted
      * @return $this
      */
@@ -564,160 +407,6 @@ class ReplDiscountSetup
     public function getIsDeleted()
     {
         return $this->IsDeleted;
-    }
-
-    /**
-     * @param boolean $IsPercentage
-     * @return $this
-     */
-    public function setIsPercentage($IsPercentage)
-    {
-        $this->IsPercentage = $IsPercentage;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsPercentage()
-    {
-        return $this->IsPercentage;
-    }
-
-    /**
-     * @param float $LineDiscountAmount
-     * @return $this
-     */
-    public function setLineDiscountAmount($LineDiscountAmount)
-    {
-        $this->LineDiscountAmount = $LineDiscountAmount;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLineDiscountAmount()
-    {
-        return $this->LineDiscountAmount;
-    }
-
-    /**
-     * @param float $LineDiscountAmountInclVAT
-     * @return $this
-     */
-    public function setLineDiscountAmountInclVAT($LineDiscountAmountInclVAT)
-    {
-        $this->LineDiscountAmountInclVAT = $LineDiscountAmountInclVAT;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLineDiscountAmountInclVAT()
-    {
-        return $this->LineDiscountAmountInclVAT;
-    }
-
-    /**
-     * @param string $LineGroup
-     * @return $this
-     */
-    public function setLineGroup($LineGroup)
-    {
-        $this->LineGroup = $LineGroup;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLineGroup()
-    {
-        return $this->LineGroup;
-    }
-
-    /**
-     * @param float $LineMemberPoints
-     * @return $this
-     */
-    public function setLineMemberPoints($LineMemberPoints)
-    {
-        $this->LineMemberPoints = $LineMemberPoints;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getLineMemberPoints()
-    {
-        return $this->LineMemberPoints;
-    }
-
-    /**
-     * @param int $LineNumber
-     * @return $this
-     */
-    public function setLineNumber($LineNumber)
-    {
-        $this->LineNumber = $LineNumber;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLineNumber()
-    {
-        return $this->LineNumber;
-    }
-
-    /**
-     * @param string $LinePriceGroup
-     * @return $this
-     */
-    public function setLinePriceGroup($LinePriceGroup)
-    {
-        $this->LinePriceGroup = $LinePriceGroup;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLinePriceGroup()
-    {
-        return $this->LinePriceGroup;
-    }
-
-    /**
-     * @param ReplDiscountLineType|string $LineType
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setLineType($LineType)
-    {
-        if ( ! $LineType instanceof ReplDiscountLineType ) {
-            if ( ReplDiscountLineType::isValid( $LineType ) )
-                $LineType = new ReplDiscountLineType( $LineType );
-            elseif ( ReplDiscountLineType::isValidKey( $LineType ) )
-                $LineType = new ReplDiscountLineType( constant( "ReplDiscountLineType::$LineType" ) );
-            elseif ( ! $LineType instanceof ReplDiscountLineType )
-                throw new InvalidEnumException();
-        }
-        $this->LineType = $LineType->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return ReplDiscountLineType
-     */
-    public function getLineType()
-    {
-        return $this->LineType;
     }
 
     /**
@@ -821,42 +510,6 @@ class ReplDiscountSetup
     }
 
     /**
-     * @param string $Number
-     * @return $this
-     */
-    public function setNumber($Number)
-    {
-        $this->Number = $Number;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNumber()
-    {
-        return $this->Number;
-    }
-
-    /**
-     * @param int $NumberOfItemNeeded
-     * @return $this
-     */
-    public function setNumberOfItemNeeded($NumberOfItemNeeded)
-    {
-        $this->NumberOfItemNeeded = $NumberOfItemNeeded;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfItemNeeded()
-    {
-        return $this->NumberOfItemNeeded;
-    }
-
-    /**
      * @param string $OfferNo
      * @return $this
      */
@@ -872,42 +525,6 @@ class ReplDiscountSetup
     public function getOfferNo()
     {
         return $this->OfferNo;
-    }
-
-    /**
-     * @param float $OfferPrice
-     * @return $this
-     */
-    public function setOfferPrice($OfferPrice)
-    {
-        $this->OfferPrice = $OfferPrice;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getOfferPrice()
-    {
-        return $this->OfferPrice;
-    }
-
-    /**
-     * @param float $OfferPriceInclVAT
-     * @return $this
-     */
-    public function setOfferPriceInclVAT($OfferPriceInclVAT)
-    {
-        $this->OfferPriceInclVAT = $OfferPriceInclVAT;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getOfferPriceInclVAT()
-    {
-        return $this->OfferPriceInclVAT;
     }
 
     /**
@@ -947,24 +564,6 @@ class ReplDiscountSetup
     }
 
     /**
-     * @param string $ProductItemCategory
-     * @return $this
-     */
-    public function setProductItemCategory($ProductItemCategory)
-    {
-        $this->ProductItemCategory = $ProductItemCategory;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProductItemCategory()
-    {
-        return $this->ProductItemCategory;
-    }
-
-    /**
      * @param boolean $PromptForAction
      * @return $this
      */
@@ -980,60 +579,6 @@ class ReplDiscountSetup
     public function getPromptForAction()
     {
         return $this->PromptForAction;
-    }
-
-    /**
-     * @param float $SplitDealPriceDiscount
-     * @return $this
-     */
-    public function setSplitDealPriceDiscount($SplitDealPriceDiscount)
-    {
-        $this->SplitDealPriceDiscount = $SplitDealPriceDiscount;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getSplitDealPriceDiscount()
-    {
-        return $this->SplitDealPriceDiscount;
-    }
-
-    /**
-     * @param float $StandardPrice
-     * @return $this
-     */
-    public function setStandardPrice($StandardPrice)
-    {
-        $this->StandardPrice = $StandardPrice;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getStandardPrice()
-    {
-        return $this->StandardPrice;
-    }
-
-    /**
-     * @param float $StandardPriceInclVAT
-     * @return $this
-     */
-    public function setStandardPriceInclVAT($StandardPriceInclVAT)
-    {
-        $this->StandardPriceInclVAT = $StandardPriceInclVAT;
-        return $this;
-    }
-
-    /**
-     * @return float
-     */
-    public function getStandardPriceInclVAT()
-    {
-        return $this->StandardPriceInclVAT;
     }
 
     /**
@@ -1109,24 +654,6 @@ class ReplDiscountSetup
     }
 
     /**
-     * @param boolean $TriggerPopUp
-     * @return $this
-     */
-    public function setTriggerPopUp($TriggerPopUp)
-    {
-        $this->TriggerPopUp = $TriggerPopUp;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getTriggerPopUp()
-    {
-        return $this->TriggerPopUp;
-    }
-
-    /**
      * @param ReplDiscountType|string $Type
      * @return $this
      * @throws InvalidEnumException
@@ -1155,60 +682,6 @@ class ReplDiscountSetup
     }
 
     /**
-     * @param string $UnitOfMeasureId
-     * @return $this
-     */
-    public function setUnitOfMeasureId($UnitOfMeasureId)
-    {
-        $this->UnitOfMeasureId = $UnitOfMeasureId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUnitOfMeasureId()
-    {
-        return $this->UnitOfMeasureId;
-    }
-
-    /**
-     * @param string $ValidFromBeforeExpDate
-     * @return $this
-     */
-    public function setValidFromBeforeExpDate($ValidFromBeforeExpDate)
-    {
-        $this->ValidFromBeforeExpDate = $ValidFromBeforeExpDate;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidFromBeforeExpDate()
-    {
-        return $this->ValidFromBeforeExpDate;
-    }
-
-    /**
-     * @param string $ValidToBeforeExpDate
-     * @return $this
-     */
-    public function setValidToBeforeExpDate($ValidToBeforeExpDate)
-    {
-        $this->ValidToBeforeExpDate = $ValidToBeforeExpDate;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidToBeforeExpDate()
-    {
-        return $this->ValidToBeforeExpDate;
-    }
-
-    /**
      * @param int $ValidationPeriodId
      * @return $this
      */
@@ -1224,42 +697,6 @@ class ReplDiscountSetup
     public function getValidationPeriodId()
     {
         return $this->ValidationPeriodId;
-    }
-
-    /**
-     * @param string $VariantId
-     * @return $this
-     */
-    public function setVariantId($VariantId)
-    {
-        $this->VariantId = $VariantId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getVariantId()
-    {
-        return $this->VariantId;
-    }
-
-    /**
-     * @param int $VariantType
-     * @return $this
-     */
-    public function setVariantType($VariantType)
-    {
-        $this->VariantType = $VariantType;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getVariantType()
-    {
-        return $this->VariantType;
     }
 
     /**

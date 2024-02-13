@@ -169,11 +169,6 @@ class ReplItem
     protected $SeasonCode = null;
 
     /**
-     * @property string $SpecialGroups
-     */
-    protected $SpecialGroups = null;
-
-    /**
      * @property string $TariffNo
      */
     protected $TariffNo = null;
@@ -784,24 +779,6 @@ class ReplItem
     public function getSeasonCode()
     {
         return $this->SeasonCode;
-    }
-
-    /**
-     * @param string $SpecialGroups
-     * @return $this
-     */
-    public function setSpecialGroups($SpecialGroups)
-    {
-        $this->SpecialGroups = $SpecialGroups;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSpecialGroups()
-    {
-        return $this->SpecialGroups;
     }
 
     /**

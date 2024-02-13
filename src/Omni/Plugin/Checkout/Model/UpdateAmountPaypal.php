@@ -66,8 +66,7 @@ class UpdateAmountPaypal
         $loyaltyPoints = $pointRate > 0 ? $pointRate * $quote->getLsPointsSpent() : 0;
 
         if (in_array($paymentMethod, $paypalMehodList)) {
-            $result[self::SUBTOTAL] =
-                $quote->getSubtotal() - ($loyaltyPoints + $quote->getLsGiftCardAmountUsed() + $result[self::TAX]);
+            $result[self::SUBTOTAL] = $quote->getSubtotal() - ($loyaltyPoints + $quote->getLsGiftCardAmountUsed());
         }
 
         return $result;

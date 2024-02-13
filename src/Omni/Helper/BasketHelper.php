@@ -1057,6 +1057,36 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Get item row discount
+     *
+     * @param $item
+     * @return float|int
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getItemRowDiscount($item)
+    {
+        $rowDiscount = 0;
+        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+            $item->getSku()
+        );
+
+        $basketData = $this->getOneListCalculation();
+        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
+        foreach ($orderLines as $line) {
+            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
+                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
+                break;
+            }
+        }
+
+        return $rowDiscount;
+    }
+
+    /**
      * Calculate row total of bundle adding all individual simple items
      *
      * @param $item

@@ -30,8 +30,6 @@
     <type name="Magento\ConfigurableProduct\Model\ConfigurableAttributeData">
         <plugin name="ls_omni_attribute_option_data_sort" type="Ls\Omni\Plugin\Product\AttributeData" sortOrder="10" />
     </type>
-    <!-- To Override Tax Calculator -->
-    <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax"/>
     <!-- To stop magento for re-calculating tax on custom price. -->
     <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
         <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
@@ -48,7 +46,7 @@
         <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
     </type>
     <!-- for fixing invoice total -->
-    <type name="Magento\Sales\Model\Service\InvoiceService">
-        <plugin name="ls_omni_order_invoice_total" type="Ls\Omni\Plugin\Order\Invoice\InvoiceServicePlugin" sortOrder="1"/>
-    </type>
+<!--    <type name="Magento\Sales\Model\Service\InvoiceService">-->
+<!--        <plugin name="ls_omni_order_invoice_total" type="Ls\Omni\Plugin\Order\Invoice\InvoiceServicePlugin" sortOrder="1"/>-->
+<!--    </type>-->
 </config>

@@ -13,9 +13,9 @@ use Ls\Omni\Client\RequestInterface;
 class OneListItemModify implements RequestInterface
 {
     /**
-     * @property string $oneListId
+     * @property string $onelistId
      */
-    protected $oneListId = null;
+    protected $onelistId = null;
 
     /**
      * @property OneListItem $item
@@ -33,21 +33,21 @@ class OneListItemModify implements RequestInterface
     protected $calculate = null;
 
     /**
-     * @param string $oneListId
+     * @param string $onelistId
      * @return $this
      */
-    public function setOneListId($oneListId)
+    public function setOnelistId($onelistId)
     {
-        $this->oneListId = $oneListId;
+        $this->onelistId = $onelistId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getOneListId()
+    public function getOnelistId()
     {
-        return $this->oneListId;
+        return $this->onelistId;
     }
 
     /**
