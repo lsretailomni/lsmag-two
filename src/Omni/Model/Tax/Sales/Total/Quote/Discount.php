@@ -123,11 +123,8 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         if (!count($items)) {
             return $this;
         }
-        $discountAmount = $this->getTotalDiscount($quote);
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
-//        $total->addTotalAmount('discount', $discountAmount);
         $total->addTotalAmount('grand_total', $paymentDiscount);
-//        $total->addBaseTotalAmount('discount', $discountAmount);
         $total->addBaseTotalAmount('grand_total', $paymentDiscount);
 
         if ($quote->getCouponCode()) {
@@ -146,12 +143,6 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
      */
     public function fetch(Quote $quote, Total $total)
     {
-        $lsr = $this->basketHelper->getLsrModel();
-
-//        if ($lsr->isLSR($lsr->getCurrentStoreId())) {
-//            return parent::fetch($quote, $total);
-//        }
-
         $result = null;
         $amount = $this->getTotalDiscount($quote);
         $title = __('Discount');

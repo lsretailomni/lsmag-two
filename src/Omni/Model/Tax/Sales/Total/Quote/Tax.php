@@ -19,7 +19,6 @@ use Magento\Tax\Model\Config;
 
 class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
 {
-
     /**
      * @var BasketHelper
      */
@@ -68,32 +67,6 @@ class Tax extends \Magento\Tax\Model\Sales\Total\Quote\Tax
             $customerAddressRegionFactory,
             $taxData
         );
-    }
-
-    /**
-     * Custom Collect tax totals for quote address
-     */
-    /**
-     * @param Quote $quote
-     * @param ShippingAssignmentInterface $shippingAssignment
-     * @param Total $total
-     * @return $this|\Magento\Tax\Model\Sales\Total\Quote\Tax
-     */
-    public function collect(
-        Quote $quote,
-        ShippingAssignmentInterface $shippingAssignment,
-        Total $total
-    ) {
-        $items = $shippingAssignment->getItems();
-        if (!count($items)) {
-            return $this;
-        }
-        $basketData = $this->basketHelper->getBasketSessionValue();
-        if (isset($basketData)) {
-//            $total->setTaxAmount($basketData->getTotalAmount() - $basketData->getTotalNetAmount());
-        }
-
-        return $this;
     }
 
     /**

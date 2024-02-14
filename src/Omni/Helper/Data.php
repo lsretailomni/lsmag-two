@@ -652,9 +652,6 @@ class Data extends AbstractHelper
      */
     public function calculateInvoiceCreditMemoTotal($invoiceCreditMemo)
     {
-        $this->_logger->info(__METHOD__);
-        $this->_logger->info('Payment method:'. $invoiceCreditMemo->getOrder()->getPayment()->getMethodInstance()->getTitle());
-        $this->_logger->info('points spent:'. $invoiceCreditMemo->getOrder()->getLsPointsSpent());
         $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
         $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
         if ($pointsSpent > 0 || $giftCardAmount > 0) {
@@ -682,12 +679,11 @@ class Data extends AbstractHelper
 
             $storeId = $invoiceCreditMemo->getOrder()->getStoreId();
 
-            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ? $this->loyaltyHelper->getPointRate($storeId) : 0;
-            $this->_logger->info('points rate:'. $pointRate);
+            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ?
+                $this->loyaltyHelper->getPointRate($storeId) : 0;
             $totalPointsAmount = $pointsSpent * $pointRate;
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
-            $this->_logger->info('points spent after:'. $totalPointsAmount);
             $giftCardAmount = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
             $invoiceCreditMemo->setLsPointsSpent($pointsSpent);
@@ -698,10 +694,8 @@ class Data extends AbstractHelper
 
             $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
             $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
-            $this->_logger->info('before grand_total:'. $invoiceCreditMemo->getGrandTotal());
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
-            $this->_logger->info('after grand_total:'. $invoiceCreditMemo->getGrandTotal());
         }
 
         return $invoiceCreditMemo;

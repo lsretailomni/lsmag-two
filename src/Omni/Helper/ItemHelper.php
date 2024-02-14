@@ -402,7 +402,7 @@ class ItemHelper extends AbstractHelper
         $quoteItemList = $quote->getAllVisibleItems();
 
         foreach ($quoteItemList as $quoteItem) {
-            $bundleProduct = $customPrice = $discountAmount = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
+            $bundleProduct = $customPrice = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
             $children = [];
             $orderLines = $basketData->getOrderLines()->getOrderLine();
 
@@ -440,12 +440,10 @@ class ItemHelper extends AbstractHelper
                 $taxAmount += $child->getTaxAmount();
                 $rowTotal += $child->getRowTotal();
                 $rowTotalIncTax += $child->getRowTotalInclTax();
-                $discountAmount += $child->getDiscountAmount();
             }
 
             if ($bundleProduct == 1) {
                 $quoteItem->setCustomPrice($customPrice);
-//                $quoteItem->setDiscountAmount($discountAmount);
                 $quoteItem->setRowTotal($rowTotal);
                 $quoteItem->setRowTotalInclTax($rowTotalIncTax);
                 $quoteItem->setTaxAmount($taxAmount);
@@ -507,7 +505,7 @@ class ItemHelper extends AbstractHelper
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
-        $customPrice = $discountAmount = $amount = $taxAmount = $netAmount = null;
+        $customPrice = $amount = $taxAmount = $netAmount = null;
         $itemQty = $quoteItem->getQty();
 
         if ($quoteItem->getParentItem() &&
@@ -518,8 +516,6 @@ class ItemHelper extends AbstractHelper
         $qtyEqual = $line->getQuantity() == $itemQty;
 
         if ($line->getDiscountAmount() > 0) {
-            $discountAmount = $qtyEqual ? $line->getDiscountAmount() :
-                ($line->getDiscountAmount() / $line->getQuantity()) * $itemQty;
             $customPrice = $unitPrice;
         } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
             $customPrice = $unitPrice;
@@ -544,7 +540,6 @@ class ItemHelper extends AbstractHelper
         $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem->setCustomPrice($customPrice)
-//            ->setDiscountAmount($discountAmount)
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
             ->setBaseTaxAmount($taxAmount)

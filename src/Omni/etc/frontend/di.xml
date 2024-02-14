@@ -45,8 +45,4 @@
     <type name="Magento\Sales\Api\OrderManagementInterface">
         <plugin name="ls_omni_around_cancel_order_operation" type="Ls\Omni\Plugin\Order\OrderManagement" sortOrder="1"/>
     </type>
-    <!-- for fixing invoice total -->
-<!--    <type name="Magento\Sales\Model\Service\InvoiceService">-->
-<!--        <plugin name="ls_omni_order_invoice_total" type="Ls\Omni\Plugin\Order\Invoice\InvoiceServicePlugin" sortOrder="1"/>-->
-<!--    </type>-->
 </config>
