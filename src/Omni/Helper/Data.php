@@ -654,7 +654,6 @@ class Data extends AbstractHelper
     {
         $this->_logger->info(__METHOD__);
         $this->_logger->info('Payment method:'. $invoiceCreditMemo->getOrder()->getPayment()->getMethodInstance()->getTitle());
-        $this->_logger->info(print_r($invoiceCreditMemo->getOrder()->getData(), true));
         $this->_logger->info('points spent:'. $invoiceCreditMemo->getOrder()->getLsPointsSpent());
         $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
         $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
