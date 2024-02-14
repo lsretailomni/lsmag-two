@@ -652,13 +652,14 @@ class Data extends AbstractHelper
      */
     public function calculateInvoiceCreditMemoTotal($invoiceCreditMemo)
     {
+        $this->_logger->info(__METHOD__);
+        $this->_logger->info('Payment method:'. $invoiceCreditMemo->getOrder()->getPayment()->getMethodInstance()->getTitle());
         $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
         $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
         if ($pointsSpent > 0 || $giftCardAmount > 0) {
             $totalItemsQuantities = $totalItemsInvoice = 0;
             $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
-            $allItems = $invoiceCreditMemo->getOrder()->getAllItems();
             $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
             /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
             foreach ($allVisibleItems as $item) {
@@ -693,8 +694,10 @@ class Data extends AbstractHelper
 
             $grandTotalAmount     = $invoiceCreditMemo->getGrandTotal() - $totalPointsAmount - $giftCardAmount;
             $baseGrandTotalAmount = $invoiceCreditMemo->getBaseGrandTotal() - $totalPointsAmount - $giftCardAmount;
+            $this->_logger->info('before grand_total:'. $invoiceCreditMemo->getGrandTotal());
             $invoiceCreditMemo->setGrandTotal($grandTotalAmount);
             $invoiceCreditMemo->setBaseGrandTotal($baseGrandTotalAmount);
+            $this->_logger->info('after grand_total:'. $invoiceCreditMemo->getGrandTotal());
         }
 
         return $invoiceCreditMemo;
