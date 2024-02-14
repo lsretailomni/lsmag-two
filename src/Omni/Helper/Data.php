@@ -680,7 +680,9 @@ class Data extends AbstractHelper
                 }
             }
 
-            $pointRate         = ($this->loyaltyHelper->getPointRate()) ? $this->loyaltyHelper->getPointRate() : 0;
+            $storeId = $invoiceCreditMemo->getOrder()->getStoreId();
+
+            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ? $this->loyaltyHelper->getPointRate($storeId) : 0;
             $this->_logger->info('points rate:'. $pointRate);
             $totalPointsAmount = $pointsSpent * $pointRate;
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
