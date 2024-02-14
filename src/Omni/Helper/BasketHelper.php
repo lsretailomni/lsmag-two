@@ -889,7 +889,7 @@ class BasketHelper extends AbstractHelper
             ->setPublishedOffers($this->_offers())
             ->setStoreId($webStore);
 
-        return $this->saveToOmni($list);
+        return $list;
         // @codingStandardsIgnoreEnd
     }
 
@@ -1504,5 +1504,15 @@ class BasketHelper extends AbstractHelper
     public function getLsrModel()
     {
         return $this->lsr;
+    }
+
+    /**
+     * Get cart repository
+     *
+     * @return CartRepositoryInterface
+     */
+    public function getCartRepositoryObject()
+    {
+        return $this->cartRepository;
     }
 }
