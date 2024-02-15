@@ -97,10 +97,6 @@ class OrderObserver implements ObserverInterface
                         $this->messageManager->addSuccessMessage(
                             __('Order request has been sent to LS Central successfully')
                         );
-                        $oneList = $this->basketHelper->getOneListFromCustomerSession();
-                        if ($oneList) {
-                            $this->basketHelper->delete($oneList);
-                        }
                     }
                 }
             } catch (Exception $e) {
