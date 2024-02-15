@@ -77,6 +77,9 @@
              method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>
+        <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
         <!-- Less Important-->
         <job name="repl_vendor" instance="Ls\Replication\Cron\ReplEcommVendorTask" method="execute">
             <schedule>0 1 * * *</schedule>
@@ -95,9 +98,6 @@
         <job name="repl_store_tender_type" instance="Ls\Replication\Cron\ReplEcommStoreTenderTypesTask"
              method="execute">
             <schedule>0 5 * * *</schedule>
-        </job>
-        <job name="repl_store" instance="Ls\Replication\Cron\ReplEcommStoresTask" method="execute">
-            <schedule>0 6 * * *</schedule>
         </job>
     </group>
     <group id="replication">

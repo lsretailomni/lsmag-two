@@ -569,6 +569,10 @@ class ProductCreateTask
                                     LSR::LS_ITEM_CATEGORY,
                                     $item->getItemCategoryCode()
                                 );
+                                $productData->setCustomAttribute(
+                                    LSR::LS_ITEM_SPECIAL_GROUP,
+                                    $item->getSpecialGroups()
+                                );
                                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
@@ -649,6 +653,10 @@ class ProductCreateTask
                                 $product->setCustomAttribute(
                                     LSR::LS_ITEM_CATEGORY,
                                     $item->getItemCategoryCode()
+                                );
+                                $product->setCustomAttribute(
+                                    LSR::LS_ITEM_SPECIAL_GROUP,
+                                    $item->getSpecialGroups()
                                 );
                                 $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
                                 $product->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
@@ -1746,7 +1754,7 @@ class ProductCreateTask
      */
     public function updateBarcodeOnly()
     {
-        $itemId           = $variantId = $uom = '';
+        $itemId = '';
         $cronProductCheck = $this->lsr->getConfigValueFromDb(
             LSR::SC_SUCCESS_CRON_PRODUCT,
             ScopeInterface::SCOPE_STORES,
@@ -1766,18 +1774,27 @@ class ProductCreateTask
                 /** @var ReplBarcode $replBarcode */
                 foreach ($replBarcodes->getItems() as $replBarcode) {
                     try {
+                        $variantId = $uom = '';
                         $itemId = $replBarcode->getItemId();
                         if ($replBarcode->getVariantId()) {
                             $variantId = $replBarcode->getVariantId();
                         }
                         if (!empty($replBarcode->getUnitOfMeasure())) {
-                            $uom = $replBarcode->getUnitOfMeasure();
+                            $totalUomCodes = $this->replicationHelper->getUomCodes(
+                                $replBarcode->getItemId(),
+                                $this->getScopeId()
+                            );
+
+                            if (count($totalUomCodes[$replBarcode->getItemId()]) > 1) {
+                                $uom = $replBarcode->getUnitOfMeasure();
+                            }
+
                         }
                         $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                             $itemId,
                             $variantId,
                             $uom,
-                            $this->store->getId()
+                            'global'
                         );
                         if (isset($productData)) {
                             $productData->setBarcode($replBarcode->getNavId());
@@ -1788,14 +1805,20 @@ class ProductCreateTask
                         $this->logDetailedException(
                             __METHOD__,
                             $this->store->getName(),
-                            $itemId
+                            $itemId,
+                            $variantId,
+                            $uom
                         );
                         $this->logger->debug($e->getMessage());
                         $replBarcode->setData('is_failed', 1);
                     }
-                    $replBarcode->setData('is_updated', 0);
-                    $replBarcode->setData('processed_at', $this->replicationHelper->getDateTime());
-                    $replBarcode->setData('processed', 1);
+                    $replBarcode->addData(
+                        [
+                            'is_updated'   => 0,
+                            'processed_at' => $this->replicationHelper->getDateTime(),
+                            'processed'    => 1
+                        ]
+                    );
                     $this->replBarcodeRepository->save($replBarcode);
                 }
             }
@@ -2219,8 +2242,8 @@ class ProductCreateTask
         $configProduct->setCanSaveConfigurableAttributes(true);
         $configProduct->setAssociatedProductIds($associatedProductIds); // Setting Associated Products
 
-        if ($configProduct->getExtensionAttributes()->getStockItem()) {
-            $configProduct->getExtensionAttributes()->getStockItem()->setStockStatusChangedAutomaticallyFlag(true);
+        if ($stockItem = $configProduct->getExtensionAttributes()->getStockItem()) {
+            $stockItem->setIsInStock(1)->setStockStatusChangedAutomaticallyFlag(1);
         }
         try {
             $this->productRepository->save($configProduct);

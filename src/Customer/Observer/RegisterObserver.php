@@ -20,24 +20,20 @@ class RegisterObserver implements ObserverInterface
 {
     /** @var ContactHelper $contactHelper */
     private $contactHelper;
-
     /** @var Registry $registry */
     private $registry;
-
     /** @var LoggerInterface $logger */
     private $logger;
-
     /** @var CustomerSession $customerSession */
     private $customerSession;
-
     /** @var \Magento\Customer\Model\ResourceModel\Customer $customerResourceModel */
     private $customerResourceModel;
-
     /** @var LSR @var */
     private $lsr;
 
     /**
      * RegisterObserver constructor.
+     *
      * @param ContactHelper $contactHelper
      * @param Registry $registry
      * @param LoggerInterface $logger
@@ -62,21 +58,26 @@ class RegisterObserver implements ObserverInterface
     }
 
     /**
+     * Observer execute
+     *
      * @param Observer $observer
      * @return $this|void
      */
     public function execute(Observer $observer)
     {
         try {
-            $parameters = $observer->getRequest()->getParams();
+            $session          = $this->customerSession;
+            $customer         = $session->getCustomer();
             $additionalParams = $this->contactHelper->getValue();
-            $session    = $this->customerSession;
+
             /** @var Customer $customer */
-            $customer = $session->getCustomer();
+
             if (empty($customer->getId())) {
                 $customer = $this->contactHelper->getCustomerByEmail($additionalParams['email']);
             }
-            if ($customer->getId() && !empty($additionalParams['lsr_username']) && !empty($additionalParams['password'])) {
+            if ($customer->getId() && !empty($additionalParams['lsr_username'])
+                && !empty($additionalParams['password'])
+            ) {
                 $customer->setData('lsr_username', $additionalParams['lsr_username']);
                 $customer->setData('password', $additionalParams['password']);
                 if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
@@ -94,7 +95,7 @@ class RegisterObserver implements ObserverInterface
                         $customer->getData('lsr_username'),
                         $additionalParams['password']
                     );
-                    if ($loginResult == false) {
+                    if (!$loginResult) {
                         $this->logger->error('Invalid Omni login or Omni password');
                         return $this;
                     } else {
@@ -103,7 +104,10 @@ class RegisterObserver implements ObserverInterface
                         $this->contactHelper->updateBasketAndWishlistAfterLogin($loginResult);
                     }
                 } else {
-                    $customer->setData('lsr_password', $this->contactHelper->encryptPassword($additionalParams['password']));
+                    $customer->setData(
+                        'lsr_password',
+                        $this->contactHelper->encryptPassword($additionalParams['password'])
+                    );
                     $this->customerResourceModel->save($customer);
                 }
             }

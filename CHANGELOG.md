@@ -2,6 +2,80 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0] - 2024-02-15
+
+### Added
+
+- Added support for checking applied discount validity before placing an order. [47151](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47151)
+- Added support to check the availability of hospitality items before placing an order. [39352](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/39352)
+- Added support to configure persistent session for QR code data on graphql. [47519](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47519)
+- Added support for item special group as a DiscountLine in discount replication. [47569](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47569)
+
+### Bugs/Fixes
+
+- Fixed issue with gift card online purchase. [46126](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/46126)
+- Fixed issue with resetting discount replication. [47569](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47569)
+- Fixed issue with updating barcode while product creation. [47854](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47854)
+- Fixed issue with customer registration in case of an invalid captcha. [47682](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47682)
+- Fixed issue with loyalty points expiry on customer dashboard. [48453](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48453)
+- Fixed issue with inventory synchronization. [47743](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47743)
+- Fixed issue with generated invoice printing on frontend and admin panel. [48145](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48145)
+- Fixed issue with price synchronization for improving performance. [48471](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48471)
+- Fixed issue with customer login when an item in the basket is out of stock. [48795](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48795)
+- Fixed issue with mismatch order totals. [48456](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48456)
+
+
+## [2.5.0] - 2024-01-11
+
+### Added
+
+- Added support to display loyalty points to be expired based on the interval set in admin configuration on customer dashboard and graphql. [29283](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/29283)
+- Added support to replicate Tariff No during Products Replication. [42027](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/42027)
+- Added support to save additional UOM attributes such as Height, Weight, Length, Width and Cubage to Magento Products. [41527](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41527)
+- Added support for single step checkout on magento classic frontend based on configuration. [42162](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/42162)
+- Added support for anonymous ordering on magento classic frontend based on configuration. [41771](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41771)
+- Added support to process order in magento based on KOTStatus webhook. [33781](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/33781)
+- Added support to use Loyalty Points in Multi-currency websites. [37806](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/37806)
+- Added support for gift card redemption using pin code. [41775](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41775)
+- Added support for replicating and purchasing gift cards online. [15370](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/15370)
+- Added support for Get All Stores and Get Gift Card Balance GraphQl endpoint. [44319](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44319)
+- Added support for a new discount replication job to improve replication time. [44282](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44282)
+
+
+### Changed
+- Changed preferences with plugins in Omni and Customer modules. [38447](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/38447)
+- Changed overriding template files in LS modules after comparing with core Magento module. [38446](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/38446)
+- Changed order cancellation web service. [43243](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/43243)
+
+
+### Bugs/Fixes
+- Fixed issues with deleted item image synchronization. [39256](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/39256)
+- Fixed additional compatibility issues with php 8.2. [40001](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/40001)
+- Fixed issues with partial shipment webhook. [39857](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/39857)
+- Fixed issues with modifiers and recipe not updating on synchronization. [39357](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/39357)
+- Fixed issues with discount replication. [40139](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/40139)
+- Fixed issues related to phpcs based on magento coding standards rule-set. [40916](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/40916)
+- Fixed issue with commerce service ping response parsing in the admin configuration. [40823](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/40823)
+- Fixed issue with basket calculation when using different store on same browser. [41073](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41073)
+- Fixed issue of password reset from admin. [41486](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41486)
+- Fixed issue in saving LS Attribute values for products with UOM null condition. [41527](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41527)
+- Fixed basket calculation and enabled used_in_product_listing flag for lsr_item_id and lsr_variant_id in case if flat catalog is enabled. [43214](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/43214)
+- Fixed customer registration in Magento when registration fails in LS Central. [41957](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/41957)
+- Fixed LS adobe commerce extension dependency. [42227](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/42227)
+- Fixed issue with syncing order to LS Central from Magento admin panel. [43294](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/43294)
+- Fixed Paypal payment method and order status issue on order success. [43631](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/43631)
+- Fixed issue creating new variants for an existing product based on both uom & variants. [44361](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44361)
+- Fixed issues regarding LS Key for hospitality. [44596](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44596)
+- Fixed issues with discount creation in case of no date and time. [44224](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44224)
+- Fixed issues with disabling all variants in magento once removed from Central. [44081](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44081)
+- Fix issues with shopping cart not updating for the orders created during LS Central downtime. [43807](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/43807)
+- Fixed issues to view shipment in customer dashboard in case of shipment created first before invoice (On-Premise). [44653](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44653)
+- Fixed duplication of records in all flat tables by adding unique constraint on new column called identity_value. [44595](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44595)
+- Fixed issues related to price synchronization cron. [44595](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/44595)
+- Fixed issues with crons grid when single store mode is enabled. [46195](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/46195)
+- Github issue [#47](https://github.com/lsretailomni/lsmag-two/issues/47)
+- Github issue [#45](https://github.com/lsretailomni/lsmag-two/issues/45)
+
 ## [2.4.0] - 2023-06-26
 
 ### Added

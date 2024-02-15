@@ -60,7 +60,7 @@ $loginButtonViewModel = $block->getData('login_button_view_model');
                                 class="action login primary"
                                 name="send"
                                 id="send2"
-                                <?php if ($loginButtonViewModel->disabled()): ?> disabled="disabled" <?php endif; ?>>
+                                <?php if ($loginButtonViewModel && $loginButtonViewModel->disabled()): ?> disabled="disabled" <?php endif; ?>>
                             <span><?= $escaper->escapeHtml(__('Sign In')) ?></span>
                         </button>
                     </div>

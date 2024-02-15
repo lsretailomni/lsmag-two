@@ -352,6 +352,17 @@ interface ReplItemInterface
     public function getSeasonCode();
 
     /**
+     * @param string $SpecialGroups
+     * @return $this
+     */
+    public function setSpecialGroups($SpecialGroups);
+
+    /**
+     * @return string
+     */
+    public function getSpecialGroups();
+
+    /**
      * @param string $TariffNo
      * @return $this
      */

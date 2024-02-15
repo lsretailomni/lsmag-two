@@ -23,9 +23,9 @@ class ActivityGetAvailabilityToken implements RequestInterface
     protected $productNo = null;
 
     /**
-     * @property string $activiyTime
+     * @property string $activityTime
      */
-    protected $activiyTime = null;
+    protected $activityTime = null;
 
     /**
      * @property string $optionalResource
@@ -74,21 +74,21 @@ class ActivityGetAvailabilityToken implements RequestInterface
     }
 
     /**
-     * @param string $activiyTime
+     * @param string $activityTime
      * @return $this
      */
-    public function setActiviyTime($activiyTime)
+    public function setActivityTime($activityTime)
     {
-        $this->activiyTime = $activiyTime;
+        $this->activityTime = $activityTime;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getActiviyTime()
+    public function getActivityTime()
     {
-        return $this->activiyTime;
+        return $this->activityTime;
     }
 
     /**
