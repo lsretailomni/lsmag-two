@@ -39,9 +39,24 @@ class DiscountManagement implements DiscountManagementInterface
         if (!is_numeric($cartId)) {
             $cartId = $this->quoteIdMaskFactory->create()->load($cartId, 'masked_id')->getQuoteId();
         }
-
-        /** @var  Order $existingBasketCalculation */
         $existingBasketCalculation = $this->basketHelper->getOneListCalculation();
+
+        //Added this in case if we don't get session values in pwa
+        if (empty($existingBasketCalculation)) {
+            $quote      = $this->basketHelper->getCartRepositoryObject()->get($cartId);
+            $basketData = $quote->getBasketResponse();
+            /** @var  Order $existingBasketCalculation */
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+            $existingBasketCalculation = ($basketData) ? unserialize($basketData) : $basketData;
+            if ($existingBasketCalculation) {
+                $oneList = $this->basketHelper->getOneListAdmin(
+                    $quote->getCustomerEmail(),
+                    $quote->getStore()->getWebsiteId(),
+                    $quote->getCustomerIsGuest()
+                );
+                $this->basketHelper->setOneListQuote($quote, $oneList);
+            }
+        }
 
         if (!$existingBasketCalculation) {
             return false;
