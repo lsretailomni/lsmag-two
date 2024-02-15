@@ -41,8 +41,6 @@
     </type>
     <!-- To Override Discount Calculator -->
     <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount"/>
-    <!-- To Override Tax Calculator -->
-<!--    <preference for="Magento\Tax\Model\Sales\Total\Quote\Tax" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Tax"/>-->
     <type name="Magento\Sales\Model\Order\Pdf\Invoice">
         <plugin name="ls.omni.pdf.invoice" type="Ls\Omni\Plugin\Order\Pdf\Invoice"
                 sortOrder="1"/>
