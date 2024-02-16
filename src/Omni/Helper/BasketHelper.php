@@ -286,32 +286,35 @@ class BasketHelper extends AbstractHelper
             }
 
             foreach ($children as $child) {
-                list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                    $child->getSku()
-                );
-                $match = false;
-                $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
+                if ($child->getProduct()->isInStock()) {
+                    list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                        $child->getSku()
+                    );
+                    $match              = false;
+                    $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
-                if (in_array($itemId, explode(',', $giftCardIdentifier))) {
-                    foreach ($itemsArray as $itemArray) {
-                        if ($itemArray->getId() == $child->getItemId()) {
-                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                            $match = true;
-                            break;
+                    if (in_array($itemId, explode(',', $giftCardIdentifier))) {
+                        foreach ($itemsArray as $itemArray) {
+                            if ($itemArray->getId() == $child->getItemId()) {
+                                $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                                $match = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        foreach ($itemsArray as $itemArray) {
+                            if ($itemArray->getItemId() == $itemId &&
+                                $itemArray->getVariantId() == $variantId &&
+                                $itemArray->getUnitOfMeasureId() == $uom &&
+                                $itemArray->getBarcodeId() == $barCode
+                            ) {
+                                $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                                $match = true;
+                                break;
+                            }
                         }
                     }
-                } else {
-                    foreach ($itemsArray as $itemArray) {
-                        if ($itemArray->getItemId() == $itemId &&
-                            $itemArray->getVariantId() == $variantId &&
-                            $itemArray->getUnitOfMeasureId() == $uom &&
-                            $itemArray->getBarcodeId() == $barCode
-                        ) {
-                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                            $match = true;
-                            break;
-                        }
-                    }
+
                 }
 
                 if (!$match) {
@@ -759,6 +762,10 @@ class BasketHelper extends AbstractHelper
      */
     public function calculate(Entity\OneList $oneList)
     {
+        if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            return null;
+        }
+
         if (empty($this->getCouponCode()) && $this->calculateBasket == 1
             && empty($this->getOneListCalculationFromCheckoutSession())) {
             return null;
@@ -771,7 +778,7 @@ class BasketHelper extends AbstractHelper
         $oneListItems = $oneList->getItems();
 
         /** @var Entity\OneListCalculateResponse $response */
-        $response = false;
+        $response = null;
 
         try {
             if (!($oneListItems->getOneListItem() == null)) {
@@ -829,13 +836,13 @@ class BasketHelper extends AbstractHelper
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
         }
-        if (($response == null)) {
+        if (($response === null)) {
             // @codingStandardsIgnoreLine
             $oneListCalResponse = new Entity\OneListCalculateResponse();
             $this->setOneListCalculationInCheckoutSession($response);
             return $oneListCalResponse->getResult();
         }
-        if (property_exists($response, "OneListCalculateResult")) {
+        if ($response && property_exists($response, "OneListCalculateResult")) {
             // @codingStandardsIgnoreLine
             $this->setOneListCalculationInCheckoutSession($response->getResult());
             return $response->getResult();
@@ -882,7 +889,7 @@ class BasketHelper extends AbstractHelper
             ->setPublishedOffers($this->_offers())
             ->setStoreId($webStore);
 
-        return $this->saveToOmni($list);
+        return $list;
         // @codingStandardsIgnoreEnd
     }
 
@@ -1497,5 +1504,15 @@ class BasketHelper extends AbstractHelper
     public function getLsrModel()
     {
         return $this->lsr;
+    }
+
+    /**
+     * Get cart repository
+     *
+     * @return CartRepositoryInterface
+     */
+    public function getCartRepositoryObject()
+    {
+        return $this->cartRepository;
     }
 }

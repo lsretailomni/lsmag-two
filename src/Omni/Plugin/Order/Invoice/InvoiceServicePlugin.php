@@ -3,27 +3,27 @@
 namespace Ls\Omni\Plugin\Order\Invoice;
 
 use \Ls\Core\Model\LSR;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class for fixing invoice total and grand total
  */
 class InvoiceServicePlugin
 {
-
     /**
      * @var LSR
      */
     private $lsr;
 
-
     /**
      * @param LSR $lsr
      */
-    public function __construct(LSR $lsr)
-    {
+    public function __construct(
+        LSR $lsr
+    ) {
         $this->lsr = $lsr;
     }
-
 
     /**
      * After plugin to fix invoice total and grand total
@@ -32,12 +32,15 @@ class InvoiceServicePlugin
      * @param $order
      * @param $invoice
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function afterPrepareInvoice($subject, $invoice, $order)
     {
         if ($this->lsr->isLSR($invoice->getStoreId())) {
-            $invoice->setGrandTotal($invoice->getGrandTotal() - $invoice->getTaxAmount());
-            $invoice->setBaseGrandTotal($invoice->getBaseGrandTotal() - $invoice->getBaseTaxAmount());
+            $grandTotal = $order->getGrandTotal();
+            $baseGrandTotal = $order->getBaseGrandTotal();
+            $invoice->setGrandTotal($grandTotal);
+            $invoice->setBaseGrandTotal($baseGrandTotal);
         }
 
         return $invoice;

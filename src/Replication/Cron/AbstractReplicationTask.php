@@ -109,7 +109,7 @@ abstract class AbstractReplicationTask
             if (!empty($stores)) {
                 foreach ($stores as $store) {
                     if ($this->getLsrModel()->isEnabled($store->getId(), $this->defaultScope)) {
-                        if ($this->executeDiscountReplicationOnCentralType($lsr, $store)) {
+                        if ($this->executeDiscountReplicationOnCentralType($lsr, $store, $this->defaultScope)) {
                             continue;
                         }
                         $this->fetchDataGivenStore($store->getId());
@@ -287,8 +287,8 @@ abstract class AbstractReplicationTask
                     $getMethod = 'getId';
                 } else {
                     $fieldNameCapitalized = str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
-                    $setMethod             = "set$fieldNameCapitalized";
-                    $getMethod             = "get$fieldNameCapitalized";
+                    $setMethod            = "set$fieldNameCapitalized";
+                    $getMethod            = "get$fieldNameCapitalized";
                 }
                 if ($entity && $source && method_exists($entity, $setMethod) && method_exists($source, $getMethod)) {
                     $entity->{$setMethod}($source->{$getMethod}());
@@ -382,7 +382,7 @@ abstract class AbstractReplicationTask
         $uniqueAttributesHash = [];
 
         foreach ($uniqueAttributes as $index => $attribute) {
-            $sourceValue = $this->getAttributeValue($attribute, $source);
+            $sourceValue            = $this->getAttributeValue($attribute, $source);
             $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $attribute) . '#' . $index;
         }
 
@@ -797,20 +797,21 @@ abstract class AbstractReplicationTask
     /**
      * Execute discount replication for central type saas or on-prem
      *
-     * @param mixed $lsr
-     * @param mixed $store
+     * @param $lsr
+     * @param $store
+     * @param $scope
      * @return bool
      */
-    public function executeDiscountReplicationOnCentralType($lsr, $store)
+    public function executeDiscountReplicationOnCentralType($lsr, $store, $scope)
     {
         $configPath = $this->getConfigPath();
 
         if ($configPath == "ls_mag/replication/repl_discount_setup") {
-            return !$lsr->validateForOlderVersion($store)['discountSetup'];
+            return !$lsr->validateForOlderVersion($store, $scope)['discountSetup'];
         }
 
         if ($configPath == "ls_mag/replication/repl_discount") {
-            return !$lsr->validateForOlderVersion($store)['discount'];
+            return !$lsr->validateForOlderVersion($store, $scope)['discount'];
         }
 
         return false;

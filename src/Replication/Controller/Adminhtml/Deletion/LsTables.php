@@ -2,7 +2,7 @@
 
 namespace Ls\Replication\Controller\Adminhtml\Deletion;
 
-use \Ls\Core\Model\LSR;
+use Ls\Core\Model\LSR;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -68,11 +68,11 @@ class LsTables extends AbstractReset
         }
 
         if ($scope == ScopeInterface::SCOPE_WEBSITES) {
-            $arguments = ['scope_id' => $scopeId, 'scope' => 'website'];
+            $arguments = ['scope_id' => $scopeId, 'scope' => 'website', 'website' => $scopeId];
         } elseif ($scope == ScopeConfigInterface::SCOPE_TYPE_DEFAULT) {
             $arguments = ['scope_id' => $scopeId, 'scope' => ScopeConfigInterface::SCOPE_TYPE_DEFAULT];
         } else {
-            $arguments = ['scope_id' => $scopeId, 'scope' => 'store'];
+            $arguments = ['scope_id' => $scopeId, 'scope' => 'store', 'store' => $scopeId];
         }
         $this->replicationHelper->getConnection()->endSetup();
         $this->messageManager->addSuccessMessage($message);
@@ -112,7 +112,7 @@ class LsTables extends AbstractReset
             $this->replicationHelper->deleteGivenTableDataGivenConditions(
                 $coreConfigTableName,
                 [
-                    'path = ?' => $config . $jobName,
+                    'path = ?'     => $config . $jobName,
                     'scope_id = ?' => $scopeId
                 ]
             );
@@ -164,7 +164,7 @@ class LsTables extends AbstractReset
             $this->replicationHelper->deleteGivenTableDataGivenConditions(
                 $coreConfigTableName,
                 [
-                    'path like ?' => 'ls_mag/replication/%',
+                    'path like ?'  => 'ls_mag/replication/%',
                     'scope_id = ?' => $scopeId
                 ]
             );

@@ -7,6 +7,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
+use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
@@ -62,6 +63,11 @@ abstract class AbstractOperation implements OperationInterface
     public $session;
 
     /**
+     * @var CacheHelper
+     */
+    public $cacheHelper;
+
+    /**
      * @param ServiceType $service_type
      */
     public function __construct(
@@ -72,6 +78,7 @@ abstract class AbstractOperation implements OperationInterface
         $this->logger        = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
         $this->session       = $this->objectManager->get(SessionManagerInterface::class);
+        $this->cacheHelper   = $this->objectManager->get(CacheHelper::class);
     }
 
     /**
@@ -113,67 +120,6 @@ abstract class AbstractOperation implements OperationInterface
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $response = $client->{$operation_name}($request_input);
-//Uncomment this in order to test gift card related changes
-/*            if ($operation_name == 'OneListCalculate' || $operation_name == 'OneListHospCalculate') {
-                $result = $response->getResult();
-                $exists = $price = $amount = 0;
-                $orderLines = [];
-
-                foreach ($request_input->getOneList()->getItems() as $item) {
-                    if ($item->getItemId() == '69000') {
-                        if ($operation_name == 'OneListHospCalculate') {
-                            $orderLine = new \Ls\Omni\Client\Ecommerce\Entity\OrderHospLine();
-                        } else {
-                            $orderLine = new \Ls\Omni\Client\Ecommerce\Entity\OrderLine();
-                        }
-
-                        $orderLine
-                            ->setId($item->getId())
-                            ->setLineType(\Ls\Omni\Client\Ecommerce\Entity\Enum\LineType::ITEM)
-                            ->setItemId($item->getItemId())
-                            ->setVariantId($item->getVariantId())
-                            ->setUomId($item->getUnitOfMeasureId())
-                            ->setAmount($item->getAmount())
-                            ->setPrice($item->getPrice())
-                            ->setQuantity($item->getQuantity())
-                            ->setTaxAmount((20/100) * $orderLine->getPrice())
-                            ->setNetAmount(($orderLine->getPrice()) - (20/100) * $orderLine->getPrice())
-                            ->setNetPrice(($orderLine->getPrice()) - (20/100) * $orderLine->getPrice());
-
-                        if ($operation_name == 'OneListHospCalculate') {
-                            $orderLine->setSubLines(new \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderHospSubLine());
-                        }
-                        $orderLines[] = $orderLine;
-                        $price += $orderLine->getPrice();
-                        $amount += ($orderLine->getPrice()) - (20/100) * $orderLine->getPrice();
-                        $exists = 1;
-                    }
-                }
-                if ($operation_name == 'OneListHospCalculate') {
-                    $orderLinesResponse = $result->getOrderLines()->getOrderHospLine();
-                } else {
-                    $orderLinesResponse = $result->getOrderLines()->getOrderLine();
-                }
-
-                foreach ($orderLinesResponse as $index => &$orderLine) {
-                    if ($orderLine->getItemId() == '69000') {
-                        unset($orderLinesResponse[$index]);
-                    }
-                }
-                if ($operation_name == 'OneListHospCalculate') {
-                    $arrayOfOrderLInes = new \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderHospLine();
-                    $result->setOrderLines($arrayOfOrderLInes->setOrderHospLine(array_merge($orderLinesResponse, $orderLines)));
-                } else {
-                    $arrayOfOrderLInes = new \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine();
-                    $result->setOrderLines($arrayOfOrderLInes->setOrderLine(array_merge($orderLinesResponse, $orderLines)));
-                }
-
-                if ($exists) {
-                    $result
-                        ->setTotalAmount($result->getTotalAmount() + $price)
-                        ->setTotalNetAmount($result->getTotalNetAmount() + $amount);
-                }
-            }*/
         } catch (SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
@@ -188,6 +134,8 @@ abstract class AbstractOperation implements OperationInterface
             } else {
                 $response = null;
             }
+            $cacheId = LSR::PING_RESPONSE_CACHE . $lsr->getCurrentWebsiteId();
+            $this->cacheHelper->removeCachedContent($cacheId);
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
 

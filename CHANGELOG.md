@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0] - 2024-02-15
+
+### Added
+
+- Added support for checking applied discount validity before placing an order. [47151](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47151)
+- Added support to check the availability of hospitality items before placing an order. [39352](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/39352)
+- Added support to configure persistent session for QR code data on graphql. [47519](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47519)
+- Added support for item special group as a DiscountLine in discount replication. [47569](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47569)
+
+### Bugs/Fixes
+
+- Fixed issue with gift card online purchase. [46126](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/46126)
+- Fixed issue with resetting discount replication. [47569](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47569)
+- Fixed issue with updating barcode while product creation. [47854](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47854)
+- Fixed issue with customer registration in case of an invalid captcha. [47682](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47682)
+- Fixed issue with loyalty points expiry on customer dashboard. [48453](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48453)
+- Fixed issue with inventory synchronization. [47743](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47743)
+- Fixed issue with generated invoice printing on frontend and admin panel. [48145](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48145)
+- Fixed issue with price synchronization for improving performance. [48471](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48471)
+- Fixed issue with customer login when an item in the basket is out of stock. [48795](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48795)
+- Fixed issue with mismatch order totals. [48456](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48456)
+
+
 ## [2.5.0] - 2024-01-11
 
 ### Added

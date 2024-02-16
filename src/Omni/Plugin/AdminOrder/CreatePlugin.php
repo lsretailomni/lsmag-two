@@ -82,24 +82,14 @@ class CreatePlugin
         try {
             if ($this->lsr->isLSR($quote->getStoreId())) {
                 $couponCode = $quote->getCouponCode();
-                // This will create one list if not created and will return onelist if its already created.
-                /** @var OneList|null $oneList */
-                $oneList = $this->basketHelper->getOneListFromCustomerSession();
                 $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $quote->getStore()->getWebsiteId());
                 $this->basketHelper->store_id = $webStore;
-                if (!$oneList ||
-                    !$oneList->getCardId() ||
-                    $quote->getLsOneListId() != $oneList->getId() ||
-                    $oneList->getStoreId() != $webStore
-                ) {
-                    $oneList = $this->basketHelper->getOneListAdmin(
-                        $quote->getCustomerEmail(),
-                        $quote->getStore()->getWebsiteId(),
-                        false
-                    );
-                    $quote->setLsOneListId($oneList->getId());
-                    $this->basketHelper->quoteRepository->save($quote);
-                }
+                /** @var OneList|null $oneList */
+                $oneList = $this->basketHelper->getOneListAdmin(
+                    $quote->getCustomerEmail(),
+                    $quote->getStore()->getWebsiteId(),
+                    false
+                );
 
                 $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
                 if (!empty($couponCode)) {

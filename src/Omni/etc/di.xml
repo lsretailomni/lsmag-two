@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Ls\Omni\Api\DiscountManagementInterface" type="Ls\Omni\Model\Api\DiscountManagement"/>
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
@@ -40,9 +41,6 @@
     </type>
     <!-- To Override Discount Calculator -->
     <preference for="Magento\SalesRule\Model\Quote\Discount" type="Ls\Omni\Model\Tax\Sales\Total\Quote\Discount"/>
-    <!-- To Override Invoice Pdf -->
-    <preference for="Magento\Sales\Model\Order\Pdf\Items\Invoice\DefaultInvoice"
-                type="Ls\Omni\Model\Order\Pdf\Items\Invoice\DefaultInvoice"/>
     <type name="Magento\Sales\Model\Order\Pdf\Invoice">
         <plugin name="ls.omni.pdf.invoice" type="Ls\Omni\Plugin\Order\Pdf\Invoice"
                 sortOrder="1"/>
