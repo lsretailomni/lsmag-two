@@ -5,7 +5,6 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -14,7 +13,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Webhooks\Model\Order\Status;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -647,11 +645,11 @@ class OrderHelper extends AbstractHelper
                 }
                 return $salesEntryArray;
             } else {
-                return $response;
+                return null;
             }
         }
 
-        return $response;
+        return null;
     }
 
     /**

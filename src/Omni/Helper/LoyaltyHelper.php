@@ -325,9 +325,12 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @return float|Entity\GetPointRateResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
-    public function getPointRate()
+    public function getPointRate($storeId = null)
     {
-        $storeId = $this->lsr->getCurrentStoreId();
+        if (!$storeId) {
+            $storeId = $this->lsr->getCurrentStoreId();
+        }
+
         $response = null;
         if ($this->lsr->isLSR($storeId)) {
             $cacheId = LSR::POINTRATE . $storeId;
