@@ -402,10 +402,8 @@ class ItemHelper extends AbstractHelper
         $quoteItemList = $quote->getAllVisibleItems();
 
         foreach ($quoteItemList as $quoteItem) {
-            $bundleProduct = $customPrice = $discountAmount = $taxAmount = $rowTotal = $rowTotalIncTax =
-            $priceInclTax = 0;
-            $children      = [];
-            $orderLines    = [];
+            $bundleProduct = $customPrice = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
+            $children      = $orderLines = [];
             if ($basketData) {
                 $orderLines = $basketData->getOrderLines()->getOrderLine();
             }
@@ -443,12 +441,10 @@ class ItemHelper extends AbstractHelper
                 $taxAmount      += $child->getTaxAmount();
                 $rowTotal       += $child->getRowTotal();
                 $rowTotalIncTax += $child->getRowTotalInclTax();
-                $discountAmount += $child->getDiscountAmount();
             }
 
             if ($bundleProduct == 1) {
                 $quoteItem->setCustomPrice($customPrice);
-                $quoteItem->setDiscountAmount($discountAmount);
                 $quoteItem->setRowTotal($rowTotal);
                 $quoteItem->setRowTotalInclTax($rowTotalIncTax);
                 $quoteItem->setTaxAmount($taxAmount);
@@ -458,7 +454,9 @@ class ItemHelper extends AbstractHelper
                     // @codingStandardsIgnoreLine
                     $this->itemResourceModel->save($quoteItem);
                 } catch (LocalizedException $e) {
-                    $this->_logger->critical("Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage());
+                    $this->_logger->critical(
+                        "Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage()
+                    );
                 }
             }
         }
@@ -479,9 +477,9 @@ class ItemHelper extends AbstractHelper
             if (isset($basketData)) {
                 $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
-                $quote->getShippingAddress()->setGrandTotal(
-                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
-                );
+                $quote->getShippingAddress()
+                    ->setGrandTotal(
+                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount);
             }
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
@@ -510,8 +508,8 @@ class ItemHelper extends AbstractHelper
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
-        $customPrice = $discountAmount = $amount = $taxAmount = $netAmount = null;
-        $itemQty     = $quoteItem->getQty();
+        $customPrice = $amount = $taxAmount = $netAmount = null;
+        $itemQty = $quoteItem->getQty();
 
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
@@ -521,9 +519,7 @@ class ItemHelper extends AbstractHelper
         $qtyEqual = $line->getQuantity() == $itemQty;
 
         if ($line->getDiscountAmount() > 0) {
-            $discountAmount = $qtyEqual ? $line->getDiscountAmount() :
-                ($line->getDiscountAmount() / $line->getQuantity()) * $itemQty;
-            $customPrice    = $unitPrice;
+            $customPrice = $unitPrice;
         } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
             $customPrice = $unitPrice;
         }
@@ -543,10 +539,10 @@ class ItemHelper extends AbstractHelper
                 ($line->getAmount() / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal = $line->getPrice() * $line->getQuantity();
+        $rowTotal = $line->getNetPrice() * $line->getQuantity();
+        $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem->setCustomPrice($customPrice)
-            ->setDiscountAmount($discountAmount)
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
             ->setBaseTaxAmount($taxAmount)
@@ -554,8 +550,8 @@ class ItemHelper extends AbstractHelper
             ->setBasePriceInclTax($unitPrice)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
-            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotal)
-            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotal);
+            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)
+            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax);
     }
 
     /**
