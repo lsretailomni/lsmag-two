@@ -261,15 +261,15 @@ class ItemHelper extends AbstractHelper
      */
     public function getOrderDiscountLinesForItem($item, $orderData, $type = 1)
     {
-        $discountText      = __("Save");
+        $discountText = __("Save");
         $discountInfo = [];
         try {
             if ($type == 2) {
-                $itemId      = $item->getItemId();
-                $variantId   = $item->getVariantId();
-                $uom         = $item->getUomId();
+                $itemId            = $item->getItemId();
+                $variantId         = $item->getVariantId();
+                $uom               = $item->getUomId();
                 $baseUnitOfMeasure = "";
-                $customPrice = $item->getDiscountAmount();
+                $customPrice       = $item->getDiscountAmount();
                 $this->getDiscountInfo(
                     $item,
                     $orderData,
@@ -282,7 +282,7 @@ class ItemHelper extends AbstractHelper
                 );
             } else {
                 $customPrice = $item->getCustomPrice();
-                $children = [];
+                $children    = [];
 
                 if ($item->getProductType() == Type::TYPE_BUNDLE) {
                     $children = $item->getChildren();
@@ -402,12 +402,13 @@ class ItemHelper extends AbstractHelper
         $quoteItemList = $quote->getAllVisibleItems();
 
         foreach ($quoteItemList as $quoteItem) {
-            $bundleProduct = $customPrice = $discountAmount = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
-            $children = [];
-            $orderLines = $basketData->getOrderLines()->getOrderLine();
-
+            $bundleProduct = $customPrice = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
+            $children      = $orderLines = [];
+            if ($basketData) {
+                $orderLines = $basketData->getOrderLines()->getOrderLine();
+            }
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
-                $children = $quoteItem->getChildren();
+                $children      = $quoteItem->getChildren();
                 $bundleProduct = 1;
             } else {
                 $children[] = $quoteItem;
@@ -432,20 +433,18 @@ class ItemHelper extends AbstractHelper
                     // @codingStandardsIgnoreLine
                     $this->itemResourceModel->save($child);
                 } catch (LocalizedException $e) {
-                    $this->_logger->critical("Error saving SKU:-".$child->getSku(). " - ".$e->getMessage());
+                    $this->_logger->critical("Error saving SKU:-" . $child->getSku() . " - " . $e->getMessage());
                 }
 
-                $customPrice += $child->getCustomPrice();
-                $priceInclTax += $child->getPriceInclTax();
-                $taxAmount += $child->getTaxAmount();
-                $rowTotal += $child->getRowTotal();
+                $customPrice    += $child->getCustomPrice();
+                $priceInclTax   += $child->getPriceInclTax();
+                $taxAmount      += $child->getTaxAmount();
+                $rowTotal       += $child->getRowTotal();
                 $rowTotalIncTax += $child->getRowTotalInclTax();
-                $discountAmount += $child->getDiscountAmount();
             }
 
             if ($bundleProduct == 1) {
                 $quoteItem->setCustomPrice($customPrice);
-                $quoteItem->setDiscountAmount($discountAmount);
                 $quoteItem->setRowTotal($rowTotal);
                 $quoteItem->setRowTotalInclTax($rowTotalIncTax);
                 $quoteItem->setTaxAmount($taxAmount);
@@ -455,7 +454,9 @@ class ItemHelper extends AbstractHelper
                     // @codingStandardsIgnoreLine
                     $this->itemResourceModel->save($quoteItem);
                 } catch (LocalizedException $e) {
-                    $this->_logger->critical("Error saving Quote Item:-".$quoteItem->getSku(). " - ".$e->getMessage());
+                    $this->_logger->critical(
+                        "Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage()
+                    );
                 }
             }
         }
@@ -476,9 +477,9 @@ class ItemHelper extends AbstractHelper
             if (isset($basketData)) {
                 $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
-                $quote->getShippingAddress()->setGrandTotal(
-                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
-                );
+                $quote->getShippingAddress()
+                    ->setGrandTotal(
+                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount);
             }
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
@@ -507,7 +508,7 @@ class ItemHelper extends AbstractHelper
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
-        $customPrice = $discountAmount = $amount = $taxAmount = $netAmount = null;
+        $customPrice = $amount = $taxAmount = $netAmount = null;
         $itemQty = $quoteItem->getQty();
 
         if ($quoteItem->getParentItem() &&
@@ -518,8 +519,6 @@ class ItemHelper extends AbstractHelper
         $qtyEqual = $line->getQuantity() == $itemQty;
 
         if ($line->getDiscountAmount() > 0) {
-            $discountAmount = $qtyEqual ? $line->getDiscountAmount() :
-                ($line->getDiscountAmount() / $line->getQuantity()) * $itemQty;
             $customPrice = $unitPrice;
         } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
             $customPrice = $unitPrice;
@@ -540,10 +539,10 @@ class ItemHelper extends AbstractHelper
                 ($line->getAmount() / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal = $line->getPrice() * $line->getQuantity();
+        $rowTotal = $line->getNetPrice() * $line->getQuantity();
+        $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem->setCustomPrice($customPrice)
-            ->setDiscountAmount($discountAmount)
             ->setOriginalCustomPrice($customPrice)
             ->setTaxAmount($taxAmount)
             ->setBaseTaxAmount($taxAmount)
@@ -551,8 +550,8 @@ class ItemHelper extends AbstractHelper
             ->setBasePriceInclTax($unitPrice)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
-            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotal)
-            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotal);
+            ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)
+            ->setBaseRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax);
     }
 
     /**
@@ -625,21 +624,26 @@ class ItemHelper extends AbstractHelper
     {
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('sku', $sku, 'eq')->create();
         $productList    = $this->productRepository->getList($searchCriteria)->getItems();
-        /** @var Product $product */
-        $product   = array_pop($productList);
-        $itemId    = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-        $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
-        $uom       = $product->getData('uom');
-        $barCode   = $product->getData('barcode');
-        $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
-        $baseUom   = null;
+        if (!empty($productList)) {
+            /** @var Product $product */
+            $product   = array_pop($productList);
+            $itemId    = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+            $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+            $uom       = $product->getData('uom');
+            $barCode   = $product->getData('barcode');
+            $uomQty    = $product->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+            $baseUom   = null;
 
-        if ($parentId != '') {
-            $parentProduct = $this->productRepository->getById($parentId);
-            $baseUom       = $parentProduct->getData('uom');
+            if ($parentId != '') {
+                $parentProduct = $this->productRepository->getById($parentId);
+                $baseUom       = $parentProduct->getData('uom');
+            }
+
+            return [$itemId, $variantId, $uom, $barCode, $uomQty, $baseUom];
+
         }
 
-        return [$itemId, $variantId, $uom, $barCode, $uomQty, $baseUom];
+        return null;
     }
 
     /**
@@ -679,7 +683,7 @@ class ItemHelper extends AbstractHelper
      */
     public function getLinkedProductsItemIds($bundleProduct)
     {
-        $items = $this->productLinkManagement->getChildren($bundleProduct->getSku());
+        $items   = $this->productLinkManagement->getChildren($bundleProduct->getSku());
         $itemIds = [];
 
         foreach ($items as $item) {
@@ -707,6 +711,6 @@ class ItemHelper extends AbstractHelper
 
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
             (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
-            ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
+                ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
     }
 }

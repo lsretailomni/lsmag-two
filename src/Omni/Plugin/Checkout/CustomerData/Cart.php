@@ -99,7 +99,9 @@ class Cart
                 if (is_array($result['items'])) {
                     foreach ($result['items'] as $key => $itemAsArray) {
                         if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
+                            $lineDiscount = $this->basketHelper->getItemRowDiscount($item);
                             $item->setCustomPrice($this->basketHelper->getItemRowTotal($item));
+                            $item->setDiscountAmount($lineDiscount);
                             $this->itemPriceRenderer->setItem($item);
                             $this->itemPriceRenderer->setTemplate(
                                 'Magento_Tax::checkout/cart/item/price/sidebar.phtml'

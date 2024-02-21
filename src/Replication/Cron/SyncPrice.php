@@ -4,7 +4,9 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\Data\ReplPriceInterface;
 use \Ls\Replication\Model\ReplPrice;
+use \Ls\Replication\Model\ResourceModel\ReplPrice\Collection;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
@@ -20,6 +22,11 @@ class SyncPrice extends ProductCreateTask
 
     /** @var int */
     public $remainingRecords;
+
+    /**
+     * @var array
+     */
+    public $processed = [];
 
     /**
      * Entry point for cron
@@ -54,7 +61,7 @@ class SyncPrice extends ProductCreateTask
                         ScopeInterface::SCOPE_STORES
                     );
                     $this->logger->debug('Running SyncPrice Task for store ' . $this->store->getName());
-
+                    $this->processed = [];
                     $productPricesBatchSize = $this->replicationHelper->getProductPricesBatchSize();
 
                     /** Get list of only those prices whose items are already processed */
@@ -73,98 +80,12 @@ class SyncPrice extends ProductCreateTask
                         $criteria,
                         'ItemId',
                         'VariantId',
-                        ['ItemId']
+                        ['repl_price_id']
                     );
 
                     $websiteId = $this->store->getWebsiteId();
                     $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
-
-                    foreach ($collection as $itemPrice) {
-                        /** @var ReplPrice $replPrice */
-                        foreach ($this->getAllItemPrices($itemPrice->getItemId())->getItems() as $replPrice) {
-                            try {
-                                $sku = '';
-
-                                if ($replPrice->getVariantId() && $replPrice->getUnitOfMeasure()) {
-                                    $uom = $replPrice->getUnitOfMeasure();
-                                    $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' . $uom;
-                                } elseif ((!$replPrice->getVariantId() && !$replPrice->getUnitOfMeasure()) ||
-                                    (!$replPrice->getVariantId() && $replPrice->getUnitOfMeasure())
-                                ) {
-                                    $sku = $replPrice->getItemId();
-                                    $uom = '';
-                                } else {
-                                    $totalUomCodes = $this->replicationHelper->getUomCodes(
-                                        $replPrice->getItemId(),
-                                        $this->getScopeId()
-                                    );
-
-                                    if (count($totalUomCodes[$replPrice->getItemId()]) > 1) {
-                                        $uom = $this->replicationHelper->getBaseUnitOfMeasure($replPrice->getItemId());
-                                    } else {
-                                        $uom = '';
-                                    }
-                                    $sku = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' . $uom;
-                                }
-                                $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                    $replPrice->getItemId(),
-                                    $replPrice->getVariantId(),
-                                    $uom,
-                                    $this->store->getId()
-                                );
-
-                                if (isset($productData)) {
-                                    if ($productData->getTypeId() == 'configurable') {
-                                        if (empty($replPrice->getUnitOfMeasure())) {
-                                            $productData->setPrice($replPrice->getUnitPriceInclVat());
-                                            $this->productResourceModel->saveAttribute($productData, 'price');
-                                        }
-                                        $baseUnitOfMeasure = $productData->getData('uom');
-                                        $itemPriceCount    = $this->getItemPriceCount($replPrice->getItemId());
-                                        $children          = $productData->getTypeInstance()->getUsedProducts(
-                                            $productData
-                                        );
-
-                                        foreach ($children as $child) {
-                                            $childProductData = $this->productRepository->get($child->getSKU());
-
-                                            if ($this->validateChildPriceUpdate(
-                                                $childProductData,
-                                                $replPrice,
-                                                $baseUnitOfMeasure,
-                                                $itemPriceCount
-                                            )) {
-                                                $childProductData->setPrice($replPrice->getUnitPriceInclVat());
-                                                $this->productResourceModel->saveAttribute($childProductData, 'price');
-                                            }
-                                        }
-                                    } else {
-                                        $productData->setPrice($replPrice->getUnitPriceInclVat());
-                                        $this->productResourceModel->saveAttribute($productData, 'price');
-                                    }
-                                }
-                            } catch (Exception $e) {
-                                $this->logger->debug(
-                                    sprintf(
-                                        'Exception happened in %s for store: %s, item id: %s',
-                                        __METHOD__,
-                                        $this->store->getName(),
-                                        $sku
-                                    )
-                                );
-                                $this->logger->debug($e->getMessage());
-                                $replPrice->setData('is_failed', 1);
-                            }
-                            $replPrice->addData(
-                                [
-                                    'is_updated' => 0,
-                                    'processed' => 1,
-                                    'processed_at' => $this->replicationHelper->getDateTime()
-                                ]
-                            );
-                            $this->replPriceRepository->save($replPrice);
-                        }
-                    }
+                    $this->process($collection);
                     $remainingItems = (int)$this->getRemainingRecords($this->store);
                     if ($remainingItems == 0) {
                         $this->cronStatus = true;
@@ -184,6 +105,91 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
+     * Process Price
+     *
+     * @param Collection $collection
+     * @return void
+     */
+    public function process($collection)
+    {
+        /** @var ReplPrice $replPrice */
+        foreach ($collection as $replPrice) {
+            /** @var ReplPrice $replPrice */
+            try {
+                if (in_array($replPrice->getId(), $this->processed)) {
+                    continue;
+                }
+                $productDataArray = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                    $replPrice->getItemId(),
+                    $replPrice->getVariantId(),
+                    $replPrice->getUnitOfMeasure(),
+                    $this->store->getId(),
+                    true,
+                    true,
+                    true
+                );
+                if (isset($productDataArray)) {
+                    $this->processProductPrice($productDataArray, $replPrice);
+                }
+            } catch (Exception $e) {
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %s, item id: %s, variant id: %s, uom: %s ',
+                        __METHOD__,
+                        $this->store->getName(),
+                        $replPrice->getItemId(),
+                        $replPrice->getVariantId(),
+                        $replPrice->getUnitOfMeasure()
+                    )
+                );
+                $this->logger->debug($e->getMessage());
+                $replPrice->setData('is_failed', 1);
+                $this->replPriceRepository->save($replPrice);
+            }
+
+        }
+    }
+
+    /**
+     * Process product price
+     *
+     * @param array $productDataArray
+     * @param object $replPrice
+     * @return void
+     * @throws Exception
+     */
+    public function processProductPrice($productDataArray, $replPrice)
+    {
+        /** @var ReplPrice $replPrice */
+        $replItemPriceList = null;
+        if (count($productDataArray) > 1) {
+            $replItemPriceList = $this->getItemPriceList($replPrice->getItemId());
+        }
+        foreach ($productDataArray as $productData) {
+            $price = $replPrice;
+            if (!empty($replItemPriceList)) {
+                $replItemPrice = $this->getPrice($productData, $replItemPriceList);
+                if (!empty($replItemPrice)) {
+                    $price = $replItemPrice;
+                }
+            }
+            if ($productData->getPrice() != $price->getUnitPriceInclVat()) {
+                $productData->setPrice($price->getUnitPriceInclVat());
+                $this->productResourceModel->saveAttribute($productData, 'price');
+            }
+            $price->addData(
+                [
+                    'is_updated'   => 0,
+                    'processed'    => 1,
+                    'processed_at' => $this->replicationHelper->getDateTime()
+                ]
+            );
+            $this->replPriceRepository->save($price);
+            $this->processed[$price->getId()] = $price->getId();
+        }
+    }
+
+    /**
      * Execute manually
      *
      * @param mixed $storeData
@@ -199,70 +205,60 @@ class SyncPrice extends ProductCreateTask
     }
 
     /**
-     * Validate child product price update
+     * Getting item price of given product
      *
-     * @param mixed $productData
-     * @param mixed $replPrice
-     * @param string $baseUnitOfMeasure
-     * @param string $itemPriceCount
-     * @return bool
+     * @param object $productData
+     * @param array $replItemPriceList
+     * @return object|null
      */
-    private function validateChildPriceUpdate(
-        $productData,
-        $replPrice,
-        $baseUnitOfMeasure = null,
-        $itemPriceCount = null
-    ) {
-        $needsPriceUpdate = false;
-
-        if ($productData->getData('uom') == $baseUnitOfMeasure && empty($replPrice->getUnitOfMeasure())) {
-            $needsPriceUpdate = true;
-        } elseif ($productData->getData('uom') == $replPrice->getUnitOfMeasure()) {
-            $needsPriceUpdate = true;
-        } elseif ($itemPriceCount == 1 && $baseUnitOfMeasure != null) {
-            $needsPriceUpdate = true;
+    public function getPrice($productData, $replItemPriceList)
+    {
+        $itemId    = $productData->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId = $productData->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+        $uom       = $productData->getData(LSR::LS_UOM_ATTRIBUTE);
+        if ($uom) {
+            $attr = $productData->getResource()->getAttribute(LSR::LS_UOM_ATTRIBUTE);
+            if ($attr->usesSource()) {
+                $uom = $this->replicationHelper->getUomCodeGivenDescription($attr->getSource()->getOptionText($uom));
+            }
         }
-
-        return $needsPriceUpdate;
+        $key = $itemId . '-' . $variantId . '-' . $uom;
+        if (array_key_exists($key, $replItemPriceList)) {
+            return $replItemPriceList[$key];
+        }
+        if ($uom) {
+            $variantId         = '';
+            $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure($itemId);
+            if ($uom == $baseUnitOfMeasure) {
+                $uom = '';
+            }
+            $key = $itemId . '-' . $variantId . '-' . $uom;
+            if (array_key_exists($key, $replItemPriceList)) {
+                return $replItemPriceList[$key];
+            }
+        }
+        return null;
     }
 
     /**
-     * Getting total entries of price in price table
+     * Get item price lis price
      *
      * @param string $itemId
-     * @return int
+     * @return array
      */
-    public function getItemPriceCount($itemId)
+    public function getItemPriceList($itemId)
     {
-        $itemsCount     = 0;
-        $replItemPriceList = $this->getAllItemPrices($itemId);
-
-        if ($replItemPriceList) {
-            $itemsCount = $replItemPriceList->getTotalCount();
-        }
-
-        return $itemsCount;
-    }
-
-    /**
-     * Get all item prices
-     *
-     * @param $itemId
-     * @return null
-     */
-    public function getAllItemPrices($itemId)
-    {
-        $replItemPriceList = null;
-        $webStoreId     = $this->lsr->getStoreConfig(
+        $replItemPriceListArray = [];
+        $webStoreId             = $this->lsr->getStoreConfig(
             LSR::SC_SERVICE_STORE,
             $this->store->getId()
         );
-        $filters        = [
+        $filters                = [
             ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq'],
             ['field' => 'StoreId', 'value' => $webStoreId, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
-        $searchCriteria = $this->replicationHelper
+        $searchCriteria         = $this->replicationHelper
             ->buildCriteriaForDirect($filters, -1)
             ->setSortOrders(
                 [
@@ -273,6 +269,12 @@ class SyncPrice extends ProductCreateTask
             );
         try {
             $replItemPriceList = $this->replPriceRepository->getList($searchCriteria);
+            /** @var ReplPrice $replPrice */
+            foreach ($replItemPriceList->getItems() as $replPrice) {
+                $key                          = $replPrice->getItemId() . '-' . $replPrice->getVariantId() . '-' .
+                    $replPrice->getUnitOfMeasure();
+                $replItemPriceListArray[$key] = $replPrice;
+            }
         } catch (Exception $e) {
             $this->logger->debug(
                 sprintf(
@@ -285,7 +287,7 @@ class SyncPrice extends ProductCreateTask
             $this->logger->debug($e->getMessage());
         }
 
-        return $replItemPriceList;
+        return $replItemPriceListArray;
     }
 
     /**
@@ -295,8 +297,9 @@ class SyncPrice extends ProductCreateTask
      * @return int
      * @throws LocalizedException
      */
-    public function getRemainingRecords($storeData = null)
-    {
+    public function getRemainingRecords(
+        $storeData = null
+    ) {
         if (!$this->remainingRecords) {
             /** Get list of only those prices whose items are already processed */
             $filters = [
@@ -312,7 +315,7 @@ class SyncPrice extends ProductCreateTask
                 $criteria,
                 'ItemId',
                 'VariantId',
-                ['ItemId']
+                ['repl_price_id']
             );
 
             $websiteId = $this->store->getWebsiteId();

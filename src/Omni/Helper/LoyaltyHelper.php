@@ -243,8 +243,8 @@ class LoyaltyHelper extends AbstractHelperOmni
 
         if ($result) {
             $startDateTs = Carbon::now();
-            $endDateTs   = Carbon::now()->addDays($expiryInterval);
-
+            $endDateTs   = Carbon::now()->addDays((int)$expiryInterval);
+            
             foreach ($result as $res) {
                 $entryType = $res->getEntryType();
                 $expirationDate = Carbon::parse($res->getExpirationDate());
@@ -325,9 +325,12 @@ class LoyaltyHelper extends AbstractHelperOmni
      * @return float|Entity\GetPointRateResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
-    public function getPointRate()
+    public function getPointRate($storeId = null)
     {
-        $storeId = $this->lsr->getCurrentStoreId();
+        if (!$storeId) {
+            $storeId = $this->lsr->getCurrentStoreId();
+        }
+
         $response = null;
         if ($this->lsr->isLSR($storeId)) {
             $cacheId = LSR::POINTRATE . $storeId;
@@ -449,7 +452,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             }
             $group = $this->groupRepository->getById($customerGroupId)->getCode();
             $string->setString(is_array($itemId) ? $itemId : [$itemId]);
-            $entity->setStoreId($webStore)->setItemiIds($string)->setLoyaltySchemeCode($group);
+            $entity->setStoreId($webStore)->setItemIds($string)->setLoyaltySchemeCode($group);
             try {
                 $response = $request->execute($entity);
             } catch (Exception $e) {

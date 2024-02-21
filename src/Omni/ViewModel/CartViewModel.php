@@ -75,6 +75,20 @@ class CartViewModel implements ArgumentInterface
     }
 
     /**
+     * Get Item row total
+     *
+     * @param $item
+     * @return string
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getItemRowDiscount($item)
+    {
+        return $this->basketHelper->getItemRowDiscount($item);
+    }
+
+
+    /**
      * Get One list calculation data
      *
      * @param $item

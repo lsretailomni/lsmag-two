@@ -286,32 +286,35 @@ class BasketHelper extends AbstractHelper
             }
 
             foreach ($children as $child) {
-                list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                    $child->getSku()
-                );
-                $match = false;
-                $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
+                if ($child->getProduct()->isInStock()) {
+                    list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
+                        $child->getSku()
+                    );
+                    $match              = false;
+                    $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
-                if (in_array($itemId, explode(',', $giftCardIdentifier))) {
-                    foreach ($itemsArray as $itemArray) {
-                        if ($itemArray->getId() == $child->getItemId()) {
-                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                            $match = true;
-                            break;
+                    if (in_array($itemId, explode(',', $giftCardIdentifier))) {
+                        foreach ($itemsArray as $itemArray) {
+                            if ($itemArray->getId() == $child->getItemId()) {
+                                $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                                $match = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        foreach ($itemsArray as $itemArray) {
+                            if ($itemArray->getItemId() == $itemId &&
+                                $itemArray->getVariantId() == $variantId &&
+                                $itemArray->getUnitOfMeasureId() == $uom &&
+                                $itemArray->getBarcodeId() == $barCode
+                            ) {
+                                $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
+                                $match = true;
+                                break;
+                            }
                         }
                     }
-                } else {
-                    foreach ($itemsArray as $itemArray) {
-                        if ($itemArray->getItemId() == $itemId &&
-                            $itemArray->getVariantId() == $variantId &&
-                            $itemArray->getUnitOfMeasureId() == $uom &&
-                            $itemArray->getBarcodeId() == $barCode
-                        ) {
-                            $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
-                            $match = true;
-                            break;
-                        }
-                    }
+
                 }
 
                 if (!$match) {
@@ -886,7 +889,7 @@ class BasketHelper extends AbstractHelper
             ->setPublishedOffers($this->_offers())
             ->setStoreId($webStore);
 
-        return $this->saveToOmni($list);
+        return $list;
         // @codingStandardsIgnoreEnd
     }
 
@@ -1054,6 +1057,36 @@ class BasketHelper extends AbstractHelper
         }
 
         return $rowTotal;
+    }
+
+    /**
+     * Get item row discount
+     *
+     * @param $item
+     * @return float|int
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getItemRowDiscount($item)
+    {
+        $rowDiscount = 0;
+        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+            $item->getSku()
+        );
+
+        $basketData = $this->getOneListCalculation();
+        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
+        foreach ($orderLines as $line) {
+            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
+                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
+                break;
+            }
+        }
+
+        return $rowDiscount;
     }
 
     /**
@@ -1501,5 +1534,15 @@ class BasketHelper extends AbstractHelper
     public function getLsrModel()
     {
         return $this->lsr;
+    }
+
+    /**
+     * Get cart repository
+     *
+     * @return CartRepositoryInterface
+     */
+    public function getCartRepositoryObject()
+    {
+        return $this->cartRepository;
     }
 }
