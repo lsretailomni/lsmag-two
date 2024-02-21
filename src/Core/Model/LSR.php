@@ -71,6 +71,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_VERSION = 'ls_mag/service/version';
     const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
     const SC_SERVICE_HEART_BEAT_TIMEOUT = 'ls_mag/service/heart_beat_timeout';
+    const SC_SERVICE_LICENSE_VALIDITY = 'ls_mag/service/license_validity';
 
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
@@ -857,6 +858,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $storeId = $this->getCurrentStoreId();
         }
         return $this->getStoreConfig(self::SC_SERVICE_VERSION, $storeId);
+    }
+
+    /**
+     * Get central version
+     *
+     * @param $storeId
+     * @param $scope
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getCentralVersion($storeId = null, $scope = null)
+    {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
+            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+        }
+
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
     }
 
     /**
