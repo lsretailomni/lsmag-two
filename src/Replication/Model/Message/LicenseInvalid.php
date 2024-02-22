@@ -100,7 +100,7 @@ class LicenseInvalid implements MessageInterface
         $url = $this->urlBuilder->getUrl('adminhtml/system_config/edit/section/ls_mag');
         //@codingStandardsIgnoreStart
         return __(
-            'You have an invalid or expired license for one of the Central instance configured currently.',
+            'Unable to sync orders since you have an invalid or expired LS Central license for one of the website.',
             $url
         );
         //@codingStandardsIgnoreEnd
