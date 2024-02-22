@@ -327,4 +327,20 @@ class Data
         }
         return null;
     }
+
+    /**
+     * Set license status
+     *
+     * @param $status
+     * @throws NoSuchEntityException
+     */
+    public function setLicenseStatus($status)
+    {
+        $this->configWriter->save(
+            LSR::SC_SERVICE_LICENSE_VALIDITY,
+            $status,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
 }

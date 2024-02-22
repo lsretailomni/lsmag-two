@@ -1155,4 +1155,21 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->storeManager->isSingleStoreMode();
     }
+
+    /**
+     * Set license validity
+     *
+     * @param $status
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    public function setLicenseValidity($status)
+    {
+        $str = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
+        $centralVersion =  strstr($str, " ", true);
+
+        if (version_compare($centralVersion, '24.0.0.0', '>=')) {
+            $this->data->setLicenseStatus($status);
+        }
+    }
 }
