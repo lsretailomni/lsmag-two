@@ -120,7 +120,10 @@ abstract class AbstractOperation implements OperationInterface
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $response = $client->{$operation_name}($request_input);
-            $lsr->setLicenseValidity("1");
+
+            if ($operation_name == 'OrderCreate') {
+                $lsr->setLicenseValidity("1");
+            }
         } catch (SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
