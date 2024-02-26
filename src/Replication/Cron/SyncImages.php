@@ -3,10 +3,10 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Model\ReplImageLink;
-use Ls\Replication\Model\ReplImageLinkSearchResults;
-use Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Model\ReplImageLink;
+use \Ls\Replication\Model\ReplImageLinkSearchResults;
+use \Ls\Replication\Model\ResourceModel\ReplImageLink\Collection;
 use Magento\Catalog\Model\Product\Gallery\Entry;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\App\ResourceConnection;
