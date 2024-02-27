@@ -30,11 +30,6 @@
     <type name="Magento\ConfigurableProduct\Model\ConfigurableAttributeData">
         <plugin name="ls_omni_attribute_option_data_sort" type="Ls\Omni\Plugin\Product\AttributeData" sortOrder="10" />
     </type>
-    <!-- To stop magento for re-calculating tax on custom price. -->
-    <type name="Magento\Tax\Model\Sales\Total\Quote\CommonTaxCollector">
-        <plugin name="ls.checkout.cart.tax.nocustompricing" type="Ls\Omni\Model\Sales\Total\Quote\CommonTaxCollector"
-                sortOrder="1"/>
-    </type>
     <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
         <plugin name="checkout_layout_processor" type="Ls\Omni\Plugin\Checkout\Model\LayoutProcessorPlugin" sortOrder="1"/>
     </type>
