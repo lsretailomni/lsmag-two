@@ -13,6 +13,7 @@ use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\OmniLogger;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Store\Model\ScopeInterface;
 use Psr\Log\LoggerInterface;
 use SoapFault;
 
@@ -101,11 +102,14 @@ abstract class AbstractOperation implements OperationInterface
      */
     public function makeRequest($operation_name)
     {
-        $request_input = $this->getOperationInput();
-        $client        = $this->getClient();
-        $header        = self::$header;
-        $response      = null;
-        $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
+        $request_input  = $this->getOperationInput();
+        $client         = $this->getClient();
+        $header         = self::$header;
+        $response       = null;
+        $lsr            = $this->objectManager->get("\Ls\Core\Model\LSR");
+        $websiteId      = $lsr->getCurrentWebsiteId();
+        $str            = $lsr->getCentralVersion($websiteId, ScopeInterface::SCOPE_WEBSITES);
+        $centralVersion = strstr($str, " ", true);
         if (empty($this->token)) {
             $this->setToken($lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getCurrentWebsiteId()));
         }
@@ -120,8 +124,8 @@ abstract class AbstractOperation implements OperationInterface
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $response = $client->{$operation_name}($request_input);
-
-            if ($operation_name == 'OrderCreate') {
+            if ($operation_name == 'OrderCreate' &&
+                version_compare($centralVersion, '25.0.0.0', '>=')) {
                 $lsr->setLicenseValidity("1");
             }
         } catch (SoapFault $e) {
@@ -135,6 +139,7 @@ abstract class AbstractOperation implements OperationInterface
                 } elseif ($operation_name == 'Ping') {
                     throw new Exception('Unable to ping commerce service.');
                 } elseif ($operation_name == 'OrderCreate' &&
+                    version_compare($centralVersion, '25.0.0.0', '>=') &&
                     $e->faultcode == 's:GeneralErrorCode' &&
                     str_contains($e->faultstring, 'LS Central Ecom unit')
                 ) {
