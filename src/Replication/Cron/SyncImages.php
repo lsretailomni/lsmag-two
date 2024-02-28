@@ -16,7 +16,6 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Filesystem\Driver\File;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -159,19 +158,19 @@ class SyncImages extends ProductCreateTask
                     $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
             }
+            $this->replicationHelper->flushByTypeCode('full_page');
         }
 
         $remainingItems = (int)$this->getRemainingRecords($this->store);
         if ($remainingItems == 0) {
             $this->cronStatus = true;
         }
-        $this->replicationHelper->flushByTypeCode('full_page');
     }
 
     /**
      * Fetch existing images based on sku and add image hashes.
      *
-     * @param $itemId
+     * @param string $itemId
      * @return void
      * @throws FileSystemException
      */
@@ -197,7 +196,7 @@ class SyncImages extends ProductCreateTask
     /**
      * Add image hashes.
      *
-     * @param $existingImages
+     * @param array $existingImages
      * @return void
      * @throws FileSystemException
      */
@@ -217,7 +216,9 @@ class SyncImages extends ProductCreateTask
     }
 
     /**
-     * @param $storeData
+     * To fetch remaining records of Images to process
+     *
+     * @param object $storeData
      * @return int
      * @throws LocalizedException
      */
@@ -364,7 +365,8 @@ class SyncImages extends ProductCreateTask
     /**
      * Custom function to remove duplicated images for the sku and its variants.
      *
-     * @throws FileSystemException
+     * @param object $productData
+     * @return void
      * @throws FileSystemException
      */
     public function removeDuplicatedImages($productData)
@@ -395,9 +397,9 @@ class SyncImages extends ProductCreateTask
     /**
      * Update duplicated catalog image paths with already existing image file
      *
-     * @param $tableName
-     * @param $existingFilePath
-     * @param $newFilePath
+     * @param string $tableName
+     * @param string $existingFilePath
+     * @param string $newFilePath
      * @return void
      */
     public function updateMediaPaths($tableName, $existingFilePath, $newFilePath): void
@@ -435,7 +437,7 @@ class SyncImages extends ProductCreateTask
     /**
      * Check if image file exists
      *
-     * @param $fileName
+     * @param string $fileName
      * @return bool
      * @throws FileSystemException
      */
@@ -450,7 +452,7 @@ class SyncImages extends ProductCreateTask
     /**
      * Delete duplicated image files
      *
-     * @param $fileName
+     * @param string $fileName
      * @return void
      */
     public function deleteDuplicateCatalogImage($fileName): void

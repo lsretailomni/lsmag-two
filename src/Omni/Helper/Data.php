@@ -658,10 +658,12 @@ class Data extends AbstractHelper
             $totalItemsQuantities = $totalItemsInvoice = 0;
             $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
-
+            $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
             /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
-            foreach ($invoiceCreditMemo->getOrder()->getAllVisibleItems() as $item) {
-                $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
+            foreach ($allVisibleItems as $item) {
+                if (!$item->getParentItem()) {
+                    $totalItemsQuantities = $totalItemsQuantities + $item->getQtyOrdered();
+                }
             }
 
             foreach ($invoiceCreditMemo->getAllItems() as $item) {
@@ -675,11 +677,13 @@ class Data extends AbstractHelper
                 }
             }
 
-            $pointRate         = ($this->loyaltyHelper->getPointRate()) ? $this->loyaltyHelper->getPointRate() : 0;
+            $storeId = $invoiceCreditMemo->getOrder()->getStoreId();
+
+            $pointRate         = ($this->loyaltyHelper->getPointRate($storeId)) ?
+                $this->loyaltyHelper->getPointRate($storeId) : 0;
             $totalPointsAmount = $pointsSpent * $pointRate;
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
-
             $giftCardAmount = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
             $invoiceCreditMemo->setLsPointsSpent($pointsSpent);
