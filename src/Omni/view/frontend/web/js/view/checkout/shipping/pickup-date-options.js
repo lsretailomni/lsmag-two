@@ -60,13 +60,22 @@ define([
             return optionsArray;
         },
         onUpdate: function (value) {
-            var pickupTimSlot = $("[name='pickup-timeslot']");
-            var values = window.checkoutConfig.shipping.pickup_date_timeslots.options;
+            let method = quote.shippingMethod(),
+                pickupTimSlot = $("[name='pickup-timeslot']"),
+                values = [];
+            if (method && method['carrier_code'] !== undefined) {
+                if (method['carrier_code'] !== 'clickandcollect') {
+                    values = window.checkoutConfig.shipping.pickup_date_timeslots.delivery_hours;
+                } else {
+                    values = window.checkoutConfig.shipping.pickup_date_timeslots.options;
+                }
+            }
+
             $.each(values, function (index, val) {
                 pickupTimSlot.empty();
-                var flag = false;
+                let flag = false;
                 $.each(val, function (i, v) {
-                    if (i == value) {
+                    if (i === value) {
                         $.each(v, function (index, value) {
                             pickupTimSlot.append(new Option(value, value));
                         });
