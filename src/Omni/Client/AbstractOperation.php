@@ -120,6 +120,10 @@ abstract class AbstractOperation implements OperationInterface
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
             $response = $client->{$operation_name}($request_input);
+
+            if ($operation_name == 'OrderCreate') {
+                $lsr->setLicenseValidity("1");
+            }
         } catch (SoapFault $e) {
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
@@ -130,6 +134,11 @@ abstract class AbstractOperation implements OperationInterface
                     $response = null;
                 } elseif ($operation_name == 'Ping') {
                     throw new Exception('Unable to ping commerce service.');
+                } elseif ($operation_name == 'OrderCreate' &&
+                    $e->faultcode == 's:GeneralErrorCode' &&
+                    str_contains($e->faultstring, 'LS Central Ecom unit')
+                ) {
+                    $lsr->setLicenseValidity("0");
                 }
             } else {
                 $response = null;
