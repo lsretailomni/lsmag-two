@@ -110,7 +110,9 @@ class LayoutProcessorPlugin
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['gift-card']);
         }
 
-        if (!($this->lsr->isPickupTimeslotsEnabled() && $this->lsr->isLSR($this->lsr->getCurrentStoreId()))) {
+        if (!($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) &&
+            $this->lsr->isLSR($this->lsr->getCurrentStoreId())
+        ) {
             unset($shippingAdditional['children']['ls-pickup-additional-options-wrapper']);
         }
 

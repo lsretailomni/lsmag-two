@@ -8,7 +8,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourOpeningType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
@@ -177,7 +176,6 @@ class StoreHelper extends AbstractHelper
         // @codingStandardsIgnoreStart
         if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
             $request = new Entity\StoresGet();
-            $request->setStoreType(StoreGetType::CLICK_AND_COLLECT);
             $request->setIncludeDetails(true);
             $operation = new Operation\StoresGet($baseUrl);
         } else {
@@ -201,7 +199,7 @@ class StoreHelper extends AbstractHelper
      * @throws NoSuchEntityException
      */
     // @codingStandardsIgnoreStart
-    public function getStoreOrderingHours($storeHours)
+    public function getStoreOrderingHours($storeHours, $calendarType)
     {
         if (empty($storeHours)) {
             $store      = $this->getStore($this->lsr->getStoreId());
@@ -218,7 +216,8 @@ class StoreHelper extends AbstractHelper
             );
             $currentDayOfWeek = $this->dateTime->date('w', strtotime($current));
             foreach ($storeHours as $storeHour) {
-                if ($storeHour->getCalendarType() == $this->getRetailCalendarType()) {
+                if ((!$calendarType && $storeHour->getCalendarType() == $this->getRetailCalendarType()) ||
+                    ($calendarType && $storeHour->getCalendarType() == $calendarType)) {
                     if ($storeHour->getDayOfWeek() == $currentDayOfWeek) {
                         if ($this->dataHelper->checkDateValidity($current, $storeHour)) {
                             if ($storeHour->getType() == StoreHourOpeningType::NORMAL) {
@@ -274,11 +273,11 @@ class StoreHelper extends AbstractHelper
      * @return array
      * @throws NoSuchEntityException
      */
-    public function formatDateTimeSlotsValues($storeHours)
+    public function formatDateTimeSlotsValues($storeHours, $calendarType = null)
     {
         $results = [];
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $options = $this->getDateTimeSlotsValues($storeHours);
+            $options = $this->getDateTimeSlotsValues($storeHours, $calendarType);
             if (!empty($options)) {
                 foreach ($options as $key => $option) {
                     $results[$key] = $option[StoreHourOpeningType::NORMAL];
@@ -310,10 +309,10 @@ class StoreHelper extends AbstractHelper
      * @return array
      * @throws Exception
      */
-    public function getDateTimeSlotsValues($storeHours)
+    public function getDateTimeSlotsValues($storeHours, $calendarType)
     {
         $dateTimeSlots      = [];
-        $storeOrderingHours = $this->getStoreOrderingHours($storeHours);
+        $storeOrderingHours = $this->getStoreOrderingHours($storeHours, $calendarType);
         $timeInterval       = $this->lsr->getStoreConfig(LSR::PICKUP_TIME_INTERVAL);
 
         foreach ($storeOrderingHours as $date => $storeOrderHour) {

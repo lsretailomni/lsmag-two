@@ -12,7 +12,7 @@ define([
                     return this._super();
                 }
 
-                let isEnabledTimeSlots = window.checkoutConfig.shipping.pickup_date_timeslots.enabled,
+                let isEnabledTimeSlots = window.checkoutConfig.shipping.pickup_date_timeslots.delivery_hours_enabled,
                     storeType = window.checkoutConfig.shipping.pickup_date_timeslots.store_type;
 
                 if (quote.shippingMethod().carrier_code === 'clickandcollect' && $('#pickup-store').val() === '') {
@@ -27,7 +27,7 @@ define([
                     return false;
                 }
 
-                if (isEnabledTimeSlots &&
+                if (isEnabledTimeSlots === "1" &&
                     storeType === 0 &&
                     quote.shippingMethod().carrier_code !== 'clickandcollect' &&
                     ($("[name='pickup-date']").val() === '')

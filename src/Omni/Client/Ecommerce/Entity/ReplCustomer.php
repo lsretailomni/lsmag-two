@@ -71,6 +71,11 @@ class ReplCustomer
     protected $FirstName = null;
 
     /**
+     * @property string $GuestType
+     */
+    protected $GuestType = null;
+
+    /**
      * @property string $Id
      */
     protected $Id = null;
@@ -399,6 +404,24 @@ class ReplCustomer
     public function getFirstName()
     {
         return $this->FirstName;
+    }
+
+    /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType)
+    {
+        $this->GuestType = $GuestType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuestType()
+    {
+        return $this->GuestType;
     }
 
     /**

@@ -5,6 +5,8 @@ namespace Ls\Omni\Model\Checkout;
 use Laminas\Json\Json;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
@@ -138,11 +140,16 @@ class DataProvider implements ConfigProviderInterface
             $encodedStores        = Json::encode($stores);
 
             $enabled = $this->lsr->isPickupTimeslotsEnabled();
+            $deliveryHoursEnabled = $this->lsr->isDeliveryTimeslotsEnabled();
+
             if (empty($this->checkoutSession->getStorePickupHours())) {
                 $enabled = 0;
             }
 
-            $config                    = [
+            if (empty($this->checkoutSession->getDeliveryHours())) {
+                $deliveryHoursEnabled = 0;
+            }
+            $config = [
                 'shipping' => [
                     'select_store'          => [
                         'maps_api_key'         => $mapsApiKey,
@@ -153,10 +160,12 @@ class DataProvider implements ConfigProviderInterface
                         'available_store_only' => $this->availableStoresOnlyEnabled()
                     ],
                     'pickup_date_timeslots' => [
-                        'options'           => $this->checkoutSession->getStorePickupHours(),
-                        'enabled'           => $enabled,
-                        'current_web_store' => $this->lsr->getActiveWebStore(),
-                        'store_type'        => 0
+                        'options'                => $this->checkoutSession->getStorePickupHours(),
+                        'enabled'                => $enabled,
+                        'current_web_store'      => $this->lsr->getActiveWebStore(),
+                        'store_type'             => 0,
+                        'delivery_hours'         => $this->checkoutSession->getDeliveryHours(),
+                        'delivery_hours_enabled' => $deliveryHoursEnabled
                     ]
                 ]
             ];
@@ -196,31 +205,38 @@ class DataProvider implements ConfigProviderInterface
      * Get stores
      *
      * @return Collection
-     * @throws NoSuchEntityException|LocalizedException
+     * @throws NoSuchEntityException|LocalizedException|InvalidEnumException
      */
     public function getStores()
     {
-        $storeHoursArray = [];
         $storesData      = $this->storeCollectionFactory
             ->create()
-            ->addFieldToFilter('scope_id',
+            ->addFieldToFilter(
+                'scope_id',
                 !$this->lsr->isSSM() ?
                 $this->lsr->getCurrentWebsiteId() :
                 $this->lsr->getAdminStore()->getWebsiteId()
             )->addFieldToFilter('ClickAndCollect', 1);
 
+        $allStores = $this->storeHelper->getAllStores(
+            !$this->lsr->isSSM() ?
+                $this->lsr->getCurrentStoreId() :
+                $this->lsr->getAdminStore()->getId()
+        );
+
         if ($this->lsr->isPickupTimeslotsEnabled()) {
-            $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
-            foreach ($allStores as $store) {
-                if ($store->getIsClickAndCollect() || $store->getIsWebStore()) {
-                    $storeHoursArray[$store->getId()] = $this->storeHelper->formatDateTimeSlotsValues(
-                        $store->getStoreHours()
-                    );
-                }
-            }
+            $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
 
             if (!empty($storeHoursArray)) {
                 $this->checkoutSession->setStorePickupHours($storeHoursArray);
+            }
+        }
+
+        if ($this->lsr->isDeliveryTimeslotsEnabled()) {
+            $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
+
+            if (!empty($deliveryHoursArray)) {
+                $this->checkoutSession->setDeliveryHours($deliveryHoursArray);
             }
         }
 
@@ -251,6 +267,35 @@ class DataProvider implements ConfigProviderInterface
         }
 
         return null;
+    }
+
+    /**
+     * Get relevant store hours
+     *
+     * @param null $calendarType
+     * @param null $allStores
+     * @return array
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getRelevantStoreHours($calendarType = null, $allStores = null)
+    {
+        $storeHoursArray = [];
+
+        if ($allStores == null) {
+            $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
+        }
+
+        foreach ($allStores as $store) {
+            if ($store->getIsClickAndCollect() || $store->getIsWebStore()) {
+                $storeHoursArray[$store->getId()] = $this->storeHelper->formatDateTimeSlotsValues(
+                    $store->getStoreHours(),
+                    $calendarType
+                );
+            }
+        }
+
+        return $storeHoursArray;
     }
 
     /**

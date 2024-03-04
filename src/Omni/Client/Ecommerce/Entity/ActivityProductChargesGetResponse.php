@@ -13,12 +13,12 @@ use Ls\Omni\Client\ResponseInterface;
 class ActivityProductChargesGetResponse implements ResponseInterface
 {
     /**
-     * @property AdditionalCharge $ActivityProductChargesGetResult
+     * @property ArrayOfAdditionalCharge $ActivityProductChargesGetResult
      */
     protected $ActivityProductChargesGetResult = null;
 
     /**
-     * @param AdditionalCharge $ActivityProductChargesGetResult
+     * @param ArrayOfAdditionalCharge $ActivityProductChargesGetResult
      * @return $this
      */
     public function setActivityProductChargesGetResult($ActivityProductChargesGetResult)
@@ -28,7 +28,7 @@ class ActivityProductChargesGetResponse implements ResponseInterface
     }
 
     /**
-     * @return AdditionalCharge
+     * @return ArrayOfAdditionalCharge
      */
     public function getActivityProductChargesGetResult()
     {
@@ -36,7 +36,7 @@ class ActivityProductChargesGetResponse implements ResponseInterface
     }
 
     /**
-     * @return AdditionalCharge
+     * @return ArrayOfAdditionalCharge
      */
     public function getResult()
     {
