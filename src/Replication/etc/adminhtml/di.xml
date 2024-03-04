@@ -5,6 +5,7 @@
         <arguments>
             <argument name="messages" xsi:type="array">
                 <item name="lsrInvalid" xsi:type="string">Ls\Replication\Model\Message\Invalid</item>
+                <item name="licenseInvalid" xsi:type="string">Ls\Replication\Model\Message\LicenseInvalid</item>
             </argument>
         </arguments>
     </type>
