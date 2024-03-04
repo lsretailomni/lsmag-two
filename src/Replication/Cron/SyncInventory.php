@@ -77,6 +77,7 @@ class SyncInventory extends ProductCreateTask
                         $defaultSourceCode,
                         $websiteId
                     );
+                    $this->sourceItems = [];
                     $this->process($collection, $sourceCode, $defaultSourceCode);
                     $remainingItems = (int)$this->getRemainingRecords($this->store);
                     if ($remainingItems == 0) {
@@ -170,8 +171,9 @@ class SyncInventory extends ProductCreateTask
             $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
             $this->replInvStatusRepository->save($replInvStatus);
         }
-
-        $this->changeStockStatus();
+        if (count($this->sourceItems) > 0) {
+            $this->saveSourceItems();
+        }
     }
 
     /**
@@ -186,27 +188,26 @@ class SyncInventory extends ProductCreateTask
     public function updateInventory($product, $replInvStatus, $sourceCode, $defaultSourceCode)
     {
         if (!in_array($product->getId(), $this->processed) || $sourceCode != $defaultSourceCode) {
-            $sourceItems       = $this->replicationHelper->updateInventory(
+            $this->sourceItems = $this->replicationHelper->updateInventory(
                 $product,
                 $replInvStatus,
-                true
+                true,
+                $this->sourceItems
             );
-            $this->sourceItems = array_merge($this->sourceItems, $sourceItems);
             $this->processed[] = $product->getId();
         }
     }
 
     /**
-     * Change stock status
+     * Save source items and change stock status
      *
      * @return void
      */
-    public function changeStockStatus()
+    public function saveSourceItems()
     {
         try {
-            $this->replicationHelper->getSourceItemsSaveObject()->execute($this->sourceItems);
-            $this->replicationHelper->setStockStatusChangedAuto($this->processed);
-            $this->replicationHelper->getChangeParentStockStatusObject()->execute($this->processed);
+            $this->replicationHelper->getSourceItemsSaveObject()->execute(array_values($this->sourceItems));
+            $this->replicationHelper->updateStockStatus($this->processed);
         } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
@@ -223,7 +224,7 @@ class SyncInventory extends ProductCreateTask
     public function executeManually($storeData = null)
     {
         $this->execute($storeData);
-        $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
+        $itemsLeftToProcess = $this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
     }
 
