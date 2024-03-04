@@ -45,7 +45,7 @@ use Magento\CatalogInventory\Api\StockItemCriteriaInterfaceFactory;
 use Magento\CatalogInventory\Api\StockItemRepositoryInterface;
 use Magento\CatalogInventory\Model\Stock\StockStatusRepository;
 use Magento\CatalogRule\Model\ResourceModel\Rule\CollectionFactory as RuleCollectionFactory;
-use Magento\ConfigurableProduct\Model\Inventory\ParentItemProcessor;
+use Magento\ConfigurableProduct\Model\Inventory\ChangeParentStockStatus;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable as ConfigurableProTypeModel;
 use Magento\Eav\Api\AttributeGroupRepositoryInterface;
@@ -87,6 +87,7 @@ use Magento\InventoryApi\Api\Data\StockSourceLinkInterface;
 use Magento\InventoryApi\Api\GetStockSourceLinksInterface;
 use Magento\InventoryApi\Api\SourceItemRepositoryInterface;
 use Magento\InventoryApi\Api\SourceItemsDeleteInterface;
+use Magento\InventoryCatalog\Model\DefaultSourceProvider;
 use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
@@ -433,9 +434,9 @@ class ReplicationHelper extends AbstractHelper
     public $replUnitOfMeasureRepository;
 
     /**
-     * @var ParentItemProcessor
+     * @var ChangeParentStockStatus
      */
-    public $parentItemProcessor;
+    public $changeParentStockStatus;
 
     /**
      * @var ProductRepositoryInterface
@@ -561,7 +562,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ResourceModelCategory $categoryResourceModel
      * @param RuleCollectionFactory $ruleCollectionFactory
      * @param ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository
-     * @param ParentItemProcessor $parentItemProcessor
+     * @param ChangeParentStockStatus $changeParentStockStatus
      * @param ProductRepositoryInterface $productRepository
      * @param GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus
      * @param StockStatusRepository $stockStatusRepository
@@ -627,7 +628,7 @@ class ReplicationHelper extends AbstractHelper
         ResourceModelCategory $categoryResourceModel,
         RuleCollectionFactory $ruleCollectionFactory,
         ReplUnitOfMeasureRepositoryInterface $replUnitOfMeasureRepository,
-        ParentItemProcessor $parentItemProcessor,
+        ChangeParentStockStatus $changeParentStockStatus,
         ProductRepositoryInterface $productRepository,
         GetParentSkusOfChildrenSkus $getParentSkusOfChildrenSkus,
         StockStatusRepository $stockStatusRepository,
@@ -691,7 +692,7 @@ class ReplicationHelper extends AbstractHelper
         $this->categoryResourceModel                     = $categoryResourceModel;
         $this->ruleCollectionFactory                     = $ruleCollectionFactory;
         $this->replUnitOfMeasureRepository               = $replUnitOfMeasureRepository;
-        $this->parentItemProcessor                       = $parentItemProcessor;
+        $this->changeParentStockStatus                   = $changeParentStockStatus;
         $this->productRepository                         = $productRepository;
         $this->getParentSkusOfChildrenSkus               = $getParentSkusOfChildrenSkus;
         $this->stockStatusRepository                     = $stockStatusRepository;
@@ -3011,7 +3012,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getUomCodeGivenDescription($description)
     {
-        $uomCode    = '';
+        $uomCode           = '';
         $filters           = [
             ['field' => 'description', 'value' => $description, 'condition_type' => 'eq']
         ];
@@ -3208,14 +3209,15 @@ class ReplicationHelper extends AbstractHelper
      *
      * Update inventory and status
      *
-     *
-     * @param $sku
-     * @param $replInvStatus
-     * @return void
+     * @param product $product
+     * @param object $replInvStatus
+     * @param bool $isSyncInventory
+     * @return array|void
      */
-    public function updateInventory($sku, $replInvStatus)
+    public function updateInventory($product, $replInvStatus, $isSyncInventory = false)
     {
         try {
+            $sku                = $product->getSku();
             $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
             $sourceItems        = [];
 
@@ -3226,11 +3228,11 @@ class ReplicationHelper extends AbstractHelper
                     0,
                     ($replInvStatus->getQuantity() > 0) ? 1 : 0
                 );
-
-                $this->setStockStatusChangedAuto(
-                    $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]),
-                    0
-                );
+                if (!$isSyncInventory) {
+                    $this->setStockStatusChangedAuto(
+                        $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku])
+                    );
+                }
             }
 
             $sourceItems[] = $this->getSourceItemGivenData(
@@ -3238,12 +3240,17 @@ class ReplicationHelper extends AbstractHelper
                 $replInvStatus->getQuantity(),
                 ($replInvStatus->getQuantity() > 0) ? 1 : 0
             );
-            $this->sourceItemsSave->execute($sourceItems);
-            $this->setStockStatusChangedAuto(
-                $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$sku]),
-                $replInvStatus->getQuantity()
-            );
-            $this->parentItemProcessor->process($this->productRepository->get($sku));
+
+            if (!$isSyncInventory) {
+                $this->sourceItemsSave->execute($sourceItems);
+                $this->setStockStatusChangedAuto(
+                    $product->getId()
+                );
+                $this->changeParentStockStatus->execute([$product->getId()]);
+            }
+            if ($isSyncInventory) {
+                return $sourceItems;
+            }
         } catch (Exception $e) {
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
@@ -3253,32 +3260,31 @@ class ReplicationHelper extends AbstractHelper
     /**
      * Set stock_status_changed_auto = 1 in table cataloginventory_stock_item
      *
-     * @param $productId
-     * @param $qty
+     * @param int|int[] $productIds
      * @return void
      */
-    public function setStockStatusChangedAuto($productId, $qty)
+    public function setStockStatusChangedAuto($productIds)
     {
         $criteria = $this->criteriaInterfaceFactory->create();
         $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
 
-        $criteria->setProductsFilter($productId);
+        $criteria->setProductsFilter($productIds);
         $stockItemCollection = $this->stockItemRepository->getList($criteria);
         $allItems            = $stockItemCollection->getItems();
         if (empty($allItems)) {
             return;
         }
-        $parentStockItem = array_shift($allItems);
-        $parentStockItem
-            ->setStockStatusChangedAuto(1)
-            ->setStockStatusChangedAutomaticallyFlag(1)
-            ->setQty($qty);
+        foreach ($allItems as $stockItem) {
+            $stockItem
+                ->setStockStatusChangedAuto(1)
+                ->setStockStatusChangedAutomaticallyFlag(1);
 
-        if (!$this->isSingleSourceMode->execute()) {
-            $parentStockItem->setIsInStock(1);
+            if (!$this->isSingleSourceMode->execute()) {
+                $stockItem->setIsInStock(1);
+            }
+
+            $this->stockItemRepository->save($stockItem);
         }
-
-        $this->stockItemRepository->save($parentStockItem);
     }
 
     /**
@@ -3699,5 +3705,35 @@ class ReplicationHelper extends AbstractHelper
         ]);
 
         return $product;
+    }
+
+    /**
+     * Get Change Parent Stock Status Object
+     *
+     * @return ChangeParentStockStatus
+     */
+    public function getChangeParentStockStatusObject()
+    {
+        return $this->changeParentStockStatus;
+    }
+
+    /**
+     * Get Default Source Object
+     *
+     * @return DefaultSourceProvider
+     */
+    public function getDefaultSourceObject()
+    {
+        return $this->defaultSourceProviderFactory;
+    }
+
+    /**
+     * Get source item save
+     *
+     * @return SourceItemsSave
+     */
+    public function getSourceItemsSaveObject()
+    {
+        return $this->sourceItemsSave;
     }
 }

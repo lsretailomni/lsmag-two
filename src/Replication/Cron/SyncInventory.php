@@ -21,6 +21,12 @@ class SyncInventory extends ProductCreateTask
     /** @var int */
     public $remainingRecords;
 
+    /** @var array */
+    public $processed = [];
+
+    /** @var array */
+    public $sourceItems = [];
+
     /**
      * Entry point for cron
      *
@@ -66,76 +72,12 @@ class SyncInventory extends ProductCreateTask
                     $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
                     $websiteId = $this->store->getWebsiteId();
                     $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
-
-                    /** @var ReplInvStatus $replInvStatus */
-                    foreach ($collection as $replInvStatus) {
-                        try {
-                            $uomCodeStatus = false;
-                            $uomCodes      = $this->getUomCodesProcessed($replInvStatus->getItemId());
-                            if (!empty($uomCodes)) {
-                                if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
-                                    $uomCodeStatus = true;
-                                }
-                            }
-                            if (!$uomCodeStatus) {
-                                $sku = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                                    $replInvStatus->getItemId(),
-                                    $replInvStatus->getVariantId()
-                                )->getSku();
-                                $this->replicationHelper->updateInventory(
-                                    $sku,
-                                    $replInvStatus
-                                );
-                            } else {
-                                if (!$replInvStatus->getVariantId()) {
-                                    $product = $this->replicationHelper->
-                                    getProductDataByIdentificationAttributes(
-                                        $replInvStatus->getItemId(),
-                                        '',
-                                        ''
-                                    );
-                                    if ($this->hasAttributesOtherThenUom($product)) {
-                                        $replInvStatus->setData('is_updated', 0);
-                                        $replInvStatus->setData('processed', 1);
-                                        $replInvStatus->setData(
-                                            'processed_at',
-                                            $this->replicationHelper->getDateTime()
-                                        );
-                                        $this->replInvStatusRepository->save($replInvStatus);
-                                        continue;
-                                    }
-                                }
-                                foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
-                                    $sku = $this->replicationHelper->
-                                    getProductDataByIdentificationAttributes(
-                                        $replInvStatus->getItemId(),
-                                        $replInvStatus->getVariantId(),
-                                        $uomCode
-                                    )->getSku();
-                                    $this->replicationHelper->updateInventory(
-                                        $sku,
-                                        $replInvStatus
-                                    );
-                                }
-                            }
-                        } catch (Exception $e) {
-                            $this->logger->debug(
-                                sprintf(
-                                    'Exception happened in %s for store: %s, item id: %s, variant id: %s',
-                                    __METHOD__,
-                                    $this->store->getName(),
-                                    $replInvStatus->getItemId(),
-                                    $replInvStatus->getVariantId()
-                                )
-                            );
-                            $this->logger->debug($e->getMessage());
-                            $replInvStatus->setData('is_failed', 1);
-                        }
-                        $replInvStatus->setData('is_updated', 0);
-                        $replInvStatus->setData('processed', 1);
-                        $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
-                        $this->replInvStatusRepository->save($replInvStatus);
-                    }
+                    $defaultSourceCode = $this->replicationHelper->getDefaultSourceObject()->create()->getCode();
+                    $sourceCode        = $this->replicationHelper->getSourceCodeFromWebsiteCode(
+                        $defaultSourceCode,
+                        $websiteId
+                    );
+                    $this->process($collection, $sourceCode, $defaultSourceCode);
                     $remainingItems = (int)$this->getRemainingRecords($this->store);
                     if ($remainingItems == 0) {
                         $this->cronStatus = true;
@@ -152,6 +94,121 @@ class SyncInventory extends ProductCreateTask
                 }
                 $this->lsr->setStoreId(null);
             }
+        }
+    }
+
+    /**
+     * Process inventory data
+     *
+     * @param object $collection
+     * @param string $sourceCode
+     * @param string $defaultSourceCode
+     * @return void
+     */
+    public function process($collection, $sourceCode, $defaultSourceCode)
+    {
+        /** @var ReplInvStatus $replInvStatus */
+        foreach ($collection as $replInvStatus) {
+            try {
+                $uomCodeStatus = false;
+                $uomCodes      = $this->getUomCodesProcessed($replInvStatus->getItemId());
+                if (!empty($uomCodes)) {
+                    if (count($uomCodes[$replInvStatus->getItemId()]) > 1) {
+                        $uomCodeStatus = true;
+                    }
+                }
+                if (!$uomCodeStatus) {
+                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $replInvStatus->getItemId(),
+                        $replInvStatus->getVariantId()
+                    );
+                    $this->updateInventory($product, $replInvStatus, $sourceCode, $defaultSourceCode);
+                } else {
+                    if (!$replInvStatus->getVariantId()) {
+                        $product = $this->replicationHelper->
+                        getProductDataByIdentificationAttributes(
+                            $replInvStatus->getItemId(),
+                            '',
+                            ''
+                        );
+                        if ($this->hasAttributesOtherThenUom($product)) {
+                            $replInvStatus->setData('is_updated', 0);
+                            $replInvStatus->setData('processed', 1);
+                            $replInvStatus->setData(
+                                'processed_at',
+                                $this->replicationHelper->getDateTime()
+                            );
+                            $this->replInvStatusRepository->save($replInvStatus);
+                            continue;
+                        }
+                    }
+                    foreach ($uomCodes[$replInvStatus->getItemId()] as $uomCode) {
+                        $product = $this->replicationHelper->
+                        getProductDataByIdentificationAttributes(
+                            $replInvStatus->getItemId(),
+                            $replInvStatus->getVariantId(),
+                            $uomCode
+                        );
+                        $this->updateInventory($product, $replInvStatus, $sourceCode, $defaultSourceCode);
+                    }
+                }
+            } catch (Exception $e) {
+                $this->logger->debug(
+                    sprintf(
+                        'Exception happened in %s for store: %s, item id: %s, variant id: %s',
+                        __METHOD__,
+                        $this->store->getName(),
+                        $replInvStatus->getItemId(),
+                        $replInvStatus->getVariantId()
+                    )
+                );
+                $this->logger->debug($e->getMessage());
+                $replInvStatus->setData('is_failed', 1);
+            }
+            $replInvStatus->setData('is_updated', 0);
+            $replInvStatus->setData('processed', 1);
+            $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
+            $this->replInvStatusRepository->save($replInvStatus);
+        }
+
+        $this->changeStockStatus();
+    }
+
+    /**
+     * Update inventory
+     *
+     * @param object $product
+     * @param object $replInvStatus
+     * @param string $sourceCode
+     * @param string $defaultSourceCode
+     * @return void
+     */
+    public function updateInventory($product, $replInvStatus, $sourceCode, $defaultSourceCode)
+    {
+        if (!in_array($product->getId(), $this->processed) || $sourceCode != $defaultSourceCode) {
+            $sourceItems       = $this->replicationHelper->updateInventory(
+                $product,
+                $replInvStatus,
+                true
+            );
+            $this->sourceItems = array_merge($this->sourceItems, $sourceItems);
+            $this->processed[] = $product->getId();
+        }
+    }
+
+    /**
+     * Change stock status
+     *
+     * @return void
+     */
+    public function changeStockStatus()
+    {
+        try {
+            $this->replicationHelper->getSourceItemsSaveObject()->execute($this->sourceItems);
+            $this->replicationHelper->setStockStatusChangedAuto($this->processed);
+            $this->replicationHelper->getChangeParentStockStatusObject()->execute($this->processed);
+        } catch (Exception $e) {
+            $this->logger->debug($e->getMessage());
         }
     }
 
@@ -205,7 +262,7 @@ class SyncInventory extends ProductCreateTask
      */
     public function hasAttributesOtherThenUom($product)
     {
-        $exists = false;
+        $exists  = false;
         $options = $product->getTypeInstance()->getConfigurableAttributes($product);
 
         foreach ($options->getItems() as $attribute) {
