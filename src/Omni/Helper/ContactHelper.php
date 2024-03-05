@@ -559,9 +559,6 @@ class ContactHelper extends AbstractHelper
         $request        = new Operation\PasswordChange();
         $changepassword = new Entity\PasswordChange();
         // @codingStandardsIgnoreEnd
-
-        $request->setToken($customer->getData('lsr_token'));
-
         $changepassword->setUserName($customer->getData('lsr_username'))
             ->setOldPassword($customer_post['current_password'])
             ->setNewPassword($customer_post['password'])
@@ -1512,7 +1509,6 @@ class ContactHelper extends AbstractHelper
         $request       = new Operation\PasswordChange();
         $resetpassword = new Entity\PasswordChange();
         // @codingStandardsIgnoreEnd
-        $request->setToken($customer->getData('lsr_token'));
         $resetpassword->setUserName($customer->getData('lsr_username'))
             ->setToken($customer->getData('lsr_resetcode'))
             ->setNewPassword($customer_post['password'])
@@ -1557,8 +1553,6 @@ class ContactHelper extends AbstractHelper
         $entity        = new Entity\ContactUpdate();
         $memberContact = new MemberContact();
         // @codingStandardsIgnoreEnd
-
-        $request->setToken($customer->getData('lsr_token'));
 
         if (!empty($customer->getData('dob'))) {
             $dob = $this->date->date("Y-m-d\T00:00:00", strtotime($customer->getData('dob')));

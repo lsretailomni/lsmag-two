@@ -52,7 +52,6 @@ class LoyaltyHelper extends AbstractHelperOmni
         $customer = $this->customerSession->getCustomer();
         // @codingStandardsIgnoreLine
         $request = new Operation\PublishedOffersGetByCardId();
-        $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
         $entity = new Entity\PublishedOffersGetByCardId();
         $entity->setCardId($customer->getData('lsr_cardid'));
@@ -207,7 +206,6 @@ class LoyaltyHelper extends AbstractHelperOmni
         }
         // @codingStandardsIgnoreLine
         $request = new Operation\ContactGetByCardId();
-        $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
         $entity = new Entity\ContactGetByCardId();
         $entity->setCardId($cardId);
@@ -244,7 +242,7 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($result) {
             $startDateTs = Carbon::now();
             $endDateTs   = Carbon::now()->addDays((int)$expiryInterval);
-            
+
             foreach ($result as $res) {
                 $entryType = $res->getEntryType();
                 $expirationDate = Carbon::parse($res->getExpirationDate());
@@ -282,7 +280,6 @@ class LoyaltyHelper extends AbstractHelperOmni
         }
         // @codingStandardsIgnoreLine
         $request = new Operation\CardGetPointEntries();
-        $request->setToken($customer->getData('lsr_token'));
         // @codingStandardsIgnoreLine
         $entity = new Entity\CardGetPointEntries();
         $entity->setCardId($cardId);
