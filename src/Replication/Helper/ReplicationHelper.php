@@ -3211,7 +3211,7 @@ class ReplicationHelper extends AbstractHelper
         try {
             $sku                = $product->getSku();
             $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
-
+            $productIds         = [];
             foreach ($parentProductsSkus as $parentSku) {
                 if (!in_array($parentSku, $sourceItems)) {
                     $parentSku               = array_shift($parentSku);
@@ -3220,11 +3220,7 @@ class ReplicationHelper extends AbstractHelper
                         0,
                         ($replInvStatus->getQuantity() > 0) ? 1 : 0
                     );
-                    if (!$isSyncInventory) {
-                        $this->setStockStatusChangedAuto(
-                            $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku])
-                        );
-                    }
+                    $productIds[]            = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]);
                 }
             }
 
@@ -3236,6 +3232,8 @@ class ReplicationHelper extends AbstractHelper
 
             if (!$isSyncInventory) {
                 $this->sourceItemsSave->execute(array_values($sourceItems));
+                $productIds[] = $product->getId();
+                $this->updateStockStatus($productIds);
             }
 
             if ($isSyncInventory) {
@@ -3264,11 +3262,11 @@ class ReplicationHelper extends AbstractHelper
             return;
         }
         $parentStockItem = array_shift($allItems);
-        $childrenIds = $this->configurableProTypeModel->getChildrenIds($productId);
+        $childrenIds     = $this->configurableProTypeModel->getChildrenIds($productId);
         $criteria->setProductsFilter($childrenIds);
         $stockItemCollection = $this->stockItemRepository->getList($criteria);
-        $allItems = $stockItemCollection->getItems();
-        $childrenIsInStock = false;
+        $allItems            = $stockItemCollection->getItems();
+        $childrenIsInStock   = false;
         foreach ($allItems as $childItem) {
             if ($childItem->getIsInStock() === true) {
                 $childrenIsInStock = true;
