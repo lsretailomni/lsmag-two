@@ -1613,6 +1613,7 @@ class ReplicationHelper extends AbstractHelper
     public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
     {
         $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        $fourthTableName = $this->resource->getTableName('catalog_product_entity');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1620,13 +1621,18 @@ class ReplicationHelper extends AbstractHelper
             'main_table.ItemId' . ' = third.nav_id' . ' AND main_table.scope_id' . ' = third.scope_id',
             []
         );
-
         $this->applyItemIdAndVariantIdJoins(
             $collection,
             'main_table',
             'ItemId',
             'VariantId',
             ['repl_inv_status_id']
+        );
+        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $collection->getSelect()->joinInner(
+            ['fourth' => $fourthTableName],
+            'fourth.entity_id = '. $itemIdTableAlias .'.entity_id',
+            ['fourth.entity_id', 'fourth.sku']
         );
         /** For Xdebug only to check the query */
         $query = $collection->getSelect()->__toString();
@@ -3209,11 +3215,11 @@ class ReplicationHelper extends AbstractHelper
     public function updateInventory($product, $replInvStatus, $isSyncInventory = false, $sourceItems = [])
     {
         try {
-            $sku                = $product->getSku();
+            $sku                = $product ? $product->getSku() : $replInvStatus->getSku();
             $parentProductsSkus = $this->getParentSkusOfChildrenSkus->execute([$sku]);
             $productIds         = [];
             foreach ($parentProductsSkus as $parentSku) {
-                if (!in_array($parentSku, $sourceItems)) {
+                if (!in_array(current($parentSku), array_keys($sourceItems))) {
                     $parentSku               = array_shift($parentSku);
                     $sourceItems[$parentSku] = $this->getSourceItemGivenData(
                         $parentSku,
@@ -3232,7 +3238,7 @@ class ReplicationHelper extends AbstractHelper
 
             if (!$isSyncInventory) {
                 $this->sourceItemsSave->execute(array_values($sourceItems));
-                $productIds[] = $product->getId();
+                $productIds[] = $product ? $product->getId() : $replInvStatus->getEntityId();
                 $this->updateStockStatus($productIds);
             }
 
