@@ -75,7 +75,6 @@ class SyncInventory extends ProductCreateTask
                     $this->replicationHelper->setCollectionPropertiesPlusJoinsForInventory($collection, $criteria);
                     $websiteId = $this->store->getWebsiteId();
                     $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
-                    $select = $collection->getSelect()->__toString();
                     $defaultSourceCode = $this->replicationHelper->getDefaultSourceObject()->create()->getCode();
                     $sourceCode        = $this->replicationHelper->getSourceCodeFromWebsiteCode(
                         $defaultSourceCode,
