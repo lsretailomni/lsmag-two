@@ -66,6 +66,16 @@ class ClientToken
     protected $HotelToken = null;
 
     /**
+     * @property string $Initiator
+     */
+    protected $Initiator = null;
+
+    /**
+     * @property string $InitiatorReason
+     */
+    protected $InitiatorReason = null;
+
+    /**
      * @property string $Result
      */
     protected $Result = null;
@@ -74,6 +84,11 @@ class ClientToken
      * @property string $Token
      */
     protected $Token = null;
+
+    /**
+     * @property string $TokenIDExternal
+     */
+    protected $TokenIDExternal = null;
 
     /**
      * @property string $TokenId
@@ -289,6 +304,42 @@ class ClientToken
     }
 
     /**
+     * @param string $Initiator
+     * @return $this
+     */
+    public function setInitiator($Initiator)
+    {
+        $this->Initiator = $Initiator;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInitiator()
+    {
+        return $this->Initiator;
+    }
+
+    /**
+     * @param string $InitiatorReason
+     * @return $this
+     */
+    public function setInitiatorReason($InitiatorReason)
+    {
+        $this->InitiatorReason = $InitiatorReason;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInitiatorReason()
+    {
+        return $this->InitiatorReason;
+    }
+
+    /**
      * @param string $Result
      * @return $this
      */
@@ -322,6 +373,24 @@ class ClientToken
     public function getToken()
     {
         return $this->Token;
+    }
+
+    /**
+     * @param string $TokenIDExternal
+     * @return $this
+     */
+    public function setTokenIDExternal($TokenIDExternal)
+    {
+        $this->TokenIDExternal = $TokenIDExternal;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTokenIDExternal()
+    {
+        return $this->TokenIDExternal;
     }
 
     /**

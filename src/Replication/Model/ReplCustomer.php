@@ -81,6 +81,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $FirstName = null;
 
     /**
+     * @property string $GuestType
+     */
+    protected $GuestType = null;
+
+    /**
      * @property string $nav_id
      */
     protected $nav_id = null;
@@ -483,6 +488,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getFirstName()
     {
         return $this->getData( 'FirstName' );
+    }
+
+    /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType)
+    {
+        $this->setData( 'GuestType', $GuestType );
+        $this->GuestType = $GuestType;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuestType()
+    {
+        return $this->getData( 'GuestType' );
     }
 
     /**
