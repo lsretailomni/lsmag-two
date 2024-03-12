@@ -1060,6 +1060,8 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
      * Get item row discount
      *
      * @param $item

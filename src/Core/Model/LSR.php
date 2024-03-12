@@ -246,6 +246,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Delivery and pickup time options
     const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot';
+    const DELIVERY_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/delivery_date_time_slot';
     const PICKUP_TIME_INTERVAL = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_interval';
     const PICKUP_DATE_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_format';
     const PICKUP_TIME_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_format';
@@ -983,6 +984,21 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->scopeConfig->getValue(
             self::PICKUP_TIMESLOTS_ENABLED,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
+
+    /**
+     * Return delivery option is enabled or not
+     *
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function isDeliveryTimeslotsEnabled()
+    {
+        return $this->scopeConfig->getValue(
+            self::DELIVERY_TIMESLOTS_ENABLED,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );
