@@ -1046,6 +1046,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Get website id of currently selected store
+     *
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getWebsiteId()
+    {
+        return $this->storeManager->getStore($this->validateBaseUrlStoreId)->getWebsiteId();
+    }
+
+    /**
      * Config to check if module is enabled or not for given store
      *
      * @param int $storeId
