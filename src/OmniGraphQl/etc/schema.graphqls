@@ -170,7 +170,8 @@ type GiftCardBalanceOutput {
 }
 
 type OrderTakingCalendarOutput {
-    dates: [DatesData] @doc(description: "Array of all order taking dates data.")
+    pickup_dates: [DatesData] @doc(description: "Array of all order taking dates data.")
+    delivery_dates: [DatesData] @doc(description: "Array of all order taking dates data.")
 }
 
 type DatesData {
@@ -200,7 +201,8 @@ type StoreConfig {
     ls_discounts_product_page: Boolean @doc(description:"Indicates whether discounts on product page display is enabled (true) or disabled (false).")
     ls_discounts_login_register_notice: Boolean @doc(description:"Indicates whether Login/Register display is enabled (true) or disabled (false).")
     opening_hours_time_format: String @doc(description:"Opening Hours time format.")
-    pickup_date_time_slot: Boolean @doc(description:"Indicates whether delivery pickup date time slot display is enabled (true) or disabled (false).")
+    pickup_date_time_slot: Boolean @doc(description:"Indicates whether pickup date time slot display is enabled (true) or disabled (false).")
+    delivery_date_time_slot: Boolean @doc(description:"Indicates whether delivery date time slot display is enabled (true) or disabled (false).")
     pickup_time_interval: Int @doc(description:"Pickup time interval.")
     pickup_date_format: String @doc(description:"Pickup date format.")
     pickup_time_format: String @doc(description:"Pickup time format.")
