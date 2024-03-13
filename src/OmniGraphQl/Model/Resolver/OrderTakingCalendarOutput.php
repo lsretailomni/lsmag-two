@@ -2,8 +2,8 @@
 
 namespace Ls\OmniGraphQl\Model\Resolver;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use Ls\OmniGraphQl\Helper\DataHelper;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
+use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
