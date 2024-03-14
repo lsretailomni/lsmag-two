@@ -688,7 +688,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setAddress1('Jalan')
             ->setAddress2('Klang')
             ->setCountry('MY')
-            ->setStateProvinceRegion('Kuala Lumpur')
+            ->setStateProvinceRegion(substr('Kuala Lumpur', 0, 10))
             ->setPostCode('47301');
         $result
             ->setContactId('')
