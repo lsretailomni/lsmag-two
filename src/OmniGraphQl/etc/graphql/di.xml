@@ -94,6 +94,7 @@
                 <item name="pickup_time_interval" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_time_interval</item>
                 <item name="pickup_date_format" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_date_format</item>
                 <item name="pickup_time_format" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_time_format</item>
+                <item name="ls_mag_service_selected_store" xsi:type="string">ls_mag/service/selected_store</item>
                 <item name="ls_mag_ls_industry_ls_choose_industry" xsi:type="string">ls_mag/ls_industry/ls_choose_industry</item>
                 <item name="ls_mag_display_stores" xsi:type="string">ls_mag/one_list/display_stores</item>
                 <item name="ls_mag_show_return_policy" xsi:type="string">ls_mag/return_policy/show_return_policy</item>

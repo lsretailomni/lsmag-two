@@ -100,6 +100,8 @@ type StockData {
 
 input SetShippingMethodsOnCartInput {
     store_id: String @doc(description: "Pickup Store ID only applicable for click and collect.")
+    selected_date: String @doc(description: "Delivery/Pickup Date if applicable.")
+    selected_date_time_slot: String @doc(description: "Delivery/Pickup Time slot if applicable.")
 }
 
 type ItemAvailabilityOutput {
@@ -134,6 +136,8 @@ type StoreData {
 
 type SelectedShippingMethod {
     pickup_store: StoreInfo @resolver(class: "Ls\\OmniGraphQl\\Model\\Resolver\\Cart\\StoreInfoOutput") @doc(description: "Fetch Pickup StoreId from Quote.")
+    selected_date: String @doc(description: "Selected Date for the Takeaway/delivery.")
+    selected_date_time_slot: String @doc(description: "Selected time for the Takeaway/delivery.")
 }
 
 type StoreInfo @doc(description: "Defines the pick up store id and store name.") {
@@ -206,6 +210,7 @@ type StoreConfig {
     pickup_time_interval: Int @doc(description:"Pickup time interval.")
     pickup_date_format: String @doc(description:"Pickup date format.")
     pickup_time_format: String @doc(description:"Pickup time format.")
+    ls_mag_service_selected_store: String @doc(description: "To fetch currently configured central store.")
     ls_mag_ls_industry_ls_choose_industry: String @doc(description: "To fetch currently configured industry.")
     ls_mag_product_availability: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether to show a link in product detail page for product availability (true) or not (false) based on omni connection online/offline mode.")
     ls_mag_display_stores: Boolean @doc(description:"Indicates whether to show all the stores (true) or only click and collect stores for product availability (false)."),
