@@ -44,4 +44,29 @@ class OmniClientSetupTest extends TestCase
         // phpcs:ignore Magento2.Functions.DiscouragedFunction
         return getenv($name);
     }
+
+    /**
+     * Execute given method
+     *
+     * @param $methodName
+     * @param $param
+     * @return null
+     */
+    public function executeMethod($methodName, $param = null)
+    {
+        try {
+            if ($param) {
+                $response = $this->client->{$methodName}($param);
+            } else {
+                $response = $this->client->{$methodName}();
+            }
+
+        } catch (\Exception $e) {
+            // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
+            echo $e->getMessage();
+            $response = null;
+        }
+
+        return $response;
+    }
 }

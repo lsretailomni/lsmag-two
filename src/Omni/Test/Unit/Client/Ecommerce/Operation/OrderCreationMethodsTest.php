@@ -65,8 +65,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'itemId' => $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
             'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
         ];
-        $response = $this->client->ItemGetbyId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ItemGetbyId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(LoyItem::class, $result);
     }
 
@@ -80,8 +80,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'variantId' => $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
             'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
         ];
-        $response = $this->client->ItemsInStockGet($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ItemsInStockGet", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
             $this->assertEquals(
@@ -113,8 +113,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'variantId' => $this->getEnvironmentVariableValueGivenName('VARIANT_ID'),
             'storeId' => '',
         ];
-        $response = $this->client->ItemsInStockGet($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ItemsInStockGet", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
             $this->assertEquals(
@@ -145,8 +145,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
             'items' => $inventoryArrayRequest
         ];
-        $response = $this->client->ItemsInStoreGet($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ItemsInStoreGet", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
             $this->assertEquals(
@@ -180,8 +180,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'storeId' => '',
             'items' => $inventoryArrayRequest
         ];
-        $response = $this->client->ItemsInStoreGet($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ItemsInStoreGet", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfInventoryResponse::class, $result);
         foreach ($result as $inventoryResponse) {
             $this->assertEquals(
@@ -217,8 +217,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $oneListRequest->setListType(ListType::BASKET);
         $entity = new OneListCalculate();
         $entity->setOneList($oneListRequest);
-        $response = $this->client->OneListCalculate($entity);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListCalculate", $entity);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(Order::class, $result);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $result->getStoreId());
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $result->getCardId());
@@ -250,8 +250,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'oneList' => $oneListRequest,
             'calculate' => true
         ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
+        $response = $this->executeMethod("OneListSave", $param);
+        $oneList = $response ? $response->getResult() : null;
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
         $this->assertTrue(property_exists($oneList, 'Id'));
@@ -284,8 +284,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'oneList' => $oneListRequest,
             'calculate' => true
         ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
+        $response = $this->executeMethod("OneListSave", $param);
+        $oneList = $response ? $response->getResult() : null;
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertTrue(property_exists($oneList, 'Id'));
         $this->assertTrue(property_exists($oneList, 'ListType'));
@@ -318,8 +318,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'oneList' => $oneListRequest,
             'calculate' => false
         ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
+        $response = $this->executeMethod("OneListSave", $param);
+        $oneList = $response ? $response->getResult() : null;
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
         $this->assertTrue(property_exists($oneList, 'Id'));
@@ -343,8 +343,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'listType' => ListType::BASKET,
             'includeLines' => true
         ];
-        $response = $this->client->OneListGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
             $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
@@ -369,8 +369,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'listType' => ListType::WISH,
             'includeLines' => true
         ];
-        $response = $this->client->OneListGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
             $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
@@ -395,8 +395,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'listType' => ListType::BASKET,
             'includeLines' => false
         ];
-        $response = $this->client->OneListGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         foreach ($result as $oneList) {
             $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
             $this->assertTrue(property_exists($oneList, 'Id'));
@@ -420,8 +420,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             'listType' => ListType::WISH,
             'includeLines' => false
         ];
-        $response = $this->client->OneListGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         foreach ($result as $oneList) {
             $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
             $this->assertTrue(property_exists($oneList, 'Id'));
@@ -465,8 +465,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $paramOrderCreate  = [
             'request' => $result
         ];
-        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
-        $resultOrderCreate = $responseOrder->getResult();
+        $response = $this->executeMethod("OrderCreate", $paramOrderCreate);
+        $resultOrderCreate = $response ? $response->getResult() : null;
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
         $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
@@ -516,8 +516,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $paramOrderCreate  = [
             'request' => $result
         ];
-        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
-        $resultOrderCreate = $responseOrder->getResult();
+        $response = $this->executeMethod("OrderCreate", $paramOrderCreate);
+        $resultOrderCreate = $response ? $response->getResult() : null;
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
         $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
@@ -536,6 +536,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      * Type - ClickAndCollect
      * User - Guest
      * PaymentLine - Cash
+     * @depends testOneListSaveBasket
      */
     public function testOrderCreateGuest()
     {
@@ -567,8 +568,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $paramOrderCreate  = [
             'request' => $result
         ];
-        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
-        $resultOrderCreate = $responseOrder->getResult();
+        $response = $this->executeMethod("OrderCreate", $paramOrderCreate);
+        $resultOrderCreate = $response ? $response->getResult() : null;
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
         $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
@@ -587,6 +588,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      * Type - ClickAndCollect
      * User - Member
      * PaymentLines - Cash + Gift Card + Loyalty
+     * @depends testOneListSaveBasket
      */
     public function testOrderCreateWithGiftCardAndLoyalty()
     {
@@ -637,9 +639,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $paramOrderCreate = [
             'request' => $result
         ];
-        $responseOrder = $this->client->OrderCreate($paramOrderCreate);
-
-        $resultOrderCreate = $responseOrder->getResult();
+        $response = $this->executeMethod("OrderCreate", $paramOrderCreate);
+        $resultOrderCreate = $response ? $response->getResult() : null;
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
         $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));
@@ -658,6 +659,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
      * Type - Sale
      * User - Guest
      * PaymentLine - Card
+     * @depends testOneListSaveBasket
      */
     public function testOrderCreateOnlinePaymentSaleGuest()
     {
@@ -716,8 +718,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $paramOrderCreate  = [
             'request' => $result
         ];
-        $responseOrder     = $this->client->OrderCreate($paramOrderCreate);
-        $resultOrderCreate = $responseOrder->getResult();
+        $response = $this->executeMethod("OrderCreate", $paramOrderCreate);
+        $resultOrderCreate = $response ? $response->getResult() : null;
         $this->assertInstanceOf(SalesEntry::class, $resultOrderCreate);
         $this->assertTrue(property_exists($resultOrderCreate, 'Id'));
         $this->assertTrue(property_exists($resultOrderCreate, 'CardId'));

@@ -12,8 +12,8 @@ class ReplEcommImageLinksTest extends ReplicationTest
     {
         $request = new ReplEcommImageLinks();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommImageLinks($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommImageLinks", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplImageLinkResponse::class, $result);
         $this->assertNotNull($result->getImageLinks());
         $this->assertInstanceOf(ArrayOfReplImageLink::class, $result->getImageLinks());

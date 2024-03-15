@@ -12,8 +12,8 @@ class GiftCardGetBalanceTest extends OmniClientSetupTest
         $this->assertNotNull($this->client);
         $entity = new GiftCardGetBalance();
         $entity->setCardNo($this->getEnvironmentVariableValueGivenName('GIFTCARDCODE'));
-        $response = $this->client->GiftCardGetBalance($entity);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("GiftCardGetBalance", $entity);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(GiftCard::class, $result);
         $this->assertNotNull($result->getBalance());
         $this->assertNotNull($result->getId());

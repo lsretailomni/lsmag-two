@@ -12,8 +12,8 @@ class ReplEcommItemVariantRegistrationsTest extends ReplicationTest
     {
         $request = new ReplEcommItemVariantRegistrations();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommItemVariantRegistrations($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommItemVariantRegistrations", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplItemVariantRegistrationResponse::class, $result);
         $this->assertNotNull($result->getItemVariantRegistrations());
         $this->assertInstanceOf(ArrayOfReplItemVariantRegistration::class, $result->getItemVariantRegistrations());

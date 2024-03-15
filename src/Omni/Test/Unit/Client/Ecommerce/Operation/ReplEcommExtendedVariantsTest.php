@@ -12,8 +12,8 @@ class ReplEcommExtendedVariantsTest extends ReplicationTest
     {
         $request = new ReplEcommExtendedVariants();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommExtendedVariants($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommExtendedVariants", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplExtendedVariantValuesResponse::class, $result);
         $this->assertNotNull($result->getExtendedVariantValue());
         $this->assertInstanceOf(ArrayOfReplExtendedVariantValue::class, $result->getExtendedVariantValue());
