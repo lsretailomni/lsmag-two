@@ -68,6 +68,10 @@ class SelectedShippingMethodPlugin
                 if (isset($tokens[1])) {
                     $result['selected_date_time_slot'] = $tokens[1];
                 }
+
+                if (isset($tokens[2])) {
+                    $result['selected_date_time_slot'] .= ' '. $tokens[2];
+                }
             }
         }
         return $result;
