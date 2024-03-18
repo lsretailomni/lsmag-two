@@ -44,8 +44,8 @@ class ResetReplInvStatusTask
         Logger $logger
     ) {
         $this->replicationHelper = $replicationHelper;
-        $this->lsr = $LSR;
-        $this->logger = $logger;
+        $this->lsr               = $LSR;
+        $this->logger            = $logger;
         $this->setDefaultScope();
     }
 
@@ -57,6 +57,9 @@ class ResetReplInvStatusTask
      */
     public function execute($storeData = null)
     {
+        if (version_compare($this->lsr->getOmniVersion(), '2024.4.0', '>=')) {
+            return;
+        }
         if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                 $stores = [$storeData];

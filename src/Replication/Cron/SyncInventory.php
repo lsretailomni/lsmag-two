@@ -178,7 +178,7 @@ class SyncInventory extends ProductCreateTask
             $replInvStatus->setData('processed_at', $this->replicationHelper->getDateTime());
             $this->replInvStatusRepository->save($replInvStatus);
         }
-        if (count($this->sourceItems) > 0) {
+        if (!empty($this->sourceItems)) {
             $this->saveSourceItems();
         }
     }
