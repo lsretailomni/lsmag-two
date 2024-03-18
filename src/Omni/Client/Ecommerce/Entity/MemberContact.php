@@ -116,6 +116,11 @@ class MemberContact extends Entity
     protected $Gender = null;
 
     /**
+     * @property string $GuestType
+     */
+    protected $GuestType = null;
+
+    /**
      * @property string $Initials
      */
     protected $Initials = null;
@@ -528,6 +533,24 @@ class MemberContact extends Entity
     public function getGender()
     {
         return $this->Gender;
+    }
+
+    /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType)
+    {
+        $this->GuestType = $GuestType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGuestType()
+    {
+        return $this->GuestType;
     }
 
     /**

@@ -359,6 +359,11 @@
                     <label>Enable discount Validation Before Order Creation via GraphQl</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="order_edit" translate="label" type="select" sortOrder="11" showInWebsite="1" showInDefault="1" showInStore="1">
+                    <label>Enable order edit</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Edit LS Central Order From Admin Sales->Orders Section</comment>
+                </field>
             </group>
             <group id="ls_delivery_pickup_date_time"
                    translate="label"

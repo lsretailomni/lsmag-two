@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Model\Sales\AdminOrder\OrderEdit;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -44,6 +45,11 @@ class OrderObserver implements ObserverInterface
     private $messageManager;
 
     /**
+     * @var OrderEdit
+     */
+    private $orderEdit;
+
+    /**
      * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
@@ -58,7 +64,8 @@ class OrderObserver implements ObserverInterface
         LoggerInterface $logger,
         Order $orderResourceModel,
         LSR $LSR,
-        ManagerInterface $messageManager
+        ManagerInterface $messageManager,
+        OrderEdit $orderEdit
     ) {
         $this->basketHelper       = $basketHelper;
         $this->orderHelper        = $orderHelper;
@@ -66,6 +73,7 @@ class OrderObserver implements ObserverInterface
         $this->orderResourceModel = $orderResourceModel;
         $this->lsr                = $LSR;
         $this->messageManager     = $messageManager;
+        $this->orderEdit          = $orderEdit;
     }
 
     /**
@@ -86,17 +94,32 @@ class OrderObserver implements ObserverInterface
         if ($this->lsr->isLSR($order->getStoreId())) {
             try {
                 if (!empty($oneListCalculation)) {
-                    $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                    $response = $this->orderHelper->placeOrder($request);
-                    if ($response) {
-                        if (!empty($response->getResult()->getId())) {
-                            $documentId = $response->getResult()->getId();
-                            $order->setDocumentId($documentId);
-                            $this->orderResourceModel->save($order);
-                        }
+                    if (!empty($order->getRelationParentId()) && $this->lsr->getStoreConfig(
+                        LSR::LSR_ORDER_EDIT,
+                        $order->getStoreId()
+                    )) {
+                        $oldOrder   = $this->orderHelper->getOrder($order->getRelationParentId());
+                        $documentId = $oldOrder->getDocumentId();
+                        $order->setDocumentId($documentId);
+                        $this->orderResourceModel->save($order);
+                        $req      = $this->orderEdit->prepareOrder($order, $oneListCalculation, $oldOrder, $documentId);
+                        $response = $this->orderEdit->orderEdit($req);
                         $this->messageManager->addSuccessMessage(
-                            __('Order request has been sent to LS Central successfully')
+                            __('Order edit request has been sent to LS Central successfully')
                         );
+                    } else {
+                        $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                        $response = $this->orderHelper->placeOrder($request);
+                        if ($response) {
+                            if (!empty($response->getResult()->getId())) {
+                                $documentId = $response->getResult()->getId();
+                                $order->setDocumentId($documentId);
+                                $this->orderResourceModel->save($order);
+                                $this->messageManager->addSuccessMessage(
+                                    __('Order request has been sent to LS Central successfully')
+                                );
+                            }
+                        }
                     }
                 }
             } catch (Exception $e) {

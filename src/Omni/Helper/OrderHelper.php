@@ -288,6 +288,103 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * @param Model\Order $order
+     * @param $oneListCalculateResponse
+     * @return Entity\OrderEdit
+     */
+    public function prepareOrderEdit(Model\Order $order, $oneListCalculateResponse)
+    {
+        try {
+            $storeId       = $oneListCalculateResponse->getStoreId();
+            $cardId        = $oneListCalculateResponse->getCardId();
+            $customerEmail = $order->getCustomerEmail();
+            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
+                $order->getBillingAddress()->getLastname();
+
+            if ($order->getShippingAddress()) {
+                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' .
+                    $order->getShippingAddress()->getLastname();
+            } else {
+                $shipToName = $customerName;
+            }
+
+            if ($this->customerSession->isLoggedIn()) {
+                $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+            } else {
+                $contactId = '';
+            }
+            $shippingMethod = $order->getShippingMethod(true);
+            //TODO work on condition
+            $isClickCollect = false;
+            $carrierCode    = '';
+            $method         = '';
+
+            if ($shippingMethod !== null) {
+                $carrierCode    = $shippingMethod->getData('carrier_code');
+                $method         = $shippingMethod->getData('method');
+                $isClickCollect = $carrierCode == 'clickandcollect';
+            }
+
+            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
+
+            //if the shipping address is empty, we use the contact address as shipping address.
+            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
+                $contactAddress;
+
+            $oneListCalculateResponse
+                ->setId($order->getIncrementId())
+                ->setContactId($contactId)
+                ->setCardId($cardId)
+                ->setEmail($customerEmail)
+                ->setShipToEmail($customerEmail)
+                ->setContactName($customerName)
+                ->setShipToName($shipToName)
+                ->setContactAddress($contactAddress)
+                ->setShipToAddress($shipToAddress)
+                ->setStoreId($storeId);
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
+            } else {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+                //TODO need to fix the length issue once LS Central allow more then 10 characters.
+                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
+                $method = ($method) ? substr($method, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentServiceCode($method);
+            }
+            $pickupDateTimeslot = $order->getPickupDateTimeslot();
+            if (!empty($pickupDateTimeslot)) {
+                $dateTimeFormat = "Y-m-d\T" . "H:i:00";
+                $pickupDateTime = $this->dateTime->date($dateTimeFormat, $pickupDateTimeslot);
+                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
+            }
+            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
+            //For click and collect.
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+            }
+            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            //For click and collect we need to remove shipment charge orderline
+            //For flat shipment it will set the correct shipment value into the order
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
+            // @codingStandardsIgnoreLine
+            $request = new Entity\OrderCreate();
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                $request->setReturnOrderIdOnly(true);
+            }
+
+            $oneListCalculateResponse->setOrderLines($orderLinesArray);
+            $request->setRequest($oneListCalculateResponse);
+            return $request;
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
      * Update shippping amount to shipment order line
      * @param $orderLines
      * @param $order
