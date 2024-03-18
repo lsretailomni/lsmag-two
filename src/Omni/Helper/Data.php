@@ -768,7 +768,7 @@ class Data extends AbstractHelper
         }
 
         if ($lsKey == null) {
-            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
+            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $scopeId);
         }
 
         if ($this->lsr->validateBaseUrl($baseUrl, $lsKey) && $storeId != '') {
