@@ -58,7 +58,7 @@ class NavStore implements OptionSourceInterface
         $baseUrl   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
         $lsKey     = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
 
-        if ($this->lsr->validateBaseUrl($baseUrl)) {
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey)) {
             // @codingStandardsIgnoreLine
             if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
                 $get_nav_stores = new StoresGet($baseUrl);

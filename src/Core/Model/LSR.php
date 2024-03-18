@@ -609,10 +609,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      *
      * @param $baseUrl
      * @param $lsKey
+     * @param $websiteId
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null, $lsKey = null)
+    public function validateBaseUrl($baseUrl = null, $lsKey = null, $websiteId = null)
     {
         if ($baseUrl == null) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
@@ -623,41 +624,45 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (empty($baseUrl)) {
             return false;
         }
-
-        return $this->data->isEndpointResponding($baseUrl, $lsKey);
+        $websiteId = ($websiteId) ?: $this->getWebsiteId();
+        return $this->data->isEndpointResponding($baseUrl, $lsKey, $websiteId);
     }
 
     /**
      * Main function to check if service is configured and running properly for given store and scope
      *
-     * @param bool $store_id
+     * @param bool $storeId
      * @param bool $scope
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isLSR($store_id = false, $scope = false)
+    public function isLSR($storeId = false, $scope = false)
     {
-        if (!$this->isEnabled($store_id, $scope)) {
+        if (!$this->isEnabled($storeId, $scope)) {
             return false;
         }
 
-        if (isset($this->validateBaseUrlResponse) && $this->validateBaseUrlStoreId == $store_id) {
+        if (isset($this->validateBaseUrlResponse) && $this->validateBaseUrlStoreId == $storeId) {
             return $this->validateBaseUrlResponse;
         }
-
+        $this->validateBaseUrlStoreId = $storeId;
+        $websiteId                    = '';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
-            $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
+            $baseUrl   = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store     = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey     = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $websiteId = $storeId;
         } else {
-            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
-            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey   = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
         }
         if (empty($baseUrl) || empty($store)) {
             $this->validateBaseUrlResponse = false;
         } else {
-            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, $lsKey, $websiteId);
         }
-        $this->validateBaseUrlStoreId = $store_id;
+
 
         return $this->validateBaseUrlResponse;
     }
@@ -1192,8 +1197,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function setLicenseValidity($status)
     {
-        $str = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
-        $centralVersion =  strstr($str, " ", true);
+        $str            = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
+        $centralVersion = strstr($str, " ", true);
 
         if (version_compare($centralVersion, '25.0.0.0', '>=')) {
             $this->data->setLicenseStatus($status);

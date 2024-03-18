@@ -146,7 +146,7 @@ class LoadStore extends Action
      */
     public function getStores($baseUrl, $lsKey, $serviceVersion)
     {
-        if ($this->lsr->validateBaseUrl($baseUrl)) {
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey)) {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
             $url          = OmniService::getUrl($service_type, $baseUrl);

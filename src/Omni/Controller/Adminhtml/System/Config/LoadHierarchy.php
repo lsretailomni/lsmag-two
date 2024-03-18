@@ -97,7 +97,7 @@ class LoadHierarchy extends Action
      */
     public function getHierarchy($baseUrl, $storeId, $lsKey)
     {
-        if ($this->lsr->validateBaseUrl($baseUrl) && $storeId != "") {
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey) && $storeId != "") {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
             $url          = OmniService::getUrl($service_type, $baseUrl);
