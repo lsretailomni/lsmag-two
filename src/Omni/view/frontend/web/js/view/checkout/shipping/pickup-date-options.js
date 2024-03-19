@@ -72,19 +72,21 @@ define([
             }
 
             $.each(values, function (index, val) {
-                pickupTimSlot.empty();
-                let flag = false;
-                $.each(val, function (i, v) {
-                    if (i === value) {
-                        $.each(v, function (index, value) {
-                            pickupTimSlot.append(new Option(value, value));
-                        });
-                        flag = true;
-                    }
-                });
+                if (index === self.storeId) {
+                    pickupTimSlot.empty();
+                    let flag = false;
+                    $.each(val, function (i, v) {
+                        if (i === value) {
+                            $.each(v, function (index, value) {
+                                pickupTimSlot.append(new Option(value, value));
+                            });
+                            flag = true;
+                        }
+                    });
 
-                if (flag) {
-                    return false;
+                    if (flag) {
+                        return false;
+                    }
                 }
             });
         },
