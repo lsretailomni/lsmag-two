@@ -545,6 +545,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $validateBaseUrlStoreId = null;
 
     /**
+     * @var null
+     */
+    public $validateBaseUrlScope = null;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param \Ls\Core\Model\Data $data
@@ -642,7 +647,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             return false;
         }
 
-        if (isset($this->validateBaseUrlResponse) && $this->validateBaseUrlStoreId == $storeId) {
+        if (isset($this->validateBaseUrlResponse) &&
+            $this->validateBaseUrlStoreId == $storeId &&
+            $scope == $this->validateBaseUrlScope
+        ) {
             return $this->validateBaseUrlResponse;
         }
         $this->validateBaseUrlStoreId = $storeId;
@@ -652,17 +660,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $store     = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
             $lsKey     = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $websiteId = $storeId;
+            $this->validateBaseUrlScope = $scope;
         } else {
             $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
             $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
             $lsKey   = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $this->validateBaseUrlScope = false;
         }
         if (empty($baseUrl) || empty($store)) {
             $this->validateBaseUrlResponse = false;
         } else {
             $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, $lsKey, $websiteId);
         }
-
 
         return $this->validateBaseUrlResponse;
     }
@@ -1058,6 +1067,14 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getWebsiteId()
     {
+        $scope = $this->validateBaseUrlScope;
+
+        if (isset($this->validateBaseUrlStoreId) &&
+            ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE)
+        ) {
+            return $this->validateBaseUrlStoreId;
+        }
+
         return $this->storeManager->getStore($this->validateBaseUrlStoreId)->getWebsiteId();
     }
 
