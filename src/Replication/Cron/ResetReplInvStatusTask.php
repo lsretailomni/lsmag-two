@@ -57,9 +57,6 @@ class ResetReplInvStatusTask
      */
     public function execute($storeData = null)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '2024.4.0', '>=')) {
-            return;
-        }
         if (!$this->lsr->isSSM()) {
             if (!empty($storeData) && $storeData instanceof WebsiteInterface) {
                 $stores = [$storeData];
@@ -73,6 +70,13 @@ class ResetReplInvStatusTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
+                    if (version_compare(
+                        $this->lsr->getOmniVersion($store->getId(), $this->defaultScope),
+                        '2024.4.0',
+                        '>='
+                    )) {
+                        return;
+                    }
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         self::CONFIG_PATH_LAST_EXECUTE,
