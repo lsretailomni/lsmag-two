@@ -98,6 +98,7 @@ class TenderTypesColumn extends Select
         $storeTenderTypes = [];
 
         $scopeId = (int)$this->request->getParam('website');
+        
         if ($scopeId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
             $stores               = $this->lsr->getAllStores();
             $store                = reset($stores);

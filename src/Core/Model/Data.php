@@ -214,18 +214,19 @@ class Data
         return $ping->execute();
     }
 
-    /**
-     * Checks heartbeat of commerce service
-     *
-     * @param $url
-     * @param $lsKey
-     * @return bool
-     * @throws NoSuchEntityException
-     */
-    public function isEndpointResponding($url, $lsKey)
+   /**
+    * Checks heartbeat of commerce service
+    *
+    * @param $url
+    * @param $lsKey
+    * @param $websiteId
+    * @return bool
+    * @throws NoSuchEntityException
+    */
+    public function isEndpointResponding($url, $lsKey, $websiteId)
     {
         try {
-            $cacheId       = LSR::PING_RESPONSE_CACHE . $this->storeManager->getWebsite()->getId();
+            $cacheId       = LSR::PING_RESPONSE_CACHE . $websiteId;
             $cachedContent = $this->cacheHelper->getCachedContent($cacheId);
 
             if (!empty($cachedContent)) {
