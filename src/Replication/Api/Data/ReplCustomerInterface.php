@@ -143,6 +143,17 @@ interface ReplCustomerInterface
     public function getFirstName();
 
     /**
+     * @param string $GuestType
+     * @return $this
+     */
+    public function setGuestType($GuestType);
+
+    /**
+     * @return string
+     */
+    public function getGuestType();
+
+    /**
      * @param string $nav_id
      * @return $this
      */

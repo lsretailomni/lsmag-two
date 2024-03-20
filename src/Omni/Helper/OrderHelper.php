@@ -517,7 +517,7 @@ class OrderHelper extends AbstractHelper
         $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
         $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
 
-        $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
+        $noOrderPayment = $this->paymentLineNotRequiredPaymentMethods();
 
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
@@ -587,6 +587,18 @@ class OrderHelper extends AbstractHelper
         }
 
         return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Payment methods with no need to send in payment line
+     *
+     * @return string[]
+     */
+    public function paymentLineNotRequiredPaymentMethods()
+    {
+        return ['ls_payment_method_pay_at_store', 'free'];
     }
 
     /**

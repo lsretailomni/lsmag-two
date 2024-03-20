@@ -105,7 +105,7 @@ class SyncOrders
                 $this->store = $store;
 
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $orders = $this->orderHelper->getOrders($this->storeManager->getDefaultStoreView()->getId());
+                    $orders = $this->orderHelper->getOrders($this->store->getId());
 
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
@@ -114,8 +114,8 @@ class SyncOrders
                                 $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
 
                                 if (!empty($basketData)) {
-                                    $request            = $this->orderHelper->prepareOrder($order, $basketData);
-                                    $response           = $this->orderHelper->placeOrder($request);
+                                    $request  = $this->orderHelper->prepareOrder($order, $basketData);
+                                    $response = $this->orderHelper->placeOrder($request);
 
                                     if ($response) {
                                         if (!empty($response->getResult()->getId())) {
