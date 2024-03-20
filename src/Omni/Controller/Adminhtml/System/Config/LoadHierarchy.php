@@ -72,7 +72,8 @@ class LoadHierarchy extends Action
             $baseUrl     = $this->getRequest()->getParam('baseUrl');
             $storeId     = $this->getRequest()->getParam('storeId');
             $lsKey       = $this->getRequest()->getParam('lsKey');
-            $hierarchies = $this->getHierarchy($baseUrl, $storeId, $lsKey);
+            $scopeId     = $this->getRequest()->getParam('scopeId');
+            $hierarchies = $this->getHierarchy($baseUrl, $storeId, $lsKey, $scopeId);
             if (!empty($hierarchies)) {
                 $option_array = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {
@@ -90,14 +91,18 @@ class LoadHierarchy extends Action
     }
 
     /**
+     * Fetch all available hierarchies
+     *
      * @param $baseUrl
      * @param $storeId
      * @param $lsKey
+     * @param $scopeId
      * @return array|ReplEcommHierarchyResponse|ReplHierarchy[]|ResponseInterface
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getHierarchy($baseUrl, $storeId, $lsKey)
+    public function getHierarchy($baseUrl, $storeId, $lsKey, $scopeId)
     {
-        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey) && $storeId != "") {
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey, $scopeId) && $storeId != "") {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
             $url          = OmniService::getUrl($service_type, $baseUrl);

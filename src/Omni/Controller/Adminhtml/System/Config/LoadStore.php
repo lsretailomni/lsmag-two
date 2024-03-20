@@ -7,9 +7,11 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
+use Ls\Omni\Client\Ecommerce\Entity\StoresGetResponse;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGet;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
@@ -20,6 +22,7 @@ use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Controller\Result\RawFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -104,16 +107,16 @@ class LoadStore extends Action
         try {
             $baseUrl   = $this->getRequest()->getParam('baseUrl');
             $lsKey     = $this->getRequest()->getParam('lsKey');
-            $websiteId = $this->getRequest()->getParam('websiteId');
+            $scopeId   = $this->getRequest()->getParam('scopeId');
             $pong      = $this->helper->omniPing($baseUrl, $lsKey);
             if (empty($pong)) {
                 $pong = 'Omni Ping failed. Please try with valid service base URL.';
             }
 
             if (!empty($pong)) {
-                $version = $this->helper->parsePingResponseAndSaveToConfigData($pong, $websiteId);
+                $version = $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);
                 if (!empty($version)) {
-                    $stores = $this->getStores($baseUrl, $lsKey, $version['service_version']);
+                    $stores = $this->getStores($baseUrl, $lsKey, $version['service_version'], $scopeId);
                     if (!empty($stores)) {
                         $option_array = null;
                         $option_array = [['value' => '', 'label' => __('Please select your web store')]];
@@ -140,13 +143,19 @@ class LoadStore extends Action
     }
 
     /**
+     * Fetch stores
+     *
      * @param $baseUrl
      * @param $lsKey
-     * @return array|ArrayOfStore|StoresGetAllResponse|ResponseInterface
+     * @param $serviceVersion
+     * @param $scopeId
+     * @return array|ArrayOfStore|StoresGetAllResponse|StoresGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
-    public function getStores($baseUrl, $lsKey, $serviceVersion)
+    public function getStores($baseUrl, $lsKey, $serviceVersion, $scopeId)
     {
-        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey)) {
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey, $scopeId)) {
             //@codingStandardsIgnoreStart
             $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
             $url          = OmniService::getUrl($service_type, $baseUrl);
@@ -165,11 +174,8 @@ class LoadStore extends Action
             if ($result != null) {
                 $result = $result->getResult();
             }
-            if (!is_array($result)) {
-                return $resultArray[] = $result;
-            } else {
-                return $result;
-            }
+
+            return $result;
         }
         return [];
     }
