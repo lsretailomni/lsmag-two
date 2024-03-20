@@ -473,10 +473,10 @@ class DataHelper extends AbstractHelper
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId)
+    public function getOrderTakingCalendarGivenStoreId($storeId, $websiteId, $calendarType = null)
     {
         $store         = $this->storeHelper->getStore($websiteId, $storeId);
-        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours());
+        $slots         = $this->storeHelper->formatDateTimeSlotsValues($store->getStoreHours(), $calendarType);
         $formattedData = [];
 
         foreach ($slots as $index => $slot) {
