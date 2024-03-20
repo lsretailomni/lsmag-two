@@ -42,8 +42,8 @@ class ResetReplPriceStatusTask
         Logger $logger
     ) {
         $this->replicationHelper = $replicationHelper;
-        $this->lsr = $LSR;
-        $this->logger = $logger;
+        $this->lsr               = $LSR;
+        $this->logger            = $logger;
         $this->setDefaultScope();
     }
 
@@ -68,6 +68,14 @@ class ResetReplPriceStatusTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
+                    if (version_compare(
+                        $this->lsr->getOmniVersion($store->getId(), $this->defaultScope),
+                        '2024.4.0',
+                        '>='
+                    )) {
+                        return;
+                    }
+
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
                         self::CONFIG_PATH_LAST_EXECUTE,
