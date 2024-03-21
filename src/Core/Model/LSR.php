@@ -1165,9 +1165,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $status = ['discountSetup' => false, 'discount' => true];
         if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
-            if ($this->getCentralType($store->getId(), $scope) == LSR::OnPremise) {
-                $status = ['discountSetup' => true, 'discount' => false];
-            }
+            $status = ['discountSetup' => true, 'discount' => false];
         }
 
         return $status;
@@ -1192,8 +1190,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function setLicenseValidity($status)
     {
-        $str = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
-        $centralVersion =  strstr($str, " ", true);
+        $str            = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
+        $centralVersion = strstr($str, " ", true);
 
         if (version_compare($centralVersion, '25.0.0.0', '>=')) {
             $this->data->setLicenseStatus($status);
