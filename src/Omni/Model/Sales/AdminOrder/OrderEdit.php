@@ -171,6 +171,7 @@ class OrderEdit
             $orderObject->setOrderPayments($orderPaymentArrayObject);
             /** @var Entity\OneListItem[] $orderLinesArray */
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            $lineOrderArray  = [];
             /** @var OrderItemInterface[] $olditems */
             $olditems = $oldOrder->getItems();
             /** @var OrderItemInterface[] $newItems */
@@ -187,43 +188,46 @@ class OrderEdit
                                 $orderLine->getVariantId() == $variantId &&
                                 $orderLine->getUomId() == $uom
                             ) {
-                                $price          = ($orderLine->getPrice() / $orderLine->getQuantity())
-                                    * $qtyDifference;
+                                $price          = $orderLine->getPrice();
                                 $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
                                     * $qtyDifference;
-                                $netPrice       = ($orderLine->getNetPrice() / $orderLine->getQuantity())
+                                $netPrice       = $orderLine->getNetPrice();
+                                $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
                                     * $qtyDifference;
                                 $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
                                     * $qtyDifference;
                                 $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
                                     * $qtyDifference;
+                                $lineNumber     = (count($orderLinesArray) + 1) * 100000;
                                 $itemId         = $orderLine->getItemId();
-                                $orderLine->setPrice($orderLine->getPrice() - $price);
-                                $orderLine->setAmount($orderLine->getAmount() - $amount);
-                                $orderLine->setNetPrice($orderLine->getNetPrice() - $netPrice);
-                                $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
-                                $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
-                                $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
-                                $lineNumber = (count($orderLinesArray) + 1) * 1000;
                                 // @codingStandardsIgnoreLine
                                 $lineOrder = new Entity\OrderLine();
                                 $lineOrder->setPrice($price)
                                     ->setAmount($amount)
                                     ->setNetPrice($netPrice)
-                                    ->setNetAmount($netPrice)
+                                    ->setNetAmount($netAmount)
                                     ->setTaxAmount($taxAmount)
                                     ->setItemId($itemId)
+                                    ->setDiscountPercent($orderLine->getDiscountPercent())
+                                    ->setUomId($orderLine->getUomId())
+                                    ->setVariantId($orderLine->getVariantId())
                                     ->setLineType(Entity\Enum\LineType::ITEM)
                                     ->setLineNumber($lineNumber)
                                     ->setQuantity($qtyDifference)
                                     ->setDiscountAmount($discountAmount);
-                                array_push($orderLinesArray, $lineOrder);
+                                $lineOrderArray[] = $lineOrder;
+                                $orderLine->setAmount($orderLine->getAmount() - $amount);
+                                $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
+                                $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
+                                $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
+                                $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
                             }
                         }
                     }
                 }
             }
-            $orderLinesArray = $this->orderHelper->updateShippingAmount($orderLinesArray, $order);
+            $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $oldOrder);
             if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
                 $orderEdit->setReturnOrderIdOnly(true);
             }
@@ -334,5 +338,40 @@ class OrderEdit
         }
 
         return $orderPaymentArray;
+    }
+
+    /**
+     * Update shipping amount
+     *
+     * @param $orderLines
+     * @param $order
+     * @param $oldOrder
+     * @return mixed
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     */
+    public function updateShippingAmount($orderLines, $order, $oldOrder)
+    {
+        $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
+        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
+        $shippingAmount     = $order->getShippingInclTax() - $oldOrder->getShippingInclTax();
+        if ($shippingAmount > 0) {
+            $netPriceFormula = 1 + $shipmentTaxPercent / 100;
+            $netPrice        = $shippingAmount / $netPriceFormula;
+            $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
+            // @codingStandardsIgnoreLine
+            $shipmentOrderLine = new Entity\OrderLine();
+            $shipmentOrderLine->setPrice($shippingAmount)
+                ->setAmount($shippingAmount)
+                ->setNetPrice($netPrice)
+                ->setNetAmount($netPrice)
+                ->setTaxAmount($taxAmount)
+                ->setItemId($shipmentFeeId)
+                ->setLineType(Entity\Enum\LineType::ITEM)
+                ->setLineNumber(1000000)
+                ->setQuantity(1)
+                ->setDiscountAmount($order->getShippingDiscountAmount());
+            array_push($orderLines, $shipmentOrderLine);
+        }
+        return $orderLines;
     }
 }
