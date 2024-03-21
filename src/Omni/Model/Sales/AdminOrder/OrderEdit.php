@@ -169,10 +169,6 @@ class OrderEdit
             }
 
             $orderObject->setOrderPayments($orderPaymentArrayObject);
-            //For click and collect.
-            if ($isClickCollect) {
-                $orderObject->setCollectLocation($order->getPickupStore());
-            }
             /** @var Entity\OneListItem[] $orderLinesArray */
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
             /** @var OrderItemInterface[] $olditems */
@@ -193,6 +189,8 @@ class OrderEdit
                             ) {
                                 $price          = ($orderLine->getPrice() / $orderLine->getQuantity())
                                     * $qtyDifference;
+                                $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
+                                    * $qtyDifference;
                                 $netPrice       = ($orderLine->getNetPrice() / $orderLine->getQuantity())
                                     * $qtyDifference;
                                 $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
@@ -201,15 +199,16 @@ class OrderEdit
                                     * $qtyDifference;
                                 $itemId         = $orderLine->getItemId();
                                 $orderLine->setPrice($orderLine->getPrice() - $price);
+                                $orderLine->setAmount($orderLine->getAmount() - $amount);
                                 $orderLine->setNetPrice($orderLine->getNetPrice() - $netPrice);
                                 $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
                                 $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
                                 $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
-                                $lineNumber = count($orderLinesArray) + 1;
+                                $lineNumber = (count($orderLinesArray) + 1) * 1000;
                                 // @codingStandardsIgnoreLine
                                 $lineOrder = new Entity\OrderLine();
                                 $lineOrder->setPrice($price)
-                                    ->setAmount($price)
+                                    ->setAmount($amount)
                                     ->setNetPrice($netPrice)
                                     ->setNetAmount($netPrice)
                                     ->setTaxAmount($taxAmount)
