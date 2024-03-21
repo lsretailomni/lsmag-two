@@ -12,6 +12,8 @@ use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit as EditOrder;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderEditType;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Model\Order;
 use Psr\Log\LoggerInterface;
 
@@ -107,15 +109,34 @@ class OrderEdit
             $carrierCode    = '';
             $method         = '';
 
+
+            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            // @codingStandardsIgnoreStart
+            $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
+            // @codingStandardsIgnoreEndund
+            $orderPaymentArray = [];
             if ($shippingMethod !== null) {
                 $carrierCode    = $shippingMethod->getData('carrier_code');
                 $method         = $shippingMethod->getData('method');
                 $isClickCollect = $carrierCode == 'clickandcollect';
             }
 
-            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($oldOrder, $cardId, 'refund', 4);
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId, '', 7);
+            $orderPaymentArray = $this->setOrderPayments(
+                $oldOrder,
+                $cardId,
+                'refund',
+                4,
+                $orderPaymentArray
+            );
+            $orderPaymentArray = $this->setOrderPayments(
+                $order,
+                $cardId,
+                '',
+                7,
+                $orderPaymentArray
+            );
+
+            $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->orderHelper->convertAddress(
@@ -152,7 +173,57 @@ class OrderEdit
             if ($isClickCollect) {
                 $orderObject->setCollectLocation($order->getPickupStore());
             }
+            /** @var Entity\OneListItem[] $orderLinesArray */
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            /** @var OrderItemInterface[] $olditems */
+            $olditems = $oldOrder->getItems();
+            /** @var OrderItemInterface[] $newItems */
+            $newItems = $order->getItems();
+            foreach ($newItems as $item) {
+                foreach ($olditems as $oldItem) {
+                    if ($item->getSku() == $oldItem->getSku() && $item->getQtyOrdered() > $oldItem->getQtyOrdered()) {
+                        $qtyDifference = $item->getQtyOrdered() - $oldItem->getQtyOrdered();
+                        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                            $item->getSku()
+                        );
+                        foreach ($orderLinesArray as &$orderLine) {
+                            if ($orderLine->getItemId() == $itemId &&
+                                $orderLine->getVariantId() == $variantId &&
+                                $orderLine->getUomId() == $uom
+                            ) {
+                                $price          = ($orderLine->getPrice() / $orderLine->getQuantity())
+                                    * $qtyDifference;
+                                $netPrice       = ($orderLine->getNetPrice() / $orderLine->getQuantity())
+                                    * $qtyDifference;
+                                $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
+                                    * $qtyDifference;
+                                $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
+                                    * $qtyDifference;
+                                $itemId         = $orderLine->getItemId();
+                                $orderLine->setPrice($orderLine->getPrice() - $price);
+                                $orderLine->setNetPrice($orderLine->getNetPrice() - $netPrice);
+                                $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
+                                $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
+                                $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
+                                $lineNumber = count($orderLinesArray) + 1;
+                                // @codingStandardsIgnoreLine
+                                $lineOrder = new Entity\OrderLine();
+                                $lineOrder->setPrice($price)
+                                    ->setAmount($price)
+                                    ->setNetPrice($netPrice)
+                                    ->setNetAmount($netPrice)
+                                    ->setTaxAmount($taxAmount)
+                                    ->setItemId($itemId)
+                                    ->setLineType(Entity\Enum\LineType::ITEM)
+                                    ->setLineNumber($lineNumber)
+                                    ->setQuantity($qtyDifference)
+                                    ->setDiscountAmount($discountAmount);
+                                array_push($orderLinesArray, $lineOrder);
+                            }
+                        }
+                    }
+                }
+            }
             $orderLinesArray = $this->orderHelper->updateShippingAmount($orderLinesArray, $order);
             if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
                 $orderEdit->setReturnOrderIdOnly(true);
@@ -167,32 +238,32 @@ class OrderEdit
     }
 
     /**
-     * set order payments
+     * Set order payments
      *
      * @param Order $order
      * @param $cardId
      * @param $isType
-     * @return Entity\ArrayOfOrderPayment
+     * @param $startingLineNumber
+     * @param $orderPaymentArray
+     * @return array
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
-     *
      */
-    public function setOrderPayments(Order $order, $cardId, $isType, $startingLineNumber)
+    public function setOrderPayments(Order $order, $cardId, $isType, $startingLineNumber, $orderPaymentArray)
     {
         $transId          = $order->getPayment()->getLastTransId();
-        $ccType           = $order->getPayment()->getCcType() ? substr($order->getPayment()->getCcType(), 0, 10) : '';
+        $ccType           = $order->getPayment()->getCcType() ? substr(
+            $order->getPayment()->getCcType(),
+            0,
+            10
+        ) : '';
         $cardNumber       = $order->getPayment()->getCcLast4();
         $paidAmount       = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
         $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
-
-        $orderPaymentArray = [];
-        // @codingStandardsIgnoreStart
-        $orderPaymentArrayObject = new Entity\ArrayOfOrderPayment();
-        // @codingStandardsIgnoreEnd
-        $paymentCode  = ($isType =='refund')?:$order->getPayment()->getMethodInstance()->getCode();
-        $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
+        $paymentCode      = ($isType == 'refund') ? $isType : $order->getPayment()->getMethodInstance()->getCode();
+        $tenderTypeId     = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
@@ -236,7 +307,7 @@ class OrderEdit
             //default values for all payment types.
             $orderPaymentLoyalty->setCurrencyCode('LOY')
                 ->setCurrencyFactor($pointRate)
-                ->setLineNumber($startingLineNumber+1)
+                ->setLineNumber($startingLineNumber + 1)
                 ->setCardNumber($cardId)
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getLsPointsSpent())
@@ -254,7 +325,7 @@ class OrderEdit
                 ->setCurrencyFactor(1)
                 ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setAmount($order->getLsGiftCardAmountUsed())
-                ->setLineNumber($startingLineNumber+2)
+                ->setLineNumber($startingLineNumber + 2)
                 ->setCardNumber($order->getLsGiftCardNo())
                 ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
@@ -263,6 +334,6 @@ class OrderEdit
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 
-        return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+        return $orderPaymentArray;
     }
 }

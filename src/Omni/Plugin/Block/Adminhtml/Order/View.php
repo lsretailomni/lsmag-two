@@ -30,7 +30,7 @@ class View
     {
         $message = __('Send order to LS Central?');
         $url     = $view->getUrl('omni/order/request/id', ['order_id' => $view->getOrderId()]);
-        $order = $view->getOrder();
+        $order   = $view->getOrder();
 
         if (!$view->getOrder()->getDocumentId() && $this->orderHelper->isAllowed($view->getOrder())) {
             $view->addButton(
@@ -42,7 +42,10 @@ class View
                 ]
             );
         }
-        if ($order->canEdit()) {
+        if ($order->canEdit() && $this->orderHelper->lsr->getStoreConfig(
+            LSR::LSR_ORDER_EDIT,
+            $order->getStoreId()
+        )) {
             $message = __('Want to Edit the Order?');
             $view->removeButton('order_edit');
 

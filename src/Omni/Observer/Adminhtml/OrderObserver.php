@@ -98,15 +98,24 @@ class OrderObserver implements ObserverInterface
                         LSR::LSR_ORDER_EDIT,
                         $order->getStoreId()
                     )) {
-                        $oldOrder   = $this->orderHelper->getOrder($order->getRelationParentId());
-                        $documentId = $oldOrder->getDocumentId();
-                        $order->setDocumentId($documentId);
-                        $this->orderResourceModel->save($order);
-                        $req      = $this->orderEdit->prepareOrder($order, $oneListCalculation, $oldOrder, $documentId);
-                        $response = $this->orderEdit->orderEdit($req);
-                        $this->messageManager->addSuccessMessage(
-                            __('Order edit request has been sent to LS Central successfully')
-                        );
+                        $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId($order->getRelationParentId());
+                        if ($oldOrder) {
+                            $documentId = $oldOrder->getDocumentId();
+                            $req        = $this->orderEdit->prepareOrder(
+                                $order,
+                                $oneListCalculation,
+                                $oldOrder,
+                                $documentId
+                            );
+                            $response   = $this->orderEdit->orderEdit($req);
+                            $order->setDocumentId($documentId);
+                            $this->orderResourceModel->save($order);
+                            $oldOrder->setDocumentId(null);
+                            $this->orderResourceModel->save($oldOrder);
+                            $this->messageManager->addSuccessMessage(
+                                __('Order edit request has been sent to LS Central successfully')
+                            );
+                        }
                     } else {
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
