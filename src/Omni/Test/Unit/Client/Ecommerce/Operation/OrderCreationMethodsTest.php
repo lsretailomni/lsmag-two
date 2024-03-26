@@ -685,8 +685,15 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::SALE);
-        $omniAddress = new Address();
-        $omniAddress->setCity('KL')
+        $omniAddress1 = new Address();
+        $omniAddress1->setCity('KL')
+            ->setAddress1('Jalan')
+            ->setAddress2('Klang')
+            ->setCountry('MY')
+            ->setStateProvinceRegion(substr('Kuala Lumpur', 0, 10))
+            ->setPostCode('47301');
+        $omniAddress2 = new Address();
+        $omniAddress2->setCity('KL')
             ->setAddress1('Jalan')
             ->setAddress2('Klang')
             ->setCountry('MY')
@@ -699,8 +706,8 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setShipToEmail($this->getEnvironmentVariableValueGivenName('EMAIL'))
             ->setContactName('Testing')
             ->setShipToName('Testing')
-            ->setContactAddress($omniAddress)
-            ->setShipToAddress($omniAddress)
+            ->setContactAddress($omniAddress1)
+            ->setShipToAddress($omniAddress2)
             ->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderLines        = $result->getOrderLines()->getOrderLine();
         $shipmentOrderLine = new OrderLine();

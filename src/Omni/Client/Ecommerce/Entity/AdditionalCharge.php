@@ -34,6 +34,11 @@ class AdditionalCharge
     protected $InvoiceReference = null;
 
     /**
+     * @property boolean $IsAllowance
+     */
+    protected $IsAllowance = null;
+
+    /**
      * @property string $ItemNo
      */
     protected $ItemNo = null;
@@ -47,6 +52,16 @@ class AdditionalCharge
      * @property string $Optional
      */
     protected $Optional = null;
+
+    /**
+     * @property string $OptionalComment
+     */
+    protected $OptionalComment = null;
+
+    /**
+     * @property int $ParentLine
+     */
+    protected $ParentLine = null;
 
     /**
      * @property float $Price
@@ -72,6 +87,11 @@ class AdditionalCharge
      * @property string $UnitOfMeasure
      */
     protected $UnitOfMeasure = null;
+
+    /**
+     * @property string $VariantCode
+     */
+    protected $VariantCode = null;
 
     /**
      * @param string $ActivityNo
@@ -146,6 +166,24 @@ class AdditionalCharge
     }
 
     /**
+     * @param boolean $IsAllowance
+     * @return $this
+     */
+    public function setIsAllowance($IsAllowance)
+    {
+        $this->IsAllowance = $IsAllowance;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsAllowance()
+    {
+        return $this->IsAllowance;
+    }
+
+    /**
      * @param string $ItemNo
      * @return $this
      */
@@ -197,6 +235,42 @@ class AdditionalCharge
     public function getOptional()
     {
         return $this->Optional;
+    }
+
+    /**
+     * @param string $OptionalComment
+     * @return $this
+     */
+    public function setOptionalComment($OptionalComment)
+    {
+        $this->OptionalComment = $OptionalComment;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOptionalComment()
+    {
+        return $this->OptionalComment;
+    }
+
+    /**
+     * @param int $ParentLine
+     * @return $this
+     */
+    public function setParentLine($ParentLine)
+    {
+        $this->ParentLine = $ParentLine;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentLine()
+    {
+        return $this->ParentLine;
     }
 
     /**
@@ -297,6 +371,24 @@ class AdditionalCharge
     public function getUnitOfMeasure()
     {
         return $this->UnitOfMeasure;
+    }
+
+    /**
+     * @param string $VariantCode
+     * @return $this
+     */
+    public function setVariantCode($VariantCode)
+    {
+        $this->VariantCode = $VariantCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVariantCode()
+    {
+        return $this->VariantCode;
     }
 }
 
