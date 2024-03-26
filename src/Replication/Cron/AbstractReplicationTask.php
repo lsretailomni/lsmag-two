@@ -34,8 +34,7 @@ abstract class AbstractReplicationTask
     private static $no_lastkey_config_path = [
         'ls_mag/replication/repl_country_code',
         'ls_mag/replication/repl_shipping_agent',
-        'ls_mag/replication/repl_store_tender_type',
-        'ls_mag/replication/repl_inv_status'
+        'ls_mag/replication/repl_store_tender_type'
     ];
 
     /** @var Logger */
