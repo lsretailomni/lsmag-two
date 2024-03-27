@@ -55,6 +55,7 @@ class OmniClientSetupTest extends TestCase
     public function executeMethod($methodName, $param = null)
     {
         try {
+
             if ($param) {
                 $response = $this->client->{$methodName}($param);
             } else {
