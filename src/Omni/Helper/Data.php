@@ -623,21 +623,21 @@ class Data extends AbstractHelper
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
-                        LSR::LS_ENABLE_COUPON_ELEMENTS,
-                        $this->lsr->getCurrentStoreId()
-                    ) && $this->lsr->getStoreConfig(
-                        LSR::LS_COUPONS_SHOW_ON_CART,
-                        $this->lsr->getCurrentStoreId()
-                    )
-                );
-            }
-            return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_COUPON_ELEMENTS,
                     $this->lsr->getCurrentStoreId()
                 ) && $this->lsr->getStoreConfig(
-                    LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                    LSR::LS_COUPONS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 )
+                );
+            }
+            return ($this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
+                LSR::LS_COUPONS_SHOW_ON_CHECKOUT,
+                $this->lsr->getCurrentStoreId()
+            )
             );
         } else {
             return false;
@@ -684,7 +684,7 @@ class Data extends AbstractHelper
             $totalPointsAmount = $pointsSpent * $pointRate;
             $totalPointsAmount = ($totalPointsAmount / $totalItemsQuantities) * $totalItemsInvoice;
             $pointsSpent       = ($pointsSpent / $totalItemsQuantities) * $totalItemsInvoice;
-            $giftCardAmount = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
+            $giftCardAmount    = ($giftCardAmount / $totalItemsQuantities) * $totalItemsInvoice;
 
             $invoiceCreditMemo->setLsPointsSpent($pointsSpent);
             $invoiceCreditMemo->setLsGiftCardAmountUsed($giftCardAmount);
@@ -767,11 +767,11 @@ class Data extends AbstractHelper
             $storeId = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $scopeId);
         }
 
-        if ($this->lsr->validateBaseUrl($baseUrl) && $storeId != '') {
-            if ($lsKey == null) {
-                $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $scopeId);
-            }
+        if ($lsKey == null) {
+            $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $scopeId);
+        }
 
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey, $scopeId) && $storeId != '') {
             try {
                 $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
                 $result  = $request->execute();

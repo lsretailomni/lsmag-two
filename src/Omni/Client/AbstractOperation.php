@@ -112,7 +112,13 @@ abstract class AbstractOperation implements OperationInterface
         //@codingStandardsIgnoreStart
         $client->setStreamContext(
             stream_context_create(
-                ['http' => ['header' => "$header: {$this->token}", 'timeout' => floatval($lsr->getOmniTimeout())]]
+                [
+                    'http' =>
+                        [
+                            'header'  => "$header: {$this->token}",
+                            'timeout' => floatval($lsr->getWebsiteConfig(LSR::SC_SERVICE_TIMEOUT, $lsr->getWebsiteId()))
+                        ]
+                ]
             )
         );
         $client->setLocation($client->getWSDL());
