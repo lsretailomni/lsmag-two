@@ -1110,7 +1110,7 @@ class OrderHelper extends AbstractHelper
         }
         $paymentTenderTypesArray = $this->lsr->getStoreConfig(
             LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,
-            $this->lsr->getCurrentStoreId()
+            $this->basketHelper->getCorrectStoreIdFromCheckoutSession() ?? $this->lsr->getCurrentStoreId()
         );
 
         if (!is_array($paymentTenderTypesArray)) {
