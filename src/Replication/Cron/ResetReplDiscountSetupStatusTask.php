@@ -68,11 +68,11 @@ class ResetReplDiscountSetupStatusTask
         ResourceConnection $resource,
         StoreManagerInterface $storeManager
     ) {
-        $this->replicationHelper     = $replicationHelper;
-        $this->lsr                   = $LSR;
-        $this->logger                = $logger;
-        $this->resource              = $resource;
-        $this->storeManager          = $storeManager;
+        $this->replicationHelper = $replicationHelper;
+        $this->lsr               = $LSR;
+        $this->logger            = $logger;
+        $this->resource          = $resource;
+        $this->storeManager      = $storeManager;
         $this->setDefaultScope();
     }
 
@@ -97,6 +97,13 @@ class ResetReplDiscountSetupStatusTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 if ($this->lsr->isLSR($store->getId(), $this->defaultScope)) {
+                    if (version_compare(
+                        $this->lsr->getOmniVersion($store->getId(), $this->defaultScope),
+                        '2024.4.0',
+                        '>='
+                    )) {
+                        return;
+                    }
                     $this->logger->debug('Running ResetReplDiscountSetupStatusTask Task ');
 
                     $this->replicationHelper->updateConfigValue(

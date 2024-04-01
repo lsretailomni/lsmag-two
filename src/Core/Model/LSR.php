@@ -1187,9 +1187,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $status = ['discountSetup' => false, 'discount' => true];
         if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
-            if ($this->getCentralType($store->getId(), $scope) == LSR::OnPremise) {
-                $status = ['discountSetup' => true, 'discount' => false];
-            }
+            $status = ['discountSetup' => true, 'discount' => false];
         }
 
         return $status;
