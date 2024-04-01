@@ -43,9 +43,13 @@ class License extends Field
         $websiteId = $element->getScopeId();
 
         $str = $this->lsr->getCentralVersion($websiteId, ScopeInterface::SCOPE_WEBSITES);
-        $centralVersion =  strstr($str, " ", true);
+        if ($str) {
+            $centralVersion = strstr($str, " ", true);
 
-        if (version_compare($centralVersion, '24.0.0.0', '<') || $element->getValue() === null) {
+            if (version_compare($centralVersion, '24.0.0.0', '<') || $element->getValue() === null) {
+                return '';
+            }
+        } else {
             return '';
         }
 
@@ -60,13 +64,13 @@ class License extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
-        $validClass = 'valid-license';
+        $validClass   = 'valid-license';
         $invalidClass = 'invalid-license';
-        $html = "<div class='control-value ";
-        $html .= $element->getValue() == "1" ? $validClass : $invalidClass;
-        $html .= "'>";
-        $html .= $element->getValue() == "1" ? __('Valid') : __('Invalid');
-        $html .= "</div>";
+        $html         = "<div class='control-value ";
+        $html         .= $element->getValue() == "1" ? $validClass : $invalidClass;
+        $html         .= "'>";
+        $html         .= $element->getValue() == "1" ? __('Valid') : __('Invalid');
+        $html         .= "</div>";
 
         return $html;
     }

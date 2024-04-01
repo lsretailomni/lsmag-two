@@ -35,12 +35,12 @@ class LicenseInvalid implements MessageInterface
      * @param StoreManagerInterface $storeManager
      */
     public function __construct(
-        UrlInterface $urlBuilder,
-        LSR $lsr,
+        UrlInterface          $urlBuilder,
+        LSR                   $lsr,
         StoreManagerInterface $storeManager
     ) {
-        $this->urlBuilder   = $urlBuilder;
-        $this->lsr          = $lsr;
+        $this->urlBuilder = $urlBuilder;
+        $this->lsr = $lsr;
         $this->storeManager = $storeManager;
     }
 
@@ -60,15 +60,16 @@ class LicenseInvalid implements MessageInterface
             /** @var StoreInterface $store */
             foreach ($stores as $store) {
                 $str = $this->lsr->getCentralVersion($store->getWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
-                $centralVersion =  strstr($str, " ", true);
-
-                if (version_compare($centralVersion, '25.0.0.0', '>=') &&
-                    $this->lsr->getWebsiteConfig(
-                        LSR::SC_SERVICE_LICENSE_VALIDITY,
-                        $store->getWebsiteId()
-                    ) === '0') {
-                    $displayNotice = true;
-                    break;
+                if ($str) {
+                    $centralVersion = strstr($str, " ", true);
+                    if (version_compare($centralVersion, '25.0.0.0', '>=') &&
+                        $this->lsr->getWebsiteConfig(
+                            LSR::SC_SERVICE_LICENSE_VALIDITY,
+                            $store->getWebsiteId()
+                        ) === '0') {
+                        $displayNotice = true;
+                        break;
+                    }
                 }
             }
         }
