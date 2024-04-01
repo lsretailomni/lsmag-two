@@ -27,8 +27,10 @@ class OrderEditMethodsTest extends OmniClientSetupTest
     public function testOrderEdit()
     {
         $orderEditObject = new OrderEdit();
-        $orderEditObject->setOrderId($this->getEnvironmentVariableValueGivenName('DOCUMENT_ID'));
-        $orderEditObject->setEditType(OrderEditType::GENERAL);
+        $documentId      = ($this->getEnvironmentVariableValueGivenName('DOCUMENT_ID')) ?
+            $this->getEnvironmentVariableValueGivenName('DOCUMENT_ID') : 'CO000275';
+        $orderEditObject->setOrderId($documentId);
+        $orderEditObject->setEditType('General');
         $orderObject = new CommerceOrder();
         $orderObject->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderObject->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
@@ -76,7 +78,7 @@ class OrderEditMethodsTest extends OmniClientSetupTest
         $orderLinesArray->setOrderLine([$lineOrder]);
         $orderObject->setOrderLines($orderLinesArray);
         $orderEditObject->setRequest($orderObject);
-        $responseOrder     = $this->client->OrderEdit($orderEditObject);
+        $responseOrder   = $this->client->OrderEdit($orderEditObject);
         $resultOrderEdit = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderEdit);
         $this->assertTrue(property_exists($resultOrderEdit, 'Id'));
