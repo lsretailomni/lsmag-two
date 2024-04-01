@@ -22,7 +22,6 @@ class OrderEditMethodsTest extends OmniClientSetupTest
      * Type - Order Edit
      * User - Member
      * PaymentLine - Cash
-     * @depends testOneListSaveBasket
      */
     public function testOrderEdit()
     {
