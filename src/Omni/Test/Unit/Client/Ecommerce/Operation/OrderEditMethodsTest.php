@@ -6,6 +6,7 @@ use Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderPayment;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
 use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderEditType;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit;
 use Ls\Omni\Client\Ecommerce\Entity\OrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -25,6 +26,9 @@ class OrderEditMethodsTest extends OmniClientSetupTest
      */
     public function testOrderEdit()
     {
+        $orderEditObject = new OrderEdit();
+        $orderEditObject->setOrderId($this->getEnvironmentVariableValueGivenName('DOCUMENT_ID'));
+        $orderEditObject->setEditType(OrderEditType::GENERAL);
         $orderObject = new CommerceOrder();
         $orderObject->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderObject->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
@@ -71,13 +75,8 @@ class OrderEditMethodsTest extends OmniClientSetupTest
         $orderLinesArray = new ArrayOfOrderLine();
         $orderLinesArray->setOrderLine([$lineOrder]);
         $orderObject->setOrderLines($orderLinesArray);
-        // Order edit request
-        $paramEditCreate  = [
-            'request' => $orderObject,
-            'editType' => OrderEditType::GENERAL,
-            'orderId' => $this->getEnvironmentVariableValueGivenName('DOCUMENT_ID')
-        ];
-        $responseOrder     = $this->client->OrderEdit($paramEditCreate);
+        $orderEditObject->setRequest($orderObject);
+        $responseOrder     = $this->client->OrderEdit($orderEditObject);
         $resultOrderEdit = $responseOrder->getResult();
         $this->assertInstanceOf(SalesEntry::class, $resultOrderEdit);
         $this->assertTrue(property_exists($resultOrderEdit, 'Id'));
