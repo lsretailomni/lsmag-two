@@ -35,7 +35,7 @@ class DefaultTotalsPlugin
         return $this->currency->format(
             $value,
             ['precision'=> PriceCurrencyInterface::DEFAULT_PRECISION,
-             'display'=> \Magento\Framework\Currency\Data\Currency::NO_SYMBOL],
+             'display'=> \Magento\Framework\Currency::NO_SYMBOL],
             0
         ). ' '. __('points');
     }
