@@ -88,11 +88,9 @@ class OrderEdit
             $orderEdit->setOrderId($documentId);
             $orderEdit->setEditType(OrderEditType::GENERAL);
             $orderObject = new CommerceOrder();
-            $orderObject->setStoreId($oneListCalculateResponse->getStoreId());
             $orderObject->setCardId($oneListCalculateResponse->getCardId());
             $orderObject->setEmail($order->getCustomerEmail());
 
-            $storeId       = $oneListCalculateResponse->getStoreId();
             $cardId        = $oneListCalculateResponse->getCardId();
             $customerEmail = $order->getCustomerEmail();
             $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
@@ -157,7 +155,9 @@ class OrderEdit
                 ->setShipToName($shipToName)
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
-                ->setStoreId($storeId);
+                ->setStoreId(($oldOrder->getPickupStore()) ? $oldOrder->getPickupStore() :
+                    $oneListCalculateResponse->getStoreId());
+
             if ($isClickCollect) {
                 $orderObject->setOrderType(OrderType::CLICK_AND_COLLECT);
             } else {

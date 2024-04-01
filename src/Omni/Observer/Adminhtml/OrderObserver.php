@@ -109,6 +109,16 @@ class OrderObserver implements ObserverInterface
                             );
                             $response   = $this->orderEdit->orderEdit($req);
                             $order->setDocumentId($documentId);
+                            $isClickCollect = false;
+                            $shippingMethod = $order->getShippingMethod(true);
+                            if ($shippingMethod !== null) {
+                                $carrierCode    = $shippingMethod->getData('carrier_code');
+                                $method         = $shippingMethod->getData('method');
+                                $isClickCollect = $carrierCode == 'clickandcollect';
+                            }
+                            if ($isClickCollect) {
+                                $order->setPickupStore($oldOrder->getPickupStore());
+                            }
                             $this->orderResourceModel->save($order);
                             $oldOrder->setDocumentId(null);
                             $this->orderResourceModel->save($oldOrder);
