@@ -173,9 +173,9 @@ class OrderEdit
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
             $lineOrderArray  = [];
             /** @var OrderItemInterface[] $olditems */
-            $olditems = $oldOrder->getItems();
+            $olditems = $oldOrder->getAllVisibleItems();
             /** @var OrderItemInterface[] $newItems */
-            $newItems = $order->getItems();
+            $newItems = $order->getAllVisibleItems();
             foreach ($newItems as $item) {
                 foreach ($olditems as $oldItem) {
                     if ($item->getSku() == $oldItem->getSku() && $item->getQtyOrdered() > $oldItem->getQtyOrdered()) {
