@@ -125,14 +125,14 @@ class OrderEdit
                 $oldOrder,
                 $cardId,
                 'refund',
-                4,
+                4 * $order->getEditIncrement(),
                 $orderPaymentArray
             );
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
                 $cardId,
                 '',
-                7,
+                7 * $order->getEditIncrement(),
                 $orderPaymentArray
             );
 
@@ -198,7 +198,7 @@ class OrderEdit
                                     * $qtyDifference;
                                 $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
                                     * $qtyDifference;
-                                $lineNumber     = (count($orderLinesArray) + 1) * 100000;
+                                $lineNumber     = (count($orderLinesArray) + 1) * $order->getEditIncrement()  * 100000;
                                 $itemId         = $orderLine->getItemId();
                                 // @codingStandardsIgnoreLine
                                 $lineOrder = new Entity\OrderLine();
