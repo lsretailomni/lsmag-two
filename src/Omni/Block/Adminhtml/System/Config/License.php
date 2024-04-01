@@ -49,6 +49,8 @@ class License extends Field
             if (version_compare($centralVersion, '24.0.0.0', '<') || $element->getValue() === null) {
                 return '';
             }
+        } else {
+            return '';
         }
 
         return parent::render($element);
