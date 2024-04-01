@@ -13,6 +13,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit as EditOrder;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderEditType;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use Magento\Catalog\Model\Product\Type;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Model\Order;
 use Psr\Log\LoggerInterface;
@@ -131,7 +132,7 @@ class OrderEdit
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
                 $cardId,
-                '',
+                $order->getPayment()->getMethodInstance()->getCode(),
                 7 * $order->getEditIncrement(),
                 $orderPaymentArray
             );
@@ -173,54 +174,60 @@ class OrderEdit
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
             $lineOrderArray  = [];
             /** @var OrderItemInterface[] $olditems */
-            $olditems = $oldOrder->getAllVisibleItems();
+            $oldItems = $oldOrder->getItems();
             /** @var OrderItemInterface[] $newItems */
-            $newItems = $order->getAllVisibleItems();
-            foreach ($newItems as $item) {
-                foreach ($olditems as $oldItem) {
-                    if ($item->getSku() == $oldItem->getSku() && $item->getQtyOrdered() > $oldItem->getQtyOrdered()) {
-                        $qtyDifference = $item->getQtyOrdered() - $oldItem->getQtyOrdered();
-                        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                            $item->getSku()
-                        );
-                        foreach ($orderLinesArray as &$orderLine) {
-                            if ($orderLine->getItemId() == $itemId &&
-                                $orderLine->getVariantId() == $variantId &&
-                                $orderLine->getUomId() == $uom
-                            ) {
-                                $price          = $orderLine->getPrice();
-                                $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
-                                    * $qtyDifference;
-                                $netPrice       = $orderLine->getNetPrice();
-                                $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
-                                    * $qtyDifference;
-                                $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
-                                    * $qtyDifference;
-                                $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
-                                    * $qtyDifference;
-                                $lineNumber     = ((count($orderLinesArray) + 1) + $order->getEditIncrement()) * 100000;
-                                $itemId         = $orderLine->getItemId();
-                                // @codingStandardsIgnoreLine
-                                $lineOrder = new Entity\OrderLine();
-                                $lineOrder->setPrice($price)
-                                    ->setAmount($amount)
-                                    ->setNetPrice($netPrice)
-                                    ->setNetAmount($netAmount)
-                                    ->setTaxAmount($taxAmount)
-                                    ->setItemId($itemId)
-                                    ->setDiscountPercent($orderLine->getDiscountPercent())
-                                    ->setUomId($orderLine->getUomId())
-                                    ->setVariantId($orderLine->getVariantId())
-                                    ->setLineType(Entity\Enum\LineType::ITEM)
-                                    ->setLineNumber($lineNumber)
-                                    ->setQuantity($qtyDifference)
-                                    ->setDiscountAmount($discountAmount);
-                                $lineOrderArray[] = $lineOrder;
-                                $orderLine->setAmount($orderLine->getAmount() - $amount);
-                                $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
-                                $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
-                                $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
-                                $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
+            $newItems = $order->getItems();
+            foreach ($newItems as $newItem) {
+                if ($newItem->getProductType() == Type::TYPE_SIMPLE) {
+                    foreach ($oldItems as $oldItem) {
+                        if ($oldItem->getProductType() == Type::TYPE_SIMPLE) {
+                            if ($newItem->getSku() == $oldItem->getSku()
+                                && $newItem->getQtyOrdered() > $oldItem->getQtyOrdered()) {
+                                $qtyDifference = $newItem->getQtyOrdered() - $oldItem->getQtyOrdered();
+                                list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                                    $newItem->getSku()
+                                );
+                                foreach ($orderLinesArray as &$orderLine) {
+                                    if ($orderLine->getItemId() == $itemId &&
+                                        $orderLine->getVariantId() == $variantId &&
+                                        $orderLine->getUomId() == $uom
+                                    ) {
+                                        $price          = $orderLine->getPrice();
+                                        $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
+                                            * $qtyDifference;
+                                        $netPrice       = $orderLine->getNetPrice();
+                                        $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
+                                            * $qtyDifference;
+                                        $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
+                                            * $qtyDifference;
+                                        $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
+                                            * $qtyDifference;
+                                        $lineNumber     = ($orderLine->getLineNumber() + $order->getEditIncrement())
+                                            * 100000;
+                                        $itemId         = $orderLine->getItemId();
+                                        // @codingStandardsIgnoreLine
+                                        $lineOrder = new Entity\OrderLine();
+                                        $lineOrder->setPrice($price)
+                                            ->setAmount($amount)
+                                            ->setNetPrice($netPrice)
+                                            ->setNetAmount($netAmount)
+                                            ->setTaxAmount($taxAmount)
+                                            ->setItemId($itemId)
+                                            ->setDiscountPercent($orderLine->getDiscountPercent())
+                                            ->setUomId($orderLine->getUomId())
+                                            ->setVariantId($orderLine->getVariantId())
+                                            ->setLineType(Entity\Enum\LineType::ITEM)
+                                            ->setLineNumber($lineNumber)
+                                            ->setQuantity($qtyDifference)
+                                            ->setDiscountAmount($discountAmount);
+                                        $lineOrderArray[] = $lineOrder;
+                                        $orderLine->setAmount($orderLine->getAmount() - $amount);
+                                        $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
+                                        $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
+                                        $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
+                                        $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
+                                    }
+                                }
                             }
                         }
                     }
@@ -265,8 +272,8 @@ class OrderEdit
         $paidAmount       = $order->getPayment()->getAmountPaid();
         $authorizedAmount = $order->getPayment()->getAmountAuthorized();
         $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
-        $paymentCode      = ($isType == 'refund') ? $isType : $order->getPayment()->getMethodInstance()->getCode();
-        $tenderTypeId     = $this->orderHelper->getPaymentTenderTypeId($paymentCode);
+        $paymentCode      = $order->getPayment()->getMethodInstance()->getCode();
+        $tenderTypeId     = $this->orderHelper->getPaymentTenderTypeId($isType);
 
         $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
