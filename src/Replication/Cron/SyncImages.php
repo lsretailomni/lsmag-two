@@ -34,9 +34,6 @@ class SyncImages extends ProductCreateTask
     /** @var array  */
     public array $imageHashes = [];
 
-    /** @var array  */
-    public array $productIds = [];
-
     /**
      * Entry point for cron
      *
@@ -114,7 +111,6 @@ class SyncImages extends ProductCreateTask
         $sortOrder = $this->replicationHelper->getSortOrderObject();
         $collection = $this->getRecordsForImagesToProcess();
         $this->imagesFetched = [];
-        $this->productIds = [];
         if ($collection->getSize() > 0) {
             // Right now the only thing we have to do is flush all the images and do it again.
             /** @var ReplImageLink $itemImage */
@@ -162,7 +158,7 @@ class SyncImages extends ProductCreateTask
                     $this->replImageLinkRepositoryInterface->save($itemImage);
                 }
             }
-            $this->replicationHelper->flushFpcCacheAgainstIds($this->productIds);
+            $this->replicationHelper->flushByTypeCode('full_page');
         }
 
         $remainingItems = (int)$this->getRemainingRecords($this->store);
@@ -341,8 +337,6 @@ class SyncImages extends ProductCreateTask
                 $this->store->getId()
             );
             $productData = $this->productRepository->get($product->getSku(), true, 0, true);
-            $this->productIds[] = $productData->getId();
-            $this->productIds = array_unique($this->productIds);
         } catch (NoSuchEntityException $e) {
             return;
         }
