@@ -198,7 +198,7 @@ class OrderEdit
                                     * $qtyDifference;
                                 $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
                                     * $qtyDifference;
-                                $lineNumber     = (count($orderLinesArray) + 1) * $order->getEditIncrement()  * 100000;
+                                $lineNumber     = ((count($orderLinesArray) + 1) + $order->getEditIncrement()) * 100000;
                                 $itemId         = $orderLine->getItemId();
                                 // @codingStandardsIgnoreLine
                                 $lineOrder = new Entity\OrderLine();
