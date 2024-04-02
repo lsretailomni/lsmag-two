@@ -27,9 +27,12 @@ class OmniClientSetupTest extends TestCase
     public function testExecute()
     {
         $pong = $this->client->Ping();
-        $this->assertStringContainsString(
-            'PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS Central DB] & [LS Central WS]',
-            $pong->getResult()
+        $this->assertThat(
+            $pong->getResult(),
+            $this->logicalOr(
+                $this->stringContains('PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS Central DB] & [LS Central WS]'),
+                $this->stringContains('PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS SaaS] & [LS Central WS]')
+            )
         );
     }
 
