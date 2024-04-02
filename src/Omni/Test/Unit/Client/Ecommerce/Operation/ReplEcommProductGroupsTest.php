@@ -12,8 +12,8 @@ class ReplEcommProductGroupsTest extends ReplicationTest
     {
         $request = new ReplEcommProductGroups();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommProductGroups($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommProductGroups", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplProductGroupResponse::class, $result);
         $this->assertNotNull($result->getProductGroups());
         $this->assertInstanceOf(ArrayOfReplProductGroup::class, $result->getProductGroups());

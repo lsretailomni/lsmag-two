@@ -12,8 +12,8 @@ class ReplEcommItemsTest extends ReplicationTest
     {
         $request = new ReplEcommItems();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommItems($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommItems", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplItemResponse::class, $result);
         $this->assertNotNull($result->getItems());
         $this->assertInstanceOf(ArrayOfReplItem::class, $result->getItems());

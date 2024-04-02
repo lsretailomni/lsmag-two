@@ -20,8 +20,8 @@ class ContactGetByCardIdTest extends OmniClientSetupTest
         $param    = [
             'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID')
         ];
-        $response = $this->client->ContactGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ContactGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(MemberContact::class, $result);
         $this->assertInstanceOf(ArrayOfAddress::class, $result->getAddresses());
         $this->assertInstanceOf(ArrayOfCard::class, $result->getCards());
