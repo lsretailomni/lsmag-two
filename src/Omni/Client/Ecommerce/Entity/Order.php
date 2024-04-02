@@ -114,9 +114,9 @@ class Order extends Entity
     protected $RequestedDeliveryDate = null;
 
     /**
-     * @property boolean $ShipCACOrder
+     * @property boolean $ShipOrder
      */
-    protected $ShipCACOrder = null;
+    protected $ShipOrder = null;
 
     /**
      * @property Address $ShipToAddress
@@ -534,21 +534,21 @@ class Order extends Entity
     }
 
     /**
-     * @param boolean $ShipCACOrder
+     * @param boolean $ShipOrder
      * @return $this
      */
-    public function setShipCACOrder($ShipCACOrder)
+    public function setShipOrder($ShipOrder)
     {
-        $this->ShipCACOrder = $ShipCACOrder;
+        $this->ShipOrder = $ShipOrder;
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getShipCACOrder()
+    public function getShipOrder()
     {
-        return $this->ShipCACOrder;
+        return $this->ShipOrder;
     }
 
     /**

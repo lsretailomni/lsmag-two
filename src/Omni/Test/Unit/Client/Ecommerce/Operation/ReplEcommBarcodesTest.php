@@ -12,8 +12,8 @@ class ReplEcommBarcodesTest extends ReplicationTest
     {
         $request = new ReplEcommBarcodes();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommBarcodes($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommBarcodes", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplBarcodeResponse::class, $result);
         $this->assertNotNull($result->getBarcodes());
         $this->assertInstanceOf(ArrayOfReplBarcode::class, $result->getBarcodes());

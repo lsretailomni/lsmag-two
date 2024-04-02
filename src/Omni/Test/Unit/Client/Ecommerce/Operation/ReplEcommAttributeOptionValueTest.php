@@ -12,8 +12,8 @@ class ReplEcommAttributeOptionValueTest extends ReplicationTest
     {
         $request = new ReplEcommAttributeOptionValue();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommAttributeOptionValue($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommAttributeOptionValue", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplAttributeOptionValueResponse::class, $result);
         $this->assertNotNull($result->getOptionValues());
         $this->assertInstanceOf(ArrayOfReplAttributeOptionValue::class, $result->getOptionValues());

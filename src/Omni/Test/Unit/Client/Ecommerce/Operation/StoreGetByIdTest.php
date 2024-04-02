@@ -12,8 +12,9 @@ class StoreGetByIdTest extends OmniClientSetupTest
         $param    = [
             'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID')
         ];
-        $response = $this->client->StoreGetById($param);
-        $result   = $response->getResult();
+
+        $response = $this->executeMethod("StoreGetById", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(Store::class, $result);
         $this->assertNotNull($result->getLatitude());
         $this->assertNotNull($result->getLongitude());

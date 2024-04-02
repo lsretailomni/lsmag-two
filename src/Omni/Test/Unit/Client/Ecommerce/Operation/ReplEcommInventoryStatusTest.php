@@ -12,8 +12,8 @@ class ReplEcommInventoryStatusTest extends ReplicationTest
     {
         $request = new ReplEcommInventoryStatus();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommInventoryStatus($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommInventoryStatus", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplInvStatusResponse::class, $result);
         $this->assertNotNull($result->getItems());
         $this->assertInstanceOf(ArrayOfReplInvStatus::class, $result->getItems());
