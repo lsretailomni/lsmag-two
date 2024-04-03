@@ -6,7 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Helper\OrderHelper;
-use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit as EditOrder;
@@ -43,7 +42,6 @@ class OrderEdit
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
      * @param LSR $LSR
-     * @param Data $data
      */
     public function __construct(
         OrderHelper $orderHelper,
@@ -60,8 +58,8 @@ class OrderEdit
     /**
      * For sending order edit request
      *
-     * @param $request
-     * @return Entity\OrderCreateResponse|ResponseInterface
+     * @param object $request
+     * @return Entity\OrderEditResponse|\Ls\Omni\Client\ResponseInterface
      */
     public function orderEdit($request)
     {
@@ -73,12 +71,12 @@ class OrderEdit
     }
 
     /**
-     * prepare order edit
+     * Prepare order edit
      *
      * @param Order $order
-     * @param $oneListCalculateResponse
+     * @param object $oneListCalculateResponse
      * @param Order $oldOrder
-     * @param $documentId
+     * @param string $documentId
      * @return EditOrder|void
      */
     public function prepareOrder(Order $order, $oneListCalculateResponse, Order $oldOrder, $documentId)
@@ -107,7 +105,6 @@ class OrderEdit
             $isClickCollect = false;
             $carrierCode    = '';
             $method         = '';
-
 
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
             // @codingStandardsIgnoreStart
@@ -176,7 +173,12 @@ class OrderEdit
             /** @var OrderItemInterface[] $olditems */
             $oldItems = $oldOrder->getItems();
             /** @var OrderItemInterface[] $newItems */
-            $newItems = $order->getItems();
+            $newItems      = $order->getItems();
+            $newItemsArray = [];
+            foreach ($newItems as $newItem) {
+                $newItemsArray[$newItem->getSku()] = $newItem->getSku();
+            }
+
             foreach ($newItems as $newItem) {
                 if ($newItem->getProductType() == Type::TYPE_SIMPLE) {
                     foreach ($oldItems as $oldItem) {
@@ -190,8 +192,7 @@ class OrderEdit
                                 foreach ($orderLinesArray as &$orderLine) {
                                     if ($orderLine->getItemId() == $itemId &&
                                         $orderLine->getVariantId() == $variantId &&
-                                        $orderLine->getUomId() == $uom
-                                    ) {
+                                        $orderLine->getUomId() == $uom) {
                                         $price          = $orderLine->getPrice();
                                         $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
                                             * $qtyDifference;
@@ -224,7 +225,9 @@ class OrderEdit
                                         $orderLine->setAmount($orderLine->getAmount() - $amount);
                                         $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
                                         $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
-                                        $orderLine->setDiscountAmount($orderLine->getDiscountAmount() - $discountAmount);
+                                        $orderLine->setDiscountAmount(
+                                            $orderLine->getDiscountAmount() - $discountAmount
+                                        );
                                         $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
                                     }
                                 }
@@ -251,11 +254,11 @@ class OrderEdit
      * Set order payments
      *
      * @param Order $order
-     * @param $cardId
-     * @param $isType
-     * @param $startingLineNumber
-     * @param $orderPaymentArray
-     * @return array
+     * @param string $cardId
+     * @param string $isType
+     * @param int $startingLineNumber
+     * @param int $orderPaymentArray
+     * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
@@ -350,9 +353,9 @@ class OrderEdit
     /**
      * Update shipping amount
      *
-     * @param $orderLines
-     * @param $order
-     * @param $oldOrder
+     * @param array $orderLines
+     * @param object $order
+     * @param object $oldOrder
      * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */

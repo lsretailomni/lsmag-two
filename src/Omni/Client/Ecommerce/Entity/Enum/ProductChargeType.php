@@ -13,11 +13,14 @@ use MyCLabs\Enum\Enum;
 /**
  * @$method static ProductChargeType ITEM()
  * @$method static ProductChargeType DEAL()
+ * @$method static ProductChargeType INFO_CODE()
  */
 class ProductChargeType extends Enum
 {
     public const ITEM = 'Item';
 
     public const DEAL = 'Deal';
+
+    public const INFO_CODE = 'InfoCode';
 }
 

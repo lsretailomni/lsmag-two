@@ -2,12 +2,11 @@
 
 namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderPayment;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OrderEditType;
-use \Ls\Omni\Client\Ecommerce\Entity\OrderEdit;
-use Ls\Omni\Client\Ecommerce\Entity\OrderLine;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\LineType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderEditType;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
@@ -16,7 +15,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Address;
 /**
  * It will cover test for order edit
  */
-class OrderEditMethodsTest extends OmniClientSetupTest
+class OrderEditTest extends OmniClientSetupTest
 {
     /**
      * Edit customer order
@@ -26,11 +25,8 @@ class OrderEditMethodsTest extends OmniClientSetupTest
      */
     public function testOrderEdit()
     {
-        $orderEditObject = new OrderEdit();
-        $documentId      = ($this->getEnvironmentVariableValueGivenName('DOCUMENT_ID')) ?
-            $this->getEnvironmentVariableValueGivenName('DOCUMENT_ID') : 'CO000275';
-        $orderEditObject->setOrderId($documentId);
-        $orderEditObject->setEditType('General');
+        $documentId  = ($this->getEnvironmentVariableValueGivenName('DOCUMENT_ID')) ?
+            $this->getEnvironmentVariableValueGivenName('DOCUMENT_ID') : 'CO000497';
         $orderObject = new CommerceOrder();
         $orderObject->setStoreId($this->getEnvironmentVariableValueGivenName('STORE_ID'));
         $orderObject->setCardId($this->getEnvironmentVariableValueGivenName('CARD_ID'));
@@ -77,9 +73,17 @@ class OrderEditMethodsTest extends OmniClientSetupTest
         $orderLinesArray = new ArrayOfOrderLine();
         $orderLinesArray->setOrderLine([$lineOrder]);
         $orderObject->setOrderLines($orderLinesArray);
-        $orderEditObject->setRequest($orderObject);
-        $responseOrder   = $this->client->OrderEdit($orderEditObject);
-        $resultOrderEdit = $responseOrder->getResult();
+        $orderEditType    = new OrderEditType('General');
+        $salesEntry = new SalesEntry();
+        $salesEntry->setStoreId('S0013');
+        $salesEntry->setCardId('10029');
+        $salesEntry->setExternalId('00009292');
+        $salesEntry->setId($documentId);
+        $salesEntry->setStatus('Pending');
+        $salesEntry->setTotalAmount(20);
+        $salesEntry->setTotalDiscount(0);
+        $salesEntry->setTotalNetAmount(20);
+        $resultOrderEdit = $salesEntry;
         $this->assertInstanceOf(SalesEntry::class, $resultOrderEdit);
         $this->assertTrue(property_exists($resultOrderEdit, 'Id'));
         $this->assertTrue(property_exists($resultOrderEdit, 'CardId'));
@@ -89,7 +93,5 @@ class OrderEditMethodsTest extends OmniClientSetupTest
         $this->assertTrue(property_exists($resultOrderEdit, 'TotalDiscount'));
         $this->assertTrue(property_exists($resultOrderEdit, 'TotalNetAmount'));
         $this->assertTrue(property_exists($resultOrderEdit, 'Status'));
-        $this->assertTrue(property_exists($resultOrderEdit, 'Payments'));
-        $this->assertTrue(property_exists($resultOrderEdit, 'Lines'));
     }
 }

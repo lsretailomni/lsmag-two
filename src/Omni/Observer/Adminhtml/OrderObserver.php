@@ -16,8 +16,7 @@ use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class OrderObserver
- * @package Ls\Omni\Observer\Adminhtml
+ * Observer for order creation and update
  */
 class OrderObserver implements ObserverInterface
 {
@@ -50,13 +49,13 @@ class OrderObserver implements ObserverInterface
     private $orderEdit;
 
     /**
-     * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
      * @param Order $orderResourceModel
      * @param LSR $LSR
      * @param ManagerInterface $messageManager
+     * @param OrderEdit $orderEdit
      */
     public function __construct(
         BasketHelper $basketHelper,
@@ -77,6 +76,8 @@ class OrderObserver implements ObserverInterface
     }
 
     /**
+     * Execute method to perform order creation and updates
+     *
      * @param Observer $observer
      * @return $this|void
      * @throws AlreadyExistsException
