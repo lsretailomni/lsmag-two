@@ -91,7 +91,6 @@ use Magento\InventoryCatalog\Model\GetProductIdsBySkus;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use Magento\InventoryCatalogApi\Model\IsSingleSourceModeInterface;
 use Magento\InventorySales\Model\ResourceModel\GetAssignedStockIdForWebsite;
-use Magento\PageCache\Model\Cache\Type;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Store\Model\Website\Interceptor;
@@ -509,11 +508,6 @@ class ReplicationHelper extends AbstractHelper
     public $isSingleSourceMode;
 
     /**
-     * @var Type
-     */
-    public $pageCache;
-
-    /**
      * @param Context $context
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
@@ -577,7 +571,6 @@ class ReplicationHelper extends AbstractHelper
      * @param StockItemRepositoryInterface $stockItemRepository
      * @param StockConfigurationInterface $stockConfiguration
      * @param IsSingleSourceModeInterface $isSingleSourceMode
-     * @param Type $pageCache
      */
     public function __construct(
         Context $context,
@@ -642,8 +635,7 @@ class ReplicationHelper extends AbstractHelper
         StockItemCriteriaInterfaceFactory $criteriaInterfaceFactory,
         StockItemRepositoryInterface $stockItemRepository,
         StockConfigurationInterface $stockConfiguration,
-        IsSingleSourceModeInterface $isSingleSourceMode,
-        Type $pageCache
+        IsSingleSourceModeInterface $isSingleSourceMode
     ) {
         $this->searchCriteriaBuilder                     = $searchCriteriaBuilder;
         $this->filterBuilder                             = $filterBuilder;
@@ -707,7 +699,6 @@ class ReplicationHelper extends AbstractHelper
         $this->stockItemRepository                       = $stockItemRepository;
         $this->stockConfiguration                        = $stockConfiguration;
         $this->isSingleSourceMode                        = $isSingleSourceMode;
-        $this->pageCache                                 = $pageCache;
         parent::__construct(
             $context
         );
@@ -1310,21 +1301,6 @@ class ReplicationHelper extends AbstractHelper
     {
         $this->cacheTypeList->cleanType($typeCode);
         $this->_logger->debug($typeCode . ' cache type flushed.');
-    }
-
-    /**
-     * Clear fpc cache for product_ids
-     * @param $productIds
-     */
-    public function flushFpcCacheAgainstIds($productIds)
-    {
-        $tags = [];
-
-        foreach ($productIds as $productId) {
-            $tags[] = Product::CACHE_TAG . '_' . $productId;
-        }
-        $this->pageCache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, $tags);
-        $this->_logger->debug('FPC cache flushed for product Ids:' . join(', ', $productIds));
     }
 
     /**

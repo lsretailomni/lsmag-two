@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
 use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Model\Quote\Item;
@@ -748,6 +749,6 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display' => 1], false);
+        return $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL], false);
     }
 }
