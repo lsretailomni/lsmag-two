@@ -9,6 +9,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
+use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Replication\Model\ResourceModel\ReplStore\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplStore\CollectionFactory;
 use Magento\Catalog\Model\Product\Type;
@@ -67,6 +68,11 @@ class DataProvider implements ConfigProviderInterface
     public $storeHelper;
 
     /**
+     * @var GiftCardHelper
+     */
+    public $giftCardHelper;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -75,6 +81,7 @@ class DataProvider implements ConfigProviderInterface
      * @param Session $checkoutSession
      * @param StockHelper $stockHelper
      * @param StoreHelper $storeHelper
+     * @param GiftCardHelper $giftCardHelper
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -84,7 +91,8 @@ class DataProvider implements ConfigProviderInterface
         LSR $lsr,
         Session $checkoutSession,
         StockHelper $stockHelper,
-        StoreHelper $storeHelper
+        StoreHelper $storeHelper,
+        GiftCardHelper $giftCardHelper
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
@@ -94,6 +102,7 @@ class DataProvider implements ConfigProviderInterface
         $this->checkoutSession        = $checkoutSession;
         $this->stockHelper            = $stockHelper;
         $this->storeHelper            = $storeHelper;
+        $this->giftCardHelper         = $giftCardHelper;
     }
 
     /**
@@ -139,7 +148,7 @@ class DataProvider implements ConfigProviderInterface
             $stores['storesInfo'] = $storesData;
             $encodedStores        = Json::encode($stores);
 
-            $enabled = $this->lsr->isPickupTimeslotsEnabled();
+            $enabled              = $this->lsr->isPickupTimeslotsEnabled();
             $deliveryHoursEnabled = $this->lsr->isDeliveryTimeslotsEnabled();
 
             if (empty($this->checkoutSession->getStorePickupHours())) {
@@ -149,7 +158,7 @@ class DataProvider implements ConfigProviderInterface
             if (empty($this->checkoutSession->getDeliveryHours())) {
                 $deliveryHoursEnabled = 0;
             }
-            $config = [
+            $config                    = [
                 'shipping' => [
                     'select_store'          => [
                         'maps_api_key'         => $mapsApiKey,
@@ -173,6 +182,8 @@ class DataProvider implements ConfigProviderInterface
         }
 
         $config['ls_enabled'] = (bool)$this->lsr->isEnabled();
+
+        $config['gift_card_pin_enable'] = $this->giftCardHelper->isPinCodeFieldEnable();
 
         return $config;
     }
@@ -209,13 +220,13 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getStores()
     {
-        $storesData      = $this->storeCollectionFactory
+        $storesData = $this->storeCollectionFactory
             ->create()
             ->addFieldToFilter(
                 'scope_id',
                 !$this->lsr->isSSM() ?
-                $this->lsr->getCurrentWebsiteId() :
-                $this->lsr->getAdminStore()->getWebsiteId()
+                    $this->lsr->getCurrentWebsiteId() :
+                    $this->lsr->getAdminStore()->getWebsiteId()
             )->addFieldToFilter('ClickAndCollect', 1);
 
         $allStores = $this->storeHelper->getAllStores(
@@ -458,9 +469,9 @@ class DataProvider implements ConfigProviderInterface
     public function isCouponsDisplayEnabled()
     {
         return ($this->lsr->getStoreConfig(
-                LSR::LS_ENABLE_COUPON_ELEMENTS,
-                $this->lsr->getCurrentStoreId()
-            ) &&
+            LSR::LS_ENABLE_COUPON_ELEMENTS,
+            $this->lsr->getCurrentStoreId()
+        ) &&
             $this->lsr->getStoreConfig(
                 LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
