@@ -21,6 +21,7 @@ class OmniClientSetupTest extends TestCase
         $uri          = UriFactory::factory($url);
         $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
+        $this->client->setLocation($this->client->getWSDL());
         $this->assertNotNull($this->client);
     }
 
