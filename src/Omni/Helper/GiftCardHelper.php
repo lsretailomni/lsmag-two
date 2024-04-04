@@ -149,6 +149,6 @@ class GiftCardHelper extends AbstractHelper
      */
     public function isPinCodeFieldEnable()
     {
-        return (bool)$this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, $this->lsr->getCurrentStoreId());
+        return $this->lsr->getStoreConfig(LSR::LS_GIFTCARD_SHOW_PIN_CODE_FIELD, $this->lsr->getCurrentStoreId());
     }
 }

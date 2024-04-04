@@ -183,7 +183,7 @@ class DataProvider implements ConfigProviderInterface
 
         $config['ls_enabled'] = (bool)$this->lsr->isEnabled();
 
-        $config['gift_card_pin_enable'] = $this->giftCardHelper->isPinCodeFieldEnable();
+        $config['gift_card_pin_enable'] = (bool)$this->giftCardHelper->isPinCodeFieldEnable();
 
         return $config;
     }
@@ -469,9 +469,9 @@ class DataProvider implements ConfigProviderInterface
     public function isCouponsDisplayEnabled()
     {
         return ($this->lsr->getStoreConfig(
-            LSR::LS_ENABLE_COUPON_ELEMENTS,
-            $this->lsr->getCurrentStoreId()
-        ) &&
+                LSR::LS_ENABLE_COUPON_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) &&
             $this->lsr->getStoreConfig(
                 LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
