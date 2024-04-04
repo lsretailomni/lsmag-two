@@ -4,13 +4,13 @@ namespace Ls\Omni\Block\GiftCardBalance;
 
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Result\PageFactory;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class Stores
- * @package Ls\Omni\Block\Stores
+ * To check gift card balance
  */
 class GiftCardBalance extends Template
 {
@@ -57,6 +57,8 @@ class GiftCardBalance extends Template
     }
 
     /**
+     * Getting layout
+     *
      * @return string
      */
     public function getJsLayout()
@@ -65,5 +67,16 @@ class GiftCardBalance extends Template
             $this->jsLayout = $processor->process($this->jsLayout);
         }
         return parent::getJsLayout();
+    }
+
+    /**
+     * Check pin code field in enable or not in gift card
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function isPinCodeFieldEnable()
+    {
+        return $this->giftCardHelper->isPinCodeFieldEnable();
     }
 }
