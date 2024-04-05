@@ -124,7 +124,6 @@ class ResetReplInvStatusTask
 
     /**
      * Set default scope
-     *
      */
     public function setDefaultScope()
     {
