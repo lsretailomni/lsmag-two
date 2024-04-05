@@ -6,6 +6,9 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+/**
+ * Totals class to return total lines
+ */
 class Totals extends AbstractOrderBlock
 {
     /**
@@ -42,6 +45,8 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
+     * Get Total Tax
+     *
      * @return mixed
      */
     public function getTotalTax()
@@ -53,8 +58,8 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
-     * To fetch TotalNetAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     * To fetch TotalNetAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResul
+     *
      * @return mixed
      */
     public function getTotalNetAmount()
@@ -67,7 +72,7 @@ class Totals extends AbstractOrderBlock
 
     /**
      * To fetch TotalAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getGrandTotal()
@@ -77,6 +82,8 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
+     * Get total amount
+     *
      * @return float
      */
     public function getTotalAmount()
@@ -86,7 +93,7 @@ class Totals extends AbstractOrderBlock
 
     /**
      * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getTotalDiscount()
