@@ -16,17 +16,9 @@ define([
         },
 
         isPinCodeFieldEnable: function () {
-            storage.get('omni/ajax/CheckPinCodeEnable').done(
-                function (response) {
-                    if (response.value) {
-                        $('#pincode').show();
-                    }
-                }
-            ).fail(
-                function (response) {
-                    $('#pincode').hide();
-                }
-            );
+            if (giftCardPinEnable) {
+                return true;
+            }
         },
 
         checkGiftCardBalance: function (form) {

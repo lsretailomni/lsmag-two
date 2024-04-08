@@ -1,12 +1,13 @@
+<script>var giftCardPinEnable = <?php echo $block->isPinCodeFieldEnable(); ?>;</script>
 <div id="gift-card-balance" data-bind="scope:'gift-card-balance'">
     <!-- ko template: getTemplate() --><!-- /ko -->
     <script type="text/x-magento-init">
-    {
-        "#gift-card-balance": {
-            "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */
+        {
+            "#gift-card-balance": {
+                "Magento_Ui/js/core/app": <?php /* @escapeNotVerified */
         echo $block->getJsLayout(); ?>
-            }
         }
+    }
 
     </script>
 </div>
