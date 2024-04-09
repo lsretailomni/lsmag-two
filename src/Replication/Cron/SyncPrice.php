@@ -144,6 +144,8 @@ class SyncPrice extends ProductCreateTask
                 );
                 $this->logger->debug($e->getMessage());
                 $replPrice->setData('is_failed', 1);
+                $replPrice->setData('is_updated', 0);
+                $replPrice->setData('processed', 1);
                 $this->replPriceRepository->save($replPrice);
             }
 
