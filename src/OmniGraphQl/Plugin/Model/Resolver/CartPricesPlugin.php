@@ -8,7 +8,6 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Address\Total;
 use Magento\Quote\Model\Quote\TotalsCollector;
-use Magento\Tests\NamingConvention\true\object;
 
 /**
  * Interceptor to return vat value of the whole cart
