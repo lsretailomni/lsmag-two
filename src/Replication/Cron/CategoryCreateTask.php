@@ -292,9 +292,6 @@ class CategoryCreateTask
                             'name',
                             ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId()
                         );
-                        if (2 != $categoryExistData->getData('parent_id')) {
-                            $categoryExistData->move(2, null);
-                        }
                         $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
                             $image = $this->getImage($hierarchyNode->getImageId());
