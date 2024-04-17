@@ -73,20 +73,31 @@ class CartItemPricesPlugin
                 $cartItem->getCustomPrice() : $cartItem->getPrice();
         }
         $basketData              = $this->basketHelper->getBasketSessionValue();
-        $discountDescriptionData = $this->itemHelper->getOrderDiscountLinesForItem($cartItem, $basketData);
+        $discountDescriptionData = $this->itemHelper->getOrderDiscountLinesForItem($cartItem, $basketData, 1, 1);
         if (!empty($discountDescriptionData)) {
-            foreach ($discountDescriptionData as $discountDescription) {
-                $discountDescription = str_replace('<br />', '', $discountDescription);
-                if ($discountDescription != __('Save')) {
-                    $result['discounts'][] = [
-                        'label'  => $discountDescription,
-                        'amount' => [
-                            'value' => 0
-                        ]
-                    ];
+            $itemTotalDiscount = 0;
+            foreach ($discountDescriptionData as $id => $discountDataArr) {
+                foreach ($discountDataArr as $discountData) {
+                    $discountDescription = str_replace('<br />', '', $discountData['description']);
+                    if ($discountDescription != __('Save')) {
+                        $itemTotalDiscount     += $discountData['value'];
+                        $result['discounts'][] = [
+                            'label'  => $discountDescription,
+                            'amount' => [
+                                'value' => -$discountData['value']
+                            ]
+                        ];
+                    }
                 }
             }
+
+            if ($itemTotalDiscount > 0) {
+                $result['total_item_discount'] = [
+                    'value' => -$itemTotalDiscount
+                ];
+            }
         }
+
 
         return $result;
     }

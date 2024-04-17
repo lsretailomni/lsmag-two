@@ -29,6 +29,7 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
+use Magento\Tests\NamingConvention\true\object;
 
 /**
  * Useful helper functions for item
@@ -254,12 +255,13 @@ class ItemHelper extends AbstractHelper
      *
      * Compare orderLines with discountLines and get discounted prices on cart page or order detail page
      *
-     * @param $item
+     * @param object $item
      * @param Order|SalesEntry $orderData
      * @param int $type
+     * @param int $graphQlRequest
      * @return array|null
      */
-    public function getOrderDiscountLinesForItem($item, $orderData, $type = 1)
+    public function getOrderDiscountLinesForItem($item, $orderData, $type = 1, $graphQlRequest = 0)
     {
         $discountText = __("Save");
         $discountInfo = [];
@@ -278,7 +280,8 @@ class ItemHelper extends AbstractHelper
                     $variantId,
                     $uom,
                     $baseUnitOfMeasure,
-                    $discountInfo
+                    $discountInfo,
+                    $graphQlRequest
                 );
             } else {
                 $customPrice = $item->getCustomPrice();
@@ -303,7 +306,8 @@ class ItemHelper extends AbstractHelper
                         $variantId,
                         $uom,
                         $baseUnitOfMeasure,
-                        $discountInfo
+                        $discountInfo,
+                        $graphQlRequest
                     );
                 }
             }
@@ -311,8 +315,10 @@ class ItemHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
 
-        if (!empty($discountInfo)) {
+        if (!empty($discountInfo) && !$graphQlRequest) {
             return [implode($discountInfo), $discountText];
+        } elseif (!empty($discountInfo) && $graphQlRequest) {
+            return [$discountInfo, $discountText];
         } else {
             return null;
         }
@@ -329,6 +335,7 @@ class ItemHelper extends AbstractHelper
      * @param $uom
      * @param $baseUnitOfMeasure
      * @param $discountInfo
+     * @param int $graphQlRequest
      * @return mixed
      * @throws NoSuchEntityException
      */
@@ -340,7 +347,8 @@ class ItemHelper extends AbstractHelper
         $variantId,
         $uom,
         $baseUnitOfMeasure,
-        &$discountInfo
+        &$discountInfo,
+        $graphQlRequest = 0
     ) {
         $orderLines = $discountsLines = [];
         if ($orderData instanceof SalesEntry) {
@@ -356,8 +364,14 @@ class ItemHelper extends AbstractHelper
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
                         if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)
+                                && !$graphQlRequest) {
                                 $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
+                            } else {
+                                $discountInfo[] = [
+                                    'description' => $orderDiscountLine->getDescription(),
+                                    'value'       => $orderDiscountLine->getDiscountAmount()
+                                ];
                             }
                         }
                     }
@@ -479,7 +493,7 @@ class ItemHelper extends AbstractHelper
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $quote->getShippingAddress()
                     ->setGrandTotal(
-                    $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount);
+                        $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount);
             }
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
@@ -509,7 +523,7 @@ class ItemHelper extends AbstractHelper
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
         $customPrice = $amount = $taxAmount = $netAmount = null;
-        $itemQty = $quoteItem->getQty();
+        $itemQty     = $quoteItem->getQty();
 
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
@@ -539,7 +553,7 @@ class ItemHelper extends AbstractHelper
                 ($line->getAmount() / $line->getQuantity()) * $itemQty;
         }
 
-        $rowTotal = $line->getNetPrice() * $line->getQuantity();
+        $rowTotal       = $line->getNetPrice() * $line->getQuantity();
         $rowTotalIncTax = $line->getPrice() * $line->getQuantity();
 
         $quoteItem->setCustomPrice($customPrice)
