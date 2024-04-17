@@ -29,7 +29,6 @@ use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Magento\Quote\Model\ResourceModel\Quote\Item;
-use Magento\Tests\NamingConvention\true\object;
 
 /**
  * Useful helper functions for item

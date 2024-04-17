@@ -98,7 +98,6 @@ class CartItemPricesPlugin
             }
         }
 
-
         return $result;
     }
 }
