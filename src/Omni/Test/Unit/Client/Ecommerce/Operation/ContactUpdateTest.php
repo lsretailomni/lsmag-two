@@ -36,8 +36,8 @@ class ContactUpdateTest extends OmniClientSetupTest
         $contactUpdate = new ContactUpdate();
         $contactUpdate->setContact($contact);
         $contactUpdate->setGetContact(1);
-        $response = $this->client->ContactUpdate($contactUpdate);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ContactUpdate", $contactUpdate);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(MemberContact::class, $result);
         $this->assertInstanceOf(ArrayOfAddress::class, $result->getAddresses());
         $this->assertInstanceOf(ArrayOfCard::class, $result->getCards());

@@ -35,8 +35,8 @@ class ContactCreateTest extends OmniClientSetupTest
         $contactCreate = new ContactCreate();
         $contactCreate->setContact($contact);
         $contactCreate->setDoLogin(1);
-        $response = $this->client->ContactCreate($contactCreate);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ContactCreate", $contactCreate);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(MemberContact::class, $result);
         $this->assertInstanceOf(ArrayOfAddress::class, $result->getAddresses());
         $this->assertInstanceOf(ArrayOfCard::class, $result->getCards());

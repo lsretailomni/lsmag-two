@@ -16,7 +16,7 @@ class ContactSearchTest extends OmniClientSetupTest
             'searchType' => Entity\Enum\ContactSearchType::USER_NAME,
             'search'     => $username
         ];
-        $response = $this->client->ContactSearch($params);
+        $response = $this->executeMethod("ContactSearch", $params);
         $this->assertInstanceOf(ContactSearchResponse::class, $response);
     }
 
@@ -29,7 +29,7 @@ class ContactSearchTest extends OmniClientSetupTest
             'searchType' => Entity\Enum\ContactSearchType::EMAIL,
             'search'     => $email
         ];
-        $response = $this->client->ContactSearch($params);
+        $response = $this->executeMethod("ContactSearch", $params);
         $this->assertInstanceOf(ContactSearchResponse::class, $response);
     }
 }

@@ -13,6 +13,7 @@ use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order;
 use Magento\Sales\Model\OrderRepository;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Backend\Model\Session\Quote as BackendQuoteSession;
 
 /**
  * Class for cancelling the order
@@ -39,22 +40,29 @@ class OrderManagement
     private $basketHelper;
 
     /**
-     * OrderManagement constructor.
+     * @var BackendQuoteSession
+     */
+    private $backendQuoteSession;
+
+    /**
      * @param LSR $lsr
      * @param OrderHelper $orderHelper
      * @param OrderRepository $orderRepository
      * @param BasketHelper $basketHelper
+     * @param BackendQuoteSession $backendQuoteSession
      */
     public function __construct(
         LSR $lsr,
         OrderHelper $orderHelper,
         OrderRepository $orderRepository,
-        BasketHelper $basketHelper
+        BasketHelper $basketHelper,
+        BackendQuoteSession $backendQuoteSession
     ) {
-        $this->lsr             = $lsr;
-        $this->orderHelper     = $orderHelper;
-        $this->orderRepository = $orderRepository;
-        $this->basketHelper    = $basketHelper;
+        $this->lsr                 = $lsr;
+        $this->orderHelper         = $orderHelper;
+        $this->orderRepository     = $orderRepository;
+        $this->basketHelper        = $basketHelper;
+        $this->backendQuoteSession = $backendQuoteSession;
     }
 
     /**
@@ -75,7 +83,7 @@ class OrderManagement
         $order      = $this->orderRepository->get($id);
         $documentId = $order->getDocumentId();
         $websiteId  = $order->getStore()->getWebsiteId();
-        if (!$order->hasInvoices()) {
+        if (!$order->hasInvoices() && empty($this->backendQuoteSession->getOrder()->getId())) {
             /**
              * Adding condition to only process if LSR is enabled.
              */

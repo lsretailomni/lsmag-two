@@ -12,8 +12,8 @@ class ReplEcommDiscountTest extends ReplicationTest
     {
         $request = new ReplEcommDiscounts();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommDiscounts($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommDiscounts", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplDiscountResponse::class, $result);
         $this->assertNotNull($result->getDiscounts());
         $this->assertInstanceOf(ArrayOfReplDiscount::class, $result->getDiscounts());

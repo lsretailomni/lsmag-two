@@ -10,8 +10,8 @@ class StoresGetAllTest extends OmniClientSetupTest
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $response = $this->client->StoresGetAll();
-        $result   = $response->getResult();
+        $response = $this->executeMethod("StoresGetAll");
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfStore::class, $result);
         $stores = $result->getStore();
         foreach ($stores as $store) {

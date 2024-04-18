@@ -6,6 +6,9 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use Magento\Framework\Exception\NoSuchEntityException;
 
+/**
+ * Totals class to return total lines
+ */
 class Totals extends AbstractOrderBlock
 {
     /**
@@ -42,29 +45,34 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
+     * Get Total Tax
+     *
      * @return mixed
      */
     public function getTotalTax()
     {
         $grandTotal     = $this->getGrandTotal();
-        $totalNetAmount = $this->getTotalNetAmount();
+        $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
+        $totalNetAmount = $this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount");
         return ($grandTotal - $totalNetAmount);
     }
 
     /**
-     * To fetch TotalNetAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     * To fetch TotalNetAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResul
+     *
      * @return mixed
      */
     public function getTotalNetAmount()
     {
         $lineItemObj = ($this->getItems()) ? $this->getItems() : $this->getOrder();
-        return $this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount");
+        $shipmentFee = $this->getShipmentChargeLineFee();
+        return (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalNetAmount") - (float)$shipmentFee
+            + (float)$this->orderHelper->getParameterValues($lineItemObj, "TotalDiscount");
     }
 
     /**
      * To fetch TotalAmount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getGrandTotal()
@@ -74,6 +82,8 @@ class Totals extends AbstractOrderBlock
     }
 
     /**
+     * Get total amount
+     *
      * @return float
      */
     public function getTotalAmount()
@@ -83,7 +93,7 @@ class Totals extends AbstractOrderBlock
 
     /**
      * To fetch TotalDiscount value from SalesEntryGetResult or SalesEntryGetReturnSalesResult
-     * depending on the structure of SalesEntry node
+     *
      * @return mixed
      */
     public function getTotalDiscount()
@@ -104,9 +114,9 @@ class Totals extends AbstractOrderBlock
         $fee        = 0;
         foreach ($orderLines as $key => $line) {
             if ($line->getItemId() == $this->lsr->getStoreConfig(
-                    LSR::LSR_SHIPMENT_ITEM_ID,
-                    $this->lsr->getCurrentStoreId()
-                )) {
+                LSR::LSR_SHIPMENT_ITEM_ID,
+                $this->lsr->getCurrentStoreId()
+            )) {
                 $fee = $line->getAmount();
                 break;
             }

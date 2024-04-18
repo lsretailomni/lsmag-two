@@ -12,8 +12,8 @@ class SalesEntriesGetByCardIdTest extends OmniClientSetupTest
         $param    = [
             'cardId' => $this->getEnvironmentVariableValueGivenName('CARD_ID')
         ];
-        $response = $this->client->SalesEntriesGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("SalesEntriesGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfSalesEntry::class, $result);
         $testOrder = $result->getSalesEntry();
         if (!empty($testOrder)) {

@@ -21,15 +21,19 @@ class OmniClientSetupTest extends TestCase
         $uri          = UriFactory::factory($url);
         $this->client = new OmniClient($uri, $service_type);
         $this->client->setClassmap(ClassMap::getClassMap());
+        $this->client->setLocation($this->client->getWSDL());
         $this->assertNotNull($this->client);
     }
 
     public function testExecute()
     {
         $pong = $this->client->Ping();
-        $this->assertStringContainsString(
-            'PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS Central DB] & [LS Central WS]',
-            $pong->getResult()
+        $this->assertThat(
+            $pong->getResult(),
+            $this->logicalOr(
+                $this->stringContains('PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS Central DB] & [LS Central WS]'),
+                $this->stringContains('PONG OK> Successfully connected to [Commerce Service for LS Central DB] & [LS SaaS] & [LS Central WS]')
+            )
         );
     }
 
@@ -43,5 +47,31 @@ class OmniClientSetupTest extends TestCase
     {
         // phpcs:ignore Magento2.Functions.DiscouragedFunction
         return getenv($name);
+    }
+
+    /**
+     * Execute given method
+     *
+     * @param $methodName
+     * @param $param
+     * @return null
+     */
+    public function executeMethod($methodName, $param = null)
+    {
+        try {
+
+            if ($param) {
+                $response = $this->client->{$methodName}($param);
+            } else {
+                $response = $this->client->{$methodName}();
+            }
+
+        } catch (\Exception $e) {
+            // phpcs:ignore Magento2.Security.LanguageConstruct.DirectOutput
+            echo $e->getMessage();
+            $response = null;
+        }
+
+        return $response;
     }
 }

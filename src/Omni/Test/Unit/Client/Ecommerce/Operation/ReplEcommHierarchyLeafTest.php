@@ -12,8 +12,8 @@ class ReplEcommHierarchyLeafTest extends ReplicationTest
     {
         $request = new ReplEcommHierarchyLeaf();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommHierarchyLeaf($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommHierarchyLeaf", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplHierarchyLeafResponse::class, $result);
         $this->assertNotNull($result->getLeafs());
         $this->assertInstanceOf(ArrayOfReplHierarchyLeaf::class, $result->getLeafs());
