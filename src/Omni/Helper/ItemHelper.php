@@ -363,14 +363,16 @@ class ItemHelper extends AbstractHelper
                 if ($customPrice > 0 && $customPrice != null) {
                     foreach ($discountsLines as $orderDiscountLine) {
                         if ($line->getLineNumber() == $orderDiscountLine->getLineNumber()) {
-                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)
-                                && !$graphQlRequest) {
-                                $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
-                            } else {
-                                $discountInfo[] = [
-                                    'description' => $orderDiscountLine->getDescription(),
-                                    'value'       => $orderDiscountLine->getDiscountAmount()
-                                ];
+                            if (!in_array($orderDiscountLine->getDescription() . '<br />', $discountInfo)) {
+                                if (!$graphQlRequest) {
+                                    $discountInfo[] = $orderDiscountLine->getDescription() . '<br />';
+                                } else {
+                                    $discountInfo[] = [
+                                        'description' => $orderDiscountLine->getDescription(),
+                                        'value'       => $orderDiscountLine->getDiscountAmount()
+                                    ];
+                                }
+
                             }
                         }
                     }
@@ -492,7 +494,8 @@ class ItemHelper extends AbstractHelper
                 $giftCardAmount = $quote->getLsGiftCardAmountUsed();
                 $quote->getShippingAddress()
                     ->setGrandTotal(
-                        $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount);
+                        $basketData->getTotalAmount() - $giftCardAmount - $pointDiscount
+                    );
             }
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
