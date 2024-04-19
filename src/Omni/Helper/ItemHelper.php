@@ -314,9 +314,7 @@ class ItemHelper extends AbstractHelper
             $this->_logger->error($e->getMessage());
         }
 
-        if (!empty($discountInfo) && !$graphQlRequest) {
-            return [implode($discountInfo), $discountText];
-        } elseif (!empty($discountInfo) && $graphQlRequest) {
+        if (!empty($discountInfo)) {
             return [$discountInfo, $discountText];
         } else {
             return null;
