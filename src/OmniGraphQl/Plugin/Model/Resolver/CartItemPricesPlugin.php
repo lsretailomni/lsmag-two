@@ -84,7 +84,7 @@ class CartItemPricesPlugin
                         $result['discounts'][] = [
                             'label'  => $discountDescription,
                             'amount' => [
-                                'value' => -$discountData['value']
+                                'value' => $discountData['value']
                             ]
                         ];
                     }
@@ -93,7 +93,7 @@ class CartItemPricesPlugin
 
             if ($itemTotalDiscount > 0) {
                 $result['total_item_discount'] = [
-                    'value' => -$itemTotalDiscount
+                    'value' => $itemTotalDiscount
                 ];
             }
         }
