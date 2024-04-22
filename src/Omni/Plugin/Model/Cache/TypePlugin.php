@@ -3,7 +3,6 @@
 namespace Ls\Omni\Plugin\Model\Cache;
 
 use \Ls\Core\Model\LSR;
-use Ls\Replication\Logger\Logger;
 use Magento\PageCache\Model\Cache\Type;
 
 class TypePlugin
@@ -12,16 +11,13 @@ class TypePlugin
      * @var LSR
      */
     public $lsr;
-    private Logger $logger;
 
     /**
      * @param LSR $lsr
-     * @param Logger $logger
      */
-    public function __construct(LSR $lsr, Logger $logger)
+    public function __construct(LSR $lsr)
     {
         $this->lsr = $lsr;
-        $this->logger = $logger;
     }
 
     /**
