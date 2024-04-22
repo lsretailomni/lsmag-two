@@ -461,6 +461,7 @@ class ProductCreateTask
         $this->dataTranslationTask                       = $dataTranslationTask;
         $this->imageService                              = $imageService;
         $this->sortOrderBuilder                          = $sortOrderBuilder;
+        $this->lsr->setFpcInvalidateFlag(true);
     }
 
     /**

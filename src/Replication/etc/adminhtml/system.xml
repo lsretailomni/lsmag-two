@@ -233,6 +233,17 @@
                     <label>Item Image Height</label>
                     <comment>Selected image height will be used in image replication</comment>
                 </field>
+                <field id="stop_fpc_purge_on_index"
+                       translate="label"
+                       type="select"
+                       sortOrder="250"
+                       showInDefault="1"
+                       showInWebsite="0"
+                       showInStore="0">
+                    <label>Stop FPC purge by indexers</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>This will stop the indexers to purge full page cache everytime anything changes related to item to improve performance.</comment>
+                </field>
             </group>
             <group id="one_list"
                    translate="label"
