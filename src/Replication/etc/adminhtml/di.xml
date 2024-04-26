@@ -259,4 +259,7 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Backend\Model\Menu\Config">
+        <plugin name="ls_replication_remove_menu_item_admin" type="Ls\Replication\Plugin\Admin\Config"/>
+    </type>
 </config>
