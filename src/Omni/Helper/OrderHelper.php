@@ -519,7 +519,7 @@ class OrderHelper extends AbstractHelper
         $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
         $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
 
-        $noOrderPayment = $this->paymentLineNotRequiredPaymentMethods();
+        $noOrderPayment = $this->paymentLineNotRequiredPaymentMethods($order);
 
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
@@ -596,9 +596,10 @@ class OrderHelper extends AbstractHelper
      *
      * Payment methods with no need to send in payment line
      *
+     * @param Model\Order $order
      * @return string[]
      */
-    public function paymentLineNotRequiredPaymentMethods()
+    public function paymentLineNotRequiredPaymentMethods(Model\Order $order)
     {
         return ['ls_payment_method_pay_at_store', 'free'];
     }

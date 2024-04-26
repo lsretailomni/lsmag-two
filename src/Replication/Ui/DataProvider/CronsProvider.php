@@ -136,16 +136,18 @@ class CronsProvider extends DataProvider implements DataProviderInterface
      */
     public function getData()
     {
-        $cronsGroupListing = $this->readCronFile();
+        $scopeId           = $this->request->getParam('scope_id');
         $items             = [];
         $counter           = 1;
         $scope             = $this->request->getParam('scope');
-        $scopeId           = $this->request->getParam('scope_id');
         $pagingParam       = $this->request->getParam('paging');
 
         if ($scopeId === null) {
             $scopeId = $this->getDefaultStoreId();
         }
+
+        $cronsGroupListing = $this->readCronFile($scopeId);
+        $versionRes = version_compare($this->lsr->getOmniVersion($scopeId, $scope), '2024.4.0', '>=');
 
         foreach ($cronsGroupListing as $cronlist) {
             $path = '';
@@ -167,7 +169,15 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                 $fullReplicationStatus    = '0';
                 $cronName                 = $joblist['_attribute']['name'];
                 $isTranslationRelatedCron = $this->showTranslationRelatedCronJobsAtStoreLevel($cronName);
-
+                if (($cronName == 'repl_discount' || $cronName == 'repl_discount_create' ||
+                        $cronName == 'repl_discount_status_reset') && $versionRes) {
+                    continue;
+                }
+                if (($cronName == 'repl_discount_setup' || $cronName == 'repl_discount_create_setup' ||
+                        $cronName == 'repl_discount_setup_status_reset' || $cronName == 'repl_discount_validation') &&
+                    !$versionRes) {
+                    continue;
+                }
                 if (!$this->lsr->isSSM()) {
                     if ($scope == ScopeInterface::SCOPE_STORES) {
                         if (($cronlist['_attribute']['id'] == 'flat_replication' ||
@@ -249,9 +259,10 @@ class CronsProvider extends DataProvider implements DataProviderInterface
     /**
      * This is being used in Hospitality module, so do not change the structure of it.
      *
+     * @param $scopeId
      * @return mixed
      */
-    public function readCronFile()
+    public function readCronFile($scopeId = null)
     {
         try {
             $filePath    = $this->moduleDirReader->getModuleDir('etc', 'Ls_Replication') . '/crontab.xml';

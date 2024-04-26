@@ -165,16 +165,21 @@ class Grid extends Action
                 $info = $cron->executeManually($storeData);
                 if (!empty($info)) {
                     $executeMoreData = '';
-                    if ($info[0] > 0) {
-                        $executeMoreData = $this->_url->getUrl(
-                            LSR::URL_PATH_EXECUTE,
-                            ['joburl' => $jobUrl, 'jobname' => $jobName, 'scope_id' => $scopeId, 'scope' => $scope]
+                    if (is_int($info[0])) {
+                        if ($info[0] >0) {
+                            $executeMoreData = $this->_url->getUrl(
+                                LSR::URL_PATH_EXECUTE,
+                                ['joburl' => $jobUrl, 'jobname' => $jobName, 'scope_id' => $scopeId, 'scope' => $scope]
+                            );
+                        }
+                        $this->messageManager->addComplexSuccessMessage(
+                            'cronlinkmessage',
+                            ['url' => $executeMoreData, 'jobName' => $jobName, 'remaining' => $info[0]]
                         );
+                    } else {
+                        $this->messageManager->addErrorMessage($info[0]);
                     }
-                    $this->messageManager->addComplexSuccessMessage(
-                        'cronlinkmessage',
-                        ['url' => $executeMoreData, 'jobName' => $jobName, 'remaining' => $info[0]]
-                    );
+
                 }
 
                 $resultRedirect->setUrl($this->_redirect->getRefererUrl());
