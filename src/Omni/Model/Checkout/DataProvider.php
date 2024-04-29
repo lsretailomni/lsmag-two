@@ -229,25 +229,27 @@ class DataProvider implements ConfigProviderInterface
                     $this->lsr->getAdminStore()->getWebsiteId()
             )->addFieldToFilter('ClickAndCollect', 1);
 
-        $allStores = $this->storeHelper->getAllStores(
-            !$this->lsr->isSSM() ?
-                $this->lsr->getCurrentStoreId() :
-                $this->lsr->getAdminStore()->getId()
-        );
+        if ($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) {
+            $allStores = $this->storeHelper->getAllStores(
+                !$this->lsr->isSSM() ?
+                    $this->lsr->getCurrentStoreId() :
+                    $this->lsr->getAdminStore()->getId()
+            );
 
-        if ($this->lsr->isPickupTimeslotsEnabled()) {
-            $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
+            if ($this->lsr->isPickupTimeslotsEnabled()) {
+                $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
 
-            if (!empty($storeHoursArray)) {
-                $this->checkoutSession->setStorePickupHours($storeHoursArray);
+                if (!empty($storeHoursArray)) {
+                    $this->checkoutSession->setStorePickupHours($storeHoursArray);
+                }
             }
-        }
 
-        if ($this->lsr->isDeliveryTimeslotsEnabled()) {
-            $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
+            if ($this->lsr->isDeliveryTimeslotsEnabled()) {
+                $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
 
-            if (!empty($deliveryHoursArray)) {
-                $this->checkoutSession->setDeliveryHours($deliveryHoursArray);
+                if (!empty($deliveryHoursArray)) {
+                    $this->checkoutSession->setDeliveryHours($deliveryHoursArray);
+                }
             }
         }
 
@@ -257,10 +259,6 @@ class DataProvider implements ConfigProviderInterface
 
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
-
-        if (!$this->availableStoresOnlyEnabled()) {
-            return $storesData;
-        }
 
         if ($response) {
             if (is_object($response)) {
