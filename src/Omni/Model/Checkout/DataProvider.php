@@ -211,8 +211,6 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
-     * This function is overriding in hospitality module
-     *
      * Get stores
      *
      * @return Collection
@@ -220,15 +218,63 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getStores()
     {
-        $storesData = $this->storeCollectionFactory
-            ->create()
+        $storesData = $this->getRequiredStores();
+
+        $this->setRespectiveTimeSlotsInCheckoutSession();
+
+        if (!$this->availableStoresOnlyEnabled()) {
+            return $storesData;
+        }
+        $this->checkoutSession->setNoManageStock(0);
+        $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
+        list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
+
+        if ($response) {
+            if (is_object($response)) {
+                if (!is_array($response->getInventoryResponse())) {
+                    $response = [$response->getInventoryResponse()];
+                } else {
+                    $response = $response->getInventoryResponse();
+                }
+            }
+
+            $clickNCollectStoresIds = $this->getClickAndCollectStoreIds($storesData);
+            $this->filterClickAndCollectStores($response, $clickNCollectStoresIds);
+
+            return $this->filterStoresOnTheBasisOfQty($response, $items);
+        }
+
+        return null;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Get all click and collect stores
+     *
+     * @return Collection|null
+     * @throws NoSuchEntityException
+     */
+    public function getRequiredStores()
+    {
+        return $this->storeCollectionFactory->create()
             ->addFieldToFilter(
                 'scope_id',
                 !$this->lsr->isSSM() ?
                     $this->lsr->getCurrentWebsiteId() :
                     $this->lsr->getAdminStore()->getWebsiteId()
             )->addFieldToFilter('ClickAndCollect', 1);
+    }
 
+    /**
+     * Set both pick up and delivery calenders in checkout session based on configurations
+     *
+     * @return void
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function setRespectiveTimeSlotsInCheckoutSession()
+    {
         if ($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) {
             $allStores = $this->storeHelper->getAllStores(
                 !$this->lsr->isSSM() ?
@@ -252,30 +298,6 @@ class DataProvider implements ConfigProviderInterface
                 }
             }
         }
-
-        if (!$this->availableStoresOnlyEnabled()) {
-            return $storesData;
-        }
-
-        $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
-        list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
-
-        if ($response) {
-            if (is_object($response)) {
-                if (!is_array($response->getInventoryResponse())) {
-                    $response = [$response->getInventoryResponse()];
-                } else {
-                    $response = $response->getInventoryResponse();
-                }
-            }
-
-            $clickNCollectStoresIds = $this->getClickAndCollectStoreIds($storesData);
-            $this->filterClickAndCollectStores($response, $clickNCollectStoresIds);
-
-            return $this->filterStoresOnTheBasisOfQty($response, $items);
-        }
-
-        return null;
     }
 
     /**
@@ -292,7 +314,11 @@ class DataProvider implements ConfigProviderInterface
         $storeHoursArray = [];
 
         if ($allStores == null) {
-            $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
+            $allStores = $this->storeHelper->getAllStores(
+                !$this->lsr->isSSM() ?
+                    $this->getStoreId() :
+                    $this->lsr->getAdminStore()->getId()
+            );
         }
 
         foreach ($allStores as $store) {
@@ -308,7 +334,7 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
-     * This function is using in hospitality
+     * This function is overriding in hospitality module
      *
      * Available Stores only enabled
      *
