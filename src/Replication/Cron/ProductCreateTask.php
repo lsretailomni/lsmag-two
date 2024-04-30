@@ -300,6 +300,11 @@ class ProductCreateTask
     public $sortOrderBuilder;
 
     /**
+     * @var string
+     */
+    public $message;
+
+    /**
      * @param Config $eavConfig
      * @param ConfigurableProTypeModel $configurable
      * @param Attribute $attribute
@@ -799,7 +804,11 @@ class ProductCreateTask
      */
     public function executeManually($storeData = null)
     {
+        $this->message = '';
         $this->execute($storeData);
+        if (!empty($this->message)) {
+            return [$this->message];
+        }
         $itemsLeftToProcess = (int)$this->getRemainingRecords($storeData);
         return [$itemsLeftToProcess];
     }
@@ -919,16 +928,17 @@ class ProductCreateTask
             $cronAttributeCheck,
             $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
-
+        $this->message .='Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName().':';
+        $this->message.=((int)$cronCategoryCheck)?'':"\nrepl_categories,";
+        $this->message.=((int)$cronAttributeCheck)?'':".\nrepl_attributes,";
+        $this->message.=((int)$cronAttributeVariantCheck)?'':"\nrepl_attributes,";
+        $this->message.=((int)$fullReplicationImageLinkStatus)?'':"\nrepl_image_link,";
+        $this->message.=((int)$fullReplicationBarcodeStatus)?'':"\nrepl_barcode,";
+        $this->message.=((int)$fullReplicationPriceStatus)?'':"\nrepl_price,";
+        $this->message.=((int)$fullReplicationInvStatus)?'':"\nrepl_inv_status";
+        $this->message = rtrim($this->message,',');
         // @codingStandardsIgnoreLine
-        $this->logger->debug('Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName() .
-            "\n Status cron CategoryCheck = " . $cronCategoryCheck .
-            "\n Status cron AttributeCheck = " . $cronAttributeCheck .
-            "\n Status cron AttributeVariantCheck = " . $cronAttributeVariantCheck .
-            "\n Status full ReplicationImageLinkStatus = " . $fullReplicationImageLinkStatus .
-            "\n Status full ReplicationBarcodeStatus = " . $fullReplicationBarcodeStatus .
-            "\n Status full ReplicationPriceStatus = " . $fullReplicationPriceStatus .
-            "\n Status full ReplicationInvStatus = " . $fullReplicationInvStatus);
+        $this->logger->debug($this->message);
     }
 
     /**

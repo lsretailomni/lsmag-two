@@ -100,6 +100,11 @@ class DiscountCreateSetupTask
     public $store;
 
     /**
+     * @var string
+     */
+    public $message;
+
+    /**
      * @param CatalogRuleRepositoryInterface $catalogRule
      * @param RuleFactory $ruleFactory
      * @param RuleCollectionFactory $ruleCollectionFactory
@@ -353,6 +358,8 @@ class DiscountCreateSetupTask
                         /* Synchronize validation period */
                         $this->syncValidationPeriod();
                         $this->logger->debug('End DiscountCreateTask for store ' . $this->store->getName());
+                    } else {
+                        $this->message = __('repl_discount_validation from scope website level should run first.');
                     }
                 }
                 $this->lsr->setStoreId(null);
@@ -373,7 +380,11 @@ class DiscountCreateSetupTask
     public function executeManually(
         $storeData = null
     ) {
+        $this->message = '';
         $this->execute($storeData);
+        if (!empty($this->message)) {
+            return [$this->message];
+        }
         $discountsLeftToProcess = $this->getRemainingRecords($storeData->getId());
         return [$discountsLeftToProcess];
     }
