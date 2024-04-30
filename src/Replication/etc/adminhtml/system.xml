@@ -240,9 +240,9 @@
                        showInDefault="1"
                        showInWebsite="0"
                        showInStore="0">
-                    <label>Stop Built in FPC purge by indexers</label>
+                    <label>Stop FPC purge by indexers</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <comment>This will stop indexers to purge magento's built in full page cache everytime anything changes related to an item using our replication jobs only in order to improve performance.</comment>
+                    <comment>This will stop adobe commerce indexers to purge built in or Varnish full page cache everytime anything changes related to an item due to our replication jobs only. Additionally, you also need to update the partial indexer i.e. indexer_update_all_views schedule as needed.</comment>
                 </field>
             </group>
             <group id="one_list"
