@@ -167,27 +167,43 @@ class StoreHelper extends AbstractHelper
      * @param $webStoreId
      * @return array|Entity\ArrayOfStore|Entity\StoresGetAllResponse|Entity\StoresGetResponse|ResponseInterface|null
      * @throws NoSuchEntityException
-     * @throws \Ls\Omni\Exception\InvalidEnumException
      */
     public function getAllStores($webStoreId)
     {
         $response = [];
-        $baseUrl  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $webStoreId);
-        // @codingStandardsIgnoreStart
-        if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
-            $request = new Entity\StoresGet();
-            $request->setIncludeDetails(true);
-            $operation = new Operation\StoresGet($baseUrl);
+        $cacheId        = LSR::STORES;
+        $cachedResponse = $this->cacheHelper->getCachedContent($cacheId);
+
+        if ($cachedResponse) {
+            $response = $cachedResponse;
         } else {
-            $request   = new Entity\StoresGetAll();
-            $operation = new Operation\StoresGetAll($baseUrl);
+            $baseUrl  = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $webStoreId);
+            // @codingStandardsIgnoreStart
+            if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
+                $request = new Entity\StoresGet();
+                $request->setIncludeDetails(true);
+                $operation = new Operation\StoresGet($baseUrl);
+            } else {
+                $request   = new Entity\StoresGetAll();
+                $operation = new Operation\StoresGetAll($baseUrl);
+            }
+            // @codingStandardsIgnoreEnd
+            try {
+                $response = $operation->execute($request);
+
+                if (!empty($response)) {
+                    $this->cacheHelper->persistContentInCache(
+                        $cacheId,
+                        $response,
+                        [Type::CACHE_TAG],
+                        86400
+                    );
+                }
+            } catch (Exception $e) {
+                $this->_logger->error($e->getMessage());
+            }
         }
-        // @codingStandardsIgnoreEnd
-        try {
-            $response = $operation->execute($request);
-        } catch (Exception $e) {
-            $this->_logger->error($e->getMessage());
-        }
+
         return $response ? $response->getResult() : $response;
     }
 
