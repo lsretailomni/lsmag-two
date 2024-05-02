@@ -149,6 +149,15 @@
         <plugin name="bundle_product_final_price_override"
                 type="Ls\Omni\Plugin\Bundle\Helper\Catalog\Product\ConfigurationPlugin"/>
     </type>
+    <type name="Magento\PageCache\Model\Cache\Type">
+        <plugin name="stop_built_in_fpc_purge"
+                type="Ls\Omni\Plugin\Model\Cache\TypePlugin"/>
+    </type>
+    <type name="Magento\CacheInvalidate\Model\PurgeCache">
+        <plugin name="stop_varnish_fpc_purge"
+                type="Ls\Omni\Plugin\Model\Cache\PurgeCachePlugin"/>
+    </type>
+
     <type name="Ls\Omni\Helper\AbstractHelperOmni">
         <arguments>
             <argument name="basketHelper" xsi:type="object">Ls\Omni\Helper\BasketHelper\Proxy</argument>

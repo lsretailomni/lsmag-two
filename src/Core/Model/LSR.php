@@ -87,6 +87,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_ITEM_IMAGE_WIDTH = 'ls_mag/replication/item_image_width';
     const SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT = 'ls_mag/replication/item_image_height';
+
+    const SC_REPLICATION_DEFAULT_STOP_FPC_PURGE = 'ls_mag/replication/stop_fpc_purge_on_index';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
@@ -552,6 +554,11 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $validateBaseUrlScope = null;
 
     /**
+     * @var bool
+     */
+    public $fpcInvalidateFlag = false;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param \Ls\Core\Model\Data $data
@@ -609,6 +616,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $sc = $this->scopeConfig->getValue($path);
         }
         return $sc;
+    }
+
+    /**
+     * Set fpc invalidate flag
+     *
+     * @param $value
+     * @return void
+     */
+    public function setFpcInvalidateFlag($value)
+    {
+        $this->fpcInvalidateFlag = $value;
     }
 
     /**
@@ -988,6 +1006,32 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             self::LS_PLACE_TO_SYNC_BASKET_CALCULATION,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
+    }
+
+    /**
+     * Returns configured value for fpc purge
+     *
+     * @return bool
+     */
+    public function getStopFpcPurge(&$tags)
+    {
+        $config =  $this->fpcInvalidateFlag && (bool) $this->scopeConfig->getValue(
+            self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
+        );
+
+        if (!$config) {
+            return false;
+        }
+
+        foreach ($tags as $index => $tag) {
+            if (str_contains($tag, 'cat_p_') || str_contains($tag, 'cat_c_') || str_contains($tag, 'cat_c_p_')) {
+                unset($tags[$index]);
+            } else {
+                $config = false;
+            }
+        }
+
+        return $config;
     }
 
     /**
