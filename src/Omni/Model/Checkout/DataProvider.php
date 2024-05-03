@@ -211,8 +211,6 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
-     * This function is overriding in hospitality module
-     *
      * Get stores
      *
      * @return Collection
@@ -220,47 +218,16 @@ class DataProvider implements ConfigProviderInterface
      */
     public function getStores()
     {
-        $storesData = $this->storeCollectionFactory
-            ->create()
-            ->addFieldToFilter(
-                'scope_id',
-                !$this->lsr->isSSM() ?
-                    $this->lsr->getCurrentWebsiteId() :
-                    $this->lsr->getAdminStore()->getWebsiteId()
-            )->addFieldToFilter('ClickAndCollect', 1);
+        $storesData = $this->getRequiredStores();
 
-        $allStores = $this->storeHelper->getAllStores(
-            !$this->lsr->isSSM() ?
-                $this->lsr->getCurrentStoreId() :
-                $this->lsr->getAdminStore()->getId()
-        );
-
-        if ($this->lsr->isPickupTimeslotsEnabled()) {
-            $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
-
-            if (!empty($storeHoursArray)) {
-                $this->checkoutSession->setStorePickupHours($storeHoursArray);
-            }
-        }
-
-        if ($this->lsr->isDeliveryTimeslotsEnabled()) {
-            $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
-
-            if (!empty($deliveryHoursArray)) {
-                $this->checkoutSession->setDeliveryHours($deliveryHoursArray);
-            }
-        }
+        $this->setRespectiveTimeSlotsInCheckoutSession();
 
         if (!$this->availableStoresOnlyEnabled()) {
             return $storesData;
         }
-
+        $this->checkoutSession->setNoManageStock(0);
         $items = $this->checkoutSession->getQuote()->getAllVisibleItems();
         list($response) = $this->stockHelper->getGivenItemsStockInGivenStore($items);
-
-        if (!$this->availableStoresOnlyEnabled()) {
-            return $storesData;
-        }
 
         if ($response) {
             if (is_object($response)) {
@@ -281,6 +248,59 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
+     * Get all click and collect stores
+     *
+     * @return Collection|null
+     * @throws NoSuchEntityException
+     */
+    public function getRequiredStores()
+    {
+        return $this->storeCollectionFactory->create()
+            ->addFieldToFilter(
+                'scope_id',
+                !$this->lsr->isSSM() ?
+                    $this->lsr->getCurrentWebsiteId() :
+                    $this->lsr->getAdminStore()->getWebsiteId()
+            )->addFieldToFilter('ClickAndCollect', 1);
+    }
+
+    /**
+     * Set both pick up and delivery calenders in checkout session based on configurations
+     *
+     * @return void
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function setRespectiveTimeSlotsInCheckoutSession()
+    {
+        if ($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) {
+            $allStores = $this->storeHelper->getAllStores(
+                !$this->lsr->isSSM() ?
+                    $this->lsr->getCurrentStoreId() :
+                    $this->lsr->getAdminStore()->getId()
+            );
+
+            if ($this->lsr->isPickupTimeslotsEnabled()) {
+                $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
+
+                if (!empty($storeHoursArray)) {
+                    $this->checkoutSession->setStorePickupHours($storeHoursArray);
+                }
+            }
+
+            if ($this->lsr->isDeliveryTimeslotsEnabled()) {
+                $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
+
+                if (!empty($deliveryHoursArray)) {
+                    $this->checkoutSession->setDeliveryHours($deliveryHoursArray);
+                }
+            }
+        }
+    }
+
+    /**
      * Get relevant store hours
      *
      * @param null $calendarType
@@ -294,7 +314,11 @@ class DataProvider implements ConfigProviderInterface
         $storeHoursArray = [];
 
         if ($allStores == null) {
-            $allStores = $this->storeHelper->getAllStores($this->lsr->getCurrentStoreId());
+            $allStores = $this->storeHelper->getAllStores(
+                !$this->lsr->isSSM() ?
+                    $this->getStoreId() :
+                    $this->lsr->getAdminStore()->getId()
+            );
         }
 
         foreach ($allStores as $store) {
@@ -310,7 +334,7 @@ class DataProvider implements ConfigProviderInterface
     }
 
     /**
-     * This function is using in hospitality
+     * This function is overriding in hospitality module
      *
      * Available Stores only enabled
      *
