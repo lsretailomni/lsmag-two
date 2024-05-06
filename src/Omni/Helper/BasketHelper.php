@@ -1421,6 +1421,62 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Set store_pickup_hours in checkout session being used
+     *
+     * @param $hours
+     */
+    public function setStorePickUpHoursInCheckoutSession($hours)
+    {
+        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_STORE_PICKUP_HOURS, $hours);
+    }
+
+    /**
+     * Get store_pickup_hours from checkout session being used
+     *
+     * @return mixed|null
+     */
+    public function getStorePickUpHoursFromCheckoutSession()
+    {
+        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_STORE_PICKUP_HOURS);
+    }
+
+    /**
+     * Set delivery_hours in checkout session being used
+     *
+     * @param $hours
+     */
+    public function setDeliveryHoursInCheckoutSession($hours)
+    {
+        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_DELIVERY_HOURS, $hours);
+    }
+
+    /**
+     * Get delivery_hours from checkout session being used in case of admin
+     *
+     * @return mixed|null
+     */
+    public function getDeliveryHoursFromCheckoutSession()
+    {
+        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_DELIVERY_HOURS);
+    }
+
+    /**
+     * clear store_pickup_hours from checkout session being used
+     */
+    public function unSetStorePickupHours()
+    {
+        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_STORE_PICKUP_HOURS);
+    }
+
+    /**
+     * clear delivery_hours from checkout session being used
+     */
+    public function unSetDeliveryHours()
+    {
+        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_DELIVERY_HOURS);
+    }
+
+    /**
      * clear correct_store_id from checkout session being used in case of admin
      */
     public function unSetCorrectStoreId()
@@ -1478,6 +1534,8 @@ class BasketHelper extends AbstractHelper
         $this->unSetOneListCalculation();
         $this->unSetCorrectStoreId();
         $this->unSetQuoteId();
+        $this->unSetDeliveryHours();
+        $this->unSetStorePickupHours();
     }
 
     /**
