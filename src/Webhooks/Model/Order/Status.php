@@ -61,9 +61,9 @@ class Status
     public $creditMemoService;
 
     /**
-     * @var string
+     * @var array
      */
-    public $message;
+    public $message = [];
 
     /**
      * @param Data $helper
