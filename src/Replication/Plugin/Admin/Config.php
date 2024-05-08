@@ -35,12 +35,15 @@ class Config
      */
     public function afterGetMenu($subject, $result)
     {
-        if (version_compare($this->lsr->getOmniVersion(), '2024.4.0', '>=')) {
-            $result->remove('Ls_Replication::discount_grid');
-        } else {
-            $result->remove('Ls_Replication::discount_setup_grid');
-            $result->remove('Ls_Replication::discount_validation_grid');
+        if (!empty($this->lsr->getOmniVersion())) {
+            if (version_compare($this->lsr->getOmniVersion(), '2024.4.0', '>=')) {
+                $result->remove('Ls_Replication::discount_grid');
+            } else {
+                $result->remove('Ls_Replication::discount_setup_grid');
+                $result->remove('Ls_Replication::discount_validation_grid');
+            }
         }
+
         return $result;
     }
 }

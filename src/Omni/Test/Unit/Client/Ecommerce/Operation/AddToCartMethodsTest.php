@@ -5,6 +5,7 @@ namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListItem;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListPublishedOffer;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderDiscountLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
@@ -163,8 +164,7 @@ class AddToCartMethodsTest extends OmniClientSetupTest
     public function testApplyCoupon()
     {
         $listItems = new OneListItem();
-        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
-        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('SIMPLE_ITEM_ID'));
         $listItems->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
@@ -179,22 +179,31 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $offer->setId($this->getEnvironmentVariableValueGivenName('COUPON_CODE'));
         $offer->setType('Coupon');
         $oneListRequest->setPublishedOffers($offers);
-        $param    = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response = $this->executeMethod("OneListSave", $param);
+        $oneListRequest->setListType(ListType::BASKET);
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneListRequest);
+        $response = $this->executeMethod("OneListCalculate", $entity);
         $oneList = $response ? $response->getResult() : null;
-        $this->assertInstanceOf(OneList::class, $oneList);
+        $this->assertInstanceOf(Order::class, $oneList);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
-        $this->assertTrue(property_exists($oneList, 'Id'));
-        $this->assertTrue(property_exists($oneList, 'ListType'));
-        $this->assertTrue(property_exists($oneList, 'PublishedOffers'));
-        $this->assertTrue(property_exists($oneList, 'CreateDate'));
-        $this->assertTrue(property_exists($oneList, 'StoreId'));
-        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $oneList->getStoreId());
+        $this->assertTrue(is_string($oneList->getOrderType()));
+        $this->assertEquals(OrderType::SALE, $oneList->getOrderType());
+        $this->assertInstanceOf(ArrayOfOrderLine::class, $oneList->getOrderLines());
+        $this->assertInstanceOf(ArrayOfOrderDiscountLine::class, $oneList->getOrderDiscountLines());
+        $this->assertGreaterThan(0, $oneList->getTotalAmount());
+        $this->assertGreaterThan(0, $oneList->getTotalNetAmount());
+        $this->assertGreaterThan(0, $oneList->getTotalDiscount());
+        $discountExists = false;
+
+        foreach ($oneList->getOrderDiscountLines() as $oneListItemDiscount) {
+            if ($oneListItemDiscount->getOfferNumber() ==
+                $this->getEnvironmentVariableValueGivenName('COUPON_CODE')) {
+                $discountExists = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($discountExists);
     }
 }
