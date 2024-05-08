@@ -154,6 +154,14 @@
         <plugin name="coupon_validation"
                 type="Ls\Omni\Plugin\SalesRule\Model\ValidatorPlugin"/>
     </type>
+    <type name="Magento\PageCache\Model\Cache\Type">
+        <plugin name="stop_built_in_fpc_purge"
+                type="Ls\Omni\Plugin\Model\Cache\TypePlugin"/>
+    </type>
+    <type name="Magento\CacheInvalidate\Model\PurgeCache">
+        <plugin name="stop_varnish_fpc_purge"
+                type="Ls\Omni\Plugin\Model\Cache\PurgeCachePlugin"/>
+    </type>
     <type name="Ls\Omni\Helper\AbstractHelperOmni">
         <arguments>
             <argument name="basketHelper" xsi:type="object">Ls\Omni\Helper\BasketHelper\Proxy</argument>
