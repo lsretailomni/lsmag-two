@@ -84,8 +84,7 @@ class Status
         Invoice $invoice,
         CreditmemoFactory $creditMemoFactory,
         CreditmemoService $creditMemoService
-    )
-    {
+    ) {
         $this->helper            = $helper;
         $this->orderCancel       = $orderCancel;
         $this->creditMemo        = $creditMemo;

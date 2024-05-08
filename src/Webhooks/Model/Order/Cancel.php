@@ -45,8 +45,7 @@ class Cancel
         ItemRepository $itemRepository,
         Data $helper,
         Logger $logger
-    )
-    {
+    ) {
         $this->orderManagement = $orderManagement;
         $this->itemRepository  = $itemRepository;
         $this->helper          = $helper;
