@@ -51,9 +51,10 @@ class OrderStatus implements OrderStatusInterface
                 'orderKOTStatus' => $orderKOTStatus
             ];
             $this->logger->info('OrderStatus = ', $data);
-            $this->status->process($data);
+            return $this->status->process($data);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
+           return $this->status->getHelperObject()->outputMessage(false, __($e->getMessage()));
         }
     }
 }

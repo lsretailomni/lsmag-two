@@ -18,6 +18,8 @@ use Magento\Sales\Model\Service\CreditmemoService;
  */
 class Status
 {
+    public const SUCCESS_MESSAGE = 'success';
+
     /**
      * @var Data
      */
@@ -59,6 +61,11 @@ class Status
     public $creditMemoService;
 
     /**
+     * @var array
+     */
+    public $message = [];
+
+    /**
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
@@ -93,8 +100,8 @@ class Status
      *
      * Process order status based on webhook call from Ls Central
      *
-     * @param array $data
-     * @return void
+     * @param $data
+     * @return string
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -113,6 +120,8 @@ class Status
                 }
             }
         }
+
+        return $this->message;
     }
 
     /**
@@ -190,9 +199,9 @@ class Status
             (($shipmentLineCount == 1 && $magOrder->getShippingAmount()) ? $shipmentLineCount : 0);
 
         if ($magentoOrderTotalItemsQty == count($itemsInfo)) {
-            $this->orderCancel->cancelOrder($magOrder->getEntityId());
+            $this->message = $this->orderCancel->cancelOrder($magOrder->getEntityId());
         } else {
-            $this->orderCancel->cancelItems($magOrder, $items);
+            $this->message = $this->orderCancel->cancelItems($magOrder, $items);
         }
 
         if ($magOrder->hasInvoices() && $this->itemExistsInInvoice($magOrder, $itemsInfo)) {
@@ -216,8 +225,10 @@ class Status
                 }
                 $shippingItemId = $this->helper->getShippingItemId();
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
-                $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
+                $this->message = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
+
+            $this->message = $this->helper->outputMessage(true, __(Status::SUCCESS_MESSAGE));
         }
     }
 
@@ -254,7 +265,7 @@ class Status
      */
     public function getItemInvoice($magOrder, $itemId, $variantId)
     {
-        $invoices  = $magOrder->getInvoiceCollection();
+        $invoices        = $magOrder->getInvoiceCollection();
         $requiredInvoice = false;
 
         foreach ($invoices as $invoice) {
@@ -272,5 +283,15 @@ class Status
         }
 
         return $requiredInvoice;
+    }
+
+    /**
+     * Get Helper Object
+     *
+     * @return Data
+     */
+    public function getHelperObject()
+    {
+        return $this->helper;
     }
 }

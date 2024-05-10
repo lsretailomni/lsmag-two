@@ -158,7 +158,7 @@ class Shipment
         $lines               = $data['lines'];
 
         $magOrder        = $this->helper->getOrderByDocumentId($orderId);
-        $status          = false;
+        $status          = true;
         $statusMsg       = '';
         $shipmentDetails = [];
         if (!empty($magOrder)) {

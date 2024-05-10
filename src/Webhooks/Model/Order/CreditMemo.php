@@ -81,6 +81,7 @@ class CreditMemo
                     throw new LocalizedException(
                         __('The credit memo\'s total must be positive.')
                     );
+                    return $this->helper->outputMessage(false, __('The credit memo\'s total must be positive.'));
                 }
                 if (!empty($creditMemoData['comment_text'])) {
                     $creditMemo->addComment(
@@ -103,10 +104,11 @@ class CreditMemo
                 if (!empty($creditMemoData['send_email'])) {
                     $this->creditMemoSender->send($creditMemo);
                 }
-
+                return $this->helper->outputMessage(true, __(Status::SUCCESS_MESSAGE));
             }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->helper->outputMessage(false, __($e->getMessage()));
         }
     }
 
