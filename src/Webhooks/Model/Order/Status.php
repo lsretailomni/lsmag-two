@@ -101,7 +101,7 @@ class Status
      * Process order status based on webhook call from Ls Central
      *
      * @param $data
-     * @return string
+     * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
@@ -227,8 +227,8 @@ class Status
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
                 $this->message = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
-
-            $this->message = $this->helper->outputMessage(true, __(Status::SUCCESS_MESSAGE));
+            $meesage = Status::SUCCESS_MESSAGE;
+            $this->message = $this->helper->outputMessage(true, __($meesage));
         }
     }
 

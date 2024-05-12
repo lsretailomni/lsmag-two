@@ -38,8 +38,15 @@ class OrderStatus implements OrderStatusInterface
     /**
      * @inheritdoc
      */
-    public function set($orderId, $headerStatus, $msgSubject, $msgDetail, $cardId = null, $lines = null, $orderKOTStatus = null)
-    {
+    public function set(
+        $orderId,
+        $headerStatus,
+        $msgSubject,
+        $msgDetail,
+        $cardId = null,
+        $lines = null,
+        $orderKOTStatus = null
+    ) {
         try {
             $data = [
                 'OrderId'        => $orderId,
@@ -54,7 +61,7 @@ class OrderStatus implements OrderStatusInterface
             return $this->status->process($data);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-           return $this->status->getHelperObject()->outputMessage(false, __($e->getMessage()));
+            return $this->status->getHelperObject()->outputMessage(false, __($e->getMessage()));
         }
     }
 }
