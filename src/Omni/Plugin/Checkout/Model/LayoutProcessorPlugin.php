@@ -110,35 +110,37 @@ class LayoutProcessorPlugin
             unset($billingStep['children']['payment']['children']['afterMethods']['children']['gift-card']);
         }
 
+        if (!$this->lsr->isDiscountValidationEnabled()) {
+            unset($payment['children']['additional-payment-validators']['children']['discount-validator']);
+        }
+
         if (!($this->lsr->isPickupTimeslotsEnabled() || $this->lsr->isDeliveryTimeslotsEnabled()) &&
             $this->lsr->isLSR($this->lsr->getCurrentStoreId())
         ) {
             unset($shippingAdditional['children']['ls-pickup-additional-options-wrapper']);
         }
 
-        if (!$this->lsr->isDiscountValidationEnabled()) {
-            unset($payment['children']['additional-payment-validators']['children']['discount-validator']);
-        }
-
-        if (isset($shippingAdditional['children'])) {
-            $shippingAdditional['children']['select_store'] =
-                ['component' => 'Ls_Omni/js/view/checkout/shipping/select-store', 'sortOrder' => 1];
-        } else {
-            $shippingAdditional =
-                [
-                    'component'   => "uiComponent",
-                    'displayArea' => 'shippingAdditional',
-                    'sortOrder' => 1,
-                    'children'    => [
-                        'select_store' => [
-                            'component' => 'Ls_Omni/js/view/checkout/shipping/select-store'
+        if ($this->lsr->getClickCollectEnabled()) {
+            if (isset($shippingAdditional['children'])) {
+                $shippingAdditional['children']['select_store'] =
+                    ['component' => 'Ls_Omni/js/view/checkout/shipping/select-store', 'sortOrder' => 1];
+            } else {
+                $shippingAdditional =
+                    [
+                        'component'   => "uiComponent",
+                        'displayArea' => 'shippingAdditional',
+                        'sortOrder' => 1,
+                        'children'    => [
+                            'select_store' => [
+                                'component' => 'Ls_Omni/js/view/checkout/shipping/select-store'
+                            ]
                         ]
-                    ]
-                ];
-        }
+                    ];
+            }
 
-        if (!$this->isValid()) {
-            unset($shippingAdditional['children']['select_store']);
+            if (!$this->isValid()) {
+                unset($shippingAdditional['children']['select_store']);
+            }
         }
 
         return $jsLayout;

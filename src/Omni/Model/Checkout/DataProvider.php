@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Stores\Stores;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\StockHelper;
 use \Ls\Omni\Helper\StoreHelper;
 use \Ls\Omni\Helper\GiftCardHelper;
@@ -73,6 +74,11 @@ class DataProvider implements ConfigProviderInterface
     public $giftCardHelper;
 
     /**
+     * @var BasketHelper
+     */
+    public $basketHelper;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
@@ -82,6 +88,7 @@ class DataProvider implements ConfigProviderInterface
      * @param StockHelper $stockHelper
      * @param StoreHelper $storeHelper
      * @param GiftCardHelper $giftCardHelper
+     * @param BasketHelper $basketHelper
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -92,7 +99,8 @@ class DataProvider implements ConfigProviderInterface
         Session $checkoutSession,
         StockHelper $stockHelper,
         StoreHelper $storeHelper,
-        GiftCardHelper $giftCardHelper
+        GiftCardHelper $giftCardHelper,
+        BasketHelper $basketHelper
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
@@ -103,80 +111,89 @@ class DataProvider implements ConfigProviderInterface
         $this->stockHelper            = $stockHelper;
         $this->storeHelper            = $storeHelper;
         $this->giftCardHelper         = $giftCardHelper;
+        $this->basketHelper           = $basketHelper;
     }
 
     /**
      * Get config
      *
+     * This function is overriding in hospitality module
+     *
      * @return array
-     * @throws NoSuchEntityException|LocalizedException
+     * @throws NoSuchEntityException|LocalizedException|InvalidEnumException
      */
     public function getConfig()
     {
         $config = [];
 
         if ($this->isValid()) {
-            $store                = $this->getStoreId();
-            $mapsApiKey           = $this->scopeConfig->getValue(
-                self::XPATH_MAPS_API_KEY,
-                ScopeInterface::SCOPE_STORE,
-                $store
-            );
-            $defaultLatitude      = $this->scopeConfig->getValue(
-                self::XPATH_DEFAULT_LATITUDE,
-                ScopeInterface::SCOPE_STORE,
-                $store
-            );
-            $defaultLongitude     = $this->scopeConfig->getValue(
-                self::XPATH_DEFAULT_LONGITUDE,
-                ScopeInterface::SCOPE_STORE,
-                $store
-            );
-            $defaultZoom          = $this->scopeConfig->getValue(
-                self::XPATH_DEFAULT_ZOOM,
-                ScopeInterface::SCOPE_STORE,
-                $store
-            );
-            $storesResponse       = $this->getStores();
-            $resultPage           = $this->resultPageFactory->create();
-            $storesData           = $resultPage->getLayout()->createBlock(Stores::class)
-                ->setTemplate('Ls_Omni::stores/stores.phtml')
-                ->setData('data', $storesResponse)
-                ->setData('storeHours', 0)
-                ->toHtml();
-            $stores               = $storesResponse ? $storesResponse->toArray() : [];
-            $stores['storesInfo'] = $storesData;
-            $encodedStores        = Json::encode($stores);
+            $clickAndCollectEnabled = $this->lsr->getClickCollectEnabled();
+
+            if ($clickAndCollectEnabled) {
+                $store                = $this->getStoreId();
+                $mapsApiKey           = $this->scopeConfig->getValue(
+                    self::XPATH_MAPS_API_KEY,
+                    ScopeInterface::SCOPE_STORE,
+                    $store
+                );
+                $defaultLatitude      = $this->scopeConfig->getValue(
+                    self::XPATH_DEFAULT_LATITUDE,
+                    ScopeInterface::SCOPE_STORE,
+                    $store
+                );
+                $defaultLongitude     = $this->scopeConfig->getValue(
+                    self::XPATH_DEFAULT_LONGITUDE,
+                    ScopeInterface::SCOPE_STORE,
+                    $store
+                );
+                $defaultZoom          = $this->scopeConfig->getValue(
+                    self::XPATH_DEFAULT_ZOOM,
+                    ScopeInterface::SCOPE_STORE,
+                    $store
+                );
+
+                $storesResponse       = $this->getStores();
+                $resultPage           = $this->resultPageFactory->create();
+                $storesData           = $resultPage->getLayout()->createBlock(Stores::class)
+                    ->setTemplate('Ls_Omni::stores/stores.phtml')
+                    ->setData('data', $storesResponse)
+                    ->setData('storeHours', 0)
+                    ->toHtml();
+                $stores               = $storesResponse ? $storesResponse->toArray() : [];
+                $stores['storesInfo'] = $storesData;
+                $encodedStores        = Json::encode($stores);
+
+                $config['shipping']['select_store'] = [
+                    'maps_api_key'         => $mapsApiKey,
+                    'lat'                  => (float)$defaultLatitude,
+                    'lng'                  => (float)$defaultLongitude,
+                    'zoom'                 => (int)$defaultZoom,
+                    'stores'               => $encodedStores,
+                    'available_store_only' => $this->availableStoresOnlyEnabled()
+                ];
+            }
+
+            if ($this->lsr->getClickCollectEnabled() || $this->lsr->getFlatRateEnabled()) {
+                $this->setRespectiveTimeSlotsInCheckoutSession();
+            }
 
             $enabled              = $this->lsr->isPickupTimeslotsEnabled();
             $deliveryHoursEnabled = $this->lsr->isDeliveryTimeslotsEnabled();
 
-            if (empty($this->checkoutSession->getStorePickupHours())) {
+            if (empty($this->basketHelper->getStorePickUpHoursFromCheckoutSession()) || !$clickAndCollectEnabled) {
                 $enabled = 0;
             }
 
-            if (empty($this->checkoutSession->getDeliveryHours())) {
+            if (empty($this->basketHelper->getDeliveryHoursFromCheckoutSession())) {
                 $deliveryHoursEnabled = 0;
             }
-            $config                    = [
-                'shipping' => [
-                    'select_store'          => [
-                        'maps_api_key'         => $mapsApiKey,
-                        'lat'                  => (float)$defaultLatitude,
-                        'lng'                  => (float)$defaultLongitude,
-                        'zoom'                 => (int)$defaultZoom,
-                        'stores'               => $encodedStores,
-                        'available_store_only' => $this->availableStoresOnlyEnabled()
-                    ],
-                    'pickup_date_timeslots' => [
-                        'options'                => $this->checkoutSession->getStorePickupHours(),
-                        'enabled'                => $enabled,
-                        'current_web_store'      => $this->lsr->getActiveWebStore(),
-                        'store_type'             => 0,
-                        'delivery_hours'         => $this->checkoutSession->getDeliveryHours(),
-                        'delivery_hours_enabled' => $deliveryHoursEnabled
-                    ]
-                ]
+            $config['shipping']['pickup_date_timeslots'] = [
+                'options'                => $this->basketHelper->getStorePickUpHoursFromCheckoutSession(),
+                'enabled'                => $enabled,
+                'current_web_store'      => $this->lsr->getActiveWebStore(),
+                'store_type'             => 0,
+                'delivery_hours'         => $this->basketHelper->getDeliveryHoursFromCheckoutSession(),
+                'delivery_hours_enabled' => $deliveryHoursEnabled
             ];
             $config['coupons_display'] = $this->isCouponsDisplayEnabled();
         }
@@ -219,8 +236,6 @@ class DataProvider implements ConfigProviderInterface
     public function getStores()
     {
         $storesData = $this->getRequiredStores();
-
-        $this->setRespectiveTimeSlotsInCheckoutSession();
 
         if (!$this->availableStoresOnlyEnabled()) {
             return $storesData;
@@ -286,7 +301,7 @@ class DataProvider implements ConfigProviderInterface
                 $storeHoursArray = $this->getRelevantStoreHours(null, $allStores);
 
                 if (!empty($storeHoursArray)) {
-                    $this->checkoutSession->setStorePickupHours($storeHoursArray);
+                    $this->basketHelper->setStorePickUpHoursInCheckoutSession($storeHoursArray);
                 }
             }
 
@@ -294,7 +309,7 @@ class DataProvider implements ConfigProviderInterface
                 $deliveryHoursArray = $this->getRelevantStoreHours(StoreHourCalendarType::RECEIVING, $allStores);
 
                 if (!empty($deliveryHoursArray)) {
-                    $this->checkoutSession->setDeliveryHours($deliveryHoursArray);
+                    $this->basketHelper->setDeliveryHoursInCheckoutSession($deliveryHoursArray);
                 }
             }
         }
