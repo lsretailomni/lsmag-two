@@ -227,8 +227,8 @@ class Status
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
                 $this->message = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
-            $meesage = Status::SUCCESS_MESSAGE;
-            $this->message = $this->helper->outputMessage(true, __($meesage));
+            $message = Status::SUCCESS_MESSAGE;
+            $this->message = $this->helper->outputMessage(true, __($message));
         }
     }
 

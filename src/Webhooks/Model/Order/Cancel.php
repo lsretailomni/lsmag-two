@@ -61,8 +61,8 @@ class Cancel
     {
         try {
             $this->orderManagement->cancel($orderId);
-            $meesage = Status::SUCCESS_MESSAGE;
-            return $this->helper->outputMessage(true, __($meesage));
+            $message = Status::SUCCESS_MESSAGE;
+            return $this->helper->outputMessage(true, __($message));
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
             return $this->helper->outputMessage(false, __($e->getMessage()));
@@ -90,8 +90,8 @@ class Cancel
                     $this->helper->getOrderRepository()->save($magOrder);
                 }
             }
-            $meesage = Status::SUCCESS_MESSAGE;
-            return $this->helper->outputMessage(true, __($meesage));
+            $message = Status::SUCCESS_MESSAGE;
+            return $this->helper->outputMessage(true, __($message));
         }
 
         return [];
