@@ -1265,4 +1265,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $this->data->setLicenseStatus($status);
         }
     }
+
+    /**
+     * Get license validity status
+     *
+     * @throws NoSuchEntityException
+     */
+    public function getLicenseValidity()
+    {
+        return $this->getConfigValueFromDb(
+            LSR::SC_SERVICE_LICENSE_VALIDITY,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
 }

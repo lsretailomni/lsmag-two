@@ -463,6 +463,11 @@ class Data extends AbstractHelper
             $results = explode('LS:', $pingResponseText);
 
             if (!empty($results)) {
+                $licenseHtml = $this->getLicenseStatusHtml($results[1]);
+                if($licenseHtml != "") {
+                    $bothVersion['license_html'] = $licenseHtml;
+                }
+
                 $versions = explode('Commerce Service for LS Central:', $results[1]);
                 if (!empty($versions) && count($versions) < 2) {
                     $versions = explode('LS Commerce Service:', $results[1]);
@@ -471,7 +476,6 @@ class Data extends AbstractHelper
                     // for Omni lower then 4.16
                     $versions = explode('OMNI:', $results[1]);
                 }
-
                 if (!empty($versions) && count($versions) < 2) {
                     $versions = explode('CS:', $results[1]);
                 }
@@ -485,7 +489,9 @@ class Data extends AbstractHelper
                         $this->updateConfigValueDefault($serviceVersion, LSR::SC_SERVICE_VERSION);
                     }
                     $lsCentralVersion                  = trim($versions[0]);
-                    $bothVersion['ls_central_version'] = $lsCentralVersion;
+                    $lsCentralVersionTxt               = explode('CL:',$lsCentralVersion);
+
+                    $bothVersion['ls_central_version'] = trim($lsCentralVersionTxt[0]);
                     if (!empty($websiteId)) {
                         $this->updateConfigValueWebsite(
                             $lsCentralVersion,
@@ -872,5 +878,36 @@ class Data extends AbstractHelper
         }
 
         return null;
+    }
+
+    /**
+     * Get license status html
+     *
+     * @param $string
+     * @return string
+     */
+    function getLicenseStatusHtml($string)
+    {
+        $licenseHtml = "";
+        if(trim($string) && strpos($string,'CL') !== false) {
+//            echo strpos($string, 'CL:True EL:True');
+            if(strpos($string, 'CL:True EL:True') !== false) {
+                $this->lsr->setLicenseValidity("1");
+                $licenseValidity = 1;
+            } else {
+                $licenseValidity = 0;
+                $this->lsr->setLicenseValidity("0");
+            }
+
+            $validClass   = 'valid-license';
+            $invalidClass = 'invalid-license';
+            $licenseHtml         = "<div class='1 control-value ";
+            $licenseHtml         .= $licenseValidity == "1" ? $validClass : $invalidClass;
+            $licenseHtml         .= "'>";
+            $licenseHtml         .= $licenseValidity == "1" ? __('Valid') : __('Invalid');
+            $licenseHtml         .= "</div>";
+            return $licenseHtml;
+        }
+        return $licenseHtml;
     }
 }

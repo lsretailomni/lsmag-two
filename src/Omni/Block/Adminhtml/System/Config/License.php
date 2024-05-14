@@ -64,12 +64,13 @@ class License extends Field
      */
     protected function _getElementHtml(AbstractElement $element)
     {
+        $licenseValidity = $this->lsr->getLicenseValidity();
         $validClass   = 'valid-license';
         $invalidClass = 'invalid-license';
         $html         = "<div class='control-value ";
-        $html         .= $element->getValue() == "1" ? $validClass : $invalidClass;
+        $html         .= $licenseValidity == "1" ? $validClass : $invalidClass;
         $html         .= "'>";
-        $html         .= $element->getValue() == "1" ? __('Valid') : __('Invalid');
+        $html         .= $licenseValidity == "1" ? __('Valid') : __('Invalid');
         $html         .= "</div>";
 
         return $html;
