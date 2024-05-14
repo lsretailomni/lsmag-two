@@ -245,7 +245,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
+    const SC_CLICKCOLLECT_ENABLED = 'carriers/clickandcollect/active';
 
+    const SC_FLATRATE_ENABLED = 'carriers/flatrate/active';
     //Delivery and pickup time options
     const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot';
     const DELIVERY_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/delivery_date_time_slot';
@@ -284,6 +286,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CHECKOUT_CORRECT_STORE_ID = 'correct_store_id';
     const SESSION_GROUP_ID = 'customer_group_id';
     const SESSION_CUSTOMER_ID = 'customer_id';
+
+    const SESSION_CHECKOUT_STORE_PICKUP_HOURS = 'store_pickup_hours';
+
+    const SESSION_CHECKOUT_DELIVERY_HOURS = 'delivery_hours';
 
     // WORKFLOW
     const W_TYPE = 'T';
@@ -399,6 +405,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
+    const STORES = 'LS_STORES';
     const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
     const PING_RESPONSE_CACHE = 'PING_RESPONSE_';
@@ -730,6 +737,34 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         $message .= __('Go to Stores > Configuration > LS Retail > General Configuration.');
         $message .= '</div>';
         return $message;
+    }
+
+    /**
+     * Check to see if click and collect is enabled
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getClickCollectEnabled()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_CLICKCOLLECT_ENABLED,
+            $this->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Check to see if flatrate is enabled
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getFlatRateEnabled()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_FLATRATE_ENABLED,
+            $this->getCurrentStoreId()
+        );
     }
 
     /**
