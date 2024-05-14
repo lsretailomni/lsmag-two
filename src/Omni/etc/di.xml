@@ -157,7 +157,11 @@
         <plugin name="stop_varnish_fpc_purge"
                 type="Ls\Omni\Plugin\Model\Cache\PurgeCachePlugin"/>
     </type>
-
+    <!-- Plugin to stop validating coupon from magento sales rules -->
+    <type name="Magento\SalesRule\Model\Validator">
+        <plugin name="coupon_validation"
+                type="Ls\Omni\Plugin\SalesRule\Model\ValidatorPlugin"/>
+    </type>
     <type name="Ls\Omni\Helper\AbstractHelperOmni">
         <arguments>
             <argument name="basketHelper" xsi:type="object">Ls\Omni\Helper\BasketHelper\Proxy</argument>

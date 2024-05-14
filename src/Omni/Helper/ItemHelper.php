@@ -315,6 +315,9 @@ class ItemHelper extends AbstractHelper
         }
 
         if (!empty($discountInfo)) {
+            if (!$graphQlRequest) {
+                return [implode($discountInfo), $discountText];
+            }
             return [$discountInfo, $discountText];
         } else {
             return null;
