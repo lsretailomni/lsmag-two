@@ -114,6 +114,9 @@ class ReplicationHelper extends AbstractHelper
     public const COLUMNS_MAPPING = [
         'catalog_product_entity_varchar' => [
             'entity_id' => 'row_id'
+        ],
+        'catalog_product_entity' => [
+            'entity_id' => 'row_id'
         ]
     ];
 
@@ -1613,15 +1616,28 @@ class ReplicationHelper extends AbstractHelper
         }
 
         $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $catalogProductEntityTableAlias = 'cpe';
+        $whereClause = $this->magentoEditionSpecificJoinWhereClause(
+            "$catalogProductEntityTableAlias.entity_id = $itemIdTableAlias.entity_id",
+            'catalog_product_entity_varchar',
+            [$itemIdTableAlias]
+        );
+
+        $whereClause = $this->magentoEditionSpecificJoinWhereClause(
+            $whereClause,
+            'catalog_product_entity',
+            [$catalogProductEntityTableAlias]
+        );
 
         $collection->getSelect()->joinInner(
+            [$catalogProductEntityTableAlias => 'catalog_product_entity'],
+            $whereClause,
+            []
+        );
+        $collection->getSelect()->joinInner(
             ['cpw' => 'catalog_product_website'],
-            $this->magentoEditionSpecificJoinWhereClause(
-                "cpw.product_id = $itemIdTableAlias.entity_id" .
+                "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
                 " AND cpw.website_id = $websiteId",
-                'catalog_product_entity_varchar',
-                [$itemIdTableAlias]
-            ),
             []
         );
     }
