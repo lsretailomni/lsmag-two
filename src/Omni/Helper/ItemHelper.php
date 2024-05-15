@@ -415,14 +415,17 @@ class ItemHelper extends AbstractHelper
      */
     public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts(&$quote, $basketData, $type = 1)
     {
-        $quoteItemList = $quote->getAllVisibleItems();
         $orderLines = [];
+        $quoteItemList = $quote->getAllVisibleItems();
+
+        if (count($quoteItemList) && !empty($basketData)) {
+            $orderLines = $basketData->getOrderLines()->getOrderLine();
+        }
+
         foreach ($quoteItemList as $quoteItem) {
             $bundleProduct = $customPrice = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
             $children      = [];
-            if ($basketData && empty($orderLines)) {
-                $orderLines = $basketData->getOrderLines()->getOrderLine();
-            }
+
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
                 $children      = $quoteItem->getChildren();
                 $bundleProduct = 1;
@@ -434,7 +437,7 @@ class ItemHelper extends AbstractHelper
                 foreach ($orderLines as $index => $line) {
                     if (is_numeric($line->getId()) ?
                         $child->getItemId() == $line->getId() :
-                        $this->isSameItem($quoteItem, $child)
+                        $this->isSameItem($child, $line)
                     ) {
                         $unitPrice = $line->getAmount() / $line->getQuantity();
                         $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
@@ -761,8 +764,8 @@ class ItemHelper extends AbstractHelper
     public function isSameItem($quoteItem, $line)
     {
         $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->getComparisonValues(
-            $quoteItem->getSku()
+        list($itemId, $variantId, $uom) = $this->getItemAttributesGivenQuoteItem(
+            $quoteItem
         );
 
         return $this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure);
