@@ -889,8 +889,7 @@ class Data extends AbstractHelper
     function getLicenseStatusHtml($string)
     {
         $licenseHtml = "";
-        if(trim($string) && strpos($string,'CL') !== false) {
-//            echo strpos($string, 'CL:True EL:True');
+        if(trim($string) && strpos($string,'CL:') !== false) {
             if(strpos($string, 'CL:True EL:True') !== false) {
                 $this->lsr->setLicenseValidity("1");
                 $licenseValidity = 1;
