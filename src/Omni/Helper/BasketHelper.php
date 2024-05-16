@@ -1060,6 +1060,38 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * This function is overriding in hospitality module
+     *
+     * Get item row discount
+     *
+     * @param $item
+     * @return float|int
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getItemRowDiscount($item)
+    {
+        $rowDiscount = 0;
+        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+            $item->getSku()
+        );
+
+        $basketData = $this->getOneListCalculation();
+        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
+        foreach ($orderLines as $line) {
+            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
+                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
+                break;
+            }
+        }
+
+        return $rowDiscount;
+    }
+
+    /**
      * Calculate row total of bundle adding all individual simple items
      *
      * @param $item
@@ -1389,6 +1421,62 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
+     * Set store_pickup_hours in checkout session being used
+     *
+     * @param $hours
+     */
+    public function setStorePickUpHoursInCheckoutSession($hours)
+    {
+        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_STORE_PICKUP_HOURS, $hours);
+    }
+
+    /**
+     * Get store_pickup_hours from checkout session being used
+     *
+     * @return mixed|null
+     */
+    public function getStorePickUpHoursFromCheckoutSession()
+    {
+        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_STORE_PICKUP_HOURS);
+    }
+
+    /**
+     * Set delivery_hours in checkout session being used
+     *
+     * @param $hours
+     */
+    public function setDeliveryHoursInCheckoutSession($hours)
+    {
+        $this->checkoutSession->setData(LSR::SESSION_CHECKOUT_DELIVERY_HOURS, $hours);
+    }
+
+    /**
+     * Get delivery_hours from checkout session being used in case of admin
+     *
+     * @return mixed|null
+     */
+    public function getDeliveryHoursFromCheckoutSession()
+    {
+        return $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_DELIVERY_HOURS);
+    }
+
+    /**
+     * clear store_pickup_hours from checkout session being used
+     */
+    public function unSetStorePickupHours()
+    {
+        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_STORE_PICKUP_HOURS);
+    }
+
+    /**
+     * clear delivery_hours from checkout session being used
+     */
+    public function unSetDeliveryHours()
+    {
+        $this->checkoutSession->unsetData(LSR::SESSION_CHECKOUT_DELIVERY_HOURS);
+    }
+
+    /**
      * clear correct_store_id from checkout session being used in case of admin
      */
     public function unSetCorrectStoreId()
@@ -1446,6 +1534,8 @@ class BasketHelper extends AbstractHelper
         $this->unSetOneListCalculation();
         $this->unSetCorrectStoreId();
         $this->unSetQuoteId();
+        $this->unSetDeliveryHours();
+        $this->unSetStorePickupHours();
     }
 
     /**

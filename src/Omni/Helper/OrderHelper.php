@@ -5,7 +5,6 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
-use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
@@ -14,7 +13,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use \Ls\Webhooks\Model\Order\Status;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
@@ -290,6 +288,103 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
+     * @param Model\Order $order
+     * @param $oneListCalculateResponse
+     * @return Entity\OrderEdit
+     */
+    public function prepareOrderEdit(Model\Order $order, $oneListCalculateResponse)
+    {
+        try {
+            $storeId       = $oneListCalculateResponse->getStoreId();
+            $cardId        = $oneListCalculateResponse->getCardId();
+            $customerEmail = $order->getCustomerEmail();
+            $customerName  = $order->getBillingAddress()->getFirstname() . ' ' .
+                $order->getBillingAddress()->getLastname();
+
+            if ($order->getShippingAddress()) {
+                $shipToName = $order->getShippingAddress()->getFirstname() . ' ' .
+                    $order->getShippingAddress()->getLastname();
+            } else {
+                $shipToName = $customerName;
+            }
+
+            if ($this->customerSession->isLoggedIn()) {
+                $contactId = $this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID);
+            } else {
+                $contactId = '';
+            }
+            $shippingMethod = $order->getShippingMethod(true);
+            //TODO work on condition
+            $isClickCollect = false;
+            $carrierCode    = '';
+            $method         = '';
+
+            if ($shippingMethod !== null) {
+                $carrierCode    = $shippingMethod->getData('carrier_code');
+                $method         = $shippingMethod->getData('method');
+                $isClickCollect = $carrierCode == 'clickandcollect';
+            }
+
+            /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
+
+            //if the shipping address is empty, we use the contact address as shipping address.
+            $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
+            $shipToAddress  = $order->getShippingAddress() ? $this->convertAddress($order->getShippingAddress()) :
+                $contactAddress;
+
+            $oneListCalculateResponse
+                ->setId($order->getIncrementId())
+                ->setContactId($contactId)
+                ->setCardId($cardId)
+                ->setEmail($customerEmail)
+                ->setShipToEmail($customerEmail)
+                ->setContactName($customerName)
+                ->setShipToName($shipToName)
+                ->setContactAddress($contactAddress)
+                ->setShipToAddress($shipToAddress)
+                ->setStoreId($storeId);
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
+            } else {
+                $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::SALE);
+                //TODO need to fix the length issue once LS Central allow more then 10 characters.
+                $carrierCode = ($carrierCode) ? substr($carrierCode, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentCode($carrierCode);
+                $method = ($method) ? substr($method, 0, 10) : "";
+                $oneListCalculateResponse->setShippingAgentServiceCode($method);
+            }
+            $pickupDateTimeslot = $order->getPickupDateTimeslot();
+            if (!empty($pickupDateTimeslot)) {
+                $dateTimeFormat = "Y-m-d\T" . "H:i:00";
+                $pickupDateTime = $this->dateTime->date($dateTimeFormat, $pickupDateTimeslot);
+                $oneListCalculateResponse->setRequestedDeliveryDate($pickupDateTime);
+            }
+            $oneListCalculateResponse->setOrderPayments($orderPaymentArrayObject);
+            //For click and collect.
+            if ($isClickCollect) {
+                $oneListCalculateResponse->setCollectLocation($order->getPickupStore());
+            }
+            $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
+            //For click and collect we need to remove shipment charge orderline
+            //For flat shipment it will set the correct shipment value into the order
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order);
+            // @codingStandardsIgnoreLine
+            $request = new Entity\OrderCreate();
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+                $request->setReturnOrderIdOnly(true);
+            }
+
+            $oneListCalculateResponse->setOrderLines($orderLinesArray);
+            $request->setRequest($oneListCalculateResponse);
+            return $request;
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+    }
+
+    /**
      * Update shippping amount to shipment order line
      * @param $orderLines
      * @param $order
@@ -305,6 +400,7 @@ class OrderHelper extends AbstractHelper
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
+            $lineNumber = 1000000;
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
             $shipmentOrderLine->setPrice($shippingAmount)
@@ -314,6 +410,7 @@ class OrderHelper extends AbstractHelper
                 ->setTaxAmount($taxAmount)
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
+                ->setLineNumber($lineNumber)
                 ->setQuantity(1)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
@@ -422,7 +519,7 @@ class OrderHelper extends AbstractHelper
         $paymentCode  = $order->getPayment()->getMethodInstance()->getCode();
         $tenderTypeId = $this->getPaymentTenderTypeId($paymentCode);
 
-        $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
+        $noOrderPayment = $this->paymentLineNotRequiredPaymentMethods($order);
 
         if (!in_array($paymentCode, $noOrderPayment)) {
             // @codingStandardsIgnoreStart
@@ -492,6 +589,19 @@ class OrderHelper extends AbstractHelper
         }
 
         return $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
+     * Payment methods with no need to send in payment line
+     *
+     * @param Model\Order $order
+     * @return string[]
+     */
+    public function paymentLineNotRequiredPaymentMethods(Model\Order $order)
+    {
+        return ['ls_payment_method_pay_at_store', 'free'];
     }
 
     /**
@@ -647,11 +757,11 @@ class OrderHelper extends AbstractHelper
                 }
                 return $salesEntryArray;
             } else {
-                return $response;
+                return null;
             }
         }
 
-        return $response;
+        return null;
     }
 
     /**
@@ -1100,7 +1210,7 @@ class OrderHelper extends AbstractHelper
         }
         $paymentTenderTypesArray = $this->lsr->getStoreConfig(
             LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,
-            $this->lsr->getCurrentStoreId()
+            $this->basketHelper->getCorrectStoreIdFromCheckoutSession() ?? $this->lsr->getCurrentStoreId()
         );
 
         if (!is_array($paymentTenderTypesArray)) {

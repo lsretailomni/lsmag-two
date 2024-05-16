@@ -12,8 +12,8 @@ class ReplEcommStoreTest extends ReplicationTest
     {
         $request = new ReplEcommStores();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommStores($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommStores", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplStoreResponse::class, $result);
         $this->assertNotNull($result->getStores());
         $this->assertInstanceOf(ArrayOfReplStore::class, $result->getStores());

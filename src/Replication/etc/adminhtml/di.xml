@@ -5,6 +5,7 @@
         <arguments>
             <argument name="messages" xsi:type="array">
                 <item name="lsrInvalid" xsi:type="string">Ls\Replication\Model\Message\Invalid</item>
+                <item name="licenseInvalid" xsi:type="string">Ls\Replication\Model\Message\LicenseInvalid</item>
             </argument>
         </arguments>
     </type>
@@ -258,4 +259,7 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Backend\Model\Menu\Config">
+        <plugin name="ls_replication_remove_menu_item_admin" type="Ls\Replication\Plugin\Admin\Config"/>
+    </type>
 </config>

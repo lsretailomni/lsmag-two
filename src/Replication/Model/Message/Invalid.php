@@ -1,18 +1,15 @@
 <?php
 
-namespace LS\Replication\Model\Message;
+namespace Ls\Replication\Model\Message;
 
 use \Ls\Core\Model\LSR;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Notification\MessageInterface;
 use Magento\Framework\Phrase;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
-/**
- * Class Invalid
- * @package LS\Replication\Model\Message
- */
 class Invalid implements MessageInterface
 {
     /**
@@ -50,10 +47,10 @@ class Invalid implements MessageInterface
      * Check whether LS Retail configuration are valid or not
      *
      * @return bool
+     * @throws NoSuchEntityException
      */
     public function isDisplayed()
     {
-
         /**
          * The Idea is for Multi Store, if any of the store has isLSR setup?
          * then in that case we dont need to throw this error.

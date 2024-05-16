@@ -14,6 +14,7 @@ use Magento\Framework\GraphQl\Exception\GraphQlAuthorizationException;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Exception\GraphQlNoSuchEntityException;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\OfflineShipping\Model\Carrier\Flatrate;
 
 /**
  * Interceptor to intercept ShippingMethodsOnCart methods
@@ -38,17 +39,24 @@ class SetShippingMethodsOnCartPlugin
     /**
      * @var Data
      */
-    private Data $helper;
+    public Data $helper;
+
+    /**
+     * @var Flatrate
+     */
+    public $flatRateCarrier;
 
     /**
      * @param DataHelper $dataHelper
      * @param Clickandcollect $carrierModel
+     * @param Flatrate $flatRateCarrier
      * @param BasketHelper $basketHelper
      * @param Data $helper
      */
     public function __construct(
         DataHelper $dataHelper,
         Clickandcollect $carrierModel,
+        Flatrate $flatRateCarrier,
         BasketHelper $basketHelper,
         Data $helper
     ) {
@@ -56,6 +64,7 @@ class SetShippingMethodsOnCartPlugin
         $this->carrierModel = $carrierModel;
         $this->basketHelper = $basketHelper;
         $this->helper       = $helper;
+        $this->flatRateCarrier = $flatRateCarrier;
     }
 
     /**
@@ -90,32 +99,34 @@ class SetShippingMethodsOnCartPlugin
 
         $shippingMethods = reset($args['input']['shipping_methods']);
         $validForClickAndCollect = false;
+        $storeId = $selectedDate = $selectedDateTimeslot = '';
 
-        if ($shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode()) {
+        if ($shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode() ||
+            $shippingMethods['carrier_code'] === $this->flatRateCarrier->getCarrierCode()
+        ) {
 
             if (empty($args['input']['cart_id'])) {
                 throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
             }
 
             $maskedCartId    = $args['input']['cart_id'];
-            $storeId = $pickupDate = $pickupTimeslot = '';
 
             if (isset($args['input']['store_id']) && !empty($args['input']['store_id'])) {
                 $storeId = $args['input']['store_id'];
             }
 
-            if (isset($args['input']['pickup_date']) && !empty($args['input']['pickup_date'])) {
-                $pickupDate = $args['input']['pickup_date'];
+            if (isset($args['input']['selected_date']) && !empty($args['input']['selected_date'])) {
+                $selectedDate = $args['input']['selected_date'];
             }
 
-            if (isset($args['input']['pickup_time_slot']) && !empty($args['input']['pickup_time_slot'])) {
-                $pickupTimeslot = $args['input']['pickup_time_slot'];
+            if (isset($args['input']['selected_date_time_slot']) && !empty($args['input']['selected_date_time_slot'])) {
+                $selectedDateTimeslot = $args['input']['selected_date_time_slot'];
             }
 
             $scopeId         = (int)$context->getExtensionAttributes()->getStore()->getId();
             $userId          = $context->getUserId();
 
-            if (!empty($storeId)) {
+            if (!empty($storeId) && $shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode()) {
                 $stockCollection = $this->helper->fetchCartAndReturnStock(
                     $maskedCartId,
                     $userId,
@@ -143,8 +154,10 @@ class SetShippingMethodsOnCartPlugin
             $cart = $result['cart']['model'];
             $this->basketHelper->syncBasketWithCentral($cart->getId());
 
-            if ($validForClickAndCollect) {
-                $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId, $pickupDate, $pickupTimeslot);
+            if ($validForClickAndCollect ||
+                $shippingMethods['carrier_code'] === $this->flatRateCarrier->getCarrierCode()
+            ) {
+                $this->dataHelper->setPickUpStoreGivenCart($cart, $storeId, $selectedDate, $selectedDateTimeslot);
 
                 return [
                     'cart' => [

@@ -3,6 +3,7 @@
 namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Logger\Logger;
+use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Sales\Api\CreditmemoManagementInterface;
 use Magento\Sales\Model\Order\Email\Sender\CreditmemoSender;
@@ -34,30 +35,39 @@ class CreditMemo
     private $logger;
 
     /**
-     * CreditMemo constructor.
+     * @var Data
+     */
+    private $helper;
+
+    /**
      * @param CreditmemoSender $creditMemoSender
      * @param CreditmemoLoader $creditMemoLoader
      * @param CreditmemoManagementInterface $creditMemoManagement
+     * @param Data $helper
      * @param Logger $logger
      */
     public function __construct(
         CreditmemoSender $creditMemoSender,
         CreditmemoLoader $creditMemoLoader,
         CreditmemoManagementInterface $creditMemoManagement,
+        Data $helper,
         Logger $logger
     ) {
         $this->creditMemoSender     = $creditMemoSender;
         $this->creditMemoLoader     = $creditMemoLoader;
         $this->creditMemoManagement = $creditMemoManagement;
+        $this->helper               = $helper;
         $this->logger               = $logger;
     }
 
     /**
      * To process refund for that item which is cancelled
+     *
      * @param $magOrder
      * @param $items
      * @param $creditMemoData
      * @param $invoice
+     * @return array[]|void
      */
     public function refund($magOrder, $items, $creditMemoData, $invoice)
     {
@@ -103,15 +113,17 @@ class CreditMemo
                 if (!empty($creditMemoData['send_email'])) {
                     $this->creditMemoSender->send($creditMemo);
                 }
-
+                $message = Status::SUCCESS_MESSAGE;
+                return $this->helper->outputMessage(true, __($message));
             }
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
+            return $this->helper->outputMessage(false, __($e->getMessage()));
         }
     }
 
     /**
-     * set credit memo parameters
+     * Set credit memo parameters
      *
      * @param $magOrder
      * @param $itemsInfo

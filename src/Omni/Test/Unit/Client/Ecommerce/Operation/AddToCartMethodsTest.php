@@ -5,6 +5,7 @@ namespace Ls\Omni\Test\Unit\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneList;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListItem;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOneListPublishedOffer;
+use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderDiscountLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
@@ -31,8 +32,8 @@ class AddToCartMethodsTest extends OmniClientSetupTest
             'itemId'  => $this->getEnvironmentVariableValueGivenName('ITEM_ID'),
             'storeId' => $this->getEnvironmentVariableValueGivenName('STORE_ID'),
         ];
-        $response = $this->client->ItemGetbyId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ItemGetbyId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(LoyItem::class, $result);
     }
 
@@ -55,8 +56,8 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $oneListRequest->setListType(ListType::BASKET);
         $entity = new OneListCalculate();
         $entity->setOneList($oneListRequest);
-        $response = $this->client->OneListCalculate($entity);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListCalculate", $entity);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(Order::class, $result);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $result->getStoreId());
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $result->getCardId());
@@ -84,8 +85,8 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $oneListRequest->setListType(ListType::BASKET);
         $entity = new OneListCalculate();
         $entity->setOneList($oneListRequest);
-        $response = $this->client->OneListCalculate($entity);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListCalculate", $entity);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(Order::class, $result);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $result->getStoreId());
         $this->assertNotNull($result->getTotalAmount());
@@ -116,8 +117,8 @@ class AddToCartMethodsTest extends OmniClientSetupTest
             'oneList'   => $oneListRequest,
             'calculate' => true
         ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
+        $response = $this->executeMethod("OneListSave", $param);
+        $oneList = $response ? $response->getResult() : null;
         $this->assertInstanceOf(OneList::class, $oneList);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
         $this->assertTrue(property_exists($oneList, 'Id'));
@@ -141,8 +142,8 @@ class AddToCartMethodsTest extends OmniClientSetupTest
             'listType'     => ListType::BASKET,
             'includeLines' => true
         ];
-        $response = $this->client->OneListGetByCardId($param);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("OneListGetByCardId", $param);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ArrayOfOneList::class, $result);
         foreach ($result as $oneList) {
             $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
@@ -163,8 +164,7 @@ class AddToCartMethodsTest extends OmniClientSetupTest
     public function testApplyCoupon()
     {
         $listItems = new OneListItem();
-        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('ITEM_ID'));
-        $listItems->setVariantId($this->getEnvironmentVariableValueGivenName('VARIANT_ID'));
+        $listItems->setItemId($this->getEnvironmentVariableValueGivenName('SIMPLE_ITEM_ID'));
         $listItems->setQuantity(1);
         $itemsArray = new ArrayOfOneListItem();
         $itemsArray->setOneListItem($listItems);
@@ -179,22 +179,31 @@ class AddToCartMethodsTest extends OmniClientSetupTest
         $offer->setId($this->getEnvironmentVariableValueGivenName('COUPON_CODE'));
         $offer->setType('Coupon');
         $oneListRequest->setPublishedOffers($offers);
-        $param    = [
-            'oneList'   => $oneListRequest,
-            'calculate' => true
-        ];
-        $response = $this->client->OneListSave($param);
-        $oneList  = $response->getResult();
-        $this->assertInstanceOf(OneList::class, $oneList);
+        $oneListRequest->setListType(ListType::BASKET);
+        $entity = new OneListCalculate();
+        $entity->setOneList($oneListRequest);
+        $response = $this->executeMethod("OneListCalculate", $entity);
+        $oneList = $response ? $response->getResult() : null;
+        $this->assertInstanceOf(Order::class, $oneList);
         $this->assertEquals($this->getEnvironmentVariableValueGivenName('CARD_ID'), $oneList->getCardId());
-        $this->assertTrue(property_exists($oneList, 'Id'));
-        $this->assertTrue(property_exists($oneList, 'ListType'));
-        $this->assertTrue(property_exists($oneList, 'PublishedOffers'));
-        $this->assertTrue(property_exists($oneList, 'CreateDate'));
-        $this->assertTrue(property_exists($oneList, 'StoreId'));
-        $this->assertTrue(property_exists($oneList, 'TotalAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalDiscAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalNetAmount'));
-        $this->assertTrue(property_exists($oneList, 'TotalTaxAmount'));
+        $this->assertEquals($this->getEnvironmentVariableValueGivenName('STORE_ID'), $oneList->getStoreId());
+        $this->assertTrue(is_string($oneList->getOrderType()));
+        $this->assertEquals(OrderType::SALE, $oneList->getOrderType());
+        $this->assertInstanceOf(ArrayOfOrderLine::class, $oneList->getOrderLines());
+        $this->assertInstanceOf(ArrayOfOrderDiscountLine::class, $oneList->getOrderDiscountLines());
+        $this->assertGreaterThan(0, $oneList->getTotalAmount());
+        $this->assertGreaterThan(0, $oneList->getTotalNetAmount());
+        $this->assertGreaterThan(0, $oneList->getTotalDiscount());
+        $discountExists = false;
+
+        foreach ($oneList->getOrderDiscountLines() as $oneListItemDiscount) {
+            if ($oneListItemDiscount->getOfferNumber() ==
+                $this->getEnvironmentVariableValueGivenName('COUPON_CODE')) {
+                $discountExists = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($discountExists);
     }
 }

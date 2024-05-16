@@ -3,11 +3,18 @@
 namespace Ls\Omni\Model\System\Source;
 
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
 use \Ls\Omni\Client\Ecommerce\Entity\Store;
+use Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
+use Ls\Omni\Client\Ecommerce\Entity\StoresGetResponse;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGet;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
+use Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class NavStore
@@ -48,19 +55,24 @@ class NavStore implements OptionSourceInterface
     }
 
     /**
-     * @return Store[]
+     * Get nav stores
+     *
+     * @return array|ArrayOfStore|StoresGetAllResponse|StoresGetResponse|ResponseInterface|null
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
      */
     public function getNavStores()
     {
-
         // get current Website Id.
         $websiteId = (int)$this->request->getParam('website');
         $baseUrl   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
         $lsKey     = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
 
-        if ($this->lsr->validateBaseUrl($baseUrl)) {
+        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey)) {
             // @codingStandardsIgnoreLine
-            if (version_compare($this->lsr->getOmniVersion(), '2023.01', '>')) {
+            if (version_compare(
+                $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITE), '2023.01', '>')
+            ) {
                 $get_nav_stores = new StoresGet($baseUrl);
                 $get_nav_stores->getOperationInput()->setStoreType(StoreGetType::WEB_STORE);
             } else {

@@ -12,8 +12,8 @@ class ReplEcommHierarchyNodeTest extends ReplicationTest
     {
         $request = new ReplEcommHierarchyNode();
         $request->setReplRequest($this->params);
-        $response = $this->client->ReplEcommHierarchyNode($request);
-        $result   = $response->getResult();
+        $response = $this->executeMethod("ReplEcommHierarchyNode", $request);
+        $result = $response ? $response->getResult() : null;
         $this->assertInstanceOf(ReplHierarchyNodeResponse::class, $result);
         $this->assertNotNull($result->getNodes());
         $this->assertInstanceOf(ArrayOfReplHierarchyNode::class, $result->getNodes());

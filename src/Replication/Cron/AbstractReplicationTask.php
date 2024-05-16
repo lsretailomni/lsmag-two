@@ -439,15 +439,29 @@ abstract class AbstractReplicationTask
 
     /**
      * Check LastKey is always zero or not using Replication Config Path
+     *
+     * @param $storeId
      * @return bool
+     * @throws NoSuchEntityException
      */
-    public function isLastKeyAlwaysZero()
+    public function isLastKeyAlwaysZero($storeId)
     {
-        if (in_array($this->getConfigPath(), self::$no_lastkey_config_path)) {
-            return true;
-        } else {
-            return false;
+        $lsrModel = $this->getLsrModel();
+        $noLastKeyConfigPaths = self::$no_lastkey_config_path;
+
+        if (version_compare(
+            $lsrModel->getOmniVersion($storeId, $this->defaultScope),
+            '2024.4.0',
+            '>='
+        )) {
+            $noLastKeyConfigPaths = self::$no_lastkey_config_path;
+
+            if (($key = array_search('ls_mag/replication/repl_inv_status', $noLastKeyConfigPaths)) !== false) {
+                unset($noLastKeyConfigPaths[$key]);
+            }
         }
+
+        return in_array($this->getConfigPath(), $noLastKeyConfigPaths);
     }
 
     /**
@@ -689,7 +703,7 @@ abstract class AbstractReplicationTask
             if (isset($isFirstTime) && $isFirstTime == 1) {
                 $fullReplication = 0;
 
-                if ($this->isLastKeyAlwaysZero()) {
+                if ($this->isLastKeyAlwaysZero($storeId)) {
                     return;
                 }
             }
@@ -773,7 +787,6 @@ abstract class AbstractReplicationTask
 
     /**
      * Set default scope
-     *
      */
     public function setDefaultScope()
     {

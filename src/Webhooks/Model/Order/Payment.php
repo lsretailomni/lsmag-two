@@ -154,12 +154,12 @@ class Payment
             $invoice         = null;
             if ($validateOrder['data']['success'] && $order->canInvoice()) {
                 $items = $this->helper->getItems($order, $lines, $linesMerged);
-                foreach ($items as $itemData) {
-                    foreach ($itemData as $itemData) {
+                foreach ($items as $itemsData) {
+                    foreach ($itemsData as $itemData) {
                         $item                         = $itemData['item'];
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
-                        if ($isOffline && $totalAmount == 0) {
+                        if ($isOffline) {
                             $totalAmount += $itemData['amount'];
                         }
                     }

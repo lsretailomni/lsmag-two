@@ -84,6 +84,11 @@ class PaymentMethodsColumn extends Select
             'label' => __('Loyalty Points')
         ];
 
+        $optionsArray[] = [
+            'value' => LSR::LS_REFUND_TENDER_TYPE,
+            'label' => __('Refund')
+        ];
+
         return $optionsArray;
     }
 }

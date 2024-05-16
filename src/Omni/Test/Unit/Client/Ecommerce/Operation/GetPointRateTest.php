@@ -7,8 +7,8 @@ class GetPointRateTest extends OmniClientSetupTest
     public function testExecute()
     {
         $this->assertNotNull($this->client);
-        $response = $this->client->GetPointRate();
-        $result   = $response->getResult();
+        $response = $this->executeMethod("GetPointRate");
+        $result = $response ? $response->getResult() : null;
         $this->assertNotNull($result);
         $this->assertNotEmpty($result);
     }

@@ -71,6 +71,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_VERSION = 'ls_mag/service/version';
     const SC_SERVICE_LS_CENTRAL_VERSION = 'ls_mag/service/ls_central_version';
     const SC_SERVICE_HEART_BEAT_TIMEOUT = 'ls_mag/service/heart_beat_timeout';
+    const SC_SERVICE_LICENSE_VALIDITY = 'ls_mag/service/license_validity';
 
     // REPLICATION
     const SC_REPLICATION_GETCATEGORIES = 'ls_mag/replication/replicate_category';
@@ -86,6 +87,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_REPLICATION_BATCHSIZE_PREFIX = 'ls_mag/replication/batch_size_{@1}';
     const SC_REPLICATION_DEFAULT_ITEM_IMAGE_WIDTH = 'ls_mag/replication/item_image_width';
     const SC_REPLICATION_DEFAULT_ITEM_IMAGE_HEIGHT = 'ls_mag/replication/item_image_height';
+
+    const SC_REPLICATION_DEFAULT_STOP_FPC_PURGE = 'ls_mag/replication/stop_fpc_purge_on_index';
     const SC_REPLICATION_DEFAULT_BATCHSIZE = 'ls_mag/replication/default_batch_size';
     const SC_REPLICATION_PRODUCT_BATCHSIZE = 'ls_mag/replication/product_batch_size';
     const SC_REPLICATION_PRODUCT_ATTRIBUTE_BATCH_SIZE = 'ls_mag/replication/product_attribute_batch_size';
@@ -242,9 +245,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_CLICKCOLLECT_DEFAULT_LONGITUDE = 'omni_clickandcollect/general/default_longitude';
     const SC_CLICKCOLLECT_DEFAULT_ZOOM = 'omni_clickandcollect/general/default_zoom';
     const SC_PAYMENT_OPTION = 'carriers/clickandcollect/payment_option';
+    const SC_CLICKCOLLECT_ENABLED = 'carriers/clickandcollect/active';
 
+    const SC_FLATRATE_ENABLED = 'carriers/flatrate/active';
     //Delivery and pickup time options
     const PICKUP_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot';
+    const DELIVERY_TIMESLOTS_ENABLED = 'ls_mag/ls_delivery_pickup_date_time/delivery_date_time_slot';
     const PICKUP_TIME_INTERVAL = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_interval';
     const PICKUP_DATE_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_date_format';
     const PICKUP_TIME_FORMAT = 'ls_mag/ls_delivery_pickup_date_time/pickup_time_format';
@@ -280,6 +286,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SESSION_CHECKOUT_CORRECT_STORE_ID = 'correct_store_id';
     const SESSION_GROUP_ID = 'customer_group_id';
     const SESSION_CUSTOMER_ID = 'customer_id';
+
+    const SESSION_CHECKOUT_STORE_PICKUP_HOURS = 'store_pickup_hours';
+
+    const SESSION_CHECKOUT_DELIVERY_HOURS = 'delivery_hours';
 
     // WORKFLOW
     const W_TYPE = 'T';
@@ -395,6 +405,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
+    const STORES = 'LS_STORES';
     const STORE_HOURS = 'LS_STORE_HOURS_';
     const RETURN_POLICY_CACHE = 'LS_RETURN_POLICY_';
     const PING_RESPONSE_CACHE = 'PING_RESPONSE_';
@@ -414,10 +425,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_SHIPMENT_ITEM_ID = 'ls_mag/ls_order_management/shipping_item_id';
     const LSR_SHIPMENT_TAX = 'ls_mag/ls_order_management/shipping_tax';
     const LSR_PAYMENT_TENDER_TYPE_MAPPING = 'ls_mag/ls_order_management/tender_type_mapping';
+    const LS_REFUND_TENDER_TYPE = 'refund';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
     const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
     const LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_discount_validation_active';
+    const LSR_ORDER_EDIT = 'ls_mag/ls_order_management/order_edit';
     const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
         = 'ls_mag/hospitality/graphql_dateandtime_range_validation_active';
@@ -543,6 +556,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public $validateBaseUrlStoreId = null;
 
     /**
+     * @var null
+     */
+    public $validateBaseUrlScope = null;
+
+    /**
+     * @var bool
+     */
+    public $fpcInvalidateFlag = false;
+
+    /**
      * @param ScopeConfigInterface $scopeConfig
      * @param StoreManagerInterface $storeManager
      * @param \Ls\Core\Model\Data $data
@@ -603,14 +626,26 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Set fpc invalidate flag
+     *
+     * @param $value
+     * @return void
+     */
+    public function setFpcInvalidateFlag($value)
+    {
+        $this->fpcInvalidateFlag = $value;
+    }
+
+    /**
      * Validate base url
      *
      * @param $baseUrl
      * @param $lsKey
+     * @param $websiteId
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null, $lsKey = null)
+    public function validateBaseUrl($baseUrl = null, $lsKey = null, $websiteId = null)
     {
         if ($baseUrl == null) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
@@ -621,41 +656,49 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (empty($baseUrl)) {
             return false;
         }
-
-        return $this->data->isEndpointResponding($baseUrl, $lsKey);
+        $websiteId = ($websiteId) ?: $this->getWebsiteId();
+        return $this->data->isEndpointResponding($baseUrl, $lsKey, $websiteId);
     }
 
     /**
      * Main function to check if service is configured and running properly for given store and scope
      *
-     * @param bool $store_id
+     * @param bool $storeId
      * @param bool $scope
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isLSR($store_id = false, $scope = false)
+    public function isLSR($storeId = false, $scope = false)
     {
-        if (!$this->isEnabled($store_id, $scope)) {
+        if (!$this->isEnabled($storeId, $scope)) {
             return false;
         }
 
-        if (isset($this->validateBaseUrlResponse) && $this->validateBaseUrlStoreId == $store_id) {
+        if (isset($this->validateBaseUrlResponse) &&
+            $this->validateBaseUrlStoreId == $storeId &&
+            $scope == $this->validateBaseUrlScope
+        ) {
             return $this->validateBaseUrlResponse;
         }
-
+        $this->validateBaseUrlStoreId = $storeId;
+        $websiteId                    = '';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $baseUrl = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
-            $store   = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $store_id);
+            $baseUrl   = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store     = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey     = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $websiteId = $storeId;
+            $this->validateBaseUrlScope = $scope;
         } else {
-            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $store_id);
-            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $store_id);
+            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey   = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $this->validateBaseUrlScope = false;
         }
         if (empty($baseUrl) || empty($store)) {
             $this->validateBaseUrlResponse = false;
         } else {
-            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, $lsKey, $websiteId);
         }
-        $this->validateBaseUrlStoreId = $store_id;
 
         return $this->validateBaseUrlResponse;
     }
@@ -694,6 +737,34 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         $message .= __('Go to Stores > Configuration > LS Retail > General Configuration.');
         $message .= '</div>';
         return $message;
+    }
+
+    /**
+     * Check to see if click and collect is enabled
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getClickCollectEnabled()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_CLICKCOLLECT_ENABLED,
+            $this->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Check to see if flatrate is enabled
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getFlatRateEnabled()
+    {
+        return $this->getStoreConfig(
+            LSR::SC_FLATRATE_ENABLED,
+            $this->getCurrentStoreId()
+        );
     }
 
     /**
@@ -860,6 +931,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Get central version
+     *
+     * @param $storeId
+     * @param $scope
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getCentralVersion($storeId = null, $scope = null)
+    {
+        if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
+            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+        }
+
+        //If StoreID is not passed they retrieve it from the global area.
+        if ($storeId === null) {
+            $storeId = $this->getCurrentStoreId();
+        }
+        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+    }
+
+    /**
      * Get the central type
      *
      * @param $storeId
@@ -952,6 +1044,32 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
+     * Returns configured value for fpc purge
+     *
+     * @return bool
+     */
+    public function getStopFpcPurge(&$tags)
+    {
+        $config =  $this->fpcInvalidateFlag && (bool) $this->scopeConfig->getValue(
+            self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
+        );
+
+        if (!$config) {
+            return false;
+        }
+
+        foreach ($tags as $index => $tag) {
+            if (str_contains($tag, 'cat_p_') || str_contains($tag, 'cat_c_') || str_contains($tag, 'cat_c_p_')) {
+                unset($tags[$index]);
+            } else {
+                $config = false;
+            }
+        }
+
+        return $config;
+    }
+
+    /**
      * Return pickup and delivery option is enabled or not
      *
      * @return mixed
@@ -961,6 +1079,21 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->scopeConfig->getValue(
             self::PICKUP_TIMESLOTS_ENABLED,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
+    }
+
+    /**
+     * Return delivery option is enabled or not
+     *
+     * @return mixed
+     * @throws NoSuchEntityException
+     */
+    public function isDeliveryTimeslotsEnabled()
+    {
+        return $this->scopeConfig->getValue(
+            self::DELIVERY_TIMESLOTS_ENABLED,
             ScopeInterface::SCOPE_WEBSITES,
             $this->storeManager->getStore()->getWebsiteId()
         );
@@ -1005,6 +1138,25 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getCurrentWebsiteId()
     {
         return $this->storeManager->getStore()->getWebsiteId();
+    }
+
+    /**
+     * Get website id of currently selected store
+     *
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getWebsiteId()
+    {
+        $scope = $this->validateBaseUrlScope;
+
+        if (isset($this->validateBaseUrlStoreId) &&
+            ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE)
+        ) {
+            return $this->validateBaseUrlStoreId;
+        }
+
+        return $this->storeManager->getStore($this->validateBaseUrlStoreId)->getWebsiteId();
     }
 
     /**
@@ -1116,9 +1268,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         $status = ['discountSetup' => false, 'discount' => true];
         if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
-            if ($this->getCentralType($store->getId(), $scope) == LSR::OnPremise) {
-                $status = ['discountSetup' => true, 'discount' => false];
-            }
+            $status = ['discountSetup' => true, 'discount' => false];
         }
 
         return $status;
@@ -1132,5 +1282,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function isSSM()
     {
         return $this->storeManager->isSingleStoreMode();
+    }
+
+    /**
+     * Set license validity
+     *
+     * @param $status
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    public function setLicenseValidity($status)
+    {
+        $str            = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
+        $centralVersion = strstr($str, " ", true);
+
+        if (version_compare($centralVersion, '25.0.0.0', '>=')) {
+            $this->data->setLicenseStatus($status);
+        }
     }
 }
