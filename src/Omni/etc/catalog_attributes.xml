@@ -8,5 +8,8 @@
         <attribute name="lsr_uom_width"/>
         <attribute name="lsr_uom_cubage"/>
         <attribute name="uom"/>
+        <attribute name="lsr_item_id"/>
+        <attribute name="lsr_variant_id"/>
+        <attribute name="barcode"/>
     </group>
 </config>
