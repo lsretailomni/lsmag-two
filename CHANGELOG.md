@@ -2,6 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7.0] - 2024-05-16
+
+### Added
+
+- Added support for showing Ls Central License validity in the configuration. [49158](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49158)
+- Added support for customer order edit from Magento admin. [48012](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48012)
+- Added support for stopping fpc or varnish cache flush for replication operations only based on configuration. [50902](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50902)
+- Added support for delivery orders in hospitality. [48005](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48005)
+- Added support for delivery order in hospitality using graphql. [48006](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48006)
+- Added support for passing sales type from qr code ordering link in hospitality. [50802](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50802)
+
+### Bugs/Fixes
+
+- Fixed issue with sync orders on instance with multi-store view. [49802](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49802)
+- Fixed issues with inventory synchronization for optimization. [49651](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49651)
+- Fixed issue with LS Key for multi websites. [49846](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49846)
+- Fixed issue with cache flush after every 5 minutes even if there is no image to be synced. [48849](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/48849)
+- Fixed compatibility issues with Magento 2.4.5-p1. [50675](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50675)
+- Fixed issues with license message for fresh installation of Magento. [50849](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50849)
+- Fixed issue concerning tender type mapping for orders synced to LS Central from the Magento admin panel in a multi-website setup. [50453](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50453)
+- Fixed issues with commerce ping when using LS key. [50454](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50454)
+- Fixed issue with hierarchy node when the same hierarchy code is being used on multiple websites with different root category. [51248](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51248)
+- Fixed issue with discount lines coming from LS Central not showing on graphQl interface. [51243](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51243)
+- Fixed issue with scope_id while fetching click and collect stores on graphql. [51203](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51203)
+- Fixed issue with order net total on customer dashboard. [51106](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51106)
+- Fixed issue with CheckPinCodeEnable configuration. [50696](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50696)
+- Fixed issue with replication jobs. [51246](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51246)
+- Fixed issues with image replication collection query to process all required records. [52425](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52425)
+- Fixed compatibility issues with Magento 2.4.7 and php 8.3. [50901](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50901)
+- Fixed performance issues on checkout by removing unnecessary calls. [52006](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52006)
+- Fixed issues related to order cancellation on customer dashboard. [51862](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51862)
+- Fixed issue with mini cart error in hospitality. [49602](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49602)
+- Fixed issue of an infinite loop when making cart is virtual in hospitality. [51208](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51208)
+- Fixed issue with payment line for cashondelivery in case of hospitality. [51860](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51860)
+
+### Removed
+
+- Removed unnecessary code for optimizing add to cart. [47268](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/47268)
+- Removed discount setup reset and price reset cron jobs usage for Commerce Version >= 2024.4.0. [50593](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50593)
+- Removed inventory reset job usage for Commerce Version >= 2024.4.0. [50201](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/50201)
+
 ## [2.6.0] - 2024-02-15
 
 ### Added
