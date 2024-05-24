@@ -26,6 +26,11 @@ class SalesEntryList
     protected $CardId = null;
 
     /**
+     * @property SalesEntry $Order
+     */
+    protected $Order = null;
+
+    /**
      * @property string $OrderId
      */
     protected $OrderId = null;
@@ -82,6 +87,24 @@ class SalesEntryList
     public function getCardId()
     {
         return $this->CardId;
+    }
+
+    /**
+     * @param SalesEntry $Order
+     * @return $this
+     */
+    public function setOrder($Order)
+    {
+        $this->Order = $Order;
+        return $this;
+    }
+
+    /**
+     * @return SalesEntry
+     */
+    public function getOrder()
+    {
+        return $this->Order;
     }
 
     /**

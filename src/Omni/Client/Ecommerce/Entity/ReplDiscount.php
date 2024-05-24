@@ -105,7 +105,7 @@ class ReplDiscount
     protected $UnitOfMeasureId = null;
 
     /**
-     * @property int $ValidationPeriodId
+     * @property string $ValidationPeriodId
      */
     protected $ValidationPeriodId = null;
 
@@ -469,7 +469,7 @@ class ReplDiscount
     }
 
     /**
-     * @param int $ValidationPeriodId
+     * @param string $ValidationPeriodId
      * @return $this
      */
     public function setValidationPeriodId($ValidationPeriodId)
@@ -479,7 +479,7 @@ class ReplDiscount
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriodId()
     {

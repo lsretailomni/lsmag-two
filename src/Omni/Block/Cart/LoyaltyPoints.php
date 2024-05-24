@@ -101,4 +101,15 @@ class LoyaltyPoints extends AbstractCart
     {
         return $this->priceHelper->currency($price, true, false);
     }
+
+    /**
+     * Format value to two decimal places
+     *
+     * @param float $value
+     * @return string
+     */
+    public function formatValue($value)
+    {
+        return $this->loyaltyHelper->formatValue($value);
+    }
 }

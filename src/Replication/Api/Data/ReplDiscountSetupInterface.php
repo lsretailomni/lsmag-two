@@ -550,13 +550,13 @@ interface ReplDiscountSetupInterface
     public function getValidToBeforeExpDate();
 
     /**
-     * @param int $ValidationPeriodId
+     * @param string $ValidationPeriodId
      * @return $this
      */
     public function setValidationPeriodId($ValidationPeriodId);
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriodId();
 
