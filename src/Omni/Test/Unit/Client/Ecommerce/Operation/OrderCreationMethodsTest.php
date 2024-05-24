@@ -11,7 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryRequest;
 use \Ls\Omni\Client\Ecommerce\Entity\LoyItem;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
