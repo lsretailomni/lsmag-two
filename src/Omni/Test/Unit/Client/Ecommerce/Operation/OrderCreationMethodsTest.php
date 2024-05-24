@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryRequest;
 use \Ls\Omni\Client\Ecommerce\Entity\LoyItem;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
@@ -612,6 +613,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPaymentArray[] = $orderPayment;
         $orderPaymentLoyalty = new OrderPayment();
         $orderPaymentLoyalty->setCurrencyCode('LOY')
+            ->setPaymentType(PaymentType::PAYMENT)
             ->setCurrencyFactor('0.10000000000000000000')
             ->setLineNumber('2')
             ->setCardNumber($this->getEnvironmentVariableValueGivenName('CARD_ID'))
