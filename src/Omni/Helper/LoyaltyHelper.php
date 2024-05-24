@@ -329,14 +329,13 @@ class LoyaltyHelper extends AbstractHelperOmni
         }
 
         $response = null;
+
         if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
             $cacheId = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
+
             if ($response !== false) {
-                return round(
-                    $response,
-                    2
-                );
+                return $this->formatValue($response);
             }
             // @codingStandardsIgnoreStart
             $request = new Operation\GetPointRate();
@@ -359,10 +358,7 @@ class LoyaltyHelper extends AbstractHelperOmni
                     86400
                 );
 
-                return round(
-                    $response->getResult(),
-                    2
-                );
+                return $this->formatValue($response->getResult());
             }
         }
         return $response;
@@ -772,7 +768,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Format value to two decimal places
      *
      * @param float $value
-     * @return float|string
+     * @return string
      */
     public function formatValue($value)
     {

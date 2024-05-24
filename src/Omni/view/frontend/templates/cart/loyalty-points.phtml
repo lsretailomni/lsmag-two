@@ -40,7 +40,7 @@ if($availablePoints > 0) {
                             __(
                                 'You have %1. Each of %2 gets %3 discount.',
                                 '<strong>' . $availablePoints . ' loyalty points</strong>',
-                                '<strong>' . round(1 / $pointRate, 3) . ' Points</strong>',
+                                '<strong>' . $block->formatValue(1 / $pointRate) . ' Points</strong>',
                                 '<strong>' . $block->getFormattedPrice(1) . '</strong>'
                             ) ?>
                         </span>
