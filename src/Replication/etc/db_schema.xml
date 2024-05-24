@@ -1565,7 +1565,7 @@
     <column xsi:type="varchar" name="ToDate" length="200" nullable="true" comment="ToDate"/>
     <column xsi:type="text" name="Type" nullable="true" comment="Type"/>
     <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
-    <column xsi:type="int" name="ValidationPeriodId" padding="11" nullable="true" comment="ValidationPeriodId"/>
+    <column xsi:type="text" name="ValidationPeriodId" nullable="true" comment="ValidationPeriodId"/>
     <column xsi:type="varchar" name="VariantId" length="200" nullable="true" comment="VariantId"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
@@ -1668,7 +1668,7 @@
     <column xsi:type="text" name="UnitOfMeasureId" nullable="true" comment="UnitOfMeasureId"/>
     <column xsi:type="text" name="ValidFromBeforeExpDate" nullable="true" comment="ValidFromBeforeExpDate"/>
     <column xsi:type="text" name="ValidToBeforeExpDate" nullable="true" comment="ValidToBeforeExpDate"/>
-    <column xsi:type="int" name="ValidationPeriodId" padding="11" nullable="true" comment="ValidationPeriodId"/>
+    <column xsi:type="text" name="ValidationPeriodId" nullable="true" comment="ValidationPeriodId"/>
     <column xsi:type="text" name="VariantId" nullable="true" comment="VariantId"/>
     <column xsi:type="int" name="VariantType" padding="11" nullable="true" comment="VariantType"/>
     <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
@@ -1826,6 +1826,7 @@
     <column xsi:type="text" name="ReceiptEmail" nullable="true" comment="ReceiptEmail"/>
     <column xsi:type="int" name="ReceiptOption" padding="11" nullable="true" comment="ReceiptOption"/>
     <column xsi:type="text" name="SchemeCode" nullable="true" comment="SchemeCode"/>
+    <column xsi:type="text" name="SendReceiptByEMail" nullable="true" comment="SendReceiptByEMail"/>
     <column xsi:type="text" name="ShippingLocation" nullable="true" comment="ShippingLocation"/>
     <column xsi:type="text" name="State" nullable="true" comment="State"/>
     <column xsi:type="text" name="Street" nullable="true" comment="Street"/>
