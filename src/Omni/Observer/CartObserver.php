@@ -85,6 +85,8 @@ class CartObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         try {
+            $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+
             $salesQuoteItems = $observer->getItems();
             if (!empty($salesQuoteItems)) {
                 $salesQuoteItem = reset($salesQuoteItems);
@@ -109,6 +111,16 @@ class CartObserver implements ObserverInterface
                 $this->basketHelper->setOneListCalculationInCheckoutSession(null);
             }
             $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
+            $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+            $timeElapsed = $requestTime->diff($responseTime);
+            $seconds = $timeElapsed->s + $timeElapsed->f;
+            $this->logger->debug(
+                sprintf(
+                    "==== Time Elapsed ==== %s ==== %s ====",
+                    $timeElapsed->format("%i minute(s) " . $seconds . " second(s)"),
+                    __METHOD__
+                )
+            );
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }
