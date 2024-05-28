@@ -491,7 +491,7 @@ class Data extends AbstractHelper
                     $lsCentralVersion                  = trim($versions[0]);
                     $lsCentralVersionTxt               = explode('CL:',$lsCentralVersion);
 
-                    $bothVersion['ls_central_version'] = trim($lsCentralVersionTxt[0]);
+                    $bothVersion['ls_central_version'] = ($licenseHtml != "") ? trim($lsCentralVersionTxt[0]).")" : trim($lsCentralVersionTxt[0]);
                     if (!empty($websiteId)) {
                         $this->updateConfigValueWebsite(
                             $lsCentralVersion,
