@@ -462,7 +462,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_MISC = 'MISC';
 
     const LS_NOTIFICATION_EMAIL = 'email';
-
+    const LS_NOTIFICATION_PUSH_NOTIFICATION = 'push_notification';
     //Email notification through webhook
     const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';
     const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/webhooks_email_notification_order_status';

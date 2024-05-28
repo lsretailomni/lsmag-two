@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Notification\EmailNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
@@ -66,6 +67,11 @@ class Status
     public $message = [];
 
     /**
+     * @var ManagerInterface
+     */
+    private $eventManager;
+
+    /**
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
@@ -74,6 +80,7 @@ class Status
      * @param Invoice $invoice
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
+     * @param ManagerInterface $eventManager
      */
     public function __construct(
         Data $helper,
@@ -83,7 +90,8 @@ class Status
         EmailNotification $emailNotification,
         Invoice $invoice,
         CreditmemoFactory $creditMemoFactory,
-        CreditmemoService $creditMemoService
+        CreditmemoService $creditMemoService,
+        ManagerInterface $eventManager
     ) {
         $this->helper            = $helper;
         $this->orderCancel       = $orderCancel;
@@ -93,6 +101,7 @@ class Status
         $this->invoice           = $invoice;
         $this->creditMemoFactory = $creditMemoFactory;
         $this->creditMemoService = $creditMemoService;
+        $this->eventManager      = $eventManager;
     }
 
     /**
@@ -173,10 +182,17 @@ class Status
 
         if ($orderStatus !== null) {
             foreach ($configuredNotificationType as $type) {
-                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
-                    $this->emailNotification->setNotificationType($orderStatus);
-                    $this->emailNotification->setOrder($magOrder)->setItems($items);
-                    $this->emailNotification->prepareAndSendNotification();
+//                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
+//                    $this->emailNotification->setNotificationType($orderStatus);
+//                    $this->emailNotification->setOrder($magOrder)->setItems($items);
+//                    $this->emailNotification->prepareAndSendNotification();
+//                }
+
+                if ($type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
+                    $this->eventManager->dispatch(
+                        'ls_push_notification_send',
+                        []
+                    );
                 }
             }
         }
