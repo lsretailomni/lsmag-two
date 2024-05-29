@@ -6,6 +6,8 @@
                 <value id="fontawesome1" type="host">*.fontawesome.com</value>
                 <value id="googleapis" type="host">*.googleapis.com</value>
                 <value id="fontawesome2" type="host">*.cloudflare.com</value>
+                <value id="onesignal1" type="host">*.onesignal.com</value>
+                <value id="onesignal2" type="host">onesignal.com</value>
             </values>
         </policy>
         <policy id="connect-src">
@@ -16,6 +18,8 @@
         <policy id="script-src">
             <values>
                 <value id="googleapis" type="host">*.googleapis.com</value>
+                <value id="onesignal1" type="host">*.onesignal.com</value>
+                <value id="onesignal2" type="host">onesignal.com</value>
             </values>
         </policy>
         <policy id="font-src">

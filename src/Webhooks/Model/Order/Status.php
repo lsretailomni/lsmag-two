@@ -5,6 +5,7 @@ namespace Ls\Webhooks\Model\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Notification\EmailNotification;
+use Ls\Webhooks\Model\Notification\PushNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
@@ -47,6 +48,11 @@ class Status
     public $emailNotification;
 
     /**
+     * @var PushNotification
+     */
+    public $pushNotification;
+
+    /**
      * @var Invoice
      */
     public $invoice;
@@ -67,11 +73,6 @@ class Status
     public $message = [];
 
     /**
-     * @var ManagerInterface
-     */
-    private $eventManager;
-
-    /**
      * @param Data $helper
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
@@ -80,7 +81,7 @@ class Status
      * @param Invoice $invoice
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
-     * @param ManagerInterface $eventManager
+     * @param PushNotification $pushNotification
      */
     public function __construct(
         Data $helper,
@@ -91,7 +92,7 @@ class Status
         Invoice $invoice,
         CreditmemoFactory $creditMemoFactory,
         CreditmemoService $creditMemoService,
-        ManagerInterface $eventManager
+        PushNotification $pushNotification
     ) {
         $this->helper            = $helper;
         $this->orderCancel       = $orderCancel;
@@ -101,7 +102,7 @@ class Status
         $this->invoice           = $invoice;
         $this->creditMemoFactory = $creditMemoFactory;
         $this->creditMemoService = $creditMemoService;
-        $this->eventManager      = $eventManager;
+        $this->pushNotification  = $pushNotification;
     }
 
     /**
@@ -182,17 +183,16 @@ class Status
 
         if ($orderStatus !== null) {
             foreach ($configuredNotificationType as $type) {
-//                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
-//                    $this->emailNotification->setNotificationType($orderStatus);
-//                    $this->emailNotification->setOrder($magOrder)->setItems($items);
-//                    $this->emailNotification->prepareAndSendNotification();
-//                }
+                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
+                    $this->emailNotification->setNotificationType($orderStatus);
+                    $this->emailNotification->setOrder($magOrder)->setItems($items);
+                    $this->emailNotification->prepareAndSendNotification();
+                }
 
                 if ($type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
-                    $this->eventManager->dispatch(
-                        'ls_push_notification_send',
-                        []
-                    );
+                    $this->pushNotification->setNotificationType($orderStatus);
+                    $this->pushNotification->setOrder($magOrder)->setItems($items);
+                    $this->pushNotification->prepareAndSendNotification();
                 }
             }
         }

@@ -39,6 +39,28 @@
                     <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
                     <comment>Please select all the required order status you want to send the notification for</comment>
                 </field>
+                <field id="webhooks_push_notification_app_id"
+                       translate="label"
+                       type="text"
+                       sortOrder="30"
+                       showInDefault="1"
+                       showInWebsite="1">
+                    <label>OneSignal App ID</label>
+                    <depends>
+                        <field id="webhooks_notification_type">push_notification</field>
+                    </depends>
+                </field>
+                <field id="webhooks_push_notification_rest_api_key"
+                       translate="label"
+                       type="text"
+                       sortOrder="40"
+                       showInDefault="1"
+                       showInWebsite="1">
+                    <label>OneSignal Rest API Key</label>
+                    <depends>
+                        <field id="webhooks_notification_type">push_notification</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

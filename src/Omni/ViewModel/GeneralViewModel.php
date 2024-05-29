@@ -7,6 +7,7 @@ use Magento\Catalog\Helper\Data;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
+use Magento\Store\Model\ScopeInterface;
 
 class GeneralViewModel implements ArgumentInterface
 {
@@ -79,6 +80,48 @@ class GeneralViewModel implements ArgumentInterface
     public function getDefaultZoom()
     {
         return $this->lsr->getDefaultZoom();
+    }
+
+    /**
+     * Get configured app_id
+     *
+     * @return mixed
+     */
+    public function getAppId()
+    {
+        return $this->lsr->getAppId();
+    }
+
+    /**
+     * Get configured rest_api_key
+     *
+     * @return mixed
+     */
+    public function getRestApiKey()
+    {
+        return $this->lsr->getRestApiKey();
+    }
+
+    /**
+     * Get configuration for notification type
+     *
+     * @return string
+     */
+    public function getNotificationType()
+    {
+        return $this->lsr->getNotificationType();
+    }
+
+    /**
+     * Check to see if push notification is enabled
+     *
+     * @return bool
+     */
+    public function isPushNotificationsEnabled()
+    {
+        $configuredNotificationType = explode(',', $this->getNotificationType());
+
+        return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }
 
     /**

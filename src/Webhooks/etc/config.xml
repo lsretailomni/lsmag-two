@@ -5,7 +5,7 @@
     <default>
         <ls_mag>
             <webhooks>
-                <webhooks_notification_type>email, push_notification</webhooks_notification_type>
+                <webhooks_notification_type>email</webhooks_notification_type>
                 <webhooks_email_notification_order_status>
                     <item1>
                         <order_status>PICKED</order_status>

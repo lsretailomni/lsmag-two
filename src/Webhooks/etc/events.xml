@@ -3,4 +3,8 @@
     <event name="ls_mag_giftcard_recipient_notification">
         <observer name="ls.mag.giftcard.recipient" instance="Ls\Webhooks\Observer\GiftCard\SendNotification" />
     </event>
+    <event name="ls_push_notification_send">
+        <observer name="ls_oneSignal_ls_push_notification_send_observer"
+                  instance="Ls\Webhooks\Observer\Push\LsPushNotificationSendObserver"/>
+    </event>
 </config>

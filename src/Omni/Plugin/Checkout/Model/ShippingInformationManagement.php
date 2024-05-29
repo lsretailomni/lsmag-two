@@ -51,8 +51,11 @@ class ShippingInformationManagement
         $quote->setPickupStore($pickupStore);
         $pickupDate         = $extAttributes->getPickupDate();
         $pickupTimeslot     = $extAttributes->getPickupTimeslot();
+        $subscriptionId = $extAttributes->getSubscriptionId();
         $pickupDateTimeslot = $this->basketHelper->getPickupTimeSlot($pickupDate, $pickupTimeslot);
 
-        $quote->setPickupDateTimeslot($pickupDateTimeslot);
+        $quote
+            ->setPickupDateTimeslot($pickupDateTimeslot)
+            ->setLsSubscriptionId($subscriptionId);
     }
 }

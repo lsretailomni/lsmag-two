@@ -189,9 +189,9 @@ class Data
      * @param mixed $storeId
      * @return string
      */
-    public function getNotificationType($storeId)
+    public function getNotificationType($storeId = null)
     {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_TYPE, $storeId);
+        return $this->lsr->getNotificationType($storeId);
     }
 
     /**

@@ -1,0 +1,32 @@
+<?php
+
+use Ls\Omni\ViewModel\GeneralViewModel;
+use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
+
+/**
+ * @var $block Template
+ * @var $secureRenderer SecureHtmlRenderer
+ * @var $viewModel GeneralViewModel
+ */
+
+$viewModel = $block->getData('view_model');
+
+if ($viewModel->isPushNotificationsEnabled()) {
+    $configuredAppId = $viewModel->getAppId();
+    $scriptString = <<<script
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(function(OneSignal) {
+    OneSignal.init({
+      appId: "$configuredAppId",
+    });
+  });
+script;
+
+    echo $secureRenderer->renderTag(
+        'script',
+        ['type' => 'text/javascript'],
+        $scriptString,
+        false
+    );
+}
