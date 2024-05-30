@@ -2,12 +2,11 @@
 
 namespace Ls\Omni\ViewModel;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Catalog\Helper\Data;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Store\Model\ScopeInterface;
 
 class GeneralViewModel implements ArgumentInterface
 {

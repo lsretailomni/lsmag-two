@@ -12,7 +12,7 @@ use Magento\Quote\Model\QuoteRepository;
  */
 class ShippingInformationManagement
 {
-    /** @var QuoteRepository */
+    /** @var QuoteRepository */\
     public $quoteRepository;
 
     /**
@@ -45,16 +45,16 @@ class ShippingInformationManagement
         $cartId,
         ShippingInformationInterface $addressInformation
     ) {
-        $extAttributes = $addressInformation->getExtensionAttributes();
-        $pickupStore   = $extAttributes->getPickupStore();
-        $quote         = $this->quoteRepository->getActive($cartId);
-        $quote->setPickupStore($pickupStore);
+        $extAttributes      = $addressInformation->getExtensionAttributes();
+        $pickupStore        = $extAttributes->getPickupStore();
+        $quote              = $this->quoteRepository->getActive($cartId);
         $pickupDate         = $extAttributes->getPickupDate();
         $pickupTimeslot     = $extAttributes->getPickupTimeslot();
-        $subscriptionId = $extAttributes->getSubscriptionId();
+        $subscriptionId     = $extAttributes->getSubscriptionId();
         $pickupDateTimeslot = $this->basketHelper->getPickupTimeSlot($pickupDate, $pickupTimeslot);
 
         $quote
+            ->setPickupStore($pickupStore)
             ->setPickupDateTimeslot($pickupDateTimeslot)
             ->setLsSubscriptionId($subscriptionId);
     }
