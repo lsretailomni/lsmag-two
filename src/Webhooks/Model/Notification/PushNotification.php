@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\Webhooks\Model\Notification;
 
-use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Logger\Logger;
 use Magento\Framework\Event\ManagerInterface;

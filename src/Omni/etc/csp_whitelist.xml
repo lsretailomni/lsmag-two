@@ -13,6 +13,8 @@
         <policy id="connect-src">
             <values>
                 <value id="googleapis" type="host">*.googleapis.com</value>
+                <value id="onesignal1" type="host">*.onesignal.com</value>
+                <value id="onesignal2" type="host">onesignal.com</value>
             </values>
         </policy>
         <policy id="script-src">
@@ -34,6 +36,8 @@
                 <value id="gstatic" type="host">*.gstatic.com</value>
                 <value id="googleapis" type="host">*.googleapis.com</value>
                 <value id="data-image" type="host">'self' data:</value>
+                <value id="onesignal1" type="host">*.onesignal.com</value>
+                <value id="onesignal2" type="host">onesignal.com</value>
             </values>
         </policy>
     </policies>

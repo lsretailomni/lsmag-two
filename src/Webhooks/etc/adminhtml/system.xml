@@ -26,41 +26,49 @@
                     <source_model>Ls\Webhooks\Model\Config\Source\NotificationType</source_model>
                     <comment>Please select the notification type you want your customer to receive as a result of webhooks</comment>
                 </field>
-                <field id="webhooks_email_notification_order_status"
-                       translate="label"
-                       sortOrder="20"
-                       showInDefault="1"
-                       showInWebsite="1">
-                    <label>Order Status Email Notification</label>
-                    <depends>
-                        <field id="webhooks_notification_type">email</field>
-                    </depends>
-                    <frontend_model>Ls\Webhooks\Block\Adminhtml\System\Config\OrderStatus</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
-                    <comment>Please select all the required order status you want to send the notification for</comment>
-                </field>
-                <field id="webhooks_push_notification_app_id"
+                <group id="email"
                        translate="label"
                        type="text"
-                       sortOrder="30"
+                       sortOrder="160"
                        showInDefault="1"
                        showInWebsite="1">
-                    <label>OneSignal App ID</label>
-                    <depends>
-                        <field id="webhooks_notification_type">push_notification</field>
-                    </depends>
-                </field>
-                <field id="webhooks_push_notification_rest_api_key"
+                    <label>Email Notifications</label>
+                    <field id="webhooks_email_notification_order_status"
+                           translate="label"
+                           sortOrder="20"
+                           showInDefault="1"
+                           showInWebsite="1">
+                        <label>Order Status Email Notification</label>
+                        <frontend_model>Ls\Webhooks\Block\Adminhtml\System\Config\OrderStatus</frontend_model>
+                        <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                        <comment>Please select all the required order status you want to send the notification for</comment>
+                    </field>
+                </group>
+                <group id="push"
                        translate="label"
                        type="text"
-                       sortOrder="40"
+                       sortOrder="160"
                        showInDefault="1"
                        showInWebsite="1">
-                    <label>OneSignal Rest API Key</label>
-                    <depends>
-                        <field id="webhooks_notification_type">push_notification</field>
-                    </depends>
-                </field>
+                    <label>Push Notifications</label>
+                    <comment>We are using OneSignal for sending push notifications. Here is the link to the official documentation https://documentation.onesignal.com</comment>
+                    <field id="webhooks_push_notification_app_id"
+                           translate="label"
+                           type="text"
+                           sortOrder="30"
+                           showInDefault="1"
+                           showInWebsite="1">
+                        <label>OneSignal App ID</label>
+                    </field>
+                    <field id="webhooks_push_notification_rest_api_key"
+                           translate="label"
+                           type="text"
+                           sortOrder="40"
+                           showInDefault="1"
+                           showInWebsite="1">
+                        <label>OneSignal Rest API Key</label>
+                    </field>
+                </group>
             </group>
         </section>
     </system>

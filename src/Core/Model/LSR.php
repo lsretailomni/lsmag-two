@@ -465,15 +465,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_NOTIFICATION_PUSH_NOTIFICATION = 'push_notification';
     //Email notification through webhook
     const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';
-    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/webhooks_email_notification_order_status';
+    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/email/webhooks_email_notification_order_status';
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
     const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
     const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';
-    public const XML_CONFIG_PATH_ONESIGNAL_APP_ID = 'ls_mag/webhooks/webhooks_push_notification_app_id';
-    public const XML_CONFIG_PATH_ONESIGNAL_REST_API_KEY = 'ls_mag/webhooks/webhooks_push_notification_rest_api_key';
+    public const XML_CONFIG_PATH_ONESIGNAL_APP_ID = 'ls_mag/webhooks/push/webhooks_push_notification_app_id';
+    public const XML_CONFIG_PATH_ONESIGNAL_REST_API_KEY = 'ls_mag/webhooks/push/webhooks_push_notification_rest_api_key';
 
     //Choose Industry
     const LS_INDUSTRY_VALUE_RETAIL = 'retail';

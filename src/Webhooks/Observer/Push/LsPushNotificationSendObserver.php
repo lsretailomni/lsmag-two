@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Webhooks\Observer\Push;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use GuzzleHttp\Client;
@@ -92,7 +92,7 @@ class LsPushNotificationSendObserver implements ObserverInterface
                 "app_id"                   => $this->lsr->getAppId($storeId),
                 "include_subscription_ids" => [$order->getLsSubscriptionId()],
                 "headings"                 => ["en" => "Your $storeName order $incrementId has a new status update"],
-                "contents"                 => ["en" => "Hello $receiverName, \n\n $notificationStatus at store $ccStoreName."],
+                "contents"                 => ["en" => "Hello $receiverName, \n\nOrder Status: $notificationStatus at store $ccStoreName."],
             ],
             Request::HTTP_METHOD_POST,
             $headers
