@@ -52,6 +52,11 @@ class OrderHelper extends AbstractHelper
     public $loyaltyHelper;
 
     /**
+     * @var GiftCardHelper
+     */
+    public $giftCardHelper;
+
+    /**
      * @var StoreHelper
      */
     public $storeHelper;
@@ -125,10 +130,13 @@ class OrderHelper extends AbstractHelper
     private $storeData;
 
     /**
+     * Order helper constructor
+     *
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
+     * @param GiftCardHelper $giftCardHelper
      * @param OrderRepository $orderRepository
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
@@ -147,6 +155,7 @@ class OrderHelper extends AbstractHelper
         Model\Order $order,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
+        GiftCardHelper $giftCardHelper,
         Model\OrderRepository $orderRepository,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
@@ -164,6 +173,7 @@ class OrderHelper extends AbstractHelper
         $this->order              = $order;
         $this->basketHelper       = $basketHelper;
         $this->loyaltyHelper      = $loyaltyHelper;
+        $this->giftCardHelper     = $giftCardHelper;
         $this->orderRepository    = $orderRepository;
         $this->customerSession    = $customerSession;
         $this->checkoutSession    = $checkoutSession;
@@ -570,14 +580,17 @@ class OrderHelper extends AbstractHelper
                 ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
+
         if ($order->getLsGiftCardAmountUsed()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+            $this->checkoutSession->getGiftCard();
+            $currencyFactor    = ($order->getLsGiftCardCnf()) ? $order->getLsGiftCardCnf() : 1;
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPaymentGiftCard
-                ->setCurrencyFactor(1)
+                ->setCurrencyFactor($currencyFactor)
                 ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
@@ -585,6 +598,7 @@ class OrderHelper extends AbstractHelper
                 ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
+                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }

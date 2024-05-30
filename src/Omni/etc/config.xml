@@ -5,6 +5,7 @@
     <default>
         <ls_mag>
             <service>
+                <local_currency_code>GBP</local_currency_code>
                 <debug>0</debug>
                 <advanced>0</advanced>
                 <timeout>10</timeout>

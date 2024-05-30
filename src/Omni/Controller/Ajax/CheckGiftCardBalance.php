@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Controller\Ajax;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
@@ -42,12 +43,19 @@ class CheckGiftCardBalance implements HttpPostActionInterface
     public RequestInterface $request;
 
     /**
-     * CheckGiftCardBalance constructor.
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
+     * CheckGiftCardBalance constructor
+     *
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param RawFactory $resultRawFactory
      * @param GiftCardHelper $giftCardHelper
      * @param Data $priceHelper
+     * @param LSR $lsr
      * @param RequestInterface $request
      */
     public function __construct(
@@ -56,6 +64,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         RawFactory $resultRawFactory,
         GiftCardHelper $giftCardHelper,
         Data $priceHelper,
+        LSR $lsr,
         RequestInterface $request
     ) {
         $this->resultJsonFactory = $resultJsonFactory;
@@ -63,6 +72,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         $this->giftCardHelper    = $giftCardHelper;
         $this->priceHelper       = $priceHelper;
         $this->request           = $request;
+        $this->lsr               = $lsr;
     }
 
     /**
@@ -79,6 +89,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         if (!$isPost || !$this->request->isXmlHttpRequest()) {
             return $resultRaw->setHttpResponseCode($httpBadRequestCode);
         }
+
         /** @var Json $resultJson */
         $resultJson   = $this->resultJsonFactory->create();
         $post         = $this->request->getContent();
@@ -89,9 +100,31 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         if ($giftCardCode != null) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin);
             if (is_object($giftCardResponse)) {
-                $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse->getBalance(), true, false);
+//                if($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
+//                    $pointRate = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
+//                    $case      = 1;
+//                } elseif ($this->lsr->getStoreCurrencyCode() != $this->giftCardHelper->getLocalCurrencyCode()) {
+//                    $storeCurrencyPointRate = $this->giftCardHelper->getPointRate($this->lsr->getStoreCurrencyCode());
+//                    $giftCardPointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
+//                    $case                   = 2;
+//                }
+//
+//                if($pointRate > 0 || ($storeCurrencyPointRate > 0 && $giftCardPointRate > 0)) {
+//                    $giftCardBalance = match($case) {
+//                        1 => $giftCardResponse->getBalance() / $pointRate,
+//                        2 => ($giftCardResponse->getBalance() / $giftCardPointRate) * $storeCurrencyPointRate,
+//                        default => $giftCardResponse->getBalance(),
+//                    };
+//                } else {
+//                    $giftCardBalance = $giftCardResponse->getBalance();
+//                }
+
+                $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
+
+                $data['giftcardbalance'] = $this->priceHelper->currency($convertedGiftCardBalanceArr['giftCardBalanceAmount'], true, false);
                 $data['expirydate']      = $giftCardResponse->getExpireDate();
             } else {
+                $logger->info(" im in else ");
                 $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse, true, false);
                 $data['expirydate']      = null;
             }

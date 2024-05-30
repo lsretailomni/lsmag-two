@@ -3,6 +3,7 @@
 namespace Ls\Omni\Controller\Cart;
 
 use Exception;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\GiftCardHelper;
@@ -48,6 +49,11 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public $data;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * GiftCardUsed constructor.
      * @param Context $context
      * @param ScopeConfigInterface $scopeConfig
@@ -72,7 +78,8 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         GiftCardHelper $giftCardHelper,
         BasketHelper $basketHelper,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        Data $data
+        Data $data,
+        LSR $lsr
     ) {
         parent::__construct(
             $context,
@@ -87,6 +94,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
         $this->priceHelper     = $priceHelper;
         $this->basketHelper    = $basketHelper;
         $this->data            = $data;
+        $this->lsr             = $lsr;
     }
 
     /**
@@ -97,8 +105,9 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
     public function execute()
     {
         $giftCardNo            = $this->getRequest()->getParam('giftcardno');
-        $giftCardPin            = $this->getRequest()->getParam('giftcardpin');
+        $giftCardPin           = $this->getRequest()->getParam('giftcardpin');
         $giftCardBalanceAmount = 0;
+        $pointRate             = 0;
         $giftCardAmount        = $this->getRequest()->getParam('removegiftcard') == 1
             ? 0
             : trim($this->getRequest()->getParam('giftcardamount'));
@@ -116,9 +125,30 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             }
             if ($giftCardNo != null) {
                 $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
-
                 if (is_object($giftCardResponse)) {
-                    $giftCardBalanceAmount = $giftCardResponse->getBalance();
+//                    if($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
+//                        $pointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
+//                        $quotePointRate = $pointRate;
+//                        $case           = 1;
+//                    } elseif ($this->lsr->getStoreCurrencyCode() != $this->giftCardHelper->getLocalCurrencyCode()) {
+//                        $storeCurrencyPointRate = $this->giftCardHelper->getPointRate($this->lsr->getStoreCurrencyCode());
+//                        $giftCardPointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
+//                        $quotePointRate         = $giftCardPointRate;
+//                        $case                   = 2;
+//                    }
+//
+//                    if($pointRate > 0 || ($storeCurrencyPointRate > 0 && $giftCardPointRate > 0)) {
+//                        $giftCardBalanceAmount = match($case) {
+//                            1 => $giftCardResponse->getBalance() / $pointRate,
+//                            2 => ($giftCardResponse->getBalance() / $giftCardPointRate) * $storeCurrencyPointRate,
+//                            default => $giftCardResponse->getBalance(),
+//                        };
+//                    } else {
+//                        $giftCardBalanceAmount = $giftCardResponse->getBalance();
+//                    }
+                    $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
+                    $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
+                    $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
                 } else {
                     $giftCardBalanceAmount = $giftCardResponse;
                 }
@@ -172,6 +202,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
                 $cartQuote->setLsGiftCardPin($giftCardPin)->collectTotals();
+                $cartQuote->setLsGiftCardCnf($quotePointRate)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {

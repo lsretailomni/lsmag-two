@@ -39,22 +39,20 @@ class GiftCardBalanceOutput implements ResolverInterface
         $giftCardPin     = $args['gift_card_pin'];
         $giftCardBalance = '';
         $currency        = '';
+        $pointRate = $storeCurrencyPointRate = $giftCardPointRate = 1;
 
         $response = $this->giftCardHelper->getGiftCardBalance($args['gift_card_no'], $giftCardPin);
-        if ($response) {
-            $giftCardBalance = $response->getBalance();
-            $currency        = $response->getCurrencyCode();
-        }
 
-        if (empty($response)) {
+        if (!empty($response)) {
+            $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($response);
+            return [
+                'currency' => $convertedGiftCardBalanceArr['gift_card_currency'],
+                'value'    => $convertedGiftCardBalanceArr['gift_card_balance_amount']
+            ];
+        } else {
             return [
                 'error' => __('The gift card is not valid.')
             ];
         }
-
-        return [
-            'currency' => $currency,
-            'value'    => $giftCardBalance,
-        ];
     }
 }
