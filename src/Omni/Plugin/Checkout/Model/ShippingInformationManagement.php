@@ -12,7 +12,7 @@ use Magento\Quote\Model\QuoteRepository;
  */
 class ShippingInformationManagement
 {
-    /** @var QuoteRepository */\
+    /** @var QuoteRepository */
     public $quoteRepository;
 
     /**
