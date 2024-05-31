@@ -1344,4 +1344,16 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             $this->data->setLicenseStatus($status);
         }
     }
+
+    /**
+     * Check to see if push notification is enabled
+     *
+     * @return bool
+     */
+    public function isPushNotificationsEnabled()
+    {
+        $configuredNotificationType = explode(',', $this->getNotificationType());
+
+        return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
+    }
 }
