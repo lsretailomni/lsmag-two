@@ -54,7 +54,7 @@
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
                     <comment>Choose the web store</comment>
                 </field>
-                <field id="replicate_hierarchy_code" translate="label comment" sortOrder="100"
+                <field id="replicate_hierarchy_code" type="select" translate="label comment" sortOrder="100"
                        showInWebsite="1">
                     <label>Select Hierarchy Code</label>
                     <validate>required-entry</validate>
