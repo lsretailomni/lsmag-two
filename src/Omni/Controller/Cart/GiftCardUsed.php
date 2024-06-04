@@ -202,7 +202,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
                 $cartQuote->setLsGiftCardPin($giftCardPin)->collectTotals();
-                $cartQuote->setLsGiftCardCnf($quotePointRate)->collectTotals();
+                $cartQuote->setLsGiftCardCnyFactor($quotePointRate)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {

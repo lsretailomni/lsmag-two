@@ -121,7 +121,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
 
                 $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
 
-                $data['giftcardbalance'] = $this->priceHelper->currency($convertedGiftCardBalanceArr['giftCardBalanceAmount'], true, false);
+                $data['giftcardbalance'] = $this->priceHelper->currency($convertedGiftCardBalanceArr['gift_card_balance_amount'], true, false);
                 $data['expirydate']      = $giftCardResponse->getExpireDate();
             } else {
                 $logger->info(" im in else ");

@@ -584,7 +584,7 @@ class OrderHelper extends AbstractHelper
         if ($order->getLsGiftCardAmountUsed()) {
             $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
             $this->checkoutSession->getGiftCard();
-            $currencyFactor    = ($order->getLsGiftCardCnf()) ? $order->getLsGiftCardCnf() : 1;
+            $currencyFactor    = ($order->getLsGiftCardCnyFactor()) ? $order->getLsGiftCardCnyFactor() : 1;
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd

@@ -277,15 +277,13 @@ class GiftCardHelper extends AbstractHelperOmni
             $giftCardBalanceAmount = $giftCardResponse->getBalance();
         }
 
-        $logger->info('case: '.$case);
-        $logger->info('store currency: '.$this->lsr->getStoreCurrencyCode());
         $logger->info('LCY Currency: '.$this->giftCardHelper->getLocalCurrencyCode());
         $logger->info('point rate: '.$pointRate);
         $logger->info('sc point rate: '.$storeCurrencyPointRate);
         $logger->info('gc point rate: '.$giftCardPointRate);
 
 
-        $logger->info('gift card balance after: ' . $giftCardBalance);
+        $logger->info('gift card balance after: ' . $giftCardBalanceAmount);
 
         return [
             'gift_card_balance_amount' => $giftCardBalanceAmount,
