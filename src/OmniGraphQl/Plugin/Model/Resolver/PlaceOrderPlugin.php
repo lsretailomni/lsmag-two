@@ -82,16 +82,12 @@ class PlaceOrderPlugin
             );
         }
 
-        if ($this->lsr->isPushNotificationsEnabled() && empty($args['input']['subscription_id'])) {
-            throw new GraphQlInputException(__('Required parameter "subscription_id" is missing'));
-        }
-
         $result = $proceed($field, $context, $info, $value, $args);
 
         if (isset($result['order']['order_number'])) {
             $order = $this->dataHelper->getOrderByIncrementId($result['order']['order_number']);
 
-            if ($this->lsr->isPushNotificationsEnabled()) {
+            if ($this->lsr->isPushNotificationsEnabled() && isset($args['input']['subscription_id'])) {
                 $order->setLsSubscriptionId($args['input']['subscription_id']);
                 $this->dataHelper->saveOrder($order);
             }
