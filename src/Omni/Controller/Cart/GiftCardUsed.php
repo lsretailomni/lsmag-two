@@ -126,26 +126,6 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             if ($giftCardNo != null) {
                 $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
                 if (is_object($giftCardResponse)) {
-//                    if($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
-//                        $pointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
-//                        $quotePointRate = $pointRate;
-//                        $case           = 1;
-//                    } elseif ($this->lsr->getStoreCurrencyCode() != $this->giftCardHelper->getLocalCurrencyCode()) {
-//                        $storeCurrencyPointRate = $this->giftCardHelper->getPointRate($this->lsr->getStoreCurrencyCode());
-//                        $giftCardPointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
-//                        $quotePointRate         = $giftCardPointRate;
-//                        $case                   = 2;
-//                    }
-//
-//                    if($pointRate > 0 || ($storeCurrencyPointRate > 0 && $giftCardPointRate > 0)) {
-//                        $giftCardBalanceAmount = match($case) {
-//                            1 => $giftCardResponse->getBalance() / $pointRate,
-//                            2 => ($giftCardResponse->getBalance() / $giftCardPointRate) * $storeCurrencyPointRate,
-//                            default => $giftCardResponse->getBalance(),
-//                        };
-//                    } else {
-//                        $giftCardBalanceAmount = $giftCardResponse->getBalance();
-//                    }
                     $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
                     $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
                     $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
@@ -233,7 +213,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 }
             } else {
                 if ($giftCardAmount == 0) {
-                    $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->setLsGiftCardPin(null)->save();
+                    $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->setLsGiftCardPin(null)->setLsGiftCardCnyFactor(null)->save();
                 }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
             }

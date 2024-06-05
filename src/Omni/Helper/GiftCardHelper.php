@@ -248,12 +248,7 @@ class GiftCardHelper extends AbstractHelperOmni
      */
     public function getConvertedGiftCardBalance($giftCardResponse)
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-
-        $logger->info('gift card balance before: ' . $giftCardResponse->getBalance());
-        $pointRate = $storeCurrencyPointRate = $giftCardPointRate = $quotePointRate = 1;
+        $pointRate = $storeCurrencyPointRate = $giftCardPointRate = $quotePointRate = 0;
         $currency  = $giftCardResponse->getCurrencyCode();
         if($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
             $pointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
@@ -276,14 +271,6 @@ class GiftCardHelper extends AbstractHelperOmni
         } else {
             $giftCardBalanceAmount = $giftCardResponse->getBalance();
         }
-
-        $logger->info('LCY Currency: '.$this->giftCardHelper->getLocalCurrencyCode());
-        $logger->info('point rate: '.$pointRate);
-        $logger->info('sc point rate: '.$storeCurrencyPointRate);
-        $logger->info('gc point rate: '.$giftCardPointRate);
-
-
-        $logger->info('gift card balance after: ' . $giftCardBalanceAmount);
 
         return [
             'gift_card_balance_amount' => $giftCardBalanceAmount,

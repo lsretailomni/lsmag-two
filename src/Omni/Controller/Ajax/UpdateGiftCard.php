@@ -139,6 +139,14 @@ class UpdateGiftCard implements HttpPostActionInterface
             } else {
                 $giftCardBalanceAmount = $giftCardResponse;
             }
+
+            $quote->setLsGiftCardNo($giftCardNo);
+            $quote->setLsGiftCardPin($giftCardPin);
+            $quote->setLsGiftCardAmountUsed($giftCardAmount);
+            $quote->setLsGiftCardCnyFactor($quotePointRate);
+            $this->validateQuote($quote);
+            $quote->collectTotals();
+            $this->cartRepository->save($quote);
         } else {
             try {
                 $response = [
@@ -147,10 +155,10 @@ class UpdateGiftCard implements HttpPostActionInterface
                         'You have successfully cancelled the gift card.'
                     )
                 ];
-                $quote->setLsGiftCardNo($giftCardNo);
-                $quote->setLsGiftCardPin($giftCardPin);
-                $quote->setLsGiftCardAmountUsed($giftCardAmount);
-                $quote->setLsGiftCardCnyFactor($quotePointRate);
+                $quote->setLsGiftCardNo(null);
+                $quote->setLsGiftCardPin(null);
+                $quote->setLsGiftCardAmountUsed(0);
+                $quote->setLsGiftCardCnyFactor(null);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
