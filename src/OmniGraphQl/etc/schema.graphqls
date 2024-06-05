@@ -216,7 +216,7 @@ type StoreConfig {
     ls_mag_display_stores: Boolean @doc(description:"Indicates whether to show all the stores (true) or only click and collect stores for product availability (false)."),
     ls_mag_show_return_policy: Boolean @doc(description:"Indicates whether return policy display on pdp is enabled (true) or disabled (false).")
     ls_mag_webhooks_webhooks_notification_type: String @doc(description: "To fetch configured webhook notification types.")
-    ls_mag_webhooks_push_webhooks_push_notification_app_id: String @doc(description: "To fetch configured onesignal app_id.")
+    ls_mag_webhooks_push_app_id: String @doc(description: "To fetch configured onesignal app_id.")
 }
 
 input SetPaymentMethodOnCartInput {
