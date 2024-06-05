@@ -7,6 +7,7 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\Framework\Pricing\Helper\Data;
 
 /**
  * To return gift card balance in graphql
@@ -19,12 +20,23 @@ class GiftCardBalanceOutput implements ResolverInterface
     public $giftCardHelper;
 
     /**
-     * @param GiftCardHelper $giftCardHelper
+     * @var Data
      */
+    public $priceHelper;
+
+    /**
+     * Giftcard balance output constructor.
+     *
+     * @param GiftCardHelper $giftCardHelper
+     * @param Data $priceHelper
+     */
+
     public function __construct(
-        GiftCardHelper $giftCardHelper
+        GiftCardHelper $giftCardHelper,
+        Data $priceHelper,
     ) {
         $this->giftCardHelper = $giftCardHelper;
+        $this->priceHelper    = $priceHelper;
     }
 
     /**
@@ -46,7 +58,7 @@ class GiftCardBalanceOutput implements ResolverInterface
         if (!empty($response)) {
             $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($response);
             return [
-                'currency' => $convertedGiftCardBalanceArr['gift_card_currency'],
+                'currency' => $this->priceHelper->currency($convertedGiftCardBalanceArr['gift_card_currency']),
                 'value'    => $convertedGiftCardBalanceArr['gift_card_balance_amount']
             ];
         } else {

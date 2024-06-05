@@ -100,25 +100,6 @@ class CheckGiftCardBalance implements HttpPostActionInterface
         if ($giftCardCode != null) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardCode, $giftCardPin);
             if (is_object($giftCardResponse)) {
-//                if($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
-//                    $pointRate = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
-//                    $case      = 1;
-//                } elseif ($this->lsr->getStoreCurrencyCode() != $this->giftCardHelper->getLocalCurrencyCode()) {
-//                    $storeCurrencyPointRate = $this->giftCardHelper->getPointRate($this->lsr->getStoreCurrencyCode());
-//                    $giftCardPointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
-//                    $case                   = 2;
-//                }
-//
-//                if($pointRate > 0 || ($storeCurrencyPointRate > 0 && $giftCardPointRate > 0)) {
-//                    $giftCardBalance = match($case) {
-//                        1 => $giftCardResponse->getBalance() / $pointRate,
-//                        2 => ($giftCardResponse->getBalance() / $giftCardPointRate) * $storeCurrencyPointRate,
-//                        default => $giftCardResponse->getBalance(),
-//                    };
-//                } else {
-//                    $giftCardBalance = $giftCardResponse->getBalance();
-//                }
-
                 $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
 
                 $data['giftcardbalance'] = $this->priceHelper->currency($convertedGiftCardBalanceArr['gift_card_balance_amount'], true, false);
