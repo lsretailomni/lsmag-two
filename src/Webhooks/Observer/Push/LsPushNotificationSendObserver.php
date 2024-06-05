@@ -13,6 +13,7 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ResponseFactory;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Framework\Webapi\Rest\Request;
+use Psr\Log\LoggerInterface;
 
 /**
  * Dispatcher for the `ls_push_notification_send` event.
@@ -45,21 +46,29 @@ class LsPushNotificationSendObserver implements ObserverInterface
     public $serializer;
 
     /**
+     * @var LoggerInterface
+     */
+    public $logger;
+
+    /**
      * @param LSR $lsr
      * @param ClientFactory $clientFactory
      * @param ResponseFactory $responseFactory
      * @param Json $serializer
+     * @param LoggerInterface $logger
      */
     public function __construct(
         LSR $lsr,
         ClientFactory $clientFactory,
         ResponseFactory $responseFactory,
-        Json $serializer
+        Json $serializer,
+        LoggerInterface $logger
     ) {
         $this->lsr             = $lsr;
         $this->clientFactory   = $clientFactory;
         $this->responseFactory = $responseFactory;
         $this->serializer      = $serializer;
+        $this->logger          = $logger;
     }
 
     /**
@@ -98,7 +107,14 @@ class LsPushNotificationSendObserver implements ObserverInterface
             $headers
         );
 
-        $responseContent    = $response->getBody()->getContents();
+        $responseContent    = $this->serializer->unserialize($response->getBody()->getContents());
+
+        if (isset($responseContent['errors'])) {
+            $this->logger->error('Unable to send push notifications');
+            foreach ($responseContent['errors'] as $error) {
+                $this->logger->error($error);
+            }
+        }
     }
 
     /**

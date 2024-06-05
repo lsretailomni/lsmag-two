@@ -99,7 +99,7 @@
                 <item name="ls_mag_display_stores" xsi:type="string">ls_mag/one_list/display_stores</item>
                 <item name="ls_mag_show_return_policy" xsi:type="string">ls_mag/return_policy/show_return_policy</item>
                 <item name="ls_mag_webhooks_webhooks_notification_type" xsi:type="string">ls_mag/webhooks/webhooks_notification_type</item>
-                <item name="ls_mag_webhooks_push_webhooks_push_notification_app_id" xsi:type="string">ls_mag/webhooks/push/webhooks_push_notification_app_id</item>
+                <item name="ls_mag_webhooks_push_app_id" xsi:type="string">ls_mag/webhooks/push/app_id</item>
             </argument>
         </arguments>
     </type>
