@@ -136,6 +136,7 @@ class UpdateGiftCard implements HttpPostActionInterface
                 $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
                 $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
                 $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
+                $giftCardCurrencyCode        = $convertedGiftCardBalanceArr['gift_card_currency'];
             } else {
                 $giftCardBalanceAmount = $giftCardResponse;
             }
@@ -144,6 +145,7 @@ class UpdateGiftCard implements HttpPostActionInterface
             $quote->setLsGiftCardPin($giftCardPin);
             $quote->setLsGiftCardAmountUsed($giftCardAmount);
             $quote->setLsGiftCardCnyFactor($quotePointRate);
+            $quote->setLsGiftCardCnyCode($giftCardCurrencyCode);
             $this->validateQuote($quote);
             $quote->collectTotals();
             $this->cartRepository->save($quote);
@@ -159,6 +161,7 @@ class UpdateGiftCard implements HttpPostActionInterface
                 $quote->setLsGiftCardPin(null);
                 $quote->setLsGiftCardAmountUsed(0);
                 $quote->setLsGiftCardCnyFactor(null);
+                $quote->setLsGiftCardCnyCode(null);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);

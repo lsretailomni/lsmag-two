@@ -129,6 +129,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                     $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
                     $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
                     $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
+                    $giftCardCurrencyCode        = $convertedGiftCardBalanceArr['gift_card_currency'];
                 } else {
                     $giftCardBalanceAmount = $giftCardResponse;
                 }
@@ -183,6 +184,7 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
                 $cartQuote->setLsGiftCardPin($giftCardPin)->collectTotals();
                 $cartQuote->setLsGiftCardCnyFactor($quotePointRate)->collectTotals();
+                $cartQuote->setLsGiftCardCnyCode($giftCardCurrencyCode)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {
@@ -213,7 +215,12 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 }
             } else {
                 if ($giftCardAmount == 0) {
-                    $this->_checkoutSession->getQuote()->setLsGiftCardNo(null)->setLsGiftCardPin(null)->setLsGiftCardCnyFactor(null)->save();
+                    $this->_checkoutSession->getQuote()
+                        ->setLsGiftCardNo(null)
+                        ->setLsGiftCardPin(null)
+                        ->setLsGiftCardCnyFactor(null)
+                        ->setLsGiftCardCnyCode(null)
+                        ->save();
                 }
                 $this->messageManager->addSuccessMessage(__('You have successfully cancelled the gift card.'));
             }
