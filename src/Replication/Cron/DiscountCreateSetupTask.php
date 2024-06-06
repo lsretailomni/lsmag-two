@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
@@ -184,7 +185,12 @@ class DiscountCreateSetupTask
                         ScopeInterface::SCOPE_WEBSITES,
                         $this->getScopeId()
                     );
-                    if ($fullReplicationDiscountValidationStatus) {
+                    $fullReplicationItemVariantRegistrationTask = $this->lsr->getConfigValueFromDb(
+                        ReplEcommItemVariantRegistrationsTask::CONFIG_PATH_STATUS,
+                        ScopeInterface::SCOPE_WEBSITES,
+                        $this->getScopeId()
+                    );
+                    if ($fullReplicationDiscountValidationStatus && $fullReplicationItemVariantRegistrationTask) {
                         $this->logger->debug('Running DiscountCreateTask for store ' . $this->store->getName());
                         $this->replicationHelper->updateConfigValue(
                             $this->replicationHelper->getDateTime(),
@@ -196,6 +202,7 @@ class DiscountCreateSetupTask
                         $publishedOfferCollection = $this->getUniquePublishedOffers($storeId);
                         if (!empty($publishedOfferCollection)) {
                             $reindexRules = false;
+                            $schemes = $this->contactHelper->getSchemes();
                             /** @var ReplDiscountSetup $item */
                             foreach ($publishedOfferCollection as $item) {
                                 $filters  = [
@@ -244,15 +251,20 @@ class DiscountCreateSetupTask
                                         $discountValue     = $replDiscount->getDealPriceDiscount();
                                     }
                                     $this->deleteOfferByName($replDiscount);
-                                    $customerGroupId = $this->contactHelper->getCustomerGroupIdByName(
-                                        $replDiscount->getLoyaltySchemeCode()
-                                    );
-
-                                    // To check if discounts groups are specific for any Member Scheme.
-                                    if (!$useAllGroupIds && !in_array($customerGroupId, $customerGroupIds)) {
-                                        $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
-                                            $replDiscount->getLoyaltySchemeCode()
-                                        );
+                                    if (empty($customerGroupIds) && !$useAllGroupIds) {
+                                        if ($replDiscount->getMemberType() == ReplDiscMemberType::CLUB
+                                            && !empty($replDiscount->getLoyaltySchemeCode()) && !empty($schemes)) {
+                                            $groups = array_keys($schemes, $replDiscount->getLoyaltySchemeCode());
+                                            foreach ($groups as $group) {
+                                                $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
+                                                    $group
+                                                );
+                                            }
+                                        } else {
+                                            $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
+                                                $replDiscount->getLoyaltySchemeCode()
+                                            );
+                                        }
                                     }
 
                                     $lineType = (string)$replDiscount->getLineType();
@@ -274,12 +286,24 @@ class DiscountCreateSetupTask
                                         if ($replDiscount->getVariantId() == '' ||
                                             $replDiscount->getVariantId() == null
                                         ) {
-                                            $skuAmountArray[$discountValue][$discountValueType] [] =
-                                                $replDiscount->getNumber() . $appendUom;
+                                            $skuAmountArray[$discountValue][$discountValueType] []
+                                                = $replDiscount->getNumber() . $appendUom;
                                         } else {
-                                            $skuAmountArray[$discountValue][$discountValueType] [] =
-                                                $replDiscount->getNumber() . '-' .
-                                                $replDiscount->getVariantId() . $appendUom;
+                                            if ($replDiscount->getVariantType() == 2) {
+                                                $variantIds = $this->getVariantIdsByDimension(
+                                                    $replDiscount->getNumber(),
+                                                    $replDiscount->getVariantId(),
+                                                    $storeId
+                                                );
+                                                foreach ($variantIds as $variantId) {
+                                                    $skuAmountArray[$discountValue][$discountValueType] []
+                                                        = $replDiscount->getNumber() . '-' . $variantId . $appendUom;
+                                                }
+                                            } else {
+                                                $skuAmountArray[$discountValue][$discountValueType] []
+                                                    = $replDiscount->getNumber() . '-' .
+                                                    $replDiscount->getVariantId() . $appendUom;
+                                            }
                                         }
                                     } else {
                                         $categoryGroupAmountArray[$discountValue][] = $replDiscount;
@@ -508,6 +532,19 @@ class DiscountCreateSetupTask
             1
         );
 
+        $collection->addFieldToFilter(
+            'IsDeleted',
+            0
+        );
+
+        $collection->addFieldToFilter(
+            ['processed', 'is_updated'],
+            [
+                ['eq' => 0],
+                ['eq' => 1]
+            ]
+        );
+        $query = $collection->getSelect()->__toString();
         if ($collection->getSize() > 0) {
             return $collection;
         }
@@ -646,10 +683,49 @@ class DiscountCreateSetupTask
                 if ($isItem) {
                     $conditions      = $rule->getConditions();
                     $conditionsArray = $conditions->getConditions();
+                    $storeId =  $this->store->getId();
                     foreach ($conditionsArray as $condition) {
                         if ($condition->getAttribute() == 'sku') {
-                            if (in_array($replDiscount->getNumber(), explode(',', $condition->getValue()))) {
-                                $this->catalogRule->deleteById($rule->getId());
+                            $skuArray = [];
+                            if (!empty($replDiscount->getUnitOfMeasureId())) {
+                                // @codingStandardsIgnoreLine
+                                $baseUnitOfMeasure = $this->replicationHelper->getBaseUnitOfMeasure(
+                                    $replDiscount->getNumber()
+                                );
+                                if (($baseUnitOfMeasure != $replDiscount->getUnitOfMeasureId()) ||
+                                    ($replDiscount->getVariantId() == '' ||
+                                        $replDiscount->getVariantId() == null)) {
+                                    $appendUom = '-' . $replDiscount->getUnitOfMeasureId();
+                                }
+                            }
+
+                            if ($replDiscount->getVariantId() == '' ||
+                                $replDiscount->getVariantId() == null
+                            ) {
+                                $skuArray[]
+                                    = $replDiscount->getNumber() . $appendUom;
+                            } else {
+                                if ($replDiscount->getVariantType() == 2) {
+                                    $variantIds = $this->getVariantIdsByDimension(
+                                        $replDiscount->getNumber(),
+                                        $replDiscount->getVariantId(),
+                                        $storeId
+                                    );
+                                    foreach ($variantIds as $variantId) {
+                                        $skuArray[]
+                                            = $replDiscount->getNumber() . '-' . $variantId . $appendUom;
+                                    }
+                                } else {
+                                    $skuArray[]
+                                        = $replDiscount->getNumber() . '-' .
+                                        $replDiscount->getVariantId() . $appendUom;
+                                }
+                            }
+                            $conditionsSku = explode(',', $condition->getValue());
+                            foreach ($skuArray as $sku) {
+                                if (in_array($sku, $conditionsSku)) {
+                                    $this->catalogRule->deleteById($rule->getId());
+                                }
                             }
                         }
                     }
@@ -754,53 +830,66 @@ class DiscountCreateSetupTask
         }
 
         // Create root conditions to match with all child conditions
-        $conditions['1'] =
-            [
-                'type'       => Combine::class,
-                'aggregator' => 'all',
-                'value'      => 1,
-                'new_child'  => ''
-            ];
+        $conditions['1']
+            = [
+            'type'       => Combine::class,
+            'aggregator' => 'all',
+            'value'      => 1,
+            'new_child'  => ''
+        ];
         if ($lineType == OfferDiscountLineType::ITEM_CATEGORY) {
-            $conditions['1--1'] =
-                [
-                    'type'      => Product::class,
-                    'attribute' => LSR::LS_ITEM_CATEGORY,
-                    'operator'  => '==',
-                    'value'     => $number
-                ];
+            $conditions['1--1']
+                = [
+                'type'      => Product::class,
+                'attribute' => LSR::LS_ITEM_CATEGORY,
+                'operator'  => '==',
+                'value'     => $number
+            ];
 
         } elseif ($lineType == OfferDiscountLineType::PRODUCT_GROUP) {
 
-            $conditions['1--1'] =
-                [
-                    'type'      => Product::class,
-                    'attribute' => LSR::LS_ITEM_PRODUCT_GROUP,
-                    'operator'  => '==',
-                    'value'     => $number
-                ];
+            $conditions['1--1']
+                = [
+                'type'      => Product::class,
+                'attribute' => LSR::LS_ITEM_PRODUCT_GROUP,
+                'operator'  => '==',
+                'value'     => $number
+            ];
 
         } elseif ($lineType == OfferDiscountLineType::SPECIAL_GROUP) {
 
-            $conditions['1--1'] =
-                [
-                    'type'      => Product::class,
-                    'attribute' => LSR::LS_ITEM_SPECIAL_GROUP,
-                    'operator'  => '{}',
-                    'value'     =>  $number.';'
-                ];
+            $conditions['1--1']
+                = [
+                'type'      => Product::class,
+                'attribute' => LSR::LS_ITEM_SPECIAL_GROUP,
+                'operator'  => '{}',
+                'value'     => $number . ';'
+            ];
 
         } elseif ($lineType == OfferDiscountLineType::ITEM) {
-            $conditions['1--1'] =
-                [
-                    'type'      => Product::class,
-                    'attribute' => 'sku',
-                    'operator'  => '()',
-                    'value'     => implode(',', $key)
-                ];
+            $conditions['1--1']
+                = [
+                'type'      => Product::class,
+                'attribute' => 'sku',
+                'operator'  => '()',
+                'value'     => implode(',', $key)
+            ];
         }
 
         return $conditions;
+    }
+
+    /**
+     * Get Variant Ids by Dimension
+     *
+     * @param $itemId
+     * @param $dimension
+     * @param $storeId
+     * @return null
+     */
+    public function getVariantIdsByDimension($itemId, $dimension, $storeId)
+    {
+        return $this->replicationHelper->getVariantIdsByDimension($itemId, $dimension, $storeId);
     }
 
     /**
