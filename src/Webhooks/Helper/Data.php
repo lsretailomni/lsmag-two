@@ -388,7 +388,7 @@ class Data
         return [
             "data" => [
                 'success' => $status,
-                'message' => __($message)
+                'message' => $message
             ]
         ];
     }
