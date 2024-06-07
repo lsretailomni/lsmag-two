@@ -17,7 +17,8 @@ class NotificationType implements OptionSourceInterface
     {
         return [
             ['value' => '', 'label' => __('-- Please Select --')],
-            ['value' => LSR::LS_NOTIFICATION_EMAIL, 'label' => __('EMAIL')]
+            ['value' => LSR::LS_NOTIFICATION_EMAIL, 'label' => __('EMAIL')],
+            ['value' => LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, 'label' => __('PUSH NOTIFICATION')]
         ];
     }
 }
