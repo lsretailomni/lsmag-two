@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Model\GiftCard;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -179,9 +179,13 @@ class GiftCardManagement
         }
         if ($itemsCount) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo)
-                ->setLsGiftCardPin($giftCardPin)->setLsGiftCardCnyFactor($quotePointRate)->setLsGiftCardCnyCode($giftCardCurrencyCode)->collectTotals();
-            $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
+            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)
+                ->setLsGiftCardNo($giftCardNo)
+                ->setLsGiftCardPin($giftCardPin)
+                ->setLsGiftCardCnyFactor($quotePointRate)
+                ->setLsGiftCardCnyCode($giftCardCurrencyCode)
+                ->setTotalsCollectedFlag(false)
+                ->collectTotals();
             $this->quoteRepository->save($cartQuote);
         }
         return true;

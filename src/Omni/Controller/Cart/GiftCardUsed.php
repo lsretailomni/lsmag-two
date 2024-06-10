@@ -180,11 +180,12 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
             }
             if ($itemsCount && !empty($giftCardResponse) && $isGiftCardAmountValid) {
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-                $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->collectTotals();
-                $cartQuote->setLsGiftCardNo($giftCardNo)->collectTotals();
-                $cartQuote->setLsGiftCardPin($giftCardPin)->collectTotals();
-                $cartQuote->setLsGiftCardCnyFactor($quotePointRate)->collectTotals();
-                $cartQuote->setLsGiftCardCnyCode($giftCardCurrencyCode)->collectTotals();
+                $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)
+                          ->setLsGiftCardNo($giftCardNo)
+                          ->setLsGiftCardPin($giftCardPin)
+                          ->setLsGiftCardCnyFactor($quotePointRate)
+                          ->setLsGiftCardCnyCode($giftCardCurrencyCode)
+                          ->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             }
             if ($giftCardAmount) {

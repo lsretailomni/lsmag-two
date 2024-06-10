@@ -142,10 +142,6 @@ class GiftCardHelper extends AbstractHelperOmni
             $storeId = $this->lsr->getCurrentStoreId();
         }
 
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
-
         $response        = null;
         $getExchangeRate = false;
 
@@ -154,15 +150,11 @@ class GiftCardHelper extends AbstractHelperOmni
             $response = $this->cacheHelper->getCachedContent($cacheId);
 
             if ($response !== false) {
-                $logger->info("From cache");
                 return $this->formatValue($response);
             }
 
             if (!empty($giftCardCurrency)) {
                 $getExchangeRate = ($giftCardCurrency != $this->lsr->getStoreCurrencyCode()) ? true : false;
-
-                $logger->info('gift card currency: ' . $giftCardCurrency);
-                $logger->info('get exchange rate: '.$getExchangeRate);
             }
 
             // @codingStandardsIgnoreStart
@@ -267,7 +259,7 @@ class GiftCardHelper extends AbstractHelperOmni
                 2 => ($giftCardResponse->getBalance() / $giftCardPointRate) * $storeCurrencyPointRate,
                 default => $giftCardResponse->getBalance(),
             };
-            $currency = $this->lsr->getStoreCurrencyCode();
+            $currency = $giftCardResponse->getCurrencyCode();
         } else {
             $giftCardBalanceAmount = $giftCardResponse->getBalance();
         }
