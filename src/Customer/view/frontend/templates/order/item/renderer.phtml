@@ -30,7 +30,7 @@ use \Ls\Customer\Block\Order\Item\Renderer; ?>
             <?= /* @noEscape */ $block->getFormattedPrice($_item->getAmount()); ?>
             <div class="lsdiscountprice2">
                 <strike>
-                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()); ?>
+                    <?= /* @noEscape */ $block->getFormattedPrice($_item->getPrice()); ?>
                 </strike>
             </div>
             <div class="lsdiscountamount">
