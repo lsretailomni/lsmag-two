@@ -214,15 +214,15 @@ class Data
         return $ping->execute();
     }
 
-   /**
-    * Checks heartbeat of commerce service
-    *
-    * @param $url
-    * @param $lsKey
-    * @param $websiteId
-    * @return bool
-    * @throws NoSuchEntityException
-    */
+    /**
+     * Checks heartbeat of commerce service
+     *
+     * @param $url
+     * @param $lsKey
+     * @param $websiteId
+     * @return bool
+     * @throws NoSuchEntityException
+     */
     public function isEndpointResponding($url, $lsKey, $websiteId)
     {
         try {
@@ -251,8 +251,8 @@ class Data
                 }
 
                 //Set license validity
-                if(strpos($string,'CL:') !== false) {
-                    if(strpos($response->getResult(), 'CL:True EL:True') !== false) {
+                if (strpos($response->getResult(), 'CL:') !== false) {
+                    if (strpos($response->getResult(), 'CL:True EL:True') !== false) {
                         $this->setLicenseStatus("1");
                     } else {
                         $this->setLicenseStatus("0");
@@ -325,7 +325,7 @@ class Data
     public function getConfigValueFromDb($path, $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT, $scopeId = 0)
     {
         if ($this->storeManager->isSingleStoreMode()) {
-            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+            $scope   = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
             $scopeId = 0;
         }
         /** @var ConfigDataCollection $configDataCollection */
