@@ -249,6 +249,16 @@ class Data
                 if ($this->isNotificationEmailSent()) {
                     $this->setNotificationEmailSent(0);
                 }
+
+                //Set license validity
+                if(strpos($string,'CL:') !== false) {
+                    if(strpos($response->getResult(), 'CL:True EL:True') !== false) {
+                        $this->setLicenseStatus("1");
+                    } else {
+                        $this->setLicenseStatus("0");
+                    }
+                }
+
                 return true;
             }
         } catch (Exception $e) {

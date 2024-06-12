@@ -8,6 +8,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\SendEmail;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class ReplCustomer
 {
     /**
@@ -144,6 +147,11 @@ class ReplCustomer
      * @property string $SchemeCode
      */
     protected $SchemeCode = null;
+
+    /**
+     * @property SendEmail $SendReceiptByEMail
+     */
+    protected $SendReceiptByEMail = null;
 
     /**
      * @property string $ShippingLocation
@@ -674,6 +682,34 @@ class ReplCustomer
     public function getSchemeCode()
     {
         return $this->SchemeCode;
+    }
+
+    /**
+     * @param SendEmail|string $SendReceiptByEMail
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setSendReceiptByEMail($SendReceiptByEMail)
+    {
+        if ( ! $SendReceiptByEMail instanceof SendEmail ) {
+            if ( SendEmail::isValid( $SendReceiptByEMail ) )
+                $SendReceiptByEMail = new SendEmail( $SendReceiptByEMail );
+            elseif ( SendEmail::isValidKey( $SendReceiptByEMail ) )
+                $SendReceiptByEMail = new SendEmail( constant( "SendEmail::$SendReceiptByEMail" ) );
+            elseif ( ! $SendReceiptByEMail instanceof SendEmail )
+                throw new InvalidEnumException();
+        }
+        $this->SendReceiptByEMail = $SendReceiptByEMail->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return SendEmail
+     */
+    public function getSendReceiptByEMail()
+    {
+        return $this->SendReceiptByEMail;
     }
 
     /**

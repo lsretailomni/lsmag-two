@@ -11,6 +11,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderLine;
 use \Ls\Omni\Client\Ecommerce\Entity\ArrayOfOrderPayment;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\PaymentType;
 use \Ls\Omni\Client\Ecommerce\Entity\InventoryRequest;
 use \Ls\Omni\Client\Ecommerce\Entity\LoyItem;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
@@ -460,6 +461,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setCollectLocation($this->getEnvironmentVariableValueGivenName('COLLECT_LOCATION'));
         $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
@@ -478,6 +480,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
+        $this->assertTrue($resultOrderCreate->getClickAndCollectOrder());
     }
 
     /**
@@ -511,6 +514,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setCollectLocation($this->getEnvironmentVariableValueGivenName('COLLECT_LOCATION'));
         $result->setId('test1' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
@@ -529,6 +533,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
+        $this->assertTrue($resultOrderCreate->getClickAndCollectOrder());
     }
 
     /**
@@ -563,6 +568,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment([$orderPayment]);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setCollectLocation($this->getEnvironmentVariableValueGivenName('COLLECT_LOCATION'));
         $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
@@ -581,6 +587,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
+        $this->assertTrue($resultOrderCreate->getClickAndCollectOrder());
     }
 
     /**
@@ -612,6 +619,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPaymentArray[] = $orderPayment;
         $orderPaymentLoyalty = new OrderPayment();
         $orderPaymentLoyalty->setCurrencyCode('LOY')
+            ->setPaymentType(PaymentType::PAYMENT)
             ->setCurrencyFactor('0.10000000000000000000')
             ->setLineNumber('2')
             ->setCardNumber($this->getEnvironmentVariableValueGivenName('CARD_ID'))
@@ -633,6 +641,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $orderPayments->setOrderPayment($orderPaymentArray);
         $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::CLICK_AND_COLLECT);
+        $result->setCollectLocation($this->getEnvironmentVariableValueGivenName('COLLECT_LOCATION'));
         $result->setPointBalance('8668');
         $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
@@ -652,6 +661,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $this->assertTrue(property_exists($resultOrderCreate, 'Status'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Payments'));
         $this->assertTrue(property_exists($resultOrderCreate, 'Lines'));
+        $this->assertTrue($resultOrderCreate->getClickAndCollectOrder());
     }
 
     /**
@@ -671,19 +681,6 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
         $response = $this->client->OneListCalculate($entity);
         $result   = $response->getResult();
         $this->assertInstanceOf(Order::class, $result);
-        $orderPayment = new OrderPayment();
-        $orderPayment->setCurrencyFactor(1)
-            ->setAmount($result->getTotalAmount())
-            ->setLineNumber('1')
-            ->setExternalReference('TEST0012345')
-            ->setTenderType($this->getEnvironmentVariableValueGivenName('CREDIT_CARD_TENDER_TYPE'))
-            ->setCardType('VISA')
-            ->setCardNumber('4111111111111111')
-            ->setTokenNumber('1276349812634981234')
-            ->setPaymentType('Payment');
-        $orderPayments = new ArrayOfOrderPayment();
-        $orderPayments->setOrderPayment([$orderPayment]);
-        $result->setOrderPayments($orderPayments);
         $result->setOrderType(OrderType::SALE);
         $omniAddress1 = new Address();
         $omniAddress1->setCity('KL')
@@ -720,6 +717,19 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setQuantity(1);
         array_push($orderLines, $shipmentOrderLine);
         $result->setOrderLines($orderLines);
+        $orderPayment = new OrderPayment();
+        $orderPayment->setCurrencyFactor(1)
+            ->setAmount($result->getTotalAmount() + $shipmentOrderLine->getAmount())
+            ->setLineNumber('1')
+            ->setExternalReference('TEST0012345')
+            ->setTenderType($this->getEnvironmentVariableValueGivenName('CREDIT_CARD_TENDER_TYPE'))
+            ->setCardType('VISA')
+            ->setCardNumber('4111111111111111')
+            ->setTokenNumber('1276349812634981234')
+            ->setPaymentType('Payment');
+        $orderPayments = new ArrayOfOrderPayment();
+        $orderPayments->setOrderPayment([$orderPayment]);
+        $result->setOrderPayments($orderPayments);
         $result->setId('test' . substr(preg_replace("/[^A-Za-z0-9 ]/", '', $result->getId()), 0, 10));
         // Order creation request
         $paramOrderCreate  = [
