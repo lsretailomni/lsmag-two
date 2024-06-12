@@ -156,6 +156,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $SchemeCode = null;
 
     /**
+     * @property SendEmail $SendReceiptByEMail
+     */
+    protected $SendReceiptByEMail = null;
+
+    /**
      * @property string $ShippingLocation
      */
     protected $ShippingLocation = null;
@@ -788,6 +793,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getSchemeCode()
     {
         return $this->getData( 'SchemeCode' );
+    }
+
+    /**
+     * @param SendEmail $SendReceiptByEMail
+     * @return $this
+     */
+    public function setSendReceiptByEMail($SendReceiptByEMail)
+    {
+        $this->setData( 'SendReceiptByEMail', $SendReceiptByEMail );
+        $this->SendReceiptByEMail = $SendReceiptByEMail;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return SendEmail
+     */
+    public function getSendReceiptByEMail()
+    {
+        return $this->getData( 'SendReceiptByEMail' );
     }
 
     /**

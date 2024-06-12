@@ -38,6 +38,11 @@ class OrderEdit
     private $lsr;
 
     /**
+     * @var ItemHelper
+     */
+    private $itemHelper;
+
+    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger

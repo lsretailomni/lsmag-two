@@ -63,12 +63,15 @@ class AccountManagement
     }
 
     /**
+     * Before plugin to save ls_password as an extension attribute
+     *
      * @param $subject
      * @param CustomerInterface $customer
      * @param $password
      * @return array|null
+     * @throws NoSuchEntityException
      */
-    public function beforeCreateAccount($subject, CustomerInterface $customer, $password): ?array
+    public function beforeCreateAccount($subject, CustomerInterface $customer, $password = null): ?array
     {
         if (!empty($password)) {
             $extensionAttributes = $customer->getExtensionAttributes();

@@ -33,4 +33,8 @@
     <type name="Magento\Sales\Block\Adminhtml\Order\Create\Totals\DefaultTotals">
         <plugin name="ls_omni_format_points_earned" type="Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Totals\DefaultTotalsPlugin" sortOrder="1"/>
     </type>
+    <!-- During editing of orders we want to restrict user to change order from shipping to click&collect and viceversa-->
+    <type name="Magento\Sales\Block\Adminhtml\Order\Create\Shipping\Method\Form">
+        <plugin name="ls_omni_shipping_method_edit" type="Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Shipping\FormPlugin" sortOrder="1"/>
+    </type>
 </config>

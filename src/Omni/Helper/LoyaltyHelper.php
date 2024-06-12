@@ -329,11 +329,13 @@ class LoyaltyHelper extends AbstractHelperOmni
         }
 
         $response = null;
-        if ($this->lsr->isLSR($storeId)) {
+
+        if ($this->lsr->isLSR($storeId) && $this->isEnabledLoyaltyPoints()) {
             $cacheId = LSR::POINTRATE . $storeId;
             $response = $this->cacheHelper->getCachedContent($cacheId);
+
             if ($response !== false) {
-                return $response;
+                return $this->formatValue($response);
             }
             // @codingStandardsIgnoreStart
             $request = new Operation\GetPointRate();
@@ -355,7 +357,8 @@ class LoyaltyHelper extends AbstractHelperOmni
                     [Type::CACHE_TAG],
                     86400
                 );
-                return $response->getResult();
+
+                return $this->formatValue($response->getResult());
             }
         }
         return $response;
@@ -630,11 +633,17 @@ class LoyaltyHelper extends AbstractHelperOmni
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             if ($area == "cart") {
                 return $this->lsr->getStoreConfig(
+                    LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
+                    $this->lsr->getCurrentStoreId()
+                ) && $this->lsr->getStoreConfig(
                     LSR::LS_LOYALTYPOINTS_SHOW_ON_CART,
                     $this->lsr->getCurrentStoreId()
                 );
             }
             return $this->lsr->getStoreConfig(
+                LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
+                $this->lsr->getCurrentStoreId()
+            ) && $this->lsr->getStoreConfig(
                 LSR::LS_LOYALTYPOINTS_SHOW_ON_CHECKOUT,
                 $this->lsr->getCurrentStoreId()
             );
@@ -653,6 +662,20 @@ class LoyaltyHelper extends AbstractHelperOmni
     {
         return $this->lsr->getStoreConfig(
             LSR::SC_LOYALTY_ENABLE_LOYALTY_ELEMENTS,
+            $this->lsr->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * To check if loyalty points enabled
+     *
+     * @return string
+     * @throws NoSuchEntityException
+     */
+    public function isEnabledLoyaltyPoints()
+    {
+        return $this->lsr->getStoreConfig(
+            LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
             $this->lsr->getCurrentStoreId()
         );
     }
@@ -745,7 +768,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      * Format value to two decimal places
      *
      * @param float $value
-     * @return float|string
+     * @return string
      */
     public function formatValue($value)
     {
