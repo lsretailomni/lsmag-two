@@ -12,6 +12,7 @@ use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use \Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
@@ -375,6 +376,9 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplExtendedVariantValueRepository */
     public $extendedVariantValueRepository;
 
+    /** @var ReplItemVariantRegistrationRepository */
+    public $itemVariantRegistrationRepository;
+
     /** @var ReplItemUnitOfMeasure */
     public $replItemUomRepository;
 
@@ -551,6 +555,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param ConfigurableProTypeModel $configurableProTypeModel
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
+     * @param ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
      * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
      * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
@@ -617,6 +622,7 @@ class ReplicationHelper extends AbstractHelper
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         ConfigurableProTypeModel $configurableProTypeModel,
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
+        ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
         ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
         ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
@@ -681,6 +687,7 @@ class ReplicationHelper extends AbstractHelper
         $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
         $this->configurableProTypeModel                  = $configurableProTypeModel;
         $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
+        $this->itemVariantRegistrationRepository         = $itemVariantRegistrationRepository;
         $this->replItemUomRepository                     = $replItemUomRepository;
         $this->replTaxSetupRepository                    = $replTaxSetupRepository;
         $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
@@ -1636,7 +1643,7 @@ class ReplicationHelper extends AbstractHelper
         );
         $collection->getSelect()->joinInner(
             ['cpw' => 'catalog_product_website'],
-                "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
+            "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
                 " AND cpw.website_id = $websiteId",
             []
         );
@@ -3783,5 +3790,28 @@ class ReplicationHelper extends AbstractHelper
     public function getSourceItemsSaveObject()
     {
         return $this->sourceItemsSave;
+    }
+
+    /**
+     * Get variant ids
+     *
+     * @param $itemId
+     * @param $dimension
+     * @param $storeId
+     * @return array
+     */
+    public function getVariantIdsByDimension($itemId, $dimension, $storeId)
+    {
+        $variantIds = [];
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('VariantDimension1', $dimension)
+            ->addFilter('ItemId', $itemId, 'eq')
+            ->addFilter('scope_id', $storeId, 'eq')
+            ->create();
+        $items = $this->itemVariantRegistrationRepository->getList($searchCriteria)->getItems();
+        foreach ($items as $item) {
+            $variantIds [] = $item->getVariantId();
+        }
+
+        return $variantIds;
     }
 }
