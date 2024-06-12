@@ -102,25 +102,13 @@ class GeneralViewModel implements ArgumentInterface
     }
 
     /**
-     * Get configuration for notification type
-     *
-     * @return string
-     */
-    public function getNotificationType()
-    {
-        return $this->lsr->getNotificationType();
-    }
-
-    /**
      * Check to see if push notification is enabled
      *
      * @return bool
      */
     public function isPushNotificationsEnabled()
     {
-        $configuredNotificationType = explode(',', $this->getNotificationType());
-
-        return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
+        return $this->lsr->isPushNotificationsEnabled();
     }
 
     /**
