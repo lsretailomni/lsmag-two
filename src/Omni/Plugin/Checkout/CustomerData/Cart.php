@@ -111,7 +111,7 @@ class Cart
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
                                 $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                                    $item->getRowTotal()  : $item->getProduct()->getPrice() * $item->getQty();
+                                    $item->getRowTotal()  : $item->getPrice();
                             }
                             $result['items'][$key]['lsPriceOriginal']  = ($originalPrice != "") ?
                                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice;
