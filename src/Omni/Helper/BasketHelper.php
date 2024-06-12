@@ -287,9 +287,8 @@ class BasketHelper extends AbstractHelper
 
             foreach ($children as $child) {
                 if ($child->getProduct()->isInStock()) {
-                    list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                        $child->getSku()
-                    );
+                    list($itemId, $variantId, $uom, $barCode) =
+                        $this->itemHelper->getItemAttributesGivenQuoteItem($child);
                     $match              = false;
                     $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
@@ -303,10 +302,12 @@ class BasketHelper extends AbstractHelper
                         }
                     } else {
                         foreach ($itemsArray as $itemArray) {
-                            if ($itemArray->getItemId() == $itemId &&
+                            if (is_numeric($itemArray->getId()) ?
+                                $itemArray->getId() == $child->getItemId() :
+                                ($itemArray->getItemId() == $itemId &&
                                 $itemArray->getVariantId() == $variantId &&
                                 $itemArray->getUnitOfMeasureId() == $uom &&
-                                $itemArray->getBarcodeId() == $barCode
+                                $itemArray->getBarcodeId() == $barCode)
                             ) {
                                 $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
                                 $match = true;
@@ -315,22 +316,21 @@ class BasketHelper extends AbstractHelper
                         }
                     }
 
-                }
+                    if (!$match) {
+                        // @codingStandardsIgnoreLine
+                        $list_item = (new Entity\OneListItem())
+                            ->setQuantity($quoteItem->getData('qty'))
+                            ->setItemId($itemId)
+                            ->setId($quoteItem->getItemId())
+                            ->setBarcodeId($barCode)
+                            ->setVariantId($variantId)
+                            ->setUnitOfMeasureId($uom)
+                            ->setAmount($quoteItem->getPrice())
+                            ->setPrice($quoteItem->getPrice())
+                            ->setImmutable(true);
 
-                if (!$match) {
-                    // @codingStandardsIgnoreLine
-                    $list_item = (new Entity\OneListItem())
-                        ->setQuantity($quoteItem->getData('qty'))
-                        ->setItemId($itemId)
-                        ->setId($quoteItem->getItemId())
-                        ->setBarcodeId($barCode)
-                        ->setVariantId($variantId)
-                        ->setUnitOfMeasureId($uom)
-                        ->setAmount($quoteItem->getPrice())
-                        ->setPrice($quoteItem->getPrice())
-                        ->setImmutable(true);
-
-                    $itemsArray[] = $list_item;
+                        $itemsArray[] = $list_item;
+                    }
                 }
             }
         }
