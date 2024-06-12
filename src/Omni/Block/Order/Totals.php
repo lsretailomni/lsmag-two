@@ -41,6 +41,20 @@ class Totals extends AbstractBlock
     {
         $orderTotalsBlock = $this->getParentBlock();
         $order            = $orderTotalsBlock->getOrder();
+
+        if ($order->getLsDiscountAmount() > 0) {
+            $lsDiscountAmount = $order->getLsDiscountAmount();
+            // @codingStandardsIgnoreLine
+            $lsDiscounts = new DataObject(
+                [
+                    'code'  => 'ls_discount_amount',
+                    'value' => -$lsDiscountAmount,
+                    'label' => __('Discount'),
+                ]
+            );
+            $this->getParentBlock()->addTotalBefore($lsDiscounts, 'discount');
+        }
+
         if ($order->getLsPointsSpent() > 0) {
             $loyaltyAmount = $order->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreLine

@@ -138,7 +138,7 @@ class DataAssignObserver implements ObserverInterface
 
         $order->setLsPointsSpent($loyaltyPointsSpent);
         $order->setLsPointsEarn($quote->getLsPointsEarn());
-
+        $order->setLsDiscountAmount($quote->getLsDiscountAmount());
         $order->setLsGiftCardAmountUsed($giftCardAmountUsed);
         $order->setLsGiftCardNo($giftCardNo);
         $order->setLsGiftCardPin($giftCardPin);

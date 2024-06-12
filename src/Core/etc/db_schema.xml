@@ -3,6 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="quote" resource="checkout" engine="innodb" comment="Sales Flat Quote">
         <column xsi:type="blob" name="basket_response" nullable="true"  comment="One List Calculate Response"/>
+        <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
         <column xsi:type="varchar" name="pickup_date_timeslot" nullable="true" comment="Pick Up Date Time Slot"/>
@@ -12,7 +13,11 @@
         <column xsi:type="float" name="ls_gift_card_amount_used" nullable="true" default="0" comment="Ls Gift Card Amount Used"/>
         <column xsi:type="text" name="ls_gift_card_pin" nullable="true" comment="LS Gift Card Pin"/>
     </table>
+    <table name="quote_item" resource="checkout" engine="innodb" comment="Sales Flat Quote Item">
+        <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>
+    </table>
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
+        <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount"/>
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
         <column xsi:type="text" name="pickup_store" nullable="true" comment="Pick Up Store"/>
         <column xsi:type="varchar" name="pickup_date_timeslot" nullable="true" comment="Pick Up Date Time Slot"/>
@@ -23,7 +28,11 @@
         <column xsi:type="text" name="ls_gift_card_pin" nullable="true" comment="LS Gift Card Pin"/>
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>
     </table>
+    <table name="sales_order_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
+        <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>
+    </table>
     <table name="sales_invoice" resource="sales" engine="innodb" comment="Sales Flat Invoice">
+        <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>
         <column xsi:type="int" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
         <column xsi:type="int" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
@@ -31,6 +40,7 @@
         <column xsi:type="text" name="ls_gift_card_pin" nullable="true" comment="LS Gift Card Pin"/>
     </table>
     <table name="sales_creditmemo" resource="sales" engine="innodb" comment="Sales Flat Creditmemo">
+        <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>
         <column xsi:type="int" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
         <column xsi:type="int" name="ls_points_spent" nullable="true" default="0" comment="LS Loyalty Points Spent"/>
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
