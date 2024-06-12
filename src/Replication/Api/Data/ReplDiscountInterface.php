@@ -209,13 +209,13 @@ interface ReplDiscountInterface
     public function getUnitOfMeasureId();
 
     /**
-     * @param int $ValidationPeriodId
+     * @param string $ValidationPeriodId
      * @return $this
      */
     public function setValidationPeriodId($ValidationPeriodId);
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriodId();
 
