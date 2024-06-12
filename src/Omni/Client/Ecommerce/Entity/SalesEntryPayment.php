@@ -19,6 +19,11 @@ class SalesEntryPayment
     protected $Amount = null;
 
     /**
+     * @property float $AmountLCY
+     */
+    protected $AmountLCY = null;
+
+    /**
      * @property string $AuthorizationCode
      */
     protected $AuthorizationCode = null;
@@ -84,6 +89,24 @@ class SalesEntryPayment
     public function getAmount()
     {
         return $this->Amount;
+    }
+
+    /**
+     * @param float $AmountLCY
+     * @return $this
+     */
+    public function setAmountLCY($AmountLCY)
+    {
+        $this->AmountLCY = $AmountLCY;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmountLCY()
+    {
+        return $this->AmountLCY;
     }
 
     /**

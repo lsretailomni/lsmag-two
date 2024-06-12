@@ -266,7 +266,7 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $ValidToBeforeExpDate = null;
 
     /**
-     * @property int $ValidationPeriodId
+     * @property string $ValidationPeriodId
      */
     protected $ValidationPeriodId = null;
 
@@ -1321,7 +1321,7 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
-     * @param int $ValidationPeriodId
+     * @param string $ValidationPeriodId
      * @return $this
      */
     public function setValidationPeriodId($ValidationPeriodId)
@@ -1333,7 +1333,7 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriodId()
     {

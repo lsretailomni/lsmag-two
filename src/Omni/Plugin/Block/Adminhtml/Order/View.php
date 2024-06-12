@@ -3,9 +3,9 @@
 namespace Ls\Omni\Plugin\Block\Adminhtml\Order;
 
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\BasketHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Sales\Model\Order;
 
 class View
 {
@@ -14,9 +14,19 @@ class View
      */
     public $orderHelper;
 
-    public function __construct(OrderHelper $orderHelper)
+    /**
+     * @var BasketHelper
+     */
+    public $basketHelper;
+
+    /**
+     * @param OrderHelper $orderHelper
+     * @param BasketHelper $basketHelper
+     */
+    public function __construct(OrderHelper $orderHelper, BasketHelper $basketHelper)
     {
         $this->orderHelper = $orderHelper;
+        $this->basketHelper = $basketHelper;
     }
 
     /**
@@ -46,6 +56,7 @@ class View
             LSR::LSR_ORDER_EDIT,
             $order->getStoreId()
         )) {
+            $this->basketHelper->setOneListCalculationInCheckoutSession(null);
             $message = __('Want to Edit the Order?');
             $view->removeButton('order_edit');
 

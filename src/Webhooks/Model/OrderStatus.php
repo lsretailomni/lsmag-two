@@ -61,7 +61,7 @@ class OrderStatus implements OrderStatusInterface
             return $this->status->process($data);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
-            return $this->status->getHelperObject()->outputMessage(false, __($e->getMessage()));
+            return $this->status->getHelperObject()->outputMessage(false, $e->getMessage());
         }
     }
 }
