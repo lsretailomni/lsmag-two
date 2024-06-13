@@ -46,17 +46,16 @@ class Totals extends AbstractBlock
         $orderTotalsBlock = $this->getParentBlock();
         $order            = $orderTotalsBlock->getOrder();
 
-        if ($order->getLsDiscountAmount() > 0) {
-            $lsDiscountAmount = $order->getLsDiscountAmount();
+        if ($order->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
-            $lsDiscounts = new DataObject(
+            $giftCardAmount = new DataObject(
                 [
-                    'code'  => 'ls_discount_amount',
-                    'value' => -$lsDiscountAmount,
-                    'label' => __('Discount'),
+                    'code'  => 'ls_gift_card_amount_used',
+                    'value' => -$order->getLsGiftCardAmountUsed(),
+                    'label' => __('Gift Card Redeemed ') . '(' . $order->getLsGiftCardNo() . ')',
                 ]
             );
-            $this->getParentBlock()->addTotalBefore($lsDiscounts, 'discount');
+            $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
         }
 
         if ($order->getLsPointsSpent() > 0) {
@@ -71,16 +70,18 @@ class Totals extends AbstractBlock
             );
             $this->getParentBlock()->addTotalBefore($loyaltyPoints, 'discount');
         }
-        if ($order->getLsGiftCardAmountUsed() > 0) {
+
+        if ($order->getLsDiscountAmount() > 0) {
+            $lsDiscountAmount = $order->getLsDiscountAmount();
             // @codingStandardsIgnoreLine
-            $giftCardAmount = new DataObject(
+            $lsDiscounts = new DataObject(
                 [
-                    'code'  => 'ls_gift_card_amount_used',
-                    'value' => -$order->getLsGiftCardAmountUsed(),
-                    'label' => __('Gift Card Redeemed ') . '(' . $order->getLsGiftCardNo() . ')',
+                    'code'  => 'ls_discount_amount',
+                    'value' => -$lsDiscountAmount,
+                    'label' => __('Discount'),
                 ]
             );
-            $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
+            $this->getParentBlock()->addTotalBefore($lsDiscounts, 'discount');
         }
 
         return $this;

@@ -118,18 +118,19 @@ class Totals extends Template
         $this->getInvoice();
         $this->getCreditmemo();
         $this->getSource();
-        if ($this->getSource()->getLsDiscountAmount() > 0) {
-            $lsDiscountAmount = $this->getSource()->getLsDiscountAmount();
+
+        if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
             // @codingStandardsIgnoreLine
-            $lsDiscounts = new DataObject(
+            $giftCardAmount = new DataObject(
                 [
-                    'code'  => 'ls_discount_amount',
-                    'value' => -$lsDiscountAmount,
-                    'label' => __('Discount'),
+                    'code'  => 'ls_gift_card_amount_used',
+                    'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
+                    'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
                 ]
             );
-            $this->getParentBlock()->addTotalBefore($lsDiscounts, 'discount');
+            $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
         }
+
         if ($this->getSource()->getLsPointsSpent() > 0) {
             $loyaltyAmount = $this->getSource()->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreLine
@@ -142,16 +143,18 @@ class Totals extends Template
             );
             $this->getParentBlock()->addTotalBefore($loyaltyPoints, 'discount');
         }
-        if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
+
+        if ($this->getSource()->getLsDiscountAmount() > 0) {
+            $lsDiscountAmount = $this->getSource()->getLsDiscountAmount();
             // @codingStandardsIgnoreLine
-            $giftCardAmount = new DataObject(
+            $lsDiscounts = new DataObject(
                 [
-                    'code'  => 'ls_gift_card_amount_used',
-                    'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
-                    'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
+                    'code'  => 'ls_discount_amount',
+                    'value' => -$lsDiscountAmount,
+                    'label' => __('Discount'),
                 ]
             );
-            $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
+            $this->getParentBlock()->addTotalBefore($lsDiscounts, 'discount');
         }
 
         return $this;
