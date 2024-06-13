@@ -4,6 +4,7 @@ namespace Ls\Omni\Block\Order;
 
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
 
@@ -35,7 +36,10 @@ class Totals extends AbstractBlock
     }
 
     /**
+     * Initialize order totals array for email
+     *
      * @return $this
+     * @throws NoSuchEntityException
      */
     public function initTotals()
     {
