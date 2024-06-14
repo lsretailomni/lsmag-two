@@ -300,7 +300,7 @@ class DiscountCreateSetupTask
                                                                 $replDiscount->getNumber(),
                                                                 $replDiscount->getVariantId(),
                                                                 $uomCode,
-                                                                $storeId,
+                                                                $this->store->getId(),
                                                             )->getSku();
                                                         }
                                                     } else {
@@ -310,7 +310,7 @@ class DiscountCreateSetupTask
                                                             $replDiscount->getNumber(),
                                                             $replDiscount->getVariantId(),
                                                             $replDiscount->getUnitOfMeasureId(),
-                                                            $storeId,
+                                                            $this->store->getId(),
                                                         )->getSku();
                                                     }
                                                 } else {
@@ -320,7 +320,7 @@ class DiscountCreateSetupTask
                                                         $replDiscount->getNumber(),
                                                         $replDiscount->getVariantId(),
                                                         $replDiscount->getUnitOfMeasureId(),
-                                                        $storeId,
+                                                        $this->store->getId(),
                                                     )->getSku();
                                                 }
                                             } elseif (!empty($replDiscount->getVariantId())) {
@@ -328,7 +328,7 @@ class DiscountCreateSetupTask
                                                     $variantIds = $this->getVariantIdsByDimension(
                                                         $replDiscount->getNumber(),
                                                         $replDiscount->getVariantId(),
-                                                        $storeId
+                                                        $this->store->getId()
                                                     );
                                                 } else {
                                                     $variantIds[] = $replDiscount->getVariantId();
@@ -343,7 +343,7 @@ class DiscountCreateSetupTask
                                                                     $replDiscount->getNumber(),
                                                                     $variantId,
                                                                     $uomCode,
-                                                                    $storeId,
+                                                                    $this->store->getId(),
                                                                 )->getSku();
                                                             }
                                                         } else {
@@ -353,7 +353,7 @@ class DiscountCreateSetupTask
                                                                 $replDiscount->getNumber(),
                                                                 $variantId,
                                                                 $replDiscount->getUnitOfMeasureId(),
-                                                                $storeId,
+                                                                $this->store->getId(),
                                                             )->getSku();
                                                         }
                                                     } else {
@@ -363,7 +363,7 @@ class DiscountCreateSetupTask
                                                             $replDiscount->getNumber(),
                                                             $variantId,
                                                             $replDiscount->getUnitOfMeasureId(),
-                                                            $storeId,
+                                                            $this->store->getId(),
                                                         )->getSku();
                                                     }
                                                 }
@@ -374,7 +374,7 @@ class DiscountCreateSetupTask
                                                     $replDiscount->getNumber(),
                                                     $replDiscount->getVariantId(),
                                                     $replDiscount->getUnitOfMeasureId(),
-                                                    $storeId,
+                                                    $this->store->getId(),
                                                 )->getSku();
                                             }
                                         } else {
