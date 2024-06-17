@@ -66,15 +66,15 @@ $_item->getItemId() ?>">
         __('Price') ?>">
             <?php if (!empty($_item->getDiscountAmount()) && $_item->getDiscountAmount() > 0): ?>
                 <?= /* @noEscape */
-                $block->getFormattedPrice($_item->getAmount()/$_item->getQuantity()); ?>
+                $block->getFormattedPrice($_item->getAmount()); ?>
                 <div class="lsdiscountprice2">
                     <strike>
                         <?= /* @noEscape */
-                        $block->getFormattedPrice($_item->getPrice()); ?>
+                        $block->getFormattedPrice($_item->getPrice() * $_item->getQuantity()); ?>
                     </strike></div>
                 <div class="lsdiscountamount">
                     <?= /* @noEscape */
-                    '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()/$_item->getQuantity()) . ')'; ?>
+                    '(' . __($block->getDiscountLabel()) . ' ' . $block->getFormattedPrice($_item->getDiscountAmount()) . ')'; ?>
                 </div>
             <?php else: ?>
                 <?= /* @noEscape */
@@ -91,7 +91,7 @@ $_item->getItemId() ?>">
         <td class="col subtotal" data-th="<?= /* @noEscape */
         __('Subtotal') ?>">
             <?= /* @noEscape */
-            $block->getFormattedPrice($_item->getAmount()); ?>
+             $block->getFormattedPrice($_item->getAmount()); ?>
         </td>
     <?php endif; ?>
 </tr>

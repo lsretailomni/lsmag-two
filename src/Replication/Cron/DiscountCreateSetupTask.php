@@ -328,7 +328,7 @@ class DiscountCreateSetupTask
                                                     $variantIds = $this->getVariantIdsByDimension(
                                                         $replDiscount->getNumber(),
                                                         $replDiscount->getVariantId(),
-                                                        $this->store->getId()
+                                                        $storeId
                                                     );
                                                 } else {
                                                     $variantIds[] = $replDiscount->getVariantId();

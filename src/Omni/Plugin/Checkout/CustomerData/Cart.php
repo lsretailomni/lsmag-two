@@ -100,7 +100,8 @@ class Cart
                     foreach ($result['items'] as $key => $itemAsArray) {
                         if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                             $lineDiscount = $this->basketHelper->getItemRowDiscount($item);
-                            $item->setCustomPrice($this->basketHelper->getItemRowTotal($item));
+                            $customPrice = $this->basketHelper->getItemRowTotal($item);
+                            $item->setCustomPrice($customPrice);
                             $item->setDiscountAmount($lineDiscount);
                             $this->itemPriceRenderer->setItem($item);
                             $this->itemPriceRenderer->setTemplate(
@@ -111,8 +112,10 @@ class Cart
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
                                 $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                                    $item->getRowTotal()  : $item->getPrice();
+                                    $item->getRowTotal()  : $item->getProduct()->getPrice() * $item->getQty();
                             }
+                            $originalPrice = $this->basketHelper->getPriceAddingCustomOptions($item, $originalPrice);
+                            $item->setPriceInclTax($customPrice);
                             $result['items'][$key]['lsPriceOriginal']  = ($originalPrice != "") ?
                                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice;
                             $result['items'][$key]['lsDiscountAmount'] = ($discountAmount != "") ?
