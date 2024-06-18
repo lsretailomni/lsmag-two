@@ -1062,6 +1062,40 @@ class BasketHelper extends AbstractHelper
     /**
      * This function is overriding in hospitality module
      *
+     * Get Correct Item Row Total for mini-cart after comparison
+     *
+     * @param $item
+     * @return string
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getPrice($item)
+    {
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $rowTotal = $this->getRowTotalBundleProduct($item);
+        } else {
+            $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $item->getSku()
+            );
+            $price   = $item->getPrice();
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
+            foreach ($orderLines as $line) {
+                if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                    $price = $line->getPrice();
+                    break;
+                }
+            }
+        }
+
+        return $price;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
      * Get item row discount
      *
      * @param $item
@@ -1295,6 +1329,27 @@ class BasketHelper extends AbstractHelper
         }
 
         return $pickupDateTimeslot;
+    }
+
+    /**
+     * Get price include custom options price
+     *
+     * @param $item
+     * @param $price
+     * @return float|int|mixed
+     */
+    public function getPriceAddingCustomOptions($item, $price) {
+        $options = $item->getOptions();
+        if ($options) {
+            foreach ($options as $option) {
+                if ($option->getCode() == 'option_ids') {
+                    $price  = $item->getProductType() == Type::TYPE_BUNDLE ?
+                        $item->getRowTotal()  : $item->getPrice() * $item->getQty();
+                }
+            }
+        }
+
+        return $price;
     }
 
     /**

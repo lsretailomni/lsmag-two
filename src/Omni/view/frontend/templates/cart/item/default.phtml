@@ -2,7 +2,7 @@
 // @codingStandardsIgnoreFile
 
 /**
- * Recent order template
+ * Cart item template
  *
  * @var Renderer $block
  * @var Escaper $escaper
@@ -30,11 +30,11 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
 <tr class="item-info">
     <td data-th="<?= $escaper->escapeHtml(__('Item')) ?>" class="col item">
         <?php if ($block->hasProductUrl()): ?>
-            <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"
-               title="<?= $escaper->escapeHtml($block->getProductName()) ?>"
-               tabindex="-1"
-               class="product-item-photo">
-        <?php else: ?>
+        <a href="<?= $escaper->escapeUrl($block->getProductUrl()) ?>"
+           title="<?= $escaper->escapeHtml($block->getProductName()) ?>"
+           tabindex="-1"
+           class="product-item-photo">
+            <?php else: ?>
             <span class="product-item-photo">
         <?php endif; ?>
         <?= $block->getImage(
@@ -42,10 +42,10 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
             'cart_page_product_thumbnail'
         )->toHtml() ?>
         <?php if ($block->hasProductUrl()): ?>
-            </a>
-        <?php else: ?>
-            </span>
-        <?php endif; ?>
+        </a>
+    <?php else: ?>
+        </span>
+    <?php endif; ?>
         <div class="product-item-details">
             <strong class="product-item-name">
                 <?php if ($block->hasProductUrl()): ?>
@@ -98,8 +98,8 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                     <a href="#" class="action help map"
                        id="<?= $escaper->escapeHtml($helpLinkId) ?>"
                        data-mage-init='{"addToCart":{"helpLinkId": "#<?= $escaper->escapeHtml(
-                        $helpLinkId) ?>","productName": "<?=$escaper->escapeHtml(
-                        $product->getName()) ?>","showAddToCart": false}}'>
+                           $helpLinkId) ?>","productName": "<?=$escaper->escapeHtml(
+                           $product->getName()) ?>","showAddToCart": false}}'>
                         <span><?= $escaper->escapeHtml(__("What's this?")) ?></span>
                     </a>
                 </span>
@@ -110,10 +110,10 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                 <span class="price-excluding-tax" data-label="Excl. Tax">
                     <span class="cart-price">
                         <?= $priceCurrency->format($viewModel->getItemRowTotal($_item), true); ?><br/>
-                        <?php if ($_item->getDiscountAmount() > 0): ?>
+                        <?php if ($_item->getDiscountAmount() > 0): $price = $_item->getProduct()->getPrice() * (int)$block->getQty(); ?>
                             <div class="lsdiscountprice2">
                             <strike>
-                                <?= $priceCurrency->format($_item->getPrice(), true); ?>
+                                <?= $priceCurrency->format($viewModel->getItemPriceIncludeCustomOptions($_item, $price), true); ?>
                             </strike>
                             </div>
                         <?php endif; ?>

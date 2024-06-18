@@ -87,6 +87,17 @@ class CartViewModel implements ArgumentInterface
         return $this->basketHelper->getItemRowDiscount($item);
     }
 
+    /**
+     * Get Item price including custom options price
+     *
+     * @param $item
+     * @param $price
+     * @return float|int|mixed
+     */
+    public function getItemPriceIncludeCustomOptions($item, $price)
+    {
+        return $this->basketHelper->getPriceAddingCustomOptions($item, $price);
+    }
 
     /**
      * Get One list calculation data
