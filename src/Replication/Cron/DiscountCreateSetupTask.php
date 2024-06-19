@@ -643,7 +643,6 @@ class DiscountCreateSetupTask
     {
         $filters  = [
         ['field' => 'is_updated', 'value' => 1, 'condition_type' => 'eq'],
-        ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
         ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForDirect(
