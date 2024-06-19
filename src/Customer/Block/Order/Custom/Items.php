@@ -3,6 +3,7 @@
 namespace Ls\Customer\Block\Order\Custom;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
@@ -57,9 +58,9 @@ class Items extends AbstractItems
      */
     public function getItems()
     {
-        $type    = $this->_request->getParam('type');
+        $type         = $this->_request->getParam('type');
         $order        = $this->getOrder();
-        if ($this->getMagOrder() && $type!= 'Receipt') {
+        if ($this->getMagOrder() && $type != DocumentIdType::RECEIPT) {
             $magentoOrder = $this->getMagOrder();
 
             if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
