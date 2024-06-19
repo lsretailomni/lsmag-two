@@ -5,6 +5,8 @@ namespace Ls\Omni\Model\Sales\AdminOrder;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
+use Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
+use Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
@@ -82,7 +84,8 @@ class OrderEdit
     public function prepareOrder(Order $order, $oneListCalculateResponse, Order $oldOrder, $documentId)
     {
         try {
-            $orderEdit = new EditOrder();
+            $customerOrder = $this->orderHelper->getOrderDetailsAgainstId($documentId);
+            $orderEdit     = new EditOrder();
             $orderEdit->setOrderId($documentId);
             $orderEdit->setEditType(OrderEditType::GENERAL);
             $orderObject = new CommerceOrder();
@@ -179,6 +182,30 @@ class OrderEdit
                 $newItemsArray[$newItem->getSku()] = $newItem->getSku();
             }
 
+            // Adding logic in case of items remove
+            if (count($oldItems) > count($newItems)) {
+                $itemsToCancel = [];
+                foreach ($oldItems as $oldItem) {
+                    if (!in_array($oldItem->getSku(), $newItemsArray)) {
+                        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                            $oldItem->getSku()
+                        );
+                        $orderLines = $customerOrder->getLines()->getSalesEntryLine();
+                        foreach ($orderLines as $line) {
+                            if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
+                                $uom == $line->getUomId()) {
+                                $itemsToCancel[$line->getLineNumber()] = [
+                                    'lineNo' => $line->getLineNumber(),
+                                    'qty'    => $line->getQuantity(),
+                                    'itemId' => $line->getItemId(),
+                                ];
+                            }
+                        }
+                    }
+                }
+                $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
+            }
+
             foreach ($newItems as $newItem) {
                 if ($newItem->getProductType() == Type::TYPE_SIMPLE) {
                     foreach ($oldItems as $oldItem) {
@@ -192,7 +219,7 @@ class OrderEdit
                                 foreach ($orderLinesArray as &$orderLine) {
                                     if ($orderLine->getItemId() == $itemId &&
                                         $orderLine->getVariantId() == $variantId &&
-                                        $orderLine->getUomId() == $uom) {
+                                        $orderLine->getUnitOfMeasureId() == $uom) {
                                         $price          = $orderLine->getPrice();
                                         $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
                                             * $qtyDifference;
@@ -215,7 +242,7 @@ class OrderEdit
                                             ->setTaxAmount($taxAmount)
                                             ->setItemId($itemId)
                                             ->setDiscountPercent($orderLine->getDiscountPercent())
-                                            ->setUomId($orderLine->getUomId())
+                                            ->setUomId($orderLine->getUnitOfMeasureId())
                                             ->setVariantId($orderLine->getVariantId())
                                             ->setLineType(Entity\Enum\LineType::ITEM)
                                             ->setLineNumber($lineNumber)
@@ -237,7 +264,7 @@ class OrderEdit
                 }
             }
             $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
-            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $oldOrder);
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder);
             if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
                 $orderEdit->setReturnOrderIdOnly(true);
             }
@@ -353,18 +380,33 @@ class OrderEdit
     /**
      * Update shipping amount
      *
-     * @param array $orderLines
-     * @param object $order
-     * @param object $oldOrder
+     * @param $orderLines
+     * @param $order
+     * @param $customerOrder
      * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    public function updateShippingAmount($orderLines, $order, $oldOrder)
+    public function updateShippingAmount($orderLines, $order, $customerOrder)
     {
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
-        $shippingAmount     = $order->getShippingInclTax() - $oldOrder->getShippingInclTax();
+        $shippingAmount     = $order->getShippingInclTax();
         if ($shippingAmount > 0) {
+            $orderLines = $customerOrder->getLines()->getSalesEntryLine();
+            foreach ($orderLines as $line) {
+                if ($shipmentFeeId == $line->getItemId()) {
+                    $itemsToCancel[] = [
+                        'lineNo' => $line->getLineNumber(),
+                        'qty'    => $line->getQuantity(),
+                        'itemId' => $line->getItemId(),
+                    ];
+                    $this->orderCancel(
+                        $customerOrder->getDocumentId(),
+                        $customerOrder->getStoreId(),
+                        $itemsToCancel
+                    );
+                }
+            }
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
@@ -383,5 +425,41 @@ class OrderEdit
             array_push($orderLines, $shipmentOrderLine);
         }
         return $orderLines;
+    }
+
+    /**
+     * Function to cancel the items that are removed from the order
+     *
+     * @param $documentId
+     * @param $storeId
+     * @param $itemsToCancel
+     * @return bool|OrderCancelExResponse|ResponseInterface|null
+     */
+    public function orderCancel($documentId, $storeId, $itemsToCancel)
+    {
+        $response          = null;
+        $request           = new Entity\OrderCancelEx();
+        $arrayOfOrderLines = new Entity\ArrayOfOrderCancelLine();
+        $orderCancelLine   = new Entity\OrderCancelLine();
+        $orderCancelArray = [];
+        foreach ($itemsToCancel as $itemCancel) {
+            $orderCancelLine->setLineNo($itemCancel['lineNo']);
+            $orderCancelLine->setQuantity($itemCancel['qty']);
+            $orderCancelLine->setItemNo($itemCancel['itemId']);
+            $orderCancelArray[]=$orderCancelLine;
+        }
+        $arrayOfOrderLines->setOrderCancelLine($orderCancelArray);
+        $request->setOrderId($documentId);
+        $request->setStoreId($storeId);
+        $request->setUserId("");
+        $request->setLines($arrayOfOrderLines);
+        $operation = new Operation\OrderCancelEx();
+        try {
+            $response = $operation->execute($request);
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
+
+        return $response ? $response->getOrderCancelExResult() : $response;
     }
 }
