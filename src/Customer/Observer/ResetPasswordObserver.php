@@ -91,8 +91,8 @@ class ResetPasswordObserver implements ObserverInterface
          */
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
             try {
-                $controller_action = $observer->getData('controller_action');
-                $post_param        = $controller_action->getRequest()->getParams();
+                $controllerAction = $observer->getData('controller_action');
+                $post_param        = $controllerAction->getRequest()->getParams();
                 $result            = null;
                 /**
                  * only have to continue if actual event does not throws any error
@@ -102,7 +102,7 @@ class ResetPasswordObserver implements ObserverInterface
                  */
                 $isFailed = $this->customerSession->getRpToken();
                 if (!$isFailed) {
-                    $customerId = $observer->getRequest()->getQuery('id');
+                    $customerId = $controllerAction->getRequest()->getQuery('id');
                     $customer   =  $this->customerFactory->create()->load($customerId);
 
                     if ($customer) {
