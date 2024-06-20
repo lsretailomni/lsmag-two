@@ -11,7 +11,8 @@
             "basket_response": true,
             "pickup_date_timeslot": true,
             "ls_gift_card_pin": true,
-            "ls_discount_amount": true
+            "ls_discount_amount": true,
+            "ls_subscription_id": true
         }
     },
     "sales_order": {
@@ -25,7 +26,8 @@
             "document_id": true,
             "pickup_date_timeslot": true,
             "ls_gift_card_pin": true,
-            "ls_discount_amount": true
+            "ls_discount_amount": true,
+            "ls_subscription_id": true
         }
     },
     "sales_invoice": {

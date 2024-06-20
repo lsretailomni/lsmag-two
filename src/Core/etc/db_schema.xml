@@ -12,6 +12,7 @@
         <column xsi:type="text" name="ls_gift_card_no" nullable="true" comment="LS Gift Card No"/>
         <column xsi:type="float" name="ls_gift_card_amount_used" nullable="true" default="0" comment="Ls Gift Card Amount Used"/>
         <column xsi:type="text" name="ls_gift_card_pin" nullable="true" comment="LS Gift Card Pin"/>
+        <column xsi:type="text" name="ls_subscription_id" nullable="true" comment="LS Subscription ID"/>
     </table>
     <table name="quote_item" resource="checkout" engine="innodb" comment="Sales Flat Quote Item">
         <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>
@@ -27,6 +28,7 @@
         <column xsi:type="float" name="ls_gift_card_amount_used" nullable="true" default="0" comment="Ls Gift Card Amount Used"/>
         <column xsi:type="text" name="ls_gift_card_pin" nullable="true" comment="LS Gift Card Pin"/>
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>
+        <column xsi:type="text" name="ls_subscription_id" nullable="true" comment="LS Subscription ID"/>
     </table>
     <table name="sales_order_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
         <column xsi:type="float" name="ls_discount_amount" nullable="true" comment="LS Discount Amount"/>

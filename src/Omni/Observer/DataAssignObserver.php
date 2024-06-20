@@ -136,6 +136,10 @@ class DataAssignObserver implements ObserverInterface
             $order->setCouponCode($quote->getCouponCode());
         }
 
+        if (!empty($quote->getLsSubscriptionId())) {
+            $order->setLsSubscriptionId($quote->getLsSubscriptionId());
+        }
+
         $order->setLsPointsSpent($loyaltyPointsSpent);
         $order->setLsPointsEarn($quote->getLsPointsEarn());
         $order->setLsDiscountAmount($quote->getLsDiscountAmount());
