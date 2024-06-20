@@ -3,10 +3,9 @@
 namespace Ls\Customer\Test\Unit\Observer;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Customer\Observer\ResetPasswordObserver;
+use \Ls\Customer\Observer\LoginObserver;
+use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Helper\ContactHelper;
-use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
@@ -18,22 +17,22 @@ use Magento\Framework\Message\ManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class ResetPasswordObserverTest extends TestCase
+class LoginObserverTest extends TestCase
 {
     private const ID = '123';
+    private const CUSTOMER_EMAIL = 'test@test.com';
     private $contactHelperMock;
     private $messageManagerMock;
     private $loggerMock;
     private $customerSessionMock;
-    private $actionFlagMock;
     private $redirectInterfaceMock;
+    private $actionFlagMock;
     private $lsrMock;
-    private $customerFactoryMock;
-    private $resetPasswordObserverMock;
-    private $requestMock;
-    private $customerMock;
-    private $responseMock;
     private $controllerMock;
+    private $loginObserverMock;
+    private $requestMock;
+    private $responseMock;
+    private $memberContact;
 
     public function setUp(): void
     {
@@ -47,32 +46,12 @@ class ResetPasswordObserverTest extends TestCase
         $this->actionFlagMock        = $this->createMock(ActionFlag::class);
         $this->lsrMock               = $this->createMock(LSR::class);
         $this->controllerMock        = $this->createMock(Action::class);
-        $this->customerFactoryMock   = $this->createMock(CustomerFactory::class);
-        $this->customerMock          = $this->createMock(Customer::class);
-        $this->customerMock
-            ->expects($this->any())
-            ->method('getData')
-            ->willReturnMap(
-                [
-                    ['lsr_username', null, self::ID],
-                    ['lsr_resetcode', null, self::ID]
-                ]
-            );
-
-        $this->customerFactoryMock
-            ->expects($this->any())
-            ->method('create')
-            ->willReturn($this->customerMock);
-
+        $this->memberContact         = $this->createMock(MemberContact::class);
         $this->requestMock
             ->expects($this->any())
-            ->method('getQuery')
-            ->with('id')
-            ->willReturn(1);
-        $this->requestMock
-            ->expects($this->any())
-            ->method('getParams')
-            ->willReturn(['password' => self::ID, 'password_confirmation' => self::ID]);
+            ->method('getPost')
+            ->with('login')
+            ->willReturn(['username' => self::ID, 'password' => self::ID]);
         $this->redirectInterfaceMock
             ->expects($this->any())
             ->method('getRefererUrl')
@@ -80,25 +59,18 @@ class ResetPasswordObserverTest extends TestCase
         $this->responseMock
             ->expects($this->any())
             ->method('setRedirect');
-
         $this->controllerMock->expects($this->any())->method('getRequest')->willReturn($this->requestMock);
         $this->controllerMock->expects($this->any())->method('getResponse')->willReturn($this->responseMock);
-
+        $this->memberContact->expects($this->any())->method('getUserName')->willReturn(self::ID);
+        $this->memberContact->expects($this->any())->method('getEmail')->willReturn(self::CUSTOMER_EMAIL);
         $this->lsrMock->expects($this->any())->method('getCurrentStoreId')->willReturn(self::ID);
-        $this->contactHelperMock
-            ->expects($this->any())
-            ->method('resetPassword')
-            ->with($this->customerMock, $this->requestMock->getParams())
-            ->willReturn(true);
-
-        $this->resetPasswordObserverMock = new ResetPasswordObserver(
+        $this->loginObserverMock = new LoginObserver(
             $this->contactHelperMock,
             $this->messageManagerMock,
             $this->loggerMock,
             $this->customerSessionMock,
             $this->redirectInterfaceMock,
             $this->actionFlagMock,
-            $this->customerFactoryMock,
             $this->lsrMock
         );
     }
@@ -106,38 +78,59 @@ class ResetPasswordObserverTest extends TestCase
     public function testExecuteWithLsrDown(): void
     {
         $this->lsrMock->expects($this->any())->method('isLSR')->willReturn(false);
-        $this->resetPasswordObserverMock->execute(
+        $this->loginObserverMock->execute(
             new Observer(['controller_action' => $this->controllerMock, 'request' => $this->requestMock])
         );
     }
 
-    public function testExecuteWithRpToken(): void
+    public function testExecuteWithUsername(): void
     {
         $this->lsrMock->expects($this->any())->method('isLSR')->willReturn(true);
-        $this->customerSessionMock->expects($this->any())->method('__call')
-            ->willReturnMap([
-                ['getRpToken', [], self::ID]
-            ]);
-        $this->resetPasswordObserverMock->execute(
+        $this->contactHelperMock->expects($this->any())->method('isValid')->with(self::ID)->willReturn(false);
+
+        $this->loginObserverMock->execute(
             new Observer(['controller_action' => $this->controllerMock, 'request' => $this->requestMock])
         );
     }
 
-    public function testExecuteWithoutRpTokenAndWithoutCustomer(): void
+    public function testExecuteWithEmailAndLoginTrue(): void
     {
         $this->lsrMock->expects($this->any())->method('isLSR')->willReturn(true);
-        $this->resetPasswordObserverMock->execute(
+        $this->contactHelperMock->expects($this->any())->method('isValid')->with(self::ID)->willReturn(true);
+        $this->contactHelperMock->expects($this->any())->method('search')->with(self::ID)->willReturn(
+            $this->memberContact
+        );
+        $this->contactHelperMock->expects($this->any())->method('login')->willReturn(
+            true
+        );
+        $this->loginObserverMock->execute(
             new Observer(['controller_action' => $this->controllerMock, 'request' => $this->requestMock])
         );
     }
 
-    public function testExecuteWithoutRpToken(): void
+    public function testExecuteWithEmailAndSearchFalse(): void
     {
         $this->lsrMock->expects($this->any())->method('isLSR')->willReturn(true);
-        $this->customerMock->expects($this->any())
-            ->method('load')
-            ->willReturnSelf();
-        $this->resetPasswordObserverMock->execute(
+        $this->contactHelperMock->expects($this->any())->method('isValid')->with(self::ID)->willReturn(true);
+        $this->contactHelperMock->expects($this->any())->method('login')->willReturn(
+            true
+        );
+        $this->loginObserverMock->execute(
+            new Observer(['controller_action' => $this->controllerMock, 'request' => $this->requestMock])
+        );
+    }
+
+    public function testExecuteWithEmailAndLoginMemberContact(): void
+    {
+        $this->lsrMock->expects($this->any())->method('isLSR')->willReturn(true);
+        $this->contactHelperMock->expects($this->any())->method('isValid')->with(self::ID)->willReturn(true);
+        $this->contactHelperMock->expects($this->any())->method('search')->with(self::ID)->willReturn(
+            $this->memberContact
+        );
+        $this->contactHelperMock->expects($this->any())->method('login')->willReturn(
+            $this->memberContact
+        );
+        $this->loginObserverMock->execute(
             new Observer(['controller_action' => $this->controllerMock, 'request' => $this->requestMock])
         );
     }
