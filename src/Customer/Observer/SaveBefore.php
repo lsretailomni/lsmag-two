@@ -58,19 +58,19 @@ class SaveBefore implements ObserverInterface
     {
         $parameters = $observer->getEvent()->getDataObject();
         $parameters->setData('ls_validation', true);
-        if (empty($parameters->getData('password_hash')) && empty($parameters['ls_password'])
-            && empty($parameters['lsr_cardid'])) {
+        if (empty($parameters->getData('password_hash')) && empty($parameters->getData('ls_password'))
+            && empty($parameters->getData('lsr_cardid'))) {
             $masterPassword = $this->lsr->getStoreConfig(LSR::SC_MASTER_PASSWORD, $this->lsr->getCurrentStoreId());
             $parameters->setData('ls_password', $this->contactHelper->encryptPassword($masterPassword));
             $parameters->setData('ls_validation', false);
         }
-        if (empty($parameters['ls_password'])) {
+        if (empty($parameters->getData('ls_password'))) {
             return $this;
         }
 
-        if (!empty($parameters['email']) && $parameters->getData('ls_validation')) {
+        if (!empty($parameters->getData('email')) && $parameters->getData('ls_validation')) {
             if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-                if ($this->contactHelper->isEmailExistInLsCentral($parameters['email'])) {
+                if ($this->contactHelper->isEmailExistInLsCentral($parameters->getData('email'))) {
                     $parameters->setData('ls_validation', false);
                     throw new AlreadyExistsException(
                         __(
