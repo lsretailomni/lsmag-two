@@ -120,23 +120,6 @@ class OrderEdit
                 $isClickCollect = $carrierCode == 'clickandcollect';
             }
 
-            $orderPaymentArray = $this->setOrderPayments(
-                $oldOrder,
-                $cardId,
-                'refund',
-                4 * $order->getEditIncrement(),
-                $orderPaymentArray
-            );
-            $orderPaymentArray = $this->setOrderPayments(
-                $order,
-                $cardId,
-                $order->getPayment()->getMethodInstance()->getCode(),
-                7 * $order->getEditIncrement(),
-                $orderPaymentArray
-            );
-
-            $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
-
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->orderHelper->convertAddress(
                 $order->getBillingAddress()
@@ -168,8 +151,6 @@ class OrderEdit
                 $method = ($method) ? substr($method, 0, 10) : "";
                 $orderObject->setShippingAgentServiceCode($method);
             }
-
-            $orderObject->setOrderPayments($orderPaymentArrayObject);
             /** @var Entity\OneListItem[] $orderLinesArray */
             $orderLinesArray = $oneListCalculateResponse->getOrderLines()->getOrderLine();
             $lineOrderArray  = [];
@@ -183,29 +164,51 @@ class OrderEdit
             }
 
             // Adding logic in case of items remove
-            if (count($oldItems) > count($newItems)) {
-                $itemsToCancel = [];
-                foreach ($oldItems as $oldItem) {
-                    if (!in_array($oldItem->getSku(), $newItemsArray)) {
-                        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                            $oldItem->getSku()
-                        );
-                        $orderLines = $customerOrder->getLines()->getSalesEntryLine();
-                        foreach ($orderLines as $line) {
-                            if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
-                                $uom == $line->getUomId()) {
-                                $itemsToCancel[$line->getLineNumber()] = [
-                                    'lineNo' => $line->getLineNumber(),
-                                    'qty'    => $line->getQuantity(),
-                                    'itemId' => $line->getItemId(),
-                                ];
-                            }
+            $itemsToCancel = [];
+            foreach ($oldItems as $oldItem) {
+                if (!in_array($oldItem->getSku(), $newItemsArray)) {
+                    list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                        $oldItem->getSku()
+                    );
+                    $orderLines = $customerOrder->getLines()->getSalesEntryLine();
+                    foreach ($orderLines as $line) {
+                        if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
+                            $uom == $line->getUomId()) {
+                            $itemsToCancel[$line->getLineNumber()] = [
+                                'lineNo' => $line->getLineNumber(),
+                                'qty'    => $line->getQuantity(),
+                                'itemId' => $line->getItemId(),
+                            ];
                         }
                     }
                 }
-                $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
             }
 
+            if (!empty($itemsToCancel)) {
+                $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
+            }
+            $amount           = $order->getGrandTotal() - $oldOrder->getGrandTotal();
+            if ($amount < 0) {
+                $amount = abs($amount);
+                $orderPaymentArray = $this->setOrderPayments(
+                    $oldOrder,
+                    $cardId,
+                    'refund',
+                    4 * $order->getEditIncrement(),
+                     $amount,
+                    $orderPaymentArray
+                );
+
+            } else {
+                $orderPaymentArray = $this->setOrderPayments(
+                    $order,
+                    $cardId,
+                    $order->getPayment()->getMethodInstance()->getCode(),
+                    7 * $order->getEditIncrement(),
+                    $amount,
+                    $orderPaymentArray
+                );
+            }
             foreach ($newItems as $newItem) {
                 if ($newItem->getProductType() == Type::TYPE_SIMPLE) {
                     foreach ($oldItems as $oldItem) {
@@ -270,6 +273,8 @@ class OrderEdit
             }
 
             $orderObject->setOrderLines($orderLinesArray);
+            $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
+            $orderObject->setOrderPayments($orderPaymentArrayObject);
             $orderEdit->setRequest($orderObject);
             return $orderEdit;
         } catch (Exception $e) {
@@ -284,14 +289,21 @@ class OrderEdit
      * @param string $cardId
      * @param string $isType
      * @param int $startingLineNumber
+     * @param float $amount
      * @param int $orderPaymentArray
      * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function setOrderPayments(Order $order, $cardId, $isType, $startingLineNumber, $orderPaymentArray)
-    {
+    public function setOrderPayments(
+        Order $order,
+        $cardId,
+        $isType,
+        $startingLineNumber,
+        $amount,
+        $orderPaymentArray
+    ) {
         $transId          = $order->getPayment()->getLastTransId();
         $ccType           = $order->getPayment()->getCcType() ? substr(
             $order->getPayment()->getCcType(),
@@ -305,74 +317,74 @@ class OrderEdit
         $paymentCode      = $order->getPayment()->getMethodInstance()->getCode();
         $tenderTypeId     = $this->orderHelper->getPaymentTenderTypeId($isType);
 
-        $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
+            $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
-        if (!in_array($paymentCode, $noOrderPayment)) {
-            // @codingStandardsIgnoreStart
-            $orderPayment = new Entity\OrderPayment();
-            // @codingStandardsIgnoreEnd
-            //default values for all payment typoes.
-            $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor($order->getBaseToOrderRate())
-                ->setLineNumber($startingLineNumber)
-                ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getGrandTotal());
-            // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
-            if (!empty($transId)) {
-                $orderPayment->setCardType($ccType);
-                $orderPayment->setCardNumber($cardNumber);
-                $orderPayment->setTokenNumber($transId);
-                if (!empty($paidAmount)) {
-                    $orderPayment->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
-                } else {
-                    if (!empty($authorizedAmount)) {
-                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::PRE_AUTHORIZATION);
+            if (!in_array($paymentCode, $noOrderPayment)) {
+                // @codingStandardsIgnoreStart
+                $orderPayment = new Entity\OrderPayment();
+                // @codingStandardsIgnoreEnd
+                //default values for all payment typoes.
+                $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+                    ->setCurrencyFactor($order->getBaseToOrderRate())
+                    ->setLineNumber($startingLineNumber)
+                    ->setExternalReference($order->getIncrementId())
+                    ->setAmount($amount);
+                // For CreditCard/Debit Card payment  use Tender Type 1 for Cards
+                if (!empty($transId)) {
+                    $orderPayment->setCardType($ccType);
+                    $orderPayment->setCardNumber($cardNumber);
+                    $orderPayment->setTokenNumber($transId);
+                    if (!empty($paidAmount)) {
+                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
                     } else {
-                        $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
+                        if (!empty($authorizedAmount)) {
+                            $orderPayment->setPaymentType(Entity\Enum\PaymentType::PRE_AUTHORIZATION);
+                        } else {
+                            $orderPayment->setPaymentType(Entity\Enum\PaymentType::NONE);
+                        }
                     }
                 }
+
+                $orderPayment->setTenderType($tenderTypeId);
+                $orderPayment->setPreApprovedValidDate($preApprovedDate);
+                $orderPaymentArray[] = $orderPayment;
             }
 
-            $orderPayment->setTenderType($tenderTypeId);
-            $orderPayment->setPreApprovedValidDate($preApprovedDate);
-            $orderPaymentArray[] = $orderPayment;
-        }
-
-        if ($order->getLsPointsSpent()) {
-            $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
-            $pointRate    = $this->orderHelper->loyaltyHelper->getPointRate();
-            // @codingStandardsIgnoreStart
-            $orderPaymentLoyalty = new Entity\OrderPayment();
-            // @codingStandardsIgnoreEnd
-            //default values for all payment types.
-            $orderPaymentLoyalty->setCurrencyCode('LOY')
-                ->setCurrencyFactor($pointRate)
-                ->setLineNumber($startingLineNumber + 1)
-                ->setCardNumber($cardId)
-                ->setExternalReference($order->getIncrementId())
-                ->setAmount($order->getLsPointsSpent())
-                ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType($tenderTypeId);
-            $orderPaymentArray[] = $orderPaymentLoyalty;
-        }
-        if ($order->getLsGiftCardAmountUsed()) {
-            $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-            // @codingStandardsIgnoreStart
-            $orderPaymentGiftCard = new Entity\OrderPayment();
-            // @codingStandardsIgnoreEnd
-            //default values for all payment typoes.
-            $orderPaymentGiftCard
-                ->setCurrencyFactor(1)
-                ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setAmount($order->getLsGiftCardAmountUsed())
-                ->setLineNumber($startingLineNumber + 2)
-                ->setCardNumber($order->getLsGiftCardNo())
-                ->setAuthorizationCode($order->getLsGiftCardPin())
-                ->setExternalReference($order->getIncrementId())
-                ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType($tenderTypeId);
-            $orderPaymentArray[] = $orderPaymentGiftCard;
-        }
+            if ($order->getLsPointsSpent()) {
+                $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_LOYALTYPOINTS_TENDER_TYPE);
+                $pointRate    = $this->orderHelper->loyaltyHelper->getPointRate();
+                // @codingStandardsIgnoreStart
+                $orderPaymentLoyalty = new Entity\OrderPayment();
+                // @codingStandardsIgnoreEnd
+                //default values for all payment types.
+                $orderPaymentLoyalty->setCurrencyCode('LOY')
+                    ->setCurrencyFactor($pointRate)
+                    ->setLineNumber($startingLineNumber + 1)
+                    ->setCardNumber($cardId)
+                    ->setExternalReference($order->getIncrementId())
+                    ->setAmount($order->getLsPointsSpent())
+                    ->setPreApprovedValidDate($preApprovedDate)
+                    ->setTenderType($tenderTypeId);
+                $orderPaymentArray[] = $orderPaymentLoyalty;
+            }
+            if ($order->getLsGiftCardAmountUsed()) {
+                $tenderTypeId = $this->orderHelper->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+                // @codingStandardsIgnoreStart
+                $orderPaymentGiftCard = new Entity\OrderPayment();
+                // @codingStandardsIgnoreEnd
+                //default values for all payment typoes.
+                $orderPaymentGiftCard
+                    ->setCurrencyFactor(1)
+                    ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+                    ->setAmount($order->getLsGiftCardAmountUsed())
+                    ->setLineNumber($startingLineNumber + 2)
+                    ->setCardNumber($order->getLsGiftCardNo())
+                    ->setAuthorizationCode($order->getLsGiftCardPin())
+                    ->setExternalReference($order->getIncrementId())
+                    ->setPreApprovedValidDate($preApprovedDate)
+                    ->setTenderType($tenderTypeId);
+                $orderPaymentArray[] = $orderPaymentGiftCard;
+            }
 
         return $orderPaymentArray;
     }
@@ -388,25 +400,22 @@ class OrderEdit
      */
     public function updateShippingAmount($orderLines, $order, $customerOrder)
     {
+        $itemsToCancel = [];
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
         $shippingAmount     = $order->getShippingInclTax();
         if ($shippingAmount > 0) {
-            $orderLines = $customerOrder->getLines()->getSalesEntryLine();
-            foreach ($orderLines as $line) {
+            $salesOrderLines = $customerOrder->getLines()->getSalesEntryLine();
+            foreach ($salesOrderLines as $line) {
                 if ($shipmentFeeId == $line->getItemId()) {
                     $itemsToCancel[] = [
                         'lineNo' => $line->getLineNumber(),
                         'qty'    => $line->getQuantity(),
                         'itemId' => $line->getItemId(),
                     ];
-                    $this->orderCancel(
-                        $customerOrder->getDocumentId(),
-                        $customerOrder->getStoreId(),
-                        $itemsToCancel
-                    );
                 }
             }
+            $this->orderCancel($customerOrder->getId(), $customerOrder->getStoreId(), $itemsToCancel);
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);

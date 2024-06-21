@@ -87,7 +87,8 @@ class OrderObserver implements ObserverInterface
     {
         /** @var \Magento\Sales\Model\Order $order */
         $order              = $observer->getEvent()->getData('order');
-        $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
+        $this->orderHelper->storeManager->setCurrentStore($order->getStoreId());
+        $oneListCalculation = $this->basketHelper->getOneListCalculation();
         $response           = null;
         /*
          * Adding condition to only process if LSR is enabled.
