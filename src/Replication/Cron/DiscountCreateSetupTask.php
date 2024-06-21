@@ -642,7 +642,8 @@ class DiscountCreateSetupTask
     public function deleteOffers()
     {
         $filters  = [
-        ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+            ['field' => 'is_updated', 'value' => 1, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
         ];
         $criteria = $this->replicationHelper->buildCriteriaForDirect(
             $filters,
