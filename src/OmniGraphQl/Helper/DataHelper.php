@@ -617,4 +617,15 @@ class DataHelper extends AbstractHelper
 
         return null;
     }
+
+    /**
+     * Save order with updated information
+     *
+     * @param $order
+     * @return void
+     */
+    public function saveOrder($order)
+    {
+        $this->orderRepository->save($order);
+    }
 }

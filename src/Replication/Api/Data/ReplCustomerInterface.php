@@ -308,6 +308,17 @@ interface ReplCustomerInterface
     public function getSchemeCode();
 
     /**
+     * @param SendEmail $SendReceiptByEMail
+     * @return $this
+     */
+    public function setSendReceiptByEMail($SendReceiptByEMail);
+
+    /**
+     * @return SendEmail
+     */
+    public function getSendReceiptByEMail();
+
+    /**
      * @param string $ShippingLocation
      * @return $this
      */

@@ -985,6 +985,29 @@ class ContactHelper extends AbstractHelper
     }
 
     /**
+     * Get all schemes
+     *
+     * @return array
+     */
+    public function getSchemes()
+    {
+        $schemes = [];
+        $schemesGetAll = new Entity\SchemesGetAll();
+        $request = new Operation\SchemesGetAll();
+        try {
+            $response = $request->execute($schemesGetAll);
+            foreach($response->getSchemesGetAllResult() as $scheme) {
+                /** @var Entity\Scheme $scheme */
+               $schemes[$scheme->getId()] = $scheme->getClub()->getId();
+            }
+        } catch (Exception $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $schemes;
+    }
+
+    /**
      *  Create new Customer group based on customer name.
      *
      * @param string $groupname

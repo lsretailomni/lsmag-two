@@ -111,7 +111,7 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     protected $UnitOfMeasureId = null;
 
     /**
-     * @property int $ValidationPeriodId
+     * @property string $ValidationPeriodId
      */
     protected $ValidationPeriodId = null;
 
@@ -541,7 +541,7 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     }
 
     /**
-     * @param int $ValidationPeriodId
+     * @param string $ValidationPeriodId
      * @return $this
      */
     public function setValidationPeriodId($ValidationPeriodId)
@@ -553,7 +553,7 @@ class ReplDiscount extends AbstractModel implements ReplDiscountInterface, Ident
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getValidationPeriodId()
     {

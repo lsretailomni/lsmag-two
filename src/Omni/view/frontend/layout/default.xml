@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" src_type="url" defer="defer"/>
+    </head>
     <body>
         <!-- Adding Stores page Link to Footer Menu -->
         <referenceBlock name="footer_links">
@@ -19,5 +22,13 @@
                 </arguments>
             </block>
         </referenceBlock>
+
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="custom_inline_js" template="Ls_Omni::html/inline-js.phtml" before="-">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>

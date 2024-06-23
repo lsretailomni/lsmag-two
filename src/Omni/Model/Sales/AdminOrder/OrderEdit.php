@@ -40,6 +40,11 @@ class OrderEdit
     private $lsr;
 
     /**
+     * @var ItemHelper
+     */
+    private $itemHelper;
+
+    /**
      * @var double
      */
     private $addtionalAmount = 0;

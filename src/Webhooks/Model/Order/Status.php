@@ -5,6 +5,7 @@ namespace Ls\Webhooks\Model\Order;
 use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Webhooks\Model\Notification\EmailNotification;
+use \Ls\Webhooks\Model\Notification\PushNotification;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -46,6 +47,11 @@ class Status
     public $emailNotification;
 
     /**
+     * @var PushNotification
+     */
+    public $pushNotification;
+
+    /**
      * @var Invoice
      */
     public $invoice;
@@ -74,6 +80,7 @@ class Status
      * @param Invoice $invoice
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
+     * @param PushNotification $pushNotification
      */
     public function __construct(
         Data $helper,
@@ -83,7 +90,8 @@ class Status
         EmailNotification $emailNotification,
         Invoice $invoice,
         CreditmemoFactory $creditMemoFactory,
-        CreditmemoService $creditMemoService
+        CreditmemoService $creditMemoService,
+        PushNotification $pushNotification
     ) {
         $this->helper            = $helper;
         $this->orderCancel       = $orderCancel;
@@ -93,6 +101,7 @@ class Status
         $this->invoice           = $invoice;
         $this->creditMemoFactory = $creditMemoFactory;
         $this->creditMemoService = $creditMemoService;
+        $this->pushNotification  = $pushNotification;
     }
 
     /**
@@ -178,6 +187,12 @@ class Status
                     $this->emailNotification->setOrder($magOrder)->setItems($items);
                     $this->emailNotification->prepareAndSendNotification();
                 }
+
+                if ($type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
+                    $this->pushNotification->setNotificationType($orderStatus);
+                    $this->pushNotification->setOrder($magOrder)->setItems($items);
+                    $this->pushNotification->prepareAndSendNotification();
+                }
             }
         }
     }
@@ -228,7 +243,7 @@ class Status
                 $this->message = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
             $message = Status::SUCCESS_MESSAGE;
-            $this->message = $this->helper->outputMessage(true, __($message));
+            $this->message = $this->helper->outputMessage(true, $message);
         }
     }
 

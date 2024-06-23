@@ -564,6 +564,7 @@ class OrderHelper extends AbstractHelper
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getLsPointsSpent())
                 ->setPreApprovedValidDate($preApprovedDate)
+                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
