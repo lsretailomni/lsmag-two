@@ -5,8 +5,8 @@ namespace Ls\Omni\Model\Sales\AdminOrder;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
-use Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
-use Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
+use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
@@ -38,6 +38,16 @@ class OrderEdit
      * @var LSR
      */
     private $lsr;
+
+    /**
+     * @var double
+     */
+    private $addtionalAmount = 0;
+
+    /**
+     * @var double
+     */
+    private $refundAmount = 0;
 
     /**
      * @param OrderHelper $orderHelper
@@ -162,116 +172,41 @@ class OrderEdit
             foreach ($newItems as $newItem) {
                 $newItemsArray[$newItem->getSku()] = $newItem->getSku();
             }
-
-            // Adding logic in case of items remove
-            $itemsToCancel = [];
+            $oldItemsArray = [];
             foreach ($oldItems as $oldItem) {
-                if (!in_array($oldItem->getSku(), $newItemsArray)) {
-                    list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                        $oldItem->getSku()
-                    );
-                    $orderLines = $customerOrder->getLines()->getSalesEntryLine();
-                    foreach ($orderLines as $line) {
-                        if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
-                            $uom == $line->getUomId()) {
-                            $itemsToCancel[$line->getLineNumber()] = [
-                                'lineNo' => $line->getLineNumber(),
-                                'qty'    => $line->getQuantity(),
-                                'itemId' => $line->getItemId(),
-                            ];
-                        }
-                    }
-                }
+                $oldItemsArray[$oldItem->getSku()] = $oldItem->getSku();
             }
-
-            if (!empty($itemsToCancel)) {
-                $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
-            }
-            $amount           = $order->getGrandTotal() - $oldOrder->getGrandTotal();
+            $amount = 0;
+            $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId);
+            $this->addNewItems($newItemsArray, $oldItemsArray, $orderLinesArray, $order);
+            $this->updateItemLineNumber($orderLinesArray, $customerOrder);
+            $lineOrderArray = $this->modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order);
+            $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
+            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder, $oldOrder);
+            $amount = $order->getGrandTotal() - $oldOrder->getGrandTotal();
             if ($amount < 0) {
-                $amount = abs($amount);
+                $amount            = $this->refundAmount;
                 $orderPaymentArray = $this->setOrderPayments(
                     $oldOrder,
                     $cardId,
                     'refund',
                     4 * $order->getEditIncrement(),
-                     $amount,
-                    $orderPaymentArray
-                );
-
-            } else {
-                $orderPaymentArray = $this->setOrderPayments(
-                    $order,
-                    $cardId,
-                    $order->getPayment()->getMethodInstance()->getCode(),
-                    7 * $order->getEditIncrement(),
                     $amount,
                     $orderPaymentArray
                 );
+
             }
-            foreach ($newItems as $newItem) {
-                if ($newItem->getProductType() == Type::TYPE_SIMPLE) {
-                    foreach ($oldItems as $oldItem) {
-                        if ($oldItem->getProductType() == Type::TYPE_SIMPLE) {
-                            if ($newItem->getSku() == $oldItem->getSku()
-                                && $newItem->getQtyOrdered() > $oldItem->getQtyOrdered()) {
-                                $qtyDifference = $newItem->getQtyOrdered() - $oldItem->getQtyOrdered();
-                                list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                                    $newItem->getSku()
-                                );
-                                foreach ($orderLinesArray as &$orderLine) {
-                                    if ($orderLine->getItemId() == $itemId &&
-                                        $orderLine->getVariantId() == $variantId &&
-                                        $orderLine->getUnitOfMeasureId() == $uom) {
-                                        $price          = $orderLine->getPrice();
-                                        $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
-                                            * $qtyDifference;
-                                        $netPrice       = $orderLine->getNetPrice();
-                                        $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
-                                            * $qtyDifference;
-                                        $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
-                                            * $qtyDifference;
-                                        $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
-                                            * $qtyDifference;
-                                        $lineNumber     = ($orderLine->getLineNumber() + $order->getEditIncrement())
-                                            * 100000;
-                                        $itemId         = $orderLine->getItemId();
-                                        // @codingStandardsIgnoreLine
-                                        $lineOrder = new Entity\OrderLine();
-                                        $lineOrder->setPrice($price)
-                                            ->setAmount($amount)
-                                            ->setNetPrice($netPrice)
-                                            ->setNetAmount($netAmount)
-                                            ->setTaxAmount($taxAmount)
-                                            ->setItemId($itemId)
-                                            ->setDiscountPercent($orderLine->getDiscountPercent())
-                                            ->setUomId($orderLine->getUnitOfMeasureId())
-                                            ->setVariantId($orderLine->getVariantId())
-                                            ->setLineType(Entity\Enum\LineType::ITEM)
-                                            ->setLineNumber($lineNumber)
-                                            ->setQuantity($qtyDifference)
-                                            ->setDiscountAmount($discountAmount);
-                                        $lineOrderArray[] = $lineOrder;
-                                        $orderLine->setAmount($orderLine->getAmount() - $amount);
-                                        $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
-                                        $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
-                                        $orderLine->setDiscountAmount(
-                                            $orderLine->getDiscountAmount() - $discountAmount
-                                        );
-                                        $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
-            $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder);
+            $orderPaymentArray = $this->setOrderPayments(
+                $order,
+                $cardId,
+                $order->getPayment()->getMethodInstance()->getCode(),
+                7 * $order->getEditIncrement(),
+                $this->addtionalAmount,
+                $orderPaymentArray
+            );
             if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
                 $orderEdit->setReturnOrderIdOnly(true);
             }
-
             $orderObject->setOrderLines($orderLinesArray);
             $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
             $orderObject->setOrderPayments($orderPaymentArrayObject);
@@ -304,18 +239,19 @@ class OrderEdit
         $amount,
         $orderPaymentArray
     ) {
-        $transId          = $order->getPayment()->getLastTransId();
-        $ccType           = $order->getPayment()->getCcType() ? substr(
-            $order->getPayment()->getCcType(),
-            0,
-            10
-        ) : '';
-        $cardNumber       = $order->getPayment()->getCcLast4();
-        $paidAmount       = $order->getPayment()->getAmountPaid();
-        $authorizedAmount = $order->getPayment()->getAmountAuthorized();
-        $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
-        $paymentCode      = $order->getPayment()->getMethodInstance()->getCode();
-        $tenderTypeId     = $this->orderHelper->getPaymentTenderTypeId($isType);
+        if ($amount > 0) {
+            $transId          = $order->getPayment()->getLastTransId();
+            $ccType           = $order->getPayment()->getCcType() ? substr(
+                $order->getPayment()->getCcType(),
+                0,
+                10
+            ) : '';
+            $cardNumber       = $order->getPayment()->getCcLast4();
+            $paidAmount       = $order->getPayment()->getAmountPaid();
+            $authorizedAmount = $order->getPayment()->getAmountAuthorized();
+            $preApprovedDate  = date('Y-m-d', strtotime('+1 years'));
+            $paymentCode      = $order->getPayment()->getMethodInstance()->getCode();
+            $tenderTypeId     = $this->orderHelper->getPaymentTenderTypeId($isType);
 
             $noOrderPayment = ['ls_payment_method_pay_at_store', 'free'];
 
@@ -385,6 +321,7 @@ class OrderEdit
                     ->setTenderType($tenderTypeId);
                 $orderPaymentArray[] = $orderPaymentGiftCard;
             }
+        }
 
         return $orderPaymentArray;
     }
@@ -395,16 +332,17 @@ class OrderEdit
      * @param $orderLines
      * @param $order
      * @param $customerOrder
+     * @param $oldOrder
      * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      */
-    public function updateShippingAmount($orderLines, $order, $customerOrder)
+    public function updateShippingAmount($orderLines, $order, $customerOrder, $oldOrder)
     {
-        $itemsToCancel = [];
+        $itemsToCancel      = [];
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
         $shippingAmount     = $order->getShippingInclTax();
-        if ($shippingAmount > 0) {
+        if ($shippingAmount > 0 && $order->getShippingInclTax() != $oldOrder->getShippingInclTax()) {
             $salesOrderLines = $customerOrder->getLines()->getSalesEntryLine();
             foreach ($salesOrderLines as $line) {
                 if ($shipmentFeeId == $line->getItemId()) {
@@ -431,6 +369,7 @@ class OrderEdit
                 ->setLineNumber(1000000)
                 ->setQuantity(1)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
+            $this->addtionalAmount = $this->addtionalAmount + (float)$shippingAmount;
             array_push($orderLines, $shipmentOrderLine);
         }
         return $orderLines;
@@ -450,12 +389,12 @@ class OrderEdit
         $request           = new Entity\OrderCancelEx();
         $arrayOfOrderLines = new Entity\ArrayOfOrderCancelLine();
         $orderCancelLine   = new Entity\OrderCancelLine();
-        $orderCancelArray = [];
+        $orderCancelArray  = [];
         foreach ($itemsToCancel as $itemCancel) {
             $orderCancelLine->setLineNo($itemCancel['lineNo']);
             $orderCancelLine->setQuantity($itemCancel['qty']);
             $orderCancelLine->setItemNo($itemCancel['itemId']);
-            $orderCancelArray[]=$orderCancelLine;
+            $orderCancelArray[] = $orderCancelLine;
         }
         $arrayOfOrderLines->setOrderCancelLine($orderCancelArray);
         $request->setOrderId($documentId);
@@ -470,5 +409,181 @@ class OrderEdit
         }
 
         return $response ? $response->getOrderCancelExResult() : $response;
+    }
+
+    /**
+     * Added new items to existing order
+     *
+     * @param $newItemsArray
+     * @param $oldItemsArray
+     * @param $orderLinesArray
+     * @param $order
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function addNewItems($newItemsArray, $oldItemsArray, $orderLinesArray, $order)
+    {
+        foreach ($newItemsArray as $newItem) {
+            if (!in_array($newItem, $oldItemsArray)) {
+                list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                    $newItem
+                );
+                foreach ($orderLinesArray as $line) {
+                    if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
+                        $uom == $line->getUomId()) {
+                        $lineNumber = ((int)$line->getLineNumber() + (int)$order->getEditIncrement());
+                        $line->setLineNumber($lineNumber);
+                        $this->addtionalAmount = $this->addtionalAmount + (float)$line->getAmount();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Remove items from exising order
+     *
+     * @param $oldItems
+     * @param $newItemsArray
+     * @param $customerOrder
+     * @param $documentId
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId)
+    {
+        $itemsToCancel = [];
+        foreach ($oldItems as $oldItem) {
+            if (!in_array($oldItem->getSku(), $newItemsArray)) {
+                list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                    $oldItem->getSku()
+                );
+                $orderLines = $customerOrder->getLines()->getSalesEntryLine();
+                foreach ($orderLines as $line) {
+                    if ($itemId == $line->getItemId() && $variantId == $line->getVariantId() &&
+                        $uom == $line->getUomId() && !in_array($line->getLineNumber(), $itemsToCancel)) {
+                        $itemsToCancel[$line->getLineNumber()] = [
+                            'lineNo' => $line->getLineNumber(),
+                            'qty'    => $line->getQuantity(),
+                            'itemId' => $line->getItemId(),
+                        ];
+                    }
+                }
+            }
+        }
+
+        if (!empty($itemsToCancel)) {
+            $this->orderCancel($documentId, $customerOrder->getStoreId(), $itemsToCancel);
+        }
+    }
+
+    /**
+     * Increase item quantity
+     *
+     * @param $newItems
+     * @param $oldItems
+     * @param $orderLinesArray
+     * @param $order
+     * @return array
+     * @throws \Ls\Omni\Exception\InvalidEnumException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order)
+    {
+        $lineOrderArray = [];
+        foreach ($newItems as $newItem) {
+            if ($newItem->getProductType() == Type::TYPE_SIMPLE) {
+                foreach ($oldItems as $oldItem) {
+                    if ($oldItem->getProductType() == Type::TYPE_SIMPLE) {
+                        if ($newItem->getSku() == $oldItem->getSku()
+                            && $newItem->getQtyOrdered() > $oldItem->getQtyOrdered()) {
+                            $qtyDifference = $newItem->getQtyOrdered() - $oldItem->getQtyOrdered();
+                            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                                $newItem->getSku()
+                            );
+                            foreach ($orderLinesArray as &$orderLine) {
+                                if ($orderLine->getItemId() == $itemId &&
+                                    $orderLine->getVariantId() == $variantId &&
+                                    $orderLine->getUomId() == $uom) {
+                                    $price          = $orderLine->getPrice();
+                                    $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
+                                        * $qtyDifference;
+                                    $this->addtionalAmount = $this->addtionalAmount + (float)$amount;
+                                    $netPrice       = $orderLine->getNetPrice();
+                                    $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
+                                        * $qtyDifference;
+                                    $taxAmount      = ($orderLine->getTaxAmount() / $orderLine->getQuantity())
+                                        * $qtyDifference;
+                                    $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
+                                        * $qtyDifference;
+                                    $lineNumber     = ((int)$orderLine->getLineNumber()
+                                            + (int)$order->getEditIncrement());
+                                    $itemId         = $orderLine->getItemId();
+                                    // @codingStandardsIgnoreLine
+                                    $lineOrder = new Entity\OrderLine();
+                                    $lineOrder->setPrice($price)
+                                        ->setAmount($amount)
+                                        ->setNetPrice($netPrice)
+                                        ->setNetAmount($netAmount)
+                                        ->setTaxAmount($taxAmount)
+                                        ->setItemId($itemId)
+                                        ->setDiscountPercent($orderLine->getDiscountPercent())
+                                        ->setUomId($orderLine->getUomId())
+                                        ->setVariantId($orderLine->getVariantId())
+                                        ->setLineType(Entity\Enum\LineType::ITEM)
+                                        ->setLineNumber($lineNumber)
+                                        ->setQuantity($qtyDifference)
+                                        ->setDiscountAmount($discountAmount);
+                                    $lineOrderArray[] = $lineOrder;
+                                    $orderLine->setAmount($orderLine->getAmount() - $amount);
+                                    $orderLine->setNetAmount($orderLine->getNetAmount() - $netAmount);
+                                    $orderLine->setTaxAmount($orderLine->getTaxAmount() - $taxAmount);
+                                    $orderLine->setDiscountAmount(
+                                        $orderLine->getDiscountAmount() - $discountAmount
+                                    );
+                                    $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
+                                }
+                            }
+                        }  if ($newItem->getSku() == $oldItem->getSku()
+                            && $newItem->getQtyOrdered() < $oldItem->getQtyOrdered()) {
+                            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                                $newItem->getSku()
+                            );
+                            $qtyDiff = $oldItem->getQtyOrdered() - $newItem->getQtyOrdered();
+                            foreach ($orderLinesArray as $orderLine) {
+                                if ($orderLine->getItemId() == $itemId &&
+                                    $orderLine->getVariantId() == $variantId &&
+                                    $orderLine->getUomId() == $uom) {
+                                    $this->refundAmount = $this->refundAmount +
+                                        ((float)$orderLine->getAmount()*$qtyDiff);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $lineOrderArray;
+    }
+
+    /**
+     * Decrease item quantity
+     *
+     * @param $orderLinesArray
+     * @param $customerOrder
+     * @return void
+     */
+    public function updateItemLineNumber($orderLinesArray, $customerOrder)
+    {
+        $orderLines = $customerOrder->getLines()->getSalesEntryLine();
+        foreach ($orderLinesArray as $line) {
+            foreach ($orderLines as $orderLine) {
+                if ($orderLine->getItemId() == $line->getItemId() && $orderLine->getVariantId() == $line->getVariantId()
+                    && $orderLine->getUomId() == $line->getUomId()) {
+                    $line->setLineNumber($orderLine->getLineNumber());
+                }
+            }
+        }
     }
 }
