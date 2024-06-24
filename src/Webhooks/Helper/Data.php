@@ -16,6 +16,8 @@ use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data as OmniHelper;
+use Ls\Webhooks\Model\Notification\EmailNotification;
+use \Ls\Webhooks\Model\Notification\PushNotification;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductRepository;
@@ -24,6 +26,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
+use Magento\Tests\NamingConvention\true\string;
 
 /**
  * Helper class to handle webhooks function
@@ -75,6 +78,17 @@ class Data
      * @var SerializerJson
      */
     public $jsonSerializer;
+
+    /**
+     * @var PushNotification
+     */
+    public $pushNotification;
+
+    /**
+     * @var EmailNotification
+     */
+    public $emailNotification;
+
     /**
      * @var ProductRepository
      */
@@ -91,6 +105,8 @@ class Data
      * @param LoyaltyHelper $loyaltyHelper
      * @param SerializerJson $jsonSerializer
      * @param ProductRepository $productRepository
+     * @param PushNotification $pushNotification
+     * @param EmailNotification $emailNotification
      */
     public function __construct(
         Logger $logger,
@@ -102,7 +118,9 @@ class Data
         ItemHelper $itemHelper,
         LoyaltyHelper $loyaltyHelper,
         SerializerJson $jsonSerializer,
-        \Magento\Catalog\Model\ProductRepository $productRepository
+        \Magento\Catalog\Model\ProductRepository $productRepository,
+        PushNotification $pushNotification,
+        EmailNotification $emailNotification
     ) {
 
         $this->logger                = $logger;
@@ -114,7 +132,9 @@ class Data
         $this->itemHelper            = $itemHelper;
         $this->loyaltyHelper         = $loyaltyHelper;
         $this->jsonSerializer        = $jsonSerializer;
-        $this->productRepository = $productRepository;
+        $this->productRepository     = $productRepository;
+        $this->pushNotification      = $pushNotification;
+        $this->emailNotification     = $emailNotification;
     }
 
     /**
@@ -274,8 +294,8 @@ class Data
      */
     public function getItems($order, $itemsInfo, $linesMerged = true)
     {
-        $items = [];
-        $globalCounter = 0;
+        $items                = [];
+        $globalCounter        = 0;
         $giftCardItemsCounter = 0;
         foreach ($order->getAllVisibleItems() as $orderItem) {
             if ($orderItem->getProductType() == Type::TYPE_BUNDLE) {
@@ -289,7 +309,7 @@ class Data
                     $child->getSku()
                 );
                 $totalAmount = 0;
-                $counter = 0;
+                $counter     = 0;
                 foreach ($itemsInfo as $index => $skuValues) {
                     if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
                         $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
@@ -299,9 +319,9 @@ class Data
                                 $orderItem->getQtyOrdered() - $orderItem->getQtyInvoiced() > 0
                             ) {
                                 $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
-                                $items[$globalCounter][$itemId]['qty'] = (float)$orderItem->getQtyOrdered();
-                                $items[$globalCounter][$itemId]['amount'] = $orderItem->getPrice();
-                                $items[$globalCounter][$itemId]['item'] = $child;
+                                $items[$globalCounter][$itemId]['qty']        = (float)$orderItem->getQtyOrdered();
+                                $items[$globalCounter][$itemId]['amount']     = $orderItem->getPrice();
+                                $items[$globalCounter][$itemId]['item']       = $child;
                                 $giftCardItemsCounter++;
 
                                 if (!$linesMerged) {
@@ -321,7 +341,7 @@ class Data
                             $items[$globalCounter][$itemId]['qty'] = $skuValues['Quantity'];
                         }
                         if (array_key_exists('Amount', $skuValues)) {
-                            $totalAmount              += $skuValues['Amount'];
+                            $totalAmount                              += $skuValues['Amount'];
                             $items[$globalCounter][$itemId]['amount'] = $totalAmount;
                         }
                         $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
@@ -558,5 +578,34 @@ class Data
         }
 
         return $qty;
+    }
+
+    /**
+     *  Process notifications
+     *
+     * @param int $storeId
+     * @param \Magento\Sales\Api\Data\OrderInterface $magOrder
+     * @param array $items
+     * @param string $statusMsg
+     * @param string $type
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    public function processNotifications($storeId, $magOrder, $items, $statusMsg, $type = 'All'): void
+    {
+        $configuredNotificationType = explode(',', $this->getNotificationType($storeId));
+        foreach ($configuredNotificationType as $type) {
+            if ($type == 'All' || $type == LSR::LS_NOTIFICATION_EMAIL) {
+                $this->emailNotification->setNotificationType($statusMsg);
+                $this->emailNotification->setOrder($magOrder)->setItems($items);
+                $this->emailNotification->prepareAndSendNotification();
+            }
+
+            if ($type == 'All' || $type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
+                $this->pushNotification->setNotificationType($statusMsg);
+                $this->pushNotification->setOrder($magOrder)->setItems($items);
+                $this->pushNotification->prepareAndSendNotification();
+            }
+        }
     }
 }

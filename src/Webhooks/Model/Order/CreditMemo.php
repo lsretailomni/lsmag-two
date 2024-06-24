@@ -2,6 +2,7 @@
 
 namespace Ls\Webhooks\Model\Order;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\Exception\LocalizedException;
@@ -72,6 +73,7 @@ class CreditMemo
     public function refund($magOrder, $items, $creditMemoData, $invoice)
     {
         $orderId = $magOrder->getEntityId();
+        $storeId = $magOrder->getStoreId();
         foreach ($items as $itemData) {
             foreach ($itemData as $itemData) {
                 $item                       = $itemData['item'];
@@ -114,6 +116,15 @@ class CreditMemo
                     $this->creditMemoSender->send($creditMemo);
                 }
                 $message = Status::SUCCESS_MESSAGE;
+
+                $this->helper->processNotifications(
+                    $storeId,
+                    $magOrder,
+                    $items,
+                    $message,
+                    LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
+                );
+
                 return $this->helper->outputMessage(true, $message);
             }
         } catch (\Exception $e) {

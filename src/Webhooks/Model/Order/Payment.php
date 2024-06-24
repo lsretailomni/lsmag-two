@@ -148,6 +148,7 @@ class Payment
         $itemsToInvoice = [];
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
+            $storeId         = $order->getStoreId();
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
@@ -212,9 +213,19 @@ class Payment
                             $this->giftCardNotification($order, $itemsToInvoice, $line);
                         }
                     }
+                    $message = 'Order posted successfully and invoice sent to customer for document id #' . $documentId;
+
+                    $this->helper->processNotifications(
+                        $storeId,
+                        $order,
+                        $items,
+                        $message,
+                        LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
+                    );
+
                     return $this->helper->outputMessage(
                         true,
-                        'Order posted successfully and invoice sent to customer for document id #' . $documentId
+                        $message
                     );
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
@@ -269,10 +280,10 @@ class Payment
      */
     public function validatePayment($order, $amount, $documentId, $shippingAmount)
     {
-        $validate = true;
-        $message  = '';
-        $grandTotal = (float) $order->getGrandTotal();
-        $totalDue = (float) $order->getTotalDue();
+        $validate   = true;
+        $message    = '';
+        $grandTotal = (float)$order->getGrandTotal();
+        $totalDue   = (float)$order->getTotalDue();
 
         if (bccomp($grandTotal, $amount, 3) == -1 && bccomp($totalDue, $amount, 3) != 1) {
             $message = "Invoice amount is greater than order amount for document id #" . $documentId;
@@ -375,9 +386,9 @@ class Payment
      */
     public function giftCardNotification($order, $itemsToInvoice, $line)
     {
-        $salesEntry = $this->helper->fetchOrder($order->getDocumentId());
+        $salesEntry         = $this->helper->fetchOrder($order->getDocumentId());
         $giftCardOrderItems = $this->helper->getGiftCardOrderItems($order);
-        $salesEntryLines = $salesEntry->getLines();
+        $salesEntryLines    = $salesEntry->getLines();
 
         foreach ($giftCardOrderItems as $giftCardOrderItem) {
             foreach ($salesEntryLines as $salesEntryLine) {
@@ -389,10 +400,10 @@ class Payment
                     $this->eventManager->dispatch(
                         'ls_mag_giftcard_recipient_notification',
                         [
-                            'order' => $order,
+                            'order'                => $order,
                             'gift_card_order_item' => $giftCardOrderItem,
-                            'sales_entry' => $salesEntry,
-                            'sales_entry_line' => $salesEntryLine
+                            'sales_entry'          => $salesEntry,
+                            'sales_entry_line'     => $salesEntryLine
                         ]
                     );
 

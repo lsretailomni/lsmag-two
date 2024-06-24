@@ -47,11 +47,6 @@ class Status
     public $emailNotification;
 
     /**
-     * @var PushNotification
-     */
-    public $pushNotification;
-
-    /**
      * @var Invoice
      */
     public $invoice;
@@ -80,7 +75,6 @@ class Status
      * @param Invoice $invoice
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
-     * @param PushNotification $pushNotification
      */
     public function __construct(
         Data $helper,
@@ -90,8 +84,7 @@ class Status
         EmailNotification $emailNotification,
         Invoice $invoice,
         CreditmemoFactory $creditMemoFactory,
-        CreditmemoService $creditMemoService,
-        PushNotification $pushNotification
+        CreditmemoService $creditMemoService
     ) {
         $this->helper            = $helper;
         $this->orderCancel       = $orderCancel;
@@ -101,7 +94,6 @@ class Status
         $this->invoice           = $invoice;
         $this->creditMemoFactory = $creditMemoFactory;
         $this->creditMemoService = $creditMemoService;
-        $this->pushNotification  = $pushNotification;
     }
 
     /**
@@ -144,12 +136,11 @@ class Status
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $items                      = $this->helper->getItems($magOrder, $itemsInfo, false);
-        $isOffline                  = $magOrder->getPayment()->getMethodInstance()->isOffline();
-        $isClickAndCollectOrder     = $this->helper->isClickAndcollectOrder($magOrder);
-        $storeId                    = $magOrder->getStoreId();
-        $configuredNotificationType = explode(',', $this->helper->getNotificationType($storeId));
-        $orderStatus                = null;
+        $items                  = $this->helper->getItems($magOrder, $itemsInfo, false);
+        $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
+        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+        $storeId                = $magOrder->getStoreId();
+        $orderStatus            = null;
 
         switch ($status) {
             case LSR::LS_STATE_CANCELED:
@@ -181,19 +172,7 @@ class Status
         }
 
         if ($orderStatus !== null) {
-            foreach ($configuredNotificationType as $type) {
-                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
-                    $this->emailNotification->setNotificationType($orderStatus);
-                    $this->emailNotification->setOrder($magOrder)->setItems($items);
-                    $this->emailNotification->prepareAndSendNotification();
-                }
-
-                if ($type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
-                    $this->pushNotification->setNotificationType($orderStatus);
-                    $this->pushNotification->setOrder($magOrder)->setItems($items);
-                    $this->pushNotification->prepareAndSendNotification();
-                }
-            }
+            $this->helper->processNotifications($storeId, $magOrder, $items, $orderStatus);
         }
     }
 
@@ -240,9 +219,9 @@ class Status
                 }
                 $shippingItemId = $this->helper->getShippingItemId();
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
-                $this->message = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
+                $this->message  = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
-            $message = Status::SUCCESS_MESSAGE;
+            $message       = Status::SUCCESS_MESSAGE;
             $this->message = $this->helper->outputMessage(true, $message);
         }
     }

@@ -19,7 +19,6 @@ use Magento\Sales\Api\Data\ShipmentCreationArgumentsInterfaceFactory;
 use Magento\InventoryCatalogApi\Api\DefaultSourceProviderInterfaceFactory;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Core\Model\LSR;
-use \Ls\Webhooks\Model\Notification\PushNotification;
 
 /**
  * class to create shipment through webhook
@@ -97,11 +96,6 @@ class Shipment
     private $logger;
 
     /**
-     * @var PushNotification
-     */
-    private $pushNotification;
-
-    /**
      * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
@@ -132,8 +126,7 @@ class Shipment
         ShippingHelper $shippingHelper,
         ShipmentRepositoryInterface $shipmentRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        Logger $logger,
-        PushNotification $pushNotification
+        Logger $logger
     ) {
         $this->shipOrderInterface            = $shipOrderInterface;
         $this->shipmentItemCreationInterface = $shipmentItemCreationInterface;
@@ -149,7 +142,6 @@ class Shipment
         $this->shipmentRepository            = $shipmentRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
         $this->logger                        = $logger;
-        $this->pushNotification              = $pushNotification;
     }
 
     /**
@@ -168,18 +160,15 @@ class Shipment
         $status              = true;
         $statusMsg           = '';
         $shipmentDetails     = [];
-
-        $magOrder                   = $this->helper->getOrderByDocumentId($orderId);
-        $storeId                    = $magOrder->getStoreId();
-        $configuredNotificationType = explode(',', $this->helper->getNotificationType($storeId));
+        $magOrder            = $this->helper->getOrderByDocumentId($orderId);
+        $storeId             = $magOrder->getStoreId();
 
         if (!empty($magOrder)) {
             if ($magOrder->canShip()
                 && !$this->getShipmentExists($orderId, $lsCentralShippingId)) {
                 //if shipment not exists create shipment
-                $shipItems         = [];
-                $parentItems       = [];
-                $shipmentItemArray = [];
+                $shipItems   = [];
+                $parentItems = [];
                 foreach ($magOrder->getAllItems() as $orderItem) {
                     $parentItem = $orderItem->getParentItem();
 
@@ -243,25 +232,22 @@ class Shipment
                     $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);
                     $statusMsg       = "Shipment posted successfully.";
                 }
-
-                if ($status) {
-                    foreach ($configuredNotificationType as $type) {
-                        if ($type == LSR::LS_NOTIFICATION_EMAIL) {
-                            continue;
-                        }
-
-                        if ($type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
-                            $this->pushNotification->setNotificationType($statusMsg);
-                            $this->pushNotification->setOrder($magOrder)->setItems($shipmentItemArray);
-                            $this->pushNotification->prepareAndSendNotification();
-                        }
-                    }
-                }
             } else { //if shipment exists update tracking number
 
                 $status    = $this->updateTrackingId($orderId, $lsCentralShippingId, $trackingId);
                 $statusMsg = ($status) ? "Tracking Id updated successfully." : "Tracking Id update failed";
 
+            }
+
+            if ($status) {
+                $items = $this->helper->getItems($magOrder, $lines, false);
+                $this->helper->processNotifications(
+                    $storeId,
+                    $magOrder,
+                    $items,
+                    $statusMsg,
+                    LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
+                );
             }
         }
 
@@ -272,7 +258,9 @@ class Shipment
         );
     }
 
-    /** Get Shipment exists status based on shipment Id from Central
+    /**
+     * Get Shipment exists status based on shipment Id from Central
+     *
      * @param $orderId
      * @param $shipmentId
      * @return bool
@@ -291,7 +279,8 @@ class Shipment
         return $shipmentExists;
     }
 
-    /** Update central tracking Id
+    /**
+     * Update central tracking Id
      *
      * @param $orderId
      * @param $lsCentralShippingId
