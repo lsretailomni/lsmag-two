@@ -251,13 +251,13 @@ class Data
                 }
 
                 //Set license validity
-//                if(strpos($string,'CL:') !== false) {
-//                    if(strpos($response->getResult(), 'CL:True EL:True') !== false) {
-//                        $this->setLicenseStatus("1");
-//                    } else {
-//                        $this->setLicenseStatus("0");
-//                    }
-//                }
+                if(strpos($string,'CL:') !== false) {
+                    if(strpos($response->getResult(), 'CL:True EL:True') !== false) {
+                        $this->setLicenseStatus("1");
+                    } else {
+                        $this->setLicenseStatus("0");
+                    }
+                }
 
                 return true;
             }
