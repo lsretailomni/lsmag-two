@@ -18,7 +18,6 @@ use Psr\Log\LoggerInterface;
 class SaveAfterObserverTest extends TestCase
 {
     private const ID = '123';
-    private const CUSTOMER_EMAIL = 'test@test.com';
     private $contactHelperMock;
     private $loggerMock;
     private $lsrMock;
