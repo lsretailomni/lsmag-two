@@ -560,7 +560,7 @@ class OrderEdit
                                     $orderLine->getVariantId() == $variantId &&
                                     $orderLine->getUomId() == $uom) {
                                     $this->refundAmount = $this->refundAmount +
-                                        ((float)$orderLine->getAmount()*$qtyDiff);
+                                        (float)($orderLine->getAmount()/$orderLine->getQuantity())*$qtyDiff;
                                 }
                             }
                         }
