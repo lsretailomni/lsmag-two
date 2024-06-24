@@ -47,11 +47,6 @@ class OrderEdit
     /**
      * @var double
      */
-    private $addtionalAmount = 0;
-
-    /**
-     * @var double
-     */
     private $refundAmount = 0;
 
     /**
@@ -188,25 +183,21 @@ class OrderEdit
             $lineOrderArray = $this->modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order);
             $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder, $oldOrder);
-            $amount = $order->getGrandTotal() - $oldOrder->getGrandTotal();
-            if ($amount < 0) {
-                $amount            = $this->refundAmount;
-                $orderPaymentArray = $this->setOrderPayments(
-                    $oldOrder,
-                    $cardId,
-                    'refund',
-                    4 * $order->getEditIncrement(),
-                    $amount,
-                    $orderPaymentArray
-                );
-
-            }
+            $amount            =  $oldOrder->getGrandTotal() - $this->refundAmount;
+            $orderPaymentArray = $this->setOrderPayments(
+                $oldOrder,
+                $cardId,
+                'refund',
+                4 * $order->getEditIncrement()*10,
+                $amount,
+                $orderPaymentArray
+            );
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
                 $cardId,
                 $order->getPayment()->getMethodInstance()->getCode(),
-                7 * $order->getEditIncrement(),
-                $this->addtionalAmount,
+                7 * $order->getEditIncrement()*10,
+                $order->getGrandTotal(),
                 $orderPaymentArray
             );
             if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
@@ -356,6 +347,8 @@ class OrderEdit
                         'qty'    => $line->getQuantity(),
                         'itemId' => $line->getItemId(),
                     ];
+
+                    $this->refundAmount = $this->refundAmount + $line->getAmount();
                 }
             }
             $this->orderCancel($customerOrder->getId(), $customerOrder->getStoreId(), $itemsToCancel);
@@ -374,7 +367,6 @@ class OrderEdit
                 ->setLineNumber(1000000)
                 ->setQuantity(1)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
-            $this->addtionalAmount = $this->addtionalAmount + (float)$shippingAmount;
             array_push($orderLines, $shipmentOrderLine);
         }
         return $orderLines;
@@ -438,7 +430,6 @@ class OrderEdit
                         $uom == $line->getUomId()) {
                         $lineNumber = ((int)$line->getLineNumber() + (int)$order->getEditIncrement());
                         $line->setLineNumber($lineNumber);
-                        $this->addtionalAmount = $this->addtionalAmount + (float)$line->getAmount();
                     }
                 }
             }
@@ -472,6 +463,7 @@ class OrderEdit
                             'qty'    => $line->getQuantity(),
                             'itemId' => $line->getItemId(),
                         ];
+                        $this->refundAmount = $this->refundAmount + $line->getAmount();
                     }
                 }
             }
@@ -513,7 +505,6 @@ class OrderEdit
                                     $price          = $orderLine->getPrice();
                                     $amount         = ($orderLine->getAmount() / $orderLine->getQuantity())
                                         * $qtyDifference;
-                                    $this->addtionalAmount = $this->addtionalAmount + (float)$amount;
                                     $netPrice       = $orderLine->getNetPrice();
                                     $netAmount      = ($orderLine->getNetAmount() / $orderLine->getQuantity())
                                         * $qtyDifference;
@@ -547,20 +538,6 @@ class OrderEdit
                                         $orderLine->getDiscountAmount() - $discountAmount
                                     );
                                     $orderLine->setQuantity($orderLine->getQuantity() - $qtyDifference);
-                                }
-                            }
-                        }  if ($newItem->getSku() == $oldItem->getSku()
-                            && $newItem->getQtyOrdered() < $oldItem->getQtyOrdered()) {
-                            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-                                $newItem->getSku()
-                            );
-                            $qtyDiff = $oldItem->getQtyOrdered() - $newItem->getQtyOrdered();
-                            foreach ($orderLinesArray as $orderLine) {
-                                if ($orderLine->getItemId() == $itemId &&
-                                    $orderLine->getVariantId() == $variantId &&
-                                    $orderLine->getUomId() == $uom) {
-                                    $this->refundAmount = $this->refundAmount +
-                                        (float)($orderLine->getAmount()/$orderLine->getQuantity())*$qtyDiff;
                                 }
                             }
                         }

@@ -48,11 +48,15 @@ class FormPlugin
             $subject->getQuote()->getStoreId()
         );
         $url = $subject->getCurrentUrl();
-        if ($isOrderEdit && strpos($url, 'order_edit') !== false)  {
-            $carrier           = 'clickandcollect';
-            $quote             = $subject->getQuote();
-            $shippingMethod    = $quote->getShippingAddress()->getShippingMethod();
-            $shippingMethodArr = explode('_', $shippingMethod);
+        if ($isOrderEdit && strpos($url, 'order_edit') !== false) {
+            $carrier        = 'clickandcollect';
+            $quote          = $subject->getQuote();
+            $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
+            $shippingMethodArr = null;
+            $carrierCode = '';
+            if (!empty($shippingMethod)) {
+                $shippingMethodArr = explode('_', $shippingMethod);
+            }
             if (!empty($shippingMethodArr)) {
                 $carrierCode = $shippingMethodArr[0];
             }

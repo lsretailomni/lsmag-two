@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\ItemHelper;
+use Ls\Omni\Helper\OrderHelper;
 use Magento\Sales\Model\AdminOrder\Create;
 use Psr\Log\LoggerInterface;
 
@@ -42,24 +43,32 @@ class CreatePlugin
     private $data;
 
     /**
+     * @var OrderHelper
+     */
+    private $orderHelper;
+
+    /**
      * @param BasketHelper $basketHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
      * @param LSR $LSR
      * @param Data $data
+     * @param OrderHelper $orderHelper
      */
     public function __construct(
         BasketHelper $basketHelper,
         ItemHelper $itemHelper,
         LoggerInterface $logger,
         LSR $LSR,
-        Data $data
+        Data $data,
+        OrderHelper $orderHelper
     ) {
         $this->basketHelper = $basketHelper;
         $this->itemHelper   = $itemHelper;
         $this->logger       = $logger;
         $this->lsr          = $LSR;
         $this->data         = $data;
+        $this->orderHelper  = $orderHelper;
     }
 
     /**
@@ -78,6 +87,7 @@ class CreatePlugin
         }
 
         $quote = $subject->getQuote();
+        $this->orderHelper->storeManager->setCurrentStore($quote->getStoreId());
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($quote->getStoreId());
         try {
             if ($this->lsr->isLSR($quote->getStoreId())) {
