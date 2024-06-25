@@ -8,7 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Helper\ItemHelper;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Sales\Model\AdminOrder\Create;
 use Psr\Log\LoggerInterface;
 
