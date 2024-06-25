@@ -15,6 +15,7 @@ use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderEditType;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\Data\OrderItemInterface;
 use Magento\Sales\Model\Order;
 use Psr\Log\LoggerInterface;
@@ -176,8 +177,7 @@ class OrderEdit
             foreach ($oldItems as $oldItem) {
                 $oldItemsArray[$oldItem->getSku()] = $oldItem->getSku();
             }
-            $amount = 0;
-            $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId);
+            $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
             $this->addNewItems($newItemsArray, $oldItemsArray, $orderLinesArray, $order);
             $this->updateItemLineNumber($orderLinesArray, $customerOrder);
             $lineOrderArray = $this->modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order);
@@ -348,7 +348,9 @@ class OrderEdit
                         'itemId' => $line->getItemId(),
                     ];
 
-                    $this->refundAmount = $this->refundAmount + $line->getAmount();
+                    if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
+                        $this->refundAmount = $this->refundAmount + $line->getAmount();
+                    }
                 }
             }
             $this->orderCancel($customerOrder->getId(), $customerOrder->getStoreId(), $itemsToCancel);
@@ -443,10 +445,11 @@ class OrderEdit
      * @param $newItemsArray
      * @param $customerOrder
      * @param $documentId
+     * @param $oldOrder
      * @return void
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
-    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId)
+    public function removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder)
     {
         $itemsToCancel = [];
         foreach ($oldItems as $oldItem) {
@@ -463,7 +466,9 @@ class OrderEdit
                             'qty'    => $line->getQuantity(),
                             'itemId' => $line->getItemId(),
                         ];
-                        $this->refundAmount = $this->refundAmount + $line->getAmount();
+                        if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
+                            $this->refundAmount = $this->refundAmount + $line->getAmount();
+                        }
                     }
                 }
             }
