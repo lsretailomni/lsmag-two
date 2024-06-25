@@ -249,7 +249,7 @@ class Data
                 if ($this->isNotificationEmailSent()) {
                     $this->setNotificationEmailSent(0);
                 }
-                $string = $response->getResult();
+
                 //Set license validity
                 if(strpos($string,'CL:') !== false) {
                     if(strpos($response->getResult(), 'CL:True EL:True') !== false) {
