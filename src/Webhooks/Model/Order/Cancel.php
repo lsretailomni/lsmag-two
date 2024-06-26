@@ -4,7 +4,6 @@ namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
-use \Ls\Core\Model\LSR;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order\ItemRepository;
@@ -82,7 +81,6 @@ class Cancel
     public function cancelItems($magOrder, $items)
     {
         if ($magOrder->canCancel()) {
-            $storeId = $magOrder->getStoreId();
             foreach ($items as $itemData) {
                 foreach ($itemData as $itemData) {
                     $item               = $itemData['item'];
@@ -95,14 +93,6 @@ class Cancel
                 }
             }
             $message = Status::SUCCESS_MESSAGE;
-
-            $this->helper->processNotifications(
-                $storeId,
-                $magOrder,
-                $items,
-                $message,
-                LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
-            );
 
             return $this->helper->outputMessage(true, $message);
         }
