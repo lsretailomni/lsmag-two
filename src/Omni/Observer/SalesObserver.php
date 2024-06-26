@@ -62,7 +62,7 @@ class SalesObserver implements ObserverInterface
                 $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal       = $basketData->getTotalAmount();
+                $subTotal       = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
                     ->setSubtotal($basketData->getTotalNetAmount())

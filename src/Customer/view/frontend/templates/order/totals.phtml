@@ -17,13 +17,16 @@ use \Ls\Customer\Block\Order\Totals;
         </span>
     </td>
 </tr>
-<?php if (!empty($block->giftCardAmount > 0)): ?>
+
+<?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0): ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
-            <?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>
+            <?= $escaper->escapeHtml(__('Total Discount')) ?>
         </th>
-        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>">
-            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($block->giftCardAmount)); ?></span>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Total Discount')) ?>">
+            <span class="price">
+                -<?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalDiscount())); ?>
+            </span>
         </td>
     </tr>
 <?php endif; ?>
@@ -41,18 +44,17 @@ use \Ls\Customer\Block\Order\Totals;
     </tr>
 <?php endif; ?>
 
-<?php if (!empty($block->getTotalDiscount()) && $block->getTotalDiscount() > 0): ?>
+<?php if (!empty($block->giftCardAmount > 0)): ?>
     <tr class="discount">
         <th colspan="4" class="mark" scope="row">
-            <?= $escaper->escapeHtml(__('Total Discount')) ?>
+            <?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>
         </th>
-        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Total Discount')) ?>">
-            <span class="price">
-                -<?= $escaper->escapeHtml($block->getFormattedPrice($block->getTotalDiscount())); ?>
-            </span>
+        <td class="amount" data-th="<?= $escaper->escapeHtml(__('Gift Card Redeemed')) ?>">
+            <span class="price">-<?= $escaper->escapeHtml($block->getFormattedPrice($block->giftCardAmount)); ?></span>
         </td>
     </tr>
 <?php endif; ?>
+
 <tr class="shipping">
     <th colspan="4" class="mark" scope="row">
         <?= $escaper->escapeHtml(__('Shipment & Handling')) ?>

@@ -462,16 +462,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_MISC = 'MISC';
 
     const LS_NOTIFICATION_EMAIL = 'email';
-
+    const LS_NOTIFICATION_PUSH_NOTIFICATION = 'push_notification';
     //Email notification through webhook
     const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';
-    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/webhooks_email_notification_order_status';
+    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/email/webhooks_email_notification_order_status';
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
     const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
     const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';
+    public const XML_CONFIG_PATH_ONESIGNAL_APP_ID = 'ls_mag/webhooks/push/app_id';
+    public const XML_CONFIG_PATH_ONESIGNAL_REST_API_KEY = 'ls_mag/webhooks/push/rest_api_key';
 
     //Choose Industry
     const LS_INDUSTRY_VALUE_RETAIL = 'retail';
@@ -820,6 +822,48 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
             ScopeInterface::SCOPE_STORE,
             $this->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Get configured app_id
+     *
+     * @return mixed
+     */
+    public function getAppId($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_CONFIG_PATH_ONESIGNAL_APP_ID,
+            ScopeInterface::SCOPE_STORE,
+            $storeId ?? null
+        );
+    }
+
+    /**
+     * Get configured rest_api_key
+     *
+     * @return mixed
+     */
+    public function getRestApiKey($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_CONFIG_PATH_ONESIGNAL_REST_API_KEY,
+            ScopeInterface::SCOPE_STORE,
+            $storeId ?? null
+        );
+    }
+
+    /**
+     * Get configuration for notification type
+     *
+     * @return string
+     */
+    public function getNotificationType($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::LS_NOTIFICATION_TYPE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId ?? null
         );
     }
 
@@ -1299,6 +1343,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (version_compare($centralVersion, '25.0.0.0', '>=')) {
             $this->data->setLicenseStatus($status);
         }
+    }
+
+    /**
+     * Check to see if push notification is enabled
+     *
+     * @return bool
+     */
+    public function isPushNotificationsEnabled()
+    {
+        $configuredNotificationType = explode(',', $this->getNotificationType());
+
+        return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }
 
     /**

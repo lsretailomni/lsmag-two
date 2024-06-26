@@ -162,6 +162,9 @@
         <plugin name="coupon_validation"
                 type="Ls\Omni\Plugin\SalesRule\Model\ValidatorPlugin"/>
     </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="quote_to_order_item_conv" type="Ls\Omni\Plugin\Quote\ConvertToOrderItem"/>
+    </type>
     <type name="Ls\Omni\Helper\AbstractHelperOmni">
         <arguments>
             <argument name="basketHelper" xsi:type="object">Ls\Omni\Helper\BasketHelper\Proxy</argument>

@@ -26,16 +26,21 @@
                                 </item>
                                 <item name="before_grandtotal" xsi:type="array">
                                     <item name="children" xsi:type="array">
+                                        <item name="ls_discount" xsi:type="array">
+                                            <item name="component" xsi:type="string">Ls_Omni/js/view/totals/ls-discount
+                                            </item>
+                                            <item name="sortOrder" xsi:type="string">1</item>
+                                        </item>
                                         <item name="ls_points_discount" xsi:type="array">
                                             <item name="component" xsi:type="string">Ls_Omni/js/view/totals/discount
                                             </item>
-                                            <item name="sortOrder" xsi:type="string">0</item>
+                                            <item name="sortOrder" xsi:type="string">2</item>
                                         </item>
                                         <item name="ls_gift_card_amount_used" xsi:type="array">
                                             <item name="component" xsi:type="string">
                                                 Ls_Omni/js/view/totals/giftcard-discount
                                             </item>
-                                            <item name="sortOrder" xsi:type="string">1</item>
+                                            <item name="sortOrder" xsi:type="string">3</item>
                                         </item>
                                     </item>
                                 </item>

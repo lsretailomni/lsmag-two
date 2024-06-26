@@ -3,6 +3,9 @@
 // @codingStandardsIgnoreFile
 
 /** @var  $block Renderer */
+/**
+ * @var \Magento\Framework\Escaper $escaper
+ */
 $_item           = $block->getItem();
 $checkIsShipment = $block->checkIsShipment();
 $discountInfo    = $block->getItemDiscountLines();
@@ -25,6 +28,30 @@ $_item->getItemId() ?>">
         <?php if (!empty($_item->getVariantDescription())): ?>
             <p><?= /* @noEscape */
                 $_item->getVariantDescription() ?></p>
+        <?php endif; ?>
+        <?php if ($_options = $block->getItemOptions()): ?>
+            <dl class="item-options">
+                <?php foreach ($_options as $_option): ?>
+                    <dt><?= $escaper->escapeHtml($_option['label']) ?></dt>
+                    <?php if (!$block->getPrintStatus()): ?>
+                        <?php $_formatedOptionValue = $block->getFormatedOptionValue($_option) ?>
+                        <dd<?= (isset($_formatedOptionValue['full_view']) ? ' class="tooltip wrapper"' : '') ?>>
+                            <?= $escaper->escapeHtml($_formatedOptionValue['value'], ['a']) ?>
+                            <?php if (isset($_formatedOptionValue['full_view'])): ?>
+                                <div class="tooltip content">
+                                    <dl class="item options">
+                                        <dt><?= $escaper->escapeHtml($_option['label']) ?></dt>
+                                        <dd><?= $escaper->escapeHtml($_formatedOptionValue['full_view']) ?></dd>
+                                    </dl>
+                                </div>
+                            <?php endif; ?>
+                        </dd>
+                    <?php else: ?>
+                        <?php $optionValue = isset($_option['print_value']) ? $_option['print_value'] : $_option['value'] ?>
+                        <dd><?= $escaper->escapeHtml($optionValue) ?></dd>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </dl>
         <?php endif; ?>
         <?php if (!empty($discountInfo)): ?>
             <p><strong><?= /* @noEscape */
@@ -64,7 +91,7 @@ $_item->getItemId() ?>">
         <td class="col subtotal" data-th="<?= /* @noEscape */
         __('Subtotal') ?>">
             <?= /* @noEscape */
-            $block->getFormattedPrice($_item->getAmount()); ?>
+             $block->getFormattedPrice($_item->getAmount()); ?>
         </td>
     <?php endif; ?>
 </tr>
