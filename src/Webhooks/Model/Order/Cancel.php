@@ -93,7 +93,6 @@ class Cancel
                 }
             }
             $message = Status::SUCCESS_MESSAGE;
-
             return $this->helper->outputMessage(true, $message);
         }
 

@@ -114,8 +114,6 @@ class CreditMemo
                     $this->creditMemoSender->send($creditMemo);
                 }
                 $message = Status::SUCCESS_MESSAGE;
-
-
                 return $this->helper->outputMessage(true, $message);
             }
         } catch (\Exception $e) {
