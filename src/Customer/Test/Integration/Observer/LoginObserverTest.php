@@ -173,7 +173,7 @@ class LoginObserverTest extends AbstractIntegrationTest
                 'controller_action' => $this->controllerAction
             ]
         ));
-        $this->assertEquals($this->customerSession->getCustomerId(), self::CUSTOMER_ID);
+        $this->assertEquals(self::CUSTOMER_ID, $this->customerSession->getCustomerId());
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));
@@ -202,7 +202,7 @@ class LoginObserverTest extends AbstractIntegrationTest
                 'controller_action' => $this->controllerAction
             ]
         ));
-        $this->assertEquals($this->customerSession->getCustomerId(), self::CUSTOMER_ID);
+        $this->assertEquals(self::CUSTOMER_ID, $this->customerSession->getCustomerId());
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_LSRID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID));
         $this->assertNotNull($this->customerSession->getData(LSR::SESSION_CUSTOMER_SECURITYTOKEN));

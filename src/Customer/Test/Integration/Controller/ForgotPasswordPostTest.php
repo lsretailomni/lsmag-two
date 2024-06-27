@@ -8,15 +8,12 @@ declare(strict_types=1);
 namespace Ls\Customer\Test\Integration\Controller;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
-use Ls\Omni\Helper\ContactHelper;
-use Magento\Authorization\Model\UserContextInterface;
-use Magento\Customer\Model\Customer;
-use Magento\Customer\Model\CustomerRegistry;
+use \Ls\Omni\Helper\ContactHelper;
 use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\JwtUserToken\Api\Data\Revoked;
-use Magento\JwtUserToken\Api\RevokedRepositoryInterface;
 use Magento\TestFramework\Fixture\Config;
+use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractController;
 
@@ -38,7 +35,6 @@ class ForgotPasswordPostTest extends AbstractController
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoDataFixture createCustomerWithCustomAttributesFixture
      * @magentoConfigFixture current_store customer/captcha/enable 0
      */
     #[
@@ -46,7 +42,16 @@ class ForgotPasswordPostTest extends AbstractController
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default')
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username'   => AbstractIntegrationTest::USERNAME,
+                'lsr_id'     => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID
+            ],
+            'customer'
+        )
     ]
 
     public function testForgotPasswordWithCustomerExists(): void
@@ -115,46 +120,5 @@ class ForgotPasswordPostTest extends AbstractController
 
         $customer = $this->contactHelper->getCustomerByEmail(AbstractIntegrationTest::EMAIL);
         $this->assertNull($customer->getData('lsr_resetcode'));
-    }
-
-    public static function createCustomerWithCustomAttributesFixture()
-    {
-        $objectManager = Bootstrap::getObjectManager();
-        $customer = $objectManager->create(Customer::class);
-        /** @var CustomerRegistry $customerRegistry */
-        $customerRegistry = $objectManager->get(CustomerRegistry::class);
-        /** @var Customer $customer */
-        $customer->setWebsiteId(1)
-            ->setId(AbstractIntegrationTest::CUSTOMER_ID)
-            ->setEmail(AbstractIntegrationTest::EMAIL)
-            ->setPassword(AbstractIntegrationTest::PASSWORD)
-            ->setGroupId(1)
-            ->setStoreId(1)
-            ->setIsActive(1)
-            ->setPrefix('Mr.')
-            ->setFirstname('John')
-            ->setMiddlename('A')
-            ->setLastname('Smith')
-            ->setSuffix('Esq.')
-            ->setDefaultBilling(1)
-            ->setDefaultShipping(1)
-            ->setTaxvat('12')
-            ->setGender(0)
-            ->setData('lsr_username', AbstractIntegrationTest::USERNAME)
-            ->setData('lsr_id', AbstractIntegrationTest::LSR_ID)
-            ->setData('lsr_cardid', AbstractIntegrationTest::LSR_CARD_ID);
-
-        $customer->isObjectNew(true);
-        $customer->save();
-        $customerRegistry->remove($customer->getId());
-        /** @var RevokedRepositoryInterface $revokedRepo */
-        $revokedRepo = $objectManager->get(RevokedRepositoryInterface::class);
-        $revokedRepo->saveRevoked(
-            new Revoked(
-                UserContextInterface::USER_TYPE_CUSTOMER,
-                (int) $customer->getId(),
-                time() - 3600 * 24
-            )
-        );
     }
 }

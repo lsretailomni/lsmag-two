@@ -51,7 +51,7 @@ class AbstractIntegrationTest extends TestCase
             ->setDefaultBilling(1)
             ->setDefaultShipping(1)
             ->setTaxvat('12')
-            ->setGender(0)
+            ->setGender(1)
             ->setData('lsr_username', self::USERNAME)
             ->setData('lsr_id', self::LSR_ID)
             ->setData('lsr_cardid', self::LSR_CARD_ID);
