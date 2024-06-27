@@ -42,9 +42,9 @@ class LoginObserverTest extends AbstractIntegrationTest
      * @magentoAppIsolation enabled
      */
     #[
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
     ]
@@ -69,9 +69,9 @@ class LoginObserverTest extends AbstractIntegrationTest
      * @magentoAppIsolation enabled
      */
     #[
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
     ]
@@ -97,9 +97,9 @@ class LoginObserverTest extends AbstractIntegrationTest
      * @magentoAppIsolation enabled
      */
     #[
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
     ]
@@ -125,16 +125,18 @@ class LoginObserverTest extends AbstractIntegrationTest
      * @magentoAppIsolation enabled
      */
     #[
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
     ]
     public function testExecuteWithNonExistentEmailAndPasswordInBothCentralAndMagento()
     {
+        $append      = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
+
         $this->request->setPost(
-            new Parameters(['login' => ['username' => self::INVALID_EMAIL, 'password' => self::PASSWORD. '123']])
+            new Parameters(['login' => ['username' => $append. $append. self::EMAIL, 'password' => self::PASSWORD. '123']])
         );
         $this->loginObserver->execute(new Observer(
             [
@@ -154,9 +156,9 @@ class LoginObserverTest extends AbstractIntegrationTest
      * @magentoDataFixture createCustomerWithCustomAttributesFixture
      */
     #[
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
     ]
@@ -183,9 +185,9 @@ class LoginObserverTest extends AbstractIntegrationTest
      * @magentoDataFixture createCustomerWithCustomAttributesFixture
      */
     #[
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, self::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default')
     ]
