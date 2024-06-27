@@ -184,14 +184,16 @@ class OrderEdit
             $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder, $oldOrder);
             $amount            =  $oldOrder->getGrandTotal() - $this->refundAmount;
-            $orderPaymentArray = $this->setOrderPayments(
-                $oldOrder,
-                $cardId,
-                'refund',
-                4 * $order->getEditIncrement()*10,
-                $amount,
-                $orderPaymentArray
-            );
+            if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
+                $orderPaymentArray = $this->setOrderPayments(
+                    $oldOrder,
+                    $cardId,
+                    $oldOrder->getPayment()->getMethodInstance()->getCode(),
+                    4 * $order->getEditIncrement() * 10,
+                    $amount,
+                    $orderPaymentArray
+                );
+            }
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
                 $cardId,
@@ -276,7 +278,6 @@ class OrderEdit
                         }
                     }
                 }
-
                 $orderPayment->setTenderType($tenderTypeId);
                 $orderPayment->setPreApprovedValidDate($preApprovedDate);
                 $orderPaymentArray[] = $orderPayment;
