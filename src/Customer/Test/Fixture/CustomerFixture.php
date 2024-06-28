@@ -31,8 +31,6 @@ class CustomerFixture implements DataFixtureInterface
         'middlename'       => 'A',
         'lastname'         => 'Smith',
         'suffix'           => 'Esq.',
-        'default_billing'  => 1,
-        'default_shipping' => 1,
         'taxvat'           => '12',
         'gender'           => 1,
     ];
