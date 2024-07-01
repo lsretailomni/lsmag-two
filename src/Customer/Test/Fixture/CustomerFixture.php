@@ -76,6 +76,10 @@ class CustomerFixture implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
+        if (isset($data['random_email'])) {
+            $append = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
+            $data['email'] = $append . AbstractIntegrationTest::EMAIL;
+        }
         $data['website_id'] = $this->storeManager->getWebsite()->getWebsiteId();
         $data['store_id']   = $this->storeManager->getStore()->getId();
         $data               = array_merge(self::DEFAULT_DATA, $data);
