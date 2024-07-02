@@ -30,11 +30,11 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
 
     protected function setUp(): void
     {
-        $this->objectManager     = Bootstrap::getObjectManager();
-        $this->request           = $this->objectManager->get(HttpRequest::class);
+        $this->objectManager          = Bootstrap::getObjectManager();
+        $this->request                = $this->objectManager->get(HttpRequest::class);
         $this->accountAddressObserver = $this->objectManager->get(AccountAddressObserver::class);
-        $this->messageManager   = $this->objectManager->get(Manager::class);
-        $this->fixtures          = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
+        $this->messageManager         = $this->objectManager->get(Manager::class);
+        $this->fixtures               = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
     }
 
     /**
@@ -49,30 +49,29 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
         DataFixture(
             CustomerFixture::class,
             [
-                'lsr_username'   => AbstractIntegrationTest::USERNAME,
-                'lsr_id'     => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
             ],
             as: 'customer'
         ),
         DataFixture(
             CustomerAddressFixture::class,
             [
-                'customer_id'   => '$customer.entity_id$'
+                'customer_id' => '$customer.entity_id$'
             ],
             as: 'address'
         )
-
     ]
     public function testExecuteWithValidParameters()
     {
         $customer = $this->fixtures->get('customer');
-        $address = $this->fixtures->get('address');
+        $address  = $this->fixtures->get('address');
         $this->accountAddressObserver->execute(new Observer(
             [
-                'request'  => $this->request,
-                'customer' => $customer,
+                'request'          => $this->request,
+                'customer'         => $customer,
                 'customer_address' => $address
             ]
         ));
@@ -93,17 +92,17 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
         DataFixture(
             CustomerFixture::class,
             [
-                'lsr_username'   => AbstractIntegrationTest::USERNAME,
-                'lsr_id'     => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
             ],
             as: 'customer'
         ),
         DataFixture(
             CustomerAddressFixture::class,
             [
-                'customer_id'   => '$customer.entity_id$'
+                'customer_id' => '$customer.entity_id$'
             ],
             as: 'address'
         )
@@ -112,13 +111,13 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
     public function testExecuteWithInValidParameters()
     {
         $customer = $this->fixtures->get('customer');
-        $address = $this->fixtures->get('address');
-        $append      = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
-        $address->setData('city', $append. $append);
+        $address  = $this->fixtures->get('address');
+        $append   = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
+        $address->setData('city', $append . $append);
         $this->accountAddressObserver->execute(new Observer(
             [
-                'request'  => $this->request,
-                'customer' => $customer,
+                'request'          => $this->request,
+                'customer'         => $customer,
                 'customer_address' => $address
             ]
         ));
@@ -139,17 +138,17 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
         DataFixture(
             CustomerFixture::class,
             [
-                'lsr_username'   => null,
-                'lsr_id'     => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid' => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token' => AbstractIntegrationTest::CUSTOMER_ID
+                'lsr_username' => null,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
             ],
             as: 'customer'
         ),
         DataFixture(
             CustomerAddressFixture::class,
             [
-                'customer_id'   => '$customer.entity_id$'
+                'customer_id' => '$customer.entity_id$'
             ],
             as: 'address'
         )
@@ -158,13 +157,13 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
     public function testExecuteWithoutLsrUsername()
     {
         $customer = $this->fixtures->get('customer');
-        $address = $this->fixtures->get('address');
-        $append      = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
-        $address->setData('city', $append. $append);
+        $address  = $this->fixtures->get('address');
+        $append   = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
+        $address->setData('city', $append . $append);
         $this->accountAddressObserver->execute(new Observer(
             [
-                'request'  => $this->request,
-                'customer' => $customer,
+                'request'          => $this->request,
+                'customer'         => $customer,
                 'customer_address' => $address
             ]
         ));
@@ -180,7 +179,7 @@ class AccountAddressObserverTest extends AbstractIntegrationTest
     {
         $this->accountAddressObserver->execute(new Observer(
             [
-                'request'  => $this->request
+                'request' => $this->request
             ]
         ));
 
