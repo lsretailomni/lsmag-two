@@ -19,7 +19,6 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\StoreManagerInterface;
-use Magento\TestFramework\Fixture\Api\DataMerger;
 use Magento\TestFramework\Fixture\Api\ServiceFactory;
 use Magento\TestFramework\Fixture\Data\ProcessorInterface;
 use Magento\TestFramework\Fixture\DataFixtureInterface;

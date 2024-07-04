@@ -22,6 +22,7 @@ use Magento\TestFramework\Fixture\Api\DataMerger;
 use Magento\TestFramework\Fixture\Api\ServiceFactory;
 use Magento\TestFramework\Fixture\RevertibleDataFixtureInterface;
 use Magento\TestFramework\Fixture\Data\ProcessorInterface;
+use Ls\Core\Model\LSR;
 
 class CreateSimpleProductFixture implements RevertibleDataFixtureInterface
 {
@@ -128,6 +129,7 @@ class CreateSimpleProductFixture implements RevertibleDataFixtureInterface
      *
      * @param array $data
      * @return array
+     * @throws NoSuchEntityException
      */
     private function prepareData(array $data): array
     {
