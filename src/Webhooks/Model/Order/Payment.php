@@ -146,6 +146,7 @@ class Payment
         }
         $shippingAmount = 0;
         $itemsToInvoice = [];
+        $subtotal = 0;
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
             $storeId         = $order->getStoreId();
@@ -160,6 +161,7 @@ class Payment
                         $item                         = $itemData['item'];
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
+                        $subtotal += $itemData['amount_with_discount'];
                         if ($isOffline) {
                             $totalAmount += $itemData['amount'];
                         }
@@ -192,8 +194,10 @@ class Payment
                 $invoice->getOrder()->setCustomerNoteNotify(false);
                 $invoice->getOrder()->setIsInProcess(true);
                 $invoice->setShippingAmount($shippingAmount);
-                $invoice->setSubtotal($totalAmount);
-                $invoice->setBaseSubtotal($totalAmount);
+                $invoice->setSubtotal($subtotal);
+                $invoice->setBaseSubtotal($subtotal);
+                $invoice->setSubtotalInclTax($subtotal);
+                $invoice->setBaseSubtotalInclTax($subtotal);
                 $invoice->setGrandTotal($totalAmount);
                 $invoice->setBaseGrandTotal($totalAmount);
                 $invoice->register();

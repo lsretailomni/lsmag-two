@@ -171,29 +171,34 @@
                                                 </item>
                                                 <item name="totals" xsi:type="array">
                                                     <item name="children" xsi:type="array">
-                                                        <item name="subtotal" xsi:type="array">
-                                                            <item name="config" xsi:type="array">
-                                                                <item name="title" xsi:type="string" translate="true">Subtotal (Inc.Tax)</item>
-                                                                <item name="sortOrder" xsi:type="string">0</item>
-                                                            </item>
-                                                        </item>
-                                                        <item name="ls_gift_card_amount_used" xsi:type="array">
-                                                            <item name="component" xsi:type="string">
-                                                                Ls_Omni/js/view/totals/giftcard-discount
-                                                            </item>
-                                                            <item name="sortOrder" xsi:type="string">1</item>
-                                                        </item>
-                                                        <item name="ls_points_discount" xsi:type="array">
-                                                            <item name="component" xsi:type="string">
-                                                                Ls_Omni/js/view/totals/discount
-                                                            </item>
-                                                            <item name="sortOrder" xsi:type="string">2</item>
-                                                        </item>
                                                         <item name="loyalty_points_label" xsi:type="array">
                                                             <item name="component" xsi:type="string">
                                                                 Ls_Omni/js/view/totals/label
                                                             </item>
                                                             <item name="sortOrder" xsi:type="string">0</item>
+                                                        </item>
+                                                        <item name="subtotal" xsi:type="array">
+                                                            <item name="config" xsi:type="array">
+                                                                <item name="title" xsi:type="string" translate="true">Subtotal (Inc.Tax)</item>
+                                                                <item name="sortOrder" xsi:type="string">1</item>
+                                                            </item>
+                                                        </item>
+                                                        <item name="ls_discount" xsi:type="array">
+                                                            <item name="component" xsi:type="string">Ls_Omni/js/view/totals/ls-discount
+                                                            </item>
+                                                            <item name="sortOrder" xsi:type="string">2</item>
+                                                        </item>
+                                                        <item name="ls_points_discount" xsi:type="array">
+                                                            <item name="component" xsi:type="string">
+                                                                Ls_Omni/js/view/totals/discount
+                                                            </item>
+                                                            <item name="sortOrder" xsi:type="string">3</item>
+                                                        </item>
+                                                        <item name="ls_gift_card_amount_used" xsi:type="array">
+                                                            <item name="component" xsi:type="string">
+                                                                Ls_Omni/js/view/totals/giftcard-discount
+                                                            </item>
+                                                            <item name="sortOrder" xsi:type="string">4</item>
                                                         </item>
                                                         <item name="grand-total" xsi:type="array">
                                                             <item name="component" xsi:type="string">

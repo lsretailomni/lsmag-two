@@ -318,9 +318,12 @@ class Data
                                 $orderItem->getQtyOrdered() - $orderItem->getQtyInvoiced() > 0
                             ) {
                                 $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
-                                $items[$globalCounter][$itemId]['qty']        = (float)$orderItem->getQtyOrdered();
-                                $items[$globalCounter][$itemId]['amount']     = $orderItem->getPrice();
-                                $items[$globalCounter][$itemId]['item']       = $child;
+                                $items[$globalCounter][$itemId]['qty'] = (float)$orderItem->getQtyOrdered();
+                                $items[$globalCounter][$itemId]['amount'] = $orderItem->getPrice();
+                                $items[$globalCounter][$itemId]['amount_with_discount'] =
+                                    $orderItem->getPrice() +
+                                    ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered());
+                                $items[$globalCounter][$itemId]['item'] = $child;
                                 $giftCardItemsCounter++;
 
                                 if (!$linesMerged) {
@@ -341,6 +344,8 @@ class Data
                         }
                         if (array_key_exists('Amount', $skuValues)) {
                             $totalAmount                              += $skuValues['Amount'];
+                            $items[$globalCounter][$itemId]['amount_with_discount'] =
+                                $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
                             $items[$globalCounter][$itemId]['amount'] = $totalAmount;
                         }
                         $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
