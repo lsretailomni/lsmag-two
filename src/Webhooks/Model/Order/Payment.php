@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Hospitality\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Webhooks\Helper\PushNotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
@@ -52,6 +53,11 @@ class Payment
     private $helper;
 
     /**
+     * @var PushNotificationHelper
+     */
+    private $pushNotificationHelper;
+
+    /**
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
@@ -91,7 +97,8 @@ class Payment
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
-     * @param Data $helper ,
+     * @param Data $helper
+     * @param PushNotificationHelper $pushNotificationHelper
      * @param OrderRepositoryInterface $orderRepository
      * @param Order $convertOrder
      * @param ShipmentNotifier $shipmentNotifier
@@ -106,6 +113,7 @@ class Payment
         TransactionFactory $transactionFactory,
         InvoiceSender $invoiceSender,
         Data $helper,
+        PushNotificationHelper $pushNotificationHelper,
         OrderRepositoryInterface $orderRepository,
         Order $convertOrder,
         ShipmentNotifier $shipmentNotifier,
@@ -119,6 +127,7 @@ class Payment
         $this->transactionFactory           = $transactionFactory;
         $this->invoiceSender                = $invoiceSender;
         $this->helper                       = $helper;
+        $this->pushNotificationHelper       = $pushNotificationHelper;
         $this->orderRepository              = $orderRepository;
         $this->convertOrder                 = $convertOrder;
         $this->shipmentNotifier             = $shipmentNotifier;
@@ -146,7 +155,7 @@ class Payment
         }
         $shippingAmount = 0;
         $itemsToInvoice = [];
-        $subtotal = 0;
+        $subtotal       = 0;
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
             $storeId         = $order->getStoreId();
@@ -161,7 +170,7 @@ class Payment
                         $item                         = $itemData['item'];
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
-                        $subtotal += $itemData['amount_with_discount'];
+                        $subtotal                     += $itemData['amount_with_discount'];
                         if ($isOffline) {
                             $totalAmount += $itemData['amount'];
                         }
@@ -219,7 +228,7 @@ class Payment
                     }
                     $message = 'Order posted successfully and invoice sent to customer for document id #' . $documentId;
 
-                    $this->helper->processNotifications(
+                    $this->pushNotificationHelper->processNotifications(
                         $storeId,
                         $order,
                         $items,

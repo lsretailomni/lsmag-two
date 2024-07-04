@@ -12,6 +12,7 @@ use Magento\Sales\Api\Data\ShipmentCommentCreationInterface;
 use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Webhooks\Helper\PushNotificationHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory;
@@ -44,6 +45,11 @@ class Shipment
      * @var Data
      */
     private $helper;
+
+    /**
+     * @var PushNotificationHelper
+     */
+    private $pushNotificationHelper;
 
     /**
      * @var TrackFactory
@@ -107,6 +113,7 @@ class Shipment
      * @param TrackFactory $trackFactory
      * @param ShipmentCommentCreationInterface $shipmentCommentCreation
      * @param Data $helper
+     * @param PushNotificationHelper $pushNotificationHelper
      * @param ShippingHelper $shippingHelper
      * @param ShipmentRepositoryInterface $shipmentRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -123,6 +130,7 @@ class Shipment
         TrackFactory $trackFactory,
         ShipmentCommentCreationInterface $shipmentCommentCreation,
         Data $helper,
+        PushNotificationHelper $pushNotificationHelper,
         ShippingHelper $shippingHelper,
         ShipmentRepositoryInterface $shipmentRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -138,6 +146,7 @@ class Shipment
         $this->trackFactory                  = $trackFactory;
         $this->shipmentCommentCreation       = $shipmentCommentCreation;
         $this->helper                        = $helper;
+        $this->pushNotificationHelper        = $pushNotificationHelper;
         $this->shippingHelper                = $shippingHelper;
         $this->shipmentRepository            = $shipmentRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
@@ -241,7 +250,7 @@ class Shipment
 
             if ($status) {
                 $items = $this->helper->getItems($magOrder, $lines, false);
-                $this->helper->processNotifications(
+                $this->pushNotificationHelper->processNotifications(
                     $storeId,
                     $magOrder,
                     $items,

@@ -4,8 +4,7 @@ namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
-use \Ls\Webhooks\Model\Notification\EmailNotification;
-use \Ls\Webhooks\Model\Notification\PushNotification;
+use \Ls\Webhooks\Helper\PushNotificationHelper;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -27,6 +26,11 @@ class Status
     public $helper;
 
     /**
+     * @var PushNotificationHelper
+     */
+    private $pushNotificationHelper;
+
+    /**
      * @var OrderCancel
      */
     public $orderCancel;
@@ -40,11 +44,6 @@ class Status
      * @var Payment
      */
     public $payment;
-
-    /**
-     * @var EmailNotification
-     */
-    public $emailNotification;
 
     /**
      * @var Invoice
@@ -71,8 +70,8 @@ class Status
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
      * @param Payment $payment
-     * @param EmailNotification $emailNotification
      * @param Invoice $invoice
+     * @param PushNotificationHelper $pushNotificationHelper *
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
      */
@@ -81,19 +80,19 @@ class Status
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
         Payment $payment,
-        EmailNotification $emailNotification,
         Invoice $invoice,
+        PushNotificationHelper $pushNotificationHelper,
         CreditmemoFactory $creditMemoFactory,
         CreditmemoService $creditMemoService
     ) {
-        $this->helper            = $helper;
-        $this->orderCancel       = $orderCancel;
-        $this->creditMemo        = $creditMemo;
-        $this->payment           = $payment;
-        $this->emailNotification = $emailNotification;
-        $this->invoice           = $invoice;
-        $this->creditMemoFactory = $creditMemoFactory;
-        $this->creditMemoService = $creditMemoService;
+        $this->helper                 = $helper;
+        $this->orderCancel            = $orderCancel;
+        $this->creditMemo             = $creditMemo;
+        $this->payment                = $payment;
+        $this->invoice                = $invoice;
+        $this->pushNotificationHelper = $pushNotificationHelper;
+        $this->creditMemoFactory      = $creditMemoFactory;
+        $this->creditMemoService      = $creditMemoService;
     }
 
     /**
@@ -172,7 +171,7 @@ class Status
         }
 
         if ($orderStatus !== null) {
-            $this->helper->processNotifications($storeId, $magOrder, $items, $orderStatus);
+            $this->pushNotificationHelper->processNotifications($storeId, $magOrder, $items, $orderStatus);
         }
     }
 
