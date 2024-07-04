@@ -772,6 +772,15 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL], false);
+        if ($value) {
+            $formattedValue = $this->currencyHelper->format(
+                $value,
+                ['display' => Currency::NO_SYMBOL],
+                false
+            );
+            return str_replace(',', '.', $formattedValue);
+        }
+
+        return '';
     }
 }
