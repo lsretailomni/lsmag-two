@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace Ls\Customer\Test\Integration\Block\Adminhtml\Tab;
 
 use \Ls\Core\Model\LSR;
