@@ -566,4 +566,15 @@ class Data
 
         return $qty;
     }
+
+    /**
+     * Get lsr object
+     *
+     * @return LSR
+     */
+    public function getLsrObject()
+    {
+        return $this->lsr;
+
+    }
 }

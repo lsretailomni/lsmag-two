@@ -85,14 +85,14 @@ class Status
         CreditmemoFactory $creditMemoFactory,
         CreditmemoService $creditMemoService
     ) {
-        $this->helper                 = $helper;
-        $this->orderCancel            = $orderCancel;
-        $this->creditMemo             = $creditMemo;
-        $this->payment                = $payment;
-        $this->invoice                = $invoice;
-        $this->notificationHelper     = $notificationHelper;
-        $this->creditMemoFactory      = $creditMemoFactory;
-        $this->creditMemoService      = $creditMemoService;
+        $this->helper             = $helper;
+        $this->orderCancel        = $orderCancel;
+        $this->creditMemo         = $creditMemo;
+        $this->payment            = $payment;
+        $this->invoice            = $invoice;
+        $this->notificationHelper = $notificationHelper;
+        $this->creditMemoFactory  = $creditMemoFactory;
+        $this->creditMemoService  = $creditMemoService;
     }
 
     /**
@@ -140,7 +140,10 @@ class Status
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
         $storeId                = $magOrder->getStoreId();
         $orderStatus            = null;
-        $message = __("Your order has been");
+        $industry               = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $storeId);
+        if ($industry == LSR::LS_INDUSTRY_VALUE_RETAIL) {
+            $message = __("Your order has been");
+        }
         switch ($status) {
             case LSR::LS_STATE_CANCELED:
             case LSR::LS_STATE_SHORTAGE:
@@ -152,7 +155,7 @@ class Status
                     $orderStatus = LSR::LS_STATE_PICKED;
                 }
                 $orderStatus = '';
-                $message = __("Your order is ready for PICKUP");
+                $message     = __("Your order is ready for PICKUP");
                 break;
             case LSR::LS_STATE_COLLECTED:
                 if ($isClickAndCollectOrder) {
@@ -177,7 +180,7 @@ class Status
                 $storeId,
                 $magOrder,
                 $items,
-                $message.' '.$orderStatus
+                $message . ' ' . $orderStatus
             );
         }
     }
