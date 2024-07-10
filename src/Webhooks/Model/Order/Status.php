@@ -141,6 +141,7 @@ class Status
         $storeId                = $magOrder->getStoreId();
         $orderStatus            = null;
         $industry               = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $storeId);
+        $message                = '';
         if ($industry == LSR::LS_INDUSTRY_VALUE_RETAIL) {
             $message = __("Your order has been");
         }
