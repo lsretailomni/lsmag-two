@@ -152,7 +152,7 @@ class Status
                     $orderStatus = LSR::LS_STATE_PICKED;
                 }
                 $orderStatus = '';
-                $message = __("Your order is ready for pickup");
+                $message = __("Your order is ready for PICKUP");
                 break;
             case LSR::LS_STATE_COLLECTED:
                 if ($isClickAndCollectOrder) {
