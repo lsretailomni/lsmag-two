@@ -238,7 +238,7 @@ class Shipment
                     );
 
                     $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);
-                    $statusMsg       = "Your order has been shipped for order id #' . $orderId";
+                    $statusMsg       = "Your order has been shipped for order# $orderId";
                 }
             } else { //if shipment exists update tracking number
 

@@ -226,7 +226,7 @@ class Payment
                             $this->giftCardNotification($order, $itemsToInvoice, $line);
                         }
                     }
-                    $message = 'Order posted successfully and invoice sent for order id #' . $documentId;
+                    $message = 'Invoice has been sent for order# ' . $documentId;
 
                     $this->notificationHelper->processNotifications(
                         $storeId,
