@@ -8,9 +8,9 @@ use \Ls\Webhooks\Model\Notification\PushNotification;
 use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Helper class to handle Push notification
+ * Helper class to handle notification
  */
-class PushNotificationHelper
+class NotificationHelper
 {
     /**
      * @var LSR

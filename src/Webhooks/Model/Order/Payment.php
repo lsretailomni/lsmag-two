@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Hospitality\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Webhooks\Helper\PushNotificationHelper;
+use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
@@ -53,9 +53,9 @@ class Payment
     private $helper;
 
     /**
-     * @var PushNotificationHelper
+     * @var NotificationHelper
      */
-    private $pushNotificationHelper;
+    private $notificationHelper;
 
     /**
      * @var OrderRepositoryInterface
@@ -98,7 +98,7 @@ class Payment
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
      * @param Data $helper
-     * @param PushNotificationHelper $pushNotificationHelper
+     * @param NotificationHelper $notificationHelper
      * @param OrderRepositoryInterface $orderRepository
      * @param Order $convertOrder
      * @param ShipmentNotifier $shipmentNotifier
@@ -113,7 +113,7 @@ class Payment
         TransactionFactory $transactionFactory,
         InvoiceSender $invoiceSender,
         Data $helper,
-        PushNotificationHelper $pushNotificationHelper,
+        NotificationHelper $notificationHelper,
         OrderRepositoryInterface $orderRepository,
         Order $convertOrder,
         ShipmentNotifier $shipmentNotifier,
@@ -127,7 +127,7 @@ class Payment
         $this->transactionFactory           = $transactionFactory;
         $this->invoiceSender                = $invoiceSender;
         $this->helper                       = $helper;
-        $this->pushNotificationHelper       = $pushNotificationHelper;
+        $this->notificationHelper           = $notificationHelper;
         $this->orderRepository              = $orderRepository;
         $this->convertOrder                 = $convertOrder;
         $this->shipmentNotifier             = $shipmentNotifier;
@@ -226,9 +226,9 @@ class Payment
                             $this->giftCardNotification($order, $itemsToInvoice, $line);
                         }
                     }
-                    $message = 'Order posted successfully and invoice sent to customer for document id #' . $documentId;
+                    $message = 'Order posted successfully and invoice sent for order id #' . $documentId;
 
-                    $this->pushNotificationHelper->processNotifications(
+                    $this->notificationHelper->processNotifications(
                         $storeId,
                         $order,
                         $items,

@@ -4,7 +4,7 @@ namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
-use \Ls\Webhooks\Helper\PushNotificationHelper;
+use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -26,9 +26,9 @@ class Status
     public $helper;
 
     /**
-     * @var PushNotificationHelper
+     * @var NotificationHelper
      */
-    private $pushNotificationHelper;
+    private $notificationHelper;
 
     /**
      * @var OrderCancel
@@ -71,7 +71,7 @@ class Status
      * @param CreditMemo $creditMemo
      * @param Payment $payment
      * @param Invoice $invoice
-     * @param PushNotificationHelper $pushNotificationHelper *
+     * @param NotificationHelper $notificationHelper
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
      */
@@ -81,7 +81,7 @@ class Status
         CreditMemo $creditMemo,
         Payment $payment,
         Invoice $invoice,
-        PushNotificationHelper $pushNotificationHelper,
+        NotificationHelper $notificationHelper,
         CreditmemoFactory $creditMemoFactory,
         CreditmemoService $creditMemoService
     ) {
@@ -90,7 +90,7 @@ class Status
         $this->creditMemo             = $creditMemo;
         $this->payment                = $payment;
         $this->invoice                = $invoice;
-        $this->pushNotificationHelper = $pushNotificationHelper;
+        $this->notificationHelper     = $notificationHelper;
         $this->creditMemoFactory      = $creditMemoFactory;
         $this->creditMemoService      = $creditMemoService;
     }
@@ -171,7 +171,7 @@ class Status
         }
 
         if ($orderStatus !== null) {
-            $this->pushNotificationHelper->processNotifications($storeId, $magOrder, $items, $orderStatus);
+            $this->notificationHelper->processNotifications($storeId, $magOrder, $items, $orderStatus);
         }
     }
 

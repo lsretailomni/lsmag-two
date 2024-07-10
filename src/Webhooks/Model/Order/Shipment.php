@@ -12,7 +12,7 @@ use Magento\Sales\Api\Data\ShipmentCommentCreationInterface;
 use Magento\Shipping\Helper\Data as ShippingHelper;
 use \Ls\Webhooks\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Webhooks\Helper\PushNotificationHelper;
+use \Ls\Webhooks\Helper\NotificationHelper;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Sales\Api\ShipmentRepositoryInterface;
 use Magento\Sales\Api\Data\ShipmentCreationArgumentsExtensionInterfaceFactory;
@@ -47,9 +47,9 @@ class Shipment
     private $helper;
 
     /**
-     * @var PushNotificationHelper
+     * @var NotificationHelper
      */
-    private $pushNotificationHelper;
+    private $notificationHelper;
 
     /**
      * @var TrackFactory
@@ -102,7 +102,6 @@ class Shipment
     private $logger;
 
     /**
-     * Shipment constructor.
      * @param ShipOrderInterface $shipOrderInterface
      * @param ShipmentItemCreationInterface $shipmentItemCreationInterface
      * @param ShipmentCreationArgumentsInterfaceFactory $shipmentCreationArgumentsInterfaceFactory
@@ -113,7 +112,7 @@ class Shipment
      * @param TrackFactory $trackFactory
      * @param ShipmentCommentCreationInterface $shipmentCommentCreation
      * @param Data $helper
-     * @param PushNotificationHelper $pushNotificationHelper
+     * @param NotificationHelper $notificationHelper
      * @param ShippingHelper $shippingHelper
      * @param ShipmentRepositoryInterface $shipmentRepository
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
@@ -130,7 +129,7 @@ class Shipment
         TrackFactory $trackFactory,
         ShipmentCommentCreationInterface $shipmentCommentCreation,
         Data $helper,
-        PushNotificationHelper $pushNotificationHelper,
+        NotificationHelper $notificationHelper,
         ShippingHelper $shippingHelper,
         ShipmentRepositoryInterface $shipmentRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
@@ -146,7 +145,7 @@ class Shipment
         $this->trackFactory                  = $trackFactory;
         $this->shipmentCommentCreation       = $shipmentCommentCreation;
         $this->helper                        = $helper;
-        $this->pushNotificationHelper        = $pushNotificationHelper;
+        $this->notificationHelper            = $notificationHelper;
         $this->shippingHelper                = $shippingHelper;
         $this->shipmentRepository            = $shipmentRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
@@ -239,7 +238,7 @@ class Shipment
                     );
 
                     $shipmentDetails = $this->getShipmentDetailsByOrder($magOrder, $shipmentId, $lsCentralShippingId);
-                    $statusMsg       = "Shipment posted successfully.";
+                    $statusMsg       = "Your order has been shipped for order id #' . $orderId";
                 }
             } else { //if shipment exists update tracking number
 
@@ -250,7 +249,7 @@ class Shipment
 
             if ($status) {
                 $items = $this->helper->getItems($magOrder, $lines, false);
-                $this->pushNotificationHelper->processNotifications(
+                $this->notificationHelper->processNotifications(
                     $storeId,
                     $magOrder,
                     $items,
