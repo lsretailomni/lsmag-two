@@ -12,7 +12,8 @@
             "ls_one_list_id": true,
             "basket_response": true,
             "pickup_date_timeslot": true,
-            "ls_gift_card_pin": true
+            "ls_gift_card_pin": true,
+            "ls_subscription_id": true
         }
     },
     "sales_order": {
@@ -27,7 +28,8 @@
             "pickup_date_timeslot": true,
             "ls_gift_card_pin": true,
             "ls_gift_card_cny_code": true,
-            "ls_gift_card_cny_factor": true
+            "ls_gift_card_cny_factor": true,
+            "ls_subscription_id": true
         }
     },
     "sales_invoice": {

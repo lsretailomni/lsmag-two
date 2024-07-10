@@ -47,29 +47,6 @@ class PlaceOrderPlugin
     }
 
     /**
-     * After plugin to set custom data in Order response
-     *
-     * @param mixed $subject
-     * @param array $result
-     * @return array
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function afterResolve($subject, $result)
-    {
-        if (isset($result['order']) && isset($result['order']['order_number'])) {
-            $order = $this->dataHelper->getOrderByIncrementId($result['order']['order_number']);
-            $result['order']['document_id'] = !empty($order) && $order->getDocumentId() ? $order->getDocumentId() : '';
-            $result['order']['pickup_store_id'] = !empty($order) && $order->getPickupStore() ?
-                $order->getPickupStore() : '';
-            $result['order']['pickup_store_name'] = !empty($order) && $order->getPickupStore() ?
-                $this->dataHelper->getStoreNameById($order->getPickupStore()) : '';
-        }
-
-        return $result;
-    }
-
-    /**
      * Around method to intercept place order mutation
      *
      * @param $subject
@@ -79,7 +56,7 @@ class PlaceOrderPlugin
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
-     * @return void
+     * @return array
      * @throws GraphQlInputException
      * @throws NoSuchEntityException
      * @throws LocalizedException
@@ -105,6 +82,22 @@ class PlaceOrderPlugin
             );
         }
 
-        return $proceed($field, $context, $info, $value, $args);
+        $result = $proceed($field, $context, $info, $value, $args);
+
+        if (isset($result['order']['order_number'])) {
+            $order = $this->dataHelper->getOrderByIncrementId($result['order']['order_number']);
+
+            if ($this->lsr->isPushNotificationsEnabled() && isset($args['input']['subscription_id'])) {
+                $order->setLsSubscriptionId($args['input']['subscription_id']);
+                $this->dataHelper->saveOrder($order);
+            }
+            $result['order']['document_id'] = !empty($order) && $order->getDocumentId() ? $order->getDocumentId() : '';
+            $result['order']['pickup_store_id'] = !empty($order) && $order->getPickupStore() ?
+                $order->getPickupStore() : '';
+            $result['order']['pickup_store_name'] = !empty($order) && $order->getPickupStore() ?
+                $this->dataHelper->getStoreNameById($order->getPickupStore()) : '';
+        }
+
+        return $result;
     }
 }

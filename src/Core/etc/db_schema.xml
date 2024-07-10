@@ -13,6 +13,7 @@
         <column xsi:type="text" name="ls_gift_card_pin" nullable="true" comment="LS Gift Card Pin"/>
         <column xsi:type="text" name="ls_gift_card_cny_code" nullable="true" comment="LS Gift Card Currency Code"/>
         <column xsi:type="float" name="ls_gift_card_cny_factor" nullable="true" comment="LS Gift Card Currency Factor"/>
+        <column xsi:type="text" name="ls_subscription_id" nullable="true" comment="LS Subscription ID"/>
     </table>
     <table name="sales_order" resource="sales" engine="innodb" comment="Sales Flat Order">
         <column xsi:type="datetime" name="pickup_date" nullable="true" comment="Pick Up Date"/>
@@ -26,6 +27,7 @@
         <column xsi:type="text" name="ls_gift_card_cny_code" nullable="true" comment="LS Gift Card Currency Code"/>
         <column xsi:type="float" name="ls_gift_card_cny_factor" nullable="true" comment="LS Gift Card Currency Factor"/>
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>
+        <column xsi:type="text" name="ls_subscription_id" nullable="true" comment="LS Subscription ID"/>
     </table>
     <table name="sales_invoice" resource="sales" engine="innodb" comment="Sales Flat Invoice">
         <column xsi:type="int" name="ls_points_earn" nullable="true" default="0" comment="LS Loyalty Points Earned"/>
