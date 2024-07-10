@@ -140,7 +140,7 @@ class Status
         $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
         $storeId                = $magOrder->getStoreId();
         $orderStatus            = null;
-
+        $message = __("Your order has been");
         switch ($status) {
             case LSR::LS_STATE_CANCELED:
             case LSR::LS_STATE_SHORTAGE:
@@ -151,6 +151,8 @@ class Status
                 if ($isClickAndCollectOrder) {
                     $orderStatus = LSR::LS_STATE_PICKED;
                 }
+                $orderStatus = '';
+                $message = __("Your order is ready for pickup");
                 break;
             case LSR::LS_STATE_COLLECTED:
                 if ($isClickAndCollectOrder) {
@@ -171,7 +173,12 @@ class Status
         }
 
         if ($orderStatus !== null) {
-            $this->notificationHelper->processNotifications($storeId, $magOrder, $items, $orderStatus);
+            $this->notificationHelper->processNotifications(
+                $storeId,
+                $magOrder,
+                $items,
+                $message.' '.$orderStatus
+            );
         }
     }
 
