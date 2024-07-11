@@ -239,7 +239,7 @@ class OrderHelper extends AbstractHelper
             }
 
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId, $isClickCollect);
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
@@ -512,7 +512,7 @@ class OrderHelper extends AbstractHelper
      * @return Entity\ArrayOfOrderPayment
      * @throws InvalidEnumException
      */
-    public function setOrderPayments(Model\Order $order, $cardId)
+    public function setOrderPayments(Model\Order $order, $cardId, $isClickAndCollect)
     {
         $transId          = $order->getPayment()->getLastTransId();
         $ccType           = $order->getPayment()->getCcType() ? substr($order->getPayment()->getCcType(), 0, 10) : '';
@@ -583,7 +583,7 @@ class OrderHelper extends AbstractHelper
 
         if ($order->getLsGiftCardAmountUsed()) {
             $tenderTypeId           = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-            $currencyFactor         = ($order->getLsGiftCardCnyFactor()) ? $order->getLsGiftCardCnyFactor() : 1;
+            $currencyFactor         = 0;
             $giftCardCurrencyCode   = ($order->getLsGiftCardCnyCode()) ? $order->getLsGiftCardCnyCode() : $order->getOrderCurrency()->getCurrencyCode();
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
@@ -600,6 +600,15 @@ class OrderHelper extends AbstractHelper
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
+
+            if ($isClickAndCollect) {
+                $pickUpStore = $order->getPickupStore();
+                $storeData = $this->storeHelper->getStoreDataByStoreId($pickUpStore);
+                $orderPaymentGiftCard->setCurrencyCode($storeData->getCurrency());
+            } else {
+                $orderPaymentGiftCard->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode());
+            }
+
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 

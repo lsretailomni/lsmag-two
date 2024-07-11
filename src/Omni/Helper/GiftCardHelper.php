@@ -162,7 +162,7 @@ class GiftCardHelper extends AbstractHelperOmni
             $entity = new Entity\GetPointRate();
             // @codingStandardsIgnoreEnd
 
-            if($getExchangeRate) {
+            if ($getExchangeRate) {
                 $entity->setCurrency($giftCardCurrency);
             } else {
                 $entity->setCurrency($this->lsr->getStoreCurrencyCode());
@@ -184,12 +184,10 @@ class GiftCardHelper extends AbstractHelperOmni
                     86400
                 );
 
-
                 return $this->formatValue($response->getResult());
             }
         }
         return $response;
-
     }
 
     /**
@@ -242,7 +240,7 @@ class GiftCardHelper extends AbstractHelperOmni
     {
         $pointRate = $storeCurrencyPointRate = $giftCardPointRate = $quotePointRate = 0;
         $currency  = $giftCardResponse->getCurrencyCode();
-        if($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
+        if ($this->lsr->getStoreCurrencyCode() == $this->giftCardHelper->getLocalCurrencyCode()) {
             $pointRate      = $this->giftCardHelper->getPointRate($giftCardResponse->getCurrencyCode());
             $quotePointRate = $pointRate;
             $case           = 1;
@@ -253,8 +251,8 @@ class GiftCardHelper extends AbstractHelperOmni
             $case                   = 2;
         }
 
-        if($pointRate > 0 || ($storeCurrencyPointRate > 0 && $giftCardPointRate > 0)) {
-            $giftCardBalanceAmount = match($case) {
+        if ($pointRate > 0 || ($storeCurrencyPointRate > 0 && $giftCardPointRate > 0)) {
+            $giftCardBalanceAmount = match ($case) {
                 1 => $giftCardResponse->getBalance() / $pointRate,
                 2 => ($giftCardResponse->getBalance() / $giftCardPointRate) * $storeCurrencyPointRate,
                 default => $giftCardResponse->getBalance(),
