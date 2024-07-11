@@ -73,7 +73,18 @@ class ItemRenderer implements ArgumentInterface
 
             foreach ($orderLines as $index => $line) {
                 if ($this->itemHelper->isValid($orderItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $discount = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $discount     = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $options      = $orderItem->getProductOptions();
+                    $optionsCheck = ($options) ? isset($options['options']) : null;
+                    if ($optionsCheck) {
+                        foreach ($orderLines as $orderLine) {
+                            if ($line->getLineNumber() == $orderLine->getParentLine() &&
+                                $orderLine->getParentLine() != 0) {
+                                $line->setPrice($line->getPrice() + $orderLine->getPrice());
+                                $line->setAmount($line->getAmount() + $orderLine->getAmount());
+                            }
+                        }
+                    }
                     break;
                 } else {
                     $line = null;

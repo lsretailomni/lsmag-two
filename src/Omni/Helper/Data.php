@@ -660,10 +660,13 @@ class Data extends AbstractHelper
     {
         $pointsSpent    = $invoiceCreditMemo->getOrder()->getLsPointsSpent();
         $giftCardAmount = $invoiceCreditMemo->getOrder()->getLsGiftCardAmountUsed();
-        if ($pointsSpent > 0 || $giftCardAmount > 0) {
+        $lsDiscountAmount = $invoiceCreditMemo->getOrder()->getLsDiscountAmount();
+
+        if ($pointsSpent > 0 || $giftCardAmount > 0 || $lsDiscountAmount > 0) {
             $totalItemsQuantities = $totalItemsInvoice = 0;
             $pointsEarn           = $invoiceCreditMemo->getOrder()->getLsPointsEarn();
             $invoiceCreditMemo->setLsPointsEarn($pointsEarn);
+            $invoiceCreditMemo->setLsDiscountAmount($lsDiscountAmount);
             $allVisibleItems = $invoiceCreditMemo->getOrder()->getAllVisibleItems();
             /** @var $item \Magento\Sales\Model\Order\Invoice\Item */
             foreach ($allVisibleItems as $item) {
