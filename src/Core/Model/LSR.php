@@ -685,15 +685,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         $this->validateBaseUrlStoreId = $storeId;
         $websiteId                    = '';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $baseUrl   = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store     = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey     = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
-            $websiteId = $storeId;
+            $baseUrl                    = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey                      = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $websiteId                  = $storeId;
             $this->validateBaseUrlScope = $scope;
         } else {
-            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey   = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey                      = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $this->validateBaseUrlScope = false;
         }
         if (empty($baseUrl) || empty($store)) {
@@ -856,7 +856,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get configuration for notification type
      *
-     * @return string
+     * @param $storeId
+     * @return mixed
      */
     public function getNotificationType($storeId = null)
     {
@@ -1094,7 +1095,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getStopFpcPurge(&$tags)
     {
-        $config =  $this->fpcInvalidateFlag && (bool) $this->scopeConfig->getValue(
+        $config = $this->fpcInvalidateFlag && (bool)$this->scopeConfig->getValue(
             self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
         );
 
