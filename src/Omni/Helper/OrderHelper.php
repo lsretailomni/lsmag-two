@@ -239,7 +239,7 @@ class OrderHelper extends AbstractHelper
             }
 
             /** Entity\ArrayOfOrderPayment $orderPaymentArrayObject */
-            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId, $isClickCollect);
+            $orderPaymentArrayObject = $this->setOrderPayments($order, $cardId);
 
             //if the shipping address is empty, we use the contact address as shipping address.
             $contactAddress = $order->getBillingAddress() ? $this->convertAddress($order->getBillingAddress()) : null;
@@ -512,7 +512,7 @@ class OrderHelper extends AbstractHelper
      * @return Entity\ArrayOfOrderPayment
      * @throws InvalidEnumException
      */
-    public function setOrderPayments(Model\Order $order, $cardId, $isClickAndCollect)
+    public function setOrderPayments(Model\Order $order, $cardId)
     {
         $transId          = $order->getPayment()->getLastTransId();
         $ccType           = $order->getPayment()->getCcType() ? substr($order->getPayment()->getCcType(), 0, 10) : '';
