@@ -3,12 +3,11 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Test\Integration\Block\Order;
 
-use Ls\Core\Model\LSR;
-use Ls\Customer\Block\Order\Custom\View;
-use Ls\Customer\Block\Order\Info;
-use Ls\Customer\Test\Fixture\CustomerFixture;
-use Ls\Customer\Test\Integration\AbstractIntegrationTest;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Customer\Block\Order\Info;
+use \Ls\Customer\Test\Fixture\CustomerFixture;
+use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Registry;
 use Magento\Framework\View\LayoutInterface;
@@ -23,6 +22,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea frontend
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class InfoTest extends TestCase
 {
@@ -31,7 +31,7 @@ class InfoTest extends TestCase
     public $fixtures;
     public $objectManager;
     public $orderHelper;
-    private $pageFactory;
+    public $pageFactory;
     public $registry;
 
     protected function setUp(): void
@@ -68,59 +68,48 @@ class InfoTest extends TestCase
             as: 'customer'
         )
     ]
-    public function testUsefulInformationSection()
+    public function testUsefulInformationSectionForClickAndCollectOrder()
     {
         $customer = $this->fixtures->get('customer');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
-        $orders = $this->orderHelper->getCurrentCustomerOrderHistory(2000);
+        $order = $this->getRespectiveOrder();
 
+        if ($order) {
+            $output = $this->getHtmlOutputGivenOrder('Ls_Customer::order/useful_info.phtml', $order);
+            $this->assertStringContainsString((string) __('Useful Information'), $output);
 
-//        $order  = current($orders->getSalesEntry());
-        $order  = $this->orderHelper->fetchOrder($order->getId(), $order->getIdType());
-        $this->registry->register('current_order', $order);
-        $this->block->setData('current_order', $order);
-        $this->block->setNameInLayout('custom.order.info');
-        $this->block->setTemplate('Ls_Customer::order/useful_info.phtml');
-        $page = $this->pageFactory->create();
-        $page->addHandle([
-            'default',
-            'customer_order_view',
-        ]);
-        $page->getLayout()->generateXml();
-        $output = $this->block->toHtml();
-        $this->assertStringContainsString((string) __('Useful Information'), $output);
+            if (!empty($order->getStoreName())) {
+                $this->assertStringContainsString((string)__('Store Name:'), $output);
 
-        if (!empty($order->getStoreName())) {
-            $this->assertStringContainsString((string)__('Store Name:'), $output);
+                $elementPaths = [
+                    "//div[contains(@class, 'block-order-details-view-loyalty')]",
+                    "//div[contains(@class, 'block-content')]",
+                    sprintf("//span[contains(text(), '%s')]", $order->getStoreName()),
+                ];
 
-            $elementPaths = [
-                "//div[contains(@class, 'block-order-details-view-loyalty')]",
-                "//div[contains(@class, 'block-content')]",
-                sprintf("//span[contains(text(), '%s')]", $order->getStoreName()),
-            ];
+                $this->validatePaths(
+                    $output,
+                    $elementPaths,
+                    sprintf('Can\'t validate order useful information in Html: %s', $output)
+                );
+            }
 
-            $this->validatePaths(
-                $output,
-                $elementPaths,
-                sprintf('Can\'t validate order useful information in Html: %s', $output)
-            );
-        }
+            if ($this->block->canShowClickAndCollect() && $order->getClickAndCollectOrder()) {
+                $this->assertStringContainsString((string)__('Click & Collect:'), $output);
 
-        if ($this->block->canShowClickAndCollect() && $order->getClickAndCollectOrder()) {
-            $this->assertStringContainsString((string)__('Click & Collect:'), $output);
+                $elementPaths = [
+                    "//div[contains(@class, 'block-order-details-view-loyalty')]",
+                    "//div[contains(@class, 'block-content')]",
+                    sprintf("//span[contains(text(), '%s')]", __('Yes')),
+                ];
 
-            $elementPaths = [
-                "//div[contains(@class, 'block-order-details-view-loyalty')]",
-                "//div[contains(@class, 'block-content')]",
-                sprintf("//span[contains(text(), '%s')]", __('Yes')),
-            ];
-
-            $this->validatePaths(
-                $output,
-                $elementPaths,
-                sprintf('Can\'t validate order useful information in Html: %s', $output)
-            );
+                $this->validatePaths(
+                    $output,
+                    $elementPaths,
+                    sprintf('Can\'t validate order useful information in Html: %s', $output)
+                );
+            }
         }
     }
 
@@ -142,34 +131,133 @@ class InfoTest extends TestCase
             as: 'customer'
         )
     ]
-    public function testOrderInformationSection()
+    public function testUsefulInformationSectionForDeliveryOrder()
     {
         $customer = $this->fixtures->get('customer');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
-        $orders = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
-        $order  = current($orders->getSalesEntry());
-        $order  = $this->orderHelper->fetchOrder($order->getId(), $order->getIdType());
-        $this->registry->register('current_order', $order);
-        $this->block->setData('current_order', $order);
-        $this->block->setNameInLayout('sales.order.info');
-        $this->block->setTemplate('Ls_Customer::order/info.phtml');
-        $page = $this->pageFactory->create();
-        $page->addHandle([
-            'default',
-            'customer_order_view',
-        ]);
-        $page->getLayout()->generateXml();
-        $output = $this->block->toHtml();
-        $this->assertStringContainsString((string) __('Order Information'), $output);
+        $order = $this->getRespectiveOrder(false);
 
-        if (!empty($this->block->getShippingDescription())) {
+        if ($order) {
+            $output = $this->getHtmlOutputGivenOrder('Ls_Customer::order/useful_info.phtml', $order);
+            $this->assertStringContainsString((string) __('Useful Information'), $output);
+
+            if (!empty($order->getStoreName())) {
+                $this->assertStringContainsString((string)__('Store Name:'), $output);
+
+                $elementPaths = [
+                    "//div[contains(@class, 'block-order-details-view-loyalty')]",
+                    "//div[contains(@class, 'block-content')]",
+                    sprintf("//span[contains(text(), '%s')]", $order->getStoreName()),
+                ];
+
+                $this->validatePaths(
+                    $output,
+                    $elementPaths,
+                    sprintf('Can\'t validate order useful information in Html: %s', $output)
+                );
+            }
+
+            if ($this->block->canShowClickAndCollect()) {
+                $this->assertStringNotContainsString((string)__('Click & Collect:'), $output);
+
+                $elementPaths = [
+                    "//div[contains(@class, 'block-order-details-view-loyalty')]",
+                    "//div[contains(@class, 'block-content')]",
+                    sprintf("//span[contains(text(), '%s')]", __('Yes')),
+                ];
+
+                $this->validatePaths(
+                    $output,
+                    $elementPaths,
+                    sprintf('Can\'t validate order useful information in Html: %s', $output),
+                    0
+                );
+            }
+        }
+    }
+
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        )
+    ]
+    public function testOrderInformationSectionForClickAndCollectOrder()
+    {
+        $customer = $this->fixtures->get('customer');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+        $order = $this->getRespectiveOrder();
+
+        if ($order) {
+            $output = $this->getHtmlOutputGivenOrder('Ls_Customer::order/info.phtml', $order);
+            $this->assertStringContainsString((string)__('Order Information'), $output);
+            $this->assertStringNotContainsString((string)__('Shipping Address'), $output);
+            $elementPaths = [
+                "//div[contains(@class, 'block-order-details-view')]",
+                "//div[contains(@class, 'block-content')]",
+                "//div[contains(@class, 'box-order-shipping-address')]",
+                "//div[contains(@class, 'box-content')]",
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order useful information in Html: %s', $output),
+                0
+            );
+
+            $this->assertStringNotContainsString((string)__('Billing Address'), $output);
+            $elementPaths = [
+                "//div[contains(@class, 'block-order-details-view')]",
+                "//div[contains(@class, 'block-content')]",
+                "//div[contains(@class, 'box-order-billing-address')]",
+                "//div[contains(@class, 'box-content')]",
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order useful information in Html: %s', $output),
+                0
+            );
             $this->assertStringContainsString((string)__('Shipping Method'), $output);
 
             $elementPaths = [
                 "//div[contains(@class, 'block-order-details-view')]",
                 "//div[contains(@class, 'block-content')]",
                 "//div[contains(@class, 'box-order-shipping-method')]",
+                "//div[contains(@class, 'box-content')]",
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order useful information in Html: %s', $output)
+            );
+
+            $this->assertStringContainsString((string)__('Payment Method'), $output);
+
+            $elementPaths = [
+                "//div[contains(@class, 'block-order-details-view')]",
+                "//div[contains(@class, 'block-content')]",
+                "//div[contains(@class, 'box-order-billing-method')]",
                 "//div[contains(@class, 'box-content')]",
             ];
 
@@ -188,6 +276,9 @@ class InfoTest extends TestCase
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -204,36 +295,18 @@ class InfoTest extends TestCase
         $customer = $this->fixtures->get('customer');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
-        $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
+        $order = $this->getRespectiveOrder(false);
 
-        foreach ($orders->getSalesEntry() as $order) {
-            if ($order->getClickAndCollectOrder()) {
-                continue;
-            }
-
-            break;
-        }
-        $order  = $this->orderHelper->fetchOrder($order->getId(), $order->getIdType());
-        $this->registry->register('current_order', $order);
-        $this->block->setData('current_order', $order);
-        $this->block->setNameInLayout('sales.order.info');
-        $this->block->setTemplate('Ls_Customer::order/info.phtml');
-        $page = $this->pageFactory->create();
-        $page->addHandle([
-            'default',
-            'customer_order_view',
-        ]);
-        $page->getLayout()->generateXml();
-        $output = $this->block->toHtml();
-        $this->assertStringContainsString((string) __('Order Information'), $output);
-
-        if (!empty($this->block->getShippingDescription())) {
-            $this->assertStringContainsString((string)__('Shipping Method'), $output);
+        if ($order) {
+            $output = $this->getHtmlOutputGivenOrder('Ls_Customer::order/info.phtml', $order);
+            $this->assertStringContainsString((string)__('Order Information'), $output);
+            $this->assertStringNotContainsString((string)__('Shipping Method'), $output);
+            $this->assertStringContainsString((string)__('Shipping Address'), $output);
 
             $elementPaths = [
                 "//div[contains(@class, 'block-order-details-view')]",
                 "//div[contains(@class, 'block-content')]",
-                "//div[contains(@class, 'box-order-shipping-method')]",
+                "//div[contains(@class, 'box-order-shipping-address')]",
                 "//div[contains(@class, 'box-content')]",
             ];
 
@@ -242,15 +315,27 @@ class InfoTest extends TestCase
                 $elementPaths,
                 sprintf('Can\'t validate order useful information in Html: %s', $output)
             );
-        }
 
-        if (!empty($order->get)) {
-            $this->assertStringContainsString((string)__('Shipping Method'), $output);
+            $this->assertStringContainsString((string)__('Billing Address'), $output);
 
             $elementPaths = [
                 "//div[contains(@class, 'block-order-details-view')]",
                 "//div[contains(@class, 'block-content')]",
-                "//div[contains(@class, 'box-order-shipping-method')]",
+                "//div[contains(@class, 'box-order-billing-address')]",
+                "//div[contains(@class, 'box-content')]",
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order useful information in Html: %s', $output)
+            );
+            $this->assertStringContainsString((string)__('Payment Method'), $output);
+
+            $elementPaths = [
+                "//div[contains(@class, 'block-order-details-view')]",
+                "//div[contains(@class, 'block-content')]",
+                "//div[contains(@class, 'box-order-billing-method')]",
                 "//div[contains(@class, 'box-content')]",
             ];
 
@@ -262,13 +347,138 @@ class InfoTest extends TestCase
         }
     }
 
-    public function validatePaths($output, $ele, $msg)
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        )
+    ]
+    public function testOrderDateSection()
+    {
+        $customer = $this->fixtures->get('customer');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+        $order = $this->getRespectiveOrder(false);
+
+        if ($order) {
+            $output = $this->getHtmlOutputGivenOrder('Ls_Customer::order/order_date.phtml', $order);
+
+            $elementPaths = [
+                "//div[contains(@class, 'order-date')]",
+                "//date"
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order useful information in Html: %s', $output)
+            );
+        }
+    }
+
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        )
+    ]
+    public function testOrderStatusSection()
+    {
+        $customer = $this->fixtures->get('customer');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+        $order = $this->getRespectiveOrder(false);
+
+        if ($order) {
+            $output = $this->getHtmlOutputGivenOrder('Ls_Customer::order/order_status.phtml', $order);
+
+            $elementPaths = [
+                sprintf(
+                    "//span[contains(text(), '%s')]",
+                    $this->block->getOrderStatus()
+                )
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order useful information in Html: %s', $output)
+            );
+        }
+    }
+
+    public function validatePaths($output, $ele, $msg, $expected = 1)
     {
         $eleCount = implode('', $ele);
         $this->assertEquals(
-            1,
+            $expected,
             Xpath::getElementsCountForXpath($eleCount, $output),
             $msg
         );
+    }
+
+    public function getRespectiveOrder($isClickAndCollect = true)
+    {
+        $orders = $this->orderHelper->getCurrentCustomerOrderHistory();
+        $order  = null;
+
+        foreach ($orders->getSalesEntry() as $order) {
+            if (($isClickAndCollect && !$order->getClickAndCollectOrder()) ||
+                !$isClickAndCollect && $order->getClickAndCollectOrder()
+            ) {
+                continue;
+            }
+
+            $order = $this->orderHelper->fetchOrder($order->getId(), $order->getIdType());
+            break;
+        }
+
+        return $order;
+    }
+
+    public function getHtmlOutputGivenOrder($template, $order)
+    {
+        $this->registry->register('current_order', $order);
+        $this->block->setData('current_order', $order);
+        $this->block->setNameInLayout('sales.order.info');
+        $this->block->setTemplate($template);
+        $page = $this->pageFactory->create();
+        $page->addHandle([
+            'default',
+            'customer_order_view',
+        ]);
+        $page->getLayout()->generateXml();
+
+        return $this->block->toHtml();
     }
 }

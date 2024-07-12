@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Customer\Test\Integration\Block\Order;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Customer\Block\Order\Recent;
+use \Ls\Customer\Block\Order\History;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
 use Magento\Customer\Model\Session;
@@ -19,8 +19,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea frontend
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
-class RecentTest extends TestCase
+class HistoryTest extends TestCase
 {
     public $block;
     public $customerSession;
@@ -34,7 +35,7 @@ class RecentTest extends TestCase
         $this->block         = $this->objectManager->get(
             LayoutInterface::class
         )->createBlock(
-            Recent::class
+            History::class
         );
 
         $this->customerSession = $this->objectManager->get(Session::class);
@@ -58,28 +59,26 @@ class RecentTest extends TestCase
             as: 'customer'
         )
     ]
-    public function testRecentOrderHistory()
+    public function testOrderHistory()
     {
         $customer = $this->fixtures->get('customer');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
-        $this->block->setTemplate('Ls_Customer::order/recent.phtml');
+        $this->block->setTemplate('Ls_Customer::order/history.phtml');
         $orders = $this->block->getOrderHistory()->getSalesEntry();
         $output = $this->block->toHtml();
-        $this->assertStringContainsString((string)__('Recent Orders'), $output);
 
         if (count($orders)) {
             $columnLabels = [
-                __('Document ID #'),
+                __('Doc ID'),
                 __('Date'),
                 __('Ship To'),
                 __('Store Name'),
-                __('Order Total'),
+                __('Total'),
                 __('Status'),
                 __('Action')
             ];
             $this->validateTableColumns($output, $columnLabels);
-
             $columns = [
                 'id',
                 'date',
@@ -100,7 +99,7 @@ class RecentTest extends TestCase
                 $this->validatePaths(
                     $output,
                     $elementPaths,
-                    sprintf('Can\'t validate recent order history table: %s', $output),
+                    sprintf('Can\'t validate order history table: %s', $output),
                     1,
                     -1
                 );
@@ -120,15 +119,46 @@ class RecentTest extends TestCase
             as: 'customer'
         )
     ]
-    public function testRecentOrderHistoryWithLsrDown()
+    public function testOrderHistoryWithLsrDown()
     {
         $customer = $this->fixtures->get('customer');
         $this->customerSession->setData('customer_id', $customer->getId());
-        $this->block->setTemplate('Ls_Customer::order/recent.phtml');
+        $this->block->setTemplate('Ls_Customer::order/history.phtml');
 
         $output = $this->block->toHtml();
-        $this->assertStringContainsString((string)__('Recent Orders'), $output);
-        $this->assertStringContainsString((string)__('You have placed no orders.'), $output);
+        $columnLabels = [
+            __('Doc ID'),
+            __('Date'),
+            __('Ship To'),
+            __('Total'),
+            __('Status'),
+            __('Action')
+        ];
+        $this->validateTableColumns($output, $columnLabels);
+        $columns = [
+            'id',
+            'date',
+            'shipping',
+            'store-name',
+            'total',
+            'status',
+            'action'
+        ];
+        foreach ($columns as $column) {
+            $elementPaths = [
+                "//table[contains(@class, 'table-order-items')]",
+                "//tbody",
+                "//tr",
+                sprintf("//td[contains(@class, '%s')]", $column)
+            ];
+
+            $this->validatePaths(
+                $output,
+                $elementPaths,
+                sprintf('Can\'t validate order history table: %s', $output),
+                0
+            );
+        }
     }
 
     public function validateTableColumns($output, $columnLabels)
