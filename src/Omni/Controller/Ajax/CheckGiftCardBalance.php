@@ -102,7 +102,11 @@ class CheckGiftCardBalance implements HttpPostActionInterface
             if (is_object($giftCardResponse)) {
                 $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
 
-                $data['giftcardbalance'] = $this->priceHelper->currency($convertedGiftCardBalanceArr['gift_card_balance_amount'], true, false);
+                $data['giftcardbalance'] = $this->priceHelper->currency(
+                    $convertedGiftCardBalanceArr['gift_card_balance_amount'],
+                    true,
+                    false
+                );
                 $data['expirydate']      = $giftCardResponse->getExpireDate();
             } else {
                 $data['giftcardbalance'] = $this->priceHelper->currency($giftCardResponse, true, false);
@@ -121,7 +125,6 @@ class CheckGiftCardBalance implements HttpPostActionInterface
                     'data'    => json_encode($data)
                 ];
             }
-            return $resultJson->setData($response);
         } else {
             $response = [
                 'error'   => 'true',
@@ -129,7 +132,7 @@ class CheckGiftCardBalance implements HttpPostActionInterface
                     'The gift card is not valid.'
                 )
             ];
-            return $resultJson->setData($response);
         }
+        return $resultJson->setData($response);
     }
 }

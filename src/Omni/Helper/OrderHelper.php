@@ -584,7 +584,7 @@ class OrderHelper extends AbstractHelper
         if ($order->getLsGiftCardAmountUsed()) {
             $tenderTypeId           = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
             $currencyFactor         = 0;
-            $giftCardCurrencyCode   = ($order->getLsGiftCardCnyCode()) ? $order->getLsGiftCardCnyCode() : $order->getOrderCurrency()->getCurrencyCode();
+            $giftCardCurrencyCode   = $order->getOrderCurrency()->getCurrencyCode();
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
@@ -600,14 +600,6 @@ class OrderHelper extends AbstractHelper
                 ->setPreApprovedValidDate($preApprovedDate)
                 ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
-
-            if ($isClickAndCollect) {
-                $pickUpStore = $order->getPickupStore();
-                $storeData = $this->storeHelper->getStoreDataByStoreId($pickUpStore);
-                $orderPaymentGiftCard->setCurrencyCode($storeData->getCurrency());
-            } else {
-                $orderPaymentGiftCard->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode());
-            }
 
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
