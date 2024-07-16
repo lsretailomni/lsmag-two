@@ -152,156 +152,156 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         $this->quoteIdMaskFactory         = $this->objectManager->get(QuoteIdMaskFactory::class);
     }
 
-//    /**
-//     * @magentoAppIsolation enabled
-//     */
-//    #[
-//        AppArea('frontend'),
-//        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
-//        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-//        DataFixture(
-//            CustomerFixture::class,
-//            [
-//                'lsr_username' => AbstractIntegrationTest::USERNAME,
-//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-//            ],
-//            as: 'customer2'
-//        ),
-//        DataFixture(
-//            CreateSimpleProductFixture::class,
-//            [
-//                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
-//            ],
-//            as: 'p1'
-//        ),
-//        DataFixture(CustomerCart::class, ['customer_id' => '$customer2.id$'], 'cart2'),
-//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-//        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart2.id$']),
-//        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart2.id$']),
-//        DataFixture(SetDeliveryMethod::class, [
-//            'cart_id'      => '$cart2.id$',
-//            'carrier_code' => 'clickandcollect',
-//            'method_code'  => 'clickandcollect'
-//        ]),
-//        DataFixture(SetPaymentMethod::class, [
-//            'cart_id' => '$cart2.id$',
-//            'method'  => 'ls_payment_method_pay_at_store'
-//        ])
-//    ]
-//    /**
-//     * Show payment methods enabled for click and collect shipping method from admin
-//     */
-//    public function testShowPayAtStorePaymentMethod()
-//    {
-//        $customer = $this->fixtures->get('customer2');
-//        $cart     = $this->fixtures->get('cart2');
-//        $this->customerSession->setData('customer_id', $customer->getId());
-//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-//        $this->checkoutSession->setQuoteId($cart->getId());
-//
-//        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-//
-//        $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
-//        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-//
-//        $shippingMethodCode = $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
-//        $result             = new DataObject();
-//        $this->event->setMethodInstance($this->payAtStore)
-//            ->setCode($shippingMethodCode)->setResult($result);
-//
-//        // Execute the observer method
-//        $this->hidePaymentMethodsObserver->execute(new Observer(
-//            [
-//                'event'             => $this->event,
-//                'request'           => $this->request,
-//                'controller_action' => $this->controllerAction
-//            ]
-//        ));
-//
-//        $cart->delete();
-//        $this->checkoutSession->clearQuote();
-//        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-//        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
-//
-//        $this->assertTrue($this->event->getResult()->getData('is_available'));
-//    }
-//
-//    /**
-//     * @magentoAppIsolation enabled
-//     */
-//    #[
-//        AppArea('frontend'),
-//        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-//        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
-//        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-//        DataFixture(
-//            CustomerFixture::class,
-//            [
-//                'lsr_username' => AbstractIntegrationTest::USERNAME,
-//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-//            ],
-//            as: 'customer'
-//        ),
-//        DataFixture(
-//            CreateSimpleProductFixture::class,
-//            [
-//                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
-//            ],
-//            as: 'p1'
-//        ),
-//        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-//        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(SetDeliveryMethod::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(SetPaymentMethod::class, ['cart_id' => '$cart1.id$'])
-//    ]
-//    /**
-//     * Hide pay at store payment method for shipping methods other than click and collect
-//     */
-//    public function testHidePayAtStorePaymentMethod()
-//    {
-//        $customer = $this->fixtures->get('customer');
-//        $cart     = $this->fixtures->get('cart1');
-//        $this->customerSession->setData('customer_id', $customer->getId());
-//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-//        $this->checkoutSession->setQuoteId($cart->getId());
-//
-//        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-//
-//        $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
-//        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-//
-//        $shippingMethodCode = $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
-//        $result             = new DataObject();
-//        $this->event->setMethodInstance($this->checkmo)
-//            ->setCode($shippingMethodCode)->setResult($result);
-//
-//        // Execute the observer method
-//        $this->hidePaymentMethodsObserver->execute(new Observer(
-//            [
-//                'event'             => $this->event,
-//                'request'           => $this->request,
-//                'controller_action' => $this->controllerAction
-//            ]
-//        ));
-//
-//        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
-//        $cart->delete();
-//        $this->checkoutSession->clearQuote();
-//        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-//
-//        $this->assertNull($this->event->getResult()->getData('is_available'));
-//    }
+    /**
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('frontend'),
+        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer2'
+        ),
+        DataFixture(
+            CreateSimpleProductFixture::class,
+            [
+                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
+            ],
+            as: 'p1'
+        ),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer2.id$'], 'cart2'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
+        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart2.id$']),
+        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart2.id$']),
+        DataFixture(SetDeliveryMethod::class, [
+            'cart_id'      => '$cart2.id$',
+            'carrier_code' => 'clickandcollect',
+            'method_code'  => 'clickandcollect'
+        ]),
+        DataFixture(SetPaymentMethod::class, [
+            'cart_id' => '$cart2.id$',
+            'method'  => 'ls_payment_method_pay_at_store'
+        ])
+    ]
+    /**
+     * Show payment methods enabled for click and collect shipping method from admin
+     */
+    public function testShowPayAtStorePaymentMethod()
+    {
+        $customer = $this->fixtures->get('customer2');
+        $cart     = $this->fixtures->get('cart2');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+        $this->checkoutSession->setQuoteId($cart->getId());
+
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+
+        $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+
+        $shippingMethodCode = $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
+        $result             = new DataObject();
+        $this->event->setMethodInstance($this->payAtStore)
+            ->setCode($shippingMethodCode)->setResult($result);
+
+        // Execute the observer method
+        $this->hidePaymentMethodsObserver->execute(new Observer(
+            [
+                'event'             => $this->event,
+                'request'           => $this->request,
+                'controller_action' => $this->controllerAction
+            ]
+        ));
+
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+
+        $this->assertTrue($this->event->getResult()->getData('is_available'));
+    }
+
+    /**
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('frontend'),
+        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        ),
+        DataFixture(
+            CreateSimpleProductFixture::class,
+            [
+                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
+            ],
+            as: 'p1'
+        ),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
+        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(SetDeliveryMethod::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(SetPaymentMethod::class, ['cart_id' => '$cart1.id$'])
+    ]
+    /**
+     * Hide pay at store payment method for shipping methods other than click and collect
+     */
+    public function testHidePayAtStorePaymentMethod()
+    {
+        $customer = $this->fixtures->get('customer');
+        $cart     = $this->fixtures->get('cart1');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+        $this->checkoutSession->setQuoteId($cart->getId());
+
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+
+        $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
+        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
+
+        $shippingMethodCode = $this->checkoutSession->getQuote()->getShippingAddress()->getShippingMethod();
+        $result             = new DataObject();
+        $this->event->setMethodInstance($this->checkmo)
+            ->setCode($shippingMethodCode)->setResult($result);
+
+        // Execute the observer method
+        $this->hidePaymentMethodsObserver->execute(new Observer(
+            [
+                'event'             => $this->event,
+                'request'           => $this->request,
+                'controller_action' => $this->controllerAction
+            ]
+        ));
+
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+
+        $this->assertNull($this->event->getResult()->getData('is_available'));
+    }
 
     /**
      * @magentoAppIsolation enabled
