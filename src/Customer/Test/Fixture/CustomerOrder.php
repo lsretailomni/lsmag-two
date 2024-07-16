@@ -35,7 +35,7 @@ class CustomerOrder implements DataFixtureInterface
 
     public $customerRepository;
     public $orderRepository;
-    private State $state;
+    public $state;
 
     /**
      * @param CustomerSession $customerSession
@@ -47,6 +47,7 @@ class CustomerOrder implements DataFixtureInterface
      * @param AddressInterfaceFactory $addressInterfaceFactory
      * @param CustomerRepositoryInterface $customerRepository
      * @param OrderRepositoryInterface $orderRepository
+     * @param State $state
      */
     public function __construct(
         CustomerSession $customerSession,
@@ -69,7 +70,7 @@ class CustomerOrder implements DataFixtureInterface
         $this->addressInterfaceFactory     = $addressInterfaceFactory;
         $this->customerRepository          = $customerRepository;
         $this->orderRepository             = $orderRepository;
-        $this->state = $state;
+        $this->state                       = $state;
     }
 
     /**
@@ -84,10 +85,10 @@ class CustomerOrder implements DataFixtureInterface
     public function apply(array $data = []): ?DataObject
     {
         $this->state->setAreaCode(Area::AREA_FRONTEND);
-        $data                 = array_merge(self::DEFAULT_DATA, $data);
-        $customer             = $data['customer'];
-        $quote                = $data['cart1'];
-        $address              = $data['address'];
+        $data     = array_merge(self::DEFAULT_DATA, $data);
+        $customer = $data['customer'];
+        $quote    = $data['cart1'];
+        $address  = $data['address'];
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($quote->getId());
@@ -121,7 +122,7 @@ class CustomerOrder implements DataFixtureInterface
 
         $orderId = $this->cartManagement->placeOrder($quote->getId());
 
-        $order =  $this->orderRepository->get($orderId);
+        $order = $this->orderRepository->get($orderId);
         $this->eventManager->dispatch(
             'checkout_onepage_controller_success_action',
             ['order' => $order]
