@@ -16,12 +16,14 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Http\Context;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\View\LayoutInterface;
+use Magento\Framework\View\Result\PageFactory;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\Helper\Xpath;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -38,6 +40,7 @@ class SuccessTest extends TestCase
     public $customerSession;
     public $checkoutSession;
     public $eventManager;
+    private $pageFactory;
 
     protected function setUp(): void
     {
@@ -53,6 +56,7 @@ class SuccessTest extends TestCase
         $this->customerSession = $this->objectManager->get(CustomerSession::class);
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
+        $this->pageFactory     = $this->objectManager->get(PageFactory::class);
     }
 
     #[
@@ -102,7 +106,30 @@ class SuccessTest extends TestCase
     public function testPrepareBlockData()
     {
         $order = $this->fixtures->get('order');
-
-        $custom = $order;
+        $this->block->setNameInLayout('checkout.success');
+        $this->block->setTemplate('Magento_Checkout::success.phtml');
+        $page = $this->pageFactory->create();
+        $page->addHandle([
+            'default',
+            'checkout_onepage_success',
+        ]);
+        $page->getLayout()->generateXml();
+        $output = $this->block->toHtml();
+        $this->assertStringContainsString(
+            (string)__(sprintf('Your order # is: <span>%s</span>', $order->getDocumentId())),
+            $output
+        );
+//        $ele = [
+//            "//div[contains(@class, 'checkout-success')]",
+//            "//p",
+//            sprintf("//th[contains(text(), '%s')]", __('Subtotal'))
+//        ];
+//        $eleCount = implode('', $ele);
+//        $msg = sprintf('Can\'t validate order items labels in Html: %s', $output);
+//        $this->assertEquals(
+//            1,
+//            Xpath::getElementsCountForXpath($eleCount, $output),
+//            $msg
+//        );
     }
 }

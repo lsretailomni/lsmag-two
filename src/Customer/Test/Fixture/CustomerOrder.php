@@ -8,6 +8,8 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Checkout\Model\Type\Onepage;
 use Magento\Customer\Api\AddressRepositoryInterface;
 use Magento\Customer\Model\Session as CustomerSession;
+use Magento\Framework\App\Area;
+use Magento\Framework\App\State;
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
@@ -33,6 +35,7 @@ class CustomerOrder implements DataFixtureInterface
 
     public $customerRepository;
     public $orderRepository;
+    private State $state;
 
     /**
      * @param CustomerSession $customerSession
@@ -54,7 +57,8 @@ class CustomerOrder implements DataFixtureInterface
         AddressRepositoryInterface $addressRepositoryInterface,
         AddressInterfaceFactory $addressInterfaceFactory,
         CustomerRepositoryInterface $customerRepository,
-        OrderRepositoryInterface $orderRepository
+        OrderRepositoryInterface $orderRepository,
+        State $state
     ) {
         $this->customerSession             = $customerSession;
         $this->checkoutSession             = $checkoutSession;
@@ -65,6 +69,7 @@ class CustomerOrder implements DataFixtureInterface
         $this->addressInterfaceFactory     = $addressInterfaceFactory;
         $this->customerRepository          = $customerRepository;
         $this->orderRepository             = $orderRepository;
+        $this->state = $state;
     }
 
     /**
@@ -78,6 +83,7 @@ class CustomerOrder implements DataFixtureInterface
      */
     public function apply(array $data = []): ?DataObject
     {
+        $this->state->setAreaCode(Area::AREA_FRONTEND);
         $data                 = array_merge(self::DEFAULT_DATA, $data);
         $customer             = $data['customer'];
         $quote                = $data['cart1'];
@@ -115,6 +121,12 @@ class CustomerOrder implements DataFixtureInterface
 
         $orderId = $this->cartManagement->placeOrder($quote->getId());
 
-        return $this->orderRepository->get($orderId);
+        $order =  $this->orderRepository->get($orderId);
+        $this->eventManager->dispatch(
+            'checkout_onepage_controller_success_action',
+            ['order' => $order]
+        );
+
+        return $order;
     }
 }
