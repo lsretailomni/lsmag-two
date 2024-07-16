@@ -10,7 +10,6 @@ use \Ls\Customer\Test\Fixture\CreateSimpleProduct;
 use \Ls\Customer\Test\Fixture\CustomerAddressFixture;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Customer\Test\Fixture\CustomerOrder;
-use \Ls\Customer\Test\Fixture\GuestOrder;
 use \Ls\Customer\Test\Fixture\OrderCreateFixture;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Api\Data\ShippingInformationInterfaceFactory;
