@@ -88,17 +88,16 @@ class CartObserverTest extends AbstractIntegrationTest
      */
     public $cartObserver;
 
-    public const PASSWORD = 'Signout369';
-    public const EMAIL = 'deep.ret@lsretail.com';
-    public const INVALID_EMAIL = 'pipeline_retail_pipeline_retail_pipeline_retail_pipeline_retail@lsretail.com';
-    public const USERNAME = 'mc_61394';
+//    public const PASSWORD = 'Signout369';
+//    public const EMAIL = 'deep.ret@lsretail.com';
+    public const PASSWORD = 'Nmswer123@';
+    public const EMAIL = 'pipeline_retail@lsretail.com';
+    public const USERNAME = 'mc_57745';
     public const CUSTOMER_ID = '1';
     public const CS_URL = 'http://20.6.33.78/commerceservice';
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
     public const LS_MAG_ENABLE = '1';
-    public const INVALID_COUPON_CODE = 'COUPON_CODE';
-    public const VALID_COUPON_CODE = 'COUP0119';
     public const RETAIL_INDUSTRY = 'retail';
 
     /**
@@ -150,7 +149,7 @@ class CartObserverTest extends AbstractIntegrationTest
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
     ]
     /**
-     * Valid Coupon Code scenario
+     * Test cart observer with items
      */
     public function testCartObserverWithOneListSave()
     {
@@ -164,10 +163,6 @@ class CartObserverTest extends AbstractIntegrationTest
 
         $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-
-        $this->request->setPost(
-            new Parameters(['coupon_code' => self::VALID_COUPON_CODE])
-        );
 
         // Execute the observer method
         $this->cartObserver->execute(new Observer(
@@ -215,10 +210,9 @@ class CartObserverTest extends AbstractIntegrationTest
             as: 'p1'
         ),
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        //DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
     ]
     /**
-     * Invalid Coupon code scenario
+     * Test cart observer with null items in cart.
      *
      * @return void
      */
@@ -234,10 +228,6 @@ class CartObserverTest extends AbstractIntegrationTest
 
         $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-
-        $this->request->setPost(
-            new Parameters(['coupon_code' => self::INVALID_COUPON_CODE])
-        );
 
         // Execute the observer method
         $this->cartObserver->execute(new Observer(
@@ -256,17 +246,5 @@ class CartObserverTest extends AbstractIntegrationTest
         );
         $this->assertEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertEquals(0, $this->checkoutSession->getQuote()->getLsPointsEarn());
-    }
-
-    /**
-     * Get environment variable value given name
-     *
-     * @param $name
-     * @return array|false|string
-     */
-    public function getEnvironmentVariableValueGivenName($name)
-    {
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction
-        return getenv($name);
     }
 }

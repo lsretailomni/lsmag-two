@@ -26,8 +26,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractIntegrationTest extends TestCase
 {
-    public const PASSWORD = 'Signout369';
-    public const EMAIL = 'deepak.ret@lsretail.com';
+    public const PASSWORD = 'Nmswer123@';
+    public const EMAIL = 'pipeline_retail@lsretail.com';
+    public const USERNAME = 'mc_57745';
     public const FIRST_NAME = 'Deepak';
     public const LAST_NAME = 'Ret';
     public const CUSTOMER_ID = '1';
@@ -35,9 +36,8 @@ class AbstractIntegrationTest extends TestCase
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
     public const ENABLED = '1';
-    public const USERNAME = 'mc_61394';
-    public const LSR_ID = 'MSO000030';
-    public const LSR_CARD_ID = '10069';
+    public const LSR_ID = 'MSO000012';
+    public const LSR_CARD_ID = '10051';
 
     public function testExecute()
     {

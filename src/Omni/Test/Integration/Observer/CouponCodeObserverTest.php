@@ -88,10 +88,10 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
      */
     public $couponCodeObserver;
 
-    public const PASSWORD = 'Signout369';
-    public const EMAIL = 'deep.ret@lsretail.com';
+    public const PASSWORD = 'Nmswer123@';
+    public const EMAIL = 'pipeline_retail@lsretail.com';
+    public const USERNAME = 'mc_57745';
     public const INVALID_EMAIL = 'pipeline_retail_pipeline_retail_pipeline_retail_pipeline_retail@lsretail.com';
-    public const USERNAME = 'mc_61394';
     public const CUSTOMER_ID = '1';
     public const CS_URL = 'http://20.6.33.78/commerceservice';
     public const CS_VERSION = '2024.4.1';
@@ -323,17 +323,5 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             '',
             $this->checkoutSession->getQuote()->getCouponCode()
         );
-    }
-
-    /**
-     * Get environment variable value given name
-     *
-     * @param $name
-     * @return array|false|string
-     */
-    public function getEnvironmentVariableValueGivenName($name)
-    {
-        // phpcs:ignore Magento2.Functions.DiscouragedFunction
-        return getenv($name);
     }
 }
