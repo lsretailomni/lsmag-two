@@ -88,7 +88,7 @@ class AbstractOrderController
      */
     public function registerValuesInRegistry()
     {
-        if ($this->request->getParam('order_id')) {
+        if ($this->request->getParam('order_id') && $this->request->getParam('type')) {
             $orderId = $this->request->getParam('order_id');
             $type    = $this->request->getParam('type');
 
@@ -110,6 +110,11 @@ class AbstractOrderController
             }
 
             $this->orderHelper->setCurrentMagOrderInRegistry($response);
+        } else {
+            $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $redirect->setUrl($this->url->getUrl('sales/order/history'));
+
+            return $redirect;
         }
     }
 

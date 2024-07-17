@@ -1,8 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
 declare(strict_types=1);
 
 namespace Ls\Customer\Test\Integration;
@@ -24,6 +20,7 @@ class AbstractIntegrationTest extends TestCase
     public const CUSTOMER_ID = '1';
     public const CS_URL = 'http://20.6.33.78/commerceservice';
     public const CS_VERSION = '2024.4.1';
+    public const LS_VERSION = '25.0.0.0';
     public const CS_STORE = 'S0013';
     public const ENABLED = '1';
     public const USERNAME = 'mc_57745';
