@@ -3,15 +3,21 @@ declare(strict_types=1);
 
 namespace Ls\Customer\Test\Integration\Block\Order;
 
-use Ls\Core\Model\LSR;
-use Ls\Customer\Block\Order\Custom\View;
-use Ls\Customer\Test\Fixture\CustomerFixture;
-use Ls\Customer\Test\Integration\AbstractIntegrationTest;
-use Ls\Omni\Helper\OrderHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Customer\Block\Order\Custom\View;
+use \Ls\Customer\Test\Fixture\CreateSimpleProduct;
+use \Ls\Customer\Test\Fixture\CustomerAddressFixture;
+use \Ls\Customer\Test\Fixture\CustomerFixture;
+use \Ls\Customer\Test\Fixture\CustomerOrder;
+use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Registry;
 use Magento\Framework\View\LayoutInterface;
 use Magento\Framework\View\Result\PageFactory;
+use Magento\Quote\Test\Fixture\AddProductToCart;
+use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
@@ -22,6 +28,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @magentoAppArea frontend
  * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
  */
 class ViewTest extends TestCase
 {
@@ -30,7 +37,7 @@ class ViewTest extends TestCase
     public $fixtures;
     public $objectManager;
     public $orderHelper;
-    private $pageFactory;
+    public $pageFactory;
     public $registry;
 
     protected function setUp(): void
@@ -56,6 +63,78 @@ class ViewTest extends TestCase
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_ORDER_CANCELLATION_PATH, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        ),
+        DataFixture(
+            CustomerAddressFixture::class,
+            [
+                'customer_id' => '$customer.entity_id$'
+            ],
+            as: 'address'
+        ),
+        DataFixture(
+            CreateSimpleProduct::class,
+            [
+                'lsr_item_id' => '40180',
+                'sku'         => '40180'
+            ],
+            as: 'product'
+        ),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 1]),
+        DataFixture(
+            CustomerOrder::class,
+            [
+                'customer' => '$customer$',
+                'cart1'    => '$cart1$',
+                'address'  => '$address$'
+            ],
+            as: 'order'
+        )
+    ]
+    public function testOrderViewWithMagentoOrder()
+    {
+        $magentoOrder = $this->fixtures->get('order');
+        $customer     = $this->fixtures->get('customer');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getData('lsr_cardid'));
+        $centralOrder = $this->orderHelper->fetchOrder($magentoOrder->getDocumentId(), DocumentIdType::ORDER);
+        $this->registry->register('current_mag_order', $magentoOrder);
+        $this->registry->register('current_order', $centralOrder);
+        $this->block->setData('current_order', $centralOrder);
+        $this->block->setNameInLayout('sales.order.view');
+        $page = $this->pageFactory->create();
+        $page->addHandle([
+            'default',
+            'customer_order_view',
+        ]);
+        $page->getLayout()->generateXml();
+        $output = $this->block->toHtml();
+        $this->validateOrderItemsLabelsPath($output);
+        $this->validateOrderTotalsValuesPath($output);
+        $this->validateOrderTotalsLabelsPath($output);
+        $this->validateOrderItemsValuesPath($output);
+    }
+
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -67,7 +146,7 @@ class ViewTest extends TestCase
             as: 'customer'
         )
     ]
-    public function testOrderView()
+    public function testOrderViewWitoutMagentoOrder()
     {
         $customer = $this->fixtures->get('customer');
         $this->customerSession->setData('customer_id', $customer->getId());

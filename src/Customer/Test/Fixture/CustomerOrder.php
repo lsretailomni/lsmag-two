@@ -102,6 +102,8 @@ class CustomerOrder implements DataFixtureInterface
         $quoteShippingAddress->importCustomerAddressData(
             $this->addressRespositoryInterface->getById($address->getId())
         );
+        $reserveOrderId = 'test1' . rand(111111111, 999999999);
+
         $customer = $this->customerRepository->getById($customer->getId());
         $quote->setStoreId(1)
             ->setIsActive(true)
@@ -110,7 +112,7 @@ class CustomerOrder implements DataFixtureInterface
             ->setShippingAddress($quoteShippingAddress)
             ->setBillingAddress($quoteShippingAddress)
             ->setCheckoutMethod(Onepage::METHOD_CUSTOMER)
-            ->setReservedOrderId('55555555')
+            ->setReservedOrderId($reserveOrderId)
             ->setEmail($customer->getEmail());
         $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
         $quote->getShippingAddress()->setCollectShippingRates(true);

@@ -88,7 +88,7 @@ class AbstractOrderController
      */
     public function registerValuesInRegistry()
     {
-        if ($this->request->getParam('order_id') && $this->request->getParam('type')) {
+        if ($this->request->getParam('order_id')) {
             $orderId = $this->request->getParam('order_id');
             $type    = $this->request->getParam('type');
 
