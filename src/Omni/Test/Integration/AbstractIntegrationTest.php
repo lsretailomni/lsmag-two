@@ -38,6 +38,7 @@ class AbstractIntegrationTest extends TestCase
     public const ENABLED = '1';
     public const LSR_ID = 'MSO000012';
     public const LSR_CARD_ID = '10051';
+    public const LSR_LOY_POINTS = 2;
 
     public function testExecute()
     {
