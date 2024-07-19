@@ -89,7 +89,10 @@ class LsPushNotificationSendObserver implements ObserverInterface
         $receiverName       = $receiver->getReceiverName();
         $storeName          = $order->getStore()->getFrontEndName();
         $incrementId        = $order->getDocumentId();
-
+        $content            = "Hello $receiverName, \n\nOrder Status: $notificationStatus";
+        if ($ccStoreName) {
+            $content.=" at store $ccStoreName";
+        }
         $headers            = [
             'Accept'        => 'application/json',
             'Content-Type'  => 'application/json',
@@ -100,8 +103,8 @@ class LsPushNotificationSendObserver implements ObserverInterface
             [
                 "app_id"                   => $this->lsr->getAppId($storeId),
                 "include_subscription_ids" => [$order->getLsSubscriptionId()],
-                "headings"                 => ["en" => "Your $storeName order $incrementId has a new status update"],
-                "contents"                 => ["en" => "Hello $receiverName, \n\nOrder Status: $notificationStatus at store $ccStoreName."],
+                "headings"                 => ['en' => "Your $storeName order $incrementId has a new status update"],
+                "contents"                 => ['en' => $content],
             ],
             Request::HTTP_METHOD_POST,
             $headers
