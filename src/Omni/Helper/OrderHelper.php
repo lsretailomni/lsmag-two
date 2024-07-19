@@ -395,26 +395,31 @@ class OrderHelper extends AbstractHelper
     {
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
-        $shippingAmount     = $order->getShippingInclTax();
-        if ($shippingAmount > 0) {
-            $netPriceFormula = 1 + $shipmentTaxPercent / 100;
-            $netPrice        = $shippingAmount / $netPriceFormula;
-            $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
-            $lineNumber = 1000000;
-            // @codingStandardsIgnoreLine
-            $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($shippingAmount)
-                ->setAmount($shippingAmount)
-                ->setNetPrice($netPrice)
-                ->setNetAmount($netPrice)
-                ->setTaxAmount($taxAmount)
-                ->setItemId($shipmentFeeId)
-                ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setLineNumber($lineNumber)
-                ->setQuantity(1)
-                ->setDiscountAmount($order->getShippingDiscountAmount());
-            array_push($orderLines, $shipmentOrderLine);
+
+        if (!empty($shipmentTaxPercent)) {
+            $shipmentTaxPercent = substr($shipmentTaxPercent, strrpos($shipmentTaxPercent, '#') + 1);
+            $shippingAmount     = $order->getShippingInclTax();
+            if ($shippingAmount > 0) {
+                $netPriceFormula = 1 + $shipmentTaxPercent / 100;
+                $netPrice        = $shippingAmount / $netPriceFormula;
+                $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
+                $lineNumber = 1000000;
+                // @codingStandardsIgnoreLine
+                $shipmentOrderLine = new Entity\OrderLine();
+                $shipmentOrderLine->setPrice($shippingAmount)
+                    ->setAmount($shippingAmount)
+                    ->setNetPrice($netPrice)
+                    ->setNetAmount($netPrice)
+                    ->setTaxAmount($taxAmount)
+                    ->setItemId($shipmentFeeId)
+                    ->setLineType(Entity\Enum\LineType::ITEM)
+                    ->setLineNumber($lineNumber)
+                    ->setQuantity(1)
+                    ->setDiscountAmount($order->getShippingDiscountAmount());
+                array_push($orderLines, $shipmentOrderLine);
+            }
         }
+
         return $orderLines;
     }
 
