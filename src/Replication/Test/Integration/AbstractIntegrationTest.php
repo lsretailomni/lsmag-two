@@ -26,46 +26,9 @@ class AbstractIntegrationTest extends TestCase
     public const USERNAME = 'mc_57745';
     public const LSR_ID = 'MSO000012';
     public const LSR_CARD_ID = '10051';
-    public static function createCustomerWithCustomAttributesFixture()
-    {
-        $objectManager = Bootstrap::getObjectManager();
-        $customer = $objectManager->create(Customer::class);
-        /** @var CustomerRegistry $customerRegistry */
-        $customerRegistry = $objectManager->get(CustomerRegistry::class);
-        /** @var Customer $customer */
-        $customer->setWebsiteId(1)
-            ->setId(self::CUSTOMER_ID)
-            ->setEmail(self::EMAIL)
-            ->setPassword(self::PASSWORD)
-            ->setGroupId(1)
-            ->setStoreId(1)
-            ->setIsActive(1)
-            ->setPrefix('Mr.')
-            ->setFirstname('John')
-            ->setMiddlename('A')
-            ->setLastname('Smith')
-            ->setSuffix('Esq.')
-            ->setDefaultBilling(1)
-            ->setDefaultShipping(1)
-            ->setTaxvat('12')
-            ->setGender(1)
-            ->setData('lsr_username', self::USERNAME)
-            ->setData('lsr_id', self::LSR_ID)
-            ->setData('lsr_cardid', self::LSR_CARD_ID);
 
-        $customer->isObjectNew(true);
-        $customer->save();
-        $customerRegistry->remove($customer->getId());
-        /** @var RevokedRepositoryInterface $revokedRepo */
-        $revokedRepo = $objectManager->get(RevokedRepositoryInterface::class);
-        $revokedRepo->saveRevoked(
-            new Revoked(
-                UserContextInterface::USER_TYPE_CUSTOMER,
-                (int) $customer->getId(),
-                time() - 3600 * 24
-            )
-        );
-    }
+    public const SAMPLE_REPLICATION_CRON_URL = 'Ls\Replication\Cron\ReplEcommItemsTask';
+    public const SAMPLE_REPLICATION_CRON_NAME = 'repl_item';
 
     /**
      * Get environment variable value given name
