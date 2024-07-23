@@ -1334,9 +1334,10 @@ class ProductCreateTask
      * @param $itemId
      * @param null $variantId
      * @param null $unitOfMeasure
+     * @param int $process
      * @return mixed
      */
-    public function getItemPrice($itemId, $variantId = null, $unitOfMeasure = null)
+    public function getItemPrice($itemId, $variantId = null, $unitOfMeasure = null, $process = 1)
     {
         $parameter  = null;
         $parameter2 = null;
@@ -1372,9 +1373,17 @@ class ProductCreateTask
             if (!empty($items)) {
                 $item = reset($items);
                 /** @var ReplInvStatus $invStatus */
-                $item->setData('is_updated', 0);
-                $item->setData('processed', 1);
-                $item->setData('processed_at', $this->replicationHelper->getDateTime());
+
+                if ($process) {
+                    $item->setData('is_updated', 0);
+                    $item->setData('processed', 1);
+                    $item->setData('processed_at', $this->replicationHelper->getDateTime());
+                } else {
+                    $item->setData('is_updated', 1);
+                    $item->setData('processed', 0);
+                    $item->setData('is_failed', 0);
+                }
+
                 $this->replPriceRepository->save($item);
             }
         } catch (Exception $e) {
@@ -2461,6 +2470,8 @@ class ProductCreateTask
             $productData = $this->setProductStatus($productData, 0);
         }
 
+        $this->resetSpecificItemPriceStatus($item, $value, $uomCode);
+
         try {
             // @codingStandardsIgnoreLine
             $productSaved = $this->productRepository->save($productData);
@@ -2632,6 +2643,37 @@ class ProductCreateTask
             );
             $this->logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * Reset specific product price so that it gets updated next time sync_price cron runs
+     *
+     * @param $item
+     * @param $value
+     * @param $uomCode
+     * @return mixed|null
+     */
+    public function resetSpecificItemPriceStatus($item, $value, $uomCode)
+    {
+        $unitOfMeasure = null;
+
+        if (!empty($uomCode)) {
+            if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {
+                $unitOfMeasure = $uomCode->getCode();
+            }
+        }
+        if (isset($uomCode) && isset($value)) {
+            $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure, 0);
+        } elseif (isset($uomCode)) {
+            $itemPrice = $this->getItemPrice($uomCode->getItemId(), null, $unitOfMeasure, 0);
+        } else {
+            $itemPrice = $this->getItemPrice($value->getItemId(), $value->getVariantId(), $unitOfMeasure, 0);
+        }
+        if (!isset($itemPrice)) {
+            $itemPrice = $this->getItemPrice($item->getNavId(), null, null, 0);
+        }
+
+        return $itemPrice;
     }
 
     /**
