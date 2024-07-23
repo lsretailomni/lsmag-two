@@ -197,7 +197,7 @@ class SalesObserverTest extends AbstractIntegrationTest
                 'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
                 'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
             ],
-            as: 'customer2'
+            as: 'customer'
         ),
         DataFixture(
             CreateSimpleProductFixture::class,
@@ -206,19 +206,20 @@ class SalesObserverTest extends AbstractIntegrationTest
             ],
             as: 'p1'
         ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer2.id$'], 'cart2'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart2.id$']),
-        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart2.id$']),
-        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart2$'])
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
+        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
+        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$'])
     ]
     /**
      * Show payment methods enabled for click and collect shipping method from admin
      */
-    public function testShowPayAtStorePaymentMethod()
+    public function testUpdatedGrandTotalForNonVirtualProduct()
     {
-        $customer = $this->fixtures->get('customer2');
-        $cart     = $this->fixtures->get('cart2');
+        $customer = $this->fixtures->get('customer');
+        $cart     = $this->fixtures->get('cart1');
+        $cart2    = $this->fixtures->get('cart2');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
@@ -227,7 +228,6 @@ class SalesObserverTest extends AbstractIntegrationTest
 
         $result = $this->contactHelper->login(self::USERNAME, self::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
-
 
         $shippingAssignment = $this->checkoutSession->getQuote()->getExtensionAttributes()->getShippingAssignments()[0];
         $quote              = $this->checkoutSession->getQuote();
@@ -262,13 +262,13 @@ class SalesObserverTest extends AbstractIntegrationTest
         $expectedGrandTotal       = $expectedBaseGrandTotal = 91.92;
         $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
 
-//        $cart->delete();
-//        $this->checkoutSession->clearQuote();
-//        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-//        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
-
         $this->assertEquals($expectedGrandTotal, $this->checkoutSession->getQuote()->getGrandTotal());
         $this->assertEquals($expectedBaseGrandTotal, $this->checkoutSession->getQuote()->getBaseGrandTotal());
         $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
+
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 }
