@@ -278,9 +278,10 @@ class BasketHelper extends AbstractHelper
 
         foreach ($quoteItems as $quoteItem) {
             $children = [];
-
+            $isBundle = 0;
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
                 $children = $quoteItem->getChildren();
+                $isBundle = 1;
             } else {
                 $children[] = $quoteItem;
             }
@@ -319,9 +320,12 @@ class BasketHelper extends AbstractHelper
                     if (!$match) {
                         // @codingStandardsIgnoreLine
                         $list_item = (new Entity\OneListItem())
-                            ->setQuantity($quoteItem->getData('qty'))
+                            ->setQuantity(
+                                $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
+                                    $quoteItem->getData('qty')
+                            )
                             ->setItemId($itemId)
-                            ->setId($quoteItem->getItemId())
+                            ->setId($child->getItemId())
                             ->setBarcodeId($barCode)
                             ->setVariantId($variantId)
                             ->setUnitOfMeasureId($uom)
