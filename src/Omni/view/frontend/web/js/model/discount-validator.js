@@ -7,9 +7,10 @@ define([
         'Magento_Checkout/js/model/cart/totals-processor/default',
         'Magento_Customer/js/customer-data',
         'Magento_Ui/js/modal/alert',
-        'mage/translate'
+        'mage/translate',
+        'Magento_Checkout/js/model/full-screen-loader'
     ],
-    function (ko, $, quote, urlBuilder, urlFormatter, totalsDefault, customerData, alert, $t) {
+    function (ko, $, quote, urlBuilder, urlFormatter, totalsDefault, customerData, alert, $t, fullScreenLoader) {
         'use strict';
         return {
             /**
@@ -19,38 +20,50 @@ define([
              */
             validate: function () {
                 var quoteId = quote.getQuoteId(),
+                    validation = 'true',
                     url = urlBuilder.createUrl('/check-discount-validity', {}),
-                    payload = {'cart_id': quoteId},
-                    validation = $.ajax({
+                    payload = {'cart_id': quoteId};
+                    $.ajax({
                         url: urlFormatter.build(url),
                         type: 'post',
                         data: JSON.stringify(payload),
                         async: false,
                         contentType: 'application/json',
                         global: false,
-
+                        beforeSend: function () {
+                            fullScreenLoader.startLoader();
+                        },
+                        complete: function () {
+                            fullScreenLoader.stopLoader();
+                        },
                         /** @inheritdoc */
                         success: function (response) {
-                            if (response === false) {
-                                totalsDefault.estimateTotals(quote.shippingAddress);
-                                customerData.invalidate(['cart']);
-                                customerData.reload(['cart'], true);
-                                alert({
-                                    title: $t('Notice'),
-                                    content: $t('Unfortunately since your discount is no longer valid your order summary has been updated.'),
-                                    actions: {
-                                        always: function () {}
+                            response.forEach((validity) => {
+                                if (validity['valid'] === false) {
+                                    validation = 'false';
+                                    totalsDefault.estimateTotals(quote.shippingAddress);
+                                    customerData.invalidate(['cart']);
+                                    customerData.reload(['cart'], true);
+
+                                    if (validity['remarks'] === 'giftcard') {
+                                        $('#gift-card .action-cancel').trigger('click');
                                     }
-                                });
-                            }
-                            return response;
+                                    alert({
+                                        title: $t('Notice'),
+                                        content: validity['msg'],
+                                        actions: {
+                                            always: function () {}
+                                        }
+                                    });
+                                }
+                            });
                         },
 
                         /** @inheritdoc */
                         error: function (xhr) {
                             console.log(xhr.statusText + xhr.responseText);
                         }
-                    }).responseText;
+                    });
                 return validation === 'true';
             }
         }

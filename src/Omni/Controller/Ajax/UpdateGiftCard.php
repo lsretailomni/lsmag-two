@@ -108,6 +108,7 @@ class UpdateGiftCard implements HttpPostActionInterface
      * @return ResponseInterface|Json|Raw|ResultInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws Exception
      */
     public function execute()
     {
@@ -131,7 +132,6 @@ class UpdateGiftCard implements HttpPostActionInterface
         $quote                 = $this->cartRepository->get($cartId);
         if ($giftCardNo != null && $giftCardAmount != 0) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
-
             if (is_object($giftCardResponse)) {
                 $giftCardBalanceAmount = $giftCardResponse->getBalance();
             } else {
@@ -163,6 +163,16 @@ class UpdateGiftCard implements HttpPostActionInterface
                 'error'   => 'true',
                 'message' => __(
                     'The gift card is not valid.'
+                )
+            ];
+            return $resultJson->setData($response);
+        }
+
+        if ($this->giftCardHelper->isGiftCardExpired($giftCardResponse) && $giftCardAmount) {
+            $response = [
+                'error'   => 'true',
+                'message' => __(
+                    'Unfortunately, we can\'t apply this gift card since its already expired.'
                 )
             ];
             return $resultJson->setData($response);
