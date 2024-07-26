@@ -74,12 +74,21 @@ class PlaceOrderPlugin
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
         }
 
-        if ($this->lsr->isGraphqlDiscountValidationEnabled() &&
-            !$this->discountManagement->checkDiscountValidity($args['input']['cart_id'])
-        ) {
-            throw new GraphQlInputException(
-                __('Unfortunately since your discount is no longer valid your grand total has been updated.')
-            );
+        if ($this->lsr->isGraphqlDiscountValidationEnabled()) {
+            $response = $this->discountManagement->checkDiscountValidity($args['input']['cart_id']);
+            $msg = [];
+
+            foreach ($response as $each) {
+                if ($each['valid'] === false) {
+                    $msg[] = $each['msg']->getText();
+                }
+            }
+
+            if (!empty($msg)) {
+                throw new GraphQlInputException(
+                    __(implode('', $msg))
+                );
+            }
         }
 
         $result = $proceed($field, $context, $info, $value, $args);

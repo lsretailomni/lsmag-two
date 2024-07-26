@@ -29,6 +29,11 @@ class SalesEntryPayment
     protected $AuthorizationCode = null;
 
     /**
+     * @property boolean $AuthorizationExpired
+     */
+    protected $AuthorizationExpired = null;
+
+    /**
      * @property string $CardNo
      */
     protected $CardNo = null;
@@ -125,6 +130,24 @@ class SalesEntryPayment
     public function getAuthorizationCode()
     {
         return $this->AuthorizationCode;
+    }
+
+    /**
+     * @param boolean $AuthorizationExpired
+     * @return $this
+     */
+    public function setAuthorizationExpired($AuthorizationExpired)
+    {
+        $this->AuthorizationExpired = $AuthorizationExpired;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAuthorizationExpired()
+    {
+        return $this->AuthorizationExpired;
     }
 
     /**

@@ -24,6 +24,11 @@ class OrderPayment
     protected $AuthorizationCode = null;
 
     /**
+     * @property boolean $AuthorizationExpired
+     */
+    protected $AuthorizationExpired = null;
+
+    /**
      * @property string $CardNumber
      */
     protected $CardNumber = null;
@@ -117,6 +122,24 @@ class OrderPayment
     public function getAuthorizationCode()
     {
         return $this->AuthorizationCode;
+    }
+
+    /**
+     * @param boolean $AuthorizationExpired
+     * @return $this
+     */
+    public function setAuthorizationExpired($AuthorizationExpired)
+    {
+        $this->AuthorizationExpired = $AuthorizationExpired;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAuthorizationExpired()
+    {
+        return $this->AuthorizationExpired;
     }
 
     /**
