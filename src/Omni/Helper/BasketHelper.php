@@ -5,6 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
@@ -1227,6 +1228,8 @@ class BasketHelper extends AbstractHelper
      * Sending request to Central for basket calculation
      *
      * @param $cartId
+     * @return OneListCalculateResponse|Order|null
+     * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1235,12 +1238,15 @@ class BasketHelper extends AbstractHelper
     {
         $oneList = $this->getOneListFromCustomerSession();
         $quote   = $this->quoteRepository->getActive($cartId);
+        $basketData = null;
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);
-            $this->updateBasketAndSaveTotals($oneList, $quote);
+            $basketData = $this->updateBasketAndSaveTotals($oneList, $quote);
             $this->setCalculateBasket(true);
         }
+
+        return $basketData;
     }
 
     /**
@@ -1248,6 +1254,8 @@ class BasketHelper extends AbstractHelper
      *
      * @param $oneList
      * @param $quote
+     * @return OneListCalculateResponse|Order|null
+     * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1260,13 +1268,18 @@ class BasketHelper extends AbstractHelper
         }
 
         $basketData = $this->update($oneList);
-        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-        $cartQuote = $this->checkoutSession->getQuote();
 
-        if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
-            $cartQuote->getLsPointsSpent() > 0) {
-            $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+        if (is_object($basketData)) {
+            $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+            $cartQuote = $this->checkoutSession->getQuote();
+
+            if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
+                $cartQuote->getLsPointsSpent() > 0) {
+                $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+            }
         }
+
+        return $basketData;
     }
 
     /**

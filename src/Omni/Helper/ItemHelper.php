@@ -507,9 +507,7 @@ class ItemHelper extends AbstractHelper
                     $quote->setLsPointsEarn($basketData->getPointsRewarded());
                 }
 
-                if ($basketData->getTotalDiscount() > 0) {
-                    $quote->setLsDiscountAmount($basketData->getTotalDiscount());
-                }
+                $quote->setLsDiscountAmount($basketData->getTotalDiscount());
             }
 
             if ($type == 2) {

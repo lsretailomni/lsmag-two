@@ -45,8 +45,16 @@ define([
                                     customerData.invalidate(['cart']);
                                     customerData.reload(['cart'], true);
 
-                                    if (validity['remarks'] === 'giftcard') {
-                                        $('#gift-card .action-cancel').trigger('click');
+                                    if (validity['type'] === 'giftcard') {
+                                        if ($('#gift-card .field .input-text').val()) {
+                                            $('#gift-card .action-cancel').trigger('click');
+                                        }
+                                    } else {
+                                        if (validity['remarks'] == 'coupon' &&
+                                            $('#discount-form .field .input-text').val()
+                                        ) {
+                                            $('#discount-form .action-cancel').trigger('click');
+                                        }
                                     }
                                     alert({
                                         title: $t('Notice'),
@@ -62,6 +70,7 @@ define([
                         /** @inheritdoc */
                         error: function (xhr) {
                             console.log(xhr.statusText + xhr.responseText);
+                            fullScreenLoader.stopLoader();
                         }
                     });
                 return validation === 'true';

@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Model\Api;
 
+use Exception;
 use \Ls\Omni\Api\DiscountManagementInterface;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
@@ -11,6 +12,12 @@ use Magento\Quote\Model\QuoteIdMaskFactory;
 
 class DiscountManagement implements DiscountManagementInterface
 {
+    public const GIFTCARD_TYPE = 'giftcard';
+    public const DISCOUNT_TYPE = 'discount';
+    public const COUPON_REMARKS = 'coupon';
+    public const NON_COUPON_REMARKS = 'non coupon';
+    public const GIFTCARD_REMARKS = 'giftcard';
+
     /**
      * @var QuoteIdMaskFactory
      */
@@ -75,6 +82,7 @@ class DiscountManagement implements DiscountManagementInterface
 
         $giftCardNo  = $quote->getLsGiftCardNo();
         $giftCardPin = $quote->getLsGiftCardPin();
+        $remarks     = self::NON_COUPON_REMARKS;
 
         if (!$existingBasketCalculation ||
             empty($existingBasketCalculation->getOrderDiscountLines()->getOrderDiscountLine())
@@ -82,15 +90,28 @@ class DiscountManagement implements DiscountManagementInterface
             $discountsValidity = [
                 'valid'   => true,
                 'msg'     => '',
-                'remarks' => 'discount'
+                'type'    => self::DISCOUNT_TYPE,
+                'remarks' => $remarks
             ];
         } else {
             $existingBasketTotal = $existingBasketCalculation->getTotalAmount();
             $this->basketHelper->setCalculateBasket('1');
-            $this->basketHelper->syncBasketWithCentral($cartId);
+            $basketData = $this->basketHelper->syncBasketWithCentral($cartId);
+
+            if (is_string($basketData) &&
+                str_contains($basketData, sprintf(' - [1000]-Coupon %s is not valid', $quote->getCouponCode()))
+            ) {
+                $status = $this->basketHelper->setCouponCode('');
+
+                if ($status === null) {
+                    $basketData = $this->basketHelper->getOneListCalculation();
+                    $remarks    = self::COUPON_REMARKS;
+                }
+            }
+            $newBasketCalculation = $this->basketHelper->getOneListCalculation();
 
             /** @var  Order $newBasketCalculation */
-            if ($newBasketCalculation = $this->basketHelper->getOneListCalculation()) {
+            if (is_object($basketData) && $newBasketCalculation) {
                 $newBasketTotal    = $newBasketCalculation->getTotalAmount();
                 $discountMsg       = $newBasketTotal > $existingBasketTotal ?
                     __('Unfortunately since your discount is no longer valid your order summary has been updated.') :
@@ -98,22 +119,27 @@ class DiscountManagement implements DiscountManagementInterface
                 $discountsValidity = [
                     'valid'   => $newBasketTotal == $existingBasketTotal,
                     'msg'     => $discountMsg,
-                    'remarks' => 'discount'
+                    'type'    => self::DISCOUNT_TYPE,
+                    'remarks' => $remarks
                 ];
             } else {
                 $discountsValidity = [
                     'valid'   => true,
                     'msg'     => '',
-                    'remarks' => 'discount'
+                    'type'    => self::DISCOUNT_TYPE,
+                    'remarks' => $remarks
                 ];
             }
         }
+
+        $remarks = self::GIFTCARD_REMARKS;
 
         if (empty($giftCardNo)) {
             $giftCardValidity = [
                 'valid'   => true,
                 'msg'     => '',
-                'remarks' => 'giftcard'
+                'type'    => self::GIFTCARD_TYPE,
+                'remarks' => $remarks
             ];
         } else {
             $giftCardValidation = $this->validateGiftCardExpiry($quote, $giftCardNo, $giftCardPin);
@@ -121,13 +147,14 @@ class DiscountManagement implements DiscountManagementInterface
             $giftCardValidity = [
                 'valid'   => $giftCardValidation,
                 'msg'     => __(
-                    'Unfortunately since applied gift card has been expired your order summary has been updated.'
+                    'Unfortunately since your applied gift card has been expired order summary has been updated.'
                 ),
-                'remarks' => 'giftcard'
+                'type'    => self::GIFTCARD_TYPE,
+                'remarks' => $remarks
             ];
         }
 
-        return ['discountValidity' => $discountsValidity, 'giftcardValidity' => $giftCardValidity];
+        return [$discountsValidity, $giftCardValidity];
     }
 
     /**
@@ -137,7 +164,7 @@ class DiscountManagement implements DiscountManagementInterface
      * @param $giftCardNo
      * @param $giftCardPin
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function validateGiftCardExpiry($quote, $giftCardNo, $giftCardPin)
     {
