@@ -360,6 +360,7 @@ class Payment
             }
 
             if (in_array($parentItem->getItemId(), $parentItems)) {
+                $this->helper->removeFirstOccurrenceOfItem($orderItem, $lines);
                 continue;
             }
             $qty          = $this->helper->getQtyToShip($orderItem, $lines);

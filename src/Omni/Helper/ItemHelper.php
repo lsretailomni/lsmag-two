@@ -538,7 +538,7 @@ class ItemHelper extends AbstractHelper
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
         ) {
-            $itemQty = $quoteItem->getParentItem()->getQty();
+            $itemQty = $quoteItem->getParentItem()->getQty() * $quoteItem->getQty();
         }
         $qtyEqual = $line->getQuantity() == $itemQty;
 

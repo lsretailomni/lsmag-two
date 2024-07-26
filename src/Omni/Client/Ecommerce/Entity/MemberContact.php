@@ -106,6 +106,11 @@ class MemberContact extends Entity
     protected $Environment = null;
 
     /**
+     * @property string $ExternalSystem
+     */
+    protected $ExternalSystem = null;
+
+    /**
      * @property string $FirstName
      */
     protected $FirstName = null;
@@ -487,6 +492,24 @@ class MemberContact extends Entity
     public function getEnvironment()
     {
         return $this->Environment;
+    }
+
+    /**
+     * @param string $ExternalSystem
+     * @return $this
+     */
+    public function setExternalSystem($ExternalSystem)
+    {
+        $this->ExternalSystem = $ExternalSystem;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalSystem()
+    {
+        return $this->ExternalSystem;
     }
 
     /**
