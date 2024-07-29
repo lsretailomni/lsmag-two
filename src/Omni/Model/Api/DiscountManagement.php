@@ -6,7 +6,7 @@ use Exception;
 use \Ls\Omni\Api\DiscountManagementInterface;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\GiftCardHelper;
+use \Ls\Omni\Helper\GiftCardHelper;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMaskFactory;
 
@@ -99,7 +99,7 @@ class DiscountManagement implements DiscountManagementInterface
             $basketData = $this->basketHelper->syncBasketWithCentral($cartId);
 
             if (is_string($basketData) &&
-                str_contains($basketData, sprintf(' - [1000]-Coupon %s is not valid', $quote->getCouponCode()))
+                str_contains($basketData, sprintf('Coupon %s is not valid', $quote->getCouponCode()))
             ) {
                 $status = $this->basketHelper->setCouponCode('');
 
@@ -114,7 +114,7 @@ class DiscountManagement implements DiscountManagementInterface
             if (is_object($basketData) && $newBasketCalculation) {
                 $newBasketTotal    = $newBasketCalculation->getTotalAmount();
                 $discountMsg       = $newBasketTotal > $existingBasketTotal ?
-                    __('Unfortunately since your discount is no longer valid your order summary has been updated.') :
+                    __($this->basketHelper->getLsrModel()->getDiscountValidationMsg()) :
                     __('Your order summary has been updated.');
                 $discountsValidity = [
                     'valid'   => $newBasketTotal == $existingBasketTotal,
@@ -147,7 +147,7 @@ class DiscountManagement implements DiscountManagementInterface
             $giftCardValidity = [
                 'valid'   => $giftCardValidation,
                 'msg'     => __(
-                    'Unfortunately since your applied gift card has been expired order summary has been updated.'
+                    $this->basketHelper->getLsrModel()->getGiftCardValidationMsg()
                 ),
                 'type'    => self::GIFTCARD_TYPE,
                 'remarks' => $remarks

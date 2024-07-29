@@ -4,6 +4,7 @@ namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Api\DiscountManagementInterface;
+use Ls\Omni\Model\Api\DiscountManagement;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -80,7 +81,11 @@ class PlaceOrderPlugin
 
             foreach ($response as $each) {
                 if ($each['valid'] === false) {
-                    $msg[] = $each['msg']->getText();
+                    if ($each['type'] === DiscountManagement::DISCOUNT_TYPE) {
+                        $msg[] = __($this->lsr->getGraphqlDiscountValidationMsg())->getText();
+                    } else {
+                        $msg[] = __($this->lsr->getGraphqlGiftCardValidationMsg())->getText();
+                    }
                 }
             }
 
