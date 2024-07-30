@@ -316,7 +316,11 @@ class Data
                             break;
                         }
 
-                        if ($counter >= $orderItem->getQtyOrdered()) {
+                        if ($counter >= $orderItem->getQtyOrdered() ||
+                            (isset($items[$globalCounter][$itemId]['qty']) &&
+                                $items[$globalCounter][$itemId]['qty'] ==
+                                $items[$globalCounter][$itemId]['item']->getQtyOrdered()
+                            )) {
                             continue;
                         }
                         $items[$globalCounter][$itemId]['item'] = $child;
@@ -493,10 +497,39 @@ class Data
             ) {
                 $qty += $line['Quantity'];
                 unset($lines[$index]);
+
+                if ($qty == $orderItem->getQtyToShip()) {
+                    break;
+                }
             }
         }
 
         return $qty;
+    }
+
+    /**
+     * Remove occurrence of item in the lines
+     *
+     * @param $orderItem
+     * @param $lines
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    public function removeFirstOccurrenceOfItem($orderItem, &$lines)
+    {
+        $product = $this->getProductById($orderItem->getProductId());
+
+        foreach ($lines as $index => $line) {
+            $itemId    = $line['ItemId'];
+            $variantId = $line['VariantId'];
+
+            if ($product->getLsrItemId() == $itemId &&
+                $product->getLsrVariantId() == $variantId
+            ) {
+                unset($lines[$index]);
+                break;
+            }
+        }
     }
 
     /**
