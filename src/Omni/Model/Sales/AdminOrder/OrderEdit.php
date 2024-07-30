@@ -367,9 +367,10 @@ class OrderEdit
     public function updateShippingAmount($orderLines, $order, $oldOrder)
     {
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
-        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
         $shippingAmount     = $order->getShippingInclTax() - $oldOrder->getShippingInclTax();
-        if ($shippingAmount > 0) {
+        $shipmentTaxPercent = $this->orderHelper->getShipmentTaxPercent($order->getStore());
+
+        if (!empty($shipmentTaxPercent) && $shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
@@ -387,6 +388,7 @@ class OrderEdit
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
         }
+
         return $orderLines;
     }
 }
