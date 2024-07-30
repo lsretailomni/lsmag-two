@@ -585,7 +585,8 @@ class OrderHelper extends AbstractHelper
                 ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType($tenderTypeId);
+                ->setTenderType($tenderTypeId)
+                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 
