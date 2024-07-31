@@ -50,7 +50,10 @@ class PushNotification extends AbstractNotification
         $storeId            = $this->getStoreId();
         $sender             = $this->getSender();
         $receiver           = $this->getReceiver();
-        $ccStoreName        = $this->helper->getStoreName($order->getPickupStore());
+        $ccStoreName        = '';
+        if($order->getPickupStore()) {
+            $ccStoreName = $this->helper->getStoreName($order->getPickupStore());
+        }
 
         try {
             $this->eventManager->dispatch(
