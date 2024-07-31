@@ -502,8 +502,14 @@ class ItemHelper extends AbstractHelper
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
 
-            if ($basketData && method_exists($basketData, 'getPointsRewarded')) {
-                $quote->setLsPointsEarn($basketData->getPointsRewarded());
+            if ($basketData) {
+                if (method_exists($basketData, 'getPointsRewarded')) {
+                    $quote->setLsPointsEarn($basketData->getPointsRewarded());
+                }
+
+                if ($basketData->getTotalDiscount() > 0) {
+                    $quote->setLsDiscountAmount($basketData->getTotalDiscount());
+                }
             }
 
             if ($type == 2) {
@@ -526,18 +532,19 @@ class ItemHelper extends AbstractHelper
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
-        $customPrice = $amount = $taxAmount = $netAmount = null;
+        $customPrice = $amount = $taxAmount = $netAmount = $lsDiscountAmount = null;
         $itemQty     = $quoteItem->getQty();
 
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
         ) {
-            $itemQty = $quoteItem->getParentItem()->getQty();
+            $itemQty = $quoteItem->getParentItem()->getQty() * $quoteItem->getQty();
         }
         $qtyEqual = $line->getQuantity() == $itemQty;
 
         if ($line->getDiscountAmount() > 0) {
             $customPrice = $unitPrice;
+            $lsDiscountAmount = $line->getDiscountAmount();
         } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
             $customPrice = $unitPrice;
         }
@@ -566,6 +573,7 @@ class ItemHelper extends AbstractHelper
             ->setBaseTaxAmount($taxAmount)
             ->setPriceInclTax($unitPrice)
             ->setBasePriceInclTax($unitPrice)
+            ->setLsDiscountAmount($lsDiscountAmount)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)

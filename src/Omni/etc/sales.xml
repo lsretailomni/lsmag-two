@@ -2,6 +2,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Sales:etc/sales.xsd">
     <section name="quote">
         <group name="totals">
+            <item name="ls_discount_amount" instance="Ls\Omni\Model\Total\Quote\LsDiscount" sort_order="350"/>
             <item name="ls_points_spent" instance="Ls\Omni\Model\Total\Quote\PointsSpent" sort_order="400"/>
             <item name="ls_points_earn" instance="Ls\Omni\Model\Total\Quote\PointsEarned" sort_order="500"/>
             <item name="ls_points_discount" instance="Ls\Omni\Model\Total\Quote\PointsDiscount" sort_order="600"/>

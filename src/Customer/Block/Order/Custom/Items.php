@@ -3,6 +3,7 @@
 namespace Ls\Customer\Block\Order\Custom;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Block\Items\AbstractItems;
@@ -57,9 +58,9 @@ class Items extends AbstractItems
      */
     public function getItems()
     {
-        $type    = $this->_request->getParam('type');
+        $type         = $this->_request->getParam('type');
         $order        = $this->getOrder();
-        if ($this->getMagOrder() && $type != 'Receipt') {
+        if ($this->getMagOrder() && $type != DocumentIdType::RECEIPT) {
             $magentoOrder = $this->getMagOrder();
 
             if (!empty($magentoOrder) && !empty($order->getStoreCurrency())) {
@@ -71,8 +72,19 @@ class Items extends AbstractItems
         }
 
         $orderLines = $order->getLines()->getSalesEntryLine();
+        $options = [];
         $this->getChildBlock("custom_order_item_renderer_custom")->setData("order", $this->getOrder());
         foreach ($orderLines as $key => $line) {
+            foreach ($orderLines as $orderLine) {
+                if ($line->getLineNumber() == $orderLine->getParentLine() &&
+                    $orderLine->getParentLine() != 0) {
+                    $line->setPrice($line->getPrice() + $orderLine->getAmount()/$orderLine->getQuantity());
+                    $line->setAmount($line->getAmount() + $orderLine->getAmount());
+                }
+            }
+            if ($line->getParentLine() !=0) {
+                unset($orderLines[$key]);
+            }
             if ($line->getItemId() == $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID)) {
                 unset($orderLines[$key]);
                 break;

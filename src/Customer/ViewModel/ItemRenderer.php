@@ -30,6 +30,11 @@ class ItemRenderer implements ArgumentInterface
     public $priceCurrency;
 
     /**
+     * @var array
+     */
+    public $lines = [];
+
+    /**
      * @param ItemHelper $itemHelper
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
@@ -65,15 +70,30 @@ class ItemRenderer implements ArgumentInterface
         $currentOrder = $this->getOrder();
 
         if ($currentOrder) {
-            $orderLines = $currentOrder->getLines();
+            if (empty($this->lines)) {
+                $this->lines = $currentOrder->getLines()->getSalesEntryLine();
+            }
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getSku()
             );
             $baseUnitOfMeasure = $orderItem->getProduct()->getData('uom');
 
-            foreach ($orderLines as $index => $line) {
+            foreach ($this->lines as $index => $line) {
                 if ($this->itemHelper->isValid($orderItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $discount = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $discount     = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $options      = $orderItem->getProductOptions();
+                    $optionsCheck = ($options) ? isset($options['options']) : null;
+                    if ($optionsCheck) {
+                        foreach ($this->lines as $orderLine) {
+                            if ($line->getLineNumber() == $orderLine->getParentLine() &&
+                                $orderLine->getParentLine() != 0) {
+                                $line->setPrice($line->getPrice() + $orderLine->getPrice());
+                                $line->setAmount($line->getAmount() + $orderLine->getAmount());
+                            }
+                        }
+                    }
+
+                    unset($this->lines[$index]);
                     break;
                 } else {
                     $line = null;

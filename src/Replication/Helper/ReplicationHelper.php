@@ -172,7 +172,6 @@ class ReplicationHelper extends AbstractHelper
         "ls_mag/replication/repl_discount_setup"             => [
             "OfferNo",
             "LineNumber",
-            "VariantId",
             "scope_id"
         ],
         "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],

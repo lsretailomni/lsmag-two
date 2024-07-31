@@ -6,6 +6,7 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Sales\Model\Order;
@@ -103,9 +104,10 @@ class Totals extends Template
     }
 
     /**
-     *
+     * Initiate all totals
      *
      * @return $this
+     * @throws NoSuchEntityException
      */
     public function initTotals()
     {
@@ -113,10 +115,22 @@ class Totals extends Template
         $order = $this->getOrder();
         $order->setIncrementId($order->getDocumentId());
         $this->setOrder($order);
-        $order2 = $this->getOrder();
         $this->getInvoice();
         $this->getCreditmemo();
         $this->getSource();
+
+        if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
+            // @codingStandardsIgnoreLine
+            $giftCardAmount = new DataObject(
+                [
+                    'code'  => 'ls_gift_card_amount_used',
+                    'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
+                    'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
+                ]
+            );
+            $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
+        }
+
         if ($this->getSource()->getLsPointsSpent() > 0) {
             $loyaltyAmount = $this->getSource()->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             // @codingStandardsIgnoreLine
@@ -129,16 +143,18 @@ class Totals extends Template
             );
             $this->getParentBlock()->addTotalBefore($loyaltyPoints, 'discount');
         }
-        if ($this->getSource()->getLsGiftCardAmountUsed() > 0) {
+
+        if ($this->getSource()->getLsDiscountAmount() > 0) {
+            $lsDiscountAmount = $this->getSource()->getLsDiscountAmount();
             // @codingStandardsIgnoreLine
-            $giftCardAmount = new DataObject(
+            $lsDiscounts = new DataObject(
                 [
-                    'code'  => 'ls_gift_card_amount_used',
-                    'value' => -$this->getSource()->getLsGiftCardAmountUsed(),
-                    'label' => __('Gift Card Redeemed ') . '(' . $this->getSource()->getLsGiftCardNo() . ')',
+                    'code'  => 'ls_discount_amount',
+                    'value' => -$lsDiscountAmount,
+                    'label' => __('Discount'),
                 ]
             );
-            $this->getParentBlock()->addTotalBefore($giftCardAmount, 'discount');
+            $this->getParentBlock()->addTotalBefore($lsDiscounts, 'discount');
         }
 
         return $this;
