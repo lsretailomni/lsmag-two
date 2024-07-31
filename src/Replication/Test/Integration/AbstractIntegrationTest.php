@@ -27,8 +27,9 @@ class AbstractIntegrationTest extends TestCase
     public const LSR_ID = 'MSO000012';
     public const LSR_CARD_ID = '10051';
 
-    public const SAMPLE_REPLICATION_CRON_URL = 'Ls\Replication\Cron\ReplEcommItemsTask';
-    public const SAMPLE_REPLICATION_CRON_NAME = 'repl_item';
+    public const SAMPLE_FLAT_REPLICATION_CRON_URL = 'Ls\Replication\Cron\ReplEcommItemsTask';
+    public const SAMPLE_FLAT_REPLICATION_CRON_NAME = 'repl_item';
+    public const SAMPLE_MAGENTO_REPLICATION_CRON_NAME = 'repl_products';
 
     /**
      * Get environment variable value given name

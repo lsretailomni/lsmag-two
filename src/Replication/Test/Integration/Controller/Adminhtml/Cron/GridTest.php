@@ -45,7 +45,6 @@ class GridTest extends AbstractBackendController
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -64,7 +63,6 @@ class GridTest extends AbstractBackendController
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -80,8 +78,8 @@ class GridTest extends AbstractBackendController
             $scopeId,
             ScopeInterface::SCOPE_WEBSITES,
             $scopeId,
-            AbstractIntegrationTest::SAMPLE_REPLICATION_CRON_NAME,
-            AbstractIntegrationTest::SAMPLE_REPLICATION_CRON_URL
+            AbstractIntegrationTest::SAMPLE_FLAT_REPLICATION_CRON_NAME,
+            AbstractIntegrationTest::SAMPLE_FLAT_REPLICATION_CRON_URL
         );
         $this->setReferalUrl();
         $this->dispatch($this->uri);
@@ -92,7 +90,6 @@ class GridTest extends AbstractBackendController
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -110,8 +107,8 @@ class GridTest extends AbstractBackendController
             $scopeId,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT,
             null,
-            AbstractIntegrationTest::SAMPLE_REPLICATION_CRON_NAME,
-            AbstractIntegrationTest::SAMPLE_REPLICATION_CRON_URL
+            AbstractIntegrationTest::SAMPLE_FLAT_REPLICATION_CRON_NAME,
+            AbstractIntegrationTest::SAMPLE_FLAT_REPLICATION_CRON_URL
         );
         $this->setReferalUrl();
         $this->dispatch($this->uri);
@@ -122,7 +119,6 @@ class GridTest extends AbstractBackendController
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
@@ -163,8 +159,8 @@ class GridTest extends AbstractBackendController
             $scopeId,
             ScopeInterface::SCOPE_WEBSITES,
             $scopeId,
-            AbstractIntegrationTest::SAMPLE_REPLICATION_CRON_NAME,
-            AbstractIntegrationTest::SAMPLE_REPLICATION_CRON_URL
+            AbstractIntegrationTest::SAMPLE_FLAT_REPLICATION_CRON_NAME,
+            AbstractIntegrationTest::SAMPLE_FLAT_REPLICATION_CRON_URL
         );
         $this->setReferalUrl();
         $this->dispatch($this->uri);
