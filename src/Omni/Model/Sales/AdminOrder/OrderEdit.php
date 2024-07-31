@@ -149,8 +149,7 @@ class OrderEdit
                 ->setShipToName($shipToName)
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
-                ->setStoreId(($oldOrder->getPickupStore()) ? $oldOrder->getPickupStore() :
-                    $oneListCalculateResponse->getStoreId());
+                ->setStoreId($oneListCalculateResponse->getStoreId());
 
             if ($isClickCollect) {
                 $orderObject->setOrderType(OrderType::CLICK_AND_COLLECT);
@@ -180,11 +179,11 @@ class OrderEdit
             $this->removeItemsFromOrder($oldItems, $newItemsArray, $customerOrder, $documentId, $oldOrder);
             $this->addNewItems($newItemsArray, $oldItemsArray, $orderLinesArray, $order);
             $this->updateItemLineNumber($orderLinesArray, $customerOrder);
-            $lineOrderArray = $this->modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order);
+            $lineOrderArray  = $this->modifyItemQuantity($newItems, $oldItems, $orderLinesArray, $order);
             $orderLinesArray = array_merge($orderLinesArray, $lineOrderArray);
             $orderLinesArray = $this->updateShippingAmount($orderLinesArray, $order, $customerOrder, $oldOrder);
-            $amount            =  $oldOrder->getGrandTotal() - $this->refundAmount;
-            if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
+            $amount          = $oldOrder->getGrandTotal() - $this->refundAmount;
+            /*if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
                 $orderPaymentArray = $this->setOrderPayments(
                     $oldOrder,
                     $cardId,
@@ -193,12 +192,12 @@ class OrderEdit
                     $amount,
                     $orderPaymentArray
                 );
-            }
+            }*/
             $orderPaymentArray = $this->setOrderPayments(
                 $order,
                 $cardId,
                 $order->getPayment()->getMethodInstance()->getCode(),
-                7 * $order->getEditIncrement()*10,
+                7 * $order->getEditIncrement() * 10,
                 $order->getGrandTotal(),
                 $orderPaymentArray
             );
@@ -206,6 +205,28 @@ class OrderEdit
                 $orderEdit->setReturnOrderIdOnly(true);
             }
             $orderObject->setOrderLines($orderLinesArray);
+            $payments = $customerOrder->getPayments()->getSalesEntryPayment();
+            foreach ($payments as $payment) {
+                if ($payment->getType() == Entity\Enum\PaymentType::PRE_AUTHORIZATION ||
+                    $payment->getType() == Entity\Enum\PaymentType::NONE) {
+                    $orderPayment = new Entity\OrderPayment();
+                    $orderPayment->setPaymentType($payment->getType());
+                    $orderPayment->setAuthorizationExpired(true);
+                    $orderPayment->setCurrencyCode($payment->getCurrencyCode());
+                    $orderPayment->setCardNumber($payment->getCardNo());
+                    $orderPayment->setAmount($payment->getAmount());
+                    $orderPayment->setTokenNumber($payment->getTokenNumber());
+                    $orderPayment->setCardType($payment->getCardType());
+                    $orderPayment->setLineNumber($payment->getLineNumber());
+                    $orderPayment->setTenderType($payment->getTenderType());
+                    $orderUpdatePayment = new Entity\OrderUpdatePayment();
+                    $orderUpdatePayment->setOrderId($documentId);
+                    $orderUpdatePayment->setStoreId($oneListCalculateResponse->getStoreId());
+                    $orderUpdatePayment->setPayment($orderPayment);
+                    $orderUpdatePaymentOperation = new Operation\OrderUpdatePayment();
+                    $orderUpdatePaymentOperation->execute($orderUpdatePayment);
+                }
+            }
             $orderPaymentArrayObject->setOrderPayment($orderPaymentArray);
             $orderObject->setOrderPayments($orderPaymentArrayObject);
             $orderEdit->setRequest($orderObject);
@@ -223,7 +244,7 @@ class OrderEdit
      * @param string $isType
      * @param int $startingLineNumber
      * @param float $amount
-     * @param int $orderPaymentArray
+     * @param array $orderPaymentArray
      * @return mixed
      * @throws \Ls\Omni\Exception\InvalidEnumException
      * @throws \Magento\Framework\Exception\LocalizedException
@@ -519,7 +540,7 @@ class OrderEdit
                                     $discountAmount = ($orderLine->getDiscountAmount() / $orderLine->getQuantity())
                                         * $qtyDifference;
                                     $lineNumber     = ((int)$orderLine->getLineNumber()
-                                            + (int)$order->getEditIncrement());
+                                        + (int)$order->getEditIncrement());
                                     $itemId         = $orderLine->getItemId();
                                     // @codingStandardsIgnoreLine
                                     $lineOrder = new Entity\OrderLine();
