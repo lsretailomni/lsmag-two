@@ -46,11 +46,6 @@ class OrderEdit
     private $itemHelper;
 
     /**
-     * @var double
-     */
-    private $refundAmount = 0;
-
-    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
@@ -350,37 +345,27 @@ class OrderEdit
         $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
         $shippingAmount     = $order->getShippingInclTax();
         if ($shippingAmount > 0 && $order->getShippingInclTax() != $oldOrder->getShippingInclTax()) {
-            $salesOrderLines = $customerOrder->getLines()->getSalesEntryLine();
-            foreach ($salesOrderLines as $line) {
-                if ($shipmentFeeId == $line->getItemId()) {
-                    $itemsToCancel[] = [
-                        'lineNo' => $line->getLineNumber(),
-                        'qty'    => $line->getQuantity(),
-                        'itemId' => $line->getItemId(),
-                    ];
-
-                    if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
-                        $this->refundAmount = $this->refundAmount + $line->getAmount();
-                    }
-                }
-            }
-            $this->orderCancel($customerOrder->getId(), $customerOrder->getStoreId(), $itemsToCancel);
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
-            // @codingStandardsIgnoreLine
-            $shipmentOrderLine = new Entity\OrderLine();
-            $shipmentOrderLine->setPrice($shippingAmount)
-                ->setAmount($shippingAmount)
-                ->setNetPrice($netPrice)
-                ->setNetAmount($netPrice)
-                ->setTaxAmount($taxAmount)
-                ->setItemId($shipmentFeeId)
-                ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setLineNumber(1000000)
-                ->setQuantity(1)
-                ->setDiscountAmount($order->getShippingDiscountAmount());
-            array_push($orderLines, $shipmentOrderLine);
+            $salesOrderLines = $customerOrder->getLines()->getSalesEntryLine();
+            foreach ($salesOrderLines as $line) {
+                if ($shipmentFeeId == $line->getItemId()) {
+                    // @codingStandardsIgnoreLine
+                    $shipmentOrderLine = new Entity\OrderLine();
+                    $shipmentOrderLine->setPrice($shippingAmount)
+                        ->setAmount($shippingAmount)
+                        ->setNetPrice($netPrice)
+                        ->setNetAmount($netPrice)
+                        ->setTaxAmount($taxAmount)
+                        ->setItemId($shipmentFeeId)
+                        ->setLineType(Entity\Enum\LineType::ITEM)
+                        ->setLineNumber($line->getLineNumber())
+                        ->setQuantity(1)
+                        ->setDiscountAmount($order->getShippingDiscountAmount());
+                    array_push($orderLines, $shipmentOrderLine);
+                }
+            }
         }
         return $orderLines;
     }
@@ -477,9 +462,6 @@ class OrderEdit
                             'qty'    => $line->getQuantity(),
                             'itemId' => $line->getItemId(),
                         ];
-                        if (empty($oldOrder->getPayment()->getAmountAuthorized())) {
-                            $this->refundAmount = $this->refundAmount + $line->getAmount();
-                        }
                     }
                 }
             }
