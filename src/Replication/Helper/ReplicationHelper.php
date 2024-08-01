@@ -116,7 +116,7 @@ class ReplicationHelper extends AbstractHelper
         'catalog_product_entity_varchar' => [
             'entity_id' => 'row_id'
         ],
-        'catalog_product_entity' => [
+        'catalog_product_entity'         => [
             'entity_id' => 'row_id'
         ]
     ];
@@ -1278,6 +1278,7 @@ class ReplicationHelper extends AbstractHelper
     {
         $code = strtolower(trim($code));
         $code = str_replace(' ', '_', $code);
+        $code = str_replace('.', '_', $code);
         // convert all special characters and replace it with _
         $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
@@ -1621,9 +1622,9 @@ class ReplicationHelper extends AbstractHelper
             $websiteId = $this->storeManager->getDefaultStoreView()->getWebsiteId();
         }
 
-        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $itemIdTableAlias               = self::ITEM_ID_TABLE_ALIAS;
         $catalogProductEntityTableAlias = 'cpe';
-        $whereClause = $this->magentoEditionSpecificJoinWhereClause(
+        $whereClause                    = $this->magentoEditionSpecificJoinWhereClause(
             "$catalogProductEntityTableAlias.entity_id = $itemIdTableAlias.entity_id",
             'catalog_product_entity_varchar',
             [$itemIdTableAlias]
@@ -1643,7 +1644,7 @@ class ReplicationHelper extends AbstractHelper
         $collection->getSelect()->joinInner(
             ['cpw' => 'catalog_product_website'],
             "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
-                " AND cpw.website_id = $websiteId",
+            " AND cpw.website_id = $websiteId",
             []
         );
     }
@@ -1658,7 +1659,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
     {
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
         $fourthTableName = $this->resource->getTableName('catalog_product_entity');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
@@ -1677,7 +1678,7 @@ class ReplicationHelper extends AbstractHelper
         $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
         $collection->getSelect()->joinInner(
             ['fourth' => $fourthTableName],
-            'fourth.entity_id = '. $itemIdTableAlias .'.entity_id',
+            'fourth.entity_id = ' . $itemIdTableAlias . '.entity_id',
             ['fourth.entity_id', 'fourth.sku']
         );
         /** For Xdebug only to check the query */
@@ -3801,12 +3802,12 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getVariantIdsByDimension($itemId, $dimension, $storeId)
     {
-        $variantIds = [];
+        $variantIds     = [];
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('VariantDimension1', $dimension)
             ->addFilter('ItemId', $itemId, 'eq')
             ->addFilter('scope_id', $storeId, 'eq')
             ->create();
-        $items = $this->itemVariantRegistrationRepository->getList($searchCriteria)->getItems();
+        $items          = $this->itemVariantRegistrationRepository->getList($searchCriteria)->getItems();
         foreach ($items as $item) {
             $variantIds [] = $item->getVariantId();
         }
