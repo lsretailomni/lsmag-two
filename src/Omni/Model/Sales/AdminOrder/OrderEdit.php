@@ -144,7 +144,8 @@ class OrderEdit
                 ->setShipToName($shipToName)
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
-                ->setStoreId($oneListCalculateResponse->getStoreId());
+                ->setStoreId(($oldOrder->getPickupStore()) ? $oldOrder->getPickupStore() :
+                    $oneListCalculateResponse->getStoreId());
 
             if ($isClickCollect) {
                 $orderObject->setOrderType(OrderType::CLICK_AND_COLLECT);
@@ -205,7 +206,8 @@ class OrderEdit
                     $orderPayment->setTenderType($payment->getTenderType());
                     $orderUpdatePayment = new Entity\OrderUpdatePayment();
                     $orderUpdatePayment->setOrderId($documentId);
-                    $orderUpdatePayment->setStoreId($oneListCalculateResponse->getStoreId());
+                    $orderUpdatePayment->setStoreId(($oldOrder->getPickupStore()) ? $oldOrder->getPickupStore() :
+                        $oneListCalculateResponse->getStoreId());
                     $orderUpdatePayment->setPayment($orderPayment);
                     $orderUpdatePaymentOperation = new Operation\OrderUpdatePayment();
                     $orderUpdatePaymentOperation->execute($orderUpdatePayment);
