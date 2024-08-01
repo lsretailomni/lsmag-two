@@ -412,7 +412,7 @@ class OrderHelper extends AbstractHelper
         $shipmentTaxPercent = $this->getShipmentTaxPercent($order->getStore());
         $shippingAmount     = $order->getShippingInclTax();
 
-        if (!empty($shipmentTaxPercent) && $shippingAmount > 0) {
+        if ($shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);

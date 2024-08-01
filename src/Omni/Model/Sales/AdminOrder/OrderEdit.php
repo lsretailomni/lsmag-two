@@ -342,7 +342,7 @@ class OrderEdit
     {
         $itemsToCancel      = [];
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
-        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
+        $shipmentTaxPercent = $this->orderHelper->getShipmentTaxPercent($order->getStore());
         $shippingAmount     = $order->getShippingInclTax();
         if ($shippingAmount > 0 && $order->getShippingInclTax() != $oldOrder->getShippingInclTax()) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
