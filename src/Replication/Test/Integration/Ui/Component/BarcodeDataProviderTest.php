@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Ui\Component;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommItemsTask;
+use \Ls\Replication\Cron\ReplEcommBarcodesTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -16,12 +16,12 @@ use Magento\TestFramework\Fixture\DataFixture;
  * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
-class ItemDataProviderTest extends AbstractDataProvider
+class BarcodeDataProviderTest extends AbstractDataProvider
 {
-    public const DATA_SOURCE_NAME = 'ls_repl_grids_item_data_source';
-    public const PRIMARY_FIELD_NAME = 'repl_item_id';
+    public const DATA_SOURCE_NAME = 'ls_repl_grids_barcode_data_source';
+    public const PRIMARY_FIELD_NAME = 'repl_barcode_id';
     public const REQUEST_FIELD_NAME = 'id';
-    public const SEARCH_FIELD_NAME = 'nav_id';
+    public const SEARCH_FIELD_NAME = 'ItemId';
 
     public function getSearchFieldName()
     {
@@ -61,7 +61,7 @@ class ItemDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplEcommBarcodesTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -87,7 +87,7 @@ class ItemDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplEcommBarcodesTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -95,8 +95,7 @@ class ItemDataProviderTest extends AbstractDataProvider
     public function testFilteredData(array $filterData)
     {
         $data = $this->applyFilterToData($filterData);
-        $this->assertEquals(1, $data['totalRecords']);
-        $this->assertCount(1, $data['items']);
+        $this->assertGreaterThanOrEqual(1, $data['items']);
         $this->assertEquals($filterData['value'], $data['items'][0][self::SEARCH_FIELD_NAME]);
     }
 }

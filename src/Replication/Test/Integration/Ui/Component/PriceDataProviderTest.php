@@ -7,47 +7,45 @@ use \Ls\Core\Model\LSR;
 use \Ls\Replication\Cron\ReplEcommPricesTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
-use Magento\Framework\Api\Filter;
-use Magento\Framework\ObjectManagerInterface;
-use Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider;
 use Magento\Store\Model\ScopeInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
-use Magento\TestFramework\Helper\Bootstrap;
-use PHPUnit\Framework\TestCase;
 
 /**
  * @magentoAppArea adminhtml
  * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
-class PriceDataProviderTest extends TestCase
+class PriceDataProviderTest extends AbstractDataProvider
 {
     public const DATA_SOURCE_NAME = 'ls_repl_grids_item_price_data_source';
+    public const PRIMARY_FIELD_NAME = 'repl_price_id';
+    public const REQUEST_FIELD_NAME = 'id';
+    public const SEARCH_FIELD_NAME = 'ItemId';
 
-    public $providerData = [
-        'name'             => self::DATA_SOURCE_NAME,
-        'primaryFieldName' => 'repl_price_id',
-        'requestFieldName' => 'id',
-    ];
-
-    /** @var ObjectManagerInterface */
-    public $objectManager;
-
-    public $dataProvider;
-
-    /**
-     * @inheritdoc
-     */
-    protected function setUp(): void
+    public function getSearchFieldName()
     {
-        parent::setUp();
+        return self::SEARCH_FIELD_NAME;
+    }
 
-        $this->objectManager    = Bootstrap::getObjectManager();
-        $this->dataProvider = $this->objectManager->create(
-            DataProvider::class,
-            $this->providerData
-        );
+    public function getSearchFieldValue()
+    {
+        return AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID;
+    }
+
+    public function getDataSourceName()
+    {
+        return self::DATA_SOURCE_NAME;
+    }
+
+    public function getPrimaryFieldName()
+    {
+        return self::PRIMARY_FIELD_NAME;
+    }
+
+    public function getRequestFieldName()
+    {
+        return self::REQUEST_FIELD_NAME;
     }
 
     #[
@@ -59,6 +57,7 @@ class PriceDataProviderTest extends TestCase
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
         DataFixture(
             FlatDataReplication::class,
             [
@@ -69,13 +68,11 @@ class PriceDataProviderTest extends TestCase
     ]
     public function testData()
     {
-        $data = $this->dataProvider->getData();
-
-        $this->assertGreaterThanOrEqual(1, $data['items']);
+        $this->assertDataExists();
     }
 
     /**
-     * @dataProvider getDataByNavIdProvider
+     * @dataProvider getDataByIdProvider
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
@@ -86,6 +83,7 @@ class PriceDataProviderTest extends TestCase
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
         DataFixture(
             FlatDataReplication::class,
             [
@@ -96,24 +94,9 @@ class PriceDataProviderTest extends TestCase
     ]
     public function testFilteredData(array $filterData)
     {
-        $filter = $this->objectManager->create(
-            Filter::class,
-            ['data' => $filterData]
-        );
-        $this->dataProvider->addFilter($filter);
-        $data = $this->dataProvider->getData();
+        $data = $this->applyFilterToData($filterData);
         $this->assertEquals(1, $data['totalRecords']);
         $this->assertCount(1, $data['items']);
-        $this->assertEquals($filterData['value'], $data['items'][0]['ItemId']);
-    }
-
-    /**
-     * @return array
-     */
-    public function getDataByNavIdProvider(): array
-    {
-        return [
-            [['condition_type' => 'eq', 'field' => 'ItemId', 'value' => '40180']],
-        ];
+        $this->assertEquals($filterData['value'], $data['items'][0][self::SEARCH_FIELD_NAME]);
     }
 }

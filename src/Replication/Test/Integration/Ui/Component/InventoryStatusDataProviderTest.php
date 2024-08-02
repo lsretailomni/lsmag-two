@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Ui\Component;
 
 use \Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommItemsTask;
+use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -16,12 +16,12 @@ use Magento\TestFramework\Fixture\DataFixture;
  * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
-class ItemDataProviderTest extends AbstractDataProvider
+class InventoryStatusDataProviderTest extends AbstractDataProvider
 {
-    public const DATA_SOURCE_NAME = 'ls_repl_grids_item_data_source';
-    public const PRIMARY_FIELD_NAME = 'repl_item_id';
+    public const DATA_SOURCE_NAME = 'ls_repl_grids_inventory_status_data_source';
+    public const PRIMARY_FIELD_NAME = 'repl_inv_status_id';
     public const REQUEST_FIELD_NAME = 'id';
-    public const SEARCH_FIELD_NAME = 'nav_id';
+    public const SEARCH_FIELD_NAME = 'ItemId';
 
     public function getSearchFieldName()
     {
@@ -61,7 +61,7 @@ class ItemDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplEcommInventoryStatusTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
@@ -87,7 +87,7 @@ class ItemDataProviderTest extends AbstractDataProvider
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplEcommInventoryStatusTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )

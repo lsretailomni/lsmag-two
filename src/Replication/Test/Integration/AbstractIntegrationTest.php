@@ -31,6 +31,11 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_FLAT_REPLICATION_CRON_NAME = 'repl_item';
     public const SAMPLE_MAGENTO_REPLICATION_CRON_NAME = 'repl_products';
 
+    public const DEFAULT_BATCH_SIZE = '5000';
+
+    public const SAMPLE_SIMPLE_ITEM_ID = '40180';
+    public const SAMPLE_CONFIGURABLE_ITEM_ID = '40020';
+
     /**
      * Get environment variable value given name
      *
