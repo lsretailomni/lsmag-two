@@ -2088,39 +2088,31 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Added objects to result factory based on collection
+     *
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      * @param $resultFactory
-     * @param null $fieldToSelect
+     * @param $fieldToSort
      * @return mixed
      */
     public function setCollection(
         $collection,
         SearchCriteriaInterface $criteria,
         $resultFactory,
-        $fieldToSort = null
+        $fieldToSort = []
     ) {
-        foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = $conditions = [];
-            foreach ($filter_group->getFilters() as $filter) {
-                $condition    = $filter->getConditionType() ?: 'eq';
-                $fields[]     = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
+        if (!empty($fieldToSort)) {
+            foreach ($fieldToSort as $field) {
+                $collection->getSelect()->order('main_table.' . $field);
             }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        if ($fieldToSort) {
-            $collection->getSelect()->order('main_table.' . $fieldToSort);
-            $collection->getSelect()->order('main_table.QtyPrUom');
         }
 
         // @codingStandardsIgnoreEnd
         $collection->getSelect()->limit($criteria->getPageSize());
 
-        /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
 
         $objects = [];
         foreach ($collection as $object_model) {
