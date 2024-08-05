@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Controller\Adminhtml\Grids;
 
-use Ls\Core\Model\LSR;
-use \Ls\Replication\Cron\ReplEcommItemsTask;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
-use Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
@@ -16,7 +16,7 @@ use Magento\TestFramework\Fixture\DataFixture;
  * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
-class ItemTest extends AbstractGrid
+class AttributeValueTest extends AbstractGrid
 {
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
@@ -31,18 +31,18 @@ class ItemTest extends AbstractGrid
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommItemsTask::class,
+                'job_url' => ReplEcommAttributeValueTask::class,
                 'scope'   => ScopeInterface::SCOPE_WEBSITE
             ]
         )
     ]
     public function testExecute(): void
     {
-        $this->assertPageName(__('Item Replication'));
+        $this->assertPageName(__('Attribute Value Replication'));
     }
 
     public function getUri()
     {
-        return 'backend/ls_repl/grids/item';
+        return 'backend/ls_repl/grids/attributevalue';
     }
 }
