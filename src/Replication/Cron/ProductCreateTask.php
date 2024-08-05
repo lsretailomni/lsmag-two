@@ -2307,6 +2307,19 @@ class ProductCreateTask
 
         if ($stockItem = $configProduct->getExtensionAttributes()->getStockItem()) {
             $stockItem->setIsInStock(1)->setStockStatusChangedAutomaticallyFlag(1);
+
+            $itemStock = $this->replicationHelper->getInventoryStatus(
+                $configProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                $this->webStoreId,
+                $this->getScopeId()
+            );
+
+            if (fmod((float)$itemStock->getQuantity(), 1) != 0) {
+                $stockItem
+                    ->setIsQtyDecimal(1)
+                    ->setUseConfigMinSaleQty(0)
+                    ->setMinSaleQty(0.1);
+            }
         }
         try {
             $this->productRepository->save($configProduct);

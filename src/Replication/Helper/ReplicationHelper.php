@@ -3264,9 +3264,13 @@ class ReplicationHelper extends AbstractHelper
                         0,
                         ($replInvStatus->getQuantity() > 0) ? 1 : 0
                     );
+
                     $productIds[]            = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]);
                 }
             }
+
+            $pId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$sku]);
+            $this->setQtyUsesDecimal(array_shift($pId), $replInvStatus);
 
             $sourceItems[$sku] = $this->getSourceItemGivenData(
                 $sku,
@@ -3287,6 +3291,39 @@ class ReplicationHelper extends AbstractHelper
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * updated qty_uses_decimal for an item
+     *
+     * @param $productId
+     * @param $replInvStatus
+     * @return void
+     */
+    public function setQtyUsesDecimal($productId, $replInvStatus)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems            = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $productStockItem = array_shift($allItems);
+
+        if (fmod((float)$replInvStatus->getQuantity(), 1) != 0) {
+            $productStockItem
+                ->setIsQtyDecimal(1)
+                ->setUseConfigMinSaleQty(0)
+                ->setMinSaleQty(0.1);
+        } else {
+            $productStockItem
+                ->setIsQtyDecimal(0)
+                ->setUseConfigMinSaleQty(1);
+        }
+
+        $this->stockItemRepository->save($productStockItem);
     }
 
     /**
