@@ -39,6 +39,12 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_OFFER_NO = 'P1001';
     public const SAMPLE_VALIDATION_PERIOD_ID = '16';
     public const SAMPLE_HIERARCHY_NAV_ID = 'FASHIONCOSMETICS';
+    public const SAMPLE_UOM = 'PCS';
+    public const SAMPLE_VENDOR_ID = '44010';
+    public const SAMPLE_BUSINESS_TAX_GROUP = 'DOMESTIC';
+    public const SAMPLE_CASH_TENDER_TYPE_ID = '1';
+    public const SAMPLE_STORE_ID = 'S0001';
+    public const SAMPLE_LANGUAGE_CDOE = 'ENG';
     /**
      * Get environment variable value given name
      *
