@@ -429,7 +429,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
     const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
+
+    const LSR_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/discount_validation_msg';
+    const LSR_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/giftcard_validation_msg';
     const LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_discount_validation_active';
+    const LSR_GRAPHQL_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_discount_validation_msg';
+    const LSR_GRAPHQL_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_giftcard_validation_msg';
     const LSR_ORDER_EDIT = 'ls_mag/ls_order_management/order_edit';
     const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
@@ -1147,30 +1152,84 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Discount validation before order placement is enabled or not
      *
-     * @return mixed
+     * @return array|string
      * @throws NoSuchEntityException
      */
     public function isDiscountValidationEnabled()
     {
-        return $this->scopeConfig->getValue(
+        return $this->getStoreConfig(
             self::LSR_DISCOUNT_VALIDATION_ACTIVE,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getStore()->getWebsiteId()
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired discount
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getDiscountValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_DISCOUNT_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired gift card
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_GIFTCARD_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
         );
     }
 
     /**
      * Graphql Discount validation before order placement is enabled or not
      *
-     * @return mixed
+     * @return array|string
      * @throws NoSuchEntityException
      */
     public function isGraphqlDiscountValidationEnabled()
     {
-        return $this->scopeConfig->getValue(
+        return $this->getStoreConfig(
             self::LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getStore()->getWebsiteId()
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired discount
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGraphqlDiscountValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_GRAPHQL_DISCOUNT_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired gift card
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGraphqlGiftCardValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_GRAPHQL_GIFTCARD_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
         );
     }
 
