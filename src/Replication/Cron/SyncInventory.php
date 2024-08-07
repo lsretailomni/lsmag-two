@@ -54,6 +54,10 @@ class SyncInventory extends ProductCreateTask
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
+                $this->webStoreId = $this->lsr->getStoreConfig(
+                    LSR::SC_SERVICE_STORE,
+                    $store->getId()
+                );
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $this->replicationHelper->updateConfigValue(
                         $this->replicationHelper->getDateTime(),
@@ -64,7 +68,8 @@ class SyncInventory extends ProductCreateTask
                     $this->logger->debug('Running SyncInventory Task for store ' . $this->store->getName());
                     $productInventoryBatchSize = $this->replicationHelper->getProductInventoryBatchSize();
                     $filters                   = [
-                        ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+                        ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
+                        ['field' => 'main_table.StoreId', 'value' => $this->webStoreId, 'condition_type' => 'eq']
                     ];
                     $criteria                  = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                         $filters,
@@ -250,7 +255,8 @@ class SyncInventory extends ProductCreateTask
     {
         if (!$this->remainingRecords) {
             $filters    = [
-                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+                ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
+                ['field' => 'main_table.StoreId', 'value' => $this->webStoreId, 'condition_type' => 'eq']
             ];
             $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias(
                 $filters,
