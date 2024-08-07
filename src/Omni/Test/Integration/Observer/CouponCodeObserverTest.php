@@ -97,8 +97,6 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
     public const LS_MAG_ENABLE = '1';
-    public const INVALID_COUPON_CODE = 'COUPON_CODE';
-    public const VALID_COUPON_CODE = 'COUP0119';
     public const RETAIL_INDUSTRY = 'retail';
 
     /**
@@ -166,7 +164,7 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
         $this->request->setPost(
-            new Parameters(['coupon_code' => self::VALID_COUPON_CODE])
+            new Parameters(['coupon_code' => AbstractIntegrationTest::VALID_COUPON_CODE])
         );
 
         // Execute the observer method
@@ -182,7 +180,7 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
         $this->assertNotNull($quoteId);
         $this->assertNotNull($this->checkoutSession->getQuote()->getCouponCode());
         $this->assertEquals(
-            self::VALID_COUPON_CODE,
+            AbstractIntegrationTest::VALID_COUPON_CODE,
             $this->checkoutSession->getQuote()->getCouponCode()
         );
     }
@@ -235,7 +233,7 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
         $this->request->setPost(
-            new Parameters(['coupon_code' => self::INVALID_COUPON_CODE])
+            new Parameters(['coupon_code' => AbstractIntegrationTest::INVALID_COUPON_CODE])
         );
 
         // Execute the observer method
@@ -252,7 +250,7 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
         $this->assertNotNull($quoteId);
         $this->assertEmpty($this->checkoutSession->getQuote()->getCouponCode());
         $this->assertNotEquals(
-            self::INVALID_COUPON_CODE,
+            AbstractIntegrationTest::INVALID_COUPON_CODE,
             $this->checkoutSession->getQuote()->getCouponCode()
         );
     }

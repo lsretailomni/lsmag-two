@@ -90,6 +90,7 @@ class CustomerOrder implements DataFixtureInterface
         $quote    = $data['cart1'];
         $address  = $data['address'];
         $payment  = $data['payment'];
+        $shipment = (isset($data['shipment'])) ? $data['shipment'] : 'flatrate_flatrate';
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($quote->getId());
@@ -113,7 +114,7 @@ class CustomerOrder implements DataFixtureInterface
             ->setCheckoutMethod(Onepage::METHOD_CUSTOMER)
             ->setReservedOrderId('55555555')
             ->setEmail($customer->getEmail());
-        $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
+        $quote->getShippingAddress()->setShippingMethod($shipment);
         $quote->getShippingAddress()->setCollectShippingRates(true);
         $quote->getShippingAddress()->collectShippingRates();
         $quote->getPayment()->setMethod($payment);
