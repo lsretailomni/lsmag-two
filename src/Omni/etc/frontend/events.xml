@@ -49,4 +49,8 @@
     <event name="payment_method_is_active">
         <observer name="Ls_Omni_Payment_Method_Is_Active" instance="Ls\Omni\Observer\HidePaymentMethods"/>
     </event>
+    <!-- Adding onesignal js file -->
+    <event name="layout_load_before">
+        <observer name="ls_js_layout_render" instance="Ls\Omni\Observer\LayoutRenderObserver" />
+    </event>
 </config>
