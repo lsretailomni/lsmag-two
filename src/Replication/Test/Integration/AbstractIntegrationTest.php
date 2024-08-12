@@ -45,6 +45,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_CASH_TENDER_TYPE_ID = '1';
     public const SAMPLE_STORE_ID = 'S0001';
     public const SAMPLE_LANGUAGE_CDOE = 'ENG';
+    public const SAMPLE_LOG_FILE_NAME = 'omniclient.log';
     /**
      * Get environment variable value given name
      *
