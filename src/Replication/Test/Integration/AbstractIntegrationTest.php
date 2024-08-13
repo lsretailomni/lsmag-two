@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration;
 
+use Ls\Core\Model\LSR;
 use Magento\Authorization\Model\UserContextInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerRegistry;
@@ -46,6 +47,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_STORE_ID = 'S0001';
     public const SAMPLE_LANGUAGE_CDOE = 'ENG';
     public const SAMPLE_LOG_FILE_NAME = 'omniclient.log';
+    public const SAMPLE_HARD_ATTRIBUTE = 'SIZE';
     /**
      * Get environment variable value given name
      *
