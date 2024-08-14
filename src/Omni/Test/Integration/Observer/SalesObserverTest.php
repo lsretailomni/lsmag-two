@@ -215,11 +215,10 @@ class SalesObserverTest extends AbstractIntegrationTest
     /**
      * Show payment methods enabled for click and collect shipping method from admin
      */
-    public function testUpdatedGrandTotalForNonVirtualProduct()
+    public function testUpdatedGrandTotalForShippingAddressType()
     {
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
-        $cart2    = $this->fixtures->get('cart2');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());

@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Test\Integration\Observer;
 
-use Laminas\Stdlib\Parameters;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
@@ -28,7 +27,6 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
 
 class CartObserverTest extends AbstractIntegrationTest
@@ -88,8 +86,6 @@ class CartObserverTest extends AbstractIntegrationTest
      */
     public $cartObserver;
 
-//    public const PASSWORD = 'Signout369';
-//    public const EMAIL = 'deep.ret@lsretail.com';
     public const PASSWORD = 'Nmswer123@';
     public const EMAIL = 'pipeline_retail@lsretail.com';
     public const USERNAME = 'mc_57745';
