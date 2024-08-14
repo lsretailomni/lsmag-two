@@ -240,6 +240,53 @@ class AttributesCreateTaskTest extends TestCase
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
+        Config(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+    ]
+    public function testHardAttributeOptionUpdate()
+    {
+        $this->executeUntilReady();
+
+        $extendedVariant = $this->getFirstExtendedVariant();
+        if ($extendedVariant) {
+            $this->replExtendedVariantValueRepository->save(
+                $extendedVariant->addData(['is_updated' => 1, 'LogicalOrder' => 1000])
+            );
+
+            $this->cron->execute();
+
+            $this->eavConfig->clear();
+            $eavAttribute = $this->eavConfig->getAttribute(
+                Product::ENTITY,
+                $this->replicationHelper->formatAttributeCode(AbstractIntegrationTest::SAMPLE_HARD_ATTRIBUTE)
+            );
+
+            $sortOrderChanged = false;
+            foreach ($eavAttribute->getSource()->getAllOptions() as $index => $option) {
+                if ($option['label'] == $extendedVariant->getValue() &&
+                    $index == count($eavAttribute->getSource()->getAllOptions()) - 1) {
+                    $sortOrderChanged = true;
+                }
+            }
+
+            $this->assertTrue($sortOrderChanged);
+        }
+    }
+
+    /**
+     * @magentoDbIsolation enabled
+     */
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE)
     ]
     public function testSoftAttributeRemoval()
@@ -314,6 +361,23 @@ class AttributesCreateTaskTest extends TestCase
         $this->assertTrue($isVisualSwatch);
     }
 
+    public function getFirstExtendedVariant()
+    {
+        $storeId  = $this->storeManager->getStore()->getId();
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'Code', 'value' => AbstractIntegrationTest::SAMPLE_HARD_ATTRIBUTE, 'condition_type' => 'eq'],
+            [
+                'field'          => 'ItemId',
+                'value'          => AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+
+        return current($this->replExtendedVariantValueRepository->getList($criteria)->getItems());
+    }
+
     public function addDummySoftAttributeOptionData()
     {
         $option = $this->replAttributeOptionValueInterfaceFactory->create();
@@ -360,13 +424,13 @@ class AttributesCreateTaskTest extends TestCase
 
         $option->addData(
             [
-                'Description' => self::SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL,
-                'nav_id' => self::SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL,
-                'IsDeleted' => 0,
+                'Description'      => self::SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL,
+                'nav_id'           => self::SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL,
+                'IsDeleted'        => 0,
                 'ShortDescription' => self::SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL,
-                'UnitDecimals' => 0,
-                'scope'     => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'  => $this->storeManager->getStore()->getId()
+                'UnitDecimals'     => 0,
+                'scope'            => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id'         => $this->storeManager->getStore()->getId()
             ]
         );
         $this->replUnitOfMeasureRepository->save($option);
@@ -379,17 +443,17 @@ class AttributesCreateTaskTest extends TestCase
         $option->addData(
             [
                 'AllowCustomersToSelectPageSize' => '0',
-                'Blocked' => '0',
-                'DisplayOrder' => '1',
-                'nav_id' => self::SAMPLE_NEW_VENDOR_ATTRIBUTE_OPTION_LABEL,
-                'IsDeleted' => 0,
-                'ManufacturerTemplateId' => 1,
-                'Name' => self::SAMPLE_NEW_VENDOR_ATTRIBUTE_OPTION_LABEL,
-                'PageSize' => '4',
-                'PictureId' => 0,
-                'Published' => 1,
-                'scope'     => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'  => $this->storeManager->getStore()->getId()
+                'Blocked'                        => '0',
+                'DisplayOrder'                   => '1',
+                'nav_id'                         => self::SAMPLE_NEW_VENDOR_ATTRIBUTE_OPTION_LABEL,
+                'IsDeleted'                      => 0,
+                'ManufacturerTemplateId'         => 1,
+                'Name'                           => self::SAMPLE_NEW_VENDOR_ATTRIBUTE_OPTION_LABEL,
+                'PageSize'                       => '4',
+                'PictureId'                      => 0,
+                'Published'                      => 1,
+                'scope'                          => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id'                       => $this->storeManager->getStore()->getId()
             ]
         );
         $this->replVendorRepository->save($option);
