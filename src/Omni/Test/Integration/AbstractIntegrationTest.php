@@ -35,6 +35,7 @@ class AbstractIntegrationTest extends TestCase
     public const CS_URL = 'http://20.6.33.78/commerceservice';
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
+    public const LS_MAG_ENABLE = '1';
     public const ENABLED = '1';
     public const LSR_ID = 'MSO000012';
     public const LSR_CARD_ID = '10051';
@@ -43,6 +44,7 @@ class AbstractIntegrationTest extends TestCase
     public const VALID_COUPON_CODE = 'COUP0119';
     public const INVALID_COUPON_CODE = 'COUPON_CODE';
     public const LICENSE = '25.0.0.0 (25.0.0.0 [18056] CL:True EL:True)';
+    public const RETAIL_INDUSTRY = 'retail';
 
     public function testExecute()
     {
