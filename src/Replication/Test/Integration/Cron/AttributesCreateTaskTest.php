@@ -196,58 +196,6 @@ class AttributesCreateTaskTest extends TestCase
         );
     }
 
-    public function executeUntilReady()
-    {
-        for ($i = 0; $i < 3; $i++) {
-            $this->cron->execute();
-
-            if ($this->isReady($this->storeManager->getStore()->getId())) {
-                break;
-            }
-        }
-    }
-
-    public function isReady($scopeId)
-    {
-        $cronAttributeCheck                = $this->lsr->getConfigValueFromDb(
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE,
-            ScopeInterface::SCOPE_STORES,
-            $scopeId
-        );
-        $cronAttributeVariantCheck         = $this->lsr->getConfigValueFromDb(
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
-            ScopeInterface::SCOPE_STORES,
-            $scopeId
-        );
-        $cronAttributeStandardVariantCheck = $this->lsr->getConfigValueFromDb(
-            LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
-            ScopeInterface::SCOPE_STORES,
-            $scopeId
-        );
-        return $cronAttributeCheck && $cronAttributeVariantCheck && $cronAttributeStandardVariantCheck;
-    }
-
-    public function assertCronSuccess($cronConfigs, $storeId)
-    {
-        foreach ($cronConfigs as $config) {
-            $this->assertTrue((bool)$this->lsr->getConfigValueFromDb(
-                $config,
-                ScopeInterface::SCOPE_STORES,
-                $storeId
-            ));
-        }
-    }
-
-    public function assertAttributesCreated($attributes)
-    {
-        foreach ($attributes as $attribute) {
-            $eavAttribute = $this->eavConfig->getAttribute(Product::ENTITY, $attribute);
-
-            $this->assertNotNull($eavAttribute);
-            $this->assertNotEmpty($eavAttribute->getSource()->getAllOptions());
-        }
-    }
-
     /**
      * @magentoDbIsolation enabled
      */
@@ -276,6 +224,94 @@ class AttributesCreateTaskTest extends TestCase
         $this->assertAddHardAttributeOption();
         $this->assertAddUomAttributeOption();
         $this->assertAddVendorAttributeOption();
+    }
+
+    /**
+     * @magentoDbIsolation enabled
+     */
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE)
+    ]
+    public function testSoftAttributeRemoval()
+    {
+        $storeId       = $this->storeManager->getStore()->getId();
+        $filters       = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'Code', 'value' => AbstractIntegrationTest::SAMPLE_ATTRIBUTE_CODE, 'condition_type' => 'eq']
+        ];
+        $criteria      = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $replAttribute = current($this->replAttributeRepositoryInterface->getList($criteria)->getItems());
+
+        if ($replAttribute) {
+            $this->replAttributeRepositoryInterface->save(
+                $replAttribute->addData(['is_updated' => 1, 'IsDeleted' => 1])
+            );
+
+            $this->cron->execute();
+
+            $this->eavConfig->clear();
+            $eavAttribute = $this->eavConfig->getAttribute(
+                Product::ENTITY,
+                $this->replicationHelper->formatAttributeCode(AbstractIntegrationTest::SAMPLE_ATTRIBUTE_CODE)
+            );
+
+            $isVisibleOnFront = $eavAttribute->getData('is_visible_on_front');
+
+            $this->assertEquals(0, $isVisibleOnFront);
+        }
+    }
+
+    /**
+     * @magentoDbIsolation enabled
+     */
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
+        Config(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+    ]
+    public function testVisualSwatchAttribute()
+    {
+        $this->cron->execute();
+
+        $this->eavConfig->clear();
+        $eavAttribute   = $this->eavConfig->getAttribute(
+            Product::ENTITY,
+            AbstractIntegrationTest::SAMPLE_VISUAL_SWATCH_ATTRIBUTE_CODE
+        );
+        $additionalData = $eavAttribute->getData('additional_data');
+        $isVisualSwatch = false;
+
+        if (!empty($additionalData)) {
+            $additionalData = $this->serializer->unserialize($additionalData);
+
+            if (is_array($additionalData) &&
+                isset($additionalData[Swatch::SWATCH_INPUT_TYPE_KEY]) &&
+                $additionalData[Swatch::SWATCH_INPUT_TYPE_KEY] == Swatch::SWATCH_INPUT_TYPE_VISUAL
+            ) {
+                $isVisualSwatch = true;
+            }
+        }
+
+        $this->assertTrue($isVisualSwatch);
     }
 
     public function addDummySoftAttributeOptionData()
@@ -419,91 +455,55 @@ class AttributesCreateTaskTest extends TestCase
         $this->assertTrue($newOptionExists);
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
-    #[
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
-        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE)
-    ]
-    public function testSoftAttributeRemoval()
+    public function executeUntilReady()
     {
-        $storeId       = $this->storeManager->getStore()->getId();
-        $filters       = [
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-            ['field' => 'Code', 'value' => AbstractIntegrationTest::SAMPLE_ATTRIBUTE_CODE, 'condition_type' => 'eq']
-        ];
-        $criteria      = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
-        $replAttribute = current($this->replAttributeRepositoryInterface->getList($criteria)->getItems());
-
-        if ($replAttribute) {
-            $this->replAttributeRepositoryInterface->save(
-                $replAttribute->addData(['is_updated' => 1, 'IsDeleted' => 1])
-            );
-
+        for ($i = 0; $i < 3; $i++) {
             $this->cron->execute();
 
-            $this->eavConfig->clear();
-            $eavAttribute = $this->eavConfig->getAttribute(
-                Product::ENTITY,
-                $this->replicationHelper->formatAttributeCode(AbstractIntegrationTest::SAMPLE_ATTRIBUTE_CODE)
-            );
-
-            $isVisibleOnFront = $eavAttribute->getData('is_visible_on_front');
-
-            $this->assertEquals(0, $isVisibleOnFront);
+            if ($this->isReady($this->storeManager->getStore()->getId())) {
+                break;
+            }
         }
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
-    #[
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
-        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
-        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
-        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
-        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
-        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
-        Config(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, AbstractIntegrationTest::ENABLED, 'store', 'default'),
-    ]
-    public function testVisualSwatchAttribute()
+    public function isReady($scopeId)
     {
-        $this->cron->execute();
-
-        $this->eavConfig->clear();
-        $eavAttribute   = $this->eavConfig->getAttribute(
-            Product::ENTITY,
-            AbstractIntegrationTest::SAMPLE_VISUAL_SWATCH_ATTRIBUTE_CODE
+        $cronAttributeCheck                = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+            ScopeInterface::SCOPE_STORES,
+            $scopeId
         );
-        $additionalData = $eavAttribute->getData('additional_data');
-        $isVisualSwatch = false;
+        $cronAttributeVariantCheck         = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+            ScopeInterface::SCOPE_STORES,
+            $scopeId
+        );
+        $cronAttributeStandardVariantCheck = $this->lsr->getConfigValueFromDb(
+            LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT,
+            ScopeInterface::SCOPE_STORES,
+            $scopeId
+        );
+        return $cronAttributeCheck && $cronAttributeVariantCheck && $cronAttributeStandardVariantCheck;
+    }
 
-        if (!empty($additionalData)) {
-            $additionalData = $this->serializer->unserialize($additionalData);
-
-            if (is_array($additionalData) &&
-                isset($additionalData[Swatch::SWATCH_INPUT_TYPE_KEY]) &&
-                $additionalData[Swatch::SWATCH_INPUT_TYPE_KEY] == Swatch::SWATCH_INPUT_TYPE_VISUAL
-            ) {
-                $isVisualSwatch = true;
-            }
+    public function assertCronSuccess($cronConfigs, $storeId)
+    {
+        foreach ($cronConfigs as $config) {
+            $this->assertTrue((bool)$this->lsr->getConfigValueFromDb(
+                $config,
+                ScopeInterface::SCOPE_STORES,
+                $storeId
+            ));
         }
+    }
 
-        $this->assertTrue($isVisualSwatch);
+    public function assertAttributesCreated($attributes)
+    {
+        foreach ($attributes as $attribute) {
+            $eavAttribute = $this->eavConfig->getAttribute(Product::ENTITY, $attribute);
+
+            $this->assertNotNull($eavAttribute);
+            $this->assertNotEmpty($eavAttribute->getSource()->getAllOptions());
+        }
     }
 }
