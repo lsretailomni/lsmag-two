@@ -46,6 +46,7 @@ class AbstractIntegrationTest extends TestCase
     public const LICENSE = '25.0.0.0 (25.0.0.0 [18056] CL:True EL:True)';
     public const RETAIL_INDUSTRY = 'retail';
     public const LSR_ORDER_EDIT = 1;
+    public const TENDER_TYPE_MAPPINGS = '{"item1":{"payment_method":"checkmo","tender_type":"2"},"item2":{"payment_method":"giftcard","tender_type":"8"},"item3":{"payment_method":"loypoints","tender_type":"11"},"_1695705730821_821":{"payment_method":"braintree","tender_type":"3"},"_1706667787416_416":{"payment_method":"paypal_express","tender_type":"3"},"_1719205594553_553":{"payment_method":"refund","tender_type":"17"}}';
 
     public function testExecute()
     {

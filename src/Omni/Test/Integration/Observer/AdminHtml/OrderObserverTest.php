@@ -9,7 +9,7 @@ namespace Ls\Omni\Test\Integration\Observer\AdminHtml;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
-use Ls\Omni\Helper\ItemHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Observer\Adminhtml\OrderObserver;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
@@ -127,6 +127,7 @@ class OrderObserverTest extends AbstractIntegrationTest
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
         Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
+        Config(LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING, self::TENDER_TYPE_MAPPINGS, 'store', 'default'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -189,7 +190,6 @@ class OrderObserverTest extends AbstractIntegrationTest
     public function testAdminOrderEdit()
     {
         $customer = $this->fixtures->get('customer');
-        $cart1    = $this->fixtures->get('cart1');
         $cart2    = $this->fixtures->get('cart2');
         $order    = $this->fixtures->get('order');
         $order2   = $this->fixtures->get('order2');
@@ -199,6 +199,7 @@ class OrderObserverTest extends AbstractIntegrationTest
 
         $relationParentId = $order->getId();
         $order2->setRelationParentId($relationParentId);
+        $order2->setEditIncrement(1);
         $this->event->setData('order', $order2);
 
         $oneList = $this->basketHelper->getOneListAdmin(
@@ -225,7 +226,7 @@ class OrderObserverTest extends AbstractIntegrationTest
             $statusMessages[] = $messageObj->getText();
         }
         $this->assertTrue(
-            in_array('Order request has been sent to LS Central successfully', $statusMessages),
+            in_array('Order edit request has been sent to LS Central successfully', $statusMessages),
             'Expected validation message is generated.'
         );
     }
