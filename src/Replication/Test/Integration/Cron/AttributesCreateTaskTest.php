@@ -3,27 +3,29 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Replication\Api\Data\ReplAttributeOptionValueInterfaceFactory;
-use Ls\Replication\Api\Data\ReplExtendedVariantValueInterfaceFactory;
-use Ls\Replication\Api\Data\ReplUnitOfMeasureInterfaceFactory;
-use Ls\Replication\Api\Data\ReplVendorInterfaceFactory;
-use Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
-use Ls\Replication\Api\ReplAttributeRepositoryInterface;
-use Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
-use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
-use Ls\Replication\Api\ReplVendorRepositoryInterface;
-use Ls\Replication\Cron\AttributesCreateTask;
-use Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
-use Ls\Replication\Cron\ReplEcommAttributeTask;
-use Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
-use Ls\Replication\Cron\ReplEcommItemVariantsTask;
-use Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
-use Ls\Replication\Cron\ReplEcommVendorTask;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Test\Fixture\FlatDataReplication;
-use Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\Data\ReplAttributeOptionValueInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplExtendedVariantValueInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplUnitOfMeasureInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplVendorInterfaceFactory;
+use \Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeRepositoryInterface;
+use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplItemVariantRepositoryInterface;
+use \Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplVendorRepositoryInterface;
+use \Ls\Replication\Cron\AttributesCreateTask;
+use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
+use \Ls\Replication\Cron\ReplEcommAttributeTask;
+use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
+use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
+use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
+use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
+use \Ls\Replication\Cron\ReplEcommVendorTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Test\Fixture\FlatDataReplication;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Model\Product;
 use Magento\Framework\ObjectManagerInterface;
 use Magento\Framework\Serialize\Serializer\Json;
@@ -97,6 +99,8 @@ class AttributesCreateTaskTest extends TestCase
     public const SAMPLE_NEW_HARD_ATTRIBUTE_OPTION_LABEL = '100';
     public const SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL = 'TEST_UOM';
     public const SAMPLE_NEW_VENDOR_ATTRIBUTE_OPTION_LABEL = 'Test Vendor';
+
+    public const SAMPLE_NEW_STANDARD_VARIANT_OPTION_LABEL = 'Test/Product';
     /** @var ObjectManagerInterface */
     public $objectManager;
 
@@ -130,6 +134,10 @@ class AttributesCreateTaskTest extends TestCase
 
     public $replVendorRepository;
 
+    public $replItemVariantInterfaceFactory;
+
+    public $replItemVariantRepository;
+
     /**
      * @inheritdoc
      */
@@ -151,6 +159,8 @@ class AttributesCreateTaskTest extends TestCase
         $this->replExtendedVariantValueRepository          = $this->objectManager->get(ReplExtendedVariantValueRepository::class);
         $this->replUnitOfMeasureInterfaceFactory           = $this->objectManager->get(ReplUnitOfMeasureInterfaceFactory::class);
         $this->replVendorInterfaceFactory                  = $this->objectManager->get(ReplVendorInterfaceFactory::class);
+        $this->replItemVariantInterfaceFactory             = $this->objectManager->get(ReplItemVariantInterfaceFactory::class);
+        $this->replItemVariantRepository                   = $this->objectManager->get(ReplItemVariantRepositoryInterface::class);
         $this->replUnitOfMeasureRepository                 = $this->objectManager->get(ReplUnitOfMeasureRepositoryInterface::class);
         $this->replVendorRepository                        = $this->objectManager->get(ReplVendorRepositoryInterface::class);
     }
@@ -217,11 +227,13 @@ class AttributesCreateTaskTest extends TestCase
         $this->executeUntilReady();
         $this->addDummySoftAttributeOptionData();
         $this->addDummyHardAttributeOptionData();
+        $this->addDummyStandardVariantAttributeOptionData();
         $this->addDummyUomAttributeOptionData();
         $this->addDummyVendorAttributeOptionData();
         $this->cron->execute();
         $this->assertAddSoftAttributeOption();
         $this->assertAddHardAttributeOption();
+        $this->assertAddStardardVariantAttributeOption();
         $this->assertAddUomAttributeOption();
         $this->assertAddVendorAttributeOption();
     }
@@ -418,6 +430,24 @@ class AttributesCreateTaskTest extends TestCase
         $this->replExtendedVariantValueRepository->save($option);
     }
 
+    public function addDummyStandardVariantAttributeOptionData()
+    {
+        $option = $this->replItemVariantInterfaceFactory->create();
+
+        $option->addData(
+            [
+                'Description' => 'Test Product',
+                'Description2' => self::SAMPLE_NEW_STANDARD_VARIANT_OPTION_LABEL,
+                'IsDeleted' => 0,
+                'ItemId'  => 4444,
+                'VariantId' => 000,
+                'scope'     => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id'  => $this->storeManager->getStore()->getId()
+            ]
+        );
+        $this->replItemVariantRepository->save($option);
+    }
+
     public function addDummyUomAttributeOptionData()
     {
         $option = $this->replUnitOfMeasureInterfaceFactory->create();
@@ -494,6 +524,16 @@ class AttributesCreateTaskTest extends TestCase
         $newOptionExists = $this->givenOptionExistsInAttribute(
             $this->replicationHelper->formatAttributeCode(AbstractIntegrationTest::SAMPLE_HARD_ATTRIBUTE),
             self::SAMPLE_NEW_HARD_ATTRIBUTE_OPTION_LABEL
+        );
+
+        $this->assertTrue($newOptionExists);
+    }
+
+    public function assertAddStardardVariantAttributeOption()
+    {
+        $newOptionExists = $this->givenOptionExistsInAttribute(
+            $this->replicationHelper->formatAttributeCode(LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE),
+            self::SAMPLE_NEW_STANDARD_VARIANT_OPTION_LABEL
         );
 
         $this->assertTrue($newOptionExists);
