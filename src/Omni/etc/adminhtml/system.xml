@@ -352,12 +352,60 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="discount_validation_active" translate="label" type="select" sortOrder="9" showInWebsite="1" showInDefault="1" showInStore="1">
-                    <label>Enable discount Validation Before Order Creation</label>
+                    <label>Enable discount &amp; applied gift card Validation Before Order Creation</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="discount_validation_msg"
+                       translate="label"
+                       type="text"
+                       sortOrder="10"
+                       showInWebsite="1"
+                       showInDefault="1"
+                       showInStore="1">
+                    <label>Error message for expired discounts</label>
+                    <depends>
+                        <field id="*/*/discount_validation_active">1</field>
+                    </depends>
+                </field>
+                <field id="giftcard_validation_msg"
+                       translate="label"
+                       type="text"
+                       sortOrder="10"
+                       showInWebsite="1"
+                       showInDefault="1"
+                       showInStore="1">
+                    <label>Error message for expired gift card</label>
+                    <depends>
+                        <field id="*/*/discount_validation_active">1</field>
+                    </depends>
+                </field>
                 <field id="graphql_discount_validation_active" translate="label" type="select" sortOrder="10" showInWebsite="1" showInDefault="1" showInStore="1">
-                    <label>Enable discount Validation Before Order Creation via GraphQl</label>
+                    <label>Enable discount &amp; applied gift card Validation Before Order Creation via GraphQl</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="graphql_discount_validation_msg"
+                       translate="label"
+                       type="text"
+                       sortOrder="10"
+                       showInWebsite="1"
+                       showInDefault="1"
+                       showInStore="1">
+                    <label>Error message for expired discounts</label>
+                    <depends>
+                        <field id="*/*/graphql_discount_validation_active">1</field>
+                    </depends>
+                </field>
+                <field id="graphql_giftcard_validation_msg"
+                       translate="label"
+                       type="text"
+                       sortOrder="10"
+                       showInWebsite="1"
+                       showInDefault="1"
+                       showInStore="1">
+                    <label>Error message for expired gift card</label>
+                    <depends>
+                        <field id="*/*/graphql_discount_validation_active">1</field>
+                    </depends>
                 </field>
                 <field id="order_edit" translate="label" type="select" sortOrder="11" showInWebsite="1" showInDefault="1" showInStore="1">
                     <label>Enable order edit</label>
