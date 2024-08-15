@@ -45,6 +45,7 @@ class AbstractIntegrationTest extends TestCase
     public const INVALID_COUPON_CODE = 'COUPON_CODE';
     public const LICENSE = '25.0.0.0 (25.0.0.0 [18056] CL:True EL:True)';
     public const RETAIL_INDUSTRY = 'retail';
+    public const LSR_ORDER_EDIT = 1;
 
     public function testExecute()
     {
