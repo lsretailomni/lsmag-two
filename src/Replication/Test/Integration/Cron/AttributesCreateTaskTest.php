@@ -373,6 +373,37 @@ class AttributesCreateTaskTest extends TestCase
         $this->assertTrue($isVisualSwatch);
     }
 
+    /**
+     * @magentoDbIsolation enabled
+     */
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
+        Config(LSR::CONVERT_ATTRIBUTE_TO_VISUAL_SWATCH, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+    ]
+    public function testLsrDown()
+    {
+        $this->executeUntilReady();
+        $storeId = $this->storeManager->getStore()->getId();
+
+        $this->assertCronSuccess(
+            [
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
+                LSR::SC_SUCCESS_CRON_ATTRIBUTE_STANDARD_VARIANT
+            ],
+            $storeId,
+            false
+        );
+    }
+
     public function getFirstExtendedVariant()
     {
         $storeId  = $this->storeManager->getStore()->getId();
@@ -590,14 +621,22 @@ class AttributesCreateTaskTest extends TestCase
         return $cronAttributeCheck && $cronAttributeVariantCheck && $cronAttributeStandardVariantCheck;
     }
 
-    public function assertCronSuccess($cronConfigs, $storeId)
+    public function assertCronSuccess($cronConfigs, $storeId, $status = true)
     {
         foreach ($cronConfigs as $config) {
-            $this->assertTrue((bool)$this->lsr->getConfigValueFromDb(
-                $config,
-                ScopeInterface::SCOPE_STORES,
-                $storeId
-            ));
+            if (!$status) {
+                $this->assertFalse((bool)$this->lsr->getConfigValueFromDb(
+                    $config,
+                    ScopeInterface::SCOPE_STORES,
+                    $storeId
+                ));
+            } else {
+                $this->assertTrue((bool)$this->lsr->getConfigValueFromDb(
+                    $config,
+                    ScopeInterface::SCOPE_STORES,
+                    $storeId
+                ));
+            }
         }
     }
 
