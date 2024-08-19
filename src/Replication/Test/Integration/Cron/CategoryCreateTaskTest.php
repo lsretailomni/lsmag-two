@@ -150,10 +150,29 @@ class CategoryCreateTaskTest extends TestCase
         $this->assertMainHierarchyNode(self::SAMPLE_SUB_HIERARCHY_NODE_NAV_ID);
     }
 
-    public function assertMainHierarchyNode($navId)
+    /**
+     * @magentoDbIsolation enabled
+     */
+    #[
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'website'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'website'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
+        Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
+        Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
+        Config(LSR::SC_REPLICATION_HIERARCHY_CODE, AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID, 'store', 'default')
+    ]
+    public function testUpdateHierarchyNodeParent()
     {
-        $category = $this->getCategory($navId, true);
-        $this->assertTrue($category !== false);
+        $this->executeUntilReady();
+        $this->updateHierarchyNodeData();
+        $this->cron->execute();
+        $this->assertHierarchyNodeUpdate();
     }
 
     /**
@@ -321,5 +340,47 @@ class CategoryCreateTaskTest extends TestCase
             ]
         );
         $this->replHierarchyNodeRepository->save($option);
+    }
+
+    public function updateHierarchyNodeData()
+    {
+        $storeId  = $this->storeManager->getStore()->getId();
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            [
+                'field' => 'HierarchyCode',
+                'value' => AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID,
+                'condition_type' => 'eq'
+            ],
+            [
+                'field'          => 'nav_id',
+                'value'          => AbstractIntegrationTest::SAMPLE_UPDATE_HIERARCHY_NODE_NAV_ID,
+                'condition_type' => 'eq'
+            ]
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+
+        $item = current($this->replHierarchyNodeRepository->getList($criteria)->getItems());
+
+        $this->replHierarchyNodeRepository->save($item->addData(
+            [
+                'ParentNode' => AbstractIntegrationTest::SAMPLE_HIERARCHY_NODE_NAV_ID,
+                'is_updated' => 1
+            ]
+        ));
+    }
+
+    public function assertHierarchyNodeUpdate()
+    {
+        $category = $this->getCategory(AbstractIntegrationTest::SAMPLE_UPDATE_HIERARCHY_NODE_NAV_ID, true);
+        $parentCategory = $this->getCategory(AbstractIntegrationTest::SAMPLE_HIERARCHY_NODE_NAV_ID, true);
+
+        $this->assertEquals($parentCategory->getId(), $category->getParentId());
+    }
+
+    public function assertMainHierarchyNode($navId)
+    {
+        $category = $this->getCategory($navId, true);
+        $this->assertTrue($category !== false);
     }
 }
