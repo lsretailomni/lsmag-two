@@ -30,7 +30,7 @@ class LayoutRenderObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         if ($this->lsr->isPushNotificationsEnabled()) {
-            $observer->getLayout()->getUpdate()->addHandle('custom_handle');
+            $observer->getLayout()->getUpdate()->addHandle('add_onesignal_sdk');
         }
 
         return $observer;
