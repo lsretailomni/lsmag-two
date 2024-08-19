@@ -461,11 +461,7 @@ class CategoryCreateTask
             ['field' => 'main_table.scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
-            [
-                'field' => 'second.store_id',
-                'value' => !$this->storeManager->hasSingleStore() ? $this->store->getId() : 0,
-                'condition_type' => 'eq'
-            ],
+            ['field' => 'second.store_id', 'value' => $this->store->getId(), 'condition_type' => 'eq'],
         ];
         $criteria     = $this->replicationHelper->buildCriteriaGetDeletedOnlyWithAlias($filters, 100);
         $collection   = $this->replHierarchyNodeCollectionFactory->create();
@@ -477,7 +473,6 @@ class CategoryCreateTask
             'value'
         );
         $collection->getSelect()->distinct(true);
-        $sql = $collection->getSelect()->__toString();
         if ($collection->getSize() > 0) {
             /** @var ReplHierarchyNode $hierarchyNode */
             foreach ($collection as $hierarchyNode) {
