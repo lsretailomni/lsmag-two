@@ -3354,16 +3354,13 @@ class ReplicationHelper extends AbstractHelper
                 break;
             }
         }
-        if ($parentStockItem->getIsInStock() !== $childrenIsInStock) {
-            $parentStockItem
-                ->setStockStatusChangedAuto(1)
-                ->setStockStatusChangedAutomaticallyFlag(1);
 
-            if (!$this->isSingleSourceMode->execute()) {
-                $parentStockItem->setIsInStock($childrenIsInStock);
-            }
-            $this->stockItemRepository->save($parentStockItem);
-        }
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1)
+            ->setIsInStock((int) $childrenIsInStock);
+
+        $this->stockItemRepository->save($parentStockItem);
     }
 
     /**
