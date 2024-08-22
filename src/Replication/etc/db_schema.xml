@@ -1,5 +1,50 @@
 <?xml version="1.0"?>
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+  <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="ReplEcommStoreTenderTypes">
+    <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
+    <column xsi:type="text" name="AboveMinimumTenderId" nullable="true" comment="AboveMinimumTenderId"/>
+    <column xsi:type="int" name="AllowOverTender" padding="11" nullable="true" comment="AllowOverTender"/>
+    <column xsi:type="int" name="AllowUnderTender" padding="11" nullable="true" comment="AllowUnderTender"/>
+    <column xsi:type="int" name="AllowVoiding" padding="11" nullable="true" comment="AllowVoiding"/>
+    <column xsi:type="text" name="ChangeTenderId" nullable="true" comment="ChangeTenderId"/>
+    <column xsi:type="int" name="CountingRequired" padding="11" nullable="true" comment="CountingRequired"/>
+    <column xsi:type="int" name="ForeignCurrency" padding="11" nullable="true" comment="ForeignCurrency"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
+    <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" nullable="true" comment="MaximumOverTenderAmount"/>
+    <column xsi:type="decimal" name="MinimumChangeAmount" scale="4" precision="20" nullable="true" comment="MinimumChangeAmount"/>
+    <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
+    <column xsi:type="text" name="OmniTenderTypeId" nullable="true" comment="OmniTenderTypeId"/>
+    <column xsi:type="int" name="OpenDrawer" padding="11" nullable="true" comment="OpenDrawer"/>
+    <column xsi:type="int" name="ReturnAllowed" padding="11" nullable="true" comment="ReturnAllowed"/>
+    <column xsi:type="decimal" name="Rounding" scale="4" precision="20" nullable="true" comment="Rounding"/>
+    <column xsi:type="int" name="RoundingMethode" padding="11" nullable="true" comment="RoundingMethode"/>
+    <column xsi:type="text" name="StoreID" nullable="true" comment="StoreID"/>
+    <column xsi:type="int" name="TenderFunction" padding="11" nullable="true" comment="TenderFunction"/>
+    <column xsi:type="varchar" name="TenderTypeId" length="200" nullable="true" comment="TenderTypeId"/>
+    <column xsi:type="int" name="ValidOnMobilePOS" padding="11" nullable="true" comment="ValidOnMobilePOS"/>
+    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_store_tender_type_id"/>
+    </constraint>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID">
+      <column name="TenderTypeId"/>
+    </index>
+    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPE_ID">
+      <column name="scope_id"/>
+    </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
+  </table>
   <table name="ls_replication_repl_tax_setup" resource="default" engine="innodb" comment="ReplEcommTaxSetup">
     <column xsi:type="int" name="repl_tax_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_tax_setup_id"/>
     <column xsi:type="text" name="BusinessTaxGroup" nullable="true" comment="BusinessTaxGroup"/>
@@ -1902,51 +1947,6 @@
       <column name="IsDeleted"/>
     </index>
     <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_COUNTRY_CODE_IDENTITY_VALUE">
-      <column name="identity_value"/>
-    </constraint>
-  </table>
-  <table name="ls_replication_repl_store_tender_type" resource="default" engine="innodb" comment="ReplEcommStoreTenderTypes">
-    <column xsi:type="int" name="repl_store_tender_type_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_store_tender_type_id"/>
-    <column xsi:type="text" name="AboveMinimumTenderId" nullable="true" comment="AboveMinimumTenderId"/>
-    <column xsi:type="int" name="AllowOverTender" padding="11" nullable="true" comment="AllowOverTender"/>
-    <column xsi:type="int" name="AllowUnderTender" padding="11" nullable="true" comment="AllowUnderTender"/>
-    <column xsi:type="int" name="AllowVoiding" padding="11" nullable="true" comment="AllowVoiding"/>
-    <column xsi:type="text" name="ChangeTenderId" nullable="true" comment="ChangeTenderId"/>
-    <column xsi:type="int" name="CountingRequired" padding="11" nullable="true" comment="CountingRequired"/>
-    <column xsi:type="int" name="ForeignCurrency" padding="11" nullable="true" comment="ForeignCurrency"/>
-    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
-    <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" nullable="true" comment="MaximumOverTenderAmount"/>
-    <column xsi:type="decimal" name="MinimumChangeAmount" scale="4" precision="20" nullable="true" comment="MinimumChangeAmount"/>
-    <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
-    <column xsi:type="text" name="OmniTenderTypeId" nullable="true" comment="OmniTenderTypeId"/>
-    <column xsi:type="int" name="OpenDrawer" padding="11" nullable="true" comment="OpenDrawer"/>
-    <column xsi:type="int" name="ReturnAllowed" padding="11" nullable="true" comment="ReturnAllowed"/>
-    <column xsi:type="decimal" name="Rounding" scale="4" precision="20" nullable="true" comment="Rounding"/>
-    <column xsi:type="int" name="RoundingMethode" padding="11" nullable="true" comment="RoundingMethode"/>
-    <column xsi:type="text" name="StoreID" nullable="true" comment="StoreID"/>
-    <column xsi:type="int" name="TenderFunction" padding="11" nullable="true" comment="TenderFunction"/>
-    <column xsi:type="varchar" name="TenderTypeId" length="200" nullable="true" comment="TenderTypeId"/>
-    <column xsi:type="int" name="ValidOnMobilePOS" padding="11" nullable="true" comment="ValidOnMobilePOS"/>
-    <column xsi:type="text" name="scope" nullable="true" comment="scope"/>
-    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="scope_id"/>
-    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
-    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
-    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
-    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
-    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
-    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
-    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
-    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
-    <constraint xsi:type="primary" referenceId="PRIMARY">
-      <column name="repl_store_tender_type_id"/>
-    </constraint>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_TENDERTYPEID">
-      <column name="TenderTypeId"/>
-    </index>
-    <index indexType="btree" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_SCOPE_ID">
-      <column name="scope_id"/>
-    </index>
-    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_STORE_TENDER_TYPE_IDENTITY_VALUE">
       <column name="identity_value"/>
     </constraint>
   </table>

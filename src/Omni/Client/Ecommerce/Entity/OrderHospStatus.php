@@ -34,6 +34,11 @@ class OrderHospStatus
     protected $ProductionTime = null;
 
     /**
+     * @property string $QueueCounter
+     */
+    protected $QueueCounter = null;
+
+    /**
      * @property string $ReceiptNo
      */
     protected $ReceiptNo = null;
@@ -113,6 +118,24 @@ class OrderHospStatus
     public function getProductionTime()
     {
         return $this->ProductionTime;
+    }
+
+    /**
+     * @param string $QueueCounter
+     * @return $this
+     */
+    public function setQueueCounter($QueueCounter)
+    {
+        $this->QueueCounter = $QueueCounter;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQueueCounter()
+    {
+        return $this->QueueCounter;
     }
 
     /**
