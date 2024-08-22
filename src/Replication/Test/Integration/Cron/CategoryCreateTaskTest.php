@@ -43,7 +43,6 @@ class CategoryCreateTaskTest extends TestCase
 
     public const SAMPLE_SUB_HIERARCHY_NODE_NAV_ID = 'TEST_SUB_NODE';
 
-    /** @var ObjectManagerInterface */
     public $objectManager;
 
     public $cron;
@@ -54,18 +53,12 @@ class CategoryCreateTaskTest extends TestCase
 
     public $replicationHelper;
 
-    /** @var CollectionFactory */
     public $collectionFactory;
 
-    /** @var ReplHierarchyNodeRepository */
     public $replHierarchyNodeRepository;
 
-    /** @var CategoryRepositoryInterface */
     public $categoryRepository;
 
-    /**
-     * @var ReplHierarchyNodeInterfaceFactory
-     */
     public $replHierarchyNodeInterfaceFactory;
 
     /**
