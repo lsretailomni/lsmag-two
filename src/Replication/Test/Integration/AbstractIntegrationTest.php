@@ -19,6 +19,7 @@ class AbstractIntegrationTest extends TestCase
     public const DEFAULT_BATCH_SIZE = '5000';
     public const SAMPLE_SIMPLE_ITEM_ID = '40180';
     public const SAMPLE_CONFIGURABLE_ITEM_ID = '40020';
+    public const SAMPLE_CONFIGURABLE_VARIANT_ID = '000';
     public const SAMPLE_ATTRIBUTE_CODE = 'FABRIC';
     public const SAMPLE_COUNTRY_CODE = 'IS';
     public const SAMPLE_OFFER_NO = 'P1001';

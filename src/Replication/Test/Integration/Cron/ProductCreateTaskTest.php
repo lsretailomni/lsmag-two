@@ -4,43 +4,43 @@ declare(strict_types=1);
 namespace Ls\Replication\Test\Integration\Cron;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Replication\Api\Data\ReplHierarchyNodeInterfaceFactory;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
-use Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
-use Ls\Replication\Api\ReplItemRepositoryInterface;
-use Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface;
-use Ls\Replication\Cron\AttributesCreateTask;
-use Ls\Replication\Cron\CategoryCreateTask;
-use Ls\Replication\Cron\ProductCreateTask;
-use Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
-use Ls\Replication\Cron\ReplEcommAttributeTask;
-use Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use Ls\Replication\Cron\ReplEcommBarcodesTask;
-use Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
-use Ls\Replication\Cron\ReplEcommHierarchyLeafTask;
-use Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
-use Ls\Replication\Cron\ReplEcommImageLinksTask;
-use Ls\Replication\Cron\ReplEcommInventoryStatusTask;
-use Ls\Replication\Cron\ReplEcommItemsTask;
-use Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask;
-use Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask;
-use Ls\Replication\Cron\ReplEcommItemVariantsTask;
-use Ls\Replication\Cron\ReplEcommPricesTask;
-use Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
-use Ls\Replication\Cron\ReplEcommVendorTask;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Replication\Model\ReplItem;
-use Ls\Replication\Test\Fixture\FlatDataReplication;
-use Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\Data\ReplHierarchyNodeInterfaceFactory;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
+use \Ls\Replication\Api\ReplHierarchyNodeRepositoryInterface as ReplHierarchyNodeRepository;
+use \Ls\Replication\Api\ReplItemRepositoryInterface;
+use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface;
+use \Ls\Replication\Cron\AttributesCreateTask;
+use \Ls\Replication\Cron\CategoryCreateTask;
+use \Ls\Replication\Cron\ProductCreateTask;
+use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
+use \Ls\Replication\Cron\ReplEcommAttributeTask;
+use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
+use \Ls\Replication\Cron\ReplEcommBarcodesTask;
+use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
+use \Ls\Replication\Cron\ReplEcommHierarchyLeafTask;
+use \Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
+use \Ls\Replication\Cron\ReplEcommImageLinksTask;
+use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
+use \Ls\Replication\Cron\ReplEcommItemsTask;
+use \Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask;
+use \Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask;
+use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
+use \Ls\Replication\Cron\ReplEcommPricesTask;
+use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
+use \Ls\Replication\Cron\ReplEcommVendorTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Model\ReplItem;
+use \Ls\Replication\Test\Fixture\FlatDataReplication;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product\Attribute\Source\Status;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\App\ResourceConnection;
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Fixture\Config;
@@ -314,6 +314,69 @@ class ProductCreateTaskTest extends TestCase
 
         $this->assertSimpleProducts($simpleProduct);
         $this->assertConfigurableProducts($configurableProduct);
+
+        $this->updateProducts();
+    }
+
+    public function updateProducts()
+    {
+        $storeId        = $this->storeManager->getStore()->getId();
+        $replItemConf   = $this->getReplItem(AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID, $storeId);
+        $replItemSimple = $this->getReplItem(AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID, $storeId);
+        $replVariant    = $this->getVariant(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            $storeId,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+        );
+        $this->updateReplItemData($replItemSimple);
+        $this->updateReplItemData($replItemConf);
+        $this->updateVariantItemData($replVariant);
+        $this->executeUntilReady($this->cron, [
+            LSR::SC_SUCCESS_CRON_PRODUCT
+        ]);
+
+        $configurableProduct = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
+        $simpleProduct = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
+        $this->assertSimpleProducts($simpleProduct);
+        $this->assertConfigurableProducts($configurableProduct);
+    }
+
+    public function updateReplItemData($replItemSimple)
+    {
+        $replItemSimple->addData(
+            [
+                'Description'   => $replItemSimple->getDescription() . ' custom',
+                'BlockedOnECom' => 1,
+                'is_updated'    => 1
+            ]
+        );
+
+        $this->replItemRespository->save($replItemSimple);
+    }
+
+    public function updateVariantItemData($replItemSimple)
+    {
+        $replItemSimple->addData(
+            [
+                'Description'   => $replItemSimple->getDescription() . ' custom',
+                'BlockedOnECom' => 1,
+                'is_updated'    => 1
+            ]
+        );
+
+        $this->replItemVariantRegistrationRepository->save($replItemSimple);
     }
 
     public function assertSimpleProducts($simpleProduct)
@@ -326,7 +389,7 @@ class ProductCreateTaskTest extends TestCase
     public function assertConfigurableProducts($configurableProduct)
     {
         $this->assertTrue($configurableProduct->getTypeId() == Configurable::TYPE_CODE);
-        $this->assertVariantsCount($configurableProduct);
+        $this->assertVariants($configurableProduct);
         $this->assertAssignedCategories($configurableProduct);
         $this->assertCustomAttributes($configurableProduct);
     }
@@ -334,18 +397,19 @@ class ProductCreateTaskTest extends TestCase
     public function assertCustomAttributes($product)
     {
         $storeId = $this->storeManager->getStore()->getId();
-        $itemId = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
 
-        $filters = [
-            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
-        ];
-
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
-        /** @var ReplItem $item */
-        $item = current($this->replItemRespository->getList($searchCriteria)->getItems());
+        $item         = $this->getReplItem($itemId, $storeId);
         $itemBarcodes = $this->cron->_getBarcode($item->getNavId());
+        $this->assertTrue($product->getData('name') == $item->getDescription());
+        $this->assertTrue($product->getData('meta_title') == $item->getDescription());
+        $this->assertTrue($product->getData('description') == $item->getDetails());
+        $this->assertTrue(
+            (bool)($product->getData('status') ==
+            $item->getBlockedOnECom() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
+        );
         $this->assertTrue($product->getData('uom') == $item->getBaseUnitOfMeasure());
+        $this->assertEqualsCanonicalizing($product->getWebsiteIds(), [$this->storeManager->getStore()->getWebsiteId()]);
         $this->assertTrue($product->getData(LSR::LS_TARIFF_NO_ATTRIBUTE_CODE) == $item->getTariffNo());
         $this->assertTrue($product->getData(LSR::LS_ITEM_PRODUCT_GROUP) == $item->getProductGroupId());
         $this->assertTrue($product->getData(LSR::LS_ITEM_CATEGORY) == $item->getItemCategoryCode());
@@ -369,36 +433,48 @@ class ProductCreateTaskTest extends TestCase
         }
     }
 
-    public function assertVariantsCount($configurableProduct)
+    public function assertVariants($configurableProduct)
     {
-        $itemId    = $configurableProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-        $storeId   = $this->storeManager->getStore()->getId();
-        $filters1  = [
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-            [
-                'field'          => 'ItemId',
-                'value'          => $itemId,
-                'condition_type' => 'eq'
-            ]
-        ];
-        $criteria1 = $this->replicationHelper->buildCriteriaForDirect($filters1, -1);
+        $storeId  = $this->storeManager->getStore()->getId();
+        $itemId   = $configurableProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $replItem = $this->getReplItem($itemId, $storeId);
 
-        $filters2  = [
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
-            [
-                'field'          => 'ItemId',
-                'value'          => $itemId,
-                'condition_type' => 'eq'
-            ]
-        ];
-        $criteria2 = $this->replicationHelper->buildCriteriaForDirect($filters2, -1);
-
-        $itemUomCount = count($this->replItemUomRepository->getList($criteria2)->getItems());
-
-        $variantRegistrationCount = count($this->replItemVariantRegistrationRepository->getList($criteria1)->getItems());
+        $uoms                     = $this->replicationHelper->getUomCodes($itemId, $storeId);
+        $itemUomCount             = count($uoms[$itemId]);
+        $variants                 = $this->getVariant($itemId, $storeId);
+        $variantRegistrationCount = count($variants);
         $associatedProductIds     = $configurableProduct->getTypeInstance()->getUsedProductIds($configurableProduct);
 
         $this->assertEquals($itemUomCount * $variantRegistrationCount, count($associatedProductIds));
+
+        if (!empty($uoms) && !empty($variants)) {
+            foreach ($uoms[$itemId] as $uom) {
+                foreach ($variants as $variant) {
+                    $productData = null;
+                    try {
+                        $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                            $itemId,
+                            $variant->getVariantId(),
+                            $uom,
+                            'global'
+                        );
+                    } catch (Exception $exception) {
+                    }
+                    $this->assertNotNull($productData);
+                    $uomDescription = $this->replicationHelper->getUomDescriptionGivenCodeAndScopeId($uom, $storeId);
+                    $name           = $this->cron->getNameForVariant($variant, $replItem);
+                    $name           = $this->cron->getNameForUom($name, $uomDescription);
+
+                    $this->assertTrue($productData->getData('name') == $name);
+                    $this->assertTrue($productData->getData('meta_title') == $name);
+                    $this->assertTrue($productData->getData('description') == $replItem->getDetails());
+                    $this->assertTrue(
+                        (bool)($productData->getData('status') ==
+                        $variant->getBlockedOnECom() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
+                    );
+                }
+            }
+        }
     }
 
     public function assertAssignedCategories($product)
@@ -493,7 +569,8 @@ class ProductCreateTaskTest extends TestCase
 
         foreach ($successStatuses as $successStatus) {
             $status =
-                $status && $this->lsr->getConfigValueFromDb($successStatus, ScopeInterface::SCOPE_STORES, $scopeId);
+                $status && $this->lsr->getConfigValueFromDb($successStatus, ScopeInterface::SCOPE_STORES, $scopeId) &&
+                $successStatus !== LSR::SC_SUCCESS_CRON_PRODUCT;
         }
         return $status;
     }
@@ -526,5 +603,35 @@ class ProductCreateTaskTest extends TestCase
                 ));
             }
         }
+    }
+
+    public function getReplItem($itemId, $storeId)
+    {
+        $filters = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
+        /** @var ReplItem $item */
+        $item = current($this->replItemRespository->getList($searchCriteria)->getItems());
+
+        return $item;
+    }
+
+    public function getVariant($itemId, $storeId, $variantId = null)
+    {
+        if ($variantId == null) {
+            return $this->cron->getProductVariants($itemId);
+        }
+        $filters = [
+            ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq']
+        ];
+
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+
+        return current($this->replItemVariantRegistrationRepository->getList($criteria)->getItems());
     }
 }
