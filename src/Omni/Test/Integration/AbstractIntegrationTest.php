@@ -21,6 +21,7 @@ class AbstractIntegrationTest extends TestCase
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
     public const LS_MAG_ENABLE = '1';
+    public const LS_MAG_DISABLE = '0';
     public const ENABLED = '1';
     public const LSR_ID = 'MSO000012';
     public const LSR_CARD_ID = '10051';

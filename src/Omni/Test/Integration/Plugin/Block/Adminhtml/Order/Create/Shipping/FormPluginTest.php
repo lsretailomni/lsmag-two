@@ -141,8 +141,7 @@ class FormPluginTest extends AbstractIntegrationTest
                 'customer_id' => '$customer.entity_id$'
             ],
             as: 'address'
-        )
-    ,
+        ),
         DataFixture(
             CustomerOrder::class,
             [

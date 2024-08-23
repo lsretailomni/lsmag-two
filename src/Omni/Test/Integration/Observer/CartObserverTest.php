@@ -99,7 +99,7 @@ class CartObserverTest extends AbstractIntegrationTest
     /**
      * @return void
      */
-    protected function setUp(): void
+    public function setUp(): void
     {
         $this->objectManager    = Bootstrap::getObjectManager();
         $this->request          = $this->objectManager->get(HttpRequest::class);
