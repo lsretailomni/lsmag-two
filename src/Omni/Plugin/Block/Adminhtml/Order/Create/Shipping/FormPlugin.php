@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Shipping;
 
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Sales\Block\Adminhtml\Order\Create\Shipping\Method\Form;
@@ -23,15 +24,23 @@ class FormPlugin
     public $lsr;
 
     /**
+     * @var CheckoutSession
+     */
+    private $checkoutSession;
+
+    /**
      * @param Currency $currency
      * @param LSR $lsr
+     * @param CheckoutSession $checkoutSession
      */
     public function __construct(
         Currency $currency,
-        LSR $lsr
+        LSR $lsr,
+        CheckoutSession $checkoutSession
     ) {
         $this->lsr = $lsr;
         $this->currency = $currency;
+        $this->checkoutSession = $checkoutSession;
     }
 
     /**
@@ -47,16 +56,22 @@ class FormPlugin
             LSR::LSR_ORDER_EDIT,
             $subject->getQuote()->getStoreId()
         );
+
         $url = $subject->getCurrentUrl();
-        if ($isOrderEdit && strpos($url, 'order_edit') !== false)  {
-            $carrier           = 'clickandcollect';
-            $quote             = $subject->getQuote();
-            $shippingMethod    = $quote->getShippingAddress()->getShippingMethod();
-            $shippingMethodArr = explode('_', $shippingMethod);
+        if ($isOrderEdit && strpos($url, 'order_edit') !== false) {
+            $carrier        = 'clickandcollect';
+            $quote          = $subject->getQuote();
+            $shippingMethod = $quote->getShippingAddress()->getShippingMethod();
+            $shippingMethodArr = null;
+            $carrierCode = $this->checkoutSession->getData('carrier');
+            if (!empty($shippingMethod)) {
+                $shippingMethodArr = explode('_', $shippingMethod);
+            }
             if (!empty($shippingMethodArr)) {
                 $carrierCode = $shippingMethodArr[0];
+                $this->checkoutSession->setData('carrier', $carrierCode);
             }
-            if ($carrier != $carrierCode && array_key_exists($carrier, $result)) {
+            if (!empty($carrierCode) && $carrier != $carrierCode && array_key_exists($carrier, $result)) {
                 unset($result[$carrier]);
             }
             if (array_key_exists($carrier, $result) && $carrier == $carrierCode) {
