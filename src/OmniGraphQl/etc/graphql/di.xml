@@ -89,6 +89,8 @@
                 <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
                 <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
                 <item name="opening_hours_time_format" xsi:type="string">ls_mag/ls_stores/timeformat</item>
+                <item name="discount_validation_msg" xsi:type="string">ls_mag/ls_order_management/graphql_discount_validation_msg</item>
+                <item name="giftcard_validation_msg" xsi:type="string">ls_mag/ls_order_management/graphql_giftcard_validation_msg</item>
                 <item name="pickup_date_time_slot" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot</item>
                 <item name="delivery_date_time_slot" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/delivery_date_time_slot</item>
                 <item name="pickup_time_interval" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_time_interval</item>
@@ -98,6 +100,8 @@
                 <item name="ls_mag_ls_industry_ls_choose_industry" xsi:type="string">ls_mag/ls_industry/ls_choose_industry</item>
                 <item name="ls_mag_display_stores" xsi:type="string">ls_mag/one_list/display_stores</item>
                 <item name="ls_mag_show_return_policy" xsi:type="string">ls_mag/return_policy/show_return_policy</item>
+                <item name="ls_mag_webhooks_webhooks_notification_type" xsi:type="string">ls_mag/webhooks/webhooks_notification_type</item>
+                <item name="ls_mag_webhooks_push_app_id" xsi:type="string">ls_mag/webhooks/push/app_id</item>
             </argument>
         </arguments>
     </type>

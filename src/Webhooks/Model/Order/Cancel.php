@@ -4,6 +4,7 @@ namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Api\OrderManagementInterface;
 use Magento\Sales\Model\Order\ItemRepository;
 
@@ -62,10 +63,10 @@ class Cancel
         try {
             $this->orderManagement->cancel($orderId);
             $message = Status::SUCCESS_MESSAGE;
-            return $this->helper->outputMessage(true, __($message));
+            return $this->helper->outputMessage(true, $message);
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
-            return $this->helper->outputMessage(false, __($e->getMessage()));
+            return $this->helper->outputMessage(false, $e->getMessage());
         }
     }
 
@@ -75,6 +76,7 @@ class Cancel
      * @param $magOrder
      * @param $items
      * @return array[]
+     * @throws NoSuchEntityException
      */
     public function cancelItems($magOrder, $items)
     {
@@ -91,7 +93,7 @@ class Cancel
                 }
             }
             $message = Status::SUCCESS_MESSAGE;
-            return $this->helper->outputMessage(true, __($message));
+            return $this->helper->outputMessage(true, $message);
         }
 
         return [];

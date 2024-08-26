@@ -12,6 +12,7 @@ use \Ls\Omni\Model\InventoryCatalog\GetParentSkusOfChildrenSkus;
 use \Ls\Replication\Api\Data\ReplItemUnitOfMeasureInterface;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplExtendedVariantValueRepositoryInterface as ReplExtendedVariantValueRepository;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface as ReplItemVariantRegistrationRepository;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface as ReplHierarchyLeafRepository;
 use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface as ReplInvStatusRepository;
@@ -171,7 +172,6 @@ class ReplicationHelper extends AbstractHelper
         "ls_mag/replication/repl_discount_setup"             => [
             "OfferNo",
             "LineNumber",
-            "VariantId",
             "scope_id"
         ],
         "ls_mag/replication/repl_discount_validation"        => ["nav_id", "scope_id"],
@@ -375,6 +375,9 @@ class ReplicationHelper extends AbstractHelper
     /** @var ReplExtendedVariantValueRepository */
     public $extendedVariantValueRepository;
 
+    /** @var ReplItemVariantRegistrationRepository */
+    public $itemVariantRegistrationRepository;
+
     /** @var ReplItemUnitOfMeasure */
     public $replItemUomRepository;
 
@@ -551,6 +554,7 @@ class ReplicationHelper extends AbstractHelper
      * @param ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface
      * @param ConfigurableProTypeModel $configurableProTypeModel
      * @param ReplExtendedVariantValueRepository $extendedVariantValueRepository
+     * @param ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository
      * @param ReplItemUnitOfMeasure $replItemUomRepository
      * @param ReplTaxSetupRepositoryInterface $replTaxSetupRepository
      * @param ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository
@@ -617,6 +621,7 @@ class ReplicationHelper extends AbstractHelper
         ReplAttributeValueRepositoryInterface $replAttributeValueRepositoryInterface,
         ConfigurableProTypeModel $configurableProTypeModel,
         ReplExtendedVariantValueRepository $extendedVariantValueRepository,
+        ReplItemVariantRegistrationRepository $itemVariantRegistrationRepository,
         ReplItemUnitOfMeasure $replItemUomRepository,
         ReplTaxSetupRepositoryInterface $replTaxSetupRepository,
         ReplStoreTenderTypeRepositoryInterface $replStoreTenderTypeRepository,
@@ -681,6 +686,7 @@ class ReplicationHelper extends AbstractHelper
         $this->replAttributeValueRepositoryInterface     = $replAttributeValueRepositoryInterface;
         $this->configurableProTypeModel                  = $configurableProTypeModel;
         $this->extendedVariantValueRepository            = $extendedVariantValueRepository;
+        $this->itemVariantRegistrationRepository         = $itemVariantRegistrationRepository;
         $this->replItemUomRepository                     = $replItemUomRepository;
         $this->replTaxSetupRepository                    = $replTaxSetupRepository;
         $this->replStoreTenderTypeRepository             = $replStoreTenderTypeRepository;
@@ -1636,7 +1642,7 @@ class ReplicationHelper extends AbstractHelper
         );
         $collection->getSelect()->joinInner(
             ['cpw' => 'catalog_product_website'],
-                "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
+            "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
                 " AND cpw.website_id = $websiteId",
             []
         );
@@ -2082,39 +2088,31 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Added objects to result factory based on collection
+     *
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      * @param $resultFactory
-     * @param null $fieldToSelect
+     * @param $fieldToSort
      * @return mixed
      */
     public function setCollection(
         $collection,
         SearchCriteriaInterface $criteria,
         $resultFactory,
-        $fieldToSort = null
+        $fieldToSort = []
     ) {
-        foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = $conditions = [];
-            foreach ($filter_group->getFilters() as $filter) {
-                $condition    = $filter->getConditionType() ?: 'eq';
-                $fields[]     = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
+        if (!empty($fieldToSort)) {
+            foreach ($fieldToSort as $field) {
+                $collection->getSelect()->order('main_table.' . $field);
             }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        if ($fieldToSort) {
-            $collection->getSelect()->order('main_table.' . $fieldToSort);
-            $collection->getSelect()->order('main_table.QtyPrUom');
         }
 
         // @codingStandardsIgnoreEnd
         $collection->getSelect()->limit($criteria->getPageSize());
 
-        /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
 
         $objects = [];
         foreach ($collection as $object_model) {
@@ -3266,9 +3264,13 @@ class ReplicationHelper extends AbstractHelper
                         0,
                         ($replInvStatus->getQuantity() > 0) ? 1 : 0
                     );
+
                     $productIds[]            = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]);
                 }
             }
+
+            $pId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$sku]);
+            $this->setQtyUsesDecimal(array_shift($pId), $replInvStatus);
 
             $sourceItems[$sku] = $this->getSourceItemGivenData(
                 $sku,
@@ -3289,6 +3291,39 @@ class ReplicationHelper extends AbstractHelper
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * updated qty_uses_decimal for an item
+     *
+     * @param $productId
+     * @param $replInvStatus
+     * @return void
+     */
+    public function setQtyUsesDecimal($productId, $replInvStatus)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems            = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $productStockItem = array_shift($allItems);
+
+        if (fmod((float)$replInvStatus->getQuantity(), 1) != 0) {
+            $productStockItem
+                ->setIsQtyDecimal(1)
+                ->setUseConfigMinSaleQty(0)
+                ->setMinSaleQty(0.1);
+        } else {
+            $productStockItem
+                ->setIsQtyDecimal(0)
+                ->setUseConfigMinSaleQty(1);
+        }
+
+        $this->stockItemRepository->save($productStockItem);
     }
 
     /**
@@ -3319,16 +3354,13 @@ class ReplicationHelper extends AbstractHelper
                 break;
             }
         }
-        if ($parentStockItem->getIsInStock() !== $childrenIsInStock) {
-            $parentStockItem
-                ->setStockStatusChangedAuto(1)
-                ->setStockStatusChangedAutomaticallyFlag(1);
 
-            if (!$this->isSingleSourceMode->execute()) {
-                $parentStockItem->setIsInStock($childrenIsInStock);
-            }
-            $this->stockItemRepository->save($parentStockItem);
-        }
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1)
+            ->setIsInStock((int) $childrenIsInStock);
+
+        $this->stockItemRepository->save($parentStockItem);
     }
 
     /**
@@ -3783,5 +3815,28 @@ class ReplicationHelper extends AbstractHelper
     public function getSourceItemsSaveObject()
     {
         return $this->sourceItemsSave;
+    }
+
+    /**
+     * Get variant ids
+     *
+     * @param $itemId
+     * @param $dimension
+     * @param $storeId
+     * @return array
+     */
+    public function getVariantIdsByDimension($itemId, $dimension, $storeId)
+    {
+        $variantIds = [];
+        $searchCriteria = $this->searchCriteriaBuilder->addFilter('VariantDimension1', $dimension)
+            ->addFilter('ItemId', $itemId, 'eq')
+            ->addFilter('scope_id', $storeId, 'eq')
+            ->create();
+        $items = $this->itemVariantRegistrationRepository->getList($searchCriteria)->getItems();
+        foreach ($items as $item) {
+            $variantIds [] = $item->getVariantId();
+        }
+
+        return $variantIds;
     }
 }

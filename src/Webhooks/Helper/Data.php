@@ -75,6 +75,8 @@ class Data
      * @var SerializerJson
      */
     public $jsonSerializer;
+
+
     /**
      * @var ProductRepository
      */
@@ -114,7 +116,7 @@ class Data
         $this->itemHelper            = $itemHelper;
         $this->loyaltyHelper         = $loyaltyHelper;
         $this->jsonSerializer        = $jsonSerializer;
-        $this->productRepository = $productRepository;
+        $this->productRepository     = $productRepository;
     }
 
     /**
@@ -189,9 +191,9 @@ class Data
      * @param mixed $storeId
      * @return string
      */
-    public function getNotificationType($storeId)
+    public function getNotificationType($storeId = null)
     {
-        return $this->lsr->getStoreConfig(LSR::LS_NOTIFICATION_TYPE, $storeId);
+        return $this->lsr->getNotificationType($storeId);
     }
 
     /**
@@ -274,8 +276,8 @@ class Data
      */
     public function getItems($order, $itemsInfo, $linesMerged = true)
     {
-        $items = [];
-        $globalCounter = 0;
+        $items                = [];
+        $globalCounter        = 0;
         $giftCardItemsCounter = 0;
         foreach ($order->getAllVisibleItems() as $orderItem) {
             if ($orderItem->getProductType() == Type::TYPE_BUNDLE) {
@@ -289,7 +291,7 @@ class Data
                     $child->getSku()
                 );
                 $totalAmount = 0;
-                $counter = 0;
+                $counter     = 0;
                 foreach ($itemsInfo as $index => $skuValues) {
                     if ($itemId == $skuValues['ItemId'] && $uom == $skuValues['UnitOfMeasureId'] &&
                         $variantId == $skuValues['VariantId'] && $itemId != $this->getShippingItemId()) {
@@ -298,10 +300,13 @@ class Data
                             if ($giftCardItemsCounter < $this->getGiftCardOrderItemsQty($order) &&
                                 $orderItem->getQtyOrdered() - $orderItem->getQtyInvoiced() > 0
                             ) {
-                                $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
-                                $items[$globalCounter][$itemId]['qty'] = (float)$orderItem->getQtyOrdered();
-                                $items[$globalCounter][$itemId]['amount'] = $orderItem->getPrice();
-                                $items[$globalCounter][$itemId]['item'] = $child;
+                                $items[$globalCounter][$itemId]['itemStatus']           = $child->getStatusId();
+                                $items[$globalCounter][$itemId]['qty']                  = (float)$orderItem->getQtyOrdered();
+                                $items[$globalCounter][$itemId]['amount']               = $orderItem->getPrice();
+                                $items[$globalCounter][$itemId]['amount_with_discount'] =
+                                    $orderItem->getPrice() +
+                                    ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered());
+                                $items[$globalCounter][$itemId]['item']                 = $child;
                                 $giftCardItemsCounter++;
 
                                 if (!$linesMerged) {
@@ -311,7 +316,11 @@ class Data
                             break;
                         }
 
-                        if ($counter >= $orderItem->getQtyOrdered()) {
+                        if ($counter >= $orderItem->getQtyOrdered() ||
+                            (isset($items[$globalCounter][$itemId]['qty']) &&
+                                $items[$globalCounter][$itemId]['qty'] ==
+                                $items[$globalCounter][$itemId]['item']->getQtyOrdered()
+                            )) {
                             continue;
                         }
                         $items[$globalCounter][$itemId]['item'] = $child;
@@ -321,8 +330,10 @@ class Data
                             $items[$globalCounter][$itemId]['qty'] = $skuValues['Quantity'];
                         }
                         if (array_key_exists('Amount', $skuValues)) {
-                            $totalAmount              += $skuValues['Amount'];
-                            $items[$globalCounter][$itemId]['amount'] = $totalAmount;
+                            $totalAmount                                            += $skuValues['Amount'];
+                            $items[$globalCounter][$itemId]['amount_with_discount'] =
+                                $totalAmount + ($orderItem->getLsDiscountAmount() / $orderItem->getQtyOrdered()) * $skuValues['Quantity'];
+                            $items[$globalCounter][$itemId]['amount']               = $totalAmount;
                         }
                         $items[$globalCounter][$itemId]['itemStatus'] = $child->getStatusId();
                         $counter++;
@@ -388,7 +399,7 @@ class Data
         return [
             "data" => [
                 'success' => $status,
-                'message' => __($message)
+                'message' => $message
             ]
         ];
     }
@@ -486,10 +497,39 @@ class Data
             ) {
                 $qty += $line['Quantity'];
                 unset($lines[$index]);
+
+                if ($qty == $orderItem->getQtyToShip()) {
+                    break;
+                }
             }
         }
 
         return $qty;
+    }
+
+    /**
+     * Remove occurrence of item in the lines
+     *
+     * @param $orderItem
+     * @param $lines
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    public function removeFirstOccurrenceOfItem($orderItem, &$lines)
+    {
+        $product = $this->getProductById($orderItem->getProductId());
+
+        foreach ($lines as $index => $line) {
+            $itemId    = $line['ItemId'];
+            $variantId = $line['VariantId'];
+
+            if ($product->getLsrItemId() == $itemId &&
+                $product->getLsrVariantId() == $variantId
+            ) {
+                unset($lines[$index]);
+                break;
+            }
+        }
     }
 
     /**
@@ -558,5 +598,16 @@ class Data
         }
 
         return $qty;
+    }
+
+    /**
+     * Get lsr object
+     *
+     * @return LSR
+     */
+    public function getLsrObject()
+    {
+        return $this->lsr;
+
     }
 }

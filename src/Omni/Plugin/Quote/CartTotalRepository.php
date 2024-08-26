@@ -70,19 +70,21 @@ class CartTotalRepository
         $quoteTotals = $proceed($cartId);
         /** @var Quote $quote */
         $quote = $this->quoteRepository->get($cartId);
-        if ($this->lsr->isLSR($quote->getStoreId())) {
-            $pointsConfig = [
-                'rateLabel' => round(
-                    1 / $this->loyaltyHelper->getPointRate(),
-                    2
-                ),
-                'balance'   => $this->loyaltyHelper->getLoyaltyPointsAvailableToCustomer(),
-            ];
 
-            /** @var TotalsExtensionInterface $totalsExtension */
-            $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
-            $totalsExtension->setLoyaltyPoints($pointsConfig);
-            $quoteTotals->setExtensionAttributes($totalsExtension);
+        if ($this->lsr->isLSR($quote->getStoreId())) {
+            $pointRate = $this->loyaltyHelper->getPointRate();
+
+            if ($pointRate > 0) {
+                $pointsConfig = [
+                    'rateLabel' => $this->loyaltyHelper->formatValue(1 / $pointRate),
+                    'balance'   => $this->loyaltyHelper->getLoyaltyPointsAvailableToCustomer(),
+                ];
+
+                /** @var TotalsExtensionInterface $totalsExtension */
+                $totalsExtension = $quoteTotals->getExtensionAttributes() ?: $this->totalExtensionFactory->create();
+                $totalsExtension->setLoyaltyPoints($pointsConfig);
+                $quoteTotals->setExtensionAttributes($totalsExtension);
+            }
         }
 
         return $quoteTotals;

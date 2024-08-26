@@ -4,6 +4,7 @@ namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Api\DiscountManagementInterface;
+use Ls\Omni\Model\Api\DiscountManagement;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -47,29 +48,6 @@ class PlaceOrderPlugin
     }
 
     /**
-     * After plugin to set custom data in Order response
-     *
-     * @param mixed $subject
-     * @param array $result
-     * @return array
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
-     */
-    public function afterResolve($subject, $result)
-    {
-        if (isset($result['order']) && isset($result['order']['order_number'])) {
-            $order = $this->dataHelper->getOrderByIncrementId($result['order']['order_number']);
-            $result['order']['document_id'] = !empty($order) && $order->getDocumentId() ? $order->getDocumentId() : '';
-            $result['order']['pickup_store_id'] = !empty($order) && $order->getPickupStore() ?
-                $order->getPickupStore() : '';
-            $result['order']['pickup_store_name'] = !empty($order) && $order->getPickupStore() ?
-                $this->dataHelper->getStoreNameById($order->getPickupStore()) : '';
-        }
-
-        return $result;
-    }
-
-    /**
      * Around method to intercept place order mutation
      *
      * @param $subject
@@ -79,7 +57,7 @@ class PlaceOrderPlugin
      * @param ResolveInfo $info
      * @param array|null $value
      * @param array|null $args
-     * @return void
+     * @return array
      * @throws GraphQlInputException
      * @throws NoSuchEntityException
      * @throws LocalizedException
@@ -97,14 +75,43 @@ class PlaceOrderPlugin
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
         }
 
-        if ($this->lsr->isGraphqlDiscountValidationEnabled() &&
-            !$this->discountManagement->checkDiscountValidity($args['input']['cart_id'])
-        ) {
-            throw new GraphQlInputException(
-                __('Unfortunately since your discount is no longer valid your grand total has been updated.')
-            );
+        if ($this->lsr->isGraphqlDiscountValidationEnabled()) {
+            $response = $this->discountManagement->checkDiscountValidity($args['input']['cart_id']);
+            $msg = [];
+
+            foreach ($response as $each) {
+                if ($each['valid'] === false) {
+                    if ($each['type'] === DiscountManagement::DISCOUNT_TYPE) {
+                        $msg[] = __($this->lsr->getGraphqlDiscountValidationMsg())->getText();
+                    } else {
+                        $msg[] = __($this->lsr->getGraphqlGiftCardValidationMsg())->getText();
+                    }
+                }
+            }
+
+            if (!empty($msg)) {
+                throw new GraphQlInputException(
+                    __(implode('', $msg))
+                );
+            }
         }
 
-        return $proceed($field, $context, $info, $value, $args);
+        $result = $proceed($field, $context, $info, $value, $args);
+
+        if (isset($result['order']['order_number'])) {
+            $order = $this->dataHelper->getOrderByIncrementId($result['order']['order_number']);
+
+            if ($this->lsr->isPushNotificationsEnabled() && isset($args['input']['subscription_id'])) {
+                $order->setLsSubscriptionId($args['input']['subscription_id']);
+                $this->dataHelper->saveOrder($order);
+            }
+            $result['order']['document_id'] = !empty($order) && $order->getDocumentId() ? $order->getDocumentId() : '';
+            $result['order']['pickup_store_id'] = !empty($order) && $order->getPickupStore() ?
+                $order->getPickupStore() : '';
+            $result['order']['pickup_store_name'] = !empty($order) && $order->getPickupStore() ?
+                $this->dataHelper->getStoreNameById($order->getPickupStore()) : '';
+        }
+
+        return $result;
     }
 }

@@ -5,6 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
@@ -278,18 +279,18 @@ class BasketHelper extends AbstractHelper
 
         foreach ($quoteItems as $quoteItem) {
             $children = [];
-
+            $isBundle = 0;
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
                 $children = $quoteItem->getChildren();
+                $isBundle = 1;
             } else {
                 $children[] = $quoteItem;
             }
 
             foreach ($children as $child) {
                 if ($child->getProduct()->isInStock()) {
-                    list($itemId, $variantId, $uom, $barCode) = $this->itemHelper->getComparisonValues(
-                        $child->getSku()
-                    );
+                    list($itemId, $variantId, $uom, $barCode) =
+                        $this->itemHelper->getItemAttributesGivenQuoteItem($child);
                     $match              = false;
                     $giftCardIdentifier = $this->lsr->getGiftCardIdentifiers();
 
@@ -303,10 +304,12 @@ class BasketHelper extends AbstractHelper
                         }
                     } else {
                         foreach ($itemsArray as $itemArray) {
-                            if ($itemArray->getItemId() == $itemId &&
+                            if (is_numeric($itemArray->getId()) ?
+                                $itemArray->getId() == $child->getItemId() :
+                                ($itemArray->getItemId() == $itemId &&
                                 $itemArray->getVariantId() == $variantId &&
                                 $itemArray->getUnitOfMeasureId() == $uom &&
-                                $itemArray->getBarcodeId() == $barCode
+                                $itemArray->getBarcodeId() == $barCode)
                             ) {
                                 $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
                                 $match = true;
@@ -315,22 +318,24 @@ class BasketHelper extends AbstractHelper
                         }
                     }
 
-                }
+                    if (!$match) {
+                        // @codingStandardsIgnoreLine
+                        $list_item = (new Entity\OneListItem())
+                            ->setQuantity(
+                                $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
+                                    $quoteItem->getData('qty')
+                            )
+                            ->setItemId($itemId)
+                            ->setId($child->getItemId())
+                            ->setBarcodeId($barCode)
+                            ->setVariantId($variantId)
+                            ->setUnitOfMeasureId($uom)
+                            ->setAmount($quoteItem->getPrice())
+                            ->setPrice($quoteItem->getPrice())
+                            ->setImmutable(true);
 
-                if (!$match) {
-                    // @codingStandardsIgnoreLine
-                    $list_item = (new Entity\OneListItem())
-                        ->setQuantity($quoteItem->getData('qty'))
-                        ->setItemId($itemId)
-                        ->setId($quoteItem->getItemId())
-                        ->setBarcodeId($barCode)
-                        ->setVariantId($variantId)
-                        ->setUnitOfMeasureId($uom)
-                        ->setAmount($quoteItem->getPrice())
-                        ->setPrice($quoteItem->getPrice())
-                        ->setImmutable(true);
-
-                    $itemsArray[] = $list_item;
+                        $itemsArray[] = $list_item;
+                    }
                 }
             }
         }
@@ -1062,29 +1067,82 @@ class BasketHelper extends AbstractHelper
     /**
      * This function is overriding in hospitality module
      *
+     * Get Correct Item Row Total for mini-cart after comparison
+     *
+     * @param $item
+     * @return string
+     * @throws InvalidEnumException
+     * @throws NoSuchEntityException
+     */
+    public function getPrice($item)
+    {
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $rowTotal = $this->getRowTotalBundleProduct($item);
+        } else {
+            $baseUnitOfMeasure = $item->getProduct()->getData('uom');
+            list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
+                $item->getSku()
+            );
+            $price   = $item->getPrice();
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+
+            foreach ($orderLines as $line) {
+                if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                    $price = $line->getPrice();
+                    break;
+                }
+            }
+        }
+
+        return $price;
+    }
+
+    /**
+     * This function is overriding in hospitality module
+     *
      * Get item row discount
      *
      * @param $item
+     * @param array $lines
      * @return float|int
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowDiscount($item)
+    public function getItemRowDiscount($item, $lines = [])
     {
-        $rowDiscount = 0;
-        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-            $item->getSku()
-        );
+        $rowDiscount = $bundleProduct = 0;
 
-        $basketData = $this->getOneListCalculation();
-        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        if (empty($lines)) {
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        } else {
+            $orderLines = $lines;
+        }
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $children      = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
+            $bundleProduct = 1;
+        } else {
+            $children[] = $item;
+        }
 
-        foreach ($orderLines as $line) {
-            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
-                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
-                break;
+        foreach ($children as $child) {
+            foreach ($orderLines as $index => $line) {
+                if (is_numeric($line->getId()) ?
+                    ($child->getItemId() == $line->getId() && $line->getDiscountAmount() > 0) :
+                    ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountAmount() > 0)
+                ) {
+                    $qty = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
+                    $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountAmount()
+                        : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
+                    unset($orderLines[$index]);
+
+                    if (!$bundleProduct) {
+                        break 2;
+                    } else {
+                        break;
+                    }
+                }
             }
         }
 
@@ -1193,6 +1251,8 @@ class BasketHelper extends AbstractHelper
      * Sending request to Central for basket calculation
      *
      * @param $cartId
+     * @return OneListCalculateResponse|Order|null
+     * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1201,12 +1261,15 @@ class BasketHelper extends AbstractHelper
     {
         $oneList = $this->getOneListFromCustomerSession();
         $quote   = $this->quoteRepository->getActive($cartId);
+        $basketData = null;
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);
-            $this->updateBasketAndSaveTotals($oneList, $quote);
+            $basketData = $this->updateBasketAndSaveTotals($oneList, $quote);
             $this->setCalculateBasket(true);
         }
+
+        return $basketData;
     }
 
     /**
@@ -1214,6 +1277,8 @@ class BasketHelper extends AbstractHelper
      *
      * @param $oneList
      * @param $quote
+     * @return OneListCalculateResponse|Order|null
+     * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1226,13 +1291,18 @@ class BasketHelper extends AbstractHelper
         }
 
         $basketData = $this->update($oneList);
-        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-        $cartQuote = $this->checkoutSession->getQuote();
 
-        if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
-            $cartQuote->getLsPointsSpent() > 0) {
-            $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+        if (is_object($basketData)) {
+            $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+            $cartQuote = $this->checkoutSession->getQuote();
+
+            if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
+                $cartQuote->getLsPointsSpent() > 0) {
+                $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+            }
         }
+
+        return $basketData;
     }
 
     /**
@@ -1295,6 +1365,28 @@ class BasketHelper extends AbstractHelper
         }
 
         return $pickupDateTimeslot;
+    }
+
+    /**
+     * Get price include custom options price
+     *
+     * @param $item
+     * @param $price
+     * @return float|int|mixed
+     */
+    public function getPriceAddingCustomOptions($item, $price)
+    {
+        $options = $item->getOptions();
+        if ($options) {
+            foreach ($options as $option) {
+                if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
+                    $price  = $item->getProductType() == Type::TYPE_BUNDLE ?
+                        $item->getRowTotal()  : $item->getPrice() * $item->getQty();
+                }
+            }
+        }
+
+        return $price;
     }
 
     /**

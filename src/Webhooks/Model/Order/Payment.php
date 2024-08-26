@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Hospitality\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Logger\Logger;
 use \Ls\Webhooks\Helper\Data;
 use Magento\Framework\DB\TransactionFactory;
@@ -52,6 +53,11 @@ class Payment
     private $helper;
 
     /**
+     * @var NotificationHelper
+     */
+    private $notificationHelper;
+
+    /**
      * @var OrderRepositoryInterface
      */
     private $orderRepository;
@@ -91,7 +97,8 @@ class Payment
      * @param InvoiceService $invoiceService
      * @param TransactionFactory $transactionFactory
      * @param InvoiceSender $invoiceSender
-     * @param Data $helper ,
+     * @param Data $helper
+     * @param NotificationHelper $notificationHelper
      * @param OrderRepositoryInterface $orderRepository
      * @param Order $convertOrder
      * @param ShipmentNotifier $shipmentNotifier
@@ -106,6 +113,7 @@ class Payment
         TransactionFactory $transactionFactory,
         InvoiceSender $invoiceSender,
         Data $helper,
+        NotificationHelper $notificationHelper,
         OrderRepositoryInterface $orderRepository,
         Order $convertOrder,
         ShipmentNotifier $shipmentNotifier,
@@ -119,6 +127,7 @@ class Payment
         $this->transactionFactory           = $transactionFactory;
         $this->invoiceSender                = $invoiceSender;
         $this->helper                       = $helper;
+        $this->notificationHelper           = $notificationHelper;
         $this->orderRepository              = $orderRepository;
         $this->convertOrder                 = $convertOrder;
         $this->shipmentNotifier             = $shipmentNotifier;
@@ -146,8 +155,10 @@ class Payment
         }
         $shippingAmount = 0;
         $itemsToInvoice = [];
+        $subtotal       = 0;
         try {
             $order           = $this->helper->getOrderByDocumentId($documentId);
+            $storeId         = $order->getStoreId();
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);
             $validateInvoice = false;
@@ -159,6 +170,7 @@ class Payment
                         $item                         = $itemData['item'];
                         $orderItemId                  = $item->getItemId();
                         $itemsToInvoice[$orderItemId] = $itemData['qty'];
+                        $subtotal                     += $itemData['amount_with_discount'];
                         if ($isOffline) {
                             $totalAmount += $itemData['amount'];
                         }
@@ -191,8 +203,10 @@ class Payment
                 $invoice->getOrder()->setCustomerNoteNotify(false);
                 $invoice->getOrder()->setIsInProcess(true);
                 $invoice->setShippingAmount($shippingAmount);
-                $invoice->setSubtotal($totalAmount);
-                $invoice->setBaseSubtotal($totalAmount);
+                $invoice->setSubtotal($subtotal);
+                $invoice->setBaseSubtotal($subtotal);
+                $invoice->setSubtotalInclTax($subtotal);
+                $invoice->setBaseSubtotalInclTax($subtotal);
                 $invoice->setGrandTotal($totalAmount);
                 $invoice->setBaseGrandTotal($totalAmount);
                 $invoice->register();
@@ -212,9 +226,19 @@ class Payment
                             $this->giftCardNotification($order, $itemsToInvoice, $line);
                         }
                     }
+                    $message = 'Invoice has been sent for order# ' . $documentId;
+
+                    $this->notificationHelper->processNotifications(
+                        $storeId,
+                        $order,
+                        $items,
+                        $message,
+                        LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
+                    );
+
                     return $this->helper->outputMessage(
                         true,
-                        'Order posted successfully and invoice sent to customer for document id #' . $documentId
+                        $message
                     );
                 } catch (Exception $e) {
                     $this->logger->error('We can\'t send the invoice email right now for document id #'
@@ -269,10 +293,10 @@ class Payment
      */
     public function validatePayment($order, $amount, $documentId, $shippingAmount)
     {
-        $validate = true;
-        $message  = '';
-        $grandTotal = (float) $order->getGrandTotal();
-        $totalDue = (float) $order->getTotalDue();
+        $validate   = true;
+        $message    = '';
+        $grandTotal = (float)$order->getGrandTotal();
+        $totalDue   = (float)$order->getTotalDue();
 
         if (bccomp($grandTotal, $amount, 3) == -1 && bccomp($totalDue, $amount, 3) != 1) {
             $message = "Invoice amount is greater than order amount for document id #" . $documentId;
@@ -336,6 +360,7 @@ class Payment
             }
 
             if (in_array($parentItem->getItemId(), $parentItems)) {
+                $this->helper->removeFirstOccurrenceOfItem($orderItem, $lines);
                 continue;
             }
             $qty          = $this->helper->getQtyToShip($orderItem, $lines);
@@ -375,9 +400,9 @@ class Payment
      */
     public function giftCardNotification($order, $itemsToInvoice, $line)
     {
-        $salesEntry = $this->helper->fetchOrder($order->getDocumentId());
+        $salesEntry         = $this->helper->fetchOrder($order->getDocumentId());
         $giftCardOrderItems = $this->helper->getGiftCardOrderItems($order);
-        $salesEntryLines = $salesEntry->getLines();
+        $salesEntryLines    = $salesEntry->getLines();
 
         foreach ($giftCardOrderItems as $giftCardOrderItem) {
             foreach ($salesEntryLines as $salesEntryLine) {
@@ -389,10 +414,10 @@ class Payment
                     $this->eventManager->dispatch(
                         'ls_mag_giftcard_recipient_notification',
                         [
-                            'order' => $order,
+                            'order'                => $order,
                             'gift_card_order_item' => $giftCardOrderItem,
-                            'sales_entry' => $salesEntry,
-                            'sales_entry_line' => $salesEntryLine
+                            'sales_entry'          => $salesEntry,
+                            'sales_entry_line'     => $salesEntryLine
                         ]
                     );
 

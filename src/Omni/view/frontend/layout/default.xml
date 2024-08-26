@@ -19,5 +19,13 @@
                 </arguments>
             </block>
         </referenceBlock>
+
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="custom_inline_js" template="Ls_Omni::html/inline-js.phtml" before="-">
+                <arguments>
+                    <argument name="view_model" xsi:type="object">Ls\Omni\ViewModel\GeneralViewModel</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
     </body>
 </page>

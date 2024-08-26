@@ -149,11 +149,6 @@
         <plugin name="bundle_product_final_price_override"
                 type="Ls\Omni\Plugin\Bundle\Helper\Catalog\Product\ConfigurationPlugin"/>
     </type>
-    <!-- Plugin to stop validating coupon from magento sales rules -->
-    <type name="Magento\SalesRule\Model\Validator">
-        <plugin name="coupon_validation"
-                type="Ls\Omni\Plugin\SalesRule\Model\ValidatorPlugin"/>
-    </type>
     <type name="Magento\PageCache\Model\Cache\Type">
         <plugin name="stop_built_in_fpc_purge"
                 type="Ls\Omni\Plugin\Model\Cache\TypePlugin"/>
@@ -161,6 +156,14 @@
     <type name="Magento\CacheInvalidate\Model\PurgeCache">
         <plugin name="stop_varnish_fpc_purge"
                 type="Ls\Omni\Plugin\Model\Cache\PurgeCachePlugin"/>
+    </type>
+    <!-- Plugin to stop validating coupon from magento sales rules -->
+    <type name="Magento\SalesRule\Model\Validator">
+        <plugin name="coupon_validation"
+                type="Ls\Omni\Plugin\SalesRule\Model\ValidatorPlugin"/>
+    </type>
+    <type name="Magento\Quote\Model\Quote\Item\ToOrderItem">
+        <plugin name="quote_to_order_item_conv" type="Ls\Omni\Plugin\Quote\ConvertToOrderItem"/>
     </type>
     <type name="Ls\Omni\Helper\AbstractHelperOmni">
         <arguments>

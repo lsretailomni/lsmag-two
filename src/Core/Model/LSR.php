@@ -429,7 +429,12 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LSR_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/stock_validation_active';
     const LSR_GRAPHQL_STOCK_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_stock_validation_active';
     const LSR_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/discount_validation_active';
+
+    const LSR_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/discount_validation_msg';
+    const LSR_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/giftcard_validation_msg';
     const LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE = 'ls_mag/ls_order_management/graphql_discount_validation_active';
+    const LSR_GRAPHQL_DISCOUNT_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_discount_validation_msg';
+    const LSR_GRAPHQL_GIFTCARD_VALIDATION_MSG = 'ls_mag/ls_order_management/graphql_giftcard_validation_msg';
     const LSR_ORDER_EDIT = 'ls_mag/ls_order_management/order_edit';
     const LSR_DATETIME_RANGE_VALIDATION_ACTIVE = 'ls_mag/hospitality/dateandtime_range_validation_active';
     const LSR_GRAPHQL_DATETIME_RANGE_VALIDATION_ACTIVE
@@ -462,16 +467,18 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_STATE_MISC = 'MISC';
 
     const LS_NOTIFICATION_EMAIL = 'email';
-
+    const LS_NOTIFICATION_PUSH_NOTIFICATION = 'push_notification';
     //Email notification through webhook
     const LS_NOTIFICATION_TYPE = 'ls_mag/webhooks/webhooks_notification_type';
-    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/webhooks_email_notification_order_status';
+    const LS_EMAIL_NOTIFICATION_ORDER_STATUS = 'ls_mag/webhooks/email/webhooks_email_notification_order_status';
     const LS_NOTIFICATION_PICKUP = 'ls_mag/webhooks/notification_pickup';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_PICKUP = 'ls_mag/webhooks/template_pickup';
     const LS_NOTIFICATION_COLLECTED = 'ls_mag/webhooks/notification_collected';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_COLLECTED = 'ls_mag/webhooks/template_collected';
     const LS_NOTIFICATION_CANCEL = 'ls_mag/webhooks/notification_cancel';
     const LS_NOTIFICATION_EMAIL_TEMPLATE_CANCEL = 'ls_mag/webhooks/template_cancel';
+    public const XML_CONFIG_PATH_ONESIGNAL_APP_ID = 'ls_mag/webhooks/push/app_id';
+    public const XML_CONFIG_PATH_ONESIGNAL_REST_API_KEY = 'ls_mag/webhooks/push/rest_api_key';
 
     //Choose Industry
     const LS_INDUSTRY_VALUE_RETAIL = 'retail';
@@ -683,15 +690,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         $this->validateBaseUrlStoreId = $storeId;
         $websiteId                    = '';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $baseUrl   = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store     = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey     = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
-            $websiteId = $storeId;
+            $baseUrl                    = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey                      = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $websiteId                  = $storeId;
             $this->validateBaseUrlScope = $scope;
         } else {
-            $baseUrl = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
-            $store   = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey   = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
+            $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
+            $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
+            $lsKey                      = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $this->validateBaseUrlScope = false;
         }
         if (empty($baseUrl) || empty($store)) {
@@ -820,6 +827,49 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
             self::SC_CLICKCOLLECT_DEFAULT_ZOOM,
             ScopeInterface::SCOPE_STORE,
             $this->getCurrentStoreId()
+        );
+    }
+
+    /**
+     * Get configured app_id
+     *
+     * @return mixed
+     */
+    public function getAppId($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_CONFIG_PATH_ONESIGNAL_APP_ID,
+            ScopeInterface::SCOPE_STORE,
+            $storeId ?? null
+        );
+    }
+
+    /**
+     * Get configured rest_api_key
+     *
+     * @return mixed
+     */
+    public function getRestApiKey($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::XML_CONFIG_PATH_ONESIGNAL_REST_API_KEY,
+            ScopeInterface::SCOPE_STORE,
+            $storeId ?? null
+        );
+    }
+
+    /**
+     * Get configuration for notification type
+     *
+     * @param $storeId
+     * @return mixed
+     */
+    public function getNotificationType($storeId = null)
+    {
+        return $this->scopeConfig->getValue(
+            self::LS_NOTIFICATION_TYPE,
+            ScopeInterface::SCOPE_STORE,
+            $storeId ?? null
         );
     }
 
@@ -1050,7 +1100,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getStopFpcPurge(&$tags)
     {
-        $config =  $this->fpcInvalidateFlag && (bool) $this->scopeConfig->getValue(
+        $config = $this->fpcInvalidateFlag && (bool)$this->scopeConfig->getValue(
             self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
         );
 
@@ -1102,30 +1152,84 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Discount validation before order placement is enabled or not
      *
-     * @return mixed
+     * @return array|string
      * @throws NoSuchEntityException
      */
     public function isDiscountValidationEnabled()
     {
-        return $this->scopeConfig->getValue(
+        return $this->getStoreConfig(
             self::LSR_DISCOUNT_VALIDATION_ACTIVE,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getStore()->getWebsiteId()
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired discount
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getDiscountValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_DISCOUNT_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired gift card
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGiftCardValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_GIFTCARD_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
         );
     }
 
     /**
      * Graphql Discount validation before order placement is enabled or not
      *
-     * @return mixed
+     * @return array|string
      * @throws NoSuchEntityException
      */
     public function isGraphqlDiscountValidationEnabled()
     {
-        return $this->scopeConfig->getValue(
+        return $this->getStoreConfig(
             self::LSR_GRAPHQL_DISCOUNT_VALIDATION_ACTIVE,
-            ScopeInterface::SCOPE_WEBSITES,
-            $this->storeManager->getStore()->getWebsiteId()
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired discount
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGraphqlDiscountValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_GRAPHQL_DISCOUNT_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
+        );
+    }
+
+    /**
+     * Get error message for expired gift card
+     *
+     * @return array|string
+     * @throws NoSuchEntityException
+     */
+    public function getGraphqlGiftCardValidationMsg()
+    {
+        return $this->getStoreConfig(
+            self::LSR_GRAPHQL_GIFTCARD_VALIDATION_MSG,
+            $this->storeManager->getStore()->getId()
         );
     }
 
@@ -1299,5 +1403,31 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if (version_compare($centralVersion, '25.0.0.0', '>=')) {
             $this->data->setLicenseStatus($status);
         }
+    }
+
+    /**
+     * Check to see if push notification is enabled
+     *
+     * @return bool
+     */
+    public function isPushNotificationsEnabled()
+    {
+        $configuredNotificationType = explode(',', $this->getNotificationType());
+
+        return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
+    }
+
+    /**
+     * Get license validity status
+     *
+     * @throws NoSuchEntityException
+     */
+    public function getLicenseValidity()
+    {
+        return $this->getConfigValueFromDb(
+            LSR::SC_SERVICE_LICENSE_VALIDITY,
+            ScopeInterface::SCOPE_WEBSITES,
+            $this->storeManager->getStore()->getWebsiteId()
+        );
     }
 }

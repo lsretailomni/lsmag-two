@@ -205,6 +205,8 @@ type StoreConfig {
     ls_discounts_product_page: Boolean @doc(description:"Indicates whether discounts on product page display is enabled (true) or disabled (false).")
     ls_discounts_login_register_notice: Boolean @doc(description:"Indicates whether Login/Register display is enabled (true) or disabled (false).")
     opening_hours_time_format: String @doc(description:"Opening Hours time format.")
+    discount_validation_msg: String @doc(description:"Error message for invalid discounts.")
+    giftcard_validation_msg: String @doc(description:"Error message for invalid giftcard.")
     pickup_date_time_slot: Boolean @doc(description:"Indicates whether pickup date time slot display is enabled (true) or disabled (false).")
     delivery_date_time_slot: Boolean @doc(description:"Indicates whether delivery date time slot display is enabled (true) or disabled (false).")
     pickup_time_interval: Int @doc(description:"Pickup time interval.")
@@ -215,6 +217,8 @@ type StoreConfig {
     ls_mag_product_availability: Boolean @resolver(class: "\\Ls\\OmniGraphQl\\Model\\Resolver\\IsServiceUpResolver") @doc(description:"Indicates whether to show a link in product detail page for product availability (true) or not (false) based on omni connection online/offline mode.")
     ls_mag_display_stores: Boolean @doc(description:"Indicates whether to show all the stores (true) or only click and collect stores for product availability (false)."),
     ls_mag_show_return_policy: Boolean @doc(description:"Indicates whether return policy display on pdp is enabled (true) or disabled (false).")
+    ls_mag_webhooks_webhooks_notification_type: String @doc(description: "To fetch configured webhook notification types.")
+    ls_mag_webhooks_push_app_id: String @doc(description: "To fetch configured onesignal app_id.")
 }
 
 input SetPaymentMethodOnCartInput {
@@ -255,4 +259,8 @@ type discountProductArray {
     sku: String @doc(description: "Mix and match product sku")
     price: Money @doc(description: "Product original price")
     final_price: Money @doc(description: "Product final price")
+}
+
+input PlaceOrderInput {
+    subscription_id: String @doc(description: "Subscription ID of onesignal push notification")
 }

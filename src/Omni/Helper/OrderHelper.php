@@ -385,7 +385,22 @@ class OrderHelper extends AbstractHelper
     }
 
     /**
-     * Update shippping amount to shipment order line
+     * Get shipment tax percent
+     *
+     * @param $storeId
+     * @return string
+     */
+    public function getShipmentTaxPercent($storeId)
+    {
+        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $storeId);
+
+        return !empty($shipmentTaxPercent) &&
+        str_contains($shipmentTaxPercent, '#') ?
+            substr($shipmentTaxPercent, strrpos($shipmentTaxPercent, '#') + 1) : $shipmentTaxPercent;
+    }
+
+    /**
+     * Update shipping amount to shipment order line
      * @param $orderLines
      * @param $order
      * @return mixed
@@ -394,9 +409,10 @@ class OrderHelper extends AbstractHelper
     public function updateShippingAmount($orderLines, $order)
     {
         $shipmentFeeId      = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_ITEM_ID, $order->getStoreId());
-        $shipmentTaxPercent = $this->lsr->getStoreConfig(LSR::LSR_SHIPMENT_TAX, $order->getStoreId());
+        $shipmentTaxPercent = $this->getShipmentTaxPercent($order->getStore());
         $shippingAmount     = $order->getShippingInclTax();
-        if ($shippingAmount > 0) {
+
+        if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
@@ -415,6 +431,7 @@ class OrderHelper extends AbstractHelper
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
         }
+
         return $orderLines;
     }
 
@@ -566,6 +583,7 @@ class OrderHelper extends AbstractHelper
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getLsPointsSpent())
                 ->setPreApprovedValidDate($preApprovedDate)
+                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT)
                 ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
@@ -584,7 +602,8 @@ class OrderHelper extends AbstractHelper
                 ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType($tenderTypeId);
+                ->setTenderType($tenderTypeId)
+                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 

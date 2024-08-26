@@ -3,6 +3,8 @@
 namespace Ls\Customer\ViewModel;
 
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use \Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -30,15 +32,31 @@ class ItemRenderer implements ArgumentInterface
     public $priceCurrency;
 
     /**
+     * @var array
+     */
+    public $lines = [];
+
+    /**
+     * @var BasketHelper
+     */
+    public $basketHelper;
+
+    /**
      * @param ItemHelper $itemHelper
      * @param OrderHelper $orderHelper
      * @param PriceCurrencyInterface $priceCurrency
+     * @param BasketHelper $basketHelper
      */
-    public function __construct(ItemHelper $itemHelper, OrderHelper $orderHelper, PriceCurrencyInterface $priceCurrency)
-    {
+    public function __construct(
+        ItemHelper $itemHelper,
+        OrderHelper $orderHelper,
+        PriceCurrencyInterface $priceCurrency,
+        BasketHelper $basketHelper
+    ) {
         $this->itemHelper    = $itemHelper;
         $this->orderHelper   = $orderHelper;
         $this->priceCurrency = $priceCurrency;
+        $this->basketHelper = $basketHelper;
     }
 
     /**
@@ -65,15 +83,30 @@ class ItemRenderer implements ArgumentInterface
         $currentOrder = $this->getOrder();
 
         if ($currentOrder) {
-            $orderLines = $currentOrder->getLines();
+            if (empty($this->lines)) {
+                $this->lines = $currentOrder->getLines()->getSalesEntryLine();
+            }
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $orderItem->getSku()
             );
             $baseUnitOfMeasure = $orderItem->getProduct()->getData('uom');
 
-            foreach ($orderLines as $index => $line) {
+            foreach ($this->lines as $index => $line) {
                 if ($this->itemHelper->isValid($orderItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                    $discount = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $discount     = $this->itemHelper->getOrderDiscountLinesForItem($line, $currentOrder, 2);
+                    $options      = $orderItem->getProductOptions();
+                    $optionsCheck = ($options) ? isset($options['options']) : null;
+                    if ($optionsCheck) {
+                        foreach ($this->lines as $orderLine) {
+                            if ($line->getLineNumber() == $orderLine->getParentLine() &&
+                                $orderLine->getParentLine() != 0) {
+                                $line->setPrice($line->getPrice() + $orderLine->getPrice());
+                                $line->setAmount($line->getAmount() + $orderLine->getAmount());
+                            }
+                        }
+                    }
+
+                    unset($this->lines[$index]);
                     break;
                 } else {
                     $line = null;
@@ -99,5 +132,26 @@ class ItemRenderer implements ArgumentInterface
             $order->getStoreCurrency(),
             $order->getStoreId()
         );
+    }
+
+    /**
+     * Get item row discount for bundle products
+     *
+     * @param $item
+     * @return float|int
+     * @throws NoSuchEntityException
+     * @throws InvalidEnumException
+     */
+    public function getItemRowDiscount($item)
+    {
+        $currentOrder = $this->getOrder();
+
+        if ($currentOrder) {
+            if (empty($this->lines)) {
+                $this->lines = $currentOrder->getLines()->getSalesEntryLine();
+            }
+        }
+
+        return !empty($this->lines) ? $this->basketHelper->getItemRowDiscount($item, $this->lines) : 0;
     }
 }

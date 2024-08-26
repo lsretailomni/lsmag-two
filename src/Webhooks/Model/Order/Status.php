@@ -4,7 +4,7 @@ namespace Ls\Webhooks\Model\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Helper\Data;
-use \Ls\Webhooks\Model\Notification\EmailNotification;
+use \Ls\Webhooks\Helper\NotificationHelper;
 use \Ls\Webhooks\Model\Order\Cancel as OrderCancel;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -26,6 +26,11 @@ class Status
     public $helper;
 
     /**
+     * @var NotificationHelper
+     */
+    private $notificationHelper;
+
+    /**
      * @var OrderCancel
      */
     public $orderCancel;
@@ -39,11 +44,6 @@ class Status
      * @var Payment
      */
     public $payment;
-
-    /**
-     * @var EmailNotification
-     */
-    public $emailNotification;
 
     /**
      * @var Invoice
@@ -70,8 +70,8 @@ class Status
      * @param Cancel $orderCancel
      * @param CreditMemo $creditMemo
      * @param Payment $payment
-     * @param EmailNotification $emailNotification
      * @param Invoice $invoice
+     * @param NotificationHelper $notificationHelper
      * @param CreditmemoFactory $creditMemoFactory
      * @param CreditmemoService $creditMemoService
      */
@@ -80,19 +80,19 @@ class Status
         OrderCancel $orderCancel,
         CreditMemo $creditMemo,
         Payment $payment,
-        EmailNotification $emailNotification,
         Invoice $invoice,
+        NotificationHelper $notificationHelper,
         CreditmemoFactory $creditMemoFactory,
         CreditmemoService $creditMemoService
     ) {
-        $this->helper            = $helper;
-        $this->orderCancel       = $orderCancel;
-        $this->creditMemo        = $creditMemo;
-        $this->payment           = $payment;
-        $this->emailNotification = $emailNotification;
-        $this->invoice           = $invoice;
-        $this->creditMemoFactory = $creditMemoFactory;
-        $this->creditMemoService = $creditMemoService;
+        $this->helper             = $helper;
+        $this->orderCancel        = $orderCancel;
+        $this->creditMemo         = $creditMemo;
+        $this->payment            = $payment;
+        $this->invoice            = $invoice;
+        $this->notificationHelper = $notificationHelper;
+        $this->creditMemoFactory  = $creditMemoFactory;
+        $this->creditMemoService  = $creditMemoService;
     }
 
     /**
@@ -135,13 +135,16 @@ class Status
      */
     public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
     {
-        $items                      = $this->helper->getItems($magOrder, $itemsInfo, false);
-        $isOffline                  = $magOrder->getPayment()->getMethodInstance()->isOffline();
-        $isClickAndCollectOrder     = $this->helper->isClickAndcollectOrder($magOrder);
-        $storeId                    = $magOrder->getStoreId();
-        $configuredNotificationType = explode(',', $this->helper->getNotificationType($storeId));
-        $orderStatus                = null;
-
+        $items                  = $this->helper->getItems($magOrder, $itemsInfo, false);
+        $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
+        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+        $storeId                = $magOrder->getStoreId();
+        $orderStatus            = null;
+        $industry               = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $storeId);
+        $message                = '';
+        if ($industry == LSR::LS_INDUSTRY_VALUE_RETAIL) {
+            $message = __("Your order has been");
+        }
         switch ($status) {
             case LSR::LS_STATE_CANCELED:
             case LSR::LS_STATE_SHORTAGE:
@@ -152,6 +155,8 @@ class Status
                 if ($isClickAndCollectOrder) {
                     $orderStatus = LSR::LS_STATE_PICKED;
                 }
+                $orderStatus = '';
+                $message     = __("Your order is ready for PICKUP");
                 break;
             case LSR::LS_STATE_COLLECTED:
                 if ($isClickAndCollectOrder) {
@@ -172,13 +177,12 @@ class Status
         }
 
         if ($orderStatus !== null) {
-            foreach ($configuredNotificationType as $type) {
-                if ($type == LSR::LS_NOTIFICATION_EMAIL) {
-                    $this->emailNotification->setNotificationType($orderStatus);
-                    $this->emailNotification->setOrder($magOrder)->setItems($items);
-                    $this->emailNotification->prepareAndSendNotification();
-                }
-            }
+            $this->notificationHelper->processNotifications(
+                $storeId,
+                $magOrder,
+                $items,
+                $message . ' ' . $orderStatus
+            );
         }
     }
 
@@ -225,10 +229,10 @@ class Status
                 }
                 $shippingItemId = $this->helper->getShippingItemId();
                 $creditMemoData = $this->creditMemo->setCreditMemoParameters($magOrder, $itemsInfo, $shippingItemId);
-                $this->message = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
+                $this->message  = $this->creditMemo->refund($magOrder, $items, $creditMemoData, $invoice);
             }
-            $message = Status::SUCCESS_MESSAGE;
-            $this->message = $this->helper->outputMessage(true, __($message));
+            $message       = Status::SUCCESS_MESSAGE;
+            $this->message = $this->helper->outputMessage(true, $message);
         }
     }
 

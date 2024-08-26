@@ -19,9 +19,19 @@ class SalesEntryPayment
     protected $Amount = null;
 
     /**
+     * @property float $AmountLCY
+     */
+    protected $AmountLCY = null;
+
+    /**
      * @property string $AuthorizationCode
      */
     protected $AuthorizationCode = null;
+
+    /**
+     * @property boolean $AuthorizationExpired
+     */
+    protected $AuthorizationExpired = null;
 
     /**
      * @property string $CardNo
@@ -87,6 +97,24 @@ class SalesEntryPayment
     }
 
     /**
+     * @param float $AmountLCY
+     * @return $this
+     */
+    public function setAmountLCY($AmountLCY)
+    {
+        $this->AmountLCY = $AmountLCY;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAmountLCY()
+    {
+        return $this->AmountLCY;
+    }
+
+    /**
      * @param string $AuthorizationCode
      * @return $this
      */
@@ -102,6 +130,24 @@ class SalesEntryPayment
     public function getAuthorizationCode()
     {
         return $this->AuthorizationCode;
+    }
+
+    /**
+     * @param boolean $AuthorizationExpired
+     * @return $this
+     */
+    public function setAuthorizationExpired($AuthorizationExpired)
+    {
+        $this->AuthorizationExpired = $AuthorizationExpired;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAuthorizationExpired()
+    {
+        return $this->AuthorizationExpired;
     }
 
     /**

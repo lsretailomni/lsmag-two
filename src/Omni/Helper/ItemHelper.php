@@ -415,14 +415,17 @@ class ItemHelper extends AbstractHelper
      */
     public function compareQuoteItemsWithOrderLinesAndSetRelatedAmounts(&$quote, $basketData, $type = 1)
     {
+        $orderLines = [];
         $quoteItemList = $quote->getAllVisibleItems();
+
+        if (count($quoteItemList) && !empty($basketData)) {
+            $orderLines = $basketData->getOrderLines()->getOrderLine();
+        }
 
         foreach ($quoteItemList as $quoteItem) {
             $bundleProduct = $customPrice = $taxAmount = $rowTotal = $rowTotalIncTax = $priceInclTax = 0;
-            $children      = $orderLines = [];
-            if ($basketData) {
-                $orderLines = $basketData->getOrderLines()->getOrderLine();
-            }
+            $children      = [];
+
             if ($quoteItem->getProductType() == Type::TYPE_BUNDLE) {
                 $children      = $quoteItem->getChildren();
                 $bundleProduct = 1;
@@ -431,13 +434,11 @@ class ItemHelper extends AbstractHelper
             }
 
             foreach ($children as $child) {
-                $baseUnitOfMeasure = $child->getProduct()->getData('uom');
-                list($itemId, $variantId, $uom) = $this->getComparisonValues(
-                    $child->getSku()
-                );
-
                 foreach ($orderLines as $index => $line) {
-                    if ($this->isValid($child, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
+                    if (is_numeric($line->getId()) ?
+                        $child->getItemId() == $line->getId() :
+                        $this->isSameItem($child, $line)
+                    ) {
                         $unitPrice = $line->getAmount() / $line->getQuantity();
                         $this->setRelatedAmountsAgainstGivenQuoteItem($line, $child, $unitPrice, $type);
                         unset($orderLines[$index]);
@@ -452,8 +453,8 @@ class ItemHelper extends AbstractHelper
                     $this->_logger->critical("Error saving SKU:-" . $child->getSku() . " - " . $e->getMessage());
                 }
 
-                $customPrice    += $child->getCustomPrice();
-                $priceInclTax   += $child->getPriceInclTax();
+                $customPrice    += $child->getCustomPrice() * $child->getQty();
+                $priceInclTax   += $child->getPriceInclTax() * $child->getQty();
                 $taxAmount      += $child->getTaxAmount();
                 $rowTotal       += $child->getRowTotal();
                 $rowTotalIncTax += $child->getRowTotalInclTax();
@@ -501,8 +502,12 @@ class ItemHelper extends AbstractHelper
             $couponCode = $quote->getCouponCode();
             $quote->getShippingAddress()->setCouponCode($couponCode);
 
-            if ($basketData && method_exists($basketData, 'getPointsRewarded')) {
-                $quote->setLsPointsEarn($basketData->getPointsRewarded());
+            if ($basketData) {
+                if (method_exists($basketData, 'getPointsRewarded')) {
+                    $quote->setLsPointsEarn($basketData->getPointsRewarded());
+                }
+
+                $quote->setLsDiscountAmount($basketData->getTotalDiscount());
             }
 
             if ($type == 2) {
@@ -525,18 +530,19 @@ class ItemHelper extends AbstractHelper
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
-        $customPrice = $amount = $taxAmount = $netAmount = null;
+        $customPrice = $amount = $taxAmount = $netAmount = $lsDiscountAmount = null;
         $itemQty     = $quoteItem->getQty();
 
         if ($quoteItem->getParentItem() &&
             $quoteItem->getParentItem()->getProductType() == Type::TYPE_BUNDLE
         ) {
-            $itemQty = $quoteItem->getParentItem()->getQty();
+            $itemQty = $quoteItem->getParentItem()->getQty() * $quoteItem->getQty();
         }
         $qtyEqual = $line->getQuantity() == $itemQty;
 
         if ($line->getDiscountAmount() > 0) {
             $customPrice = $unitPrice;
+            $lsDiscountAmount = $line->getDiscountAmount();
         } elseif ($line->getAmount() != $quoteItem->getProduct()->getPrice()) {
             $customPrice = $unitPrice;
         }
@@ -565,6 +571,7 @@ class ItemHelper extends AbstractHelper
             ->setBaseTaxAmount($taxAmount)
             ->setPriceInclTax($unitPrice)
             ->setBasePriceInclTax($unitPrice)
+            ->setLsDiscountAmount($lsDiscountAmount)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setBaseRowTotal($type == 1 ? $netAmount : $rowTotal)
             ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)
@@ -664,6 +671,27 @@ class ItemHelper extends AbstractHelper
     }
 
     /**
+     * Get item attributes based on given quote item
+     *
+     * @param $quoteItem
+     * @return array
+     */
+    public function getItemAttributesGivenQuoteItem($quoteItem)
+    {
+        if ($quoteItem->getProductType() != Type::DEFAULT_TYPE) {
+            $quoteItem = current($quoteItem->getChildren());
+        }
+
+        $itemId    = $quoteItem->getProduct()->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId = $quoteItem->getProduct()->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+        $uom       = $quoteItem->getProduct()->getData('uom');
+        $barCode   = $quoteItem->getProduct()->getData('barcode');
+        $uomQty    = $quoteItem->getProduct()->getData(LSR::LS_UOM_ATTRIBUTE_QTY);
+
+        return [$itemId, $variantId, $uom, $barCode, $uomQty];
+    }
+
+    /**
      * Get Ls Central Item Id by sku
      *
      * @param string $sku
@@ -729,5 +757,23 @@ class ItemHelper extends AbstractHelper
         return in_array($itemId, explode(',', $giftCardIdentifier)) ? $line->getId() == $quoteItem->getId() :
             (($itemId == $line->getItemId() && $variantId == $line->getVariantId()) &&
                 ($uom == $line->getUomId() || (empty($line->getUomId()) && $uom == $baseUnitOfMeasure)));
+    }
+
+    /**
+     * Validate to see if quoteItem = OneListItem
+     *
+     * @param $quoteItem
+     * @param $line
+     * @return bool
+     * @throws NoSuchEntityException
+     */
+    public function isSameItem($quoteItem, $line)
+    {
+        $baseUnitOfMeasure = $quoteItem->getProduct()->getData('uom');
+        list($itemId, $variantId, $uom) = $this->getItemAttributesGivenQuoteItem(
+            $quoteItem
+        );
+
+        return $this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure);
     }
 }
