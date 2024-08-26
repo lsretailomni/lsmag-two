@@ -290,6 +290,8 @@ class ClassMap
         		'SpgUnlockRodDeviceResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SpgUnlockRodDeviceResponse',
         		'SpgUnlockRodDeviceCheck' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SpgUnlockRodDeviceCheck',
         		'SpgUnlockRodDeviceCheckResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\SpgUnlockRodDeviceCheckResponse',
+        		'GetAuthCodes' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetAuthCodes',
+        		'GetAuthCodesResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\GetAuthCodesResponse',
         		'Ping' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Ping',
         		'PingResponse' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\PingResponse',
         		'Environment' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Environment',

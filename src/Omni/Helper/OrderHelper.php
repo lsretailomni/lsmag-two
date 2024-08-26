@@ -412,7 +412,7 @@ class OrderHelper extends AbstractHelper
         $shipmentTaxPercent = $this->getShipmentTaxPercent($order->getStore());
         $shippingAmount     = $order->getShippingInclTax();
 
-        if ($shippingAmount > 0) {
+        if (isset($shipmentTaxPercent) && $shippingAmount > 0) {
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
@@ -600,7 +600,8 @@ class OrderHelper extends AbstractHelper
                 ->setAuthorizationCode($order->getLsGiftCardPin())
                 ->setExternalReference($order->getIncrementId())
                 ->setPreApprovedValidDate($preApprovedDate)
-                ->setTenderType($tenderTypeId);
+                ->setTenderType($tenderTypeId)
+                ->setPaymentType(Entity\Enum\PaymentType::PAYMENT);
             $orderPaymentArray[] = $orderPaymentGiftCard;
         }
 

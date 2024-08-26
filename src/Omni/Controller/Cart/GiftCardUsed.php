@@ -129,6 +129,13 @@ class GiftCardUsed extends \Magento\Checkout\Controller\Cart
                 return $this->_goBack();
             }
 
+            if ($this->giftCardHelper->isGiftCardExpired($giftCardResponse) && $giftCardAmount) {
+                $this->messageManager->addErrorMessage(
+                    __('Unfortunately, we can\'t apply this gift card since its already expired.')
+                );
+                return $this->_goBack();
+            }
+
             $cartQuote    = $this->cart->getQuote();
             $itemsCount   = $cartQuote->getItemsCount();
             $orderBalance = $this->data->getOrderBalance(

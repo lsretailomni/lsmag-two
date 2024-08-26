@@ -131,6 +131,12 @@ class GiftCardManagement
             throw new CouldNotSaveException(__('The gift card is not valid.'));
         }
 
+        if ($this->giftCardHelper->isGiftCardExpired($giftCardResponse) && $giftCardAmount) {
+            return throw new CouldNotSaveException(
+                __('Unfortunately, we can\'t apply this gift card since its already expired.')
+            );
+        }
+
         $itemsCount            = $cartQuote->getItemsCount();
         $orderBalance          = $this->dataHelper->getOrderBalance(
             0,
