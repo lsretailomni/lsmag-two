@@ -1104,26 +1104,45 @@ class BasketHelper extends AbstractHelper
      * Get item row discount
      *
      * @param $item
+     * @param array $lines
      * @return float|int
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowDiscount($item)
+    public function getItemRowDiscount($item, $lines = [])
     {
-        $rowDiscount = 0;
-        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-            $item->getSku()
-        );
+        $rowDiscount = $bundleProduct = 0;
 
-        $basketData = $this->getOneListCalculation();
-        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        if (empty($lines)) {
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        } else {
+            $orderLines = $lines;
+        }
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $children      = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
+            $bundleProduct = 1;
+        } else {
+            $children[] = $item;
+        }
 
-        foreach ($orderLines as $line) {
-            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
-                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
-                break;
+        foreach ($children as $child) {
+            foreach ($orderLines as $index => $line) {
+                if (is_numeric($line->getId()) ?
+                    ($child->getItemId() == $line->getId() && $line->getDiscountAmount() > 0) :
+                    ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountAmount() > 0)
+                ) {
+                    $qty = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
+                    $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountAmount()
+                        : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
+                    unset($orderLines[$index]);
+
+                    if (!$bundleProduct) {
+                        break 2;
+                    } else {
+                        break;
+                    }
+                }
             }
         }
 
@@ -1355,11 +1374,12 @@ class BasketHelper extends AbstractHelper
      * @param $price
      * @return float|int|mixed
      */
-    public function getPriceAddingCustomOptions($item, $price) {
+    public function getPriceAddingCustomOptions($item, $price)
+    {
         $options = $item->getOptions();
         if ($options) {
             foreach ($options as $option) {
-                if ($option->getCode() == 'option_ids') {
+                if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
                     $price  = $item->getProductType() == Type::TYPE_BUNDLE ?
                         $item->getRowTotal()  : $item->getPrice() * $item->getQty();
                 }

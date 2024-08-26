@@ -453,8 +453,8 @@ class ItemHelper extends AbstractHelper
                     $this->_logger->critical("Error saving SKU:-" . $child->getSku() . " - " . $e->getMessage());
                 }
 
-                $customPrice    += $child->getCustomPrice();
-                $priceInclTax   += $child->getPriceInclTax();
+                $customPrice    += $child->getCustomPrice() * $child->getQty();
+                $priceInclTax   += $child->getPriceInclTax() * $child->getQty();
                 $taxAmount      += $child->getTaxAmount();
                 $rowTotal       += $child->getRowTotal();
                 $rowTotalIncTax += $child->getRowTotalInclTax();
