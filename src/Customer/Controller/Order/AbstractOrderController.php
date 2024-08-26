@@ -110,6 +110,11 @@ class AbstractOrderController
             }
 
             $this->orderHelper->setCurrentMagOrderInRegistry($response);
+        } else {
+            $redirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
+            $redirect->setUrl($this->url->getUrl('sales/order/history'));
+
+            return $redirect;
         }
     }
 
