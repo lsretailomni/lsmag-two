@@ -416,7 +416,6 @@ class OrderHelper extends AbstractHelper
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
-            $lineNumber = 1000000;
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
             $shipmentOrderLine->setPrice($shippingAmount)
@@ -426,7 +425,6 @@ class OrderHelper extends AbstractHelper
                 ->setTaxAmount($taxAmount)
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setLineNumber($lineNumber)
                 ->setQuantity(1)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
