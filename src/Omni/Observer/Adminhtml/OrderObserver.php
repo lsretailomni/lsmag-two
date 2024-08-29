@@ -93,7 +93,7 @@ class OrderObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR($order->getStoreId())) {
+        if (false) {
             try {
                 if (!empty($oneListCalculation)) {
                     if (!empty($order->getRelationParentId()) && $this->lsr->getStoreConfig(
@@ -111,6 +111,7 @@ class OrderObserver implements ObserverInterface
                             );
                             $response   = $this->orderEdit->orderEdit($req);
                             $order->setDocumentId($documentId);
+                            $order->setLsOrderEdit(true);
                             $isClickCollect = false;
                             $shippingMethod = $order->getShippingMethod(true);
                             if ($shippingMethod !== null) {

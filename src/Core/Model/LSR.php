@@ -453,6 +453,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     const SC_CRON_SYNC_ORDERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders';
 
+    const SC_CRON_SYNC_ORDERS_EDIT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders_edit';
+
     const SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_customers';
 
     const EMAIL_TEMPLATE_ID_FOR_OMNI_SERVICE_DOWN = 'ls_omni_disaster_recovery_email';

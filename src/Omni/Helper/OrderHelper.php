@@ -159,7 +159,8 @@ class OrderHelper extends AbstractHelper
         StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
         CurrencyFactory $currencyFactory
-    ) {
+    )
+    {
         parent::__construct($context);
         $this->order              = $order;
         $this->basketHelper       = $basketHelper;
@@ -789,7 +790,8 @@ class OrderHelper extends AbstractHelper
      */
     public function getReturnDetailsAgainstId(
         $docId
-    ) {
+    )
+    {
         $response = null;
         // @codingStandardsIgnoreStart
         $returnRequest = new Operation\SalesEntryGetReturnSales();
@@ -812,7 +814,8 @@ class OrderHelper extends AbstractHelper
      */
     public function isAuthorizedForOrder(
         $order
-    ) {
+    )
+    {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $order       = $this->getOrder();
         $orderCardId = $order->getCardId();
@@ -1006,11 +1009,12 @@ class OrderHelper extends AbstractHelper
     /**
      * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
-     * @param int $storeId
-     * @param int $pageSize
-     * @param boolean $filterOptions
-     * @param int $customerId
-     * @param SortOrder $sortOrder
+     * @param $storeId
+     * @param $pageSize
+     * @param $filterOptions
+     * @param $customerId
+     * @param $sortOrder
+     * @param $isOrderEdit
      * @return OrderInterface[]|null
      * @throws NoSuchEntityException
      */
@@ -1019,7 +1023,8 @@ class OrderHelper extends AbstractHelper
         $pageSize = -1,
         $filterOptions = true,
         $customerId = 0,
-        $sortOrder = null
+        $sortOrder = null,
+        $isOrderEdit = false
     ) {
         $orders    = null;
         $store     = $this->storeManager->getStore($storeId);
@@ -1043,8 +1048,9 @@ class OrderHelper extends AbstractHelper
                 $criteriaBuilder->addFilter('customer_id', $customerId, 'eq');
             }
 
-            if ($storeId) {
-                $criteriaBuilder = $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
+            if ($isOrderEdit) {
+                $criteriaBuilder = $criteriaBuilder->addFilter('edit_increment', null, 'neq');
+                $criteriaBuilder = $criteriaBuilder->addFilter('ls_order_edit', false, 'eq');
             }
 
             if ($sortOrder) {
@@ -1057,7 +1063,6 @@ class OrderHelper extends AbstractHelper
 
             $searchCriteria = $criteriaBuilder->create();
             $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
