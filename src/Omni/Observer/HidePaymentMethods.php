@@ -11,10 +11,6 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Quote\Model\ResourceModel\Quote;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class HidePaymentMethods
- * @package Ls\Omni\Observer
- */
 class HidePaymentMethods implements ObserverInterface
 {
 
@@ -44,7 +40,6 @@ class HidePaymentMethods implements ObserverInterface
     private $lsr;
 
     /**
-     * HidePaymentMethods constructor.
      * @param BasketHelper $basketHelper
      * @param Data $data
      * @param LoggerInterface $logger
@@ -66,7 +61,10 @@ class HidePaymentMethods implements ObserverInterface
     }
 
     /**
+     * Entry point for the observer
+     *
      * @param Observer $observer
+     * @return void
      */
     public function execute(Observer $observer)
     {
@@ -79,37 +77,35 @@ class HidePaymentMethods implements ObserverInterface
                 ',',
                 $this->lsr->getStoreConfig(LSR::SC_PAYMENT_OPTION, $this->lsr->getCurrentStoreId())
             );
-            if (!empty($basketData)) {
-                $orderTotal      = $this->data->getOrderBalance(
-                    $quote->getLsGiftCardAmountUsed(),
-                    $quote->getLsPointsSpent(),
-                    $basketData
-                );
-                $orderTotal      = $orderTotal + $shippingAmount;
-                $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
-                $result          = $observer->getEvent()->getResult();
-                if ($shippingMethod == "clickandcollect_clickandcollect") {
-                    if (in_array($method_instance, $paymentOptionArray)) {
-                        $result->setData('is_available', true);
-                    } else {
-                        $result->setData('is_available', false);
-                    }
+            $orderTotal      = $this->data->getOrderBalance(
+                $quote->getLsGiftCardAmountUsed(),
+                $quote->getLsPointsSpent(),
+                $basketData
+            );
+            $orderTotal      = $orderTotal + $shippingAmount;
+            $method_instance = $observer->getEvent()->getMethodInstance()->getCode();
+            $result          = $observer->getEvent()->getResult();
+            if ($shippingMethod == "clickandcollect_clickandcollect") {
+                if (in_array($method_instance, $paymentOptionArray)) {
+                    $result->setData('is_available', true);
                 } else {
-                    if ($method_instance == "ls_payment_method_pay_at_store") {
-                        $result->setData('is_available', false);
-                    }
+                    $result->setData('is_available', false);
                 }
-                if ($orderTotal <= 0) {
-                    if ($method_instance == 'free') {
-                        $quote->setBaseGrandTotal(0);
-                        $quote->setGrandTotal(0);
-                        $quote->getShippingAddress()->setTaxAmount(0);
-                        $quote->getShippingAddress()->setBaseTaxAmount(0);
-                        $this->quoteResourceModel->save($quote);
-                        $result->setData('is_available', true);
-                    } else {
-                        $result->setData('is_available', false);
-                    }
+            } else {
+                if ($method_instance == "ls_payment_method_pay_at_store") {
+                    $result->setData('is_available', false);
+                }
+            }
+            if ($orderTotal <= 0) {
+                if ($method_instance == 'free') {
+                    $quote->setBaseGrandTotal(0);
+                    $quote->setGrandTotal(0);
+                    $quote->getShippingAddress()->setTaxAmount(0);
+                    $quote->getShippingAddress()->setBaseTaxAmount(0);
+                    $this->quoteResourceModel->save($quote);
+                    $result->setData('is_available', true);
+                } else {
+                    $result->setData('is_available', false);
                 }
             }
         } catch (Exception $e) {
