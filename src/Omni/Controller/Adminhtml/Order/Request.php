@@ -75,8 +75,7 @@ class Request extends Action
         OrderHelper $orderHelper,
         LSR $lsr,
         OrderEdit $orderEdit
-    )
-    {
+    ) {
         $this->orderRepository = $orderRepository;
         $this->basketHelper    = $basketHelper;
         $this->logger          = $logger;
