@@ -68,8 +68,7 @@ class SyncOrders
         OrderResourceModel $orderResourceModel,
         LoggerInterface $logger,
         StoreManagerInterface $storeManager
-    )
-    {
+    ) {
         $this->lsr                = $lsr;
         $this->replicationHelper  = $replicationHelper;
         $this->orderHelper        = $orderHelper;
