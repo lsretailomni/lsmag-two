@@ -68,7 +68,8 @@ class SyncOrders
         OrderResourceModel $orderResourceModel,
         LoggerInterface $logger,
         StoreManagerInterface $storeManager
-    ) {
+    )
+    {
         $this->lsr                = $lsr;
         $this->replicationHelper  = $replicationHelper;
         $this->orderHelper        = $orderHelper;
@@ -110,18 +111,29 @@ class SyncOrders
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
                             try {
-                                $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-                                $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
+                                $documentId = null;
+                                $oldOrder   = $this->orderHelper->getMagentoOrderGivenEntityId(
+                                    $order->getRelationParentId()
+                                );
+                                if ($oldOrder) {
+                                    $documentId = $oldOrder->getDocumentId();
+                                }
+                                if (empty($documentId)) {
+                                    $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+                                    $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder(
+                                        $order
+                                    );
 
-                                if (!empty($basketData)) {
-                                    $request  = $this->orderHelper->prepareOrder($order, $basketData);
-                                    $response = $this->orderHelper->placeOrder($request);
+                                    if (!empty($basketData)) {
+                                        $request  = $this->orderHelper->prepareOrder($order, $basketData);
+                                        $response = $this->orderHelper->placeOrder($request);
 
-                                    if ($response) {
-                                        if (!empty($response->getResult()->getId())) {
-                                            $documentId = $response->getResult()->getId();
-                                            $order->setDocumentId($documentId);
-                                            $this->orderResourceModel->save($order);
+                                        if ($response) {
+                                            if (!empty($response->getResult()->getId())) {
+                                                $documentId = $response->getResult()->getId();
+                                                $order->setDocumentId($documentId);
+                                                $this->orderResourceModel->save($order);
+                                            }
                                         }
                                     }
                                 }

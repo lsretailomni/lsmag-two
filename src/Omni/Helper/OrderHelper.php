@@ -159,8 +159,7 @@ class OrderHelper extends AbstractHelper
         StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
         CurrencyFactory $currencyFactory
-    )
-    {
+    ) {
         parent::__construct($context);
         $this->order              = $order;
         $this->basketHelper       = $basketHelper;
@@ -790,8 +789,7 @@ class OrderHelper extends AbstractHelper
      */
     public function getReturnDetailsAgainstId(
         $docId
-    )
-    {
+    ) {
         $response = null;
         // @codingStandardsIgnoreStart
         $returnRequest = new Operation\SalesEntryGetReturnSales();
@@ -814,8 +812,7 @@ class OrderHelper extends AbstractHelper
      */
     public function isAuthorizedForOrder(
         $order
-    )
-    {
+    ) {
         $cardId      = $this->customerSession->getData(LSR::SESSION_CUSTOMER_CARDID);
         $order       = $this->getOrder();
         $orderCardId = $order->getCardId();

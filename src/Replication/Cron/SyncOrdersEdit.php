@@ -115,7 +115,14 @@ class SyncOrdersEdit
                     LSR::LSR_ORDER_EDIT,
                     $this->store->getId()
                 )) {
-                    $orders = $this->orderHelper->getOrders($this->store->getId(), -1, true, 0, null, true);
+                    $orders = $this->orderHelper->getOrders(
+                        $this->store->getId(),
+                        -1,
+                        true,
+                        0,
+                        null,
+                        true
+                    );
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
                             try {
@@ -129,29 +136,31 @@ class SyncOrdersEdit
                                         $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder(
                                             $order
                                         );
-                                        $req      = $this->orderEdit->prepareOrder(
+                                        $req        = $this->orderEdit->prepareOrder(
                                             $order,
                                             $basketData,
                                             $oldOrder,
                                             $documentId
                                         );
-                                        $response = $this->orderEdit->orderEdit($req);
-                                        $order->setDocumentId($documentId);
-                                        $order->setLsOrderEdit(true);
-                                        $isClickCollect = false;
-                                        $shippingMethod = $order->getShippingMethod(true);
-                                        if ($shippingMethod !== null) {
-                                            $carrierCode    = $shippingMethod->getData('carrier_code');
-                                            $method         = $shippingMethod->getData('method');
-                                            $isClickCollect = $carrierCode == 'clickandcollect';
+                                        $response   = $this->orderEdit->orderEdit($req);
+                                        if ($response) {
+                                            $order->setDocumentId($documentId);
+                                            $order->setLsOrderEdit(true);
+                                            $isClickCollect = false;
+                                            $shippingMethod = $order->getShippingMethod(true);
+                                            if ($shippingMethod !== null) {
+                                                $carrierCode    = $shippingMethod->getData('carrier_code');
+                                                $method         = $shippingMethod->getData('method');
+                                                $isClickCollect = $carrierCode == 'clickandcollect';
+                                            }
+                                            if ($isClickCollect) {
+                                                $order->setPickupStore($oldOrder->getPickupStore());
+                                            }
+                                            $this->orderResourceModel->save($order);
+                                            $oldOrder->setDocumentId(null);
+                                            $this->orderResourceModel->save($oldOrder);
+                                            $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
                                         }
-                                        if ($isClickCollect) {
-                                            $order->setPickupStore($oldOrder->getPickupStore());
-                                        }
-                                        $this->orderResourceModel->save($order);
-                                        $oldOrder->setDocumentId(null);
-                                        $this->orderResourceModel->save($oldOrder);
-                                        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
                                     }
                                 }
                             } catch (\Exception $e) {
