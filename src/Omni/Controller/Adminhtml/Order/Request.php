@@ -109,7 +109,7 @@ class Request extends Action
                     $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                         $order->getRelationParentId()
                     );
-                    if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getId())) {
+                    if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                         $documentId = $oldOrder->getDocumentId();
                         if ($documentId) {
                             $req      = $this->orderEdit->prepareOrder(
