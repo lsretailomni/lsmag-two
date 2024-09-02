@@ -116,13 +116,15 @@ class CustomerFixture implements DataFixtureInterface
         Customer $customerResourceModel,
         ProcessorInterface $dataProcessor,
         StoreManagerInterface $storeManager,
-        CustomerFactory $customerFactory
+        CustomerFactory $customerFactory,
+        CustomerRegistry $customerRegistry
     ) {
         $this->serviceFactory        = $serviceFactory;
         $this->customerResourceModel = $customerResourceModel;
         $this->dataProcessor         = $dataProcessor;
         $this->storeManager          = $storeManager;
         $this->customerFactory       = $customerFactory;
+        $this->customerRegistry      = $customerRegistry;
     }
 
     /**

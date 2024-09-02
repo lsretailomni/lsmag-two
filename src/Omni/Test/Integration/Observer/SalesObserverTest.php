@@ -15,7 +15,7 @@ use \Ls\Omni\Model\Payment\PayStore;
 use \Ls\Omni\Observer\SalesObserver;
 use \Ls\Omni\Test\Fixture\ApplyLoyaltyPointsInCartFixture;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
-use \Ls\Customer\Test\Fixture\CustomerFixture;
+use \Ls\Omni\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddress;
 use Magento\Quote\Model\Quote\Address\Total\CollectorInterface;

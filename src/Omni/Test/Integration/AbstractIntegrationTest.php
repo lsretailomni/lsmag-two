@@ -33,6 +33,15 @@ class AbstractIntegrationTest extends TestCase
     public const LS_CENTRAL_VERSION = '25.0.0.0 (25.0.0.0 [conf])';
     public const RETAIL_INDUSTRY = 'retail';
     public const LSR_ORDER_EDIT = 1;
+    public const ENABLE_COUPON_ELEMENTS = 1;
+    public const COUPONS_SHOW_ON_CHECKOUT = 1;
+    public const ENABLE_LOY_ELEMENTS = 1;
+    public const LOY_SHOW_ON_CHECKOUT = 1;
+    public const ENABLE_GC_ELEMENTS = 1;
+    public const GC_SHOW_ON_CHECKOUT = 1;
+    public const DISCOUNT_VALIDATION_ACTIVE = 1;
+    public const PICKUP_TIMESLOTS_ENABLED = 1;
+    public const SC_CLICKCOLLECT_ENABLED = 1;
     public const TENDER_TYPE_MAPPINGS = '{"item1":{"payment_method":"checkmo","tender_type":"2"},"item2":{"payment_method":"giftcard","tender_type":"8"},"item3":{"payment_method":"loypoints","tender_type":"11"},"_1695705730821_821":{"payment_method":"braintree","tender_type":"3"},"_1706667787416_416":{"payment_method":"paypal_express","tender_type":"3"},"_1719205594553_553":{"payment_method":"refund","tender_type":"17"}}';
 
     protected function setUp(): void
