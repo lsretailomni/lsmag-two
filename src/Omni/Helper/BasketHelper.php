@@ -5,6 +5,7 @@ namespace Ls\Omni\Helper;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\Order;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
@@ -1103,26 +1104,45 @@ class BasketHelper extends AbstractHelper
      * Get item row discount
      *
      * @param $item
+     * @param array $lines
      * @return float|int
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowDiscount($item)
+    public function getItemRowDiscount($item, $lines = [])
     {
-        $rowDiscount = 0;
-        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-            $item->getSku()
-        );
+        $rowDiscount = $bundleProduct = 0;
 
-        $basketData = $this->getOneListCalculation();
-        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        if (empty($lines)) {
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        } else {
+            $orderLines = $lines;
+        }
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $children      = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
+            $bundleProduct = 1;
+        } else {
+            $children[] = $item;
+        }
 
-        foreach ($orderLines as $line) {
-            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
-                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
-                break;
+        foreach ($children as $child) {
+            foreach ($orderLines as $index => $line) {
+                if (is_numeric($line->getId()) ?
+                    ($child->getItemId() == $line->getId() && $line->getDiscountAmount() > 0) :
+                    ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountAmount() > 0)
+                ) {
+                    $qty = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
+                    $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountAmount()
+                        : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
+                    unset($orderLines[$index]);
+
+                    if (!$bundleProduct) {
+                        break 2;
+                    } else {
+                        break;
+                    }
+                }
             }
         }
 
@@ -1231,6 +1251,8 @@ class BasketHelper extends AbstractHelper
      * Sending request to Central for basket calculation
      *
      * @param $cartId
+     * @return OneListCalculateResponse|Order|null
+     * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1239,12 +1261,15 @@ class BasketHelper extends AbstractHelper
     {
         $oneList = $this->getOneListFromCustomerSession();
         $quote   = $this->quoteRepository->getActive($cartId);
+        $basketData = null;
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);
-            $this->updateBasketAndSaveTotals($oneList, $quote);
+            $basketData = $this->updateBasketAndSaveTotals($oneList, $quote);
             $this->setCalculateBasket(true);
         }
+
+        return $basketData;
     }
 
     /**
@@ -1252,6 +1277,8 @@ class BasketHelper extends AbstractHelper
      *
      * @param $oneList
      * @param $quote
+     * @return OneListCalculateResponse|Order|null
+     * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
@@ -1264,13 +1291,18 @@ class BasketHelper extends AbstractHelper
         }
 
         $basketData = $this->update($oneList);
-        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
-        $cartQuote = $this->checkoutSession->getQuote();
 
-        if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
-            $cartQuote->getLsPointsSpent() > 0) {
-            $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+        if (is_object($basketData)) {
+            $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
+            $cartQuote = $this->checkoutSession->getQuote();
+
+            if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
+                $cartQuote->getLsPointsSpent() > 0) {
+                $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+            }
         }
+
+        return $basketData;
     }
 
     /**
@@ -1342,11 +1374,12 @@ class BasketHelper extends AbstractHelper
      * @param $price
      * @return float|int|mixed
      */
-    public function getPriceAddingCustomOptions($item, $price) {
+    public function getPriceAddingCustomOptions($item, $price)
+    {
         $options = $item->getOptions();
         if ($options) {
             foreach ($options as $option) {
-                if ($option->getCode() == 'option_ids') {
+                if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
                     $price  = $item->getProductType() == Type::TYPE_BUNDLE ?
                         $item->getRowTotal()  : $item->getPrice() * $item->getQty();
                 }

@@ -134,7 +134,7 @@ abstract class AbstractOperation implements OperationInterface
             $navException = $this->parseException($e);
             $this->magentoLogger->critical($navException);
             if ($e->getMessage() != "") {
-                if ($e->faultcode == 's:TransactionCalc' && $operation_name == 'OneListCalculate') {
+                if ($e->faultcode == 's:Error' && $operation_name == 'OneListCalculate') {
                     $response = $e->getMessage();
                 } elseif ($e->getCode() == 504 && $operation_name == 'ContactCreate') {
                     $response = null;
