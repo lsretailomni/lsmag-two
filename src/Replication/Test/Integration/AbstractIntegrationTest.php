@@ -36,6 +36,8 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_VISUAL_SWATCH_ATTRIBUTE_CODE = 'ls_colour';
     public const SAMPLE_HIERARCHY_NODE_NAV_ID = 'ACCESSORIES';
     public const SAMPLE_UPDATE_HIERARCHY_NODE_NAV_ID = 'MAKEUP';
+    public const SAMPLE_CONFIGURABLE_UOM_ITEM_ID = '40100';
+    public const SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID = '40500';
 
     /**
      * Get environment variable value given name

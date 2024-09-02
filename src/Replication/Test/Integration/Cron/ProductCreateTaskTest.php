@@ -277,14 +277,15 @@ class ProductCreateTaskTest extends TestCase
     {
         $storeId = $this->storeManager->getStore()->getId();
         $this->executePreReqCrons();
-        $this->updateAllRelevantItemRecords(
-            1,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID
-        );
 
         $this->updateAllRelevantItemRecords(
             1,
-            AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID
+            [
+                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
+                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+                AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID
+            ]
         );
 
         $this->executeUntilReady($this->cron, [
@@ -305,6 +306,20 @@ class ProductCreateTaskTest extends TestCase
             $storeId
         );
 
+        $configurableProductWithUomOnly = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
+        $configurableProductWithVariantOnly = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
         $simpleProduct = $this->replicationHelper->getProductDataByIdentificationAttributes(
             AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
             '',
@@ -314,6 +329,8 @@ class ProductCreateTaskTest extends TestCase
 
         $this->assertSimpleProducts($simpleProduct);
         $this->assertConfigurableProducts($configurableProduct);
+        $this->assertConfigurableProducts($configurableProductWithUomOnly);
+        $this->assertConfigurableProducts($configurableProductWithVariantOnly);
 
         $this->updateProducts();
     }
@@ -322,15 +339,36 @@ class ProductCreateTaskTest extends TestCase
     {
         $storeId        = $this->storeManager->getStore()->getId();
         $replItemConf   = $this->getReplItem(AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID, $storeId);
+        $replItemConfWithUomOnly   = $this->getReplItem(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
+            $storeId
+        );
+        $replItemConfWithVariantOnly   = $this->getReplItem(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            $storeId
+        );
         $replItemSimple = $this->getReplItem(AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID, $storeId);
         $replVariant    = $this->getVariant(
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
             $storeId,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
         );
-        $this->updateReplItemData($replItemSimple);
-        $this->updateReplItemData($replItemConf);
-        $this->updateVariantItemData($replVariant);
+        $replVariantWithVariantOnly    = $this->getVariant(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            $storeId
+        );
+
+        $replUomOnly = $this->getUom(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
+            $storeId
+        );
+        $this->updateReplItemUomData($replUomOnly);
+
+        $this->updateReplItemData(
+            [$replItemConf, $replItemSimple, $replItemConfWithVariantOnly, $replItemConfWithUomOnly]
+        );
+        $this->updateVariantItemData([$replVariant]);
+        $this->updateVariantItemData($replVariantWithVariantOnly);
         $this->executeUntilReady($this->cron, [
             LSR::SC_SUCCESS_CRON_PRODUCT
         ]);
@@ -342,6 +380,20 @@ class ProductCreateTaskTest extends TestCase
             $storeId
         );
 
+        $configurableProductWithUomOnly = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
+        $configurableProductWithVariantOnly = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
         $simpleProduct = $this->replicationHelper->getProductDataByIdentificationAttributes(
             AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
             '',
@@ -351,32 +403,52 @@ class ProductCreateTaskTest extends TestCase
 
         $this->assertSimpleProducts($simpleProduct);
         $this->assertConfigurableProducts($configurableProduct);
+        $this->assertConfigurableProducts($configurableProductWithUomOnly);
+        $this->assertConfigurableProducts($configurableProductWithVariantOnly);
+    }
+
+    public function updateReplItemUomData($replUoms)
+    {
+        foreach ($replUoms as $replUom) {
+            $replUom->addData(
+                [
+                    'EComSelection' => 1,
+                    'is_updated'    => 1
+                ]
+            );
+
+            $this->replItemUomRepository->save($replUom);
+        }
     }
 
     public function updateReplItemData($replItemSimple)
     {
-        $replItemSimple->addData(
-            [
-                'Description'   => $replItemSimple->getDescription() . ' custom',
-                'BlockedOnECom' => 1,
-                'is_updated'    => 1
-            ]
-        );
+        foreach ($replItemSimple as $item) {
+            $item->addData(
+                [
+                    'Description'   => $item->getDescription() . ' custom',
+                    'BlockedOnECom' => 1,
+                    'is_updated'    => 1
+                ]
+            );
 
-        $this->replItemRespository->save($replItemSimple);
+            $this->replItemRespository->save($item);
+        }
     }
 
     public function updateVariantItemData($replItemSimple)
     {
-        $replItemSimple->addData(
-            [
-                'Description'   => $replItemSimple->getDescription() . ' custom',
-                'BlockedOnECom' => 1,
-                'is_updated'    => 1
-            ]
-        );
+        foreach ($replItemSimple as $item) {
+            $item->addData(
+                [
+                    'Description'   => $item->getDescription() . ' custom',
+                    'BlockedOnECom' => 1,
+                    'is_updated'    => 1
+                ]
+            );
 
-        $this->replItemVariantRegistrationRepository->save($replItemSimple);
+            $this->replItemVariantRegistrationRepository->save($item);
+        }
     }
 
     public function assertSimpleProducts($simpleProduct)
@@ -440,28 +512,32 @@ class ProductCreateTaskTest extends TestCase
         $replItem = $this->getReplItem($itemId, $storeId);
 
         $uoms                     = $this->replicationHelper->getUomCodes($itemId, $storeId);
-        $itemUomCount             = count($uoms[$itemId]);
+        $replUoms                 = $this->getUom($itemId, $storeId);
+        $itemUomCount             = !empty($uoms[$itemId]) ? count($uoms[$itemId]) : 1;
         $variants                 = $this->getVariant($itemId, $storeId);
-        $variantRegistrationCount = count($variants);
+        $variantRegistrationCount = !empty($variants) ? count($variants) : 1;
         $associatedProductIds     = $configurableProduct->getTypeInstance()->getUsedProductIds($configurableProduct);
 
         $this->assertEquals($itemUomCount * $variantRegistrationCount, count($associatedProductIds));
 
-        if (!empty($uoms) && !empty($variants)) {
-            foreach ($uoms[$itemId] as $uom) {
+        if (!empty($replUoms) && count($uoms[$itemId]) > 1 && !empty($variants)) {
+            foreach ($replUoms as $uom) {
                 foreach ($variants as $variant) {
                     $productData = null;
                     try {
                         $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
                             $itemId,
                             $variant->getVariantId(),
-                            $uom,
+                            $uom->getCode(),
                             'global'
                         );
                     } catch (Exception $exception) {
                     }
                     $this->assertNotNull($productData);
-                    $uomDescription = $this->replicationHelper->getUomDescriptionGivenCodeAndScopeId($uom, $storeId);
+                    $uomDescription = $this->replicationHelper->getUomDescriptionGivenCodeAndScopeId(
+                        $uom->getCode(),
+                        $storeId
+                    );
                     $name           = $this->cron->getNameForVariant($variant, $replItem);
                     $name           = $this->cron->getNameForUom($name, $uomDescription);
 
@@ -473,6 +549,56 @@ class ProductCreateTaskTest extends TestCase
                         $variant->getBlockedOnECom() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
                     );
                 }
+            }
+        } elseif (!empty($replUoms) && empty($variants)) {
+            foreach ($replUoms as $uom) {
+                $productData = null;
+                try {
+                    $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $itemId,
+                        '',
+                        $uom->getCode(),
+                        'global'
+                    );
+                } catch (Exception $exception) {
+                }
+                $this->assertNotNull($productData);
+                $uomDescription = $this->replicationHelper->getUomDescriptionGivenCodeAndScopeId(
+                    $uom->getCode(),
+                    $storeId
+                );
+                $name           = $this->cron->getNameForUom($replItem->getDescription(), $uomDescription);
+
+                $this->assertTrue($productData->getData('name') == $name);
+                $this->assertTrue($productData->getData('meta_title') == $name);
+                $this->assertTrue($productData->getData('description') == $replItem->getDetails());
+                $this->assertTrue(
+                    (bool)($productData->getData('status') ==
+                    $uom->getEComSelection() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
+                );
+            }
+        } else {
+            foreach ($variants as $variant) {
+                $productData = null;
+                try {
+                    $productData = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $itemId,
+                        $variant->getVariantId(),
+                        '',
+                        'global'
+                    );
+                } catch (Exception $exception) {
+                }
+                $this->assertNotNull($productData);
+                $name           = $this->cron->getNameForVariant($variant, $replItem);
+
+                $this->assertTrue($productData->getData('name') == $name);
+                $this->assertTrue($productData->getData('meta_title') == $name);
+                $this->assertTrue($productData->getData('description') == $replItem->getDetails());
+                $this->assertTrue(
+                    (bool)($productData->getData('status') ==
+                    $variant->getBlockedOnECom() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
+                );
             }
         }
     }
@@ -529,6 +655,17 @@ class ProductCreateTaskTest extends TestCase
     }
 
     public function updateAllRelevantItemRecords($value = 0, $itemId = '')
+    {
+        if (is_array($itemId)) {
+            foreach ($itemId as $id) {
+                $this->updateGivenItemFlatTablesData($value, $id);
+            }
+        } else {
+            $this->updateGivenItemFlatTablesData($value, $itemId);
+        }
+    }
+
+    public function updateGivenItemFlatTablesData($value, $itemId)
     {
         // Update all dependent ls tables to processed = 0
         foreach ($this->lsTables as $lsTable) {
@@ -633,5 +770,22 @@ class ProductCreateTaskTest extends TestCase
         $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
 
         return current($this->replItemVariantRegistrationRepository->getList($criteria)->getItems());
+    }
+
+    public function getUom($itemId, $storeId, $uom = null)
+    {
+        $filters = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'ItemId', 'value' => $itemId, 'condition_type' => 'eq']
+        ];
+
+        if ($uom) {
+            $filters[] = ['field' => 'Code', 'value' => $uom, 'condition_type' => 'eq'];
+        }
+
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+        $items = $this->replItemUomRepository->getList($criteria)->getItems();
+
+        return $uom ? current($items) : $items;
     }
 }
