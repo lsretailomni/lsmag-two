@@ -26,6 +26,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_VALIDATION_PERIOD_ID = '16';
     public const SAMPLE_HIERARCHY_NAV_ID = 'FASHIONCOSMETICS';
     public const SAMPLE_UOM = 'PCS';
+    public const SAMPLE_UOM_2 = 'PACK';
     public const SAMPLE_VENDOR_ID = '44010';
     public const SAMPLE_BUSINESS_TAX_GROUP = 'DOMESTIC';
     public const SAMPLE_CASH_TENDER_TYPE_ID = '1';
@@ -38,6 +39,8 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_UPDATE_HIERARCHY_NODE_NAV_ID = 'MAKEUP';
     public const SAMPLE_CONFIGURABLE_UOM_ITEM_ID = '40100';
     public const SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID = '40500';
+    public const SAMPLE_CONFIGURABLE2_VARIANT_ITEM_ID = '43130';
+    public const SAMPLE_STANDARD_VARIANT_ITEM_ID = '40190';
 
     /**
      * Get environment variable value given name
