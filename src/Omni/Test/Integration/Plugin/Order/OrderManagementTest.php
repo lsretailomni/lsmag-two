@@ -4,7 +4,7 @@ namespace Ls\Omni\Test\Integration\Plugin\Order;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
-use Ls\Omni\Helper\BasketHelper;
+use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Plugin\Order\OrderManagement;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Fixture\CustomerAddressFixture;
