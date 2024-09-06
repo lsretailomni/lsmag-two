@@ -2,15 +2,13 @@
 
 namespace Ls\Omni\Test\Integration\Plugin\Quote\Model;
 
-use Ls\Core\Model\LSR;
-use \Ls\Omni\Helper\ContactHelper;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Registry;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\AppArea;
@@ -40,16 +38,6 @@ class QuoteRepositoryPluginTest extends AbstractIntegrationTest
     /**
      * @var mixed
      */
-    public $contactHelper;
-
-    /**
-     * @var mixed
-     */
-    public $registry;
-
-    /**
-     * @var mixed
-     */
     public $customerSession;
 
     /**
@@ -67,8 +55,6 @@ class QuoteRepositoryPluginTest extends AbstractIntegrationTest
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->customerSession = $this->objectManager->get(CustomerSession::class);
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
-        $this->registry        = $this->objectManager->get(Registry::class);
-        $this->contactHelper   = $this->objectManager->get(ContactHelper::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
     }
 
