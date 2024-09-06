@@ -136,7 +136,7 @@ class SyncAttributesValue extends ProductCreateTask
                     $itemId,
                     $variantId,
                     '',
-                    0,
+                    'global',
                     true,
                     true
                 );
@@ -168,7 +168,6 @@ class SyncAttributesValue extends ProductCreateTask
                     } else {
                         $value = $attributeValue->getValue();
                     }
-
 
                     $product->setData($formattedCode, $value);
                     $product->getResource()->saveAttribute($product, $formattedCode);

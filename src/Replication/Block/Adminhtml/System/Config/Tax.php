@@ -48,7 +48,7 @@ class Tax implements OptionSourceInterface
     {
         $taxCodes     = [];
         $taxCodes[]   = [
-            'value' => 0.00,
+            'value' => 'DEFAULT' . '#' . "0.00",
             'label' => __('DEFAULT') . ' - ' . "0.00" . '%'
         ];
         $taxDataArray = $this->replicationHelper->getTaxSetup();
@@ -56,7 +56,8 @@ class Tax implements OptionSourceInterface
             foreach ($taxDataArray as $taxData) {
                 $taxPercent = number_format($taxData->getTaxPercent(), 2);
                 $taxCodes[] = [
-                    'value' => $taxPercent,
+                    'value' => $taxData->getBusinessTaxGroup() . '#' . $taxData->getProductTaxGroup() .
+                        '#' . $taxPercent,
                     'label' => __($taxData->getBusinessTaxGroup()) . ' - ' . __($taxData->getProductTaxGroup()) .
                         ' - ' . $taxPercent . '%'
                 ];

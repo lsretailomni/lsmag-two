@@ -2088,39 +2088,31 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
+     * Added objects to result factory based on collection
+     *
      * @param $collection
      * @param SearchCriteriaInterface $criteria
      * @param $resultFactory
-     * @param null $fieldToSelect
+     * @param $fieldToSort
      * @return mixed
      */
     public function setCollection(
         $collection,
         SearchCriteriaInterface $criteria,
         $resultFactory,
-        $fieldToSort = null
+        $fieldToSort = []
     ) {
-        foreach ($criteria->getFilterGroups() as $filter_group) {
-            $fields = $conditions = [];
-            foreach ($filter_group->getFilters() as $filter) {
-                $condition    = $filter->getConditionType() ?: 'eq';
-                $fields[]     = $filter->getField();
-                $conditions[] = [$condition => $filter->getValue()];
+        if (!empty($fieldToSort)) {
+            foreach ($fieldToSort as $field) {
+                $collection->getSelect()->order('main_table.' . $field);
             }
-            if ($fields) {
-                $collection->addFieldToFilter($fields, $conditions);
-            }
-        }
-        if ($fieldToSort) {
-            $collection->getSelect()->order('main_table.' . $fieldToSort);
-            $collection->getSelect()->order('main_table.QtyPrUom');
         }
 
         // @codingStandardsIgnoreEnd
         $collection->getSelect()->limit($criteria->getPageSize());
 
-        /** @var For Xdebug only to check the query $query */
-        //$query = $collection->getSelect()->__toString();
+        /** For Xdebug only to check the query $query */
+        $query = $collection->getSelect()->__toString();
 
         $objects = [];
         foreach ($collection as $object_model) {
@@ -3272,9 +3264,13 @@ class ReplicationHelper extends AbstractHelper
                         0,
                         ($replInvStatus->getQuantity() > 0) ? 1 : 0
                     );
+
                     $productIds[]            = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]);
                 }
             }
+
+            $pId = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$sku]);
+            $this->setQtyUsesDecimal(array_shift($pId), $replInvStatus);
 
             $sourceItems[$sku] = $this->getSourceItemGivenData(
                 $sku,
@@ -3295,6 +3291,39 @@ class ReplicationHelper extends AbstractHelper
             $this->_logger->debug(sprintf('Problem with sku: %s in method %s', $sku, __METHOD__));
             $this->_logger->debug($e->getMessage());
         }
+    }
+
+    /**
+     * updated qty_uses_decimal for an item
+     *
+     * @param $productId
+     * @param $replInvStatus
+     * @return void
+     */
+    public function setQtyUsesDecimal($productId, $replInvStatus)
+    {
+        $criteria = $this->criteriaInterfaceFactory->create();
+        $criteria->setScopeFilter($this->stockConfiguration->getDefaultScopeId());
+        $criteria->setProductsFilter($productId);
+        $stockItemCollection = $this->stockItemRepository->getList($criteria);
+        $allItems            = $stockItemCollection->getItems();
+        if (empty($allItems)) {
+            return;
+        }
+        $productStockItem = array_shift($allItems);
+
+        if (fmod((float)$replInvStatus->getQuantity(), 1) != 0) {
+            $productStockItem
+                ->setIsQtyDecimal(1)
+                ->setUseConfigMinSaleQty(0)
+                ->setMinSaleQty(0.1);
+        } else {
+            $productStockItem
+                ->setIsQtyDecimal(0)
+                ->setUseConfigMinSaleQty(1);
+        }
+
+        $this->stockItemRepository->save($productStockItem);
     }
 
     /**
@@ -3325,16 +3354,13 @@ class ReplicationHelper extends AbstractHelper
                 break;
             }
         }
-        if ($parentStockItem->getIsInStock() !== $childrenIsInStock) {
-            $parentStockItem
-                ->setStockStatusChangedAuto(1)
-                ->setStockStatusChangedAutomaticallyFlag(1);
 
-            if (!$this->isSingleSourceMode->execute()) {
-                $parentStockItem->setIsInStock($childrenIsInStock);
-            }
-            $this->stockItemRepository->save($parentStockItem);
-        }
+        $parentStockItem
+            ->setStockStatusChangedAuto(1)
+            ->setStockStatusChangedAutomaticallyFlag(1)
+            ->setIsInStock((int) $childrenIsInStock);
+
+        $this->stockItemRepository->save($parentStockItem);
     }
 
     /**

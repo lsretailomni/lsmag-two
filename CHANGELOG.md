@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.0] - 2024-08-26
+
+### Added
+- Added support for validating central and ecom license by parsing ping response. [49841](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/49841)
+- Added support for push notifications using OneSignal on classic frontend. [52265](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52265)
+- Added support for push notifications using OneSignal on GraphQL. [52264](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52264)
+- Added support for push notifications for shipment, payment, cancel, creditmemo webhooks. [53767](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/53767)
+- Added support for showing discount on cart, checkout, order view, email. [53510](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/53510)
+- Added support for place order validations for applied gift card and coupon validity. [55121](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55121)
+- Added support for queue counter and KOT number in kitchen order status on hospitality. [53723](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/53723)
+
+### Bugs/Fixes
+- Fixed performance issues for basket calculation. [52501](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52501)
+- Fixed issues with loyalty points payment line. [52468](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52468)
+- Fixed issues with order edit from the Magento side. [52363](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52363)
+- Fixed issues with user-friendly error message to Central in case of payment webhook. [52993](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52993)
+- Fixed issues with customer creation on admin panel. [53409](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/53409)
+- Fixed issues identified on Saas Environment on hospitality. [52260](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52260)
+- Fixed issues with discount replication setup when we use variant dimension and use club as scheme type. [53222](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/53770)
+- Fixed issues with removal of discount offer from an item. [53770](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/53222)
+- Fixed issues with formatting loyalty points based on currency. [54431](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/54431)
+- Fixed issues with shipping tax configuration. [55004](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55004)
+- Fixed issues with price replication for multi currency setup. [55056](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55056)
+- Fixed issues with inventory replication. [55592](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55592)
+- Fixed issues with bundle product basket calculation. [55116](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55116)
+- Fixed issue with bundle product price display on cart and checkout. [55841](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55841)
+- Fixed issues with product creation causing deadlock due to redundant data. [55435](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55435)
+- Fixed issues with onesignal causing js error in the browser console. [55658](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55658)
+- Github issue [#57](https://github.com/lsretailomni/lsmag-two/issues/57)
+- Github issue [#58](https://github.com/lsretailomni/lsmag-two/issues/58)
+
 ## [2.7.0] - 2024-05-16
 
 ### Added

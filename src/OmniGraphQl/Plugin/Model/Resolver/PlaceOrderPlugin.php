@@ -4,6 +4,7 @@ namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Api\DiscountManagementInterface;
+use Ls\Omni\Model\Api\DiscountManagement;
 use \Ls\OmniGraphQl\Helper\DataHelper;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -74,12 +75,25 @@ class PlaceOrderPlugin
             throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
         }
 
-        if ($this->lsr->isGraphqlDiscountValidationEnabled() &&
-            !$this->discountManagement->checkDiscountValidity($args['input']['cart_id'])
-        ) {
-            throw new GraphQlInputException(
-                __('Unfortunately since your discount is no longer valid your grand total has been updated.')
-            );
+        if ($this->lsr->isGraphqlDiscountValidationEnabled()) {
+            $response = $this->discountManagement->checkDiscountValidity($args['input']['cart_id']);
+            $msg = [];
+
+            foreach ($response as $each) {
+                if ($each['valid'] === false) {
+                    if ($each['type'] === DiscountManagement::DISCOUNT_TYPE) {
+                        $msg[] = __($this->lsr->getGraphqlDiscountValidationMsg())->getText();
+                    } else {
+                        $msg[] = __($this->lsr->getGraphqlGiftCardValidationMsg())->getText();
+                    }
+                }
+            }
+
+            if (!empty($msg)) {
+                throw new GraphQlInputException(
+                    __(implode('', $msg))
+                );
+            }
         }
 
         $result = $proceed($field, $context, $info, $value, $args);
