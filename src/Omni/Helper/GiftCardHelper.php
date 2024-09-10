@@ -93,6 +93,9 @@ class GiftCardHelper extends AbstractHelperOmni
      */
     public function isGiftCardExpired($giftCardResponse)
     {
+        if (!$giftCardResponse->getExpireDate()) {
+            return false;
+        }
         $date = new \DateTime($giftCardResponse->getExpireDate());
         $now = new \DateTime();
 
