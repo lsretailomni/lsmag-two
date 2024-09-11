@@ -41,6 +41,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID = '40500';
     public const SAMPLE_CONFIGURABLE2_VARIANT_ITEM_ID = '43130';
     public const SAMPLE_STANDARD_VARIANT_ITEM_ID = '40190';
+    public const SAMPLE_HIERARCHY_LEAF = 'DAVI';
 
     /**
      * Get environment variable value given name

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Cron;
 
+use Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
 use Ls\Replication\Api\ReplItemRepositoryInterface;
@@ -59,6 +60,10 @@ class AbstractTask extends TestCase
     public $replItemVariantInterfaceFactory;
     public $replItemVariantRepository;
 
+    public $objectManager;
+    public $replHierarchyLeafInterfaceFactory;
+    public $categoryRepository;
+
     /**
      * @inheritdoc
      */
@@ -79,6 +84,8 @@ class AbstractTask extends TestCase
         $this->resource                              = $this->objectManager->create(ResourceConnection::class);
         $this->replItemVariantInterfaceFactory       = $this->objectManager->get(ReplItemVariantInterfaceFactory::class);
         $this->replItemVariantRepository             = $this->objectManager->get(ReplItemVariantRepositoryInterface::class);
+        $this->replHierarchyLeafInterfaceFactory     = $this->objectManager->get(ReplHierarchyLeafInterfaceFactory::class);
+        $this->categoryRepository = $this->objectManager->get(\Magento\Catalog\Api\CategoryRepositoryInterface::class);
     }
 
     public function updateAllRelevantItemRecords($value = 0, $itemId = '')
