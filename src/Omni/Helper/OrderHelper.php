@@ -16,6 +16,7 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Locale\ConfigInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -125,6 +126,11 @@ class OrderHelper extends AbstractHelper
     private $storeData;
 
     /**
+     * @var ConfigInterface
+     */
+    public $config;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
@@ -141,6 +147,7 @@ class OrderHelper extends AbstractHelper
      * @param StoreManagerInterface $storeManager
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
+     * @param ConfigInterface $config
      */
     public function __construct(
         Context $context,
@@ -158,7 +165,8 @@ class OrderHelper extends AbstractHelper
         TimezoneInterface $timezoneInterface,
         StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
-        CurrencyFactory $currencyFactory
+        CurrencyFactory $currencyFactory,
+        ConfigInterface $config
     ) {
         parent::__construct($context);
         $this->order              = $order;
@@ -176,6 +184,7 @@ class OrderHelper extends AbstractHelper
         $this->storeManager       = $storeManager;
         $this->storeHelper        = $storeHelper;
         $this->currencyFactory    = $currencyFactory;
+        $this->config             = $config;
     }
 
     /**
@@ -1348,7 +1357,11 @@ class OrderHelper extends AbstractHelper
         }
 
         if (!empty($currency)) {
-            $currencyObject = $this->currencyFactory->create()->load($currency);
+            $allowedCurrencies = $this->config->getAllowedCurrencies();
+
+            if (in_array($currency, $allowedCurrencies)) {
+                $currencyObject = $this->currencyFactory->create()->load($currency);
+            }
         }
 
         return $priceCurrency->format($amount, false, 2, null, $currencyObject);
