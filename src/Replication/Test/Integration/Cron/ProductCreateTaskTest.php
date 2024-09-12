@@ -523,6 +523,27 @@ class ProductCreateTaskTest extends AbstractTask
         $this->assertCustomAttributes($simpleProduct);
     }
 
+    public function assertPrice($product)
+    {
+        $storeId = $this->storeManager->getStore()->getId();
+        $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+        $item      = $this->getReplItem($itemId, $storeId);
+        $unitOfMeasure = null;
+
+        if (!empty($uomCode)) {
+            if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {
+                $unitOfMeasure = $uomCode->getCode();
+            }
+        }
+        $itemPrice = $this->cron->getItemPrice($itemId, $variantId);
+        if (isset($itemPrice)) {
+            $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
+        } else {
+            $this->assertTrue($product->getPrice() == $item->getUnitPrice());
+        }
+    }
+
     public function assertConfigurableProducts($configurableProduct)
     {
         $this->assertTrue($configurableProduct->getTypeId() == Configurable::TYPE_CODE);
