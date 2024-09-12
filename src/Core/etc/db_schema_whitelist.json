@@ -31,7 +31,8 @@
             "ls_gift_card_cny_code": true,
             "ls_gift_card_cny_factor": true,
             "ls_discount_amount": true,
-            "ls_subscription_id": true
+            "ls_subscription_id": true,
+            "ls_order_edit": true
         }
     },
     "sales_invoice": {

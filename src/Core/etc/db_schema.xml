@@ -32,6 +32,7 @@
         <column xsi:type="text" name="ls_gift_card_cny_code" nullable="true" comment="LS Gift Card Currency Code"/>
         <column xsi:type="float" name="ls_gift_card_cny_factor" nullable="true" comment="LS Gift Card Currency Factor"/>
         <column xsi:type="varchar" name="document_id" length="255" nullable="true" comment="Document Id"/>
+        <column xsi:type="boolean" name="ls_order_edit" nullable="false" default="false" comment="Ls Order Edit"/>
         <column xsi:type="text" name="ls_subscription_id" nullable="true" comment="LS Subscription ID"/>
     </table>
     <table name="sales_order_item" resource="sales" engine="innodb" comment="Sales Flat Order Item">
