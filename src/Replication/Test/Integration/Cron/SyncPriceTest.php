@@ -23,6 +23,7 @@ use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
 use \Ls\Replication\Cron\ReplEcommPricesTask;
 use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
 use \Ls\Replication\Cron\ReplEcommVendorTask;
+use \Ls\Replication\Cron\SyncPrice;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -193,6 +194,7 @@ class SyncPriceTest extends AbstractTask
     {
         $storeId           = $this->storeManager->getStore()->getId();
         $this->cron->store = $this->storeManager->getStore();
+        $this->cron->webStoreId = AbstractIntegrationTest::CS_STORE;
         $this->executePreReqCrons();
 
         $this->updateAllRelevantItemRecords(
@@ -200,6 +202,7 @@ class SyncPriceTest extends AbstractTask
             [
                 AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
                 AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
+                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID
             ]
         );
 
@@ -213,6 +216,101 @@ class SyncPriceTest extends AbstractTask
             ],
             $storeId
         );
+
+        $this->updatePrice();
+    }
+
+    public function updatePrice()
+    {
+        $storeId           = $this->storeManager->getStore()->getId();
+        $this->addDummyPriceData(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+        );
+        $this->modifySpecificItemPrice(AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID);
+        $this->modifySpecificItemPrice(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            null,
+            AbstractIntegrationTest::SAMPLE_UOM_2
+        );
+
+        $this->executeUntilReady(SyncPrice::class, [
+            LSR::SC_SUCCESS_CRON_PRODUCT_PRICE
+        ]);
+
+        $this->assertCronSuccess(
+            [
+                LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
+            ],
+            $storeId
+        );
+        $simpleProduct = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
+            '',
+            '',
+            $storeId
+        );
+
+        $childProduct = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+        );
+
+        $this->assertPrice($simpleProduct);
+        $this->assertPrice($childProduct);
+        $items = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '',
+            AbstractIntegrationTest::SAMPLE_UOM_2,
+            $storeId,
+            true,
+            true,
+            true
+        );
+
+        foreach ($items as $item) {
+            $this->assertPrice($item);
+        }
+    }
+
+    public function addDummyPriceData($itemId, $variantId)
+    {
+        $price = $this->replPriceInterfaceFactory->create();
+        $price->addData(
+            [
+                'CurrencyCode' => AbstractIntegrationTest::SAMPLE_CURRENCY_CODE,
+                'EndingDate' => '1900-01-01T00:00:00',
+                'IsDeleted' => 0,
+                'ItemId' => $itemId,
+                'MinimumQuantity' => '0.0000',
+                'ModifyDate' => '2024-08-01T00:00:00',
+                'PriceInclVat' => 0,
+                'Priority' => 0,
+                'QtyPerUnitOfMeasure' => '0.0000',
+                'StartingDate' => '1900-01-01T00:00:00',
+                'StoreId' => AbstractIntegrationTest::CS_STORE,
+                'UnitPrice' => '10.0000',
+                'UnitPriceInclVat' => '10.0000',
+                'VariantId' => $variantId,
+                'scope' => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id' => $this->storeManager->getWebsite()->getId()
+            ]
+        );
+        $this->replPriceRepository->save($price);
+    }
+
+    public function modifySpecificItemPrice($itemId, $variantId = null, $uom = null)
+    {
+        $simpleItemPrice = $this->cron->getItemPrice($itemId, $variantId, $uom);
+
+        $simpleItemPrice->addData(
+            [
+                'UnitPriceInclVat' => '10.0000',
+                'is_updated' => 1
+            ]
+        );
+
+        $this->replPriceRepository->save($simpleItemPrice);
     }
 
     public function executePreReqCrons()
@@ -227,31 +325,6 @@ class SyncPriceTest extends AbstractTask
             LSR::SC_SUCCESS_CRON_CATEGORY
         ]);
         $this->updateAllRelevantItemRecords();
-    }
-
-    public function executeUntilReady($cronClass, $successStatus)
-    {
-        for ($i = 0; $i < 4; $i++) {
-            $cron = $this->objectManager->create($cronClass);
-            $cron->store = $this->storeManager->getStore();
-            $cron->execute();
-
-            if ($this->isReady($successStatus, $this->storeManager->getStore()->getId())) {
-                break;
-            }
-        }
-    }
-
-    public function isReady($successStatuses, $scopeId)
-    {
-        $status = true;
-
-        foreach ($successStatuses as $successStatus) {
-            $status =
-                $status && $this->lsr->getConfigValueFromDb($successStatus, ScopeInterface::SCOPE_STORES, $scopeId) &&
-                $successStatus !== LSR::SC_SUCCESS_CRON_PRODUCT;
-        }
-        return $status;
     }
 
     public function assertCronSuccess($cronConfigs, $storeId, $status = true)

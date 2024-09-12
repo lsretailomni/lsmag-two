@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractIntegrationTest extends TestCase
 {
-    public const CS_URL = 'http://20.6.33.78/commerceservice';
+    public const CS_URL = 'http://13.67.41.234/CommerceService';
     public const CS_VERSION = '2024.4.1';
     public const LS_VERSION = '25.0.0.0';
     public const CS_STORE = 'S0013';
@@ -42,6 +42,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_CONFIGURABLE2_VARIANT_ITEM_ID = '43130';
     public const SAMPLE_STANDARD_VARIANT_ITEM_ID = '40190';
     public const SAMPLE_HIERARCHY_LEAF = 'DAVI';
+    public const SAMPLE_CURRENCY_CODE = 'GBP';
 
     /**
      * Get environment variable value given name

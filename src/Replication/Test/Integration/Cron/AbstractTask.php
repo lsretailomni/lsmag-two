@@ -3,17 +3,23 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Cron;
 
-use Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
-use Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
-use Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
-use Ls\Replication\Api\ReplItemRepositoryInterface;
-use Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface;
-use Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface;
-use Ls\Replication\Api\ReplItemVariantRepositoryInterface;
-use Ls\Replication\Cron\ProductCreateTask;
-use Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
+use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
+use \Ls\Replication\Api\ReplItemRepositoryInterface;
+use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface;
+use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface;
+use \Ls\Replication\Api\ReplItemVariantRepositoryInterface;
+use \Ls\Replication\Cron\ProductCreateTask;
+use \Ls\Replication\Helper\ReplicationHelper;
+use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
+use \Ls\Replication\Model\ReplItem;
+use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
@@ -63,6 +69,8 @@ class AbstractTask extends TestCase
     public $objectManager;
     public $replHierarchyLeafInterfaceFactory;
     public $categoryRepository;
+    public $replPriceRepository;
+    public $replPriceInterfaceFactory;
 
     /**
      * @inheritdoc
@@ -85,7 +93,33 @@ class AbstractTask extends TestCase
         $this->replItemVariantInterfaceFactory       = $this->objectManager->get(ReplItemVariantInterfaceFactory::class);
         $this->replItemVariantRepository             = $this->objectManager->get(ReplItemVariantRepositoryInterface::class);
         $this->replHierarchyLeafInterfaceFactory     = $this->objectManager->get(ReplHierarchyLeafInterfaceFactory::class);
-        $this->categoryRepository = $this->objectManager->get(\Magento\Catalog\Api\CategoryRepositoryInterface::class);
+        $this->replPriceInterfaceFactory             = $this->objectManager->get(ReplPriceInterfaceFactory::class);
+        $this->categoryRepository                    = $this->objectManager->get(CategoryRepositoryInterface::class);
+        $this->replPriceRepository                   = $this->objectManager->get(ReplPriceRepository::class);
+    }
+
+    public function executeUntilReady($cronClass, $successStatus)
+    {
+        for ($i = 0; $i < 5; $i++) {
+            $cron = $this->objectManager->create($cronClass);
+            $cron->execute();
+
+            if ($this->isReady($successStatus, $this->storeManager->getStore()->getId())) {
+                break;
+            }
+        }
+    }
+
+    public function isReady($successStatuses, $scopeId)
+    {
+        $status = true;
+
+        foreach ($successStatuses as $successStatus) {
+            $status =
+                $status && $this->lsr->getConfigValueFromDb($successStatus, ScopeInterface::SCOPE_STORES, $scopeId) &&
+                $successStatus !== LSR::SC_SUCCESS_CRON_PRODUCT;
+        }
+        return $status;
     }
 
     public function updateAllRelevantItemRecords($value = 0, $itemId = '')
@@ -132,5 +166,46 @@ class AbstractTask extends TestCase
                 $error = $e->getMessage();
             }
         }
+    }
+
+    public function assertPrice($product)
+    {
+        $storeId       = $this->storeManager->getStore()->getId();
+        $itemId        = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId     = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+        $uomCode       = $product->getData("uom");
+        $item          = $this->getReplItem($itemId, $storeId);
+        $unitOfMeasure = null;
+
+        if (!empty($uomCode)) {
+            if ($uomCode != $item->getBaseUnitOfMeasure()) {
+                $unitOfMeasure = $uomCode;
+            }
+        }
+        $itemPrice = $this->cron->getItemPrice($itemId, $variantId, $unitOfMeasure);
+        if (isset($itemPrice)) {
+            $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
+        } else {
+            $itemPrice = $this->cron->getItemPrice($itemId);
+            if (!empty($itemPrice)) {
+                $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
+            } else {
+                $this->assertTrue($product->getPrice() == $itemPrice->getUnitPrice());
+            }
+        }
+    }
+
+    public function getReplItem($itemId, $storeId)
+    {
+        $filters = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
+        ];
+
+        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
+        /** @var ReplItem $item */
+        $item = current($this->replItemRespository->getList($searchCriteria)->getItems());
+
+        return $item;
     }
 }

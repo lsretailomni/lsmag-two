@@ -24,7 +24,6 @@ use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
 use \Ls\Replication\Cron\ReplEcommPricesTask;
 use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
 use \Ls\Replication\Cron\ReplEcommVendorTask;
-use \Ls\Replication\Model\ReplItem;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Model\Product\Attribute\Source\Status;
@@ -193,6 +192,7 @@ class ProductCreateTaskTest extends AbstractTask
     {
         $storeId           = $this->storeManager->getStore()->getId();
         $this->cron->store = $this->storeManager->getStore();
+        $this->cron->webStoreId = AbstractIntegrationTest::CS_STORE;
         $this->addDummyDataStandardVariant();
         $this->executePreReqCrons();
 
@@ -301,7 +301,7 @@ class ProductCreateTaskTest extends AbstractTask
                 'ItemId' => $itemId,
                 'VariantId' => $variantId,
                 'scope' => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id' => $this->storeManager->getStore()->getId()
+                'scope_id' => $this->storeManager->getWebsite()->getId()
             ]
         );
         $this->replItemVariantRepository->save($option);
@@ -521,27 +521,7 @@ class ProductCreateTaskTest extends AbstractTask
         $this->assertTrue($simpleProduct->getTypeId() == Type::TYPE_SIMPLE);
         $this->assertAssignedCategories($simpleProduct);
         $this->assertCustomAttributes($simpleProduct);
-    }
-
-    public function assertPrice($product)
-    {
-        $storeId = $this->storeManager->getStore()->getId();
-        $itemId  = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
-        $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
-        $item      = $this->getReplItem($itemId, $storeId);
-        $unitOfMeasure = null;
-
-        if (!empty($uomCode)) {
-            if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {
-                $unitOfMeasure = $uomCode->getCode();
-            }
-        }
-        $itemPrice = $this->cron->getItemPrice($itemId, $variantId);
-        if (isset($itemPrice)) {
-            $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
-        } else {
-            $this->assertTrue($product->getPrice() == $item->getUnitPrice());
-        }
+        $this->assertPrice($simpleProduct);
     }
 
     public function assertConfigurableProducts($configurableProduct)
@@ -681,6 +661,7 @@ class ProductCreateTaskTest extends AbstractTask
                     $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_LENGTH) == $uom->getLength());
                     $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_WIDTH) == $uom->getWidth());
                     $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_CUBAGE) == $uom->getCubage());
+                    $this->assertPrice($productData);
                 }
             }
         } elseif (!empty($replUoms) && empty($variants)) {
@@ -715,6 +696,7 @@ class ProductCreateTaskTest extends AbstractTask
                 $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_LENGTH) == $uom->getLength());
                 $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_WIDTH) == $uom->getWidth());
                 $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_CUBAGE) == $uom->getCubage());
+                $this->assertPrice($productData);
             }
         } else {
             foreach ($variants as $variant) {
@@ -738,6 +720,7 @@ class ProductCreateTaskTest extends AbstractTask
                     (bool)($productData->getData('status') ==
                     $variant->getBlockedOnECom() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
                 );
+                $this->assertPrice($productData);
             }
         }
     }
@@ -793,30 +776,6 @@ class ProductCreateTaskTest extends AbstractTask
         $this->updateAllRelevantItemRecords();
     }
 
-    public function isReady($successStatuses, $scopeId)
-    {
-        $status = true;
-
-        foreach ($successStatuses as $successStatus) {
-            $status =
-                $status && $this->lsr->getConfigValueFromDb($successStatus, ScopeInterface::SCOPE_STORES, $scopeId) &&
-                $successStatus !== LSR::SC_SUCCESS_CRON_PRODUCT;
-        }
-        return $status;
-    }
-
-    public function executeUntilReady($cronClass, $successStatus)
-    {
-        for ($i = 0; $i < 4; $i++) {
-            $cron = $this->objectManager->create($cronClass);
-            $cron->execute();
-
-            if ($this->isReady($successStatus, $this->storeManager->getStore()->getId())) {
-                break;
-            }
-        }
-    }
-
     public function assertCronSuccess($cronConfigs, $storeId, $status = true)
     {
         foreach ($cronConfigs as $config) {
@@ -834,20 +793,6 @@ class ProductCreateTaskTest extends AbstractTask
                 ));
             }
         }
-    }
-
-    public function getReplItem($itemId, $storeId)
-    {
-        $filters = [
-            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
-            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq']
-        ];
-
-        $searchCriteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
-        /** @var ReplItem $item */
-        $item = current($this->replItemRespository->getList($searchCriteria)->getItems());
-
-        return $item;
     }
 
     public function getVariant($itemId, $storeId, $variantId = null)
