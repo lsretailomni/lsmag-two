@@ -222,7 +222,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     '<div class="flag-yellow custom-grid-flag">' . __("Pending") . '</div>';
 
                 if (strpos($cronName, '_reset') !== false || $cronName == "sync_version" ||
-                    $cronName == "sync_orders" || $cronName == "sync_customers") {
+                    $cronName == "sync_orders" || $cronName == "sync_customers" || $cronName == "sync_orders_edit") {
                     $condition = $statusStr = '';
                 }
                 $items[] = [
