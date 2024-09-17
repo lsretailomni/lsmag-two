@@ -96,7 +96,7 @@ class DiscountManagement implements DiscountManagementInterface
         } else {
             $existingBasketTotal = $existingBasketCalculation->getTotalAmount();
             $this->basketHelper->setCalculateBasket('1');
-            $basketData = $this->basketHelper->syncBasketWithCentral($cartId);
+            $basketData = $this->basketHelper->syncBasketWithCentral($cartId, 1);
 
             if (is_string($basketData) &&
                 str_contains($basketData, sprintf('Coupon %s is not valid', $quote->getCouponCode()))
