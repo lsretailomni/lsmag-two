@@ -35,7 +35,7 @@ use Magento\TestFramework\Fixture\DataFixture;
 
 /**
  * @magentoAppArea crontab
- * @magentoDbIsolation enabled
+ * @magentoDbIsolation disabled
  * @magentoAppIsolation enabled
  */
 #[
@@ -171,7 +171,7 @@ class ProductCreateTaskTest extends AbstractTask
     }
 
     /**
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
@@ -522,6 +522,7 @@ class ProductCreateTaskTest extends AbstractTask
         $this->assertAssignedCategories($simpleProduct);
         $this->assertCustomAttributes($simpleProduct);
         $this->assertPrice($simpleProduct);
+        $this->assertInventory($simpleProduct);
     }
 
     public function assertConfigurableProducts($configurableProduct)
@@ -662,6 +663,7 @@ class ProductCreateTaskTest extends AbstractTask
                     $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_WIDTH) == $uom->getWidth());
                     $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_CUBAGE) == $uom->getCubage());
                     $this->assertPrice($productData);
+                    $this->assertInventory($productData);
                 }
             }
         } elseif (!empty($replUoms) && empty($variants)) {
@@ -697,6 +699,7 @@ class ProductCreateTaskTest extends AbstractTask
                 $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_WIDTH) == $uom->getWidth());
                 $this->assertTrue($productData->getData(LSR::LS_UOM_ATTRIBUTE_CUBAGE) == $uom->getCubage());
                 $this->assertPrice($productData);
+                $this->assertInventory($productData);
             }
         } else {
             foreach ($variants as $variant) {
@@ -721,6 +724,7 @@ class ProductCreateTaskTest extends AbstractTask
                     $variant->getBlockedOnECom() ? Status::STATUS_DISABLED : Status::STATUS_ENABLED)
                 );
                 $this->assertPrice($productData);
+                $this->assertInventory($productData);
             }
         }
     }

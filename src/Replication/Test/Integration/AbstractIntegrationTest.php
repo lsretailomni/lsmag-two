@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractIntegrationTest extends TestCase
 {
-    public const CS_URL = 'http://13.67.41.234/CommerceService';
+    public const CS_URL = 'http://20.6.33.78/commerceservice';
     public const CS_VERSION = '2024.4.1';
     public const LS_VERSION = '25.0.0.0';
     public const CS_STORE = 'S0013';

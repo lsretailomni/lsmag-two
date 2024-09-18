@@ -18,7 +18,9 @@ use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
 use \Ls\Replication\Model\ReplItem;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\Framework\App\ResourceConnection;
+use Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Helper\Bootstrap;
@@ -71,6 +73,8 @@ class AbstractTask extends TestCase
     public $categoryRepository;
     public $replPriceRepository;
     public $replPriceInterfaceFactory;
+    public $stockItemRepository;
+    public $sourceItems;
 
     /**
      * @inheritdoc
@@ -96,6 +100,8 @@ class AbstractTask extends TestCase
         $this->replPriceInterfaceFactory             = $this->objectManager->get(ReplPriceInterfaceFactory::class);
         $this->categoryRepository                    = $this->objectManager->get(CategoryRepositoryInterface::class);
         $this->replPriceRepository                   = $this->objectManager->get(ReplPriceRepository::class);
+        $this->stockItemRepository                   = $this->objectManager->get(StockItemRepository::class);
+        $this->sourceItems                           = $this->objectManager->get(GetSourceItemsDataBySku::class);
     }
 
     public function executeUntilReady($cronClass, $successStatus)
@@ -191,6 +197,28 @@ class AbstractTask extends TestCase
                 $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
             } else {
                 $this->assertTrue($product->getPrice() == $itemPrice->getUnitPrice());
+            }
+        }
+    }
+
+    public function assertInventory($product)
+    {
+        $scopeId     = $this->storeManager->getStore()->getId();
+        $itemId      = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId   = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+        $webStoreId  = $this->cron->webStoreId;
+        $itemStock   = $this->replicationHelper->getInventoryStatus($itemId, $webStoreId, $scopeId, $variantId);
+        $stockItem   = $this->stockItemRepository->get($product->getId());
+        $sourceItems = $this->sourceItems->execute($product->getSku());
+        $this->assertTrue($itemStock->getQuantity() == $stockItem->getQty());
+        if ($itemStock->getQuantity() > 0) {
+            $this->assertTrue((bool)$stockItem->getIsInStock());
+        }
+        foreach ($sourceItems as $sourceItem) {
+            $this->assertTrue($itemStock->getQuantity() == $sourceItem['quantity']);
+
+            if ($itemStock->getQuantity() > 0) {
+                $this->assertTrue((bool)$sourceItem['status']);
             }
         }
     }
