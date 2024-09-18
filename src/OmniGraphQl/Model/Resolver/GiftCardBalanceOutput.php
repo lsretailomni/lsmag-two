@@ -7,6 +7,7 @@ use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Exception\GraphQlInputException;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
+use Magento\Framework\Pricing\Helper\Data;
 
 /**
  * To return gift card balance in graphql
@@ -19,12 +20,23 @@ class GiftCardBalanceOutput implements ResolverInterface
     public $giftCardHelper;
 
     /**
-     * @param GiftCardHelper $giftCardHelper
+     * @var Data
      */
+    public $priceHelper;
+
+    /**
+     * Giftcard balance output constructor.
+     *
+     * @param GiftCardHelper $giftCardHelper
+     * @param Data $priceHelper
+     */
+
     public function __construct(
-        GiftCardHelper $giftCardHelper
+        GiftCardHelper $giftCardHelper,
+        Data $priceHelper,
     ) {
         $this->giftCardHelper = $giftCardHelper;
+        $this->priceHelper    = $priceHelper;
     }
 
     /**
@@ -39,22 +51,20 @@ class GiftCardBalanceOutput implements ResolverInterface
         $giftCardPin     = $args['gift_card_pin'];
         $giftCardBalance = '';
         $currency        = '';
+        $pointRate = $storeCurrencyPointRate = $giftCardPointRate = 1;
 
         $response = $this->giftCardHelper->getGiftCardBalance($args['gift_card_no'], $giftCardPin);
-        if ($response) {
-            $giftCardBalance = $response->getBalance();
-            $currency        = $response->getCurrencyCode();
-        }
 
-        if (empty($response)) {
+        if (!empty($response)) {
+            $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($response);
+            return [
+                'currency' => $convertedGiftCardBalanceArr['gift_card_currency'],
+                'value'    => $this->priceHelper->currency($convertedGiftCardBalanceArr['gift_card_balance_amount'],true, false)
+            ];
+        } else {
             return [
                 'error' => __('The gift card is not valid.')
             ];
         }
-
-        return [
-            'currency' => $currency,
-            'value'    => $giftCardBalance,
-        ];
     }
 }
