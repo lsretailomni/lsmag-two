@@ -19,6 +19,7 @@ use \Ls\Replication\Model\ReplItem;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
+use Magento\CatalogInventory\Model\StockRegistryStorage;
 use Magento\Framework\App\ResourceConnection;
 use Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku;
 use Magento\Store\Model\ScopeInterface;
@@ -75,6 +76,7 @@ class AbstractTask extends TestCase
     public $replPriceInterfaceFactory;
     public $stockItemRepository;
     public $sourceItems;
+    public $stockRegistry;
 
     /**
      * @inheritdoc
@@ -102,6 +104,7 @@ class AbstractTask extends TestCase
         $this->replPriceRepository                   = $this->objectManager->get(ReplPriceRepository::class);
         $this->stockItemRepository                   = $this->objectManager->get(StockItemRepository::class);
         $this->sourceItems                           = $this->objectManager->get(GetSourceItemsDataBySku::class);
+        $this->stockRegistry                         = $this->objectManager->get(StockRegistryStorage::class);
     }
 
     public function executeUntilReady($cronClass, $successStatus)

@@ -266,7 +266,7 @@ class ProductCreateTaskTest extends AbstractTask
         $this->assertConfigurableProducts($configurableProductWithVariantOnly);
         $this->assertConfigurableProducts($configurableProduct2WithVariantOnly);
         $this->assertStandardConfigurableProducts($configurableProductWithStandardVariant);
-
+        $this->stockRegistry->_resetState();
         $this->updateProducts();
         $this->removeProducts();
     }
