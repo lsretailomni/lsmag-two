@@ -54,26 +54,31 @@
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
                     <comment>Choose the web store</comment>
                 </field>
-                <field id="replicate_hierarchy_code" translate="label comment" type="select" sortOrder="100"
+                <field id="replicate_hierarchy_code" type="select" translate="label comment" sortOrder="100"
                        showInWebsite="1">
                     <label>Select Hierarchy Code</label>
                     <validate>required-entry</validate>
                     <comment>Required to get hierarchy node and leaf from omni</comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\HierarchyCode</source_model>
                 </field>
-                <field id="debug" translate="label comment" type="select" sortOrder="110" showInDefault="1"
+                <field id="local_currency_code" translate="label comment" sortOrder="110"
+                       showInWebsite="1">
+                    <label>Local Currency Code</label>
+                    <comment>Local Currency Code can be found under General Ledger Setup > LCY Code in Central.</comment>
+                </field>
+                <field id="debug" translate="label comment" type="select" sortOrder="120" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Debug Mode for Commerce Service Client</comment>
                 </field>
-                <field id="timeout" translate="label comment" type="text" sortOrder="120" showInDefault="1"
+                <field id="timeout" translate="label comment" type="text" sortOrder="130" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Service Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
                     <comment>Max time in seconds to wait for commerce service response</comment>
                 </field>
-                <field id="heart_beat_timeout" translate="label comment" type="text" sortOrder="130" showInDefault="1"
+                <field id="heart_beat_timeout" translate="label comment" type="text" sortOrder="140" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Commerce Service Heartbeat Cache Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>

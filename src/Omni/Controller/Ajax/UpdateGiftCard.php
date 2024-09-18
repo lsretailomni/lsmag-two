@@ -133,10 +133,22 @@ class UpdateGiftCard implements HttpPostActionInterface
         if ($giftCardNo != null && $giftCardAmount != 0) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
             if (is_object($giftCardResponse)) {
-                $giftCardBalanceAmount = $giftCardResponse->getBalance();
+                $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
+                $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
+                $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
+                $giftCardCurrencyCode        = $convertedGiftCardBalanceArr['gift_card_currency'];
             } else {
                 $giftCardBalanceAmount = $giftCardResponse;
             }
+
+            $quote->setLsGiftCardNo($giftCardNo);
+            $quote->setLsGiftCardPin($giftCardPin);
+            $quote->setLsGiftCardAmountUsed($giftCardAmount);
+            $quote->setLsGiftCardCnyFactor($quotePointRate);
+            $quote->setLsGiftCardCnyCode($giftCardCurrencyCode);
+            $this->validateQuote($quote);
+            $quote->collectTotals();
+            $this->cartRepository->save($quote);
         } else {
             try {
                 $response = [
@@ -145,9 +157,11 @@ class UpdateGiftCard implements HttpPostActionInterface
                         'You have successfully cancelled the gift card.'
                     )
                 ];
-                $quote->setLsGiftCardNo($giftCardNo);
-                $quote->setLsGiftCardPin($giftCardPin);
-                $quote->setLsGiftCardAmountUsed($giftCardAmount);
+                $quote->setLsGiftCardNo(null);
+                $quote->setLsGiftCardPin(null);
+                $quote->setLsGiftCardAmountUsed(0);
+                $quote->setLsGiftCardCnyFactor(null);
+                $quote->setLsGiftCardCnyCode(null);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
