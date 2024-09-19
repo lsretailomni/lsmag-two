@@ -49,6 +49,11 @@ class AdditionalCharge
     protected $LineNo = null;
 
     /**
+     * @property int $MemberNo
+     */
+    protected $MemberNo = null;
+
+    /**
      * @property string $Optional
      */
     protected $Optional = null;
@@ -59,9 +64,24 @@ class AdditionalCharge
     protected $OptionalComment = null;
 
     /**
+     * @property string $PackageCode
+     */
+    protected $PackageCode = null;
+
+    /**
+     * @property int $PackageLine
+     */
+    protected $PackageLine = null;
+
+    /**
      * @property int $ParentLine
      */
     protected $ParentLine = null;
+
+    /**
+     * @property int $ParentSequence
+     */
+    protected $ParentSequence = null;
 
     /**
      * @property float $Price
@@ -77,6 +97,16 @@ class AdditionalCharge
      * @property float $Quantity
      */
     protected $Quantity = null;
+
+    /**
+     * @property int $ReservationLineNo
+     */
+    protected $ReservationLineNo = null;
+
+    /**
+     * @property string $ReservationNo
+     */
+    protected $ReservationNo = null;
 
     /**
      * @property float $TotalAmount
@@ -220,6 +250,24 @@ class AdditionalCharge
     }
 
     /**
+     * @param int $MemberNo
+     * @return $this
+     */
+    public function setMemberNo($MemberNo)
+    {
+        $this->MemberNo = $MemberNo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMemberNo()
+    {
+        return $this->MemberNo;
+    }
+
+    /**
      * @param string $Optional
      * @return $this
      */
@@ -256,6 +304,42 @@ class AdditionalCharge
     }
 
     /**
+     * @param string $PackageCode
+     * @return $this
+     */
+    public function setPackageCode($PackageCode)
+    {
+        $this->PackageCode = $PackageCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPackageCode()
+    {
+        return $this->PackageCode;
+    }
+
+    /**
+     * @param int $PackageLine
+     * @return $this
+     */
+    public function setPackageLine($PackageLine)
+    {
+        $this->PackageLine = $PackageLine;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPackageLine()
+    {
+        return $this->PackageLine;
+    }
+
+    /**
      * @param int $ParentLine
      * @return $this
      */
@@ -271,6 +355,24 @@ class AdditionalCharge
     public function getParentLine()
     {
         return $this->ParentLine;
+    }
+
+    /**
+     * @param int $ParentSequence
+     * @return $this
+     */
+    public function setParentSequence($ParentSequence)
+    {
+        $this->ParentSequence = $ParentSequence;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentSequence()
+    {
+        return $this->ParentSequence;
     }
 
     /**
@@ -335,6 +437,42 @@ class AdditionalCharge
     public function getQuantity()
     {
         return $this->Quantity;
+    }
+
+    /**
+     * @param int $ReservationLineNo
+     * @return $this
+     */
+    public function setReservationLineNo($ReservationLineNo)
+    {
+        $this->ReservationLineNo = $ReservationLineNo;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getReservationLineNo()
+    {
+        return $this->ReservationLineNo;
+    }
+
+    /**
+     * @param string $ReservationNo
+     * @return $this
+     */
+    public function setReservationNo($ReservationNo)
+    {
+        $this->ReservationNo = $ReservationNo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReservationNo()
+    {
+        return $this->ReservationNo;
     }
 
     /**
