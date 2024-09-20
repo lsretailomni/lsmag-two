@@ -1,0 +1,69 @@
+<?php
+
+namespace Ls\Omni\Test\Integration\Controller\Ajax;
+
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
+use \Ls\Omni\Controller\Ajax\CheckGiftCardBalance;
+use Magento\Framework\App\Http\Context;
+use Magento\Framework\Serialize\SerializerInterface;
+use Magento\TestFramework\Fixture\AppArea;
+use Magento\TestFramework\Fixture\Config;
+use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Store\Model\Store;
+
+use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\TestCase\AbstractController;
+
+class CheckGiftCardBalanceTest extends AbstractController
+{
+    /**
+     * @var DataFixtureStorageManager
+     */
+    public $fixtures;
+
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
+    public $objectManager;
+
+    public $store;
+    public $checkGiftCardBalance;
+    public $json;
+
+    /**
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->objectManager        = Bootstrap::getObjectManager();
+        $this->store                = $this->objectManager->get(Store::class);
+        $this->checkGiftCardBalance = $this->objectManager->get(CheckGiftCardBalance::class);
+        $this->json                 = $this->objectManager->get(SerializerInterface::class);
+    }
+
+    /**
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('frontend'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default')
+    ]
+    public function testExecute()
+    {
+        $giftCardData = ['gift_card_code' => '10000011', 'gift_card_pin' => '8118'];
+        $content      = json_encode($giftCardData);
+        $this->getRequest()->setContent($content);
+        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
+        $this->getRequest()->getHeaders()
+            ->addHeaderLine('X_REQUESTED_WITH', 'XMLHttpRequest');
+        $result = $this->checkGiftCardBalance->execute();
+
+        $this->assertNotNull($result);
+    }
+}
