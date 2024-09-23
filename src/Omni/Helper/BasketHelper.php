@@ -3,13 +3,13 @@
 namespace Ls\Omni\Helper;
 
 use Exception;
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity;
-use Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
-use Ls\Omni\Client\Ecommerce\Entity\Order;
-use Ls\Omni\Client\Ecommerce\Operation;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Exception\InvalidEnumException;
+use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity;
+use \Ls\Omni\Client\Ecommerce\Entity\OneListCalculateResponse;
+use \Ls\Omni\Client\Ecommerce\Entity\Order;
+use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\ResponseInterface;
+use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Catalog\Model\ProductRepository;
