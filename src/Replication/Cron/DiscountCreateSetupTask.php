@@ -315,9 +315,11 @@ class DiscountCreateSetupTask
                                                     [$replDiscount->getUnitOfMeasureId()] =
                                                         $replDiscount->getUnitOfMeasureId();
                                                 } elseif (count($uomCodes[$replDiscount->getNumber()]) == 1) {
-                                                    $uomCodes                             = [];
+                                                    $uomCodes                               = [];
                                                     $uomCodes[$replDiscount->getNumber()][] = '';
                                                 }
+                                            } else {
+                                                $uomCodes[$replDiscount->getNumber()] [] = '';
                                             }
                                             if (empty($replDiscount->getVariantId())) {
                                                 foreach ($uomCodes[$replDiscount->getNumber()] as $uomCode) {
