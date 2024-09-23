@@ -149,27 +149,26 @@ class BasketHelper extends AbstractHelper
      * @param DateTime $dateTime
      */
     public function __construct(
-        Context                                                                    $context,
-        Cart                                                                       $cart,
-        ProductRepository                                                          $productRepository,
-        CheckoutSession                                                            $checkoutSession,
-        CustomerSession                                                            $customerSession,
-        SearchCriteriaBuilder                                                      $searchCriteriaBuilder,
+        Context $context,
+        Cart $cart,
+        ProductRepository $productRepository,
+        CheckoutSession $checkoutSession,
+        CustomerSession $customerSession,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
-        ProductFactory                                                             $productFactory,
-        ItemHelper                                                                 $itemHelper,
-        Registry                                                                   $registry,
-        LSR                                                                        $Lsr,
-        Data                                                                       $data,
-        SessionManagerInterface                                                    $session,
-        CartRepositoryInterface                                                    $quoteRepository,
-        \Magento\Quote\Model\ResourceModel\Quote                                   $quoteResourceModel,
-        CustomerFactory                                                            $customerFactory,
-        CartRepositoryInterface                                                    $cartRepository,
-        LoyaltyHelper                                                              $loyaltyHelper,
-        DateTime                                                                   $dateTime
-    )
-    {
+        ProductFactory $productFactory,
+        ItemHelper $itemHelper,
+        Registry $registry,
+        LSR $Lsr,
+        Data $data,
+        SessionManagerInterface $session,
+        CartRepositoryInterface $quoteRepository,
+        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
+        CustomerFactory $customerFactory,
+        CartRepositoryInterface $cartRepository,
+        LoyaltyHelper $loyaltyHelper,
+        DateTime $dateTime
+    ) {
         parent::__construct($context);
         $this->cart                           = $cart;
         $this->productRepository              = $productRepository;
