@@ -137,4 +137,10 @@
                 type="Ls\OmniGraphQl\Plugin\Omni\Helper\ContactHelperPlugin"
                 sortOrder="1"/>
     </type>
+    <type name="Ls\Omni\Api\DiscountManagementInterface">
+        <plugin name="set_one_list_calculate_in_session"
+                type="Ls\OmniGraphQl\Plugin\Omni\Model\Api\DiscountManagementPlugin"
+                sortOrder="1"/>
+    </type>
+
 </config>

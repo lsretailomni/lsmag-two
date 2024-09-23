@@ -217,6 +217,11 @@ class ReplDiscountSetup
     protected $StandardPriceInclVAT = null;
 
     /**
+     * @property string $StoreGroupCodes
+     */
+    protected $StoreGroupCodes = null;
+
+    /**
      * @property float $TenderOffer
      */
     protected $TenderOffer = null;
@@ -1034,6 +1039,24 @@ class ReplDiscountSetup
     public function getStandardPriceInclVAT()
     {
         return $this->StandardPriceInclVAT;
+    }
+
+    /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes)
+    {
+        $this->StoreGroupCodes = $StoreGroupCodes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes()
+    {
+        return $this->StoreGroupCodes;
     }
 
     /**
