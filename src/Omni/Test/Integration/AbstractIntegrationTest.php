@@ -29,6 +29,9 @@ class AbstractIntegrationTest extends TestCase
     public const STORE_PICKUP = 'S0001';
     public const VALID_COUPON_CODE = 'COUP0119';
     public const INVALID_COUPON_CODE = 'COUPON_CODE';
+    public const GIFTCARD = '10000011';
+    public const GIFTCARD_PIN = '8118';
+    public const GIFTCARD_AMOUNT = '1';
     public const LICENSE = '25.0.0.0 (25.0.0.0 [18056] CL:True EL:True)';
     public const LS_CENTRAL_VERSION = '25.0.0.0 (25.0.0.0 [conf])';
     public const RETAIL_INDUSTRY = 'retail';
