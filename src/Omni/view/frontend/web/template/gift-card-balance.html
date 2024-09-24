@@ -46,22 +46,20 @@
         </form>
         <div class="giftcardinfo mt-5">
             <div class="container">
-                <div class="row">
+                <div>
                     <!-- ko if: getGiftCardBalance()-->
-                    <div>
-                        <p><strong><span data-bind="'html': $t('Your balance is: ')"></span><span
-                                data-bind="'html': getGiftCardBalance()"></span></strong></p>
-                    </div>
+                        <div>
+                            <p><strong><span data-bind="'html': $t('Your balance is: ')"></span><span
+                                    data-bind="'html': getGiftCardBalance()"></span></strong></p>
+                        </div>
+                    <!-- /ko -->
+                    <!-- ko if: getGiftCardExpiryDate()-->
+                        <div>
+                            <p><strong><span data-bind="'html': $t('Expiry Date: ')"></span>
+                                <span data-bind="'html': getGiftCardExpiryDate()"></span></strong></p>
+                        </div>
                     <!-- /ko -->
                 </div>
-                <!-- ko if: getGiftCardExpiryDate()-->
-                <div class="row">
-                    <div>
-                        <p><strong><span data-bind="'html': $t('Expiry Date: ')"></span>
-                            <span data-bind="'html': getGiftCardExpiryDate()"></span></strong></p>
-                    </div>
-                </div>
-                <!-- /ko -->
             </div>
         </div>
     </div>

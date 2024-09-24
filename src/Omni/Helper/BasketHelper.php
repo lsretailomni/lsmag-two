@@ -1251,17 +1251,26 @@ class BasketHelper extends AbstractHelper
      * Sending request to Central for basket calculation
      *
      * @param $cartId
+     * @param int $recreateOneList
      * @return OneListCalculateResponse|Order|null
      * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function syncBasketWithCentral($cartId)
+    public function syncBasketWithCentral($cartId, $recreateOneList = 0)
     {
-        $oneList = $this->getOneListFromCustomerSession();
+        $this->quoteRepository->_resetState();
         $quote   = $this->quoteRepository->getActive($cartId);
         $basketData = null;
+
+        if (!$recreateOneList) {
+            $oneList = $this->getOneListFromCustomerSession();
+        } else {
+            $oneList = $this->get();
+            // add items from the quote to the oneList and return the updated onelist
+            $oneList = $this->setOneListQuote($quote, $oneList);
+        }
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);

@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Model\GiftCard;
 
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\GiftCardHelper;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\Data;
@@ -44,6 +45,11 @@ class GiftCardManagement
     public $priceHelper;
 
     /**
+     * @var LSR
+     */
+    public $lsr;
+
+    /**
      * GiftCardManagement constructor.
      * @param CartRepositoryInterface $quoteRepository
      * @param GiftCardHelper $giftCardHelper
@@ -56,13 +62,15 @@ class GiftCardManagement
         GiftCardHelper $giftCardHelper,
         Data $dataHelper,
         BasketHelper $basketHelper,
-        PriceHelper $priceHelper
+        PriceHelper $priceHelper,
+        LSR $lsr
     ) {
         $this->quoteRepository = $quoteRepository;
         $this->giftCardHelper  = $giftCardHelper;
         $this->dataHelper      = $dataHelper;
         $this->basketHelper    = $basketHelper;
         $this->priceHelper     = $priceHelper;
+        $this->lsr             = $lsr;
     }
 
     /**
@@ -119,9 +127,11 @@ class GiftCardManagement
         }
         if ($giftCardNo != null) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
-
             if (is_object($giftCardResponse)) {
-                $giftCardBalanceAmount = $giftCardResponse->getBalance();
+                $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
+                $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
+                $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
+                $giftCardCurrencyCode        = $convertedGiftCardBalanceArr['gift_card_currency'];
             } else {
                 $giftCardBalanceAmount = $giftCardResponse;
             }
@@ -175,9 +185,13 @@ class GiftCardManagement
         }
         if ($itemsCount) {
             $cartQuote->getShippingAddress()->setCollectShippingRates(true);
-            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo)
-                ->setLsGiftCardPin($giftCardPin);
-            $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
+            $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)
+                ->setLsGiftCardNo($giftCardNo)
+                ->setLsGiftCardPin($giftCardPin)
+                ->setLsGiftCardCnyFactor($quotePointRate)
+                ->setLsGiftCardCnyCode($giftCardCurrencyCode)
+                ->setTotalsCollectedFlag(false)
+                ->collectTotals();
             $this->quoteRepository->save($cartQuote);
         }
         return true;
@@ -206,7 +220,7 @@ class GiftCardManagement
                 $giftCardPin    = null;
                 $cartQuote->getShippingAddress()->setCollectShippingRates(true);
                 $cartQuote->setLsGiftCardAmountUsed($giftCardAmount)->setLsGiftCardNo($giftCardNo)
-                    ->setLsGiftCardPin($giftCardPin);
+                    ->setLsGiftCardPin($giftCardPin)->setLsGiftCardCnyFactor(null)->setLsGiftCardCnyCode(null);
                 $cartQuote->setTotalsCollectedFlag(false)->collectTotals();
                 $this->quoteRepository->save($cartQuote);
             } catch (CouldNotSaveException $e) {
