@@ -35,7 +35,7 @@ use Magento\TestFramework\Fixture\DataFixture;
 
 /**
  * @magentoAppArea crontab
- * @magentoDbIsolation disabled
+ * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
 #[
@@ -269,42 +269,6 @@ class ProductCreateTaskTest extends AbstractTask
         $this->stockRegistry->_resetState();
         $this->updateProducts();
         $this->removeProducts();
-    }
-
-    public function addDummyDataStandardVariant()
-    {
-        $this->addDummyStandardVariantAttributeOptionData(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '000',
-            'Small'
-        );
-        $this->addDummyStandardVariantAttributeOptionData(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '001',
-            'Medium'
-        );
-        $this->addDummyStandardVariantAttributeOptionData(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            '002',
-            'Large'
-        );
-    }
-
-    public function addDummyStandardVariantAttributeOptionData($itemId, $variantId, $desc)
-    {
-        $option = $this->replItemVariantInterfaceFactory->create();
-        $option->addData(
-            [
-                'Description' => $desc,
-                'Description2' => $desc,
-                'IsDeleted' => 0,
-                'ItemId' => $itemId,
-                'VariantId' => $variantId,
-                'scope' => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id' => $this->storeManager->getWebsite()->getId()
-            ]
-        );
-        $this->replItemVariantRepository->save($option);
     }
 
     public function removeProducts()
@@ -610,6 +574,8 @@ class ProductCreateTaskTest extends AbstractTask
             $this->assertTrue($productData->getData('name') == $name);
             $this->assertTrue($productData->getData('meta_title') == $name);
             $this->assertTrue($productData->getData('description') == $replItem->getDetails());
+            $this->assertPrice($productData);
+            $this->assertInventory($productData, 1);
         }
     }
 

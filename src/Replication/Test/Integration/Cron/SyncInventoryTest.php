@@ -23,7 +23,7 @@ use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
 use \Ls\Replication\Cron\ReplEcommPricesTask;
 use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
 use \Ls\Replication\Cron\ReplEcommVendorTask;
-use \Ls\Replication\Cron\SyncPrice;
+use \Ls\Replication\Cron\SyncInventory as SyncInventoryAlias;
 use \Ls\Replication\Test\Fixture\FlatDataReplication;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Store\Model\ScopeInterface;
@@ -32,7 +32,7 @@ use Magento\TestFramework\Fixture\DataFixture;
 
 /**
  * @magentoAppArea crontab
- * @magentoDbIsolation enabled
+ * @magentoDbIsolation disabled
  * @magentoAppIsolation enabled
  */
 #[
@@ -149,7 +149,7 @@ use Magento\TestFramework\Fixture\DataFixture;
         ]
     )
 ]
-class SyncPriceTest extends AbstractTask
+class SyncInventoryTest extends AbstractTask
 {
     /**
      * @inheritdoc
@@ -168,7 +168,7 @@ class SyncPriceTest extends AbstractTask
     }
 
     /**
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
@@ -204,6 +204,7 @@ class SyncPriceTest extends AbstractTask
                 AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
                 AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
                 AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
                 AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID
             ]
         );
@@ -218,36 +219,43 @@ class SyncPriceTest extends AbstractTask
             ],
             $storeId
         );
-
-        $this->updatePrice();
+        $this->updateInventory();
+        $this->updateInventory(1);
     }
 
-    public function updatePrice()
+    public function updateInventory($outOfStock = 0)
     {
+        $this->stockRegistry->_resetState();
         $storeId           = $this->storeManager->getStore()->getId();
-        $this->addDummyPriceData(
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-        );
-        $this->modifySpecificItemPrice(AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID);
-        $this->modifySpecificItemPrice(
+        $this->modifySpecificItemInv(AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID, null, $outOfStock);
+        $this->modifySpecificItemInv(
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            $outOfStock
+        );
+        $this->modifySpecificItemInv(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            $outOfStock
+        );
+        $this->modifySpecificItemInv(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
             null,
-            AbstractIntegrationTest::SAMPLE_UOM_2
+            $outOfStock
         );
 
-        $this->modifySpecificItemPrice(
+        $this->modifySpecificItemInv(
             AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            $outOfStock
         );
-
-        $this->executeUntilReady(SyncPrice::class, [
-            LSR::SC_SUCCESS_CRON_PRODUCT_PRICE
+        $this->executeUntilReady(SyncInventoryAlias::class, [
+            LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY
         ]);
 
         $this->assertCronSuccess(
             [
-                LSR::SC_SUCCESS_CRON_PRODUCT_PRICE,
+                LSR::SC_SUCCESS_CRON_PRODUCT_INVENTORY,
             ],
             $storeId
         );
@@ -258,23 +266,38 @@ class SyncPriceTest extends AbstractTask
             $storeId
         );
 
-        $childProduct1 = $this->replicationHelper->getProductDataByIdentificationAttributes(
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-        );
+        $this->assertInventory($simpleProduct);
 
-        $childProduct2 = $this->replicationHelper->getProductDataByIdentificationAttributes(
-            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
-            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
-        );
-
-        $this->assertPrice($simpleProduct);
-        $this->assertPrice($childProduct1);
-        $this->assertPrice($childProduct2);
-        $items = $this->replicationHelper->getProductDataByIdentificationAttributes(
+        $this->assertMultipleItemsInventory(
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
-            '',
-            AbstractIntegrationTest::SAMPLE_UOM_2,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            $storeId
+        );
+        $this->assertMultipleItemsInventory(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            $storeId
+        );
+        $this->assertMultipleItemsInventory(
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
+            null,
+            $storeId
+        );
+
+        $this->assertMultipleItemsInventory(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            $storeId,
+            1
+        );
+    }
+
+    public function assertMultipleItemsInventory($itemId, $variantId, $storeId, $isStandardVariant = 0)
+    {
+        $items = $this->replicationHelper->getProductDataByIdentificationAttributes(
+            $itemId,
+            $variantId,
+            null,
             $storeId,
             true,
             true,
@@ -282,22 +305,26 @@ class SyncPriceTest extends AbstractTask
         );
 
         foreach ($items as $item) {
-            $this->assertPrice($item);
+            $this->assertInventory($item, $isStandardVariant);
         }
     }
 
-    public function modifySpecificItemPrice($itemId, $variantId = null, $uom = null)
+    public function modifySpecificItemInv($itemId, $variantId = null, $outOfStock = 0)
     {
-        $simpleItemPrice = $this->cron->getItemPrice($itemId, $variantId, $uom);
-
-        $simpleItemPrice->addData(
+        $itemStock = $this->replicationHelper->getInventoryStatus(
+            $itemId,
+            AbstractIntegrationTest::CS_STORE,
+            $this->storeManager->getWebsite()->getId(),
+            $variantId
+        );
+        $itemStock->addData(
             [
-                'UnitPriceInclVat' => '10.0000',
-                'is_updated' => 1
+                'is_updated' => 1,
+                'Quantity' => $outOfStock ? 0.0000 : 388.0000
             ]
         );
 
-        $this->replPriceRepository->save($simpleItemPrice);
+        $this->replItemInvRespository->save($itemStock);
     }
 
     public function executePreReqCrons()

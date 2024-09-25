@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Cron;
 
+use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
+use \Ls\Replication\Api\ReplInvStatusRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface;
 use \Ls\Replication\Api\ReplItemVariantRegistrationRepositoryInterface;
@@ -16,8 +19,10 @@ use \Ls\Replication\Cron\ProductCreateTask;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Api\ReplPriceRepositoryInterface as ReplPriceRepository;
 use \Ls\Replication\Model\ReplItem;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Catalog\Model\Product\Type;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\CatalogInventory\Model\StockRegistryStorage;
 use Magento\Framework\App\ResourceConnection;
@@ -74,6 +79,9 @@ class AbstractTask extends TestCase
     public $categoryRepository;
     public $replPriceRepository;
     public $replPriceInterfaceFactory;
+    public $replItemInvRespository;
+
+    public $replItemInvInterfaceFactory;
     public $stockItemRepository;
     public $sourceItems;
     public $stockRegistry;
@@ -100,6 +108,8 @@ class AbstractTask extends TestCase
         $this->replItemVariantRepository             = $this->objectManager->get(ReplItemVariantRepositoryInterface::class);
         $this->replHierarchyLeafInterfaceFactory     = $this->objectManager->get(ReplHierarchyLeafInterfaceFactory::class);
         $this->replPriceInterfaceFactory             = $this->objectManager->get(ReplPriceInterfaceFactory::class);
+        $this->replItemInvInterfaceFactory           = $this->objectManager->get(ReplInvStatusInterfaceFactory::class);
+        $this->replItemInvRespository                = $this->objectManager->get(ReplInvStatusRepositoryInterface::class);
         $this->categoryRepository                    = $this->objectManager->get(CategoryRepositoryInterface::class);
         $this->replPriceRepository                   = $this->objectManager->get(ReplPriceRepository::class);
         $this->stockItemRepository                   = $this->objectManager->get(StockItemRepository::class);
@@ -171,7 +181,7 @@ class AbstractTask extends TestCase
                     $bind,
                     $where
                 );
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $error = $e->getMessage();
             }
         }
@@ -204,24 +214,40 @@ class AbstractTask extends TestCase
         }
     }
 
-    public function assertInventory($product)
+    public function assertInventory($product, $isStandardVariant = 0)
     {
         $scopeId     = $this->storeManager->getStore()->getId();
         $itemId      = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
         $variantId   = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
         $webStoreId  = $this->cron->webStoreId;
         $itemStock   = $this->replicationHelper->getInventoryStatus($itemId, $webStoreId, $scopeId, $variantId);
-        $stockItem   = $this->stockItemRepository->get($product->getId());
-        $sourceItems = $this->sourceItems->execute($product->getSku());
-        $this->assertTrue($itemStock->getQuantity() == $stockItem->getQty());
-        if ($itemStock->getQuantity() > 0) {
-            $this->assertTrue((bool)$stockItem->getIsInStock());
+
+        if ($isStandardVariant && empty($itemStock)) {
+            $itemStock   = $this->replicationHelper->getInventoryStatus($itemId, $webStoreId, $scopeId);
         }
-        foreach ($sourceItems as $sourceItem) {
-            $this->assertTrue($itemStock->getQuantity() == $sourceItem['quantity']);
+
+        if (!empty($itemStock)) {
+            $stockItem   = $this->stockItemRepository->get($product->getId());
+            $sourceItems = $this->sourceItems->execute($product->getSku());
+
+            if ($product->getTypeId() == Type::TYPE_SIMPLE) {
+                $this->assertTrue($itemStock->getQuantity() == $stockItem->getQty());
+            }
 
             if ($itemStock->getQuantity() > 0) {
-                $this->assertTrue((bool)$sourceItem['status']);
+                $this->assertTrue((bool)$stockItem->getIsInStock());
+            } else {
+                $this->assertFalse((bool)$stockItem->getIsInStock());
+            }
+            foreach ($sourceItems as $sourceItem) {
+                if ($product->getTypeId() == Type::TYPE_SIMPLE) {
+                    $this->assertTrue($itemStock->getQuantity() == $sourceItem['quantity']);
+                }
+                if ($itemStock->getQuantity() > 0) {
+                    $this->assertTrue((bool)$sourceItem['status']);
+                } else {
+                    $this->assertFalse((bool)$sourceItem['status']);
+                }
             }
         }
     }
@@ -238,5 +264,106 @@ class AbstractTask extends TestCase
         $item = current($this->replItemRespository->getList($searchCriteria)->getItems());
 
         return $item;
+    }
+
+    public function addDummyDataStandardVariant()
+    {
+        $this->addDummyStandardVariantAttributeOptionData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID,
+            'Small'
+        );
+        $this->addDummyStandardVariantAttributeOptionData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            '001',
+            'Medium'
+        );
+        $this->addDummyStandardVariantAttributeOptionData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            '002',
+            'Large'
+        );
+
+        $this->addDummyPriceData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+        );
+
+        $this->addDummyInventoryData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ID
+        );
+
+        $this->addDummyInventoryData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            '001',
+        );
+
+        $this->addDummyInventoryData(
+            AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID,
+            '002',
+        );
+    }
+
+    public function addDummyStandardVariantAttributeOptionData($itemId, $variantId, $desc)
+    {
+        $option = $this->replItemVariantInterfaceFactory->create();
+        $option->addData(
+            [
+                'Description' => $desc,
+                'Description2' => $desc,
+                'IsDeleted' => 0,
+                'ItemId' => $itemId,
+                'VariantId' => $variantId,
+                'scope' => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id' => $this->storeManager->getWebsite()->getId()
+            ]
+        );
+        $this->replItemVariantRepository->save($option);
+    }
+
+    public function addDummyPriceData($itemId, $variantId, $uomCode = null)
+    {
+        $price = $this->replPriceInterfaceFactory->create();
+        $price->addData(
+            [
+                'CurrencyCode' => AbstractIntegrationTest::SAMPLE_CURRENCY_CODE,
+                'EndingDate' => '1900-01-01T00:00:00',
+                'IsDeleted' => 0,
+                'ItemId' => $itemId,
+                'MinimumQuantity' => '0.0000',
+                'ModifyDate' => '2024-08-01T00:00:00',
+                'PriceInclVat' => 0,
+                'Priority' => 0,
+                'QtyPerUnitOfMeasure' => '0.0000',
+                'StartingDate' => '1900-01-01T00:00:00',
+                'StoreId' => AbstractIntegrationTest::CS_STORE,
+                'UnitOfMeasure' => $uomCode,
+                'UnitPrice' => '12.0000',
+                'UnitPriceInclVat' => '14.0000',
+                'VariantId' => $variantId,
+                'scope' => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id' => $this->storeManager->getWebsite()->getId()
+            ]
+        );
+        $this->replPriceRepository->save($price);
+    }
+
+    public function addDummyInventoryData($itemId, $variantId = null)
+    {
+        $invStatus = $this->replItemInvInterfaceFactory->create();
+
+        $invStatus->addData(
+            [
+                'IsDeleted' => 0,
+                'ItemId' => $itemId,
+                'Quantity' => 100.0000,
+                'StoreId' => AbstractIntegrationTest::CS_STORE,
+                'VariantId' => $variantId,
+                'scope' => ScopeInterface::SCOPE_WEBSITES,
+                'scope_id' => $this->storeManager->getWebsite()->getId()
+            ]
+        );
+        $this->replItemInvRespository->save($invStatus);
     }
 }
