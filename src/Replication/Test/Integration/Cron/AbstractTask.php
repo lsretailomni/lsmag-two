@@ -9,6 +9,7 @@ use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
+use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface;
@@ -85,6 +86,7 @@ class AbstractTask extends TestCase
     public $stockItemRepository;
     public $sourceItems;
     public $stockRegistry;
+    public $replAttributeValueRepository;
 
     /**
      * @inheritdoc
@@ -115,6 +117,7 @@ class AbstractTask extends TestCase
         $this->stockItemRepository                   = $this->objectManager->get(StockItemRepository::class);
         $this->sourceItems                           = $this->objectManager->get(GetSourceItemsDataBySku::class);
         $this->stockRegistry                         = $this->objectManager->get(StockRegistryStorage::class);
+        $this->replAttributeValueRepository          = $this->objectManager->get(ReplAttributeValueRepositoryInterface::class);
     }
 
     public function executeUntilReady($cronClass, $successStatus)

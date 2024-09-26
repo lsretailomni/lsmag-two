@@ -539,6 +539,40 @@ class ProductCreateTaskTest extends AbstractTask
             $this->assertTrue($product->getData('barcode') == $itemBarcodes[$item->getNavId()]);
         }
 
+        $softAttributes = $this->getSoftAttributes($itemId, $storeId);
+
+        foreach ($softAttributes as $softAttribute) {
+            $itemId        = $softAttribute->getLinkField1();
+            $variantId     = $softAttribute->getLinkField2();
+            $formattedCode = $this->replicationHelper->formatAttributeCode($softAttribute->getCode());
+            $attribute     = $this->replicationHelper->eavConfig->getAttribute('catalog_product', $formattedCode);
+
+            if (!$attribute->getId()) {
+                continue;
+            }
+
+            if ($attribute->getFrontendInput() == 'multiselect') {
+                $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
+                    $itemId,
+                    $variantId,
+                    $softAttribute->getCode(),
+                    $formattedCode,
+                    $storeId
+                );
+            } elseif ($attribute->getFrontendInput() == 'boolean') {
+                if (strtolower($softAttribute->getValue()) == 'yes') {
+                    $value = 1;
+                } else {
+                    $value = 0;
+                }
+            } else {
+                $value = $softAttribute->getValue();
+            }
+            if (isset($formattedCode)) {
+                $this->assertTrue($product->getData($formattedCode) == $value);
+            }
+        }
+
         if ($product->getTypeId() == Configurable::TYPE_CODE) {
             $children = $product->getTypeInstance()->getUsedProducts($product);
 
@@ -763,6 +797,19 @@ class ProductCreateTaskTest extends AbstractTask
                 ));
             }
         }
+    }
+
+    public function getSoftAttributes($itemId, $storeId, $variantId = null)
+    {
+        $filters = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'LinkField1', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'LinkField2', 'value' => is_null($variantId) ? true : $variantId, 'condition_type' => 'null']
+        ];
+
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+
+        return $this->replAttributeValueRepository->getList($criteria)->getItems();
     }
 
     public function getVariant($itemId, $storeId, $variantId = null)
