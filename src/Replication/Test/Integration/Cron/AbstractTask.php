@@ -5,11 +5,12 @@ namespace Ls\Replication\Test\Integration\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
-use Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface;
@@ -87,6 +88,7 @@ class AbstractTask extends TestCase
     public $sourceItems;
     public $stockRegistry;
     public $replAttributeValueRepository;
+    public $replAttributeValueInterfaceFactory;
 
     /**
      * @inheritdoc
@@ -111,6 +113,7 @@ class AbstractTask extends TestCase
         $this->replHierarchyLeafInterfaceFactory     = $this->objectManager->get(ReplHierarchyLeafInterfaceFactory::class);
         $this->replPriceInterfaceFactory             = $this->objectManager->get(ReplPriceInterfaceFactory::class);
         $this->replItemInvInterfaceFactory           = $this->objectManager->get(ReplInvStatusInterfaceFactory::class);
+        $this->replAttributeValueInterfaceFactory    = $this->objectManager->get(ReplAttributeValueInterfaceFactory::class);
         $this->replItemInvRespository                = $this->objectManager->get(ReplInvStatusRepositoryInterface::class);
         $this->categoryRepository                    = $this->objectManager->get(CategoryRepositoryInterface::class);
         $this->replPriceRepository                   = $this->objectManager->get(ReplPriceRepository::class);
@@ -368,5 +371,70 @@ class AbstractTask extends TestCase
             ]
         );
         $this->replItemInvRespository->save($invStatus);
+    }
+
+    public function assertSoftAttributes($product, $isChild = 0)
+    {
+        $itemId = $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE);
+        $variantId = $product->getData(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE);
+
+        if ($isChild && empty($variantId)) {
+            return;
+        }
+        $scopeId = $this->storeManager->getWebsite()->getId();
+        $softAttributes = $this->getSoftAttributes($itemId, $scopeId, $variantId);
+
+        foreach ($softAttributes as $softAttribute) {
+            $itemId        = $softAttribute->getLinkField1();
+            $variantId     = $softAttribute->getLinkField2();
+            $formattedCode = $this->replicationHelper->formatAttributeCode($softAttribute->getCode());
+            $attribute     = $this->replicationHelper->eavConfig->getAttribute('catalog_product', $formattedCode);
+
+            if (!$attribute->getId()) {
+                continue;
+            }
+
+            if ($attribute->getFrontendInput() == 'multiselect') {
+                $value = $this->replicationHelper->getAllValuesForGivenMultiSelectAttribute(
+                    $itemId,
+                    $variantId,
+                    $softAttribute->getCode(),
+                    $formattedCode,
+                    $scopeId
+                );
+            } elseif ($attribute->getFrontendInput() == 'boolean') {
+                if (strtolower($softAttribute->getValue()) == 'yes') {
+                    $value = 1;
+                } else {
+                    $value = 0;
+                }
+            } else {
+                $value = $softAttribute->getValue();
+            }
+            if (isset($formattedCode)) {
+                $this->assertTrue($product->getData($formattedCode) == $value);
+            }
+        }
+    }
+
+    public function getSoftAttributes($itemId, $storeId, $variantId = null, $attributeCode = null)
+    {
+        $filters = [
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+            ['field' => 'LinkField1', 'value' => $itemId, 'condition_type' => 'eq'],
+            [
+                'field' => 'LinkField2',
+                'value' => is_null($variantId) ? true : $variantId,
+                'condition_type' => is_null($variantId)  ? 'null' : 'eq'
+            ]
+        ];
+
+        if (isset($attributeCode)) {
+            $filters[] = ['field' => 'Code', 'value' => $attributeCode, 'condition_type' => 'eq'];
+        }
+
+        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
+
+        return $this->replAttributeValueRepository->getList($criteria)->getItems();
     }
 }
