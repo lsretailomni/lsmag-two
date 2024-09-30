@@ -6,4 +6,18 @@
                 type="Ls\Customer\Plugin\Customer\AccountManagement"
                 sortOrder="1"/>
     </type>
+    <!-- Adding sort order to fix two-factor auth error in integration tests -->
+    <type name="Magento\TwoFactorAuth\Observer\ControllerActionPredispatch">
+        <plugin name="bypass_twofactorauth_testframework"
+                type="Magento\TwoFactorAuth\TestFramework\Plugin\BypassTwoFactorAuth"
+                sortOrder="10"
+        />
+    </type>
+    <type name="Magento\TwoFactorAuth\Observer\ControllerActionPredispatch">
+        <plugin name="verify_admin_adobe_ims_is_enable"
+                type="Magento\AdminAdobeImsTwoFactorAuth\Plugin\VerifyAdminAdobeImsIsEnable"
+                sortOrder="20"
+        />
+    </type>
+    <!-- Adding sort order to fix two-factor auth error in integration tests -->
 </config>
