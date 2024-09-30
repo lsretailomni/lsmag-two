@@ -106,6 +106,16 @@ class Store extends Entity
     protected $Phone = null;
 
     /**
+     * @property string $PriceGroupCodes
+     */
+    protected $PriceGroupCodes = null;
+
+    /**
+     * @property string $StoreGroupCodes
+     */
+    protected $StoreGroupCodes = null;
+
+    /**
      * @property string $TaxGroupId
      */
     protected $TaxGroupId = null;
@@ -470,6 +480,42 @@ class Store extends Entity
     public function getPhone()
     {
         return $this->Phone;
+    }
+
+    /**
+     * @param string $PriceGroupCodes
+     * @return $this
+     */
+    public function setPriceGroupCodes($PriceGroupCodes)
+    {
+        $this->PriceGroupCodes = $PriceGroupCodes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroupCodes()
+    {
+        return $this->PriceGroupCodes;
+    }
+
+    /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes)
+    {
+        $this->StoreGroupCodes = $StoreGroupCodes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes()
+    {
+        return $this->StoreGroupCodes;
     }
 
     /**

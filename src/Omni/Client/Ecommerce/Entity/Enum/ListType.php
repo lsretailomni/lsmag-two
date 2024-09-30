@@ -13,11 +13,14 @@ use MyCLabs\Enum\Enum;
 /**
  * @$method static ListType BASKET()
  * @$method static ListType WISH()
+ * @$method static ListType TEMPORARY()
  */
 class ListType extends Enum
 {
     public const BASKET = 'Basket';
 
     public const WISH = 'Wish';
+
+    public const TEMPORARY = 'Temporary';
 }
 
