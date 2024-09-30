@@ -8,6 +8,7 @@
 $viewModel = $block->getViewModel();
 $parentItem = $block->getItem();
 $discountDescriptions = [];
+$itemRowDiscount = $viewModel->getItemRowDiscount($parentItem);
 foreach ($parentItem->getChildrenItems() as $child) {
     list($discountInfo, $line) = $viewModel->getDiscountInfoGivenOrderItem($child);
     if (!empty($discountInfo)) {
@@ -70,11 +71,11 @@ $prevOptionId = '';
         <td class="col price" data-th="<?= $block->escapeHtmlAttr(__('Price')); ?>">
             <?php if (!$item->getParentItem()) : ?>
                 <?= $viewModel->getFormattedPrice($item->getRowTotalInclTax()); ?>
-                <?php if ($item->getDiscountAmount() > 0): ?>
+                <?php if ($itemRowDiscount > 0): ?>
                     <div class="lsdiscountprice2">
                         <span><?= $viewModel->getFormattedPrice($item->getPrice() * $item->getQtyOrdered()); ?></span></div>
                     <div class="lsdiscountamount">
-                        <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($item->getDiscountAmount()) . ')'; ?>
+                        <?= '(' . __('Save') . ' ' . $viewModel->getFormattedPrice($itemRowDiscount) . ')'; ?>
                     </div>
                 <?php endif; ?>
             <?php else : ?>

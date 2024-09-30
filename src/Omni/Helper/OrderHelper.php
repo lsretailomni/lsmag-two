@@ -16,6 +16,7 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Locale\ConfigInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -50,6 +51,11 @@ class OrderHelper extends AbstractHelper
      * @var LoyaltyHelper
      */
     public $loyaltyHelper;
+
+    /**
+     * @var GiftCardHelper
+     */
+    public $giftCardHelper;
 
     /**
      * @var StoreHelper
@@ -125,10 +131,17 @@ class OrderHelper extends AbstractHelper
     private $storeData;
 
     /**
+     *
+     * @var ConfigInterface
+     */
+    public $config;
+
+    /**
      * @param Context $context
      * @param Model\Order $order
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
+     * @param GiftCardHelper $giftCardHelper
      * @param OrderRepository $orderRepository
      * @param CustomerSession $customerSession
      * @param CheckoutSession $checkoutSession
@@ -141,12 +154,14 @@ class OrderHelper extends AbstractHelper
      * @param StoreManagerInterface $storeManager
      * @param StoreHelper $storeHelper
      * @param CurrencyFactory $currencyFactory
+     * @param ConfigInterface $config
      */
     public function __construct(
         Context $context,
         Model\Order $order,
         BasketHelper $basketHelper,
         LoyaltyHelper $loyaltyHelper,
+        GiftCardHelper $giftCardHelper,
         Model\OrderRepository $orderRepository,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
@@ -158,12 +173,14 @@ class OrderHelper extends AbstractHelper
         TimezoneInterface $timezoneInterface,
         StoreManagerInterface $storeManager,
         StoreHelper $storeHelper,
-        CurrencyFactory $currencyFactory
+        CurrencyFactory $currencyFactory,
+        ConfigInterface $config
     ) {
         parent::__construct($context);
         $this->order              = $order;
         $this->basketHelper       = $basketHelper;
         $this->loyaltyHelper      = $loyaltyHelper;
+        $this->giftCardHelper     = $giftCardHelper;
         $this->orderRepository    = $orderRepository;
         $this->customerSession    = $customerSession;
         $this->checkoutSession    = $checkoutSession;
@@ -176,6 +193,7 @@ class OrderHelper extends AbstractHelper
         $this->storeManager       = $storeManager;
         $this->storeHelper        = $storeHelper;
         $this->currencyFactory    = $currencyFactory;
+        $this->config             = $config;
     }
 
     /**
@@ -416,7 +434,6 @@ class OrderHelper extends AbstractHelper
             $netPriceFormula = 1 + $shipmentTaxPercent / 100;
             $netPrice        = $shippingAmount / $netPriceFormula;
             $taxAmount       = number_format(($shippingAmount - $netPrice), 2);
-            $lineNumber = 1000000;
             // @codingStandardsIgnoreLine
             $shipmentOrderLine = new Entity\OrderLine();
             $shipmentOrderLine->setPrice($shippingAmount)
@@ -426,7 +443,6 @@ class OrderHelper extends AbstractHelper
                 ->setTaxAmount($taxAmount)
                 ->setItemId($shipmentFeeId)
                 ->setLineType(Entity\Enum\LineType::ITEM)
-                ->setLineNumber($lineNumber)
                 ->setQuantity(1)
                 ->setDiscountAmount($order->getShippingDiscountAmount());
             array_push($orderLines, $shipmentOrderLine);
@@ -587,15 +603,18 @@ class OrderHelper extends AbstractHelper
                 ->setTenderType($tenderTypeId);
             $orderPaymentArray[] = $orderPaymentLoyalty;
         }
+
         if ($order->getLsGiftCardAmountUsed()) {
-            $tenderTypeId = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+            $tenderTypeId           = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+            $currencyFactor         = 0;
+            $giftCardCurrencyCode   = $order->getOrderCurrency()->getCurrencyCode();
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPaymentGiftCard
-                ->setCurrencyFactor(1)
-                ->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
+                ->setCurrencyFactor($currencyFactor)
+                ->setCurrencyCode($giftCardCurrencyCode)
                 ->setAmount($order->getLsGiftCardAmountUsed())
                 ->setLineNumber('3')
                 ->setCardNumber($order->getLsGiftCardNo())
@@ -1008,11 +1027,12 @@ class OrderHelper extends AbstractHelper
     /**
      * Return orders from Magento which are yet to be sent to Central and are not payment_review and canceled
      *
-     * @param int $storeId
-     * @param int $pageSize
-     * @param boolean $filterOptions
-     * @param int $customerId
-     * @param SortOrder $sortOrder
+     * @param $storeId
+     * @param $pageSize
+     * @param $filterOptions
+     * @param $customerId
+     * @param $sortOrder
+     * @param $isOrderEdit
      * @return OrderInterface[]|null
      * @throws NoSuchEntityException
      */
@@ -1021,7 +1041,8 @@ class OrderHelper extends AbstractHelper
         $pageSize = -1,
         $filterOptions = true,
         $customerId = 0,
-        $sortOrder = null
+        $sortOrder = null,
+        $isOrderEdit = false
     ) {
         $orders    = null;
         $store     = $this->storeManager->getStore($storeId);
@@ -1045,8 +1066,9 @@ class OrderHelper extends AbstractHelper
                 $criteriaBuilder->addFilter('customer_id', $customerId, 'eq');
             }
 
-            if ($storeId) {
-                $criteriaBuilder = $criteriaBuilder->addFilter('store_id', $storeId, 'eq');
+            if ($isOrderEdit) {
+                $criteriaBuilder = $criteriaBuilder->addFilter('edit_increment', null, 'neq');
+                $criteriaBuilder = $criteriaBuilder->addFilter('ls_order_edit', false, 'eq');
             }
 
             if ($sortOrder) {
@@ -1059,7 +1081,6 @@ class OrderHelper extends AbstractHelper
 
             $searchCriteria = $criteriaBuilder->create();
             $orders         = $this->orderRepository->getList($searchCriteria)->getItems();
-
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
         }
@@ -1348,7 +1369,11 @@ class OrderHelper extends AbstractHelper
         }
 
         if (!empty($currency)) {
-            $currencyObject = $this->currencyFactory->create()->load($currency);
+            $allowedCurrencies = $this->config->getAllowedCurrencies();
+
+            if (in_array($currency, $allowedCurrencies)) {
+                $currencyObject = $this->currencyFactory->create()->load($currency);
+            }
         }
 
         return $priceCurrency->format($amount, false, 2, null, $currencyObject);
