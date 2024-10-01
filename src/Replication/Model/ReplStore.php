@@ -101,9 +101,19 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     protected $Phone = null;
 
     /**
+     * @property string $PriceGroupCodes
+     */
+    protected $PriceGroupCodes = null;
+
+    /**
      * @property string $State
      */
     protected $State = null;
+
+    /**
+     * @property string $StoreGroupCodes
+     */
+    protected $StoreGroupCodes = null;
 
     /**
      * @property string $Street
@@ -511,6 +521,26 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     }
 
     /**
+     * @param string $PriceGroupCodes
+     * @return $this
+     */
+    public function setPriceGroupCodes($PriceGroupCodes)
+    {
+        $this->setData( 'PriceGroupCodes', $PriceGroupCodes );
+        $this->PriceGroupCodes = $PriceGroupCodes;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroupCodes()
+    {
+        return $this->getData( 'PriceGroupCodes' );
+    }
+
+    /**
      * @param string $State
      * @return $this
      */
@@ -528,6 +558,26 @@ class ReplStore extends AbstractModel implements ReplStoreInterface, IdentityInt
     public function getState()
     {
         return $this->getData( 'State' );
+    }
+
+    /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes)
+    {
+        $this->setData( 'StoreGroupCodes', $StoreGroupCodes );
+        $this->StoreGroupCodes = $StoreGroupCodes;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes()
+    {
+        return $this->getData( 'StoreGroupCodes' );
     }
 
     /**
