@@ -221,6 +221,11 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $StandardPriceInclVAT = null;
 
     /**
+     * @property string $StoreGroupCodes
+     */
+    protected $StoreGroupCodes = null;
+
+    /**
      * @property float $TenderOffer
      */
     protected $TenderOffer = null;
@@ -1138,6 +1143,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getStandardPriceInclVAT()
     {
         return $this->getData( 'StandardPriceInclVAT' );
+    }
+
+    /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes)
+    {
+        $this->setData( 'StoreGroupCodes', $StoreGroupCodes );
+        $this->StoreGroupCodes = $StoreGroupCodes;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes()
+    {
+        return $this->getData( 'StoreGroupCodes' );
     }
 
     /**

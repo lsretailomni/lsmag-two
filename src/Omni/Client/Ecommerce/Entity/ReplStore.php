@@ -91,9 +91,19 @@ class ReplStore
     protected $Phone = null;
 
     /**
+     * @property string $PriceGroupCodes
+     */
+    protected $PriceGroupCodes = null;
+
+    /**
      * @property string $State
      */
     protected $State = null;
+
+    /**
+     * @property string $StoreGroupCodes
+     */
+    protected $StoreGroupCodes = null;
 
     /**
      * @property string $Street
@@ -419,6 +429,24 @@ class ReplStore
     }
 
     /**
+     * @param string $PriceGroupCodes
+     * @return $this
+     */
+    public function setPriceGroupCodes($PriceGroupCodes)
+    {
+        $this->PriceGroupCodes = $PriceGroupCodes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroupCodes()
+    {
+        return $this->PriceGroupCodes;
+    }
+
+    /**
      * @param string $State
      * @return $this
      */
@@ -434,6 +462,24 @@ class ReplStore
     public function getState()
     {
         return $this->State;
+    }
+
+    /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes)
+    {
+        $this->StoreGroupCodes = $StoreGroupCodes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes()
+    {
+        return $this->StoreGroupCodes;
     }
 
     /**
