@@ -22,7 +22,7 @@ use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractController;
 
-class CouponsTest extends AbstractController
+class ProactiveDiscountsAndCouponsTest extends AbstractController
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -96,13 +96,15 @@ class CouponsTest extends AbstractController
         $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
-        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
+        $this->getRequest()->setParams([
+            'currentProduct' => '40180'
+        ]);
         $this->getRequest()->getHeaders()
             ->addHeaderLine('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $this->dispatch('omni/ajax/coupons');
+        $this->dispatch('omni/ajax/ProactiveDiscountsAndCoupons');
         $content = json_decode($this->getResponse()->getBody());
         $this->assertNotNull($content->output);
-        $this->assertStringContainsString('available-coupons', $content->output);
+        $this->assertStringContainsString('proactive-discounts-container', $content->output);
     }
 
     /**
@@ -118,8 +120,7 @@ class CouponsTest extends AbstractController
     ]
     public function testExecuteNotAjaxRequest()
     {
-        $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
-        $this->dispatch('omni/ajax/coupons');
+        $this->dispatch('omni/ajax/ProactiveDiscountsAndCoupons');
         $this->assertRedirect(
             $this->stringContains('checkout/cart')
         );

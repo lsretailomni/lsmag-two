@@ -5,7 +5,6 @@ namespace Ls\Omni\Test\Integration\Controller\Ajax;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Controller\Ajax\CheckGiftCardBalance;
-use Magento\Framework\App\Http\Context;
 use Magento\Framework\Serialize\SerializerInterface;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\TestFramework\Fixture\Config;
@@ -17,10 +16,6 @@ use Magento\TestFramework\TestCase\AbstractController;
 
 class CheckGiftCardBalanceTest extends AbstractController
 {
-    /**
-     * @var DataFixtureStorageManager
-     */
-    public $fixtures;
 
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -62,7 +57,6 @@ class CheckGiftCardBalanceTest extends AbstractController
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
         $this->getRequest()->getHeaders()
             ->addHeaderLine('X_REQUESTED_WITH', 'XMLHttpRequest');
-        //$result = $this->checkGiftCardBalance->execute();
         $this->dispatch('omni/ajax/checkGiftCardBalance');
         $content = json_decode($this->getResponse()->getBody());
         $this->assertEquals('true', $content->success);
