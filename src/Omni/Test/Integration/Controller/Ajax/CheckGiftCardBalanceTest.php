@@ -62,8 +62,10 @@ class CheckGiftCardBalanceTest extends AbstractController
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
         $this->getRequest()->getHeaders()
             ->addHeaderLine('X_REQUESTED_WITH', 'XMLHttpRequest');
-        $result = $this->checkGiftCardBalance->execute();
-
-        $this->assertNotNull($result);
+        //$result = $this->checkGiftCardBalance->execute();
+        $this->dispatch('omni/ajax/checkGiftCardBalance');
+        $content = json_decode($this->getResponse()->getBody());
+        $this->assertEquals('true', $content->success);
+        $this->assertNotNull($content->data);
     }
 }
