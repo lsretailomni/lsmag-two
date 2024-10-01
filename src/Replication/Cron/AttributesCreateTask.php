@@ -539,7 +539,6 @@ class AttributesCreateTask
         );
         $collection = $this->replItemVariantCollectionFactory->create();
         $this->replicationHelper->setCollectionForStandardVariants($collection, $criteria);
-        $sql = $collection->getSelect()->__toString();
         $standardVariantValues = [];
 
         foreach ($collection as $item) {
