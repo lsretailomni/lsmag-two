@@ -84,7 +84,7 @@ class SyncVersion
                     $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $this->store->getId());
                     $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $this->store->getId());
                     $pong    = $this->helper->omniPing($baseUrl, $lsKey);
-                    $this->helper->parsePingResponseAndSaveToConfigData($pong);
+                    $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
                 }
                 $this->lsr->setStoreId(null);
             }
@@ -105,5 +105,15 @@ class SyncVersion
     {
         $info = $this->execute($storeData);
         return $info;
+    }
+
+    /**
+     * Get current scope id
+     *
+     * @return int
+     */
+    public function getScopeId()
+    {
+        return $this->store->getWebsiteId();
     }
 }

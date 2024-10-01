@@ -221,20 +221,29 @@ class DataHelper extends AbstractHelper
      */
     public function triggerEventForCartChange($quote)
     {
-        if ($quote->getBasketResponse()) {
-            // phpcs:ignore Magento2.Security.InsecureFunction
-            $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
-        }
-
-        /**
-         * Clearing the quote from session just in case if someone did $this->checkoutSession->getQuote()
-         * before $this->checkoutSession->setQuoteId($quote->getId());
-         **/
-        $this->checkoutSession->clearQuote();
-        $this->checkoutSession->setQuoteId($quote->getId());
+        $this->setCurrentQuoteDataInCheckoutSession($quote);
         $this->eventManager->dispatch('checkout_cart_save_after');
 
         return $this->checkoutSession->getQuote();
+    }
+
+    /**
+     * Set required values in checkout session before doing basket calculate
+     *
+     * @param $quote
+     * @return void
+     * @throws NoSuchEntityException
+     */
+    public function setCurrentQuoteDataInCheckoutSession($quote)
+    {
+        if ($quote) {
+            /**
+             * Clearing the quote from session just in case if someone did $this->checkoutSession->getQuote()
+             * before $this->checkoutSession->setQuoteId($quote->getId());
+             **/
+            $this->checkoutSession->clearQuote();
+            $this->checkoutSession->setQuoteId($quote->getId());
+        }
     }
 
     /**
