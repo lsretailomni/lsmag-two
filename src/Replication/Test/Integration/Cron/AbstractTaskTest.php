@@ -60,7 +60,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @magentoAppArea crontab
- * @magentoDbIsolation disabled
+ * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
 #[
@@ -285,7 +285,7 @@ abstract class AbstractTaskTest extends TestCase
     }
 
     /**
-     * @magentoDbIsolation disabled
+     * @magentoDbIsolation enabled
      */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
