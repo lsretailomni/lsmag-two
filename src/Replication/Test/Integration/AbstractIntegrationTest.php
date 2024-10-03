@@ -43,6 +43,8 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_STANDARD_VARIANT_ITEM_ID = '40190';
     public const SAMPLE_HIERARCHY_LEAF = 'DAVI';
     public const SAMPLE_CURRENCY_CODE = 'GBP';
+    public const SAMPLE_OFFER_CATEGORY_1 = 'P1065';
+    public const SAMPLE_OFFER_CATEGORY_2 = 'P1016';
 
     /**
      * Get environment variable value given name

@@ -5,12 +5,15 @@ namespace Ls\Replication\Test\Integration\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface;
@@ -26,6 +29,8 @@ use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
 use \Ls\Replication\Cron\ReplEcommAttributeTask;
 use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
 use \Ls\Replication\Cron\ReplEcommBarcodesTask;
+use \Ls\Replication\Cron\ReplEcommDiscountSetupTask;
+use \Ls\Replication\Cron\ReplEcommDiscountValidationsTask;
 use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
 use \Ls\Replication\Cron\ReplEcommHierarchyLeafTask;
 use \Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
@@ -49,6 +54,7 @@ use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Type;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\CatalogInventory\Model\StockRegistryStorage;
+use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
 use Magento\Framework\App\ResourceConnection;
 use Magento\InventoryCatalogAdminUi\Model\GetSourceItemsDataBySku;
 use Magento\Store\Model\ScopeInterface;
@@ -57,140 +63,14 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\CatalogRule\Model\ResourceModel\RuleFactory as ResourceRuleFactory;
 
 /**
  * @magentoAppArea crontab
- * @magentoDbIsolation enabled
+ * @magentoDbIsolation disabled
  * @magentoAppIsolation enabled
  */
-#[
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommAttributeTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommAttributeOptionValueTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommAttributeValueTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommExtendedVariantsTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommItemVariantsTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommUnitOfMeasuresTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommItemUnitOfMeasuresTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommVendorTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommHierarchyNodeTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommHierarchyLeafTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommItemsTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommBarcodesTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommItemVariantRegistrationsTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommPricesTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommImageLinksTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommInventoryStatusTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommVendorTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-    DataFixture(
-        FlatDataReplication::class,
-        [
-            'job_url' => ReplEcommVendorItemMappingTask::class,
-            'scope' => ScopeInterface::SCOPE_WEBSITE
-        ]
-    ),
-]
 abstract class AbstractTaskTest extends TestCase
 {
     public $lsTables = [
@@ -250,6 +130,30 @@ abstract class AbstractTaskTest extends TestCase
     public $replVendorRepository;
 
     /**
+     * @var ReplDiscountSetupRepositoryInterface
+     */
+    public $replDiscountRepository;
+
+    /**
+     * @var ReplDiscountValidationRepositoryInterface
+     */
+    public $discountValidationRepository;
+    public $catalogRuleRepository;
+
+    /** @var SearchCriteriaBuilder */
+    public $searchCriteriaBuilder;
+
+    /**
+     * @var ResourceRuleFactory
+     */
+    public $catalogRuleResource;
+
+    /**
+     * @var ContactHelper
+     */
+    public $contactHelper;
+
+    /**
      * @inheritdoc
      */
     protected function setUp(): void
@@ -282,12 +186,158 @@ abstract class AbstractTaskTest extends TestCase
         $this->replAttributeValueRepository          = $this->objectManager->get(ReplAttributeValueRepositoryInterface::class);
         $this->replVendorItemRepository              = $this->objectManager->get(ReplLoyVendorItemMappingRepositoryInterface::class);
         $this->replVendorRepository                  = $this->objectManager->get(ReplVendorRepositoryInterface::class);
+        $this->replDiscountRepository                = $this->objectManager->get(ReplDiscountSetupRepositoryInterface::class);
+        $this->discountValidationRepository          = $this->objectManager->get(ReplDiscountValidationRepositoryInterface::class);
+        $this->catalogRuleRepository                 = $this->objectManager->get(CatalogRuleRepositoryInterface::class);
+        $this->searchCriteriaBuilder                 = $this->objectManager->get(SearchCriteriaBuilder::class);
+        $this->catalogRuleResource                   = $this->objectManager->get(ResourceRuleFactory::class);
+        $this->contactHelper                         = $this->objectManager->get(ContactHelper::class);
     }
 
     /**
-     * @magentoDbIsolation enabled
+     * @magentoDbIsolation disabled
      */
     #[
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommAttributeTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommAttributeOptionValueTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommAttributeValueTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommExtendedVariantsTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommItemVariantsTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommUnitOfMeasuresTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommItemUnitOfMeasuresTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommVendorTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommHierarchyNodeTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommHierarchyLeafTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommItemsTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommBarcodesTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommItemVariantRegistrationsTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommPricesTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommImageLinksTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommInventoryStatusTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommVendorTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommVendorItemMappingTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommDiscountSetupTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommDiscountValidationsTask::class,
+                'scope' => ScopeInterface::SCOPE_WEBSITE
+            ]
+        ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
