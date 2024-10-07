@@ -117,26 +117,26 @@ class CreatePluginTest extends AbstractIntegrationTest
         ),
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address'
-        ),
-        DataFixture(
-            CustomerOrder::class,
-            [
-                'customer' => '$customer$',
-                'cart1'    => '$cart1$',
-                'address'  => '$address$',
-                'payment'  => 'free'
-            ],
-            as: 'order'
-        )
+//        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
+//        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
+//        DataFixture(
+//            CustomerAddressFixture::class,
+//            [
+//                'customer_id' => '$customer.entity_id$'
+//            ],
+//            as: 'address'
+//        ),
+//        DataFixture(
+//            CustomerOrder::class,
+//            [
+//                'customer' => '$customer$',
+//                'cart1'    => '$cart1$',
+//                'address'  => '$address$',
+//                'payment'  => 'free'
+//            ],
+//            as: 'order'
+//        )
     ]
     public function testCreatePlugin()
     {
@@ -157,7 +157,6 @@ class CreatePluginTest extends AbstractIntegrationTest
         $basketData = $this->basketHelper->update($oneList);
         $quote      = $this->quoteSession->getQuote();
         $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
-        $quote = $this->quoteSession->getQuote();
         $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
 
         $this->quoteSession->setQuote($quote);
