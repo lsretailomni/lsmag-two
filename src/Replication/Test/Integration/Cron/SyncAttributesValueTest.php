@@ -31,10 +31,6 @@ class SyncAttributesValueTest extends AbstractTaskTest
     public function actualExecute()
     {
         $storeId           = $this->storeManager->getStore()->getId();
-        $this->cron->store = $this->storeManager->getStore();
-        $this->cron->webStoreId = AbstractIntegrationTest::CS_STORE;
-        $this->addDummyDataStandardVariant();
-        $this->executePreReqCrons();
 
         $this->updateAllRelevantItemRecords(
             1,

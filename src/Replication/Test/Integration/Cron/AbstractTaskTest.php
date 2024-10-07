@@ -7,6 +7,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
+use Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
@@ -68,7 +69,7 @@ use Magento\CatalogRule\Model\ResourceModel\RuleFactory as ResourceRuleFactory;
 
 /**
  * @magentoAppArea crontab
- * @magentoDbIsolation disabled
+ * @magentoDbIsolation enabled
  * @magentoAppIsolation enabled
  */
 abstract class AbstractTaskTest extends TestCase
@@ -128,16 +129,15 @@ abstract class AbstractTaskTest extends TestCase
     public $replAttributeValueInterfaceFactory;
     public $replVendorItemRepository;
     public $replVendorRepository;
-
+    public $replDiscountSetupInterfaceFactory;
     /**
      * @var ReplDiscountSetupRepositoryInterface
      */
-    public $replDiscountRepository;
-
+    public $replDiscountSetupRepository;
     /**
      * @var ReplDiscountValidationRepositoryInterface
      */
-    public $discountValidationRepository;
+    public $replDiscountValidationRepository;
     public $catalogRuleRepository;
 
     /** @var SearchCriteriaBuilder */
@@ -186,8 +186,9 @@ abstract class AbstractTaskTest extends TestCase
         $this->replAttributeValueRepository          = $this->objectManager->get(ReplAttributeValueRepositoryInterface::class);
         $this->replVendorItemRepository              = $this->objectManager->get(ReplLoyVendorItemMappingRepositoryInterface::class);
         $this->replVendorRepository                  = $this->objectManager->get(ReplVendorRepositoryInterface::class);
-        $this->replDiscountRepository                = $this->objectManager->get(ReplDiscountSetupRepositoryInterface::class);
-        $this->discountValidationRepository          = $this->objectManager->get(ReplDiscountValidationRepositoryInterface::class);
+        $this->replDiscountSetupRepository           = $this->objectManager->get(ReplDiscountSetupRepositoryInterface::class);
+        $this->replDiscountSetupInterfaceFactory     = $this->objectManager->get(ReplDiscountSetupInterfaceFactory::class);
+        $this->replDiscountValidationRepository      = $this->objectManager->get(ReplDiscountValidationRepositoryInterface::class);
         $this->catalogRuleRepository                 = $this->objectManager->get(CatalogRuleRepositoryInterface::class);
         $this->searchCriteriaBuilder                 = $this->objectManager->get(SearchCriteriaBuilder::class);
         $this->catalogRuleResource                   = $this->objectManager->get(ResourceRuleFactory::class);
@@ -195,7 +196,7 @@ abstract class AbstractTaskTest extends TestCase
     }
 
     /**
-     * @magentoDbIsolation disabled
+     * @magentoDbIsolation enabled
      */
     #[
         DataFixture(
@@ -361,9 +362,14 @@ abstract class AbstractTaskTest extends TestCase
     {
         $this->cron->store = $this->storeManager->getStore();
         $this->cron->webStoreId = AbstractIntegrationTest::CS_STORE;
-        $this->addDummyDataStandardVariant();
+        $this->addDummyData();
         $this->executePreReqCrons();
         $this->actualExecute();
+    }
+
+    public function addDummyData()
+    {
+        $this->addDummyDataStandardVariant();
     }
 
     public abstract function actualExecute();
@@ -387,7 +393,7 @@ abstract class AbstractTaskTest extends TestCase
         for ($i = 0; $i < 5; $i++) {
             $cron = $this->objectManager->create($cronClass);
             $cron->execute();
-
+            $cron->store = $this->storeManager->getStore();
             if ($this->isReady($successStatus, $this->storeManager->getStore()->getId())) {
                 break;
             }

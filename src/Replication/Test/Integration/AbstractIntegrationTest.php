@@ -18,6 +18,7 @@ class AbstractIntegrationTest extends TestCase
 
     public const DEFAULT_BATCH_SIZE = '5000';
     public const SAMPLE_SIMPLE_ITEM_ID = '40180';
+    public const SAMPLE_DISCOUNTED_CONFIGURABLE_ITEM_ID = '40015';
     public const SAMPLE_CONFIGURABLE_ITEM_ID = '40020';
     public const SAMPLE_CONFIGURABLE_VARIANT_ID = '000';
     public const SAMPLE_ATTRIBUTE_CODE = 'FABRIC';
@@ -45,7 +46,10 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_CURRENCY_CODE = 'GBP';
     public const SAMPLE_OFFER_CATEGORY_1 = 'P1065';
     public const SAMPLE_OFFER_CATEGORY_2 = 'P1016';
-
+    public const SAMPLE_OFFER_ITEM_1 = 'P1060';
+    public const SAMPLE_VALID_VALIDATION_PERIOD_ID = '16';
+    public const SAMPLE_STORE_GROUP_CODES = 'EASYBURGER;ECOMMERCE;';
+    public const SAMPLE_PRICE_GROUP = 'ALL';
     /**
      * Get environment variable value given name
      *
