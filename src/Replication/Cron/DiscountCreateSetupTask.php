@@ -228,6 +228,7 @@ class DiscountCreateSetupTask
                         if (!empty($publishedOfferCollection)) {
                             $reindexRules = false;
                             $schemes      = $this->contactHelper->getSchemes();
+                            $this->createAllAvailableCustomerGroups($schemes);
                             /** @var ReplDiscountSetup $item */
                             foreach ($publishedOfferCollection as $item) {
                                 $this->deleteOfferByName($item);
@@ -272,102 +273,19 @@ class DiscountCreateSetupTask
                                     try {
                                         $this->deleteOfferItemCategoryProductGroup($replDiscount);
                                         if (!$replDiscount->getIsPercentage()) {
-                                            $discountValueType = DiscountValueType::AMOUNT;
                                             $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
                                         } else {
-                                            $discountValueType = DiscountValueType::PERCENT;
                                             $discountValue     = $replDiscount->getDealPriceDiscount();
                                         }
                                         if (empty($customerGroupIds) && !$useAllGroupIds) {
-                                            if ($replDiscount->getMemberType() == ReplDiscMemberType::CLUB
-                                                && !empty($replDiscount->getLoyaltySchemeCode()) && !empty($schemes)) {
-                                                $groups = array_keys($schemes, $replDiscount->getLoyaltySchemeCode());
-                                                foreach ($groups as $group) {
-                                                    $customerGroupIds[] = $this->contactHelper->
-                                                    getCustomerGroupIdByName($group);
-                                                }
-                                            } else {
-                                                $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
-                                                    $replDiscount->getLoyaltySchemeCode()
-                                                );
-                                            }
+                                            $customerGroupIds =
+                                                $this->getRequiredCustomerGroups($replDiscount, $schemes);
                                         }
 
                                         $lineType = (string)$replDiscount->getLineType();
 
                                         if ($lineType == OfferDiscountLineType::ITEM) {
-                                            $products                               = null;
-                                            $uomCodes[$replDiscount->getNumber()][] = '';
-                                            $variantIds                             = null;
-                                            $uomCodes                               = $this->replicationHelper->
-                                            getUomCodes(
-                                                $replDiscount->getNumber(),
-                                                $storeId
-                                            );
-                                            if (empty($uomCodes)) {
-                                                $uomCodes[$replDiscount->getNumber()] [] = '';
-                                            }
-                                            if (!empty($uomCodes[$replDiscount->getNumber()])) {
-                                                if (count($uomCodes[$replDiscount->getNumber()]) > 1 &&
-                                                    !empty($replDiscount->getUnitOfMeasureId())) {
-                                                    $uomCodes                             = [];
-                                                    $uomCodes[$replDiscount->getNumber()]
-                                                    [$replDiscount->getUnitOfMeasureId()] =
-                                                        $replDiscount->getUnitOfMeasureId();
-                                                } elseif (count($uomCodes[$replDiscount->getNumber()]) == 1) {
-                                                    $uomCodes                               = [];
-                                                    $uomCodes[$replDiscount->getNumber()][] = '';
-                                                }
-                                            } else {
-                                                $uomCodes[$replDiscount->getNumber()] [] = '';
-                                            }
-                                            if (empty($replDiscount->getVariantId())) {
-                                                foreach ($uomCodes[$replDiscount->getNumber()] as $uomCode) {
-                                                    $products = $this->replicationHelper->
-                                                    getProductDataByIdentificationAttributes(
-                                                        $replDiscount->getNumber(),
-                                                        $replDiscount->getVariantId(),
-                                                        $uomCode,
-                                                        $this->store->getId(),
-                                                        false,
-                                                        true
-                                                    );
-                                                    foreach ($products as $product) {
-                                                        $skuAmountArray[$discountValue][$discountValueType] []
-                                                            = $product->getSku();
-                                                    }
-                                                }
-                                            } elseif (!empty($replDiscount->getVariantId())) {
-                                                if ($replDiscount->getVariantType() == 2) {
-                                                    $variantIds = $this->getVariantIdsByDimension(
-                                                        $replDiscount->getNumber(),
-                                                        $replDiscount->getVariantId(),
-                                                        $storeId
-                                                    );
-                                                    if (empty($variantIds)) {
-                                                        throw new NoSuchEntityException();
-                                                    }
-                                                } else {
-                                                    $variantIds[] = $replDiscount->getVariantId();
-                                                }
-                                                foreach ($variantIds as $variantId) {
-                                                    foreach ($uomCodes[$replDiscount->getNumber()] as $uomCode) {
-                                                        $products = $this->replicationHelper->
-                                                        getProductDataByIdentificationAttributes(
-                                                            $replDiscount->getNumber(),
-                                                            $variantId,
-                                                            $uomCode,
-                                                            $this->store->getId(),
-                                                            false,
-                                                            true
-                                                        );
-                                                        foreach ($products as $product) {
-                                                            $skuAmountArray[$discountValue][$discountValueType] []
-                                                                = $product->getSku();
-                                                        }
-                                                    }
-                                                }
-                                            }
+                                            $this->getItemsInRequiredFormat($replDiscount, $skuAmountArray);
                                         } else {
                                             $categoryGroupAmountArray[$discountValue][] = $replDiscount;
                                         }
@@ -478,8 +396,7 @@ class DiscountCreateSetupTask
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public
-    function executeManually(
+    public function executeManually(
         $storeData = null
     ) {
         $this->message = '';
@@ -489,6 +406,134 @@ class DiscountCreateSetupTask
         }
         $discountsLeftToProcess = $this->getRemainingRecords($storeData->getId());
         return [$discountsLeftToProcess];
+    }
+
+    /**
+     * Gather all items together with respective discount values
+     *
+     * @param $replDiscount
+     * @param $skuAmountArray
+     * @return array
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function getItemsInRequiredFormat($replDiscount, &$skuAmountArray)
+    {
+        $storeId = $this->getScopeId();
+
+        if (!$replDiscount->getIsPercentage()) {
+            $discountValueType = DiscountValueType::AMOUNT;
+            $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
+        } else {
+            $discountValueType = DiscountValueType::PERCENT;
+            $discountValue     = $replDiscount->getDealPriceDiscount();
+        }
+
+        $uomCodes[$replDiscount->getNumber()][] = '';
+        $variantIds                             = null;
+        $uomCodes                               = $this->replicationHelper->getUomCodes(
+            $replDiscount->getNumber(),
+            $storeId
+        );
+
+        if (empty($uomCodes)) {
+            $uomCodes[$replDiscount->getNumber()] [] = '';
+        }
+
+        if (!empty($uomCodes[$replDiscount->getNumber()])) {
+            if (count($uomCodes[$replDiscount->getNumber()]) > 1 &&
+                !empty($replDiscount->getUnitOfMeasureId())) {
+                $uomCodes                             = [];
+                $uomCodes[$replDiscount->getNumber()]
+                [$replDiscount->getUnitOfMeasureId()] =
+                    $replDiscount->getUnitOfMeasureId();
+            } elseif (count($uomCodes[$replDiscount->getNumber()]) == 1) {
+                $uomCodes                               = [];
+                $uomCodes[$replDiscount->getNumber()][] = '';
+            }
+        } else {
+            $uomCodes[$replDiscount->getNumber()] [] = '';
+        }
+
+        if (empty($replDiscount->getVariantId())) {
+            foreach ($uomCodes[$replDiscount->getNumber()] as $uomCode) {
+                $products = $this->replicationHelper->
+                getProductDataByIdentificationAttributes(
+                    $replDiscount->getNumber(),
+                    $replDiscount->getVariantId(),
+                    $uomCode,
+                    $this->store->getId(),
+                    false,
+                    true
+                );
+                foreach ($products as $product) {
+                    $skuAmountArray[$discountValue][$discountValueType] []
+                        = $product->getSku();
+                }
+            }
+        } elseif (!empty($replDiscount->getVariantId())) {
+            if ($replDiscount->getVariantType() == 2) {
+                $variantIds = $this->getVariantIdsByDimension(
+                    $replDiscount->getNumber(),
+                    $replDiscount->getVariantId(),
+                    $storeId
+                );
+                if (empty($variantIds)) {
+                    throw new NoSuchEntityException();
+                }
+            } else {
+                $variantIds[] = $replDiscount->getVariantId();
+            }
+            foreach ($variantIds as $variantId) {
+                foreach ($uomCodes[$replDiscount->getNumber()] as $uomCode) {
+                    $products = $this->replicationHelper->
+                    getProductDataByIdentificationAttributes(
+                        $replDiscount->getNumber(),
+                        $variantId,
+                        $uomCode,
+                        $this->store->getId(),
+                        false,
+                        true
+                    );
+                    foreach ($products as $product) {
+                        $skuAmountArray[$discountValue][$discountValueType] []
+                            = $product->getSku();
+                    }
+                }
+            }
+        }
+
+        return $skuAmountArray;
+    }
+
+    /**
+     * Get required customer groups
+     *
+     * @param $replDiscount
+     * @param $schemes
+     * @return array
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function getRequiredCustomerGroups($replDiscount, $schemes)
+    {
+        $customerGroupIds = [];
+        if ($replDiscount->getMemberType() == ReplDiscMemberType::CLUB
+            && !empty($replDiscount->getLoyaltySchemeCode()) && !empty($schemes)) {
+            $groups = array_keys($schemes, $replDiscount->getLoyaltySchemeCode());
+            foreach ($groups as $group) {
+                $customerGroupIds[] = $this->contactHelper->
+                getCustomerGroupIdByName($group);
+            }
+        } else {
+            $customerGroupIds[] = $this->contactHelper->getCustomerGroupIdByName(
+                $replDiscount->getLoyaltySchemeCode()
+            );
+        }
+
+        return $customerGroupIds;
     }
 
     /**
@@ -503,8 +548,7 @@ class DiscountCreateSetupTask
      * @return void
      * @throws Exception
      */
-    public
-    function addSalesRule(
+    public function addSalesRule(
         ReplDiscountSetup $replDiscount,
         $key,
         $customerGroupIds,
@@ -604,8 +648,7 @@ class DiscountCreateSetupTask
      * @param string $storeId
      * @return array|Collection
      */
-    public
-    function getUniquePublishedOffers(
+    public function getUniquePublishedOffers(
         $storeId
     ) {
         $publishedOfferIds = [];
@@ -648,8 +691,7 @@ class DiscountCreateSetupTask
     /**
      * Delete all the Offers by OfferNo with IsDeleted = 1
      */
-    public
-    function deleteOffers()
+    public function deleteOffers()
     {
         $filters  = [
             ['field' => 'is_updated', 'value' => 1, 'condition_type' => 'eq'],
@@ -678,8 +720,7 @@ class DiscountCreateSetupTask
     /**
      * synchronize validaton period
      */
-    public
-    function syncValidationPeriod()
+    public function syncValidationPeriod()
     {
         $index    = false;
         $filters  = [
@@ -759,8 +800,7 @@ class DiscountCreateSetupTask
      * @param ReplDiscountSetup $replDiscount
      * @return void
      */
-    public
-    function deleteOfferItemCategoryProductGroup(
+    public function deleteOfferItemCategoryProductGroup(
         ReplDiscountSetup $replDiscount
     ) {
         $name = '';
@@ -789,8 +829,7 @@ class DiscountCreateSetupTask
      * @param ReplDiscountSetup $replDiscount
      * @return void
      */
-    public
-    function deleteOfferByName(
+    public function deleteOfferByName(
         ReplDiscountSetup $replDiscount
     ) {
         $isItem = false;
@@ -843,8 +882,7 @@ class DiscountCreateSetupTask
      * @return int
      * @throws NoSuchEntityException
      */
-    public
-    function getRemainingRecords(
+    public function getRemainingRecords(
         $storeId
     ) {
         if (!$this->remainingRecords) {
@@ -868,8 +906,7 @@ class DiscountCreateSetupTask
      * @param string $itemId
      * @return void
      */
-    public
-    function logDetailedException(
+    public function logDetailedException(
         $method,
         $storeName,
         $itemId
@@ -890,8 +927,7 @@ class DiscountCreateSetupTask
      * @param mixed $key
      * @return array
      */
-    public
-    function getConditions(
+    public function getConditions(
         $key
     ) {
         $lineType = '';
@@ -964,15 +1000,13 @@ class DiscountCreateSetupTask
      * @param $storeId
      * @return null
      */
-    public
-    function getVariantIdsByDimension(
+    public function getVariantIdsByDimension(
         $itemId,
         $dimension,
         $storeId
     ) {
         return $this->replicationHelper->getVariantIdsByDimension($itemId, $dimension, $storeId);
     }
-
 
     /**
      * Check if website exist in store group or price group
@@ -983,8 +1017,7 @@ class DiscountCreateSetupTask
      * @param $offerNo
      * @return bool
      */
-    public
-    function validateWebsiteByStoreGroupCodeOrPriceGroup(
+    public function validateWebsiteByStoreGroupCodeOrPriceGroup(
         $priceGroup,
         $storeGroup,
         $websiteId,
@@ -1046,12 +1079,30 @@ class DiscountCreateSetupTask
     }
 
     /**
+     * Create all available customer groups
+     *
+     * @param $schemes
+     * @return void
+     * @throws InputException
+     * @throws InvalidTransitionException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function createAllAvailableCustomerGroups($schemes)
+    {
+        $customGroups = array_keys($schemes);
+
+        foreach ($customGroups as $customGroup) {
+            $this->contactHelper->getCustomerGroupIdByName($customGroup);
+        }
+    }
+
+    /**
      * Get current scope id
      *
      * @return int
      */
-    public
-    function getScopeId()
+    public function getScopeId()
     {
         return $this->store->getWebsiteId();
     }
