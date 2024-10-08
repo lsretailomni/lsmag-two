@@ -7,12 +7,14 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\Data\ReplAttributeValueInterfaceFactory;
-use Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplDataTranslationInterfaceFactory;
+use \Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
 use \Ls\Replication\Api\ReplAttributeValueRepositoryInterface;
+use \Ls\Replication\Api\ReplDataTranslationRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
@@ -30,6 +32,9 @@ use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
 use \Ls\Replication\Cron\ReplEcommAttributeTask;
 use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
 use \Ls\Replication\Cron\ReplEcommBarcodesTask;
+use \Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask;
+use \Ls\Replication\Cron\ReplEcommDataTranslationTask;
+use \Ls\Replication\Cron\ReplEcommDealHtmlTranslationTask;
 use \Ls\Replication\Cron\ReplEcommDiscountSetupTask;
 use \Ls\Replication\Cron\ReplEcommDiscountValidationsTask;
 use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
@@ -53,6 +58,7 @@ use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\CatalogInventory\Model\StockRegistryStorage;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
@@ -92,6 +98,8 @@ abstract class AbstractTaskTest extends TestCase
         ['table' => 'ls_replication_repl_hierarchy_hosp_deal', 'id' => 'DealNo'],
         ['table' => 'ls_replication_repl_hierarchy_hosp_deal_line', 'id' => 'DealNo'],
     ];
+
+    public $categoryCreateTaskCron;
 
     public $cron;
 
@@ -138,6 +146,10 @@ abstract class AbstractTaskTest extends TestCase
      * @var ReplDiscountValidationRepositoryInterface
      */
     public $replDiscountValidationRepository;
+
+    public $replDataTranslationRepository;
+
+    public $replDataTranslationInterfaceFactory;
     public $catalogRuleRepository;
 
     /** @var SearchCriteriaBuilder */
@@ -153,6 +165,8 @@ abstract class AbstractTaskTest extends TestCase
      */
     public $contactHelper;
 
+    public $categoryCollectionFactory;
+
     /**
      * @inheritdoc
      */
@@ -161,6 +175,7 @@ abstract class AbstractTaskTest extends TestCase
         parent::setUp();
 
         $this->objectManager                         = Bootstrap::getObjectManager();
+        $this->categoryCreateTaskCron                = $this->objectManager->create(CategoryCreateTask::class);
         $this->cron                                  = $this->objectManager->create(ProductCreateTask::class);
         $this->lsr                                   = $this->objectManager->create(\Ls\Core\Model\Lsr::class);
         $this->storeManager                          = $this->objectManager->get(StoreManagerInterface::class);
@@ -189,10 +204,13 @@ abstract class AbstractTaskTest extends TestCase
         $this->replDiscountSetupRepository           = $this->objectManager->get(ReplDiscountSetupRepositoryInterface::class);
         $this->replDiscountSetupInterfaceFactory     = $this->objectManager->get(ReplDiscountSetupInterfaceFactory::class);
         $this->replDiscountValidationRepository      = $this->objectManager->get(ReplDiscountValidationRepositoryInterface::class);
+        $this->replDataTranslationRepository         = $this->objectManager->get(ReplDataTranslationRepositoryInterface::class);
+        $this->replDataTranslationInterfaceFactory   = $this->objectManager->get(ReplDataTranslationInterfaceFactory::class);
         $this->catalogRuleRepository                 = $this->objectManager->get(CatalogRuleRepositoryInterface::class);
         $this->searchCriteriaBuilder                 = $this->objectManager->get(SearchCriteriaBuilder::class);
         $this->catalogRuleResource                   = $this->objectManager->get(ResourceRuleFactory::class);
         $this->contactHelper                         = $this->objectManager->get(ContactHelper::class);
+        $this->categoryCollectionFactory             = $this->objectManager->get(CollectionFactory::class);
     }
 
     /**
@@ -339,6 +357,27 @@ abstract class AbstractTaskTest extends TestCase
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
         ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommDataTranslationLangCodeTask::class,
+                'scope' => ScopeInterface::SCOPE_STORE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommDataTranslationTask::class,
+                'scope' => ScopeInterface::SCOPE_STORE
+            ]
+        ),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommDealHtmlTranslationTask::class,
+                'scope' => ScopeInterface::SCOPE_STORE
+            ]
+        ),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
@@ -348,6 +387,12 @@ abstract class AbstractTaskTest extends TestCase
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'website'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(
+            LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+            AbstractIntegrationTest::SAMPLE_LANGUAGE_CODE,
+            'store',
+            'default'
+        ),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::SC_REPLICATION_DEFAULT_BATCHSIZE, AbstractIntegrationTest::DEFAULT_BATCH_SIZE),
         Config(
@@ -355,6 +400,11 @@ abstract class AbstractTaskTest extends TestCase
             AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID,
             'store',
             'default'
+        ),
+        Config(
+            LSR::SC_REPLICATION_HIERARCHY_CODE,
+            AbstractIntegrationTest::SAMPLE_HIERARCHY_NAV_ID,
+            'website'
         ),
         Config(LSR::SC_REPLICATION_PRODUCT_BATCHSIZE, 5, 'store', 'default')
     ]
@@ -720,5 +770,28 @@ abstract class AbstractTaskTest extends TestCase
         $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
 
         return $this->replAttributeValueRepository->getList($criteria)->getItems();
+    }
+
+    public function getCategory($nav_id, $store = false)
+    {
+        $collection = $this->categoryCollectionFactory->create();
+        if ($store) {
+            $collection->addPathsFilter('1/' . $this->categoryCreateTaskCron->getRootCategoryId() . '/');
+        }
+
+        if ($nav_id) {
+            $collection->addAttributeToFilter('nav_id', $nav_id);
+
+            $collection->setPageSize(1);
+            if ($collection->getSize()) {
+                // @codingStandardsIgnoreStart
+                return $collection->getFirstItem();
+                // @codingStandardsIgnoreEnd
+            } else {
+                return false;
+            }
+        }
+
+        return $collection;
     }
 }

@@ -37,6 +37,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_HARD_ATTRIBUTE = 'SIZE';
     public const SAMPLE_VISUAL_SWATCH_ATTRIBUTE_CODE = 'ls_colour';
     public const SAMPLE_HIERARCHY_NODE_NAV_ID = 'ACCESSORIES';
+    public const SAMPLE_HIERARCHY_NODE_NAV_ID_2 = 'BAGS';
     public const SAMPLE_UPDATE_HIERARCHY_NODE_NAV_ID = 'MAKEUP';
     public const SAMPLE_CONFIGURABLE_UOM_ITEM_ID = '40100';
     public const SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID = '40500';
@@ -50,6 +51,8 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_VALID_VALIDATION_PERIOD_ID = '16';
     public const SAMPLE_STORE_GROUP_CODES = 'EASYBURGER;ECOMMERCE;';
     public const SAMPLE_PRICE_GROUP = 'ALL';
+
+    public const SAMPLE_LANGUAGE_CODE = 'ENG';
     /**
      * Get environment variable value given name
      *
