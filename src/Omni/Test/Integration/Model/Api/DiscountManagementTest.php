@@ -14,10 +14,7 @@ use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Model\Api\DiscountManagement;
-use Magento\Catalog\Test\Fixture\Product as ProductFixture;
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\ConfigurableProduct\Test\Fixture\Attribute as AttributeFixture;
-use Magento\ConfigurableProduct\Test\Fixture\Product as ConfigurableProductFixture;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Registry;
@@ -117,8 +114,8 @@ class DiscountManagementTest extends TestCase
         $result = $this->discountManagement->checkDiscountValidity($cart->getId());
 
         $this->assertNotNull($result);
-        $this->assertTrue($result[1]['valid']);
-        $this->assertEquals('discount', $result[1]['type']);
+        $this->assertTrue($result[0]['valid']);
+        $this->assertEquals('discount', $result[0]['type']);
     }
 
     /**
