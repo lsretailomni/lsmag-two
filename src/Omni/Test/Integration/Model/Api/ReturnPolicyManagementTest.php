@@ -100,7 +100,7 @@ class ReturnPolicyManagementTest extends TestCase
             as: 'p1'
         ),
     ]
-    public function testUpdatePoints()
+    public function testGetReturnPolicy()
     {
         $prod = $this->fixtures->get('p1');
 
