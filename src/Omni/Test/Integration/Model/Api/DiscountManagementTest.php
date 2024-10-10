@@ -14,7 +14,10 @@ use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Model\Api\DiscountManagement;
+use Magento\Catalog\Test\Fixture\Product as ProductFixture;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\ConfigurableProduct\Test\Fixture\Attribute as AttributeFixture;
+use Magento\ConfigurableProduct\Test\Fixture\Product as ConfigurableProductFixture;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Registry;
@@ -101,13 +104,59 @@ class DiscountManagementTest extends TestCase
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
     ]
+    public function testDiscountValidityWithConfig()
+    {
+        $customer = $this->fixtures->get('customer');
+        $cart     = $this->fixtures->get('cart1');
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+        $this->checkoutSession->setQuoteId($cart->getId());
+
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+
+        $result = $this->discountManagement->checkDiscountValidity($cart->getId());
+
+        $this->assertNotNull($result);
+        $this->assertTrue($result[1]['valid']);
+        $this->assertEquals('discount', $result[1]['type']);
+    }
+
+    /**
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('frontend'),
+        Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
+        Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        DataFixture(
+            CustomerFixture::class,
+            [
+                'lsr_username' => AbstractIntegrationTest::USERNAME,
+                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+            ],
+            as: 'customer'
+        ),
+        DataFixture(
+            CreateSimpleProductFixture::class,
+            [
+                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
+            ],
+            as: 'p1'
+        ),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
+    ]
     public function testDiscountValidityWithValidGiftCard()
     {
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-        //$cart->setCouponCode(AbstractIntegrationTest::VALID_COUPON_CODE);
         $this->checkoutSession->setQuoteId($cart->getId());
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
@@ -117,9 +166,6 @@ class DiscountManagementTest extends TestCase
         $quote->setLsGiftCardAmountUsed(AbstractIntegrationTest::GIFTCARD_AMOUNT);
         $quote->collectTotals();
         $this->basketHelper->quoteRepository->save($quote);
-
-//        $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
-//        $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
         $result = $this->discountManagement->checkDiscountValidity($cart->getId());
 
