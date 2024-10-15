@@ -5,10 +5,11 @@
  */
 declare(strict_types=1);
 
-namespace Ls\Omni\Test\Integration\Model\GiftCard;
+namespace Ls\Omni\Test\Integration\Model\LoyaltyPoints;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
+use Ls\Omni\Model\LoyaltyPoints\LoyaltyPointsManagement;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Model\GiftCard\GiftCardManagement;
@@ -27,7 +28,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
 use PHPUnit\Framework\TestCase;
 
-class GiftCardManagementTest extends TestCase
+class LoyaltyPointsManagementTest extends TestCase
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -49,21 +50,21 @@ class GiftCardManagementTest extends TestCase
     public $checkoutSession;
     public $eventManager;
     public $quoteRepository;
-    public $giftCardManagement;
+    public $loyaltyPointsManagement;
 
     /**
      * @return void
      */
     public function setUp(): void
     {
-        $this->objectManager      = Bootstrap::getObjectManager();
-        $this->fixtures           = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
-        $this->giftCardManagement = $this->objectManager->get(GiftCardManagement::class);
-        $this->registry           = $this->objectManager->get(Registry::class);
-        $this->customerSession    = $this->objectManager->get(CustomerSession::class);
-        $this->checkoutSession    = $this->objectManager->get(CheckoutSession::class);
-        $this->eventManager       = $this->objectManager->create(ManagerInterface::class);
-        $this->quoteRepository    = $this->objectManager->create(CartRepositoryInterface::class);
+        $this->objectManager           = Bootstrap::getObjectManager();
+        $this->fixtures                = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
+        $this->loyaltyPointsManagement = $this->objectManager->get(LoyaltyPointsManagement::class);
+        $this->registry                = $this->objectManager->get(Registry::class);
+        $this->customerSession         = $this->objectManager->get(CustomerSession::class);
+        $this->checkoutSession         = $this->objectManager->get(CheckoutSession::class);
+        $this->eventManager            = $this->objectManager->create(ManagerInterface::class);
+        $this->quoteRepository         = $this->objectManager->create(CartRepositoryInterface::class);
     }
 
     /**
@@ -96,7 +97,7 @@ class GiftCardManagementTest extends TestCase
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
     ]
-    public function testApplyValidGiftCard()
+    public function testApplyLoy()
     {
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
@@ -106,11 +107,9 @@ class GiftCardManagementTest extends TestCase
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
-        $result = $this->giftCardManagement->apply(
+        $result = $this->loyaltyPointsManagement->apply(
             $cart->getId(),
-            AbstractIntegrationTest::GIFTCARD,
-            AbstractIntegrationTest::GIFTCARD_PIN,
-            AbstractIntegrationTest::GIFTCARD_AMOUNT
+            AbstractIntegrationTest::LOY_POINTS
         );
 
         $this->assertTrue($result);
@@ -143,10 +142,9 @@ class GiftCardManagementTest extends TestCase
             ],
             as: 'p1'
         ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1')
     ]
-    public function testApplyInvalidGiftCard()
+    public function testApplyLoyWithException()
     {
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
@@ -157,11 +155,9 @@ class GiftCardManagementTest extends TestCase
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $this->expectException(CouldNotSaveException::class);
-        $this->giftCardManagement->apply(
+        $this->loyaltyPointsManagement->apply(
             $cart->getId(),
-            AbstractIntegrationTest::GIFTCARD_EXPIRED,
-            AbstractIntegrationTest::GIFTCARD_EXPIRED_PIN,
-            AbstractIntegrationTest::GIFTCARD_AMOUNT
+            AbstractIntegrationTest::LOY_POINTS
         );
     }
 
@@ -195,30 +191,27 @@ class GiftCardManagementTest extends TestCase
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1])
     ]
-    public function testRemoveGiftCard()
+    public function testRemoveLoy()
     {
         $customer = $this->fixtures->get('customer');
         $cart     = $this->fixtures->get('cart1');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
-
-        $this->giftCardManagement->apply(
+        $this->loyaltyPointsManagement->apply(
             $cart->getId(),
-            AbstractIntegrationTest::GIFTCARD,
-            AbstractIntegrationTest::GIFTCARD_PIN,
-            AbstractIntegrationTest::GIFTCARD_AMOUNT
+            AbstractIntegrationTest::LOY_POINTS
         );
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
-        $result = $this->giftCardManagement->remove(
+        $result = $this->loyaltyPointsManagement->remove(
             $cart->getId()
         );
 
         $cartQuote = $this->quoteRepository->get($cart->getId());
+
         $this->assertTrue($result);
-        $this->assertEquals(0, $cartQuote->getLsGiftCardAmountUsed());
-        $this->assertEquals(null, $cartQuote->getLsGiftCardNo());
+        $this->assertEquals(0, $cartQuote->getLsPointsSpent());
     }
 }
