@@ -58,7 +58,6 @@ class DefaultTotalsPluginTest extends AbstractIntegrationTest
         $this->assertEquals('45.00 points', $response);
     }
 
-
     /**
      * @magentoAppIsolation enabled
      *
