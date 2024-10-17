@@ -36,11 +36,6 @@ class DiscountManagementTest extends TestCase
     public $objectManager;
 
     /**
-     * @var mixed
-     */
-    public $request;
-
-    /**
      * @var DataFixtureStorageManager
      */
     public $fixtures;
