@@ -40,11 +40,6 @@ class OrderManagementTest extends AbstractIntegrationTest
     public $fixtures;
 
     /**
-     * @var \Closure
-     */
-    private $proceed;
-
-    /**
      * @var OrderManagementInterface
      */
     public $orderManagementInterface;
@@ -64,9 +59,6 @@ class OrderManagementTest extends AbstractIntegrationTest
         $this->fixtures                 = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->orderManagement          = $this->objectManager->get(OrderManagement::class);
         $this->orderManagementInterface = $this->objectManager->create(OrderManagementInterface::class);
-        $this->proceed                  = function () {
-            $this->proceed;
-        };
         $this->basketHelper             = $this->objectManager->get(BasketHelper::class);
     }
 
@@ -125,12 +117,7 @@ class OrderManagementTest extends AbstractIntegrationTest
     public function testAroundCancel()
     {
         $order = $this->fixtures->get('order');
-
-        $this->orderManagement->aroundCancel(
-            $this->orderManagementInterface,
-            $this->proceed,
-            $order->getId()
-        );
+        $this->orderManagementInterface->cancel($order->getId());
 
         $this->assertNull($this->basketHelper->getCorrectStoreIdFromCheckoutSession());
     }
