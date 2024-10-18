@@ -60,10 +60,10 @@ class SetShippingMethodsOnCartPlugin
         BasketHelper $basketHelper,
         Data $helper
     ) {
-        $this->dataHelper   = $dataHelper;
-        $this->carrierModel = $carrierModel;
-        $this->basketHelper = $basketHelper;
-        $this->helper       = $helper;
+        $this->dataHelper      = $dataHelper;
+        $this->carrierModel    = $carrierModel;
+        $this->basketHelper    = $basketHelper;
+        $this->helper          = $helper;
         $this->flatRateCarrier = $flatRateCarrier;
     }
 
@@ -97,9 +97,9 @@ class SetShippingMethodsOnCartPlugin
             throw new GraphQlInputException(__('Required parameter "shipping_methods" is missing'));
         }
 
-        $shippingMethods = reset($args['input']['shipping_methods']);
+        $shippingMethods         = reset($args['input']['shipping_methods']);
         $validForClickAndCollect = false;
-        $storeId = $selectedDate = $selectedDateTimeslot = '';
+        $storeId                 = $selectedDate = $selectedDateTimeslot = '';
 
         if ($shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode() ||
             $shippingMethods['carrier_code'] === $this->flatRateCarrier->getCarrierCode()
@@ -109,7 +109,7 @@ class SetShippingMethodsOnCartPlugin
                 throw new GraphQlInputException(__('Required parameter "cart_id" is missing'));
             }
 
-            $maskedCartId    = $args['input']['cart_id'];
+            $maskedCartId = $args['input']['cart_id'];
 
             if (isset($args['input']['store_id']) && !empty($args['input']['store_id'])) {
                 $storeId = $args['input']['store_id'];
@@ -123,10 +123,11 @@ class SetShippingMethodsOnCartPlugin
                 $selectedDateTimeslot = $args['input']['selected_date_time_slot'];
             }
 
-            $scopeId         = (int)$context->getExtensionAttributes()->getStore()->getId();
-            $userId          = $context->getUserId();
+            $scopeId = (int)$context->getExtensionAttributes()->getStore()->getId();
+            $userId  = $context->getUserId();
 
-            if (!empty($storeId) && $shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode()) {
+            if (!empty($storeId) && $shippingMethods['carrier_code'] === $this->carrierModel->getCarrierCode()
+                && empty($this->dataHelper->getCheckoutSession()->getNoManageStock())) {
                 $stockCollection = $this->helper->fetchCartAndReturnStock(
                     $maskedCartId,
                     $userId,
@@ -149,7 +150,9 @@ class SetShippingMethodsOnCartPlugin
             }
         }
         $result = $proceed($field, $context, $info, $value, $args);
-
+        if (!empty($this->dataHelper->getCheckoutSession()->getNoManageStock())) {
+            $validForClickAndCollect = true;
+        }
         if (isset($result['cart']) && isset($result['cart']['model'])) {
             $cart = $result['cart']['model'];
             $this->basketHelper->syncBasketWithCentral($cart->getId());

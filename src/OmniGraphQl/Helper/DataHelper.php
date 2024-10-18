@@ -637,4 +637,14 @@ class DataHelper extends AbstractHelper
     {
         $this->orderRepository->save($order);
     }
+
+    /**
+     * Get checkout session
+     *
+     * @return CheckoutSession
+     */
+    public function getCheckoutSession()
+    {
+        return $this->checkoutSession;
+    }
 }
