@@ -1466,7 +1466,6 @@ class ProductCreateTask
         $collection = $this->replItemUomCollectionFactory->create();
         $criteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
 
-        /** we only need unique product Id's which has any images to modify */
         $this->replicationHelper->setCollectionPropertiesPlusJoin(
             $collection,
             $criteria,
