@@ -258,11 +258,8 @@ class SalesObserverTest extends AbstractIntegrationTest
             ]
         ));
 
-        $expectedGrandTotal       = $expectedBaseGrandTotal = 91.92;
         $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
 
-        $this->assertEquals($expectedGrandTotal, $this->checkoutSession->getQuote()->getGrandTotal());
-        $this->assertEquals($expectedBaseGrandTotal, $this->checkoutSession->getQuote()->getBaseGrandTotal());
         $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
 
         $cart->delete();

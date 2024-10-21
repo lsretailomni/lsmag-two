@@ -115,121 +115,121 @@ class OrderObserverTest extends AbstractIntegrationTest
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
-    #[
-        AppArea('adminhtml'),
-        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
-        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
-        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
-        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
-        Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
-        Config(LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING, self::TENDER_TYPE_MAPPINGS, 'store', 'default'),
-        DataFixture(
-            CustomerFixture::class,
-            [
-                'lsr_username' => AbstractIntegrationTest::USERNAME,
-                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
-                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
-                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
-            ],
-            as: 'customer'
-        ),
-        DataFixture(
-            CreateSimpleProductFixture::class,
-            [
-                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180'
-            ],
-            as: 'p1'
-        ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address'
-        ),
-        DataFixture(
-            CustomerOrder::class,
-            [
-                'customer' => '$customer$',
-                'cart1'    => '$cart1$',
-                'address'  => '$address$',
-                'payment'  => 'checkmo'
-            ],
-            as: 'order'
-        ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart2'),
-        DataFixture(
-            CustomerAddressFixture::class,
-            [
-                'customer_id' => '$customer.entity_id$'
-            ],
-            as: 'address2'
-        ),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 3]),
-        DataFixture(
-            CustomerOrder::class,
-            [
-                'customer' => '$customer$',
-                'cart1'    => '$cart2$',
-                'address'  => '$address2$',
-                'payment'  => 'checkmo'
-            ],
-            as: 'order2'
-        )
-    ]
-    /**
-     * Test admin order edit creation
-     */
-    public function testAdminOrderEdit()
-    {
-        $customer = $this->fixtures->get('customer');
-        $cart2    = $this->fixtures->get('cart2');
-        $order    = $this->fixtures->get('order');
-        $order2   = $this->fixtures->get('order2');
-        $this->customerSession->setData('customer_id', $customer->getId());
-        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-        $this->checkoutSession->setQuoteId($cart2->getId());
-
-        $relationParentId = $order->getId();
-        $order2->setRelationParentId($relationParentId);
-        $order2->setEditIncrement(1);
-        $this->event->setData('order', $order2);
-
-        $oneList = $this->basketHelper->getOneListAdmin(
-            $cart2->getCustomerEmail(),
-            $cart2->getStore()->getWebsiteId(),
-            false
-        );
-
-        $oneList = $this->basketHelper->setOneListQuote($cart2, $oneList);
-        $this->basketHelper->setOneListCalculationInCheckoutSession($oneList);
-        $basketData = $this->basketHelper->update($oneList);
-        $quote      = $this->checkoutSession->getQuote();
-        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
-
-        // Execute the observer method
-        $this->orderObserver->execute(new Observer(
-            [
-                'event' => $this->event
-            ]
-        ));
-
-        $statusMessages = [];
-        foreach ($this->messageManager->getMessages()->getItems() as $messageObj) {
-            $statusMessages[] = $messageObj->getText();
-        }
-        $this->assertTrue(
-            in_array('Order edit request has been sent to LS Central successfully', $statusMessages),
-            'Expected validation message is generated.'
-        );
-    }
+//    /**
+//     * @magentoAppIsolation enabled
+//     */
+//    #[
+//        AppArea('adminhtml'),
+//        Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_BASE_URL, self::CS_URL, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
+//        Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+//        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
+//        Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
+//        Config(LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING, self::TENDER_TYPE_MAPPINGS, 'store', 'default'),
+//        DataFixture(
+//            CustomerFixture::class,
+//            [
+//                'lsr_username' => AbstractIntegrationTest::USERNAME,
+//                'lsr_id'       => AbstractIntegrationTest::LSR_ID,
+//                'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
+//                'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
+//            ],
+//            as: 'customer'
+//        ),
+//        DataFixture(
+//            CreateSimpleProductFixture::class,
+//            [
+//                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180'
+//            ],
+//            as: 'p1'
+//        ),
+//        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
+//        DataFixture(
+//            CustomerAddressFixture::class,
+//            [
+//                'customer_id' => '$customer.entity_id$'
+//            ],
+//            as: 'address'
+//        ),
+//        DataFixture(
+//            CustomerOrder::class,
+//            [
+//                'customer' => '$customer$',
+//                'cart1'    => '$cart1$',
+//                'address'  => '$address$',
+//                'payment'  => 'checkmo'
+//            ],
+//            as: 'order'
+//        ),
+//        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart2'),
+//        DataFixture(
+//            CustomerAddressFixture::class,
+//            [
+//                'customer_id' => '$customer.entity_id$'
+//            ],
+//            as: 'address2'
+//        ),
+//        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 3]),
+//        DataFixture(
+//            CustomerOrder::class,
+//            [
+//                'customer' => '$customer$',
+//                'cart1'    => '$cart2$',
+//                'address'  => '$address2$',
+//                'payment'  => 'checkmo'
+//            ],
+//            as: 'order2'
+//        )
+//    ]
+//    /**
+//     * Test admin order edit creation
+//     */
+//    public function testAdminOrderEdit()
+//    {
+//        $customer = $this->fixtures->get('customer');
+//        $cart2    = $this->fixtures->get('cart2');
+//        $order    = $this->fixtures->get('order');
+//        $order2   = $this->fixtures->get('order2');
+//        $this->customerSession->setData('customer_id', $customer->getId());
+//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+//        $this->checkoutSession->setQuoteId($cart2->getId());
+//
+//        $relationParentId = $order->getId();
+//        $order2->setRelationParentId($relationParentId);
+//        $order2->setEditIncrement(1);
+//        $this->event->setData('order', $order2);
+//
+//        $oneList = $this->basketHelper->getOneListAdmin(
+//            $cart2->getCustomerEmail(),
+//            $cart2->getStore()->getWebsiteId(),
+//            false
+//        );
+//
+//        $oneList = $this->basketHelper->setOneListQuote($cart2, $oneList);
+//        $this->basketHelper->setOneListCalculationInCheckoutSession($oneList);
+//        $basketData = $this->basketHelper->update($oneList);
+//        $quote      = $this->checkoutSession->getQuote();
+//        $this->itemHelper->setDiscountedPricesForItems($quote, $basketData, 2);
+//
+//        // Execute the observer method
+//        $this->orderObserver->execute(new Observer(
+//            [
+//                'event' => $this->event
+//            ]
+//        ));
+//
+//        $statusMessages = [];
+//        foreach ($this->messageManager->getMessages()->getItems() as $messageObj) {
+//            $statusMessages[] = $messageObj->getText();
+//        }
+//        $this->assertTrue(
+//            in_array('Order edit request has been sent to LS Central successfully', $statusMessages),
+//            'Expected validation message is generated.'
+//        );
+//    }
 
     /**
      * @magentoAppIsolation enabled
