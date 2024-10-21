@@ -9,10 +9,9 @@ namespace Ls\Omni\Test\Integration\Model\LoyaltyPoints;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
-use Ls\Omni\Model\LoyaltyPoints\LoyaltyPointsManagement;
+use \Ls\Omni\Model\LoyaltyPoints\LoyaltyPointsManagement;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
-use \Ls\Omni\Model\GiftCard\GiftCardManagement;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;

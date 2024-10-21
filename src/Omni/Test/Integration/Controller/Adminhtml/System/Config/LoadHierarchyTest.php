@@ -2,7 +2,7 @@
 
 namespace Ls\Omni\Test\Integration\Controller\Adminhtml\System\Config;
 
-use Ls\Omni\Test\Integration\AbstractIntegrationTest;
+use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\TestFramework\TestCase\AbstractBackendController;
 

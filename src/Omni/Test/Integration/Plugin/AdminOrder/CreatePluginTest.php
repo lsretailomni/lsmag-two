@@ -8,12 +8,8 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Test\Fixture\ApplyLoyaltyPointsInCartFixture;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
-use \Ls\Omni\Test\Fixture\CustomerAddressFixture;
-use \Ls\Omni\Test\Fixture\CustomerOrder;
 use \Ls\Omni\Plugin\AdminOrder\CreatePlugin;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
-use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddress;
-use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddress;
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Test\Fixture\AddProductToCart;
@@ -117,26 +113,7 @@ class CreatePluginTest extends AbstractIntegrationTest
         ),
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-//        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
-//        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
-//        DataFixture(
-//            CustomerAddressFixture::class,
-//            [
-//                'customer_id' => '$customer.entity_id$'
-//            ],
-//            as: 'address'
-//        ),
-//        DataFixture(
-//            CustomerOrder::class,
-//            [
-//                'customer' => '$customer$',
-//                'cart1'    => '$cart1$',
-//                'address'  => '$address$',
-//                'payment'  => 'free'
-//            ],
-//            as: 'order'
-//        )
+        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$'])
     ]
     public function testCreatePlugin()
     {

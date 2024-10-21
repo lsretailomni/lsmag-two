@@ -7,11 +7,10 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Test\Integration\Observer;
 
-use Laminas\Stdlib\Parameters;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
-use Ls\Omni\Model\Payment\PayStore;
+use \Ls\Omni\Model\Payment\PayStore;
 use \Ls\Omni\Observer\HidePaymentMethods;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Customer\Test\Fixture\CustomerFixture;

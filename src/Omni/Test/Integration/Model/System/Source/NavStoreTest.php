@@ -2,9 +2,9 @@
 
 namespace Ls\Omni\Test\Integration\Model\System\Source;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Model\System\Source\NavStore;
-use Ls\Omni\Test\Integration\AbstractIntegrationTest;
+use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\TestFramework\Fixture\Config;
