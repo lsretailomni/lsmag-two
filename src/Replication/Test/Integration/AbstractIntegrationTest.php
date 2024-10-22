@@ -35,6 +35,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_LANGUAGE_CDOE = 'ENG';
     public const SAMPLE_LOG_FILE_NAME = 'omniclient.log';
     public const SAMPLE_HARD_ATTRIBUTE = 'SIZE';
+    public const SAMPLE_VARIANT_ATTRIBUTE = 'COLOUR';
     public const SAMPLE_VISUAL_SWATCH_ATTRIBUTE_CODE = 'ls_colour';
     public const SAMPLE_HIERARCHY_NODE_NAV_ID = 'ACCESSORIES';
     public const SAMPLE_HIERARCHY_NODE_NAV_ID_2 = 'BAGS';

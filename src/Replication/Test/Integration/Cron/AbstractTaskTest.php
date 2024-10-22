@@ -27,6 +27,7 @@ use \Ls\Replication\Api\ReplLoyVendorItemMappingRepositoryInterface;
 use \Ls\Replication\Api\ReplVendorRepositoryInterface;
 use \Ls\Replication\Cron\AttributesCreateTask;
 use \Ls\Replication\Cron\CategoryCreateTask;
+use Ls\Replication\Cron\DataTranslationTask;
 use \Ls\Replication\Cron\ProductCreateTask;
 use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
 use \Ls\Replication\Cron\ReplEcommAttributeTask;
@@ -58,6 +59,7 @@ use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product\Type;
+use Magento\Catalog\Model\ResourceModel\Attribute;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\CatalogInventory\Model\Stock\StockItemRepository;
 use Magento\CatalogInventory\Model\StockRegistryStorage;
@@ -102,6 +104,7 @@ abstract class AbstractTaskTest extends TestCase
     public $categoryCreateTaskCron;
 
     public $cron;
+    public $dataTranslationCron;
 
     public $lsr;
 
@@ -167,6 +170,8 @@ abstract class AbstractTaskTest extends TestCase
 
     public $categoryCollectionFactory;
 
+    public $eavConfig;
+
     /**
      * @inheritdoc
      */
@@ -177,6 +182,7 @@ abstract class AbstractTaskTest extends TestCase
         $this->objectManager                         = Bootstrap::getObjectManager();
         $this->categoryCreateTaskCron                = $this->objectManager->create(CategoryCreateTask::class);
         $this->cron                                  = $this->objectManager->create(ProductCreateTask::class);
+        $this->dataTranslationCron                   = $this->objectManager->create(DataTranslationTask::class);
         $this->lsr                                   = $this->objectManager->create(\Ls\Core\Model\Lsr::class);
         $this->storeManager                          = $this->objectManager->get(StoreManagerInterface::class);
         $this->replicationHelper                     = $this->objectManager->get(ReplicationHelper::class);
@@ -211,6 +217,7 @@ abstract class AbstractTaskTest extends TestCase
         $this->catalogRuleResource                   = $this->objectManager->get(ResourceRuleFactory::class);
         $this->contactHelper                         = $this->objectManager->get(ContactHelper::class);
         $this->categoryCollectionFactory             = $this->objectManager->get(CollectionFactory::class);
+        $this->eavConfig                             = $this->objectManager->get(\Magento\Eav\Model\Config::class);
     }
 
     /**
@@ -441,6 +448,8 @@ abstract class AbstractTaskTest extends TestCase
     public function executeUntilReady($cronClass, $successStatus)
     {
         for ($i = 0; $i < 5; $i++) {
+            $this->eavConfig->clear();
+            $this->objectManager->removeSharedInstance(Attribute::class);
             $cron = $this->objectManager->create($cronClass);
             $cron->execute();
             $cron->store = $this->storeManager->getStore();
