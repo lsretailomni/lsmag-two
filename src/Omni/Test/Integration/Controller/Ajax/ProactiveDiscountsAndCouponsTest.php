@@ -29,8 +29,19 @@ class ProactiveDiscountsAndCouponsTest extends AbstractController
      */
     public $objectManager;
 
+    /**
+     * @var SerializerInterface
+     */
     public $json;
+
+    /**
+     * @var DataFixtureStorageManager
+     */
     public $fixtures;
+
+    /**
+     * @var Registry
+     */
     public $registry;
     public $customerSession;
     public $checkoutSession;

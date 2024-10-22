@@ -9,7 +9,7 @@ use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Backend\Model\Session\Quote;
-use Magento\Checkout\Test\Fixture\PlaceOrder as PlaceOrderFixture;
+use \Ls\Omni\Test\Fixture\PlaceOrder as PlaceOrderFixture;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddressFixture;
 use Magento\Checkout\Test\Fixture\SetDeliveryMethod as SetDeliveryMethodFixture;
 use Magento\Checkout\Test\Fixture\SetPaymentMethod as SetPaymentMethodFixture;
@@ -26,12 +26,17 @@ use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractBackendController;
-use Magento\Framework\Acl\Builder;
 
 class RequestTest extends AbstractBackendController
 {
+    /**
+     * @var \Magento\Framework\ObjectManagerInterface
+     */
     public $objectManager;
-    public $request;
+
+    /**
+     * @var DataFixtureStorageManager
+     */
     public $fixtures;
 
     /**
@@ -54,26 +59,27 @@ class RequestTest extends AbstractBackendController
      */
     public $eventManager;
 
+    /**
+     * @var Create
+     */
     public $model;
 
+    /**
+     * @var OrderRepositoryInterface
+     */
     public $orderRepository;
 
+    /**
+     * @var FormKey
+     */
     public $formKey;
-
-    public $aclBuilder;
 
     /**
      * @inheritdoc
      */
     protected function setUp(): void
     {
-        $this->resource   = ['Magento_Backend::admin'];
-        $this->uri        = 'backend/omni/order/request';
-        $this->httpMethod = HttpRequest::METHOD_GET;
-        parent::setUp();
-
         $this->objectManager   = Bootstrap::getObjectManager();
-        $this->request         = $this->objectManager->get(HttpRequest::class);
         $this->model           = $this->objectManager->get(Create::class);
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
@@ -81,12 +87,15 @@ class RequestTest extends AbstractBackendController
         $this->basketHelper    = $this->objectManager->get(BasketHelper::class);
         $this->itemHelper      = $this->objectManager->get(ItemHelper::class);
         $this->orderRepository = $this->objectManager->get(OrderRepositoryInterface::class);
-        $this->formKey         = $this->_objectManager->get(FormKey::class);
-        $this->aclBuilder      = $this->_objectManager->get(Builder::class);
+        $this->formKey         = $this->objectManager->get(FormKey::class);
+
+        $this->resource   = ['Magento_Backend::admin'];
+        $this->uri        = 'backend/omni/order/request';
+        $this->httpMethod = HttpRequest::METHOD_GET;
+        parent::setUp();
     }
 
     /**
-     * @magentoAppArea adminhtml
      * @magentoAppIsolation enabled
      */
     #[
@@ -149,8 +158,7 @@ class RequestTest extends AbstractBackendController
 
         $orderData = [
             'order_id' => $order->getId(),
-            'form_key',
-            $this->formKey->getFormKey()
+            'form_key' => $this->formKey->getFormKey()
         ];
 
         $this->getRequest()->setParams($orderData);

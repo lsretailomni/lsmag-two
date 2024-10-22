@@ -8,8 +8,19 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 
 class LoadHierarchyTest extends AbstractBackendController
 {
+    /**
+     * @var string[]
+     */
     public $resource;
+
+    /**
+     * @var string
+     */
     public $uri;
+
+    /**
+     * @var string
+     */
     public $httpMethod;
 
     /**
@@ -37,7 +48,6 @@ class LoadHierarchyTest extends AbstractBackendController
         $this->assertNotNull($content->hierarchy);
         $this->assertNotEquals(1, count($content->hierarchy));
     }
-
 
     public function testExecuteNullResult()
     {

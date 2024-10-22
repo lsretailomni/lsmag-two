@@ -10,6 +10,7 @@ use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Registry;
+use Magento\TestFramework\EventManager;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Serialize\SerializerInterface;
@@ -29,12 +30,39 @@ class CouponsTest extends AbstractController
      */
     public $objectManager;
 
+    /**
+     * @var SerializerInterface
+     */
     public $json;
+
+    /**
+     * @var DataFixtureStorageManager
+     */
     public $fixtures;
+
+    /**
+     * @var Registry
+     */
     public $registry;
+
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var EventManager
+     */
     public $eventManager;
+
+    /**
+     * @var ContactHelper
+     */
     public $contactHelper;
 
     /**

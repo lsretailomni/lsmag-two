@@ -22,8 +22,19 @@ class CheckGiftCardBalanceTest extends AbstractController
      */
     public $objectManager;
 
+    /**
+     * @var Store
+     */
     public $store;
+
+    /**
+     * @var CheckGiftCardBalance
+     */
     public $checkGiftCardBalance;
+
+    /**
+     * @var SerializerInterface
+     */
     public $json;
 
     /**

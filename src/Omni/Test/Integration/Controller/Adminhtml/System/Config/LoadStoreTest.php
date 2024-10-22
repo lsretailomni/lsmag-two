@@ -8,8 +8,19 @@ use Magento\TestFramework\TestCase\AbstractBackendController;
 
 class LoadStoreTest extends AbstractBackendController
 {
+    /**
+     * @var string[]
+     */
     public $resource;
+
+    /**
+     * @var string
+     */
     public $uri;
+
+    /**
+     * @var string
+     */
     public $httpMethod;
 
     /**
