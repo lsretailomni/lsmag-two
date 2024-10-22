@@ -25,7 +25,6 @@ use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
-use Magento\Quote\Api\CartRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class DiscountManagementTest extends TestCase
@@ -40,13 +39,39 @@ class DiscountManagementTest extends TestCase
      */
     public $fixtures;
 
+    /**
+     * @var Registry
+     */
     public $registry;
+
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var ContactHelper
+     */
     public $contactHelper;
+
+    /**
+     * @var BasketHelper
+     */
     public $basketHelper;
+
+    /**
+     * @var ManagerInterface
+     */
     public $eventManager;
-    public $cartRepository;
+
+    /**
+     * @var DiscountManagements
+     */
     public $discountManagement;
 
     /**
@@ -63,7 +88,6 @@ class DiscountManagementTest extends TestCase
         $this->contactHelper      = $this->objectManager->get(ContactHelper::class);
         $this->basketHelper       = $this->objectManager->get(BasketHelper::class);
         $this->eventManager       = $this->objectManager->create(ManagerInterface::class);
-        $this->cartRepository     = $this->objectManager->create(CartRepositoryInterface::class);
     }
 
     /**

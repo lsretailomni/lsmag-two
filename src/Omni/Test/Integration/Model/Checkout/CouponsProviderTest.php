@@ -37,10 +37,29 @@ class CouponsProviderTest extends TestCase
      */
     public $fixtures;
 
+    /**
+     * @var Registry
+     */
     public $registry;
+
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var ContactHelper
+     */
     public $contactHelper;
+
+    /**
+     * @var CouponsProvider
+     */
     public $couponsProvider;
 
     /**

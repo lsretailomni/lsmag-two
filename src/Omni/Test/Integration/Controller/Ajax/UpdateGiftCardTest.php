@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Test\Integration\Controller\Ajax;
 
+use Laminas\EventManager\EventManager;
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Helper\ContactHelper;
@@ -35,12 +36,39 @@ class UpdateGiftCardTest extends AbstractController
      */
     public $objectManager;
 
+    /**
+     * @var Store
+     */
     public $store;
+
+    /**
+     * @var UpdateGiftCard
+     */
     public $updateGiftCard;
+
+    /**
+     * @var Registry
+     */
     public $registry;
+
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var EventManager
+     */
     public $eventManager;
+
+    /**
+     * @var ContactHelper
+     */
     public $contactHelper;
 
     /**

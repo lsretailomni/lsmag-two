@@ -41,13 +41,44 @@ class PointsManagementTest extends TestCase
      */
     public $fixtures;
 
+    /**
+     * @var Registry
+     */
     public $registry;
+
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var ContactHelper
+     */
     public $contactHelper;
+
+    /**
+     * @var $basketHelper
+     */
     public $basketHelper;
+
+    /**
+     * @var ManagerInterface
+     */
     public $eventManager;
+
+    /**
+     * @var CartRepositoryInterface
+     */
     public $cartRepository;
+
+    /**
+     * @var PointsManagement
+     */
     public $pointsManagement;
 
     /**

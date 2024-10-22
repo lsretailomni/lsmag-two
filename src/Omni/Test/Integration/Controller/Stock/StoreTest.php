@@ -43,6 +43,9 @@ class StoreTest extends AbstractController
      */
     public $eventManager;
 
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
 
     /**

@@ -9,24 +9,14 @@ namespace Ls\Omni\Test\Integration\Model\Api;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Model\Api\ReturnPolicyManagement;
-use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Registry;
-use Magento\Quote\Test\Fixture\AddProductToCart;
-use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
-use Magento\Quote\Api\CartRepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 class ReturnPolicyManagementTest extends TestCase
@@ -41,13 +31,9 @@ class ReturnPolicyManagementTest extends TestCase
      */
     public $fixtures;
 
-    public $registry;
-    public $customerSession;
-    public $checkoutSession;
-    public $contactHelper;
-    public $basketHelper;
-    public $eventManager;
-    public $cartRepository;
+    /**
+     * @var ReturnPolicyManagement
+     */
     public $returnPolicyManagement;
 
     /**
@@ -58,13 +44,6 @@ class ReturnPolicyManagementTest extends TestCase
         $this->objectManager          = Bootstrap::getObjectManager();
         $this->fixtures               = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->returnPolicyManagement = $this->objectManager->get(ReturnPolicyManagement::class);
-        $this->registry               = $this->objectManager->get(Registry::class);
-        $this->customerSession        = $this->objectManager->get(CustomerSession::class);
-        $this->checkoutSession        = $this->objectManager->get(CheckoutSession::class);
-        $this->contactHelper          = $this->objectManager->get(ContactHelper::class);
-        $this->basketHelper           = $this->objectManager->get(BasketHelper::class);
-        $this->eventManager           = $this->objectManager->create(ManagerInterface::class);
-        $this->cartRepository         = $this->objectManager->create(CartRepositoryInterface::class);
     }
 
     /**

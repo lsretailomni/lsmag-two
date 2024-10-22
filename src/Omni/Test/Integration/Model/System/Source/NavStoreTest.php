@@ -25,7 +25,14 @@ class NavStoreTest extends TestCase
      */
     public $fixtures;
 
+    /**
+     * @var HttpRequest
+     */
     public $request;
+
+    /**
+     * @var NavStore
+     */
     public $navStore;
 
     /**

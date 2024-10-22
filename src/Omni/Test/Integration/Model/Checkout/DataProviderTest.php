@@ -9,7 +9,6 @@ namespace Ls\Omni\Test\Integration\Model\Checkout;
 
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
-use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
@@ -17,7 +16,6 @@ use \Ls\Omni\Model\Checkout\DataProvider;
 use \Ls\Replication\Cron\ReplEcommStoresTask;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\Registry;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\Store\Model\ScopeInterface;
@@ -40,10 +38,19 @@ class DataProviderTest extends TestCase
      */
     public $fixtures;
 
-    public $registry;
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
-    public $contactHelper;
+
+    /**
+     * @var DataProvider
+     */
     public $dataProvider;
 
     /**
@@ -54,9 +61,7 @@ class DataProviderTest extends TestCase
         $this->objectManager   = Bootstrap::getObjectManager();
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->dataProvider    = $this->objectManager->get(DataProvider::class);
-        $this->registry        = $this->objectManager->get(Registry::class);
         $this->customerSession = $this->objectManager->get(CustomerSession::class);
-        $this->contactHelper   = $this->objectManager->get(ContactHelper::class);
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
     }
 

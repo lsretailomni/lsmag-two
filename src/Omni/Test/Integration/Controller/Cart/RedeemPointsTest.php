@@ -2,6 +2,7 @@
 
 namespace Ls\Omni\Test\Integration\Controller\Cart;
 
+use Laminas\EventManager\EventManager;
 use \Ls\Core\Model\LSR;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Helper\ContactHelper;
@@ -9,6 +10,7 @@ use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use \Ls\Omni\Controller\Cart\RedeemPoints;
 use Magento\Framework\Message\Manager;
+use Magento\GiftMessage\Api\Data\MessageExtension;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
@@ -36,13 +38,44 @@ class RedeemPointsTest extends AbstractController
      */
     public $objectManager;
 
+    /**
+     * @var Store
+     */
     public $store;
+
+    /**
+     * @var RedeemPoints
+     */
     public $redeemPoints;
+
+    /**
+     * @var Registry
+     */
     public $registry;
+
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var EventManager
+     */
     public $eventManager;
+
+    /**
+     * @var ContactHelper
+     */
     public $contactHelper;
+
+    /**
+     * @var Manager
+     */
     public $messageManager;
 
     /**

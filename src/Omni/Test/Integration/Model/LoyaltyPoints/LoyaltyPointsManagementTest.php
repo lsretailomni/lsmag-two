@@ -16,7 +16,6 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Registry;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
@@ -39,11 +38,29 @@ class LoyaltyPointsManagementTest extends TestCase
      */
     public $fixtures;
 
-    public $registry;
+    /**
+     * @var CustomerSession
+     */
     public $customerSession;
+
+    /**
+     * @var CheckoutSession
+     */
     public $checkoutSession;
+
+    /**
+     * @var ManagerInterface
+     */
     public $eventManager;
+
+    /**
+     * @var CartRepositoryInterface
+     */
     public $quoteRepository;
+
+    /**
+     * @var LoyaltyPointsManagement
+     */
     public $loyaltyPointsManagement;
 
     /**
@@ -54,7 +71,6 @@ class LoyaltyPointsManagementTest extends TestCase
         $this->objectManager           = Bootstrap::getObjectManager();
         $this->fixtures                = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->loyaltyPointsManagement = $this->objectManager->get(LoyaltyPointsManagement::class);
-        $this->registry                = $this->objectManager->get(Registry::class);
         $this->customerSession         = $this->objectManager->get(CustomerSession::class);
         $this->checkoutSession         = $this->objectManager->get(CheckoutSession::class);
         $this->eventManager            = $this->objectManager->create(ManagerInterface::class);
