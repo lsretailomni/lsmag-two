@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Customer\Test\Fixture\CreateSimpleProduct;
-use Ls\Customer\Test\Fixture\CustomerAddressFixture;
-use Ls\Customer\Test\Fixture\CustomerFixture;
-use Ls\Customer\Test\Fixture\CustomerOrder;
-use Ls\Replication\Cron\SyncOrders;
-use Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Core\Model\LSR;
+use \Ls\Customer\Test\Fixture\CreateSimpleProduct;
+use \Ls\Customer\Test\Fixture\CustomerAddressFixture;
+use \Ls\Customer\Test\Fixture\CustomerFixture;
+use \Ls\Customer\Test\Fixture\CustomerOrder;
+use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Replication\Cron\SyncOrders;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\Config;
@@ -32,6 +33,7 @@ class SyncOrdersTest extends TestCase
     public $lsr;
 
     public $fixtures;
+    public $orderHelper;
 
     /**
      * @inheritdoc
@@ -44,6 +46,7 @@ class SyncOrdersTest extends TestCase
         $this->cron          = $this->objectManager->create(SyncOrders::class);
         $this->lsr           = $this->objectManager->create(\Ls\Core\Model\Lsr::class);
         $this->fixtures      = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
+        $this->orderHelper   = $this->objectManager->get(OrderHelper::class);
     }
 
     /**
@@ -81,8 +84,8 @@ class SyncOrdersTest extends TestCase
         DataFixture(
             CreateSimpleProduct::class,
             [
-                'lsr_item_id' => '40180',
-                'sku' => '40180'
+                'lsr_item_id' => AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID,
+                'sku' => AbstractIntegrationTest::SAMPLE_SIMPLE_ITEM_ID
             ],
             as: 'product'
         ),
@@ -104,6 +107,7 @@ class SyncOrdersTest extends TestCase
         $order = $this->fixtures->get('order');
         $this->assertNull($order->getDocumentId());
         $this->cron->execute();
+        $order = $this->orderHelper->getMagentoOrderGivenEntityId($order->getId());
         $this->assertNotNull($order->getDocumentId());
     }
 }
