@@ -62,7 +62,6 @@ class AccountAddressObserver implements ObserverInterface
             }
             // only process if the customer has any valid lsr_username
             if ($customerAddress->getCustomer()->getData('lsr_username')
-                && $customerAddress->getCustomer()->getData('lsr_token')
             ) {
                 if ($this->contactHelper->isBillingAddress($customerAddress)) {
                     $result = $this->contactHelper->updateCustomerAccount(
