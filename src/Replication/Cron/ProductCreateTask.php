@@ -595,7 +595,11 @@ class ProductCreateTask
                                     LSR::LS_ITEM_SPECIAL_GROUP,
                                     $item->getSpecialGroups()
                                 );
-                                $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+                                    $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                                } else {
+                                    $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                }
                                 $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 $product = $this->setProductStatus($productData, $item->getBlockedOnECom());
                                 $product = $this->replicationHelper->manageStock(
@@ -680,7 +684,11 @@ class ProductCreateTask
                                     LSR::LS_ITEM_SPECIAL_GROUP,
                                     $item->getSpecialGroups()
                                 );
-                                $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+                                    $product->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+                                } else {
+                                    $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+                                }
                                 $product->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
                                 /** @var ReplBarcodeRepository $itemBarcodes */
                                 $itemBarcodes = $this->_getBarcode($item->getNavId());
@@ -944,15 +952,15 @@ class ProductCreateTask
             $cronAttributeCheck,
             $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
-        $this->message .='Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName().':';
-        $this->message.=((int)$cronCategoryCheck)?'':"\nrepl_categories,";
-        $this->message.=((int)$cronAttributeCheck)?'':".\nrepl_attributes,";
-        $this->message.=((int)$cronAttributeVariantCheck)?'':"\nrepl_attributes,";
-        $this->message.=((int)$fullReplicationImageLinkStatus)?'':"\nrepl_image_link,";
-        $this->message.=((int)$fullReplicationBarcodeStatus)?'':"\nrepl_barcode,";
-        $this->message.=((int)$fullReplicationPriceStatus)?'':"\nrepl_price,";
-        $this->message.=((int)$fullReplicationInvStatus)?'':"\nrepl_inv_status";
-        $this->message = rtrim($this->message,',');
+        $this->message .= 'Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName() . ':';
+        $this->message .= ((int)$cronCategoryCheck) ? '' : "\nrepl_categories,";
+        $this->message .= ((int)$cronAttributeCheck) ? '' : ".\nrepl_attributes,";
+        $this->message .= ((int)$cronAttributeVariantCheck) ? '' : "\nrepl_attributes,";
+        $this->message .= ((int)$fullReplicationImageLinkStatus) ? '' : "\nrepl_image_link,";
+        $this->message .= ((int)$fullReplicationBarcodeStatus) ? '' : "\nrepl_barcode,";
+        $this->message .= ((int)$fullReplicationPriceStatus) ? '' : "\nrepl_price,";
+        $this->message .= ((int)$fullReplicationInvStatus) ? '' : "\nrepl_inv_status";
+        $this->message = rtrim($this->message, ',');
         // @codingStandardsIgnoreLine
         $this->logger->debug($this->message);
     }
@@ -1113,7 +1121,9 @@ class ProductCreateTask
                         $types = ['image', 'small_image', 'thumbnail'];
                     }
                     $galleryArray[]                            = [
-                        'location' => $result['location'], 'types' => $types, 'repl_image_link_id' => $image->getId()
+                        'location'           => $result['location'],
+                        'types'              => $types,
+                        'repl_image_link_id' => $image->getId()
                     ];
                     $this->imagesFetched[$image->getImageId()] = $galleryArray[$i];
                     $i++;
@@ -2290,7 +2300,8 @@ class ProductCreateTask
                 }
             } catch (Exception $e) {
                 // @codingStandardsIgnoreLine
-                $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s', $attribute->getId(), $productId, $e->getMessage()));
+                $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s',
+                    $attribute->getId(), $productId, $e->getMessage()));
             }
             $position++;
         }
@@ -2509,7 +2520,11 @@ class ProductCreateTask
                 $productStatus = false;
             }
         } else {
-            $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
+            if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+                $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+            } else {
+                $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+            }
         }
 
         if ($value) {
@@ -2545,7 +2560,7 @@ class ProductCreateTask
      */
     public function syncUomAdditionalAttributes($product, $uomCode, $item)
     {
-        $product->setCustomAttribute("uom", $uomCode->getCode());
+        $product->setCustomAttribute('uom', $uomCode->getCode());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
         $weight = $uomCode->getWeight() ? $uomCode->getWeight() : $item->getGrossWeight();
@@ -2572,7 +2587,11 @@ class ProductCreateTask
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-        $productData->setCustomAttribute("uom", $item->getBaseUnitOfMeasure());
+        if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+            $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+        } else {
+            $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+        }
 
         if ($value) {
             $productData->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
@@ -2673,8 +2692,11 @@ class ProductCreateTask
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
-
-        $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+        if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+            $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+        } else {
+            $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+        }
         if (isset($itemBarcodes[$sku])) {
             $productV->setCustomAttribute('barcode', $itemBarcodes[$sku]);
         }
@@ -2849,7 +2871,11 @@ class ProductCreateTask
         if ($uomCode) {
             $this->syncUomAdditionalAttributes($productV, $uomCode, $item);
         } else {
-            $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+            if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+                $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
+            } else {
+                $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
+            }
         }
         if (isset($itemBarcodes[$sku])) {
             $productV->setCustomAttribute('barcode', $itemBarcodes[$sku]);
