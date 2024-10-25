@@ -595,7 +595,8 @@ class ProductCreateTask
                                     LSR::LS_ITEM_SPECIAL_GROUP,
                                     $item->getSpecialGroups()
                                 );
-                                if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+                                if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
+                                    !empty($item->getSalseUnitOfMeasure())) {
                                     $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
                                 } else {
                                     $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
@@ -684,7 +685,8 @@ class ProductCreateTask
                                     LSR::LS_ITEM_SPECIAL_GROUP,
                                     $item->getSpecialGroups()
                                 );
-                                if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+                                if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
+                                    !empty($item->getSalseUnitOfMeasure())) {
                                     $product->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
                                 } else {
                                     $product->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
@@ -2520,7 +2522,8 @@ class ProductCreateTask
                 $productStatus = false;
             }
         } else {
-            if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+            if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) &&
+                !empty($item->getSalseUnitOfMeasure())) {
                 $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
             } else {
                 $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
@@ -2587,7 +2590,8 @@ class ProductCreateTask
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
-        if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+        if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
+            && !empty($item->getSalseUnitOfMeasure())) {
             $productData->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
         } else {
             $productData->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
@@ -2692,7 +2696,8 @@ class ProductCreateTask
         if ($value->getVariantId()) {
             $productV->setCustomAttribute(LSR::LS_VARIANT_ID_ATTRIBUTE_CODE, $value->getVariantId());
         }
-        if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+        if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
+            && !empty($item->getSalseUnitOfMeasure())) {
             $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
         } else {
             $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
@@ -2871,7 +2876,8 @@ class ProductCreateTask
         if ($uomCode) {
             $this->syncUomAdditionalAttributes($productV, $uomCode, $item);
         } else {
-            if ($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure()) {
+            if (($item->getBaseUnitOfMeasure() != $item->getSalseUnitOfMeasure())
+                && !empty($item->getSalseUnitOfMeasure())) {
                 $productV->setCustomAttribute('uom', $item->getSalseUnitOfMeasure());
             } else {
                 $productV->setCustomAttribute('uom', $item->getBaseUnitOfMeasure());
