@@ -2342,7 +2342,12 @@ class ReplicationHelper extends AbstractHelper
         $criteria = $this->buildCriteriaForDirect($filters, 1);
         $items    = $this->itemRepository->getList($criteria)->getItems();
         foreach ($items as $item) {
-            return $item->getBaseUnitOfMeasure();
+            if (($item->getSalseUnitOfMeasure() != $item->getBaseUnitOfMeasure()) &&
+                !empty($item->getSalseUnitOfMeasure())) {
+                return $item->getSalseUnitOfMeasure();
+            } else {
+                return $item->getBaseUnitOfMeasure();
+            }
         }
 
         return null;
@@ -3002,7 +3007,7 @@ class ReplicationHelper extends AbstractHelper
                 $salesUnitOfMeasure    = $rItem->getSalseUnitOfMeasure();
             }
             foreach ($items as $item) {
-                $allowUom              = true;
+                $allowUom = true;
                 if ($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) {
                     $allowUom = false;
                 }
