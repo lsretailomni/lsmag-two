@@ -603,6 +603,7 @@ class ProductCreateTask
                                     $item->getType()
                                 );
 
+                                $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 $totalUomCodes        = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
@@ -944,15 +945,15 @@ class ProductCreateTask
             $cronAttributeCheck,
             $cronAttributeVariantCheck
             ) = $this->getDependentCronsStatus();
-        $this->message .='Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName().':';
-        $this->message.=((int)$cronCategoryCheck)?'':"\nrepl_categories,";
-        $this->message.=((int)$cronAttributeCheck)?'':".\nrepl_attributes,";
-        $this->message.=((int)$cronAttributeVariantCheck)?'':"\nrepl_attributes,";
-        $this->message.=((int)$fullReplicationImageLinkStatus)?'':"\nrepl_image_link,";
-        $this->message.=((int)$fullReplicationBarcodeStatus)?'':"\nrepl_barcode,";
-        $this->message.=((int)$fullReplicationPriceStatus)?'':"\nrepl_price,";
-        $this->message.=((int)$fullReplicationInvStatus)?'':"\nrepl_inv_status";
-        $this->message = rtrim($this->message,',');
+        $this->message .= 'Product Replication cron fails because dependent crons were not executed successfully for Store ' . $this->store->getName() . ':';
+        $this->message .= ((int)$cronCategoryCheck) ? '' : "\nrepl_categories,";
+        $this->message .= ((int)$cronAttributeCheck) ? '' : ".\nrepl_attributes,";
+        $this->message .= ((int)$cronAttributeVariantCheck) ? '' : "\nrepl_attributes,";
+        $this->message .= ((int)$fullReplicationImageLinkStatus) ? '' : "\nrepl_image_link,";
+        $this->message .= ((int)$fullReplicationBarcodeStatus) ? '' : "\nrepl_barcode,";
+        $this->message .= ((int)$fullReplicationPriceStatus) ? '' : "\nrepl_price,";
+        $this->message .= ((int)$fullReplicationInvStatus) ? '' : "\nrepl_inv_status";
+        $this->message = rtrim($this->message, ',');
         // @codingStandardsIgnoreLine
         $this->logger->debug($this->message);
     }
@@ -1113,7 +1114,9 @@ class ProductCreateTask
                         $types = ['image', 'small_image', 'thumbnail'];
                     }
                     $galleryArray[]                            = [
-                        'location' => $result['location'], 'types' => $types, 'repl_image_link_id' => $image->getId()
+                        'location'           => $result['location'],
+                        'types'              => $types,
+                        'repl_image_link_id' => $image->getId()
                     ];
                     $this->imagesFetched[$image->getImageId()] = $galleryArray[$i];
                     $i++;
@@ -2291,7 +2294,8 @@ class ProductCreateTask
                 }
             } catch (Exception $e) {
                 // @codingStandardsIgnoreLine
-                $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s', $attribute->getId(), $productId, $e->getMessage()));
+                $this->logger->debug(sprintf('Issue while saving Attribute Id : %s and Product Id : %s - %s',
+                    $attribute->getId(), $productId, $e->getMessage()));
             }
             $position++;
         }
@@ -2549,7 +2553,8 @@ class ProductCreateTask
         $product->setCustomAttribute("uom", $uomCode->getCode());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
-        $weight = $uomCode->getWeight() ? $uomCode->getWeight() : $item->getGrossWeight();
+        $weight = ($uomCode->getWeight() != "0" && $uomCode->getWeight()) ?
+            $uomCode->getWeight() : $item->getGrossWeight();
         $product->setWeight($weight);
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_LENGTH, $uomCode->getLength());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_WIDTH, $uomCode->getWidth());
