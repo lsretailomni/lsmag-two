@@ -64,22 +64,6 @@ class DiscountManagement implements DiscountManagementInterface
         }
         $existingBasketCalculation = $this->basketHelper->getOneListCalculation();
         $quote                     = $this->basketHelper->getCartRepositoryObject()->get($cartId);
-        //Added this in case if we don't get session values in pwa
-        if (empty($existingBasketCalculation)) {
-            $basketData = $quote->getBasketResponse();
-            /** @var  Order $existingBasketCalculation */
-            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-            $existingBasketCalculation = ($basketData) ? unserialize($basketData) : $basketData;
-            if ($existingBasketCalculation) {
-                $oneList = $this->basketHelper->getOneListAdmin(
-                    $quote->getCustomerEmail(),
-                    $quote->getStore()->getWebsiteId(),
-                    $quote->getCustomerIsGuest()
-                );
-                $this->basketHelper->setOneListQuote($quote, $oneList);
-            }
-        }
-
         $giftCardNo  = $quote->getLsGiftCardNo();
         $giftCardPin = $quote->getLsGiftCardPin();
         $remarks     = self::NON_COUPON_REMARKS;

@@ -296,7 +296,8 @@
             "updated_at": true,
             "TariffNo": true,
             "Type": true,
-            "identity_value": true
+            "identity_value": true,
+            "SpecialGroups": true
         },
         "index": {
             "LS_REPLICATION_REPL_ITEM_NAV_ID": true,
@@ -537,7 +538,9 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true,
-            "identity_value": true
+            "identity_value": true,
+            "PriceGroupCodes": true,
+            "StoreGroupCodes": true
         },
         "index": {
             "LS_REPLICATION_REPL_STORE_NAV_ID": true,
@@ -1198,7 +1201,8 @@
             "created_at": true,
             "updated_at": true,
             "TariffNo": true,
-            "identity_value": true
+            "identity_value": true,
+            "SpecialGroups": true
         },
         "index": {
             "LS_REPLICATION_LOY_ITEM_NAV_ID": true
@@ -1337,7 +1341,9 @@
             "PaymentTerms": true,
             "PriceGroup": true,
             "ShippingLocation": true,
-            "identity_value": true
+            "identity_value": true,
+            "GuestType": true,
+            "SendReceiptByEMail": true
         },
         "index": {
             "LS_REPLICATION_REPL_CUSTOMER_ACCOUNTNUMBER": true,
@@ -1549,7 +1555,8 @@
             "processed_at": true,
             "created_at": true,
             "updated_at": true,
-            "identity_value": true
+            "identity_value": true,
+            "StoreGroupCodes": true
         },
         "constraint": {
             "PRIMARY": true,

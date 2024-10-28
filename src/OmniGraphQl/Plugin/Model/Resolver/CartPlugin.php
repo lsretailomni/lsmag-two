@@ -2,7 +2,8 @@
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use \Ls\Omni\Helper\BasketHelper;
+use \Ls\OmniGraphQl\Helper\DataHelper;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\GraphQl\Config\Element\Field;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 
@@ -12,17 +13,17 @@ use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 class CartPlugin
 {
     /**
-     * @var BasketHelper
+     * @var DataHelper
      */
-    public $basketHelper;
+    public $dataHelper;
 
     /**
-     * @param BasketHelper $basketHelper
+     * @param DataHelper $dataHelper
      */
     public function __construct(
-        BasketHelper $basketHelper
+        DataHelper $dataHelper
     ) {
-        $this->basketHelper = $basketHelper;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -36,6 +37,7 @@ class CartPlugin
      * @param array|null $value
      * @param array|null $args
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function afterResolve(
         $subject,
@@ -49,10 +51,7 @@ class CartPlugin
         if (isset($result['model'])) {
             $quote = $result['model'];
 
-            if ($quote->getBasketResponse()) {
-                // phpcs:ignore Magento2.Security.InsecureFunction
-                $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($quote->getBasketResponse()));
-            }
+            $this->dataHelper->setCurrentQuoteDataInCheckoutSession($quote);
         }
         return $result;
     }

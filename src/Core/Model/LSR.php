@@ -65,6 +65,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
     const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
+    const SC_SERVICE_LCY_CODE = 'ls_mag/service/local_currency_code';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
@@ -402,6 +403,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const POINTRATE = 'LS_POINT_RATE_';
+    const EXCHANGE_RATE = 'LS_EXCHANGE_RATE_';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
@@ -452,6 +454,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL_STATUS = 'ls_mag/ls_disaster_recovery/email_sent';
 
     const SC_CRON_SYNC_ORDERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders';
+
+    const SC_CRON_SYNC_ORDERS_EDIT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders_edit';
 
     const SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_customers';
 

@@ -169,6 +169,9 @@
         <job name="sync_orders" instance="Ls\Replication\Cron\SyncOrders" method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>
+        <job name="sync_orders_edit" instance="Ls\Replication\Cron\SyncOrdersEdit" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
         <job name="sync_customers" instance="Ls\Replication\Cron\SyncCustomers" method="execute">
             <schedule>*/15 * * * *</schedule>
         </job>

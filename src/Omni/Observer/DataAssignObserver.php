@@ -91,6 +91,8 @@ class DataAssignObserver implements ObserverInterface
         $quote              = $observer->getQuote();
         $giftCardNo         = $quote->getLsGiftCardNo();
         $giftCardPin        = $quote->getLsGiftCardPin();
+        $giftCardCnyFactor  = $quote->getLsGiftCardCnyFactor();
+        $giftCardCnyCode    = $quote->getLsGiftCardCnyCode();
         $giftCardAmountUsed = $quote->getLsGiftCardAmountUsed();
         $loyaltyPointsSpent = $quote->getLsPointsSpent();
         $errorMessage       = $this->helper->orderBalanceCheck(
@@ -146,6 +148,8 @@ class DataAssignObserver implements ObserverInterface
         $order->setLsGiftCardAmountUsed($giftCardAmountUsed);
         $order->setLsGiftCardNo($giftCardNo);
         $order->setLsGiftCardPin($giftCardPin);
+        $order->setLsGiftCardCnyFactor($giftCardCnyFactor);
+        $order->setLsGiftCardCnyCode($giftCardCnyCode);
 
         return $this;
     }

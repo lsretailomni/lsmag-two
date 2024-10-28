@@ -56,6 +56,11 @@ class Reservation extends Entity
     protected $Location = null;
 
     /**
+     * @property string $MainGroupMember
+     */
+    protected $MainGroupMember = null;
+
+    /**
      * @property int $NoOfPerson
      */
     protected $NoOfPerson = null;
@@ -260,6 +265,24 @@ class Reservation extends Entity
     public function getLocation()
     {
         return $this->Location;
+    }
+
+    /**
+     * @param string $MainGroupMember
+     * @return $this
+     */
+    public function setMainGroupMember($MainGroupMember)
+    {
+        $this->MainGroupMember = $MainGroupMember;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMainGroupMember()
+    {
+        return $this->MainGroupMember;
     }
 
     /**

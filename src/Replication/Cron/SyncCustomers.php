@@ -6,12 +6,12 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
+use Magento\Customer\Model\CustomerRegistry;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -57,6 +57,11 @@ class SyncCustomers
     public $storeManager;
 
     /**
+     * @var CustomerRegistry
+     */
+    public $customerRegistry;
+
+    /**
      * @param LSR $lsr
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
@@ -64,6 +69,7 @@ class SyncCustomers
      * @param ManagerInterface $eventManager
      * @param CartRepositoryInterface $cartRepository
      * @param StoreManagerInterface $storeManager
+     * @param CustomerRegistry $customerRegistry
      */
     public function __construct(
         LSR $lsr,
@@ -72,7 +78,8 @@ class SyncCustomers
         ContactHelper $contactHelper,
         ManagerInterface $eventManager,
         CartRepositoryInterface $cartRepository,
-        StoreManagerInterface $storeManager
+        StoreManagerInterface $storeManager,
+        CustomerRegistry $customerRegistry
     ) {
         $this->lsr               = $lsr;
         $this->helper            = $helper;
@@ -81,6 +88,7 @@ class SyncCustomers
         $this->eventManager      = $eventManager;
         $this->cartRepository    = $cartRepository;
         $this->storeManager      = $storeManager;
+        $this->customerRegistry  = $customerRegistry;
     }
 
     /**
@@ -116,6 +124,7 @@ class SyncCustomers
                     );
                     if (!empty($customers)) {
                         foreach ($customers as $customer) {
+                            $customer = $this->customerRegistry->retrieve($customer->getId());
                             $this->contactHelper->syncCustomerAndAddress($customer);
                         }
                     }

@@ -307,9 +307,9 @@ class BasketHelper extends AbstractHelper
                             if (is_numeric($itemArray->getId()) ?
                                 $itemArray->getId() == $child->getItemId() :
                                 ($itemArray->getItemId() == $itemId &&
-                                $itemArray->getVariantId() == $variantId &&
-                                $itemArray->getUnitOfMeasureId() == $uom &&
-                                $itemArray->getBarcodeId() == $barCode)
+                                    $itemArray->getVariantId() == $variantId &&
+                                    $itemArray->getUnitOfMeasureId() == $uom &&
+                                    $itemArray->getBarcodeId() == $barCode)
                             ) {
                                 $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
                                 $match = true;
@@ -423,7 +423,7 @@ class BasketHelper extends AbstractHelper
         }
 
         return [
-            'orderLinesArray'         => ($basketResponse) ? $itemsArray : $orderLinesArray,
+            'orderLinesArray' => ($basketResponse) ? $itemsArray : $orderLinesArray,
             'orderDiscountLinesArray' => $discountsArray
         ];
     }
@@ -1083,7 +1083,7 @@ class BasketHelper extends AbstractHelper
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $price   = $item->getPrice();
+            $price      = $item->getPrice();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
@@ -1104,26 +1104,45 @@ class BasketHelper extends AbstractHelper
      * Get item row discount
      *
      * @param $item
+     * @param array $lines
      * @return float|int
      * @throws InvalidEnumException
      * @throws NoSuchEntityException
      */
-    public function getItemRowDiscount($item)
+    public function getItemRowDiscount($item, $lines = [])
     {
-        $rowDiscount = 0;
-        $baseUnitOfMeasure = $item->getProduct()->getData('uom');
-        list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
-            $item->getSku()
-        );
+        $rowDiscount = $bundleProduct = 0;
 
-        $basketData = $this->getOneListCalculation();
-        $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        if (empty($lines)) {
+            $basketData = $this->getOneListCalculation();
+            $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
+        } else {
+            $orderLines = $lines;
+        }
+        if ($item->getProductType() == Type::TYPE_BUNDLE) {
+            $children      = !empty($lines) ? $item->getChildrenItems() : $item->getChildren();
+            $bundleProduct = 1;
+        } else {
+            $children[] = $item;
+        }
 
-        foreach ($orderLines as $line) {
-            if ($this->itemHelper->isValid($item, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure)) {
-                $rowDiscount = $line->getQuantity() == $item->getQty() ? $line->getDiscountAmount()
-                    : ($line->getDiscountAmount() / $line->getQuantity()) * $item->getQty();
-                break;
+        foreach ($children as $child) {
+            foreach ($orderLines as $index => $line) {
+                if (is_numeric($line->getId()) ?
+                    ($child->getItemId() == $line->getId() && $line->getDiscountAmount() > 0) :
+                    ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountAmount() > 0)
+                ) {
+                    $qty         = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
+                    $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountAmount()
+                        : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
+                    unset($orderLines[$index]);
+
+                    if (!$bundleProduct) {
+                        break 2;
+                    } else {
+                        break;
+                    }
+                }
             }
         }
 
@@ -1157,7 +1176,9 @@ class BasketHelper extends AbstractHelper
         $oneListCalc = $this->getOneListCalculationFromCheckoutSession();
 
         if ($oneListCalc == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $this->calculate($this->get());
+            $cartId = $this->checkoutSession->getQuoteId();
+            $this->setCalculateBasket('1');
+            $this->syncBasketWithCentral($cartId);
 
             // calculate updates the session, so we fetch again
             return $this->getOneListCalculationFromCheckoutSession();
@@ -1240,9 +1261,11 @@ class BasketHelper extends AbstractHelper
      */
     public function syncBasketWithCentral($cartId)
     {
-        $oneList = $this->getOneListFromCustomerSession();
-        $quote   = $this->quoteRepository->getActive($cartId);
+        $quote      = $this->quoteRepository->getActive($cartId);
         $basketData = null;
+        $oneList    = $this->get();
+        // add items from the quote to the oneList and return the updated onelist
+        $oneList = $this->setOneListQuote($quote, $oneList);
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);
@@ -1355,13 +1378,14 @@ class BasketHelper extends AbstractHelper
      * @param $price
      * @return float|int|mixed
      */
-    public function getPriceAddingCustomOptions($item, $price) {
+    public function getPriceAddingCustomOptions($item, $price)
+    {
         $options = $item->getOptions();
         if ($options) {
             foreach ($options as $option) {
-                if ($option->getCode() == 'option_ids') {
-                    $price  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                        $item->getRowTotal()  : $item->getPrice() * $item->getQty();
+                if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
+                    $price = $item->getProductType() == Type::TYPE_BUNDLE ?
+                        $item->getRowTotal() : $item->getPrice() * $item->getQty();
                 }
             }
         }
@@ -1411,12 +1435,39 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @param Entity\OneListCalculateResponse|null $calculation
+     * Get current active quote
+     *
+     * @return \Magento\Quote\Api\Data\CartInterface
+     * @throws NoSuchEntityException
+     */
+    public function getCurrentQuote()
+    {
+        $quoteId = $this->checkoutSession->getQuoteId();
+
+        if (!$quoteId) {
+            return null;
+        }
+        $quote   = $this->quoteRepository->get($quoteId);
+
+        return $quote;
+    }
+
+    /**
+     * Set basket calculation into current quote
+     *
+     * @param $calculation
+     * @return void
      * @throws NoSuchEntityException
      */
     public function setOneListCalculationInCheckoutSession($calculation)
     {
-        $this->checkoutSession->setData($this->getOneListCalculationKey(), $calculation);
+        $quote = $this->getCurrentQuote();
+
+        if ($calculation && $quote) {
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+            $quote->setBasketResponse(serialize($calculation));
+            $this->quoteResourceModel->save($quote);
+        }
     }
 
     /**
@@ -1432,12 +1483,23 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @return mixed|null
+     * Get basket calculation from current quote
+     *
+     * @return mixed
      * @throws NoSuchEntityException
      */
     public function getOneListCalculationFromCheckoutSession()
     {
-        return $this->checkoutSession->getData($this->getOneListCalculationKey());
+        $quote = $this->getCurrentQuote();
+
+        if (!$quote) {
+            return null;
+        }
+        $basketData = $quote->getBasketResponse();
+        // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+        $oneListCalculate = ($basketData) ? unserialize($basketData) : $basketData;
+
+        return $oneListCalculate;
     }
 
     /**

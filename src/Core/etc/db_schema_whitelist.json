@@ -7,6 +7,8 @@
             "ls_points_spent": true,
             "ls_gift_card_no": true,
             "ls_gift_card_amount_used": true,
+            "ls_gift_card_cny_code": true,
+            "ls_gift_card_cny_factor": true,
             "ls_one_list_id": true,
             "basket_response": true,
             "pickup_date_timeslot": true,
@@ -22,12 +24,15 @@
             "ls_points_earn": true,
             "ls_points_spent": true,
             "ls_gift_card_no": true,
-            "ls_gift_card_amount_used": true,
+            "ls_gift_card_amount_used": true,            
             "document_id": true,
             "pickup_date_timeslot": true,
             "ls_gift_card_pin": true,
+            "ls_gift_card_cny_code": true,
+            "ls_gift_card_cny_factor": true,
             "ls_discount_amount": true,
-            "ls_subscription_id": true
+            "ls_subscription_id": true,
+            "ls_order_edit": true
         }
     },
     "sales_invoice": {
@@ -37,6 +42,8 @@
             "ls_gift_card_no": true,
             "ls_gift_card_amount_used": true,
             "ls_gift_card_pin": true,
+            "ls_gift_card_cny_code": true,
+            "ls_gift_card_cny_factor": true,
             "ls_discount_amount": true
         }
     },
@@ -45,8 +52,10 @@
             "ls_points_earn": true,
             "ls_points_spent": true,
             "ls_gift_card_no": true,
-            "ls_gift_card_amount_used": true,
+            "ls_gift_card_amount_used": true,            
             "ls_gift_card_pin": true,
+            "ls_gift_card_cny_code": true,
+            "ls_gift_card_cny_factor": true,
             "ls_discount_amount": true
         }
     },
