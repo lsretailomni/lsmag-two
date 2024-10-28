@@ -608,6 +608,7 @@ class ProductCreateTask
                                     $item->getType()
                                 );
 
+                                $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
                                 $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 $totalUomCodes        = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
@@ -2566,7 +2567,8 @@ class ProductCreateTask
         $product->setCustomAttribute('uom', $uomCode->getCode());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_QTY, $uomCode->getQtyPrUOM());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_HEIGHT, $uomCode->getHeight());
-        $weight = $uomCode->getWeight() ? $uomCode->getWeight() : $item->getGrossWeight();
+        $weight = ($uomCode->getWeight() != "0" && $uomCode->getWeight()) ?
+            $uomCode->getWeight() : $item->getGrossWeight();
         $product->setWeight($weight);
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_LENGTH, $uomCode->getLength());
         $product->setCustomAttribute(LSR::LS_UOM_ATTRIBUTE_WIDTH, $uomCode->getWidth());
