@@ -659,12 +659,11 @@ class AttributesCreateTask
                         continue;
                     }
                     if ($option->getLabel() == $label) {
-                        //@codingStandardsIgnoreStart
                         $option->setSortOrder($sortOrder);
                         $attribute->setOptions([$option]);
+                        // @codingStandardsIgnoreLine
                         $attribute->save();
                         break;
-                        //@codingStandardsIgnoreEnd
                     }
                 }
             }
