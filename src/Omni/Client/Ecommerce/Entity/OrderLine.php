@@ -34,6 +34,11 @@ class OrderLine extends Entity
     protected $DiscountPercent = null;
 
     /**
+     * @property boolean $InventoryTransfer
+     */
+    protected $InventoryTransfer = null;
+
+    /**
      * @property string $ItemDescription
      */
     protected $ItemDescription = null;
@@ -84,6 +89,11 @@ class OrderLine extends Entity
     protected $Quantity = null;
 
     /**
+     * @property string $SourcingLocation
+     */
+    protected $SourcingLocation = null;
+
+    /**
      * @property string $StoreId
      */
     protected $StoreId = null;
@@ -112,6 +122,11 @@ class OrderLine extends Entity
      * @property string $VariantId
      */
     protected $VariantId = null;
+
+    /**
+     * @property boolean $VendorSourcing
+     */
+    protected $VendorSourcing = null;
 
     /**
      * @param float $Amount
@@ -183,6 +198,24 @@ class OrderLine extends Entity
     public function getDiscountPercent()
     {
         return $this->DiscountPercent;
+    }
+
+    /**
+     * @param boolean $InventoryTransfer
+     * @return $this
+     */
+    public function setInventoryTransfer($InventoryTransfer)
+    {
+        $this->InventoryTransfer = $InventoryTransfer;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getInventoryTransfer()
+    {
+        return $this->InventoryTransfer;
     }
 
     /**
@@ -376,6 +409,24 @@ class OrderLine extends Entity
     }
 
     /**
+     * @param string $SourcingLocation
+     * @return $this
+     */
+    public function setSourcingLocation($SourcingLocation)
+    {
+        $this->SourcingLocation = $SourcingLocation;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSourcingLocation()
+    {
+        return $this->SourcingLocation;
+    }
+
+    /**
      * @param string $StoreId
      * @return $this
      */
@@ -481,6 +532,24 @@ class OrderLine extends Entity
     public function getVariantId()
     {
         return $this->VariantId;
+    }
+
+    /**
+     * @param boolean $VendorSourcing
+     * @return $this
+     */
+    public function setVendorSourcing($VendorSourcing)
+    {
+        $this->VendorSourcing = $VendorSourcing;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getVendorSourcing()
+    {
+        return $this->VendorSourcing;
     }
 }
 
