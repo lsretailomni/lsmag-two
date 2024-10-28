@@ -530,7 +530,7 @@ class AttributesCreateTask
     {
         $variantBatchSize = $this->replicationHelper->getProductAttributeBatchSize();
         $this->logger->debug('Running standard variants create task for store ' . $store->getName());
-        $criteria = $this->replicationHelper->buildCriteriaForVariantAttributesNewItems(
+        $criteria   = $this->replicationHelper->buildCriteriaForVariantAttributesNewItems(
             'scope_id',
             $this->getScopeId(),
             'eq',
@@ -548,10 +548,10 @@ class AttributesCreateTask
             $standardVariantValues[] = $item->getDescription2();
             $item->addData(
                 [
-                    'is_updated'   => 0,
-                    'processed_at' => $this->replicationHelper->getDateTime(),
-                    'ready_to_process'    => 1,
-                    'is_failed'    => 0
+                    'is_updated'       => 0,
+                    'processed_at'     => $this->replicationHelper->getDateTime(),
+                    'ready_to_process' => 1,
+                    'is_failed'        => 0
                 ]
             );
             $this->replItemVariantRepository->save($item);
@@ -560,7 +560,7 @@ class AttributesCreateTask
         $standardVariantValues = array_unique($standardVariantValues);
 
         if (!empty($standardVariantValues)) {
-            $code = LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE;
+            $code          = LSR::LS_STANDARD_VARIANT_ATTRIBUTE_CODE;
             $formattedCode = $this->replicationHelper->formatAttributeCode($code);
             $attribute     = $this->eavConfig->getAttribute(Product::ENTITY, $formattedCode);
             if (!$attribute || !$attribute->getAttributeId()) {
@@ -626,7 +626,7 @@ class AttributesCreateTask
                         $this->eavSetupFactory->create()
                             ->addAttributeOption(
                                 [
-                                    'values' => [$k => $v],
+                                    'values'       => [$k => $v],
                                     'attribute_id' => $this->getAttributeIdByCode($formattedCode)
                                 ]
                             );
@@ -649,6 +649,7 @@ class AttributesCreateTask
     public function updateVariantLogicalOrderByLabel($formattedCode, $updatedOptionArray)
     {
         try {
+
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
@@ -658,13 +659,16 @@ class AttributesCreateTask
                         continue;
                     }
                     if ($option->getLabel() == $label) {
+                        //@codingStandardsIgnoreStart
                         $option->setSortOrder($sortOrder);
                         $attribute->setOptions([$option]);
-                        $this->productAttributeRepository->save($attribute);
+                        $attribute->save();
                         break;
+                        //@codingStandardsIgnoreEnd
                     }
                 }
             }
+
         } catch (Exception $e) {
             $this->logDetailedException(__METHOD__, $this->store->getName(), $formattedCode);
             $this->logger->debug($e->getMessage());
@@ -823,7 +827,13 @@ class AttributesCreateTask
     public function updateOptionValues($store)
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->getScopeId(), 'eq', -1, true);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems(
+            'scope_id',
+            $this->getScopeId(),
+            'eq',
+            -1,
+            true
+        );
         /** @var ReplAttributeOptionValueSearchResults $replAttributeOptionValues */
         $replAttributeOptionValues = $this->replAttributeOptionValueRepositoryInterface->getList($criteria);
         $optionResults             = [];
@@ -915,7 +925,13 @@ class AttributesCreateTask
     public function getUomOptions($store)
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->getScopeId(), 'eq', -1, true);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems(
+            'scope_id',
+            $this->getScopeId(),
+            'eq',
+            -1,
+            true
+        );
         /** @var ReplUnitOfMeasureSearchResults $replUomOptionValues */
         $replUomOptionValues = $this->replUnitOfMeasureRepositoryInterface->getList($criteria);
 
@@ -952,7 +968,13 @@ class AttributesCreateTask
     public function getVendorOptions($store)
     {
         $optionArray = [];
-        $criteria    = $this->replicationHelper->buildCriteriaForNewItems('scope_id', $this->getScopeId(), 'eq', -1, true);
+        $criteria    = $this->replicationHelper->buildCriteriaForNewItems(
+            'scope_id',
+            $this->getScopeId(),
+            'eq',
+            -1,
+            true
+        );
         /** @var ReplVendorSearchResults $replVendorOptionValues */
         $replVendorOptionValues = $this->replVendorRepositoryInterface->getList($criteria);
 
@@ -1032,7 +1054,7 @@ class AttributesCreateTask
 
             $option = $this->optionFactory->create();
             $option->setLabel($label);
-            $option->setValue((string) $value);
+            $option->setValue((string)$value);
             $option->setStoreLabels([$optionLabel]);
             $option->setSortOrder(0);
             $option->setIsDefault(false);
