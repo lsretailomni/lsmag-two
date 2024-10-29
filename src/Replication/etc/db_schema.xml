@@ -8,6 +8,7 @@
     <column xsi:type="int" name="AllowVoiding" padding="11" nullable="true" comment="AllowVoiding"/>
     <column xsi:type="text" name="ChangeTenderId" nullable="true" comment="ChangeTenderId"/>
     <column xsi:type="int" name="CountingRequired" padding="11" nullable="true" comment="CountingRequired"/>
+    <column xsi:type="text" name="DataEntryCodes" nullable="true" comment="DataEntryCodes"/>
     <column xsi:type="int" name="ForeignCurrency" padding="11" nullable="true" comment="ForeignCurrency"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" nullable="true" comment="MaximumOverTenderAmount"/>
