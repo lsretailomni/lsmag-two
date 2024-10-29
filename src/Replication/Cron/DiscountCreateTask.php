@@ -4,7 +4,6 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscMemberType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
