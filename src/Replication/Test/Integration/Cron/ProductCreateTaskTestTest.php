@@ -122,7 +122,7 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         $replUomOnly = $this->getUom(
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
             $storeId,
-            AbstractIntegrationTest::SAMPLE_UOM_2
+            'KG'
         );
         $this->deleteReplItemUomData([$replUomOnly]);
         $this->deleteReplItemData(
@@ -150,7 +150,7 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         $uomProductVariant = $this->replicationHelper->getProductDataByIdentificationAttributes(
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
             '',
-            AbstractIntegrationTest::SAMPLE_UOM_2,
+            'KG',
             $storeId
         );
 
@@ -186,7 +186,7 @@ class ProductCreateTaskTestTest extends AbstractTaskTest
         $replUomOnly = $this->getUom(
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
             $storeId,
-            AbstractIntegrationTest::SAMPLE_UOM
+            'KG'
         );
         $this->updateReplItemUomData([$replUomOnly]);
 

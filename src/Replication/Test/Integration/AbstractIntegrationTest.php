@@ -17,7 +17,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_MAGENTO_REPLICATION_CRON_NAME = 'repl_products';
 
     public const DEFAULT_BATCH_SIZE = '5000';
-    public const SAMPLE_SIMPLE_ITEM_ID = '40180';
+    public const SAMPLE_SIMPLE_ITEM_ID = '40000';
     public const SAMPLE_DISCOUNTED_CONFIGURABLE_ITEM_ID = '40015';
     public const SAMPLE_CONFIGURABLE_ITEM_ID = '40020';
     public const SAMPLE_CONFIGURABLE_VARIANT_ID = '000';
@@ -40,7 +40,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_HIERARCHY_NODE_NAV_ID = 'ACCESSORIES';
     public const SAMPLE_HIERARCHY_NODE_NAV_ID_2 = 'BAGS';
     public const SAMPLE_UPDATE_HIERARCHY_NODE_NAV_ID = 'MAKEUP';
-    public const SAMPLE_CONFIGURABLE_UOM_ITEM_ID = '40100';
+    public const SAMPLE_CONFIGURABLE_UOM_ITEM_ID = '20020';
     public const SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID = '40500';
     public const SAMPLE_CONFIGURABLE2_VARIANT_ITEM_ID = '43130';
     public const SAMPLE_STANDARD_VARIANT_ITEM_ID = '40190';
