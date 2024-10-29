@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Plugin\Admin;
 
-use Ls\Core\Model\LSR;
-use Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
