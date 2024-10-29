@@ -250,11 +250,18 @@ class DataTranslationTask
                                 $store->getWebsiteId()
                             );
                             list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
-                            $attributesStatus                      = $this->updateAttributes($store->getId(), $langCode);
-                            $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
+                            $attributesStatus                      = $this->updateAttributes(
                                 $store->getId(),
                                 $langCode
                             );
+
+                            if ($attributesStatus) {
+                                $nonConfigurableAttributesValuesStatus = $this->updateAttributeOptionValue(
+                                    $store->getId(),
+                                    $langCode
+                                );
+                            }
+
                             $textBasedAttributesValuesStatus       = $this->updateProductAttributesValues(
                                 $store->getId(),
                                 $langCode
@@ -265,10 +272,13 @@ class DataTranslationTask
                                     $store->getId(),
                                     $langCode
                                 );
-                                $configurableAttributesValuesStatus = $this->updateExtendedVariantAttributesValues(
-                                    $store->getId(),
-                                    $langCode
-                                );
+
+                                if ($configurableAttributesStatus) {
+                                    $configurableAttributesValuesStatus = $this->updateExtendedVariantAttributesValues(
+                                        $store->getId(),
+                                        $langCode
+                                    );
+                                }
                             }
 
                             if ($cronAttributeStandardVariantCheck) {
@@ -824,7 +834,6 @@ class DataTranslationTask
     {
         $formattedCode                = $this->replicationHelper->formatAttributeCode($attributeCode);
         $defaultScopedAttributeObject = $this->replicationHelper->getProductAttributeGivenCodeAndScope($formattedCode);
-
         if (!empty($defaultScopedAttributeObject->getId())) {
             $optionId = $defaultScopedAttributeObject->getSource()->getOptionId($originalOptionalValue);
 
