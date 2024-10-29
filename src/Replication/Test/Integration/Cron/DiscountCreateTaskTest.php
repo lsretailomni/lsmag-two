@@ -3,43 +3,43 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Cron;
 
-use Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountValueType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountLineType;
-use Ls\Replication\Cron\DiscountCreateTask;
-use Ls\Replication\Cron\ProductCreateTask;
-use Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
-use Ls\Replication\Cron\ReplEcommAttributeTask;
-use Ls\Replication\Cron\ReplEcommAttributeValueTask;
-use Ls\Replication\Cron\ReplEcommBarcodesTask;
-use Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask;
-use Ls\Replication\Cron\ReplEcommDataTranslationTask;
-use Ls\Replication\Cron\ReplEcommDealHtmlTranslationTask;
-use Ls\Replication\Cron\ReplEcommDiscountSetupTask;
-use Ls\Replication\Cron\ReplEcommDiscountsTask;
-use Ls\Replication\Cron\ReplEcommDiscountValidationsTask;
-use Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
-use Ls\Replication\Cron\ReplEcommHierarchyLeafTask;
-use Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
-use Ls\Replication\Cron\ReplEcommImageLinksTask;
-use Ls\Replication\Cron\ReplEcommInventoryStatusTask;
-use Ls\Replication\Cron\ReplEcommItemsTask;
-use Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask;
-use Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask;
-use Ls\Replication\Cron\ReplEcommItemVariantsTask;
-use Ls\Replication\Cron\ReplEcommPricesTask;
-use Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
-use Ls\Replication\Cron\ReplEcommVendorItemMappingTask;
-use Ls\Replication\Cron\ReplEcommVendorTask;
-use Ls\Replication\Model\ReplDiscountSearchResults;
-use Ls\Replication\Model\ReplDiscountValidation;
-use Ls\Replication\Test\Fixture\FlatDataReplication;
-use Ls\Replication\Test\Integration\AbstractIntegrationTest;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Cron\DiscountCreateTask;
+use \Ls\Replication\Cron\ProductCreateTask;
+use \Ls\Replication\Cron\ReplEcommAttributeOptionValueTask;
+use \Ls\Replication\Cron\ReplEcommAttributeTask;
+use \Ls\Replication\Cron\ReplEcommAttributeValueTask;
+use \Ls\Replication\Cron\ReplEcommBarcodesTask;
+use \Ls\Replication\Cron\ReplEcommDataTranslationLangCodeTask;
+use \Ls\Replication\Cron\ReplEcommDataTranslationTask;
+use \Ls\Replication\Cron\ReplEcommDealHtmlTranslationTask;
+use \Ls\Replication\Cron\ReplEcommDiscountValidationsTask;
+use \Ls\Replication\Cron\ReplEcommExtendedVariantsTask;
+use \Ls\Replication\Cron\ReplEcommHierarchyLeafTask;
+use \Ls\Replication\Cron\ReplEcommHierarchyNodeTask;
+use \Ls\Replication\Cron\ReplEcommImageLinksTask;
+use \Ls\Replication\Cron\ReplEcommInventoryStatusTask;
+use \Ls\Replication\Cron\ReplEcommItemsTask;
+use \Ls\Replication\Cron\ReplEcommItemUnitOfMeasuresTask;
+use \Ls\Replication\Cron\ReplEcommItemVariantRegistrationsTask;
+use \Ls\Replication\Cron\ReplEcommItemVariantsTask;
+use \Ls\Replication\Cron\ReplEcommPricesTask;
+use \Ls\Replication\Cron\ReplEcommUnitOfMeasuresTask;
+use \Ls\Replication\Cron\ReplEcommVendorItemMappingTask;
+use \Ls\Replication\Cron\ReplEcommVendorTask;
+use \Ls\Replication\Model\ReplDiscountSearchResults;
+use \Ls\Replication\Test\Fixture\FlatDataReplication;
+use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\CatalogRule\Api\Data\RuleInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 
+/**
+ * @magentoAppArea crontab
+ * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
+ */
 class DiscountCreateTaskTest extends AbstractTaskTest
 {
     public $discountCron;
@@ -62,6 +62,9 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         parent::tearDown();
     }
 
+    /**
+     * @magentoDbIsolation enabled
+     */
     #[
         DataFixture(
             FlatDataReplication::class,
@@ -192,13 +195,6 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         DataFixture(
             FlatDataReplication::class,
             [
-                'job_url' => ReplEcommDiscountsTask::class,
-                'scope' => ScopeInterface::SCOPE_WEBSITE
-            ]
-        ),
-        DataFixture(
-            FlatDataReplication::class,
-            [
                 'job_url' => ReplEcommDiscountValidationsTask::class,
                 'scope' => ScopeInterface::SCOPE_WEBSITE
             ]
@@ -267,11 +263,7 @@ class DiscountCreateTaskTest extends AbstractTaskTest
             1,
             [
                 AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
-                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_UOM_ITEM_ID,
-                AbstractIntegrationTest::SAMPLE_CONFIGURABLE_VARIANT_ITEM_ID,
                 AbstractIntegrationTest::SAMPLE_DISCOUNTED_CONFIGURABLE_ITEM_ID,
-                AbstractIntegrationTest::SAMPLE_CONFIGURABLE2_VARIANT_ITEM_ID,
-                AbstractIntegrationTest::SAMPLE_STANDARD_VARIANT_ITEM_ID
             ]
         );
 
@@ -298,78 +290,28 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         );
 
         $this->assertOffersWithItem(AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1);
-//        $this->assertValidation();
-//        $this->assertDeletion();
+        $this->assertValidation(AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1);
+        $this->assertDeletion(AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1);
     }
 
-    public function assertValidation()
+    public function assertValidation($offerNo)
     {
-        $scopeId = $this->storeManager->getWebsite()->getId();
-        $storeId = $this->storeManager->getStore()->getId();
-        $replDiscountValidation = $this->getDiscountValidationGivenId(
-            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
-            $scopeId
-        );
-        if ($replDiscountValidation) {
-            $this->replDiscountValidationRepository->save(
-                $replDiscountValidation->addData([
-                    'is_updated' => 1,
-                    'EndDate' => '2028-11-30'
-                ])
-            );
-
-            $this->executeUntilReady(DiscountCreateTask::class, [
-                LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP
-            ]);
-
-            $this->assertCronSuccess(
-                [
-                    LSR::SC_SUCCESS_CRON_DISCOUNT_SETUP,
-                ],
-                $storeId
-            );
-
-            $this->assertOffersWithItem(AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1);
-        }
-    }
-    public function assertDeletion()
-    {
-        $scopeId = $this->storeManager->getWebsite()->getId();
-        $this->assertOfferDeletion(
-            [
-                'scope_id' => $scopeId,
-                'OfferNo' => AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
-                'LineType' => OfferDiscountLineType::ITEM,
-                'Number' => AbstractIntegrationTest::SAMPLE_DISCOUNTED_CONFIGURABLE_ITEM_ID,
-                'VariantId' => null,
-                'VariantType' => 0,
-                'UnitOfMeasureId' => null,
-            ]
-        );
-
-        $this->assertOfferDeletion(
-            [
-                'scope_id' => $scopeId,
-                'OfferNo' => AbstractIntegrationTest::SAMPLE_OFFER_CATEGORY_1
-            ]
-        );
-    }
-
-    public function assertOfferDeletion($params)
-    {
-        $storeId  = $this->storeManager->getStore()->getId();
-        $offerNo  = $params['OfferNo'];
-        $lineType = $params['LineType'] ?? null;
-        $offer1   = $this->getDiscountGivenOfferNo($params);
-
-        if (!empty($offer1)) {
-            $replDiscountSetup = current($offer1);
-            $replDiscountSetup->addData([
-                'Enabled' => 0,
-                'is_updated' => 1
-            ]);
-
-            $this->replDiscountRepository->save($replDiscountSetup);
+        $scopeId       = $this->storeManager->getWebsite()->getId();
+        $storeId       = $this->storeManager->getStore()->getId();
+        $params        = [
+            'scope_id' => $scopeId,
+            'OfferNo' => $offerNo
+        ];
+        $replDiscounts = $this->getDiscountGivenOfferNo($params);
+        if (!empty($replDiscounts)) {
+            foreach ($replDiscounts as $replDiscount) {
+                $this->replDiscountRepository->save(
+                    $replDiscount->addData([
+                        'is_updated' => 1,
+                        'ToDate' => '2028-10-31T00:00:00'
+                    ])
+                );
+            }
 
             $this->executeUntilReady(DiscountCreateTask::class, [
                 LSR::SC_SUCCESS_CRON_DISCOUNT
@@ -381,12 +323,44 @@ class DiscountCreateTaskTest extends AbstractTaskTest
                 ],
                 $storeId
             );
-        }
 
-        if ($lineType == OfferDiscountLineType::ITEM) {
-            $this->assertOffersWithItem($offerNo);
-        } else {
-            $this->assertOffersWithGroups($offerNo);
+            $this->assertOffersWithItem(AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1);
+        }
+    }
+
+    public function assertDeletion($offerNo)
+    {
+        $scopeId       = $this->storeManager->getWebsite()->getId();
+        $storeId       = $this->storeManager->getStore()->getId();
+        $params        = [
+            'scope_id' => $scopeId,
+            'OfferNo' => $offerNo
+        ];
+        $replDiscounts = $this->getDiscountGivenOfferNo($params);
+        if (!empty($replDiscounts)) {
+            foreach ($replDiscounts as $replDiscount) {
+                $this->replDiscountRepository->save(
+                    $replDiscount->addData([
+                        'IsDeleted' => 1,
+                        'is_updated' => 1
+                    ])
+                );
+            }
+
+            $this->executeUntilReady(DiscountCreateTask::class, [
+                LSR::SC_SUCCESS_CRON_DISCOUNT
+            ]);
+
+            $this->assertCronSuccess(
+                [
+                    LSR::SC_SUCCESS_CRON_DISCOUNT,
+                ],
+                $storeId
+            );
+
+            $catalogRule = $this->getRuleByName($offerNo);
+
+            $this->assertFalse($catalogRule);
         }
     }
 
@@ -395,140 +369,153 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         parent::addDummyData();
         $this->addDummyDiscountData(
             AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
-            OfferDiscountLineType::ITEM,
-            AbstractIntegrationTest::SAMPLE_DISCOUNTED_CONFIGURABLE_ITEM_ID,
-            null,
-            0,
-            AbstractIntegrationTest::SAMPLE_UOM,
-            AbstractIntegrationTest::ENABLED,
-            '15.0000',
-            '6.7500',
-            AbstractIntegrationTest::SAMPLE_PRICE_GROUP,
-            AbstractIntegrationTest::SAMPLE_STORE_GROUP_CODES,
-            '30000',
-            AbstractIntegrationTest::ENABLED,
-            0,
-            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID
-        );
-
-        $this->addDummyDiscountData(
-            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
-            OfferDiscountLineType::ITEM,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
             '001',
-            AbstractIntegrationTest::ENABLED,
-            AbstractIntegrationTest::SAMPLE_UOM_2,
-            AbstractIntegrationTest::ENABLED,
-            '15.0000',
-            '72.0000',
-            AbstractIntegrationTest::SAMPLE_PRICE_GROUP,
-            AbstractIntegrationTest::SAMPLE_STORE_GROUP_CODES,
-            '60000',
-            AbstractIntegrationTest::ENABLED,
+            'PACK',
             0,
-            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
         );
 
         $this->addDummyDiscountData(
             AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
-            OfferDiscountLineType::ITEM,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
             '003',
-            AbstractIntegrationTest::ENABLED,
             null,
             0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
             '15.0000',
-            '12.0000',
-            AbstractIntegrationTest::SAMPLE_PRICE_GROUP,
-            AbstractIntegrationTest::SAMPLE_STORE_GROUP_CODES,
-            '90000',
-            AbstractIntegrationTest::ENABLED,
-            0,
-            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID
         );
 
         $this->addDummyDiscountData(
             AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
-            OfferDiscountLineType::ITEM,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
             '007',
-            AbstractIntegrationTest::ENABLED,
             null,
             0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
             '15.0000',
-            '12.0000',
-            AbstractIntegrationTest::SAMPLE_PRICE_GROUP,
-            AbstractIntegrationTest::SAMPLE_STORE_GROUP_CODES,
-            '100000',
-            AbstractIntegrationTest::ENABLED,
+        );
+        $this->addDummyDiscountData(
+            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '021',
+            null,
             0,
-            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
+        );
+        $this->addDummyDiscountData(
+            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '022',
+            null,
+            0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
+        );
+        $this->addDummyDiscountData(
+            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '023',
+            null,
+            0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
+        );
+        $this->addDummyDiscountData(
+            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '024',
+            null,
+            0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
+        );
+        $this->addDummyDiscountData(
+            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '025',
+            null,
+            0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
+        );
+        $this->addDummyDiscountData(
+            AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
+            AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
+            '026',
+            null,
+            0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
+            '15.0000',
         );
 
         $this->addDummyDiscountData(
             AbstractIntegrationTest::SAMPLE_OFFER_ITEM_1,
-            OfferDiscountLineType::ITEM,
             AbstractIntegrationTest::SAMPLE_CONFIGURABLE_ITEM_ID,
-            'ORANGE',
-            2,
+            '027',
             null,
             0,
+            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID,
             '15.0000',
-            '12.0000',
-            AbstractIntegrationTest::SAMPLE_PRICE_GROUP,
-            AbstractIntegrationTest::SAMPLE_STORE_GROUP_CODES,
-            '110000',
-            AbstractIntegrationTest::ENABLED,
-            0,
-            AbstractIntegrationTest::SAMPLE_VALID_VALIDATION_PERIOD_ID
         );
     }
 
     public function addDummyDiscountData(
         $offerNo,
-        $lineType,
         $itemId,
         $variantId,
-        $variantType,
         $uomOfMeasureId,
-        $isPercentage,
-        $dealPriceDiscount,
-        $lineDiscountAmountIncVat,
-        $priceGroup,
-        $storeGroupCodes,
-        $lineNumber,
-        $isEnabled,
         $isDeleted,
-        $validationPeriodId
+        $validationPeriodId,
+        $discountValue
     ) {
         $scopeId           = $this->storeManager->getWebsite()->getId();
         $loyaltySchemeCode = ['CR1-BRONZE', 'CR2-SILVER', 'CR3-GOLD'];
 
         foreach ($loyaltySchemeCode as $scheme) {
+            $params  = [
+                'scope_id' => $scopeId,
+                'OfferNo' => $offerNo,
+                'ItemId' => $itemId,
+                'VariantId' => $variantId,
+                'UnitOfMeasureId' => $uomOfMeasureId,
+                'LoyaltySchemeCode' => $scheme,
+            ];
+            $replDiscount  = $this->getDiscountGivenOfferNo($params);
 
-            $replDiscount = $this->replDiscountInterfaceFactory->create();
-            $replDiscount->addData(
-                [
-                    'Description' => 'Denim on denim discount 15%',
-                    'Details' => 'Denim on denim discount 15%',
-                    'DiscountValue' => '15.00000',
-                    'DiscountValueType' => 'DealPrice',
-                    'FromDate' => '2022-01-01T00:00:00',
+            if (empty($replDiscount)) {
+                $replDiscount = $this->replDiscountInterfaceFactory->create();
+                $replDiscount->addData(
+                    [
+                        'Description' => 'Denim on denim discount 15%',
+                        'Details' => 'Denim on denim discount 15%',
+                        'DiscountValue' => $discountValue,
+                        'DiscountValueType' => 'DealPrice',
+                        'FromDate' => '2022-01-01T00:00:00',
+                        'IsDeleted' => $isDeleted,
+                        'ItemId' => $itemId,
+                        'LoyaltySchemeCode' => $scheme,
+                        'MinimumQuantity' => '0.0000',
+                        'OfferNo' => $offerNo,
+                        'StoreId' => AbstractIntegrationTest::CS_STORE,
+                        'ToDate' => '2028-12-31T00:00:00',
+                        'Type' => 'DiscOffer',
+                        'UnitOfMeasureId' => $uomOfMeasureId,
+                        'ValidationPeriodId' => $validationPeriodId,
+                        'VariantId' => $variantId,
+                        'scope' => ScopeInterface::SCOPE_WEBSITES,
+                        'scope_id' => $this->storeManager->getWebsite()->getId()
+                    ]
+                );
+            } else {
+                $replDiscount = current($replDiscount);
+                $replDiscount->addData([
                     'IsDeleted' => $isDeleted,
-                    'ItemId' => $itemId,
-                    'LoyaltySchemeCode' => $scheme,
-                    'MinimumQuantity' => '0.0000',
-                    'OfferNo' => $offerNo,
-                    'StoreId' => AbstractIntegrationTest::CS_STORE,
-                    'ToDate' => '2028-12-31T00:00:00',
-                    'Type' => 'DiscOffer',
-                    'UnitOfMeasureId' => $uomOfMeasureId,
-                    'ValidationPeriodId' => $validationPeriodId,
-                    'VariantId' => $variantId,
-                    'scope' => ScopeInterface::SCOPE_WEBSITES,
-                    'scope_id' => $this->storeManager->getWebsite()->getId()
-                ]
-            );
+                    'processed' => 0
+                ]);
+            }
 
             $this->replDiscountRepository->save($replDiscount);
         }
@@ -539,22 +526,16 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         $scopeId       = $this->storeManager->getWebsite()->getId();
         $params        = [
             'scope_id' => $scopeId,
-            'OfferNo' => $offerNo,
-            'LineType' => OfferDiscountLineType::ITEM
+            'OfferNo' => $offerNo
         ];
         $replDiscounts = $this->getDiscountGivenOfferNo($params);
-
         if (!empty($replDiscounts)) {
             foreach ($replDiscounts as $replDiscount) {
-                $replDiscountValidation = $this->getDiscountValidationGivenId(
-                    $replDiscount->getValidationPeriodId(),
-                    $scopeId
-                );
-
-                $disabled    = $replDiscount->getIsDeleted() == 1 || $replDiscount->getEnabled() == 0;
+                $disabled    = $replDiscount->getIsDeleted() == 1;
                 $catalogRule = $this->getCatalogRuleGivenReplDiscount($replDiscount);
 
-                if ($catalogRule && $replDiscountValidation) {
+                if ($catalogRule) {
+
                     $skuAmountArray = [];
                     try {
                         $this->discountCron->getItemsInRequiredFormat($replDiscount, $skuAmountArray);
@@ -565,74 +546,23 @@ class DiscountCreateTaskTest extends AbstractTaskTest
                     if (empty($skuAmountArray)) {
                         continue;
                     }
-                    if (!$replDiscount->getIsPercentage()) {
-                        $discountValueType = DiscountValueType::AMOUNT;
-                        $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
-                    } else {
-                        $discountValueType = DiscountValueType::PERCENT;
-                        $discountValue     = $replDiscount->getDealPriceDiscount();
-                    }
-                    if (isset($skuAmountArray[$discountValue][$discountValueType])) {
+                    $discountValue     = $replDiscount->getDiscountValue();
+                    if (isset($skuAmountArray[$discountValue])) {
                         $this->assertRuleConditions(
                             $catalogRule,
-                            $replDiscount,
                             $disabled,
-                            $skuAmountArray[$discountValue][$discountValueType]
+                            $skuAmountArray[$discountValue]
                         );
                     }
                     $this->assertCustomerGroups($catalogRule, $replDiscount);
-
                     $this->assertTrue($catalogRule->getDescription() == $replDiscount->getDescription());
 
-                    if ($replDiscount->getIsPercentage()) {
-                        $this->assertTrue($catalogRule->getSimpleAction() == 'by_percent');
-                        $this->assertTrue($catalogRule->getDiscountAmount() == $replDiscount->getDiscountValue());
-                    } else {
-                        $this->assertTrue($catalogRule->getSimpleAction() == 'by_fixed');
-                        $this->assertTrue(
-                            $catalogRule->getDiscountAmount() == $replDiscount->getLineDiscountAmountInclVAT()
-                        );
-                    }
-                    $this->assertDates($replDiscountValidation, $catalogRule);
-                }
-            }
-        }
-    }
+                    $this->assertDates($replDiscount, $catalogRule);
 
-    public function assertOffersWithGroups($offerNo)
-    {
-        $scopeId       = $this->storeManager->getWebsite()->getId();
-        $params        = [
-            'scope_id' => $scopeId,
-            'OfferNo' => $offerNo
-        ];
-        $replDiscounts = $this->getDiscountGivenOfferNo($params);
+                    $simpleAction = $replDiscount->getDiscountValueType() == 'Amount' ? 'by_fixed' : 'by_percent';
 
-        if (!empty($replDiscounts)) {
-            foreach ($replDiscounts as $replDiscount) {
-                $replDiscountValidation = $this->getDiscountValidationGivenId(
-                    $replDiscount->getValidationPeriodId(),
-                    $scopeId
-                );
-                $disabled               = $replDiscount->getIsDeleted() == 1 || $replDiscount->getEnabled() == 0;
-                $catalogRule            = $this->getCatalogRuleGivenReplDiscount($replDiscount);
-
-                if ($disabled) {
-                    $this->assertFalse($catalogRule);
-                }
-
-                if ($catalogRule && $replDiscountValidation) {
-                    $this->assertRuleConditions($catalogRule, $replDiscount);
-                    $this->assertCustomerGroups($catalogRule, $replDiscount);
+                    $this->assertTrue($catalogRule->getSimpleAction() == $simpleAction);
                     $this->assertTrue($catalogRule->getDiscountAmount() == $replDiscount->getDiscountValue());
-                    $this->assertTrue($catalogRule->getDescription() == $replDiscount->getDescription());
-
-                    if ($replDiscount->getIsPercentage()) {
-                        $this->assertTrue($catalogRule->getSimpleAction() == 'by_percent');
-                    } else {
-                        $this->assertTrue($catalogRule->getSimpleAction() == 'by_fixed');
-                    }
-                    $this->assertDates($replDiscountValidation, $catalogRule);
                 }
             }
         }
@@ -643,22 +573,12 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         $customerGroupsId     = $this->getCustomerGroupsIdGivenOffer($replDiscount);
         $ruleCustomerGroupsId = $catalogRule->getCustomerGroupIds();
 
-        $this->assertEqualsCanonicalizing($customerGroupsId, $ruleCustomerGroupsId);
+        $this->assertTrue(empty(array_diff($customerGroupsId, $ruleCustomerGroupsId)));
     }
 
-    public function assertRuleConditions($catalogRule, $replDiscount, $disabled = false, $skuAmountArray = [])
+    public function assertRuleConditions($catalogRule, $disabled = false, $skuAmountArray = [])
     {
-        if ($replDiscount->getLineType() == OfferDiscountLineType::SPECIAL_GROUP) {
-            $attributeCode = LSR::LS_ITEM_SPECIAL_GROUP;
-        } elseif ($replDiscount->getLineType() == OfferDiscountLineType::PRODUCT_GROUP) {
-            $attributeCode = LSR::LS_ITEM_PRODUCT_GROUP;
-        } elseif ($replDiscount->getLineType() == OfferDiscountLineType::ITEM_CATEGORY) {
-            $attributeCode = LSR::LS_ITEM_CATEGORY;
-        } else {
-            $attributeCode = 'sku';
-        }
-
-        $specialGroupValue = $replDiscount->getNumber();
+        $attributeCode = 'sku';
 
         $ruleConditions = $catalogRule->getRuleCondition();
 
@@ -666,9 +586,7 @@ class DiscountCreateTaskTest extends AbstractTaskTest
             $condition = current($ruleConditions->getConditions());
             $this->assertTrue($condition->getAttribute() == $attributeCode);
 
-            if ($condition->getOperator() == '{}') {
-                $this->assertTrue($condition->getValue() == $specialGroupValue . ';');
-            } elseif ($condition->getOperator() == '()') {
+            if ($condition->getOperator() == '()') {
                 $skus = explode(',', $condition->getValue());
 
                 foreach ($skuAmountArray as $sku) {
@@ -678,37 +596,30 @@ class DiscountCreateTaskTest extends AbstractTaskTest
                         $this->assertTrue(in_array($sku, $skus));
                     }
                 }
-            } else {
-                $this->assertTrue($condition->getValue() == $specialGroupValue);
             }
         }
     }
 
-    public function assertDates($replDiscountValidation, $catalogRule)
+    public function assertDates($replDiscount, $catalogRule)
     {
-        $fromDate = $replDiscountValidation->getStartDate();
-        $toDate   = $replDiscountValidation->getEndDate();
+        $fromDate = $replDiscount->getFromDate();
+        $toDate   = $replDiscount->getToDate();
 
-        if ($fromDate) {
-            $this->assertTrue($fromDate == $catalogRule->getFromDate());
+        if (!empty($fromDate)) {
+            $this->assertTrue(substr($fromDate, 0, strpos($fromDate, 'T')) == $catalogRule->getFromDate());
         }
 
         if (strtolower($toDate ?? '') != strtolower('1753-01-01T00:00:00')
             && !empty($toDate)) {
-            $this->assertTrue($toDate == $catalogRule->getToDate());
+            $this->assertTrue(substr($toDate, 0, strpos($toDate, 'T')) == $catalogRule->getToDate());
         }
     }
 
     public function getCatalogRuleGivenReplDiscount($replDiscount)
     {
-        $simpleAction = '';
+        $offerName    = $replDiscount->getOfferNo();
 
-        if ($replDiscount->getLineType() != OfferDiscountLineType::ITEM) {
-            $offerName = $replDiscount->getOfferNo() . '-' . $replDiscount->getLineNumber();
-        } else {
-            $offerName    = $replDiscount->getOfferNo();
-            $simpleAction = $replDiscount->getIsPercentage() ? 'by_percent' : 'by_fixed';
-        }
+        $simpleAction = $replDiscount->getDiscountValueType() == 'Amount' ? 'by_fixed' : 'by_percent';
 
         $catalogRule = $this->getRuleByName($offerName, $simpleAction);
 
@@ -747,23 +658,6 @@ class DiscountCreateTaskTest extends AbstractTaskTest
         $replDiscounts = $this->replDiscountRepository->getList($criteria)->getItems();
 
         return $replDiscounts;
-    }
-
-    public function getDiscountValidationGivenId($validationId, $scopeId)
-    {
-        $filters  = [
-            ['field' => 'scope_id', 'value' => $scopeId, 'condition_type' => 'eq'],
-            [
-                'field' => 'nav_id',
-                'value' => $validationId,
-                'condition_type' => 'eq'
-            ]
-        ];
-        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1);
-        /** @var ReplDiscountValidation $replDiscountValidation */
-        $replDiscountValidation = current($this->replDiscountValidationRepository->getList($criteria)->getItems());
-
-        return $replDiscountValidation;
     }
 
     public function getCustomerGroupsIdGivenOffer($item)
