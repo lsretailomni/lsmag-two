@@ -125,13 +125,10 @@ class CustomerOrder implements DataFixtureInterface
         $orderId = $this->cartManagement->placeOrder($quote->getId());
 
         $order = $this->orderRepository->get($orderId);
-
-        if (!isset($data['offline'])) {
-            $this->eventManager->dispatch(
-                'checkout_onepage_controller_success_action',
-                ['order' => $order]
-            );
-        }
+        $this->eventManager->dispatch(
+            'checkout_onepage_controller_success_action',
+            ['order' => $order]
+        );
 
         return $order;
     }
