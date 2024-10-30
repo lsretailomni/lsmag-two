@@ -7,8 +7,15 @@ use \Ls\Replication\Block\Adminhtml\System\Config\AttributeSets;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @magentoAppArea adminhtml
+ * @magentoDbIsolation enabled
+ */
 class AttributeSetsTest extends TestCase
 {
+    /**
+     * @magentoAppIsolation enabled
+     */
     public function testToOptionArray(): void
     {
         /** @var $model AttributeSets */
