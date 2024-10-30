@@ -3,7 +3,7 @@
 namespace Ls\Replication\Block\Adminhtml\System\Config;
 
 use Magento\Framework\Data\OptionSourceInterface;
-use \LS\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 
 /**
  *
