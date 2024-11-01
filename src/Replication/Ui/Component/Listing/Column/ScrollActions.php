@@ -2,28 +2,19 @@
 
 namespace Ls\Replication\Ui\Component\Listing\Column;
 
-use \Ls\Replication\Block\Adminhtml\Grid\Renderer\Action\UrlBuilder;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-/**
- * Class ScrollActions
- * @package Ls\Replication\Ui\Component\Listing\Column
- */
 class ScrollActions extends Column
 {
-    /** @var UrlBuilder */
-    public $actionUrlBuilder;
-
     /** @var UrlInterface */
     public $urlBuilder;
 
     /**
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlBuilder $actionUrlBuilder
      * @param UrlInterface $urlBuilder
      * @param array $components
      * @param array $data
@@ -31,13 +22,11 @@ class ScrollActions extends Column
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
-        UrlBuilder $actionUrlBuilder,
         UrlInterface $urlBuilder,
         array $components = [],
         array $data = []
     ) {
         $this->urlBuilder       = $urlBuilder;
-        $this->actionUrlBuilder = $actionUrlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
