@@ -109,7 +109,6 @@ class ConvertToOrderItemTest extends AbstractIntegrationTest
         ),
         DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
-        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
         DataFixture(
             CustomerAddressFixture::class,
             [
@@ -124,7 +123,7 @@ class ConvertToOrderItemTest extends AbstractIntegrationTest
         $quote           = $this->fixtures->get('cart1');
         $address         = $this->fixtures->get('address');
         $reservedOrderId = 'test01';
-        $notExpected     = 0.00;
+        $notExpected     = "0.00";
 
         $quoteShippingAddress = $this->addressInterfaceFactory->create();
         $quoteShippingAddress->importCustomerAddressData(
@@ -138,6 +137,9 @@ class ConvertToOrderItemTest extends AbstractIntegrationTest
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $quote->getAllVisibleItems()]);
         $quote->load($reservedOrderId, 'reserved_order_id');
 
+        foreach ($quote->getAllVisibleItems() as $quoteItem) {
+            $quoteItem->setLsDiscountAmount("2.5");
+        }
         $quote->setShippingAddress($quoteShippingAddress);
         $quote->setBillingAddress($quoteShippingAddress);
         $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
