@@ -77,6 +77,17 @@ interface ReplStoreTenderTypeInterface
     public function getCountingRequired();
 
     /**
+     * @param string $DataEntryCodes
+     * @return $this
+     */
+    public function setDataEntryCodes($DataEntryCodes);
+
+    /**
+     * @return string
+     */
+    public function getDataEntryCodes();
+
+    /**
      * @param int $ForeignCurrency
      * @return $this
      */

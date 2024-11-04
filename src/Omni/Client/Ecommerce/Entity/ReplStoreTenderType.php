@@ -41,6 +41,11 @@ class ReplStoreTenderType
     protected $CountingRequired = null;
 
     /**
+     * @property string $DataEntryCodes
+     */
+    protected $DataEntryCodes = null;
+
+    /**
      * @property int $ForeignCurrency
      */
     protected $ForeignCurrency = null;
@@ -226,6 +231,24 @@ class ReplStoreTenderType
     public function getCountingRequired()
     {
         return $this->CountingRequired;
+    }
+
+    /**
+     * @param string $DataEntryCodes
+     * @return $this
+     */
+    public function setDataEntryCodes($DataEntryCodes)
+    {
+        $this->DataEntryCodes = $DataEntryCodes;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataEntryCodes()
+    {
+        return $this->DataEntryCodes;
     }
 
     /**
