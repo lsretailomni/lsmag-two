@@ -112,7 +112,7 @@ class CustomerOrder implements DataFixtureInterface
             ->setShippingAddress($quoteShippingAddress)
             ->setBillingAddress($quoteShippingAddress)
             ->setCheckoutMethod(Onepage::METHOD_CUSTOMER)
-            ->setReservedOrderId('55555555')
+            ->setReservedOrderId('IT-' . rand(10000001, 99999999))
             ->setEmail($customer->getEmail());
         $quote->getShippingAddress()->setShippingMethod($shipment);
         $quote->getShippingAddress()->setCollectShippingRates(true);
