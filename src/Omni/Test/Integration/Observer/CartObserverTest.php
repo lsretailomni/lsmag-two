@@ -86,16 +86,6 @@ class CartObserverTest extends AbstractIntegrationTest
      */
     public $cartObserver;
 
-    public const PASSWORD = 'Nmswer123@';
-    public const EMAIL = 'pipeline_retail@lsretail.com';
-    public const USERNAME = 'mc_57745';
-    public const CUSTOMER_ID = '1';
-    public const CS_URL = 'http://20.6.33.78/commerceservice';
-    public const CS_VERSION = '2024.4.1';
-    public const CS_STORE = 'S0013';
-    public const LS_MAG_ENABLE = '1';
-    public const RETAIL_INDUSTRY = 'retail';
-
     /**
      * @return void
      */
