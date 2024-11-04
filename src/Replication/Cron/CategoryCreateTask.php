@@ -384,8 +384,7 @@ class CategoryCreateTask
                     ->setPageSize(1);
                 $subCategoryExistData = $this->isCategoryExist(
                     $hierarchyNodeSub->getNavId(),
-                    true,
-                    $this->store->getId()
+                    true
                 );
                 if ($collection->getSize() > 0) {
                     if (!$subCategoryExistData) {
@@ -585,7 +584,7 @@ class CategoryCreateTask
      * @return bool|DataObject
      * @throws LocalizedException
      */
-    public function isCategoryExist($nav_id, $store = false, $storeId = null)
+    public function isCategoryExist($nav_id, $store = false)
     {
         $collection = $this->collectionFactory->create()
             ->addAttributeToSelect('name')
