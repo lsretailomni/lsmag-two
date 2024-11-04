@@ -111,12 +111,15 @@ class SyncOrders
                         foreach ($orders as $order) {
                             try {
                                 $documentId = null;
-                                $oldOrder   = $this->orderHelper->getMagentoOrderGivenEntityId(
-                                    $order->getRelationParentId()
-                                );
-                                if ($oldOrder) {
-                                    $documentId = $oldOrder->getDocumentId();
+                                if ($order->getRelationParentId()) {
+                                    $oldOrder   = $this->orderHelper->getMagentoOrderGivenEntityId(
+                                        $order->getRelationParentId()
+                                    );
+                                    if ($oldOrder) {
+                                        $documentId = $oldOrder->getDocumentId();
+                                    }
                                 }
+
                                 if (empty($documentId)) {
                                     $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
                                     $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder(
