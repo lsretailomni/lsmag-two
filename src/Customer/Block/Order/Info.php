@@ -191,7 +191,7 @@ class Info extends AbstractOrderBlock
         $paymentLines      = $this->getOrderPayments();
         $methods           = $giftCardInfo = [];
         $tenderTypeMapping = $this->dataHelper->getTenderTypesPaymentMapping();
-        if($paymentLines) {
+        if ($paymentLines) {
             foreach ($paymentLines as $line) {
                 /**
                  * Payments line can include multiple payment types
@@ -248,14 +248,14 @@ class Info extends AbstractOrderBlock
     public function getFormattedLoyaltyPoints()
     {
         $orderTransactions = $this->getOrder(true);
-        $points = 0;
+        $points            = 0;
 
         if (!is_array($orderTransactions)) {
             $orderTransactions = [$orderTransactions];
         }
 
         foreach ($orderTransactions as $transaction) {
-            $points += (float) $transaction->getPointsRewarded();
+            $points += (float)$transaction->getPointsRewarded();
         }
 
         return number_format((float)$points, 2, '.', '');
@@ -284,7 +284,8 @@ class Info extends AbstractOrderBlock
         $params ['order_id'] = $order->getCustomerOrderNo() ?: $order->getId();
 
         if ($reqType) {
-            $params ['type'] = $reqType;
+            $params ['order_id'] = $this->getRequest()->getParam('order_id');
+            $params ['type']     = $reqType;
         }
 
         return $order ? $this->getUrl(

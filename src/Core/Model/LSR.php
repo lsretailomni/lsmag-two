@@ -1375,8 +1375,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function validateForOlderVersion($store, $scope = null)
     {
         $status = ['discountSetup' => false, 'discount' => true];
-        if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '>')) {
-            $status = ['discountSetup' => true, 'discount' => false];
+        if (version_compare($this->getOmniVersion($store->getId(), $scope), '2023.10', '<')) {
+            $status = ['discountSetup' => false, 'discount' => true];
         }
 
         return $status;
