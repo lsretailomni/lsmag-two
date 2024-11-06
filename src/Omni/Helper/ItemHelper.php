@@ -516,6 +516,7 @@ class ItemHelper extends AbstractHelper
                 $this->checkoutSession->unsetData('stopCalcRowTotal');
             }
             $quote->setTotalsCollectedFlag(false)->collectTotals();
+            $quote->setIsActive(1);
             $this->quoteResourceModel->save($quote);
         }
     }
