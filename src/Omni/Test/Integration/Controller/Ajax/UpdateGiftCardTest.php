@@ -209,6 +209,6 @@ class UpdateGiftCardTest extends AbstractController
 
         $this->assertEquals('', $this->checkoutSession->getQuote()->getLsGiftCardNo());
         $this->assertEquals('', $this->checkoutSession->getQuote()->getLsGiftCardPin());
-        $this->assertEquals('', $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed());
+        $this->assertEquals(0, $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed());
     }
 }
