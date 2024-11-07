@@ -172,6 +172,11 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             AbstractIntegrationTest::VALID_COUPON_CODE,
             $this->checkoutSession->getQuote()->getCouponCode()
         );
+
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
     /**
@@ -242,6 +247,11 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             AbstractIntegrationTest::INVALID_COUPON_CODE,
             $this->checkoutSession->getQuote()->getCouponCode()
         );
+
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
     /**
@@ -310,5 +320,10 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             '',
             $this->checkoutSession->getQuote()->getCouponCode()
         );
+
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 }
