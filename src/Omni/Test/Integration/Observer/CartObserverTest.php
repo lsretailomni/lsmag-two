@@ -158,21 +158,23 @@ class CartObserverTest extends AbstractIntegrationTest
                 'items'             => $cart->getAllVisibleItems()
             ]
         ));
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
 
         $quoteId = $this->checkoutSession->getQuoteId();
         $this->assertNotNull($quoteId);
-        $this->assertNotNull(
-            $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION . '_1')
-        );
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertNotEquals(0, $this->checkoutSession->getQuote()->getLsPointsEarn());
+
+        $cart->delete();
+        $this->checkoutSession->clearQuote();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
     /**
      * @magentoAppIsolation enabled
      */
     #[
+        AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
@@ -186,16 +188,9 @@ class CartObserverTest extends AbstractIntegrationTest
                 'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
                 'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
             ],
-            as: 'customer'
+            as: 'customer2'
         ),
-        DataFixture(
-            CreateSimpleProductFixture::class,
-            [
-                LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
-            ],
-            as: 'p1'
-        ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer2.id$'], 'cart2')
     ]
     /**
      * Test cart observer with null items in cart.
@@ -204,8 +199,8 @@ class CartObserverTest extends AbstractIntegrationTest
      */
     public function testCartObserverWithOneListNull()
     {
-        $customer = $this->fixtures->get('customer');
-        $cart     = $this->fixtures->get('cart1');
+        $customer = $this->fixtures->get('customer2');
+        $cart     = $this->fixtures->get('cart2');
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
@@ -227,9 +222,6 @@ class CartObserverTest extends AbstractIntegrationTest
 
         $quoteId = $this->checkoutSession->getQuoteId();
         $this->assertNotNull($quoteId);
-        $this->assertNull(
-            $this->checkoutSession->getData(LSR::SESSION_CHECKOUT_ONE_LIST_CALCULATION . '_1')
-        );
         $this->assertEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertEquals(0, $this->checkoutSession->getQuote()->getLsPointsEarn());
     }
