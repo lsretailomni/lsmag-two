@@ -36,10 +36,13 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\Quote\Model\QuoteIdMaskFactory;
 
+/**
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation enabled
+ */
 class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
 {
     /**
@@ -146,7 +149,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     }
 
     /**
-     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      */
     #[
         AppArea('frontend'),
@@ -218,6 +221,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
 
         $cart->delete();
         $this->checkoutSession->clearQuote();
+        $this->customerSession->logout();
+        $this->customerSession->clearStorage();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
 
@@ -225,7 +230,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     }
 
     /**
-     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      */
     #[
         AppArea('frontend'),
@@ -255,8 +260,11 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
         DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
         DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(SetDeliveryMethod::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(SetPaymentMethod::class, ['cart_id' => '$cart1.id$'])
+        DataFixture(SetDeliveryMethod::class, [
+            'cart_id'      => '$cart1.id$',
+            'carrier_code' => 'flatrate',
+            'method_code'  => 'flatrate'
+        ])
     ]
     /**
      * Hide pay at store payment method for shipping methods other than click and collect
@@ -297,7 +305,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     }
 
     /**
-     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      */
     #[
         AppArea('frontend'),
@@ -373,7 +381,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     }
 
     /**
-     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      */
     #[
         AppArea('frontend'),
@@ -453,7 +461,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     }
 
     /**
-     * @magentoAppIsolation enabled
+     * @magentoDbIsolation enabled
      */
     #[
         AppArea('frontend'),
