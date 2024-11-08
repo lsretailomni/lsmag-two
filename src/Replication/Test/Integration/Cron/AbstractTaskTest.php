@@ -11,6 +11,7 @@ use \Ls\Replication\Api\Data\ReplDataTranslationInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDiscountSetupInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplDiscountInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplHierarchyLeafInterfaceFactory;
+use Ls\Replication\Api\Data\ReplImageLinkInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplInvStatusInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplItemVariantInterfaceFactory;
 use \Ls\Replication\Api\Data\ReplPriceInterfaceFactory;
@@ -20,6 +21,7 @@ use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountSetupRepositoryInterface;
 use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Api\ReplHierarchyLeafRepositoryInterface;
+use \Ls\Replication\Api\ReplImageLinkRepositoryInterface;
 use \Ls\Replication\Api\ReplInvStatusRepositoryInterface;
 use \Ls\Replication\Api\ReplItemRepositoryInterface;
 use \Ls\Replication\Api\ReplItemUnitOfMeasureRepositoryInterface;
@@ -104,36 +106,25 @@ abstract class AbstractTaskTest extends TestCase
     ];
 
     public $categoryCreateTaskCron;
-
     public $cron;
     public $dataTranslationCron;
-
     public $lsr;
-
     public $storeManager;
-
     public $replicationHelper;
-
     public $replItemVariantRegistrationRepository;
-
     public $replItemUomRepository;
-
     public $replHierarchyLeafRepository;
-
     public $resource;
     public $replItemRespository;
-
     public $productRepository;
     public $replItemVariantInterfaceFactory;
     public $replItemVariantRepository;
-
     public $objectManager;
     public $replHierarchyLeafInterfaceFactory;
     public $categoryRepository;
     public $replPriceRepository;
     public $replPriceInterfaceFactory;
     public $replItemInvRespository;
-
     public $replItemInvInterfaceFactory;
     public $stockItemRepository;
     public $sourceItems;
@@ -144,41 +135,19 @@ abstract class AbstractTaskTest extends TestCase
     public $replVendorRepository;
     public $replDiscountSetupInterfaceFactory;
     public $replDiscountInterfaceFactory;
-    /**
-     * @var ReplDiscountSetupRepositoryInterface
-     */
     public $replDiscountSetupRepository;
-
-    /**
-     * @var ReplDiscountRepositoryInterface
-     */
     public $replDiscountRepository;
-    /**
-     * @var ReplDiscountValidationRepositoryInterface
-     */
     public $replDiscountValidationRepository;
-
     public $replDataTranslationRepository;
-
     public $replDataTranslationInterfaceFactory;
     public $catalogRuleRepository;
-
-    /** @var SearchCriteriaBuilder */
     public $searchCriteriaBuilder;
-
-    /**
-     * @var ResourceRuleFactory
-     */
     public $catalogRuleResource;
-
-    /**
-     * @var ContactHelper
-     */
     public $contactHelper;
-
     public $categoryCollectionFactory;
-
     public $eavConfig;
+    public $replImageLinkRepository;
+    public $replImageLinkInterfaceFactory;
 
     /**
      * @inheritdoc
@@ -228,6 +197,8 @@ abstract class AbstractTaskTest extends TestCase
         $this->contactHelper                         = $this->objectManager->get(ContactHelper::class);
         $this->categoryCollectionFactory             = $this->objectManager->get(CollectionFactory::class);
         $this->eavConfig                             = $this->objectManager->get(\Magento\Eav\Model\Config::class);
+        $this->replImageLinkRepository               = $this->objectManager->get(ReplImageLinkRepositoryInterface::class);
+        $this->replImageLinkInterfaceFactory         = $this->objectManager->get(ReplImageLinkInterfaceFactory::class);
     }
 
     /**
@@ -528,7 +499,7 @@ abstract class AbstractTaskTest extends TestCase
                 $where = [];
 
                 if ($columnName == 'KeyValue') {
-                    $where["$columnName like ?"] = "%$itemId";
+                    $where["$columnName like ?"] = "%$itemId%";
                 } else {
                     $where["$columnName = ?"] = $itemId;
                 }
