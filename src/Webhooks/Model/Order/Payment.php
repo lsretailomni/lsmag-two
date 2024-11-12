@@ -3,7 +3,7 @@
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
-use \Ls\Hospitality\Model\LSR;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Helper\NotificationHelper;
