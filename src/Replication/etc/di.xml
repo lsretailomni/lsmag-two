@@ -35,8 +35,6 @@
             </argument>
         </arguments>
     </type>
-    <preference for="Magento\Catalog\Block\Product\View\Attributes"
-                type="Ls\Replication\Block\Product\View\Attributes"/>
     <!--Replication API Repository Interfaces-->
     <preference for="Ls\Replication\Api\ReplAttributeOptionValueRepositoryInterface"
                 type="Ls\Replication\Model\ReplAttributeOptionValueRepository"/>

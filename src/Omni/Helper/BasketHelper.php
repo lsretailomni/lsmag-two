@@ -307,9 +307,9 @@ class BasketHelper extends AbstractHelper
                             if (is_numeric($itemArray->getId()) ?
                                 $itemArray->getId() == $child->getItemId() :
                                 ($itemArray->getItemId() == $itemId &&
-                                $itemArray->getVariantId() == $variantId &&
-                                $itemArray->getUnitOfMeasureId() == $uom &&
-                                $itemArray->getBarcodeId() == $barCode)
+                                    $itemArray->getVariantId() == $variantId &&
+                                    $itemArray->getUnitOfMeasureId() == $uom &&
+                                    $itemArray->getBarcodeId() == $barCode)
                             ) {
                                 $itemArray->setQuantity($itemArray->getQuantity() + $quoteItem->getData('qty'));
                                 $match = true;
@@ -423,7 +423,7 @@ class BasketHelper extends AbstractHelper
         }
 
         return [
-            'orderLinesArray'         => ($basketResponse) ? $itemsArray : $orderLinesArray,
+            'orderLinesArray' => ($basketResponse) ? $itemsArray : $orderLinesArray,
             'orderDiscountLinesArray' => $discountsArray
         ];
     }
@@ -1083,7 +1083,7 @@ class BasketHelper extends AbstractHelper
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $price   = $item->getPrice();
+            $price      = $item->getPrice();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
@@ -1132,7 +1132,7 @@ class BasketHelper extends AbstractHelper
                     ($child->getItemId() == $line->getId() && $line->getDiscountAmount() > 0) :
                     ($this->itemHelper->isSameItem($child, $line) && $line->getDiscountAmount() > 0)
                 ) {
-                    $qty = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
+                    $qty         = !empty($lines) ? $item->getQtyOrdered() : $item->getQty();
                     $rowDiscount += $line->getQuantity() == $qty ? $line->getDiscountAmount()
                         : ($line->getDiscountAmount() / $line->getQuantity()) * $qty;
                     unset($orderLines[$index]);
@@ -1176,7 +1176,9 @@ class BasketHelper extends AbstractHelper
         $oneListCalc = $this->getOneListCalculationFromCheckoutSession();
 
         if ($oneListCalc == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $this->calculate($this->get());
+            $cartId = $this->checkoutSession->getQuoteId();
+            $this->setCalculateBasket('1');
+            $this->syncBasketWithCentral($cartId);
 
             // calculate updates the session, so we fetch again
             return $this->getOneListCalculationFromCheckoutSession();
@@ -1251,26 +1253,19 @@ class BasketHelper extends AbstractHelper
      * Sending request to Central for basket calculation
      *
      * @param $cartId
-     * @param int $recreateOneList
      * @return OneListCalculateResponse|Order|null
      * @throws AlreadyExistsException
      * @throws InvalidEnumException
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function syncBasketWithCentral($cartId, $recreateOneList = 0)
+    public function syncBasketWithCentral($cartId)
     {
-        $this->quoteRepository->_resetState();
-        $quote   = $this->quoteRepository->getActive($cartId);
+        $quote      = $this->quoteRepository->getActive($cartId);
         $basketData = null;
-
-        if (!$recreateOneList) {
-            $oneList = $this->getOneListFromCustomerSession();
-        } else {
-            $oneList = $this->get();
-            // add items from the quote to the oneList and return the updated onelist
-            $oneList = $this->setOneListQuote($quote, $oneList);
-        }
+        $oneList    = $this->get();
+        // add items from the quote to the oneList and return the updated onelist
+        $oneList = $this->setOneListQuote($quote, $oneList);
 
         if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $oneList && $this->getCalculateBasket()) {
             $this->setCalculateBasket(false);
@@ -1389,8 +1384,8 @@ class BasketHelper extends AbstractHelper
         if ($options) {
             foreach ($options as $option) {
                 if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
-                    $price  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                        $item->getRowTotal()  : $item->getPrice() * $item->getQty();
+                    $price = $item->getProductType() == Type::TYPE_BUNDLE ?
+                        $item->getRowTotal() : $item->getPrice() * $item->getQty();
                 }
             }
         }
@@ -1440,12 +1435,39 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @param Entity\OneListCalculateResponse|null $calculation
+     * Get current active quote
+     *
+     * @return \Magento\Quote\Api\Data\CartInterface
+     * @throws NoSuchEntityException
+     */
+    public function getCurrentQuote()
+    {
+        $quoteId = $this->checkoutSession->getQuoteId();
+
+        if (!$quoteId) {
+            return null;
+        }
+        $quote   = $this->quoteRepository->get($quoteId);
+
+        return $quote;
+    }
+
+    /**
+     * Set basket calculation into current quote
+     *
+     * @param $calculation
+     * @return void
      * @throws NoSuchEntityException
      */
     public function setOneListCalculationInCheckoutSession($calculation)
     {
-        $this->checkoutSession->setData($this->getOneListCalculationKey(), $calculation);
+        $quote = $this->getCurrentQuote();
+
+        if ($calculation && $quote) {
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+            $quote->setBasketResponse(serialize($calculation));
+            $this->quoteResourceModel->save($quote);
+        }
     }
 
     /**
@@ -1461,12 +1483,23 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * @return mixed|null
+     * Get basket calculation from current quote
+     *
+     * @return mixed
      * @throws NoSuchEntityException
      */
     public function getOneListCalculationFromCheckoutSession()
     {
-        return $this->checkoutSession->getData($this->getOneListCalculationKey());
+        $quote = $this->getCurrentQuote();
+
+        if (!$quote) {
+            return null;
+        }
+        $basketData = $quote->getBasketResponse();
+        // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+        $oneListCalculate = ($basketData) ? unserialize($basketData) : $basketData;
+
+        return $oneListCalculate;
     }
 
     /**

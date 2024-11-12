@@ -8,6 +8,7 @@
     <column xsi:type="int" name="AllowVoiding" padding="11" nullable="true" comment="AllowVoiding"/>
     <column xsi:type="text" name="ChangeTenderId" nullable="true" comment="ChangeTenderId"/>
     <column xsi:type="int" name="CountingRequired" padding="11" nullable="true" comment="CountingRequired"/>
+    <column xsi:type="text" name="DataEntryCodes" nullable="true" comment="DataEntryCodes"/>
     <column xsi:type="int" name="ForeignCurrency" padding="11" nullable="true" comment="ForeignCurrency"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="decimal" name="MaximumOverTenderAmount" scale="4" precision="20" nullable="true" comment="MaximumOverTenderAmount"/>
@@ -748,7 +749,9 @@
     <column xsi:type="text" name="MainMenuID" nullable="true" comment="MainMenuID"/>
     <column xsi:type="text" name="Name" nullable="true" comment="Name"/>
     <column xsi:type="text" name="Phone" nullable="true" comment="Phone"/>
+    <column xsi:type="text" name="PriceGroupCodes" nullable="true" comment="PriceGroupCodes"/>
     <column xsi:type="text" name="State" nullable="true" comment="State"/>
+    <column xsi:type="text" name="StoreGroupCodes" nullable="true" comment="StoreGroupCodes"/>
     <column xsi:type="text" name="Street" nullable="true" comment="Street"/>
     <column xsi:type="text" name="TaxGroup" nullable="true" comment="TaxGroup"/>
     <column xsi:type="boolean" name="UseSourcingLocation" default="0" nullable="true" comment="UseSourcingLocation"/>
@@ -1704,6 +1707,7 @@
     <column xsi:type="decimal" name="SplitDealPriceDiscount" scale="4" precision="20" nullable="true" comment="SplitDealPriceDiscount"/>
     <column xsi:type="decimal" name="StandardPrice" scale="4" precision="20" nullable="true" comment="StandardPrice"/>
     <column xsi:type="decimal" name="StandardPriceInclVAT" scale="4" precision="20" nullable="true" comment="StandardPriceInclVAT"/>
+    <column xsi:type="text" name="StoreGroupCodes" nullable="true" comment="StoreGroupCodes"/>
     <column xsi:type="decimal" name="TenderOffer" scale="4" precision="20" nullable="true" comment="TenderOffer"/>
     <column xsi:type="decimal" name="TenderOfferAmount" scale="4" precision="20" nullable="true" comment="TenderOfferAmount"/>
     <column xsi:type="text" name="TenderTypeCode" nullable="true" comment="TenderTypeCode"/>

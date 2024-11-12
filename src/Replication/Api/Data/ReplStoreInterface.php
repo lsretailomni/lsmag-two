@@ -187,6 +187,17 @@ interface ReplStoreInterface
     public function getPhone();
 
     /**
+     * @param string $PriceGroupCodes
+     * @return $this
+     */
+    public function setPriceGroupCodes($PriceGroupCodes);
+
+    /**
+     * @return string
+     */
+    public function getPriceGroupCodes();
+
+    /**
      * @param string $State
      * @return $this
      */
@@ -196,6 +207,17 @@ interface ReplStoreInterface
      * @return string
      */
     public function getState();
+
+    /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes);
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes();
 
     /**
      * @param string $Street
