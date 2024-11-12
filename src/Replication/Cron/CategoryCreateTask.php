@@ -89,6 +89,9 @@ class CategoryCreateTask
     /** @var StoreInterface $store */
     public $store;
 
+    /** @var $langCode */
+    public $langCode;
+
     /** @var StoreManagerInterface */
     public $storeManager;
 
@@ -166,7 +169,11 @@ class CategoryCreateTask
         if (!empty($stores)) {
             foreach ($stores as $store) {
                 $this->lsr->setStoreId($store->getId());
-                $this->store = $store;
+                $this->store    = $store;
+                $this->langCode = $this->lsr->getStoreConfig(
+                    LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
+                    $store->getId()
+                );
                 if ($this->lsr->isLSR($this->store->getId())) {
                     $this->logger->debug('Running CategoryCreateTask for Store ' . $this->store->getName());
                     $this->replicationHelper->updateConfigValue(
@@ -288,10 +295,12 @@ class CategoryCreateTask
                     $cat->getResource()->saveAttribute($cat, 'nav_id');
                 } else {
                     if ($hierarchyNode->getIsUpdated() == 1) {
-                        $categoryExistData->setData(
-                            'name',
-                            ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId()
-                        );
+                        if ($this->langCode == 'Default') {
+                            $categoryExistData->setData(
+                                'name',
+                                ($hierarchyNode->getDescription()) ?: $hierarchyNode->getNavId()
+                            );
+                        }
                         $categoryExistData->setData('is_active', 1);
                         if ($hierarchyNode->getImageId()) {
                             $image = $this->getImage($hierarchyNode->getImageId());
@@ -373,7 +382,10 @@ class CategoryCreateTask
                     ->addAttributeToFilter('nav_id', $itemCategoryId)
                     ->addPathsFilter('1/' . $this->getRootCategoryId() . '/')
                     ->setPageSize(1);
-                $subCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getNavId(), true);
+                $subCategoryExistData = $this->isCategoryExist(
+                    $hierarchyNodeSub->getNavId(),
+                    true
+                );
                 if ($collection->getSize() > 0) {
                     if (!$subCategoryExistData) {
                         /** @var CategoryFactory $categorysub */
@@ -402,10 +414,12 @@ class CategoryCreateTask
                         $catsub->getResource()->saveAttribute($catsub, 'nav_id');
                     } else {
                         if ($hierarchyNodeSub->getIsUpdated() == 1) {
-                            $subCategoryExistData->setData(
-                                'name',
-                                ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
-                            );
+                            if ($this->langCode == 'Default') {
+                                $subCategoryExistData->setData(
+                                    'name',
+                                    ($hierarchyNodeSub->getDescription()) ?: $hierarchyNodeSub->getNavId()
+                                );
+                            }
                             $parentCategoryExistData = $this->isCategoryExist($hierarchyNodeSub->getParentNode(), true);
                             if ($parentCategoryExistData) {
                                 $newParentId = $parentCategoryExistData->getId();
@@ -426,7 +440,7 @@ class CategoryCreateTask
                                 'position',
                                 $hierarchyNodeSub->getChildrenOrder()
                             );
-                            // @codingStandardsIgnoreStart
+                            // @codingStandardsIgnoreStart                            
                             $this->categoryRepository->save($subCategoryExistData);
                         } else {
                             $subCategoryExistData->setStoreId($this->store->getId());
@@ -462,8 +476,8 @@ class CategoryCreateTask
             ['field' => 'main_table.HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'second.attribute_id', 'value' => $attribute_id, 'condition_type' => 'eq'],
             [
-                'field' => 'second.store_id',
-                'value' => !$this->storeManager->hasSingleStore() ? $this->store->getId() : 0,
+                'field'          => 'second.store_id',
+                'value'          => !$this->storeManager->hasSingleStore() ? $this->store->getId() : 0,
                 'condition_type' => 'eq'
             ]
         ];
@@ -573,6 +587,7 @@ class CategoryCreateTask
     public function isCategoryExist($nav_id, $store = false)
     {
         $collection = $this->collectionFactory->create()
+            ->addAttributeToSelect('name')
             ->addAttributeToFilter('nav_id', $nav_id);
 
         if ($store) {
