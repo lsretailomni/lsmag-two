@@ -452,6 +452,8 @@ class Data extends AbstractHelper
     }
 
     /**
+     * Parse ping response and save configuration
+     *
      * @param $pingResponseText
      * @param string $websiteId
      * @return array
@@ -464,7 +466,7 @@ class Data extends AbstractHelper
 
             if (!empty($results)) {
                 $licenseHtml = $this->getLicenseStatusHtml($results[1]);
-                if($licenseHtml != "") {
+                if ($licenseHtml != "") {
                     $bothVersion['license_html'] = $licenseHtml;
                 }
 
@@ -888,12 +890,13 @@ class Data extends AbstractHelper
      *
      * @param $string
      * @return string
+     * @throws NoSuchEntityException
      */
     function getLicenseStatusHtml($string)
     {
         $licenseHtml = "";
-        if(trim($string) && strpos($string,'CL:') !== false) {
-            if(strpos($string, 'CL:True EL:True') !== false) {
+        if (trim($string) && strpos($string, 'CL:') !== false) {
+            if (strpos($string, 'CL:True EL:True') !== false) {
                 $this->lsr->setLicenseValidity("1");
                 $licenseValidity = 1;
             } else {
