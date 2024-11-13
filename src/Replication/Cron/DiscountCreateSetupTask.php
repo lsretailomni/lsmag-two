@@ -565,7 +565,7 @@ class DiscountCreateSetupTask
         $websiteId  = $replDiscount->getScopeId();
         if ($checkStore || version_compare(
                 $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
-                '2024.6',
+                '2024.10.0',
                 '<='
             )) {
             if ($amount == null) {
