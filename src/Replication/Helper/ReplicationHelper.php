@@ -100,6 +100,7 @@ use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
+use Zend_Db_Statement_Interface;
 
 /**
  * Useful helper functions for replication
@@ -3602,15 +3603,15 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Execute Given Query
+     * Fetch records based on given query
      *
      * @param $query
-     * @return void
+     * @return array|void
      */
     public function executeGivenQuery($query)
     {
         try {
-            $this->getConnection()->query($query);
+            return $this->getConnection()->fetchAll($query);
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
         }
