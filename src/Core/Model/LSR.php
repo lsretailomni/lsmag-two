@@ -1406,10 +1406,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function setLicenseValidity($status)
     {
-        $centralVersion  = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
-
-        if (version_compare($centralVersion, '25.0.0.0', '>=')) {
-            $this->data->setLicenseStatus($status);
+        if ($centralVersion = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES)) {
+            if (version_compare($centralVersion, '25.0.0.0', '>=')) {
+                $this->data->setLicenseStatus($status);
+            }
         }
     }
 
