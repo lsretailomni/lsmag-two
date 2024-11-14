@@ -139,8 +139,9 @@ class CartObserverTest extends AbstractIntegrationTest
      */
     public function testCartObserverWithOneListSave()
     {
-        $customer = $this->fixtures->get('customer');
-        $cart     = $this->fixtures->get('cart1');
+        $customer      = $this->fixtures->get('customer');
+        $cart          = $this->fixtures->get('cart1');
+        $expectedTotal = "85.5";
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
         $this->checkoutSession->setQuoteId($cart->getId());
@@ -162,7 +163,15 @@ class CartObserverTest extends AbstractIntegrationTest
         $quoteId = $this->checkoutSession->getQuoteId();
         $this->assertNotNull($quoteId);
         $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
-        $this->assertNotEquals(0, $this->checkoutSession->getQuote()->getLsPointsEarn());
+        $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
+        $this->assertEquals(
+            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
+            $this->checkoutSession->getQuote()->getLsPointsEarn()
+        );
+        $this->assertEquals(
+            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getTotalAmount(),
+            $this->checkoutSession->getQuote()->getGrandTotal()
+        );
 
         $cart->delete();
         $this->checkoutSession->clearQuote();
@@ -224,5 +233,6 @@ class CartObserverTest extends AbstractIntegrationTest
         $this->assertNotNull($quoteId);
         $this->assertEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
         $this->assertEquals(0, $this->checkoutSession->getQuote()->getLsPointsEarn());
+        $this->assertNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
     }
 }
