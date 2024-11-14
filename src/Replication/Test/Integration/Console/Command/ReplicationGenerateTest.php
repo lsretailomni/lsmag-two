@@ -8,6 +8,7 @@ use \Ls\Omni\Client\Ecommerce\Operation\ReplEcommItems;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Replication\Code\SchemaUpdateGenerator;
 use \Ls\Replication\Console\Command\ReplicationGenerate;
 use \Ls\Replication\Test\Integration\AbstractIntegrationTest;
 use Magento\Framework\Console\Cli;
@@ -56,17 +57,22 @@ class ReplicationGenerateTest extends TestCase
         $url          = OmniService::getUrl($service_type);
         $client       = new OmniClient($url, $service_type);
         $metadata = $client->getMetadata(true);
+        $schemaUpdatePath = new SchemaUpdateGenerator($metadata);
         $replication_operation = $metadata->getReplicationOperationByName('ReplEcommItems');
+        $dbSchemaPath = $schemaUpdatePath->getPath();
         $paths = [
             $replication_operation->getMainEntityPath(true),
             $replication_operation->getInterfacePath(true),
             $replication_operation->getResourceModelPath(true),
             $replication_operation->getRepositoryPath(true),
             $replication_operation->getRepositoryInterfacePath(true),
-            $replication_operation->getResourceCollectionPath(true)
+            $replication_operation->getResourceCollectionPath(true),
+            $replication_operation->getJobPath(true),
+            $replication_operation->getSearchInterfacePath(true),
+            $replication_operation->getSearchPath(true),
+            $dbSchemaPath
         ];
 
-        $this->removeFiles($paths);
         $this->command = $this->objectManager->get(ReplicationGenerate::class);
         $this->commandTester = new CommandTester($this->command);
         $this->commandTester->execute([]);
