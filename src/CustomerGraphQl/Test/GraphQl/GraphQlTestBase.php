@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Test\GraphQl;
 
-use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\TestFramework\TestCase\GraphQlAbstract;
 
 /**

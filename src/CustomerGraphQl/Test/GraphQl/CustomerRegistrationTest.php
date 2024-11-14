@@ -1,10 +1,8 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Ls\CustomerGraphQl\Test\GraphQl;
 
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 
