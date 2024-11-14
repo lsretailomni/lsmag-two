@@ -106,41 +106,45 @@ class Request extends Action
                 $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
                 $documentId         = null;
                 if (!empty($oneListCalculation)) {
-                    $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
-                        $order->getRelationParentId()
-                    );
-                    if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
-                        $documentId = $oldOrder->getDocumentId();
-                        if ($documentId) {
-                            $req      = $this->orderEdit->prepareOrder(
-                                $order,
-                                $oneListCalculation,
-                                $oldOrder,
-                                $documentId
-                            );
-                            $response = $this->orderEdit->orderEdit($req);
-                            if ($response) {
-                                $order->setDocumentId($documentId);
-                                $order->setLsOrderEdit(true);
-                                $isClickCollect = false;
-                                $shippingMethod = $order->getShippingMethod(true);
-                                if ($shippingMethod !== null) {
-                                    $carrierCode    = $shippingMethod->getData('carrier_code');
-                                    $method         = $shippingMethod->getData('method');
-                                    $isClickCollect = $carrierCode == 'clickandcollect';
-                                }
-                                if ($isClickCollect) {
-                                    $order->setPickupStore($oldOrder->getPickupStore());
-                                }
-                                $this->orderRepository->save($order);
-                                $oldOrder->setDocumentId(null);
-                                $this->orderRepository->save($oldOrder);
-                                $this->messageManager->addSuccessMessage(
-                                    __('Order request has been sent to LS Central successfully')
+                    if ($order->getRelationParentId()) {
+                        $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
+                            $order->getRelationParentId()
+                        );
+
+                        if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
+                            $documentId = $oldOrder->getDocumentId();
+                            if ($documentId) {
+                                $req      = $this->orderEdit->prepareOrder(
+                                    $order,
+                                    $oneListCalculation,
+                                    $oldOrder,
+                                    $documentId
                                 );
+                                $response = $this->orderEdit->orderEdit($req);
+                                if ($response) {
+                                    $order->setDocumentId($documentId);
+                                    $order->setLsOrderEdit(true);
+                                    $isClickCollect = false;
+                                    $shippingMethod = $order->getShippingMethod(true);
+                                    if ($shippingMethod !== null) {
+                                        $carrierCode    = $shippingMethod->getData('carrier_code');
+                                        $method         = $shippingMethod->getData('method');
+                                        $isClickCollect = $carrierCode == 'clickandcollect';
+                                    }
+                                    if ($isClickCollect) {
+                                        $order->setPickupStore($oldOrder->getPickupStore());
+                                    }
+                                    $this->orderRepository->save($order);
+                                    $oldOrder->setDocumentId(null);
+                                    $this->orderRepository->save($oldOrder);
+                                    $this->messageManager->addSuccessMessage(
+                                        __('Order request has been sent to LS Central successfully')
+                                    );
+                                }
                             }
                         }
                     }
+
                     if (empty($documentId)) {
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
