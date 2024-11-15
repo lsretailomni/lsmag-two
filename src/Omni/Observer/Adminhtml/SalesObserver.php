@@ -63,7 +63,7 @@ class SalesObserver implements ObserverInterface
                 $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
-                    ->setSubtotal($subTotal-$taxAmount)
+                    ->setSubtotal($subTotal - $taxAmount)
                     ->setBaseSubtotal($subTotal)
                     ->setSubtotalInclTax($subTotal)
                     ->setBaseSubtotalTotalInclTax($subTotal)
