@@ -303,7 +303,7 @@ class AttributesCreateTaskTest extends TestCase
     ]
     public function testSoftAttributeRemoval()
     {
-        $storeId       = $this->storeManager->getStore()->getId();
+        $storeId       = $this->storeManager->getStore()->getWebsiteId();
         $filters       = [
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'Code', 'value' => AbstractIntegrationTest::SAMPLE_ATTRIBUTE_CODE, 'condition_type' => 'eq']
@@ -406,7 +406,7 @@ class AttributesCreateTaskTest extends TestCase
 
     public function getFirstExtendedVariant()
     {
-        $storeId  = $this->storeManager->getStore()->getId();
+        $storeId  = $this->storeManager->getStore()->getWebsiteId();
         $filters  = [
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'Code', 'value' => AbstractIntegrationTest::SAMPLE_HARD_ATTRIBUTE, 'condition_type' => 'eq'],
@@ -432,7 +432,7 @@ class AttributesCreateTaskTest extends TestCase
                 'Sequence'  => 80000,
                 'Value'     => self::SAMPLE_NEW_SOFT_ATTRIBUTE_OPTION_LABEL,
                 'scope'     => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'  => $this->storeManager->getStore()->getId()
+                'scope_id'  => $this->storeManager->getStore()->getWebsiteId()
             ]
         );
         $this->replAttributeOptionValueRepositoryInterface->save($option);
@@ -455,7 +455,7 @@ class AttributesCreateTaskTest extends TestCase
                 'Value'                 => self::SAMPLE_NEW_HARD_ATTRIBUTE_OPTION_LABEL,
                 'ValueDescription'      => self::SAMPLE_NEW_HARD_ATTRIBUTE_OPTION_LABEL,
                 'scope'                 => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'              => $this->storeManager->getStore()->getId()
+                'scope_id'              => $this->storeManager->getStore()->getWebsiteId()
             ]
         );
         $this->replExtendedVariantValueRepository->save($option);
@@ -473,7 +473,7 @@ class AttributesCreateTaskTest extends TestCase
                 'ItemId'  => 4444,
                 'VariantId' => 000,
                 'scope'     => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'  => $this->storeManager->getStore()->getId()
+                'scope_id'  => $this->storeManager->getStore()->getWebsiteId()
             ]
         );
         $this->replItemVariantRepository->save($option);
@@ -491,7 +491,7 @@ class AttributesCreateTaskTest extends TestCase
                 'ShortDescription' => self::SAMPLE_NEW_UOM_ATTRIBUTE_OPTION_LABEL,
                 'UnitDecimals'     => 0,
                 'scope'            => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'         => $this->storeManager->getStore()->getId()
+                'scope_id'         => $this->storeManager->getStore()->getWebsiteId()
             ]
         );
         $this->replUnitOfMeasureRepository->save($option);
@@ -514,7 +514,7 @@ class AttributesCreateTaskTest extends TestCase
                 'PictureId'                      => 0,
                 'Published'                      => 1,
                 'scope'                          => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'                       => $this->storeManager->getStore()->getId()
+                'scope_id'                       => $this->storeManager->getStore()->getWebsiteId()
             ]
         );
         $this->replVendorRepository->save($option);

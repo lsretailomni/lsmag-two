@@ -188,7 +188,7 @@ class CategoryCreateTaskTest extends TestCase
     public function testHierarchyNodeRemoval()
     {
         $this->executeUntilReady();
-        $storeId = $this->storeManager->getStore()->getId();
+        $storeId = $this->storeManager->getStore()->getWebsiteId();
         $filters       = [
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
             [
@@ -329,7 +329,7 @@ class CategoryCreateTaskTest extends TestCase
                 'PresentationOrder' => 1,
                 'ParentNode' => $parentNode,
                 'scope'     => ScopeInterface::SCOPE_WEBSITES,
-                'scope_id'  => $this->storeManager->getStore()->getId()
+                'scope_id'  => $this->storeManager->getStore()->getWebsiteId()
             ]
         );
         $this->replHierarchyNodeRepository->save($option);
@@ -337,7 +337,7 @@ class CategoryCreateTaskTest extends TestCase
 
     public function updateHierarchyNodeData()
     {
-        $storeId  = $this->storeManager->getStore()->getId();
+        $storeId  = $this->storeManager->getStore()->getWebsiteId();
         $filters  = [
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
             [
