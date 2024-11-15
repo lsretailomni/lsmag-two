@@ -51,6 +51,11 @@ class ReplStoreTenderType extends AbstractModel implements ReplStoreTenderTypeIn
     protected $CountingRequired = null;
 
     /**
+     * @property string $DataEntryCodes
+     */
+    protected $DataEntryCodes = null;
+
+    /**
      * @property int $ForeignCurrency
      */
     protected $ForeignCurrency = null;
@@ -298,6 +303,26 @@ class ReplStoreTenderType extends AbstractModel implements ReplStoreTenderTypeIn
     public function getCountingRequired()
     {
         return $this->getData( 'CountingRequired' );
+    }
+
+    /**
+     * @param string $DataEntryCodes
+     * @return $this
+     */
+    public function setDataEntryCodes($DataEntryCodes)
+    {
+        $this->setData( 'DataEntryCodes', $DataEntryCodes );
+        $this->DataEntryCodes = $DataEntryCodes;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataEntryCodes()
+    {
+        return $this->getData( 'DataEntryCodes' );
     }
 
     /**
