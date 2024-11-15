@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Ls\Replication\Test\Integration\Console\Command;
 
+use CaseHelper\CaseHelperFactory;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Operation\ReplEcommItems;
 use \Ls\Omni\Service\Service as OmniService;
@@ -16,6 +17,7 @@ use Magento\Framework\ObjectManagerInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Symfony\Component\Console\Tester\CommandTester;
 
 /**
@@ -24,6 +26,19 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class ReplicationGenerateTest extends TestCase
 {
+    private const SYSTEM_PROPERTIES = [
+        'scope',
+        'scope_id',
+        'processed',
+        'is_updated',
+        'is_failed',
+        'created_at',
+        'updated_at',
+        'identity_value',
+        'checksum',
+        'processed_at'
+    ];
+
     /** @var ObjectManagerInterface */
     private $objectManager;
     private $commandTester;
@@ -53,27 +68,28 @@ class ReplicationGenerateTest extends TestCase
     ]
     public function testExecute()
     {
-        $service_type = new ServiceType(ReplEcommItems::SERVICE_TYPE);
-        $url          = OmniService::getUrl($service_type);
-        $client       = new OmniClient($url, $service_type);
-        $metadata = $client->getMetadata(true);
-        $schemaUpdatePath = new SchemaUpdateGenerator($metadata);
-        $replication_operation = $metadata->getReplicationOperationByName('ReplEcommItems');
-        $dbSchemaPath = $schemaUpdatePath->getPath();
-        $paths = [
-            $replication_operation->getMainEntityPath(true),
-            $replication_operation->getInterfacePath(true),
-            $replication_operation->getResourceModelPath(true),
-            $replication_operation->getRepositoryPath(true),
-            $replication_operation->getRepositoryInterfacePath(true),
-            $replication_operation->getResourceCollectionPath(true),
-            $replication_operation->getJobPath(true),
-            $replication_operation->getSearchInterfacePath(true),
-            $replication_operation->getSearchPath(true),
+        $service_type         = new ServiceType(ReplEcommItems::SERVICE_TYPE);
+        $url                  = OmniService::getUrl($service_type);
+        $client               = new OmniClient($url, $service_type);
+        $metadata             = $client->getMetadata(true);
+        $schemaUpdatePath     = new SchemaUpdateGenerator($metadata);
+        $replicationOperation = $metadata->getReplicationOperationByName('ReplEcommItems');
+        $dbSchemaPath         = $schemaUpdatePath->getPath();
+        $paths                = [
+            $replicationOperation->getMainEntityPath(true),
+            $replicationOperation->getInterfacePath(true),
+            $replicationOperation->getResourceModelPath(true),
+            $replicationOperation->getRepositoryPath(true),
+            $replicationOperation->getRepositoryInterfacePath(true),
+            $replicationOperation->getResourceCollectionPath(true),
+            $replicationOperation->getJobPath(true),
+            $replicationOperation->getSearchInterfacePath(true),
+            $replicationOperation->getSearchPath(true),
+            $replicationOperation->getRepositoryTestPath(true),
             $dbSchemaPath
         ];
 
-        $this->command = $this->objectManager->get(ReplicationGenerate::class);
+        $this->command       = $this->objectManager->get(ReplicationGenerate::class);
         $this->commandTester = new CommandTester($this->command);
         $this->commandTester->execute([]);
         $commandOutput = $this->commandTester->getDisplay();
@@ -84,6 +100,78 @@ class ReplicationGenerateTest extends TestCase
         );
 
         $this->assertPathsExists($paths);
+        $this->assertSystemProperties($replicationOperation);
+        $this->assertSystemMethods($replicationOperation);
+        $this->assertDbSchema($replicationOperation, $dbSchemaPath);
+    }
+
+    public function assertDbSchema($replicationOperation, $schemaPath)
+    {
+        $tableName = "ls_replication_" . $replicationOperation->getTableName();
+        $xml       = simplexml_load_file($schemaPath);
+        foreach ($xml->children() as $table) {
+            if ($table->attributes()['name'] == $tableName) {
+                break;
+            }
+        }
+
+        foreach (self::SYSTEM_PROPERTIES as $property) {
+            $found = false;
+            foreach ($table->children() as $column) {
+                if ($column->attributes()['name'] == $property) {
+                    $found = true;
+                    break;
+                }
+            }
+
+            $this->assertTrue($found);
+        }
+    }
+
+    public function assertSystemMethods($replicationOperation)
+    {
+        $reflect  = new ReflectionClass($replicationOperation->getMainEntityFqn());
+        $props    = $reflect->getMethods();
+        $ownProps = [];
+        foreach ($props as $prop) {
+            if ($prop->class === $replicationOperation->getMainEntityFqn()) {
+                $ownProps[] = $prop->getName();
+            }
+        }
+
+        $caseHelper      = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_SNAKE_CASE);
+        $expectedMethods = [];
+        foreach (self::SYSTEM_PROPERTIES as $property) {
+            $pascalName        = ucfirst($caseHelper->toPascalCase($property));
+            $expectedMethods[] = "set$pascalName";
+            $expectedMethods[] = "get$pascalName";
+        }
+
+        $this->assertTrue(
+            !array_diff(
+                $expectedMethods,
+                $ownProps
+            )
+        );
+    }
+
+    public function assertSystemProperties($replicationOperation)
+    {
+        $reflect  = new ReflectionClass($replicationOperation->getMainEntityFqn());
+        $props    = $reflect->getProperties();
+        $ownProps = [];
+        foreach ($props as $prop) {
+            if ($prop->class === $replicationOperation->getMainEntityFqn()) {
+                $ownProps[] = $prop->getName();
+            }
+        }
+
+        $this->assertTrue(
+            !array_diff(
+                self::SYSTEM_PROPERTIES,
+                $ownProps
+            )
+        );
     }
 
     public function removeFiles($pathsRemoved)
