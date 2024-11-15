@@ -247,6 +247,12 @@ class SalesObserverTest extends AbstractIntegrationTest
 
         $expectedLsPointsDiscount = AbstractIntegrationTest::LSR_LOY_POINTS * $this->loyaltyHelper->getPointRate();
 
+        $this->assertNotEquals(0, count($this->checkoutSession->getQuote()->getAllItems()));
+        $this->assertNotNull($this->basketHelper->getOneListCalculationFromCheckoutSession());
+        $this->assertEquals(
+            $this->basketHelper->getOneListCalculationFromCheckoutSession()->getPointsRewarded(),
+            $this->checkoutSession->getQuote()->getLsPointsEarn()
+        );
         $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
 
         $cart->delete();
