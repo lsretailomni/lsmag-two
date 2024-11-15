@@ -24,7 +24,9 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 
 class CustomerOrder implements DataFixtureInterface
 {
-    private const DEFAULT_DATA = [];
+    private const DEFAULT_DATA = [
+        'offline' => 0
+    ];
     public $customerSession;
     public $checkoutSession;
     public $eventManager;
@@ -102,6 +104,8 @@ class CustomerOrder implements DataFixtureInterface
         $quoteShippingAddress->importCustomerAddressData(
             $this->addressRespositoryInterface->getById($address->getId())
         );
+        $reserveOrderId = 'test1' . rand(111111111, 999999999);
+
         $customer = $this->customerRepository->getById($customer->getId());
         $quote->setStoreId(1)
             ->setIsActive(true)
@@ -110,7 +114,7 @@ class CustomerOrder implements DataFixtureInterface
             ->setShippingAddress($quoteShippingAddress)
             ->setBillingAddress($quoteShippingAddress)
             ->setCheckoutMethod(Onepage::METHOD_CUSTOMER)
-            ->setReservedOrderId('55555555')
+            ->setReservedOrderId($reserveOrderId)
             ->setEmail($customer->getEmail());
         $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
         $quote->getShippingAddress()->setCollectShippingRates(true);
@@ -123,10 +127,13 @@ class CustomerOrder implements DataFixtureInterface
         $orderId = $this->cartManagement->placeOrder($quote->getId());
 
         $order = $this->orderRepository->get($orderId);
-        $this->eventManager->dispatch(
-            'checkout_onepage_controller_success_action',
-            ['order' => $order]
-        );
+
+        if (!$data['offline']) {
+            $this->eventManager->dispatch(
+                'checkout_onepage_controller_success_action',
+                ['order' => $order]
+            );
+        }
 
         return $order;
     }

@@ -35,7 +35,7 @@ use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Helper\Xpath;
 use PHPUnit\Framework\TestCase;
-
+define(__NAMESPACE__ . '\\RESERVED_ORDER_ID', 'test1'. rand(111111111,999999999));
 /**
  * @magentoAppArea frontend
  * @magentoDbIsolation enabled
@@ -78,12 +78,12 @@ class SuccessTest extends TestCase
     }
 
     #[
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -137,12 +137,12 @@ class SuccessTest extends TestCase
     }
 
     #[
-        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::ENABLED, 'store', 'default'),
+        Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         DataFixture(
             CreateSimpleProduct::class,
             [
@@ -151,7 +151,7 @@ class SuccessTest extends TestCase
             ],
             as: 'product'
         ),
-        DataFixture(GuestCartFixture::class, as: 'cart1'),
+        DataFixture(GuestCartFixture::class, ['reserved_order_id' => RESERVED_ORDER_ID], as: 'cart1'),
         DataFixture(
             AddProductToCartFixture::class,
             ['cart_id' => '$cart1.id$', 'product_id' => '$product.id$', 'qty' => 2]
@@ -171,7 +171,7 @@ class SuccessTest extends TestCase
         DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart1.id$'], 'order'),
         DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
     ]
-    public function testPrepareBlockDataForGuest()
+    public function testPrepareBlockDataForGuestUser()
     {
         $order = $this->fixtures->get('order1');
         $output = $this->block->toHtml();
@@ -185,7 +185,10 @@ class SuccessTest extends TestCase
     }
 
     #[
+        Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
+        Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, LSR::LS_INDUSTRY_VALUE_RETAIL, 'store', 'default'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LS_VERSION, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
