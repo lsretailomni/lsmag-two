@@ -28,6 +28,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\Product\Attribute\OptionManagement;
 use Magento\Catalog\Model\ResourceModel\Eav\AttributeFactory;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
+use Magento\Eav\Api\AttributeOptionUpdateInterface;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Api\Data\AttributeOptionInterfaceFactory;
 use Magento\Eav\Api\Data\AttributeOptionLabelInterfaceFactory;
@@ -138,6 +139,11 @@ class AttributesCreateTask
     public $attributeOptionManagement;
 
     /**
+     * @var AttributeOptionUpdateInterface
+     */
+    public $attributeOptionUpdate;
+
+    /**
      * @var ReplVendorRepositoryInterface
      */
     public $replVendorRepositoryInterface;
@@ -158,7 +164,6 @@ class AttributesCreateTask
     public $optionCollection;
 
     /**
-     * AttributesCreateTask constructor.
      * @param ReplExtendedVariantValueRepository $replExtendedVariantValueRepository
      * @param ProductAttributeRepositoryInterface $productAttributeRepository
      * @param EavSetupFactory $eavSetupFactory
@@ -178,6 +183,7 @@ class AttributesCreateTask
      * @param ReplItemVariantRepository $replItemVariantRepository
      * @param ReplItemVariantCollectionFactory $replItemVariantCollectionFactory
      * @param CollectionFactory $attrOptionCollectionFactory
+     * @param AttributeOptionUpdateInterface $attributeOptionUpdate
      */
     public function __construct(
         ReplExtendedVariantValueRepository $replExtendedVariantValueRepository,
@@ -198,7 +204,8 @@ class AttributesCreateTask
         LSR $LSR,
         ReplItemVariantRepository $replItemVariantRepository,
         ReplItemVariantCollectionFactory $replItemVariantCollectionFactory,
-        CollectionFactory $attrOptionCollectionFactory
+        CollectionFactory $attrOptionCollectionFactory,
+        AttributeOptionUpdateInterface $attributeOptionUpdate
     ) {
         $this->replExtendedVariantValueRepository          = $replExtendedVariantValueRepository;
         $this->productAttributeRepository                  = $productAttributeRepository;
@@ -219,6 +226,7 @@ class AttributesCreateTask
         $this->replItemVariantRepository                   = $replItemVariantRepository;
         $this->replItemVariantCollectionFactory            = $replItemVariantCollectionFactory;
         $this->attrOptionCollectionFactory                 = $attrOptionCollectionFactory;
+        $this->attributeOptionUpdate                       = $attributeOptionUpdate;
     }
 
     /**
@@ -643,13 +651,14 @@ class AttributesCreateTask
     }
 
     /**
+     * Update an option sort order in a variant attribute
+     *
      * @param $formattedCode
      * @param $updatedOptionArray
      */
     public function updateVariantLogicalOrderByLabel($formattedCode, $updatedOptionArray)
     {
         try {
-
             $attribute = $this->eavAttributeFactory->create();
             $attribute = $attribute->loadByCode(Product::ENTITY, $formattedCode);
             $options   = $attribute->getOptions();
@@ -660,9 +669,12 @@ class AttributesCreateTask
                     }
                     if ($option->getLabel() == $label) {
                         $option->setSortOrder($sortOrder);
-                        $attribute->setOptions([$option]);
-                        // @codingStandardsIgnoreLine
-                        $attribute->save();
+                        $this->attributeOptionUpdate->update(
+                            Product::ENTITY,
+                            $formattedCode,
+                            $option->getValue(),
+                            $option
+                        );
                         break;
                     }
                 }
