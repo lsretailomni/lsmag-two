@@ -17,7 +17,7 @@ class AbstractIntegrationTest extends TestCase
     public const FIRST_NAME = 'Deepak';
     public const LAST_NAME = 'Ret';
     public const CUSTOMER_ID = '1';
-    public const CS_URL = 'http://20.6.33.78/commerceservice';
+    public const CS_URL = 'http://20.6.33.78/CommerceMaster';
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
     public const LS_MAG_ENABLE = '1';
@@ -27,6 +27,7 @@ class AbstractIntegrationTest extends TestCase
     public const LSR_CARD_ID = '10051';
     public const LSR_LOY_POINTS = 2;
     public const STORE_PICKUP = 'S0001';
+    public const ITEM_SIMPLE = '40180';
     public const VALID_COUPON_CODE = 'COUP0119';
     public const INVALID_COUPON_CODE = 'COUPON_CODE';
     public const GIFTCARD = '10000011';
