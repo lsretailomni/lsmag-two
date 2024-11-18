@@ -7,9 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractIntegrationTest extends TestCase
 {
-    public const CS_URL = 'http://20.6.33.78/commerceservice';
-    public const CS_VERSION = '2024.4.1';
-    public const LS_VERSION = '25.0.0.0';
+    public const CS_URL = 'http://20.6.33.78/CommerceMaster';
+    public const CS_VERSION = '2024.10.0';
+    public const LS_VERSION = '25.1.0.0';
     public const CS_STORE = 'S0013';
     public const ENABLED = '1';
     public const SAMPLE_FLAT_REPLICATION_CRON_URL = 'Ls\Replication\Cron\ReplEcommItemsTask';

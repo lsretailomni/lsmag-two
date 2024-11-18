@@ -15,7 +15,6 @@ use Magento\Catalog\Api\CategoryRepositoryInterface;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\ObjectManagerInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\TestFramework\Fixture\Config;
@@ -68,14 +67,14 @@ class CategoryCreateTaskTest extends TestCase
     {
         parent::setUp();
 
-        $this->objectManager     = Bootstrap::getObjectManager();
-        $this->cron              = $this->objectManager->create(CategoryCreateTask::class);
-        $this->lsr               = $this->objectManager->create(\Ls\Core\Model\Lsr::class);
-        $this->storeManager      = $this->objectManager->get(StoreManagerInterface::class);
-        $this->replicationHelper = $this->objectManager->get(ReplicationHelper::class);
-        $this->collectionFactory = $this->objectManager->get(CollectionFactory::class);
-        $this->replHierarchyNodeRepository = $this->objectManager->get(ReplHierarchyNodeRepository::class);
-        $this->categoryRepository = $this->objectManager->get(CategoryRepositoryInterface::class);
+        $this->objectManager                     = Bootstrap::getObjectManager();
+        $this->cron                              = $this->objectManager->create(CategoryCreateTask::class);
+        $this->lsr                               = $this->objectManager->create(\Ls\Core\Model\Lsr::class);
+        $this->storeManager                      = $this->objectManager->get(StoreManagerInterface::class);
+        $this->replicationHelper                 = $this->objectManager->get(ReplicationHelper::class);
+        $this->collectionFactory                 = $this->objectManager->get(CollectionFactory::class);
+        $this->replHierarchyNodeRepository       = $this->objectManager->get(ReplHierarchyNodeRepository::class);
+        $this->categoryRepository                = $this->objectManager->get(CategoryRepositoryInterface::class);
         $this->replHierarchyNodeInterfaceFactory = $this->objectManager->get(ReplHierarchyNodeInterfaceFactory::class);
     }
 
@@ -256,7 +255,7 @@ class CategoryCreateTaskTest extends TestCase
     {
         for ($i = 0; $i < 3; $i++) {
             $this->cron->execute();
-
+            $this->categoryRepository->_resetState();
             if ($this->isReady($this->storeManager->getStore()->getId())) {
                 break;
             }

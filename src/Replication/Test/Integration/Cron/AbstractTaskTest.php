@@ -539,7 +539,7 @@ abstract class AbstractTaskTest extends TestCase
             if (!empty($itemPrice)) {
                 $this->assertTrue($product->getPrice() == $itemPrice->getUnitPriceInclVat());
             } else {
-                $this->assertTrue($product->getPrice() == $itemPrice->getUnitPrice());
+                $this->assertTrue($product->getPrice() == $item->getUnitPrice());
             }
         }
     }
