@@ -6,18 +6,18 @@ use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
+use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
-use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
-use Magento\Checkout\Model\Session;
 
 /**
- * Represents UpdateCartItemPluginTest Class
+ * Represents CartItemPricesPlugin Class
  */
-class UpdateCartItemsTest extends GraphQlTestBase
+class GetCartItemsPriceDiscountsTest extends GraphQlTestBase
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -54,7 +54,6 @@ class UpdateCartItemsTest extends GraphQlTestBase
      */
     public $basketHelper;
 
-
     public function setUp(): void
     {
         parent::setUp();
@@ -81,30 +80,33 @@ class UpdateCartItemsTest extends GraphQlTestBase
     ]
     public function testUpdateCartItem()
     {
-        $customer      = $this->getOrCreateCustomer();
-        $product       = $this->getOrCreateProduct();
-        $emptyCart     = $this->createCustomerEmptyCart($customer->getId());
-        $cart          = $this->addSimpleProduct($emptyCart, $product);
+        $customer  = $this->getOrCreateCustomer();
+        $product   = $this->getOrCreateProduct();
+        $emptyCart = $this->createCustomerEmptyCart($customer->getId());
+        $cart      = $this->addSimpleProduct($emptyCart, $product);
+        $cart->setCouponCode(AbstractIntegrationTest::VALID_COUPON_CODE)->collectTotals()->save();
         $maskedQuoteId = $this->maskedQuote->execute($cart->getId());
-        $item          = current($cart->getAllVisibleItems());
-        $query         = $this->getQuery($maskedQuoteId, $item->getId(), 5);
+        $query         = $this->getQuery($maskedQuoteId);
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];
-        $response  = $this->graphQlMutation(
+        $response  = $this->graphQlQuery(
             $query,
             [],
             '',
             $headerMap
         );
 
-        $basketData = $this->basketHelper->getOneListCalculationFromCheckoutSession();
-        $itemsArray = $basketData->getOrderLines();
+        $basketData         = $this->basketHelper->getOneListCalculationFromCheckoutSession();
+        $discountOrderLines = $basketData->getOrderDiscountLines()->getOrderDiscountLine();
 
         $this->assertNotNull($response);
-        $this->assertEquals(5, $response['updateCartItems']['cart']['items'][0]['quantity']);
-        $this->assertNotNull($this->checkoutSession->getBasketResponse());
-        $this->assertEquals(6, $itemsArray->getOrderLine()[0]->getQuantity());
+        $this->assertArrayHasKey('discounts', $response['cart']['items'][0]['prices']);
+        $this->assertArrayHasKey('total_item_discount', $response['cart']['items'][0]['prices']);
+        $this->assertGreaterThan(0, $response['cart']['items'][0]['prices']['total_item_discount']['value']);
+        $this->assertGreaterThan(0, count($response['cart']['items'][0]['prices']['discounts']));
+        $this->assertNotNull($response['cart']['items'][0]['prices']['discounts'][0]['amount']['value']);
+        $this->assertGreaterThan(0, count($discountOrderLines));
     }
 
     /**
@@ -113,24 +115,55 @@ class UpdateCartItemsTest extends GraphQlTestBase
      * @param float $quantity
      * @return string
      */
-    private function getQuery(string $maskedQuoteId, int $itemId, float $quantity): string
+    private function getQuery(string $maskedQuoteId): string
     {
         return <<<QUERY
-mutation {
-  updateCartItems(input: {
-    cart_id: "{$maskedQuoteId}"
-    cart_items:[
-      {
-        cart_item_id: {$itemId}
-        quantity: {$quantity}
-      }
-    ]
-  }) {
-    cart {
-      items {
-        id
-        quantity
-      }
+        {
+            cart(cart_id: "{$maskedQuoteId}") {
+                email
+                items {
+                    uid
+                    prices {
+                        total_item_discount {
+                            value
+                        }
+                    price {
+                            value
+                    }
+                    discounts {
+                        label
+                        amount {
+                            value
+                        }
+                    }
+                }
+            product {
+                name
+                sku
+            }
+            quantity
+        }
+        applied_coupons {
+          code
+        }
+        prices {
+            lsdiscount {
+                label
+                amount {
+                    value
+                    currency
+                }
+            }
+        lstax {         
+          label
+          amount {
+            value
+            currency
+          }
+        }
+        grand_total {
+            value
+        }
     }
   }
 }

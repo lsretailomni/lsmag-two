@@ -54,6 +54,7 @@ class AbstractIntegrationTest extends TestCase
     public const SAMPLE_PRICE_GROUP = 'ALL';
 
     public const SAMPLE_LANGUAGE_CODE = 'ENG';
+
     /**
      * Get environment variable value given name
      *
