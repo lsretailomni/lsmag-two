@@ -62,7 +62,7 @@ class CheckGiftCardBalanceTest extends AbstractController
     ]
     public function testExecute()
     {
-        $giftCardData = ['gift_card_code' => '10000011', 'gift_card_pin' => '8118'];
+        $giftCardData = ['gift_card_code' => AbstractIntegrationTest::GIFTCARD, 'gift_card_pin' => AbstractIntegrationTest::GIFTCARD_PIN];
         $content      = json_encode($giftCardData);
         $this->getRequest()->setContent($content);
         $this->getRequest()->setMethod(HttpRequest::METHOD_POST);
