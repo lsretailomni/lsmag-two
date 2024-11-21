@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\OmniGraphQl\Test\Integration\Plugin;
+namespace Integration\Plugin;
 
 use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
@@ -15,9 +15,9 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
 
 /**
- * Represents CartItemPricesPlugin Class
+ * Represents CartPricesPlugin Class
  */
-class GetCartItemsPriceDiscountsTest extends GraphQlTestBase
+class GetCartPriceTest extends GraphQlTestBase
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -101,10 +101,11 @@ class GetCartItemsPriceDiscountsTest extends GraphQlTestBase
         $discountOrderLines = $basketData->getOrderDiscountLines()->getOrderDiscountLine();
 
         $this->assertNotNull($response);
-        $this->assertArrayHasKey('lsdiscount', $response['cart']['prices']);
-        $this->assertArrayHasKey('lstax', $response['cart']['prices']);
-        $this->assertNotEquals(0, $response['cart']['prices']['lsdiscount']['amount']['value']);
-        $this->assertNotEquals(0, $response['cart']['prices']['lstax']['amount']['value']);
+        $this->assertArrayHasKey('discounts', $response['cart']['items'][0]['prices']);
+        $this->assertArrayHasKey('total_item_discount', $response['cart']['items'][0]['prices']);
+        $this->assertGreaterThan(0, $response['cart']['items'][0]['prices']['total_item_discount']['value']);
+        $this->assertGreaterThan(0, count($response['cart']['items'][0]['prices']['discounts']));
+        $this->assertNotNull($response['cart']['items'][0]['prices']['discounts'][0]['amount']['value']);
         $this->assertGreaterThan(0, count($discountOrderLines));
     }
 
