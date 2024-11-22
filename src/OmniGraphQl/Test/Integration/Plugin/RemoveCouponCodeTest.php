@@ -78,7 +78,7 @@ class RemoveCouponCodeTest extends GraphQlTestBase
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default')
 
     ]
-    public function testUpdateCartItem()
+    public function testRemoveCouponCode()
     {
         $customer  = $this->getOrCreateCustomer();
         $product   = $this->getOrCreateProduct();
