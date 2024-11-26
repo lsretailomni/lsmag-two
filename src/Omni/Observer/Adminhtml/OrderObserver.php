@@ -88,6 +88,7 @@ class OrderObserver implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $observer->getEvent()->getData('order');
         $this->orderHelper->storeManager->setCurrentStore($order->getStoreId());
+        $this->orderHelper->checkoutSession->setQuoteId($order->getQuoteId());
         $oneListCalculation = $this->basketHelper->getOneListCalculation();
         $response           = null;
         /*

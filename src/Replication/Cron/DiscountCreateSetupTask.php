@@ -556,18 +556,17 @@ class DiscountCreateSetupTask
         $discountValueType,
         $amount = null
     ) {
-        $checkStore = $this->validateWebsiteByStoreGroupCodeOrPriceGroup(
+        $websiteId  = $replDiscount->getScopeId();
+        if (version_compare(
+            $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
+            '2024.6.0',
+            '<='
+        ) || $this->validateWebsiteByStoreGroupCodeOrPriceGroup(
             $replDiscount->getPriceGroup(),
             $replDiscount->getStoreGroupCodes(),
             $replDiscount->getScopeId(),
             $replDiscount->getOfferNo()
-        );
-        $websiteId  = $replDiscount->getScopeId();
-        if ($checkStore || version_compare(
-                $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
-                '2024.6',
-                '<='
-            )) {
+        )) {
             if ($amount == null) {
                 $amount = $replDiscount->getDiscountValue();
             }
