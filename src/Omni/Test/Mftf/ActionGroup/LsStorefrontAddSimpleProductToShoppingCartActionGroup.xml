@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsStorefrontAddSimpleProductToShoppingCartActionGroup">
+        <arguments>
+            <argument name="product"/>
+            <argument name="qty" type="string" defaultValue="1" />
+        </arguments>
+        <amOnPage url="{{StorefrontProductPage.url(product.custom_attributes[url_key])}}" stepKey="openProductPage" />
+        <wait stepKey="waitForSessionLoad" time="5"/>
+        <waitForPageLoad stepKey="waitForProductPageOpen" />
+        <fillField userInput="{{qty}}" selector="{{StorefrontProductInfoMainSection.qty}}" stepKey="fillQty" />
+        <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart" />
+        <waitForElementVisible selector="{{StorefrontMessagesSection.messageByType('success')}}" stepKey="waitForSuccessMessage" />
+    </actionGroup>
+</actionGroups>

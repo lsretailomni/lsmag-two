@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="LsSimpleProduct1" extends="SimpleProduct">
+        <data key="sku">40430</data>
+        <data key="price">95</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdProductAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsSimpleProduct2" extends="SimpleProduct">
+        <data key="sku">40440</data>
+        <data key="price">95</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdProductAttribute2</requiredEntity>
+    </entity>
+</entities>

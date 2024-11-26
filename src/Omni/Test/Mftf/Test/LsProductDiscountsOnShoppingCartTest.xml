@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsProductDiscountsOnShoppingCartTest">
+        <annotations>
+            <stories value="Ls Product Discounts Display on Shopping Cart"/>
+            <features value="Checkout"/>
+            <title value="Add multiple products in cart. Check discounts display on shopping cart"/>
+            <description value="Verify, user is able to add multiple products in cart and see discounts on shopping cart."/>
+            <testCaseId value="LS-41079"/>
+            <useCaseId value="LS-40983"/>
+            <severity value="CRITICAL"/>
+            <group value="shoppingCart"/>
+            <group value="checkout"/>
+        </annotations>
+
+        <before>
+            <magentoCLI command="config:set {{ServiceStore.path}} {{ServiceStore.value}}" stepKey="serviceStore"/>
+            <magentoCLI command="config:set {{ServiceHierarchyCode.path}} {{ServiceHierarchyCode.value}}" stepKey="serviceHierarchyCode"/>
+            <magentoCLI command="config:set {{ServiceBaseUrl.path}} {{ServiceBaseUrl.value}}" stepKey="serviceBaseUrl"/>
+            <magentoCLI command="config:set {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion"/>
+            <magentoCLI command="config:set {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
+            <magentoCLI command="config:set {{ServiceIndustry.path}} {{ServiceIndustry.value}}" stepKey="ServiceIndustry"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct1" stepKey="product1" />
+            <createData entity="LsSimpleProduct2" stepKey="product2" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <deleteData createDataKey="product2" stepKey="deleteSimpleProduct2"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </after>
+
+        <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
+            <argument name="product" value="$product1$"/>
+            <argument name="qty" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart2">
+            <argument name="product" value="$product2$"/>
+            <argument name="qty" value="1"/>
+        </actionGroup>
+        <actionGroup ref="ClickViewAndEditCartFromMiniCartActionGroup" stepKey="clickMiniCart1"/>
+
+        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage"/>
+        <grabMultiple selector="{{CheckoutCartProductSection.ProductDiscount}}" stepKey="grabDiscountsDescription1"/>
+        <assertCount stepKey="assertProductDiscountsDescription1">
+            <actualResult type="variable">grabDiscountsDescription1</actualResult>
+            <expectedResult type="string">2</expectedResult>
+        </assertCount>
+    </test>
+</tests>
