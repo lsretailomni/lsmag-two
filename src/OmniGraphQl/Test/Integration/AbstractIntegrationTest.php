@@ -17,7 +17,7 @@ class AbstractIntegrationTest extends TestCase
     public const FIRST_NAME = 'Deepak';
     public const LAST_NAME = 'Ret';
     public const CUSTOMER_ID = '1';
-    public const CS_URL = 'http://20.6.33.78/CommerceMaster';
+    public const CS_URL = 'http://20.6.33.78/CommerceService';
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
     public const LS_MAG_ENABLE = '1';
