@@ -987,22 +987,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get central version
      *
-     * @param $storeId
-     * @param $scope
+     * @param null $storeId
+     * @param null $scope
+     * @param bool $formatted
      * @return array|string
      * @throws NoSuchEntityException
      */
-    public function getCentralVersion($storeId = null, $scope = null)
+    public function getCentralVersion($storeId = null, $scope = null, $formatted = true)
     {
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+            $centralVersion = $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+
+            return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
         }
 
         //If StoreID is not passed they retrieve it from the global area.
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+        $centralVersion = $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+
+        return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
     }
 
     /**
@@ -1401,9 +1406,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function setLicenseValidity($status)
     {
-        if ($str = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES)) {
-            $centralVersion = strstr($str, " ", true);
-
+        if ($centralVersion = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES)) {
             if (version_compare($centralVersion, '25.0.0.0', '>=')) {
                 $this->data->setLicenseStatus($status);
             }
