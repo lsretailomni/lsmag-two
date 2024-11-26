@@ -142,8 +142,25 @@ class ApplyGiftCardTest extends GraphQlTestBase
                         amount: "{$amount}" 
                       }
                     ) {
-                        cart {                              
-                              applied_gift_card                             
+                        cart {
+                            prices {
+                            lsdiscount {
+                                label
+                                amount {
+                                    value
+                                    currency
+                                }
+                            }
+                            lstax {         
+                              label
+                              amount {
+                                value
+                                currency
+                              }
+                            }
+                            grand_total {
+                                value
+                            }
                           }                        
                         }
                     }
