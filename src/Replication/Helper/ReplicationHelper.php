@@ -118,6 +118,12 @@ class ReplicationHelper extends AbstractHelper
         ],
         'catalog_product_entity'         => [
             'entity_id' => 'row_id'
+        ],
+        'catalog_category_entity_varchar' => [
+            'entity_id' => 'row_id'
+        ],
+        'catalog_category_entity'         => [
+            'entity_id' => 'row_id'
         ]
     ];
 
@@ -1538,7 +1544,7 @@ class ReplicationHelper extends AbstractHelper
     ) {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
-        $second_table_name = $this->resource->getTableName($secondaryTableName);
+        $second_table_name = $this->getGivenTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
         if ($isReplaceJoin) {
@@ -1631,23 +1637,23 @@ class ReplicationHelper extends AbstractHelper
         $catalogProductEntityTableAlias = 'cpe';
         $whereClause                    = $this->magentoEditionSpecificJoinWhereClause(
             "$catalogProductEntityTableAlias.entity_id = $itemIdTableAlias.entity_id",
-            'catalog_product_entity_varchar',
+            $this->getGivenTableName('catalog_product_entity_varchar'),
             [$itemIdTableAlias]
         );
 
         $whereClause = $this->magentoEditionSpecificJoinWhereClause(
             $whereClause,
-            'catalog_product_entity',
+            $this->getGivenTableName('catalog_product_entity'),
             [$catalogProductEntityTableAlias]
         );
 
         $collection->getSelect()->joinInner(
-            [$catalogProductEntityTableAlias => 'catalog_product_entity'],
+            [$catalogProductEntityTableAlias => $this->getGivenTableName('catalog_product_entity')],
             $whereClause,
             []
         );
         $collection->getSelect()->joinInner(
-            ['cpw' => 'catalog_product_website'],
+            ['cpw' => $this->getGivenTableName('catalog_product_website')],
             "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
             " AND cpw.website_id = $websiteId",
             []
@@ -1664,8 +1670,8 @@ class ReplicationHelper extends AbstractHelper
      */
     public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
     {
-        $thirdTableName  = $this->resource->getTableName('ls_replication_repl_item');
-        $fourthTableName = $this->resource->getTableName('catalog_product_entity');
+        $thirdTableName  = $this->getGivenTableName('ls_replication_repl_item');
+        $fourthTableName = $this->getGivenTableName('catalog_product_entity');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1683,7 +1689,15 @@ class ReplicationHelper extends AbstractHelper
         $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
         $collection->getSelect()->joinInner(
             ['fourth' => $fourthTableName],
-            'fourth.entity_id = ' . $itemIdTableAlias . '.entity_id',
+            $this->magentoEditionSpecificJoinWhereClause(
+                $this->magentoEditionSpecificJoinWhereClause(
+                    'fourth.entity_id = ' . $itemIdTableAlias . '.entity_id',
+                    $fourthTableName,
+                    ['fourth']
+                ),
+                $this->getGivenTableName('catalog_product_entity_varchar'),
+                [$itemIdTableAlias]
+            ),
             ['fourth.entity_id', 'fourth.sku']
         );
         /** For Xdebug only to check the query */
@@ -1726,6 +1740,17 @@ class ReplicationHelper extends AbstractHelper
         }
     }
 
+    public function getMappingColumns()
+    {
+        $mappingColumns = [];
+
+        foreach (self::COLUMNS_MAPPING as $tableName => $mapping) {
+            $mappingColumns[$this->getGivenTableName($tableName)] = $mapping;
+        }
+
+        return $mappingColumns;
+    }
+
     /**
      * Replace column names of joining tables based on mapping
      *
@@ -1739,10 +1764,12 @@ class ReplicationHelper extends AbstractHelper
         $tableName,
         $aliasNames
     ) {
+        $columnsMapping = $this->getMappingColumns();
+
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
-            isset(self::COLUMNS_MAPPING[$tableName])
+            isset($columnsMapping[$tableName])
         ) {
-            $mappingColumns = self::COLUMNS_MAPPING[$tableName];
+            $mappingColumns = $columnsMapping[$tableName];
 
             foreach ($aliasNames as $alias) {
                 foreach ($mappingColumns as $columnName => $newColumnName) {
@@ -1777,11 +1804,11 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinInner(
-            [self::ITEM_ID_TABLE_ALIAS => 'catalog_product_entity_varchar'],
+            [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
                 " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias]
             ),
             []
@@ -1811,13 +1838,13 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinLeft(
-            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            [$variantIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
                 " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
             []
@@ -1834,7 +1861,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function setCollectionPropertiesPlusJoinsForVendor(&$collection, SearchCriteriaInterface $criteria)
     {
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_vendor');
+        $thirdTableName = $this->getGivenTableName('ls_replication_repl_vendor');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1872,7 +1899,7 @@ class ReplicationHelper extends AbstractHelper
             $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         }
 
-        $secondTableName = $this->resource->getTableName('ls_replication_repl_item_variant_registration');
+        $secondTableName = $this->getGivenTableName('ls_replication_repl_item_variant_registration');
         $collection
             ->getSelect()->where('ItemId NOT IN (?)', new \Zend_Db_Expr("select ItemId From $secondTableName"));
         /** For Xdebug only to check the query $query */
@@ -1894,9 +1921,9 @@ class ReplicationHelper extends AbstractHelper
         $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
 
         if ($type == 'Item') {
-            $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+            $thirdTableName = $this->getGivenTableName('ls_replication_repl_item');
         } else {
-            $thirdTableName = $this->resource->getTableName('ls_replication_repl_hierarchy_leaf');
+            $thirdTableName = $this->getGivenTableName('ls_replication_repl_hierarchy_leaf');
         }
 
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
@@ -1911,24 +1938,24 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinInner(
-            [$itemIdTableAlias => 'catalog_product_entity_varchar'],
+            [$itemIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
                 " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias]
             ),
             []
         );
 
         $collection->getSelect()->joinLeft(
-            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            [$variantIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
                 " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
             []
@@ -1982,24 +2009,24 @@ class ReplicationHelper extends AbstractHelper
          * @codingStandardsIgnoreStart
          */
         $collection->getSelect()->joinInner(
-            [$itemIdTableAlias => 'catalog_product_entity_varchar'],
+            [$itemIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
                 " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias]
             ),
             []
         );
 
         $collection->getSelect()->joinLeft(
-            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            [$variantIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
                 " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
             []
@@ -2045,8 +2072,16 @@ class ReplicationHelper extends AbstractHelper
         );
         $rootCategoryId = $store->getRootCategoryId();
         $collection->getSelect()->joinInner(
-            ['third' => 'catalog_category_entity'],
-            "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+            ['third' => $this->getGivenTableName('catalog_category_entity')],
+            $this->magentoEditionSpecificJoinWhereClause(
+            $this->magentoEditionSpecificJoinWhereClause(
+                "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+                $this->getGivenTableName('catalog_category_entity_varchar'),
+                ['second']
+            ),
+                $this->getGivenTableName('catalog_category_entity'),
+            ['third']
+            ),
             []
         );
 
@@ -2316,7 +2351,7 @@ class ReplicationHelper extends AbstractHelper
                 $conditions['store_id = ?'] = $scopeId;
             }
             $this->deleteGivenTableDataGivenConditions(
-                $this->resource->getTableName('url_rewrite'),
+                $this->getGivenTableName('url_rewrite'),
                 $conditions
             );
         }
