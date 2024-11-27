@@ -49,21 +49,21 @@ class NotificationHelper
      * @param \Magento\Sales\Api\Data\OrderInterface $magOrder
      * @param array $items
      * @param string $statusMsg
-     * @param string $type
      * @return void
      * @throws NoSuchEntityException
      */
-    public function processNotifications($storeId, $magOrder, $items, $statusMsg, $type = 'All'): void
+    public function processNotifications($storeId, $magOrder, $items, $statusMsg): void
     {
         $configuredNotificationType = explode(',', $this->getNotificationType($storeId));
+
         foreach ($configuredNotificationType as $type) {
-            if ($type == 'All' || $type == LSR::LS_NOTIFICATION_EMAIL) {
+            if ($type == LSR::LS_NOTIFICATION_EMAIL) {
                 $this->emailNotification->setNotificationType($statusMsg);
                 $this->emailNotification->setOrder($magOrder)->setItems($items);
                 $this->emailNotification->prepareAndSendNotification();
             }
 
-            if ($type == 'All' || $type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
+            if ($type == LSR::LS_NOTIFICATION_PUSH_NOTIFICATION) {
                 $this->pushNotification->setNotificationType($statusMsg);
                 $this->pushNotification->setOrder($magOrder)->setItems($items);
                 $this->pushNotification->prepareAndSendNotification();

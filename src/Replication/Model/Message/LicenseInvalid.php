@@ -59,9 +59,8 @@ class LicenseInvalid implements MessageInterface
         if (!empty($stores)) {
             /** @var StoreInterface $store */
             foreach ($stores as $store) {
-                $str = $this->lsr->getCentralVersion($store->getWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
-                if ($str) {
-                    $centralVersion = strstr($str, " ", true);
+                $centralVersion = $this->lsr->getCentralVersion($store->getWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
+                if ($centralVersion) {
                     if (version_compare($centralVersion, '25.0.0.0', '>=') &&
                         $this->lsr->getWebsiteConfig(
                             LSR::SC_SERVICE_LICENSE_VALIDITY,

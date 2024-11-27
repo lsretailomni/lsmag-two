@@ -110,7 +110,6 @@ class Request extends Action
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                             $order->getRelationParentId()
                         );
-                        
                         if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
@@ -144,6 +143,7 @@ class Request extends Action
                             }
                         }
                     }
+
                     if (empty($documentId)) {
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);

@@ -194,7 +194,8 @@ class AbstractOrderBlock extends Template
         $params ['order_id'] = $order->getDocumentId();
 
         if ($reqType) {
-            $params ['type'] = $reqType;
+            $params ['order_id'] = $this->getRequest()->getParam('order_id');
+            $params ['type']     = $reqType;
         }
 
         return $this->getUrl('*/*/printInvoice', $params);
@@ -213,6 +214,7 @@ class AbstractOrderBlock extends Template
         $params ['order_id'] = $order->getDocumentId();
 
         if ($reqType) {
+            $params ['order_id'] = $this->getRequest()->getParam('order_id');
             $params ['type'] = $reqType;
         }
 
@@ -244,7 +246,7 @@ class AbstractOrderBlock extends Template
     public function getTitleAndClassBasedOnDetail()
     {
         $detail = $this->orderHelper->getGivenValueFromRegistry('current_detail');
-        $title = $class = '';
+        $title  = $class = '';
 
         switch ($detail) {
             case 'order':

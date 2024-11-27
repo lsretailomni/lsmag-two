@@ -225,7 +225,7 @@ class DataTranslationTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $cronAttributeVariantCheck = $this->lsr->getConfigValueFromDb(
+                    $cronAttributeVariantCheck         = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_ATTRIBUTE_VARIANT,
                         ScopeInterface::SCOPE_STORES,
                         $store->getId()
@@ -235,22 +235,22 @@ class DataTranslationTask
                         ScopeInterface::SCOPE_STORES,
                         $store->getId()
                     );
-                    $langCode                  = $this->lsr->getStoreConfig(
+                    $langCode                          = $this->lsr->getStoreConfig(
                         LSR::SC_STORE_DATA_TRANSLATION_LANG_CODE,
                         $store->getId()
                     );
                     $this->logger->debug('DataTranslationTask Started for Store ' . $store->getName());
                     try {
                         if ($langCode != "Default") {
-                            $configurableAttributesValuesStatus    =
+                            $configurableAttributesValuesStatus =
                             $configurableAttributesStatus = $standardConfigurableAttributesValuesStatus = false;
-                            $hierarchyNodesStatus                  = $this->updateHierarchyNode(
+                            $hierarchyNodesStatus               = $this->updateHierarchyNode(
                                 $store->getId(),
                                 $langCode,
                                 $store->getWebsiteId()
                             );
-                            list($itemsStatus,,)                   = $this->updateItem($store, $langCode);
-                            $attributesStatus                      = $this->updateAttributes(
+                            list($itemsStatus, ,) = $this->updateItem($store, $langCode);
+                            $attributesStatus = $this->updateAttributes(
                                 $store->getId(),
                                 $langCode
                             );
@@ -262,13 +262,13 @@ class DataTranslationTask
                                 );
                             }
 
-                            $textBasedAttributesValuesStatus       = $this->updateProductAttributesValues(
+                            $textBasedAttributesValuesStatus = $this->updateProductAttributesValues(
                                 $store->getId(),
                                 $langCode
                             );
 
                             if ($cronAttributeVariantCheck) {
-                                $configurableAttributesStatus       = $this->updateExtendedVariantAttributes(
+                                $configurableAttributesStatus = $this->updateExtendedVariantAttributes(
                                     $store->getId(),
                                     $langCode
                                 );
@@ -333,7 +333,7 @@ class DataTranslationTask
      */
     public function updateAttributeOptionValue($storeId, $langCode)
     {
-        $filters = $this->getFiltersGivenValues(
+        $filters  = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_ATTRIBUTE_OPTION_VALUE,
@@ -374,7 +374,7 @@ class DataTranslationTask
      */
     public function updateStandardVariantAttributeOptionValue($storeId, $langCode)
     {
-        $filters = $this->getFiltersGivenValues(
+        $filters  = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_STANDARD_VARIANT_ATTRIBUTE_OPTION_VALUE,
@@ -410,9 +410,9 @@ class DataTranslationTask
             }
             $dataTranslation->addData(
                 [
-                    'is_updated' => 0,
+                    'is_updated'   => 0,
                     'processed_at' => $this->replicationHelper->getDateTime(),
-                    'processed' => 1
+                    'processed'    => 1
                 ]
             );
             // @codingStandardsIgnoreLine
@@ -430,7 +430,7 @@ class DataTranslationTask
      */
     public function updateExtendedVariantAttributesValues($storeId, $langCode)
     {
-        $filters = $this->getFiltersGivenValues(
+        $filters  = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_EXTENDED_VARIANT_VALUE,
@@ -469,7 +469,7 @@ class DataTranslationTask
      */
     public function updateExtendedVariantAttributes($storeId, $langCode)
     {
-        $filters = $this->getFiltersGivenValues(
+        $filters  = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_EXTENDED_VARIANT,
@@ -510,7 +510,7 @@ class DataTranslationTask
      */
     public function updateProductAttributesValues($storeId, $langCode)
     {
-        $filters = $this->getFiltersGivenValues(
+        $filters    = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_PRODUCT_ATTRIBUTE_VALUE
@@ -565,7 +565,7 @@ class DataTranslationTask
      */
     public function updateAttributes($storeId, $langCode)
     {
-        $filters = $this->getFiltersGivenValues(
+        $filters  = $this->getFiltersGivenValues(
             $storeId,
             $langCode,
             LSR::SC_TRANSLATION_ID_ATTRIBUTE
@@ -607,9 +607,9 @@ class DataTranslationTask
             LSR::SC_TRANSLATION_ID_ITEM_HTML . ',' . LSR::SC_TRANSLATION_ID_ITEM_DESCRIPTION
         );
         if (!empty($sku)) {
-            $criteria   = $this->replicationHelper->buildCriteriaForDirect($filters, -1, true);
+            $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, -1, true);
         } else {
-            $criteria   = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
+            $criteria = $this->replicationHelper->buildCriteriaForArrayWithAlias($filters, -1);
         }
 
         $collection = $this->replDataTranslationCollectionFactory->create();
@@ -652,6 +652,7 @@ class DataTranslationTask
                         $productData->setName($dataTranslation->getText());
                         // @codingStandardsIgnoreLine
                         $this->productResourceModel->saveAttribute($productData, 'name');
+                        $this->productResourceModel->saveAttribute($productData, 'meta_title');
                         $nameFlag = 1;
                     }
                 }
@@ -801,12 +802,12 @@ class DataTranslationTask
      */
     public function getStandardVariantOriginalOptionLabel($keyArray, $storeId)
     {
-        $filters  = [
+        $filters               = [
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
             ['field' => 'ItemId', 'value' => $keyArray[0], 'condition_type' => 'eq'],
             ['field' => 'VariantId', 'value' => $keyArray[1], 'condition_type' => 'eq']
         ];
-        $criteria = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
+        $criteria              = $this->replicationHelper->buildCriteriaForDirect($filters, 1);
         $replItemVariantValues = $this->replItemVariantRepository->getList($criteria);
         /** @var ReplItemVariant $item */
         $item = current($replItemVariantValues->getItems());
@@ -860,9 +861,9 @@ class DataTranslationTask
                         );
                         $dataTranslation->addData(
                             [
-                                'is_updated' => 0,
+                                'is_updated'   => 0,
                                 'processed_at' => $this->replicationHelper->getDateTime(),
-                                'processed' => 1
+                                'processed'    => 1
                             ]
                         );
                         break;
@@ -890,7 +891,7 @@ class DataTranslationTask
                 ->setIdFilter($optionId);
 
             if ($valuesCollection->getItems()) {
-                $label = $valuesCollection->getFirstItem()->getValue();
+                $label       = $valuesCollection->getFirstItem()->getValue();
                 $optionLabel = $this->optionLabelFactory->create();
                 $optionLabel->setStoreId($store->getId());
                 $optionLabel->setLabel($label);
@@ -963,9 +964,9 @@ class DataTranslationTask
             $this->productAttributeRepository->save($attributeObject);
             $dataTranslation->addData(
                 [
-                    'is_updated' => 0,
+                    'is_updated'   => 0,
                     'processed_at' => $this->replicationHelper->getDateTime(),
-                    'processed' => 1
+                    'processed'    => 1
                 ]
             );
         }
