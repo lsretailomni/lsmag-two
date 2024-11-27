@@ -42,10 +42,9 @@ class License extends Field
     {
         $websiteId = $element->getScopeId();
 
-        $str = $this->lsr->getCentralVersion($websiteId, ScopeInterface::SCOPE_WEBSITES);
-        if ($str) {
-            $centralVersion = strstr($str, " ", true);
+        $centralVersion = $this->lsr->getCentralVersion($websiteId, ScopeInterface::SCOPE_WEBSITES);
 
+        if ($centralVersion) {
             if (version_compare($centralVersion, '24.0.0.0', '<') || $element->getValue() === null) {
                 return '';
             }

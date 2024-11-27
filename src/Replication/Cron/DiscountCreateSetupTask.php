@@ -559,7 +559,7 @@ class DiscountCreateSetupTask
         $websiteId  = $replDiscount->getScopeId();
         if (version_compare(
             $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
-            '2024.6.0',
+            '2024.10.0',
             '<='
         ) || $this->validateWebsiteByStoreGroupCodeOrPriceGroup(
             $replDiscount->getPriceGroup(),

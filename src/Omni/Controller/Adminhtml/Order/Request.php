@@ -94,15 +94,15 @@ class Request extends Action
      */
     public function execute()
     {
-        $orderId = $this->getRequest()->getParam('order_id');
-        $order   = $this->orderRepository->get($orderId);
-        $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+        $orderId        = $this->getRequest()->getParam('order_id');
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
-        $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
+        try {
+            $order = $this->orderRepository->get($orderId);
+            $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+            $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
 
-        if ($this->lsr->isLSR($order->getStoreId())) {
-            try {
+            if ($this->lsr->isLSR($order->getStoreId())) {
                 $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
                 $documentId         = null;
                 if (!empty($oneListCalculation)) {
@@ -110,7 +110,6 @@ class Request extends Action
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                             $order->getRelationParentId()
                         );
-
                         if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
@@ -161,17 +160,23 @@ class Request extends Action
                         }
                     }
                 }
-            } catch (Exception $e) {
-                $this->logger->error($e->getMessage());
-                $this->messageManager->addErrorMessage($e->getMessage());
-            }
-        }
+                if (!$response) {
+                    $this->logger->critical(__(
+                        'Something terrible happened while placing order %1',
+                        $order->getIncrementId()
+                    ));
+                    $this->messageManager->addErrorMessage(
+                        __('The service is currently unavailable. Please try again later.')
+                    );
+                }
+                $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
 
-        if (!$response) {
-            $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
-            $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
+            }
+
+        } catch (Exception $e) {
+            $this->logger->error($e->getMessage());
+            $this->messageManager->addErrorMessage($e->getMessage());
         }
-        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
 
         return $resultRedirect;
     }
