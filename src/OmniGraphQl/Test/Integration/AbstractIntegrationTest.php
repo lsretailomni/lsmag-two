@@ -13,7 +13,7 @@ class AbstractIntegrationTest extends TestCase
 {
     public const PASSWORD = 'Nmswer123@';
     public const EMAIL = 'pipeline_retail@lsretail.com';
-    public const USERNAME = 'mc_57745';
+    public const USERNAME = 'mc_61422';
     public const FIRST_NAME = 'Deepak';
     public const LAST_NAME = 'Ret';
     public const CUSTOMER_ID = '1';
@@ -23,8 +23,8 @@ class AbstractIntegrationTest extends TestCase
     public const LS_MAG_ENABLE = '1';
     public const LS_MAG_DISABLE = '0';
     public const ENABLED = '1';
-    public const LSR_ID = 'MSO000012';
-    public const LSR_CARD_ID = '10051';
+    public const LSR_ID = 'MSO000005';
+    public const LSR_CARD_ID = '10044';
     public const LSR_LOY_POINTS = 2;
     public const STORE_PICKUP = 'S0001';
     public const ITEM_SIMPLE = '40180';
