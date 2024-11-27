@@ -1,6 +1,6 @@
 <?php
 
-namespace Integration\Plugin;
+namespace Ls\OmniGraphQl\Test\Integration\Plugin;
 
 use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;

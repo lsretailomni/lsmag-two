@@ -2,18 +2,13 @@
 
 namespace Integration\Plugin;
 
-use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
-use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\TestFramework\Fixture\AppArea;
 
 /**
  * Represents SetShippingMethodsOnCart Class
@@ -154,7 +149,5 @@ class SetShippingMethodsTest extends GraphQlTestBase
         $cart->save();
 
         return $cart;
-
-        //$this->quoteRepository->save($this->customerCart->getQuote());
     }
 }
