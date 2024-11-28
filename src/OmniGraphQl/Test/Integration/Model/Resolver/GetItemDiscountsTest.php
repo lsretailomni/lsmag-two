@@ -2,15 +2,7 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
-use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
-use \Ls\Omni\Helper\BasketHelper;
-use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
-use Magento\Checkout\Model\Session;
-use Magento\Framework\Event\ManagerInterface;
-use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
-use Magento\TestFramework\Fixture\Config;
-use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
 
@@ -25,44 +17,15 @@ class GetItemDiscountsTest extends GraphQlTestBase
     public $objectManager;
 
     /**
-     * @var DataFixtureStorageManager
-     */
-    public $fixtures;
-
-    /**
      * @var $authToken
      */
     private $authToken;
 
-    /**
-     * @var QuoteIdToMaskedQuoteIdInterface
-     */
-    public $maskedQuote;
-
-    /**
-     * @var Session
-     */
-    public $checkoutSession;
-
-    /**
-     * @var ManagerInterface
-     */
-    public $eventManager;
-
-    /**
-     * @var BasketHelper
-     */
-    public $basketHelper;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->authToken       = $this->loginAndFetchToken();
-        $this->objectManager   = Bootstrap::getObjectManager();
-        $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
-        $this->maskedQuote     = $this->objectManager->get(QuoteIdToMaskedQuoteIdInterface::class);
-        $this->checkoutSession = $this->objectManager->create(Session::class);
-        $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
+        $this->authToken     = $this->loginAndFetchToken();
+        $this->objectManager = Bootstrap::getObjectManager();
     }
 
     /**
