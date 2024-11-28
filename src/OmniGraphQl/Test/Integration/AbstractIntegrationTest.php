@@ -20,6 +20,7 @@ class AbstractIntegrationTest extends TestCase
     public const CS_URL = 'http://20.6.33.78/CommerceService';
     public const CS_VERSION = '2024.4.1';
     public const CS_STORE = 'S0013';
+    public const HOSP_STORE = 'S0017';
     public const LS_MAG_ENABLE = '1';
     public const LS_MAG_DISABLE = '0';
     public const ENABLED = '1';
