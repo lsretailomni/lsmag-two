@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="ServiceStore">
+        <data key="path">ls_mag/service/selected_store</data>
+        <data key="label">Central Store</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">S0013</data>
+    </entity>
+    <entity name="ServiceHierarchyCode">
+        <data key="path">ls_mag/service/replicate_hierarchy_code</data>
+        <data key="label">Hierarchy Code</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">FASHIONCOSMETICS</data>
+    </entity>
+    <entity name="ServiceBaseUrl">
+        <data key="path">ls_mag/service/base_url</data>
+        <data key="label">Base URL</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">http://20.6.33.78/commerceservice</data>
+    </entity>
+    <entity name="ServiceVersion">
+        <data key="path">ls_mag/service/version</data>
+        <data key="label">CS Version</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">2024.10.0</data>
+    </entity>
+    <entity name="ServiceCentralVersion">
+        <data key="path">ls_mag/service/ls_central_version</data>
+        <data key="label">Central Version</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">&quot;26.0.0.0 (26.0.0.0 [25900] CL:True EL:True)&quot;</data>
+    </entity>
+    <entity name="ServiceIndustry">
+        <data key="path">ls_mag/ls_industry/ls_choose_industry</data>
+        <data key="label">Industry</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">retail</data>
+    </entity>
+</entities>
