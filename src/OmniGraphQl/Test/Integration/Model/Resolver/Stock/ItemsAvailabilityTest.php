@@ -71,7 +71,7 @@ class ItemsAvailabilityTest extends GraphQlTestBase
     #[
         AppArea('graphql'),
     ]
-    public function testApplyGiftCard()
+    public function testItemAvailability()
     {
         $product = $this->getOrCreateProduct();
         $query   = $this->getQuery('', $product->getSku());

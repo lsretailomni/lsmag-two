@@ -1,6 +1,6 @@
 <?php
 
-namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver\Stock;
+namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
 use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
@@ -15,9 +15,9 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
 
 /**
- * Represents CartItemsAvailabilityInStoreOutput Model Class
+ * Represents ClickAndCollectStoresOutput Model Class
  */
-class CartItemsAvailabilityTest extends GraphQlTestBase
+class ClickAndCollectStoresTest extends GraphQlTestBase
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -71,18 +71,9 @@ class CartItemsAvailabilityTest extends GraphQlTestBase
     #[
         AppArea('graphql'),
     ]
-    public function testCartsItemAvailability()
+    public function testClickAndCollectStores()
     {
-        $customer      = $this->getOrCreateCustomer();
-        $product       = $this->getOrCreateProduct();
-        $emptyCart     = $this->createCustomerEmptyCart($customer->getId());
-        $cart          = $this->addSimpleProduct($emptyCart, $product);
-        $maskedQuoteId = $this->maskedQuote->execute($cart->getId());
-        $query         = $this->getQuery(
-            $maskedQuoteId,
-            'S0001',
-        );
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+        $query = $this->getQuery();
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];
         $response  = $this->graphQlQuery(
@@ -93,34 +84,43 @@ class CartItemsAvailabilityTest extends GraphQlTestBase
         );
 
         $this->assertNotNull($response);
-        $this->assertGreaterThan(0, count($response['cart_items_availability_in_store']['stock']));
-        $this->assertArrayHasKey('name', $response['cart_items_availability_in_store']['stock'][0]);
-        $this->assertArrayHasKey('qty', $response['cart_items_availability_in_store']['stock'][0]);
-        $this->assertArrayHasKey('status', $response['cart_items_availability_in_store']['stock'][0]);
+        $this->assertGreaterThan(0, count($response['click_and_collect_stores']['stores']));
+        $this->assertNotNull($response['click_and_collect_stores']['stores'][0]['store_id']);
+        $this->assertNotNull($response['click_and_collect_stores']['stores'][0]['store_name']);
+        $this->assertNotNull($response['click_and_collect_stores']['stores'][0]['click_and_collect_accepted']);
+        $this->assertNotNull($response['click_and_collect_stores']['stores'][0]['latitude']);
+        $this->assertNotNull($response['click_and_collect_stores']['stores'][0]['store_hours']);
     }
 
     /**
-     * @param string $maskedQuoteId
-     * @param $giftcard
-     * @param $pin
-     * @param $amount
+     * Get Query
+     *
      * @return string
      */
-    private function getQuery(string $maskedQuoteId, $storeId): string
+    private function getQuery(): string
     {
         return <<<QUERY
         {
-            cart_items_availability_in_store (
-             cart_id: "{$maskedQuoteId}",
-             store_id: "{$storeId}"
-            ) {
-                stock 
+            click_and_collect_stores {
+                stores 
                     {
-                        sku
-                        name
-                        qty
-                        status
-                        display
+                        store_id
+                        store_name
+                        click_and_collect_accepted
+                        latitude
+                        longitude
+                        phone
+                        available_hospitality_sales_types
+                        store_hours
+                        {
+                            day_of_week
+                            hour_types
+                            {
+                                type
+                                opening_time
+                                closing_time
+                            }
+                        }
                     }
                 
             }
