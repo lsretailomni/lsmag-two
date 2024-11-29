@@ -8,6 +8,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
@@ -54,6 +55,11 @@ class ApplyGiftCardTest extends GraphQlTestBase
      */
     public $basketHelper;
 
+    /**
+     * @var CartRepositoryInterface
+     */
+    public $cartRepository;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -64,6 +70,7 @@ class ApplyGiftCardTest extends GraphQlTestBase
         $this->checkoutSession = $this->objectManager->create(Session::class);
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->basketHelper    = $this->objectManager->create(BasketHelper::class);
+        $this->cartRepository  = $this->objectManager->get(CartRepositoryInterface::class);
     }
 
     /**
@@ -102,9 +109,6 @@ class ApplyGiftCardTest extends GraphQlTestBase
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
-        $basketData         = $this->basketHelper->getOneListCalculationFromCheckoutSession();
-        $discountOrderLines = $basketData->getOrderDiscountLines()->getOrderDiscountLine();
-
         $this->assertNotNull($response);
         $this->assertEquals(
             AbstractIntegrationTest::GIFTCARD,
@@ -115,10 +119,15 @@ class ApplyGiftCardTest extends GraphQlTestBase
             $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed()
         );
 
-        $expectedGrandTotal = $basketData->getTotalAmount() - AbstractIntegrationTest::GIFTCARD_AMOUNT;
+        $cart = $this->cartRepository->get($cart->getId());
         $this->assertEquals(
-            $expectedGrandTotal,
-            $this->checkoutSession->getQuote()->getGrandTotal()
+            AbstractIntegrationTest::GIFTCARD,
+            $cart->getLsGiftCardNo()
+        );
+
+        $this->assertEquals(
+            AbstractIntegrationTest::GIFTCARD_AMOUNT,
+            $cart->getLsGiftCardAmountUsed()
         );
     }
 

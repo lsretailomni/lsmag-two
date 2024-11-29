@@ -20,7 +20,7 @@ class ClickAndCollectStoresTest extends GraphQlTestBase
     {
         $query = $this->getQuery();
 
-        $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];
+        $headerMap = [];
         $response  = $this->graphQlQuery(
             $query,
             [],

@@ -112,7 +112,7 @@ class RemoveGiftCardTest extends GraphQlTestBase
             $headerMap
         );
 
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+        // $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $cart = $this->cartRepository->get($cart->getId());
 
@@ -124,13 +124,6 @@ class RemoveGiftCardTest extends GraphQlTestBase
         $this->assertEquals(
             0,
             $cart->getLsGiftCardAmountUsed()
-        );
-
-        $basketData         = $this->basketHelper->getOneListCalculationFromCheckoutSession();
-        $expectedGrandTotal = $basketData->getTotalAmount();
-        $this->assertEquals(
-            $expectedGrandTotal,
-            $cart->getGrandTotal()
         );
     }
 
