@@ -135,9 +135,11 @@ define([
                             if (flag === "1") {
                                 applyStoreBtn.removeAttr('disabled');
                             } else {
+                                stockRemarks.find('> strong').remove();
                                 stockRemarks.append("<strong>" + data.remarks + " <a href='" + backUrl + "'>" + translatedText + "</a></strong>");
                             }
                         } else {
+                            stockRemarks.find('> strong').remove();
                             stockRemarks.append("<br/><strong>" + data.remarks + "</strong><br/>");
                         }
                     },
