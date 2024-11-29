@@ -89,7 +89,6 @@ class ApplyLoyaltyPointsTest extends GraphQlTestBase
     /**
      * @magentoAppIsolation enabled
      * @magentoAppArea adminhtml
-     * @magentoConfigFixture graphql/session/disable 0
      */
     public function testApplyLoyaltyPoints()
     {
@@ -99,24 +98,16 @@ class ApplyLoyaltyPointsTest extends GraphQlTestBase
         $cart          = $this->addSimpleProduct($emptyCart, $product);
         $maskedQuoteId = $this->maskedQuote->execute($cart->getId());
 
-        //$this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $query = $this->getQuery(
             $maskedQuoteId,
-            2.00
+            AbstractIntegrationTest::LOY_POINTS
         );
 
         $headerMap = [
-            'Authorization' => 'Bearer ' . $this->authToken,
-            'Accept'        => 'application/json',
-            'Content-Type'  => 'application/json',
+            'Authorization' => 'Bearer ' . $this->authToken
         ];
-
-//        $this->customerSession->setData('customer_id', $customer->getId());
-//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-//        $this->customerSession->setData(LSR::SESSION_CUSTOMER_LSRID, $customer->getData('lsr_id'));
-//        $this->checkoutSession->setQuoteId($cart->getId());
-//        $this->contactHelper->setCardIdInCustomerSession($customer->getLsrCardid());
 
         $response = $this->graphQlMutation(
             $query,
@@ -128,16 +119,16 @@ class ApplyLoyaltyPointsTest extends GraphQlTestBase
         $cart = $this->cartRepository->get($cart->getId());
 
         $this->assertNotNull($response);
+        $this->assertNotNull($response['applyLsLoyaltyPoints']['cart']['loyalty_points_info']['points_earn']);
+        $this->assertEquals(
+            AbstractIntegrationTest::LOY_POINTS,
+            $response['applyLsLoyaltyPoints']['cart']['loyalty_points_info']['points_spent']
+        );
+        $this->assertNotNull($response['applyLsLoyaltyPoints']['cart']['loyalty_points_info']['points_discount']);
+        $this->assertNotNull($response['applyLsLoyaltyPoints']['cart']['loyalty_points_info']['point_rate']);
         $this->assertEquals(
             AbstractIntegrationTest::LOY_POINTS,
             $cart->getLsPointsSpent()
-        );
-
-        $basketData         = $this->basketHelper->getOneListCalculationFromCheckoutSession();
-        $expectedGrandTotal = $basketData->getTotalAmount() - AbstractIntegrationTest::LOY_POINTS;
-        $this->assertEquals(
-            $expectedGrandTotal,
-            $cart->checkoutSession->getQuote()->getGrandTotal()
         );
     }
 
@@ -158,25 +149,13 @@ class ApplyLoyaltyPointsTest extends GraphQlTestBase
                   }
                 ) {
                     cart {
-                        prices {
-                        lsdiscount {
-                            label
-                            amount {
-                                value
-                                currency
-                            }
-                        }
-                        lstax {         
-                          label
-                          amount {
-                            value
-                            currency
-                          }
-                        }
-                        grand_total {
-                            value
-                        }
-                      }                        
+                        loyalty_points_info
+                        {
+                            points_earn
+                            points_spent
+                            points_discount
+                            point_rate
+                        }                      
                     }
                 }
             }

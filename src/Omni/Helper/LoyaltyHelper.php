@@ -167,7 +167,12 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getLoyaltyPointsAvailableToCustomer()
     {
-        $cardId   = $this->contactHelper->getCardIdFromCustomerSession();
+        $cardId = $this->contactHelper->getCardIdFromCustomerSession();
+        if (!$cardId) { //fetch card id from customer object if session value not available
+            $customerId = $this->customerSession->getCustomerId();
+            $customer   = $this->customerFactory->create()->load($customerId);
+            $cardId     = $customer->getLsrCardid();
+        }
         $points   = $this->basketHelper->getMemberPointsFromCheckoutSession();
         $response = null;
 
