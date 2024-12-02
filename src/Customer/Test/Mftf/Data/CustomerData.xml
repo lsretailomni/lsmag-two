@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="Ls_Simple_US_Customer" extends="Simple_US_Customer">
+        <data key="email">{{_ENV.EXISTING_CUSTOMER_1_EMAIL}}</data>
+        <data key="password">{{_ENV.EXISTING_CUSTOMER_1_PASSWORD}}</data>
+        <requiredEntity type="custom_attribute_array">LsrUsernameCustomerAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute_array">LsrCardIdCustomerAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute_array">LsrIdCustomerAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsrUsernameCustomerAttribute1" type="custom_attribute">
+        <data key="attribute_code">lsr_username</data>
+        <data key="value">{{_ENV.EXISTING_CUSTOMER_1_LSR_USERNAME}}</data>
+    </entity>
+    <entity name="LsrCardIdCustomerAttribute1" type="custom_attribute">
+        <data key="attribute_code">lsr_cardid</data>
+        <data key="value">{{_ENV.EXISTING_CUSTOMER_1_LSR_CARDID}}</data>
+    </entity>
+    <entity name="LsrIdCustomerAttribute1" type="custom_attribute">
+        <data key="attribute_code">lsr_id</data>
+        <data key="value">{{_ENV.EXISTING_CUSTOMER_1_LSR_ID}}</data>
+    </entity>
+</entities>

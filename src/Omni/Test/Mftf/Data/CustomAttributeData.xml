@@ -3,10 +3,10 @@
         xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
     <entity name="LsrItemIdProductAttribute1" type="custom_attribute">
         <data key="attribute_code">lsr_item_id</data>
-        <data key="value">40430</data>
+        <data key="value">{{_ENV.SIMPLE_PRODUCT_1_ITEM_ID}}</data>
     </entity>
     <entity name="LsrItemIdProductAttribute2" type="custom_attribute">
         <data key="attribute_code">lsr_item_id</data>
-        <data key="value">40440</data>
+        <data key="value">{{_ENV.SIMPLE_PRODUCT_2_ITEM_ID}}</data>
     </entity>
 </entities>
