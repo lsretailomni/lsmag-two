@@ -9,7 +9,8 @@
             <testCaseId value="LS-41079"/>
             <useCaseId value="LS-40983"/>
             <severity value="CRITICAL"/>
-            <group value="lsmagShoppingCart"/>
+            <group value="ls"/>
+            <group value="lsShoppingCart"/>
         </annotations>
 
         <before>
