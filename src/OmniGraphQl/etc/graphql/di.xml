@@ -89,6 +89,8 @@
                 <item name="ls_discounts_product_page" xsi:type="string">ls_mag/ls_discounts/discount</item>
                 <item name="ls_discounts_login_register_notice" xsi:type="string">ls_mag/ls_discounts/discount_login_register_notice</item>
                 <item name="opening_hours_time_format" xsi:type="string">ls_mag/ls_stores/timeformat</item>
+                <item name="discount_validation_msg" xsi:type="string">ls_mag/ls_order_management/graphql_discount_validation_msg</item>
+                <item name="giftcard_validation_msg" xsi:type="string">ls_mag/ls_order_management/graphql_giftcard_validation_msg</item>
                 <item name="pickup_date_time_slot" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_date_time_slot</item>
                 <item name="delivery_date_time_slot" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/delivery_date_time_slot</item>
                 <item name="pickup_time_interval" xsi:type="string">ls_mag/ls_delivery_pickup_date_time/pickup_time_interval</item>
@@ -135,4 +137,10 @@
                 type="Ls\OmniGraphQl\Plugin\Omni\Helper\ContactHelperPlugin"
                 sortOrder="1"/>
     </type>
+    <type name="Ls\Omni\Api\DiscountManagementInterface">
+        <plugin name="set_one_list_calculate_in_session"
+                type="Ls\OmniGraphQl\Plugin\Omni\Model\Api\DiscountManagementPlugin"
+                sortOrder="1"/>
+    </type>
+
 </config>

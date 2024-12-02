@@ -108,6 +108,7 @@ class UpdateGiftCard implements HttpPostActionInterface
      * @return ResponseInterface|Json|Raw|ResultInterface
      * @throws LocalizedException
      * @throws NoSuchEntityException
+     * @throws Exception
      */
     public function execute()
     {
@@ -131,12 +132,23 @@ class UpdateGiftCard implements HttpPostActionInterface
         $quote                 = $this->cartRepository->get($cartId);
         if ($giftCardNo != null && $giftCardAmount != 0) {
             $giftCardResponse = $this->giftCardHelper->getGiftCardBalance($giftCardNo, $giftCardPin);
-
             if (is_object($giftCardResponse)) {
-                $giftCardBalanceAmount = $giftCardResponse->getBalance();
+                $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($giftCardResponse);
+                $giftCardBalanceAmount       = $convertedGiftCardBalanceArr['gift_card_balance_amount'];
+                $quotePointRate              = $convertedGiftCardBalanceArr['quote_point_rate'];
+                $giftCardCurrencyCode        = $convertedGiftCardBalanceArr['gift_card_currency'];
             } else {
                 $giftCardBalanceAmount = $giftCardResponse;
             }
+
+            $quote->setLsGiftCardNo($giftCardNo);
+            $quote->setLsGiftCardPin($giftCardPin);
+            $quote->setLsGiftCardAmountUsed($giftCardAmount);
+            $quote->setLsGiftCardCnyFactor($quotePointRate);
+            $quote->setLsGiftCardCnyCode($giftCardCurrencyCode);
+            $this->validateQuote($quote);
+            $quote->collectTotals();
+            $this->cartRepository->save($quote);
         } else {
             try {
                 $response = [
@@ -145,9 +157,11 @@ class UpdateGiftCard implements HttpPostActionInterface
                         'You have successfully cancelled the gift card.'
                     )
                 ];
-                $quote->setLsGiftCardNo($giftCardNo);
-                $quote->setLsGiftCardPin($giftCardPin);
-                $quote->setLsGiftCardAmountUsed($giftCardAmount);
+                $quote->setLsGiftCardNo(null);
+                $quote->setLsGiftCardPin(null);
+                $quote->setLsGiftCardAmountUsed(0);
+                $quote->setLsGiftCardCnyFactor(null);
+                $quote->setLsGiftCardCnyCode(null);
                 $this->validateQuote($quote);
                 $quote->collectTotals();
                 $this->cartRepository->save($quote);
@@ -163,6 +177,16 @@ class UpdateGiftCard implements HttpPostActionInterface
                 'error'   => 'true',
                 'message' => __(
                     'The gift card is not valid.'
+                )
+            ];
+            return $resultJson->setData($response);
+        }
+
+        if ($this->giftCardHelper->isGiftCardExpired($giftCardResponse) && $giftCardAmount) {
+            $response = [
+                'error'   => 'true',
+                'message' => __(
+                    'Unfortunately, we can\'t apply this gift card since its already expired.'
                 )
             ];
             return $resultJson->setData($response);

@@ -451,6 +451,17 @@ interface ReplDiscountSetupInterface
     public function getStandardPriceInclVAT();
 
     /**
+     * @param string $StoreGroupCodes
+     * @return $this
+     */
+    public function setStoreGroupCodes($StoreGroupCodes);
+
+    /**
+     * @return string
+     */
+    public function getStoreGroupCodes();
+
+    /**
      * @param float $TenderOffer
      * @return $this
      */

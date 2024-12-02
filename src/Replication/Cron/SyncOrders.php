@@ -110,18 +110,32 @@ class SyncOrders
                     if (!empty($orders)) {
                         foreach ($orders as $order) {
                             try {
-                                $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-                                $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
+                                $documentId = null;
+                                if ($order->getRelationParentId()) {
+                                    $oldOrder   = $this->orderHelper->getMagentoOrderGivenEntityId(
+                                        $order->getRelationParentId()
+                                    );
+                                    if ($oldOrder) {
+                                        $documentId = $oldOrder->getDocumentId();
+                                    }
+                                }
 
-                                if (!empty($basketData)) {
-                                    $request  = $this->orderHelper->prepareOrder($order, $basketData);
-                                    $response = $this->orderHelper->placeOrder($request);
+                                if (empty($documentId)) {
+                                    $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+                                    $basketData = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder(
+                                        $order
+                                    );
 
-                                    if ($response) {
-                                        if (!empty($response->getResult()->getId())) {
-                                            $documentId = $response->getResult()->getId();
-                                            $order->setDocumentId($documentId);
-                                            $this->orderResourceModel->save($order);
+                                    if (!empty($basketData)) {
+                                        $request  = $this->orderHelper->prepareOrder($order, $basketData);
+                                        $response = $this->orderHelper->placeOrder($request);
+
+                                        if ($response) {
+                                            if (!empty($response->getResult()->getId())) {
+                                                $documentId = $response->getResult()->getId();
+                                                $order->setDocumentId($documentId);
+                                                $this->orderResourceModel->save($order);
+                                            }
                                         }
                                     }
                                 }

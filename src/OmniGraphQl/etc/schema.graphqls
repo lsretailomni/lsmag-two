@@ -205,6 +205,8 @@ type StoreConfig {
     ls_discounts_product_page: Boolean @doc(description:"Indicates whether discounts on product page display is enabled (true) or disabled (false).")
     ls_discounts_login_register_notice: Boolean @doc(description:"Indicates whether Login/Register display is enabled (true) or disabled (false).")
     opening_hours_time_format: String @doc(description:"Opening Hours time format.")
+    discount_validation_msg: String @doc(description:"Error message for invalid discounts.")
+    giftcard_validation_msg: String @doc(description:"Error message for invalid giftcard.")
     pickup_date_time_slot: Boolean @doc(description:"Indicates whether pickup date time slot display is enabled (true) or disabled (false).")
     delivery_date_time_slot: Boolean @doc(description:"Indicates whether delivery date time slot display is enabled (true) or disabled (false).")
     pickup_time_interval: Int @doc(description:"Pickup time interval.")

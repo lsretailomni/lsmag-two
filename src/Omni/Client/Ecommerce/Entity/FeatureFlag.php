@@ -14,31 +14,31 @@ use Ls\Omni\Exception\InvalidEnumException;
 class FeatureFlag
 {
     /**
-     * @property FeatureFlagName $name
+     * @property FeatureFlagName $Name
      */
-    protected $name = null;
+    protected $Name = null;
 
     /**
-     * @property string $value
+     * @property string $Value
      */
-    protected $value = null;
+    protected $Value = null;
 
     /**
-     * @param FeatureFlagName|string $name
+     * @param FeatureFlagName|string $Name
      * @return $this
      * @throws InvalidEnumException
      */
-    public function setName($name)
+    public function setName($Name)
     {
-        if ( ! $name instanceof FeatureFlagName ) {
-            if ( FeatureFlagName::isValid( $name ) )
-                $name = new FeatureFlagName( $name );
-            elseif ( FeatureFlagName::isValidKey( $name ) )
-                $name = new FeatureFlagName( constant( "FeatureFlagName::$name" ) );
-            elseif ( ! $name instanceof FeatureFlagName )
+        if ( ! $Name instanceof FeatureFlagName ) {
+            if ( FeatureFlagName::isValid( $Name ) )
+                $Name = new FeatureFlagName( $Name );
+            elseif ( FeatureFlagName::isValidKey( $Name ) )
+                $Name = new FeatureFlagName( constant( "FeatureFlagName::$Name" ) );
+            elseif ( ! $Name instanceof FeatureFlagName )
                 throw new InvalidEnumException();
         }
-        $this->name = $name->getValue();
+        $this->Name = $Name->getValue();
 
         return $this;
     }
@@ -48,16 +48,16 @@ class FeatureFlag
      */
     public function getName()
     {
-        return $this->name;
+        return $this->Name;
     }
 
     /**
-     * @param string $value
+     * @param string $Value
      * @return $this
      */
-    public function setValue($value)
+    public function setValue($Value)
     {
-        $this->value = $value;
+        $this->Value = $Value;
         return $this;
     }
 
@@ -66,7 +66,7 @@ class FeatureFlag
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->Value;
     }
 }
 

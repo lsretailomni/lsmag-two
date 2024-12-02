@@ -6,10 +6,10 @@
         <form method="post" data-role="save"
               data-bind="submit:checkGiftCardBalance">
             <div
-                data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+                    data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
                 <div class="field required">
                     <label class="label"><span
-                        data-bind="i18n: 'Gift Card Code:'"></span><span style="color:red">*</span></label>
+                            data-bind="i18n: 'Gift Card Code:'"></span><span style="color:red">*</span></label>
                     <div class="control">
                         <input class="input-text"
                                type="text"
@@ -21,7 +21,7 @@
                     <div id="pincode" data-bind="visible: isPinCodeFieldEnable()">
                         <br/>
                         <label class="label"><span
-                            data-bind="i18n: 'Gift Card Pin:'"></span><span style="color:red">*</span></label>
+                                data-bind="i18n: 'Gift Card Pin:'"></span><span style="color:red">*</span></label>
                         <div class="control">
                             <input class="input-text"
                                    type="password"
@@ -37,29 +37,27 @@
             <div class="actions-toolbar">
                 <div class="primary">
                     <button type="submit" class="action  primary"><span
-                        data-bind="i18n: 'Check Balance'"></span></button>
+                            data-bind="i18n: 'Check Balance'"></span></button>
                     <button type="button" class="action  primary"
                             data-bind="'value': $t('Reset'), click: cancelGiftCardBalance"><span
-                        data-bind="i18n: 'Reset'"></span></button>
+                            data-bind="i18n: 'Reset'"></span></button>
                 </div>
             </div>
         </form>
         <div class="giftcardinfo mt-5">
             <div class="container">
-                <div class="row">
+                <div>
                     <!-- ko if: getGiftCardBalance()-->
-                    <div>
-                        <p><strong><span data-bind="'html': $t('Your balance is: ')"></span><span
-                            data-bind="'html': getGiftCardBalance()"></span></strong></p>
-                    </div>
+                        <div>
+                            <p><strong><span data-bind="'html': $t('Your balance is: ')"></span><span
+                                    data-bind="'html': getGiftCardBalance()"></span></strong></p>
+                        </div>
                     <!-- /ko -->
                     <!-- ko if: getGiftCardExpiryDate()-->
-                    <div class="col-sm">
-                        <p><strong><span data-bind="'html': $t('Gift Card Expiry Date')"></span></strong></p>
-                    </div>
-                    <div class="col-sm">
-                        <p><span data-bind="'html': getGiftCardExpiryDate()"></span></p>
-                    </div>
+                        <div>
+                            <p><strong><span data-bind="'html': $t('Expiry Date: ')"></span>
+                                <span data-bind="'html': getGiftCardExpiryDate()"></span></strong></p>
+                        </div>
                     <!-- /ko -->
                 </div>
             </div>

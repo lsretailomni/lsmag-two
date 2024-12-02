@@ -86,8 +86,10 @@ class OrderObserver implements ObserverInterface
     public function execute(Observer $observer)
     {
         /** @var \Magento\Sales\Model\Order $order */
-        $order              = $observer->getEvent()->getData('order');
-        $oneListCalculation = $this->basketHelper->getOneListCalculationFromCheckoutSession();
+        $order = $observer->getEvent()->getData('order');
+        $this->orderHelper->storeManager->setCurrentStore($order->getStoreId());
+        $this->orderHelper->checkoutSession->setQuoteId($order->getQuoteId());
+        $oneListCalculation = $this->basketHelper->getOneListCalculation();
         $response           = null;
         /*
          * Adding condition to only process if LSR is enabled.
@@ -102,30 +104,35 @@ class OrderObserver implements ObserverInterface
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId($order->getRelationParentId());
                         if ($oldOrder) {
                             $documentId = $oldOrder->getDocumentId();
-                            $req        = $this->orderEdit->prepareOrder(
-                                $order,
-                                $oneListCalculation,
-                                $oldOrder,
-                                $documentId
-                            );
-                            $response   = $this->orderEdit->orderEdit($req);
-                            $order->setDocumentId($documentId);
-                            $isClickCollect = false;
-                            $shippingMethod = $order->getShippingMethod(true);
-                            if ($shippingMethod !== null) {
-                                $carrierCode    = $shippingMethod->getData('carrier_code');
-                                $method         = $shippingMethod->getData('method');
-                                $isClickCollect = $carrierCode == 'clickandcollect';
+                            if ($documentId) {
+                                $req      = $this->orderEdit->prepareOrder(
+                                    $order,
+                                    $oneListCalculation,
+                                    $oldOrder,
+                                    $documentId
+                                );
+                                $response = $this->orderEdit->orderEdit($req);
+                                if ($response) {
+                                    $order->setDocumentId($documentId);
+                                    $order->setLsOrderEdit(true);
+                                    $isClickCollect = false;
+                                    $shippingMethod = $order->getShippingMethod(true);
+                                    if ($shippingMethod !== null) {
+                                        $carrierCode    = $shippingMethod->getData('carrier_code');
+                                        $method         = $shippingMethod->getData('method');
+                                        $isClickCollect = $carrierCode == 'clickandcollect';
+                                    }
+                                    if ($isClickCollect) {
+                                        $order->setPickupStore($oldOrder->getPickupStore());
+                                    }
+                                    $this->orderResourceModel->save($order);
+                                    $oldOrder->setDocumentId(null);
+                                    $this->orderResourceModel->save($oldOrder);
+                                    $this->messageManager->addSuccessMessage(
+                                        __('Order edit request has been sent to LS Central successfully')
+                                    );
+                                }
                             }
-                            if ($isClickCollect) {
-                                $order->setPickupStore($oldOrder->getPickupStore());
-                            }
-                            $this->orderResourceModel->save($order);
-                            $oldOrder->setDocumentId(null);
-                            $this->orderResourceModel->save($oldOrder);
-                            $this->messageManager->addSuccessMessage(
-                                __('Order edit request has been sent to LS Central successfully')
-                            );
                         }
                     } else {
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
