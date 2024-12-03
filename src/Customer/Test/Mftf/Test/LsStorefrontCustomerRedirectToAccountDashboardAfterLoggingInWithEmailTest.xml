@@ -8,7 +8,7 @@
             <features value="Customer"/>
             <stories value="Customer logs in with email and redirected to account dashboard"/>
             <title value="Redirect to account dashboard"/>
-            <description value="Customer should be automatically redirected to account dashboard after login with email"/>
+            <description value="Customer should be automatically redirected to account dashboard after login with email and should see club information"/>
             <severity value="CRITICAL"/>
             <group value="ls"/>
             <group value="lsCustomer"/>

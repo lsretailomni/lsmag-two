@@ -9,6 +9,13 @@
         <requiredEntity type="custom_attribute_array">LsrCardIdCustomerAttribute1</requiredEntity>
         <requiredEntity type="custom_attribute_array">LsrIdCustomerAttribute1</requiredEntity>
     </entity>
+    <entity name="Ls_Simple_US_CustomerIncorrectPassword" extends="Simple_US_Customer">
+        <data key="email">{{_ENV.EXISTING_CUSTOMER_1_EMAIL}}</data>
+        <data key="password" unique="suffix">abc</data>
+        <requiredEntity type="custom_attribute_array">LsrUsernameCustomerAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute_array">LsrCardIdCustomerAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute_array">LsrIdCustomerAttribute1</requiredEntity>
+    </entity>
     <entity name="LsrUsernameCustomerAttribute1" type="custom_attribute">
         <data key="attribute_code">lsr_username</data>
         <data key="value">{{_ENV.EXISTING_CUSTOMER_1_LSR_USERNAME}}</data>
