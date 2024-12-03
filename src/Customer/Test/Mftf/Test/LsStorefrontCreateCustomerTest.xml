@@ -13,12 +13,7 @@
             <group value="lsCustomer"/>
         </annotations>
         <before>
-            <magentoCLI command="config:set {{ServiceStore.path}} {{ServiceStore.value}}" stepKey="serviceStore" />
-            <magentoCLI command="config:set {{ServiceHierarchyCode.path}} {{ServiceHierarchyCode.value}}" stepKey="serviceHierarchyCode" />
-            <magentoCLI command="config:set {{ServiceBaseUrl.path}} {{ServiceBaseUrl.value}}" stepKey="serviceBaseUrl" />
-            <magentoCLI command="config:set {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion" />
-            <magentoCLI command="config:set {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion" />
-            <magentoCLI command="config:set {{ServiceIndustry.path}} {{ServiceIndustry.value}}" stepKey="ServiceIndustry" />
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="-"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
                 <argument name="indices" value=""/>
