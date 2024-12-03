@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsStorefrontAddCustomerDefaultAddressTest" extends="StorefrontAddCustomerDefaultAddressTest">
+        <annotations>
+            <features value="Customer address"/>
+            <stories value="Implement handling of large number of addresses on storefront Address book"/>
+            <title value="Storefront - My account - Address Book - add new default billing/shipping address"/>
+            <description value="Storefront user should be able to create a new default address via the storefront"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCustomer"/>
+        </annotations>
+        <before>
+            <remove keyForRemoval="createCustomer"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="DeleteCustomer"/>
+            <actionGroup ref="StorefrontCustomerLogoutActionGroup" stepKey="logoutCustomer" />
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout" after="logoutCustomer"/>
+        </after>
+
+        <remove keyForRemoval="signUp"/>
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefrontAccount" before="AddNewDefaultAddress">
+            <argument name="Customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+
+        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="checkNewAddressesPostcodeOnDefaultShipping">
+            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+        </actionGroup>
+        <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid" after="deleteNewUser"/>
+    </test>
+</tests>
