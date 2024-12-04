@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsCheckoutLoginTest">
+        <annotations>
+            <features value="OnePageCheckout"/>
+            <stories value="Customer should be able to login on checkout"/>
+            <title value="OnePageCheckout with all product types test"/>
+            <description value="Checkout with all product types"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsShoppingCart"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct1" stepKey="product1" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+            <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 0" stepKey="DisablingGuestCheckoutLogin"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefrontAccount">
+            <argument name="Customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontCustomerLogoutActionGroup" stepKey="logoutCustomer" />
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
+            <argument name="product" value="$product1$"/>
+            <argument name="qty" value="1"/>
+        </actionGroup>
+
+        <!--Go to shopping cart-->
+        <actionGroup ref="ClickViewAndEditCartFromMiniCartActionGroup" stepKey="goToShoppingCartFromMinicart"/>
+        <actionGroup ref="FillShippingZipForm" stepKey="fillShippingZipForm">
+            <argument name="address" value="US_Address_CA"/>
+        </actionGroup>
+        <actionGroup ref="StorefrontClickProceedToCheckoutActionGroup" stepKey="clickProceedToCheckout"/>
+        <comment userInput="Adding the comment to replace waitForProceedToCheckout action for preserving Backward Compatibility" stepKey="waitForProceedToCheckout"/>
+        <actionGroup ref="LsFillCustomerSignInPopupFormActionGroup" stepKey="fillCustomerSignInPopupForm">
+            <argument name="customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+
+        <amOnPage url="{{CheckoutShippingPage.url}}" stepKey="navigateToShippingPage"/>
+        <waitForPageLoad stepKey="waitForShippingPageLoad"/>
+
+        <grabMultiple selector="{{StorefrontCustomerSignInPopupFormSection.email}}" stepKey="grabEmailField"/>
+        <assertCount stepKey="assertEmailField">
+            <actualResult type="variable">grabEmailField</actualResult>
+            <expectedResult type="string">0</expectedResult>
+        </assertCount>
+        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
+            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+        </actionGroup>
+        <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid"/>
+    </test>
+</tests>
