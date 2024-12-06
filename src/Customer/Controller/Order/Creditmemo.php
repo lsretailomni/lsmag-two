@@ -46,7 +46,7 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
     public function fetchAndSetCurrentOrderInRegistry($orderId, $type)
     {
         $transactions = parent::fetchAndSetCurrentOrderInRegistry($orderId, $type);
-        $response = [];
+        $response     = [];
 
         if (!is_array($transactions)) {
             $transactions = [$transactions];
@@ -60,6 +60,10 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
                 $response = array_merge($response, $returnTransactions);
                 // @codingStandardsIgnoreEnd
             }
+        }
+
+        if (empty($response)) {
+            $response = $transactions;
         }
 
         if ($response) {

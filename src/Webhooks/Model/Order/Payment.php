@@ -3,7 +3,6 @@
 namespace Ls\Webhooks\Model\Order;
 
 use Exception;
-use \Ls\Hospitality\Model\LSR;
 use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Webhooks\Helper\NotificationHelper;
@@ -232,8 +231,7 @@ class Payment
                         $storeId,
                         $order,
                         $items,
-                        $message,
-                        LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
+                        $message
                     );
 
                     return $this->helper->outputMessage(

@@ -1150,7 +1150,9 @@ class ContactHelper extends AbstractHelper
                 ->setData('email', $contact->getEmail())
                 ->setData('firstname', $contact->getFirstName())
                 ->setData('lastname', $contact->getLastName())
-                ->setData('lsr_username', $contact->getUserName());
+                ->setData('lsr_username', $contact->getUserName())
+                ->setData('lsr_id', $contact->getId())
+                ->setData('lsr_cardid', current($contact->getCards()->getCard())->getId());
             $this->customerResourceModel->save($customer);
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());

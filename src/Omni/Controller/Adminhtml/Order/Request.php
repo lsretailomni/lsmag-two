@@ -144,6 +144,7 @@ class Request extends Action
                             }
                         }
                     }
+
                     if (empty($documentId)) {
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);

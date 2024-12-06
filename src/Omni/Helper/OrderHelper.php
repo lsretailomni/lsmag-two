@@ -31,6 +31,7 @@ use Magento\Sales\Model;
 use Magento\Sales\Model\OrderRepository;
 use Magento\Sales\Model\ResourceModel\Order;
 use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Directory\Model\CurrencyFactory;
 
@@ -605,9 +606,16 @@ class OrderHelper extends AbstractHelper
         }
 
         if ($order->getLsGiftCardAmountUsed()) {
-            $tenderTypeId           = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
-            $currencyFactor         = 0;
-            $giftCardCurrencyCode   = $order->getOrderCurrency()->getCurrencyCode();
+            $tenderTypeId   = $this->getPaymentTenderTypeId(LSR::LS_GIFTCARD_TENDER_TYPE);
+            $currencyFactor = 0;
+            if (version_compare(
+                $this->lsr->getCentralVersion($this->lsr->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES),
+                '25',
+                '<'
+            )) {
+                $currencyFactor = 1;
+            }
+            $giftCardCurrencyCode = $order->getOrderCurrency()->getCurrencyCode();
             // @codingStandardsIgnoreStart
             $orderPaymentGiftCard = new Entity\OrderPayment();
             // @codingStandardsIgnoreEnd

@@ -1404,10 +1404,6 @@ class ProductCreateTask
             ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq'],
         ];
 
-        if (!$unitOfMeasure) {
-            $filters[] = ['field' => 'QtyPerUnitOfMeasure', 'value' => 0, 'condition_type' => 'eq'];
-        }
-
         if ($variantId) {
             $parameter = ['field' => 'VariantId', 'value' => $variantId, 'condition_type' => 'eq'];
         }

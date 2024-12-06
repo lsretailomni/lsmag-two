@@ -26,6 +26,9 @@ class EmailNotification extends AbstractNotification
      */
     public $inlineTranslation;
 
+    /** @var LSR */
+    public $lsr;
+
     /**
      * @param Data $helper
      * @param Logger $logger
@@ -33,6 +36,7 @@ class EmailNotification extends AbstractNotification
      * @param StateInterface $inlineTranslation
      * @param ReceiverFactory $receiverFactory
      * @param SenderFactory $senderFactory
+     * @param LSR $lsr
      * @param array $data
      */
     public function __construct(
@@ -42,10 +46,12 @@ class EmailNotification extends AbstractNotification
         StateInterface $inlineTranslation,
         ReceiverFactory $receiverFactory,
         SenderFactory $senderFactory,
+        LSR $lsr,
         array $data = []
     ) {
         $this->transportBuilder  = $transportBuilder;
         $this->inlineTranslation = $inlineTranslation;
+        $this->lsr = $lsr;
         parent::__construct($helper, $logger, $receiverFactory, $senderFactory, $data);
     }
 
@@ -116,7 +122,10 @@ class EmailNotification extends AbstractNotification
     {
         $order        = $this->getOrder();
         $magStoreName = $order->getStore()->getFrontEndName();
-        $ccStoreName  = $this->helper->getStoreName($order->getPickupStore());
+        $centralStoreId = $order->getPickupStore() ??
+            $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $order->getStore()->getWebsiteId());
+        $ccStoreName  = $this->helper->getStoreName($centralStoreId);
+
         $receiver     = $this->getReceiver();
         $status       = $this->getNotificationType();
 
