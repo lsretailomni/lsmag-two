@@ -973,6 +973,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getOmniVersion($storeId = null, $scope = null)
     {
+        if(!$this->isEnabled($storeId)) {
+            $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
+        }
+
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             return $this->getWebsiteConfig(self::SC_SERVICE_VERSION, $storeId);
         }

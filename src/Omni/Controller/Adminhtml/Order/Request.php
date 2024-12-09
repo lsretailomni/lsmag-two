@@ -97,6 +97,7 @@ class Request extends Action
         $orderId = $this->getRequest()->getParam('order_id');
         $order   = $this->orderRepository->get($orderId);
         $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+        $this->lsr->setStoreId($order->getStoreId());
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
@@ -172,7 +173,7 @@ class Request extends Action
             $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
-
+        $this->lsr->setStoreId(null);
         return $resultRedirect;
     }
 }

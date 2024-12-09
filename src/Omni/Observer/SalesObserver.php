@@ -46,6 +46,10 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
+        $total->setSubtotal($quote->getSubtotal());
+        $total->setSubtotalInclTax($quote->getSubtotal());
+        $total->setBaseSubtotalInclTax($quote->getSubtotal());
+        $total->setBaseSubtotalTotalInclTax($quote->getSubtotal());
 
         $basketData = $this->basketHelper->getBasketSessionValue();
 
