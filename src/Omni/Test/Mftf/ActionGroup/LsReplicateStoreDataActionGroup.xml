@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsReplicateStoreDataActionGroup">
+        <amOnPage url="{{AdminCronListingPage.url}}" stepKey="navigateToCronListingPage"/>
+        <waitForPageLoad stepKey="waitForCronListingPage"/>
+        <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='repl_store_execute_label']" stepKey="waitForGridLoad"/>
+        <click selector=".admin__data-grid-wrap a[aria-label='repl_store_execute_label']" stepKey="clickExecute"/>
+        <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForExecuteConfirmationModal"/>
+        <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage"/>
+        <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute"/>
+        <waitForPageLoad time="60" stepKey="waitForExecuteToFinish"/>
+    </actionGroup>
+</actionGroups>
