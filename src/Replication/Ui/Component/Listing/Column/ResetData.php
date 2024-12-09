@@ -51,14 +51,19 @@ class ResetData extends Column
                         $item[$name]['reset'] = [
                             'href'    => $this->urlBuilder->getUrl(
                                 self::URL_PATH_EXECUTE,
-                                ['jobname' => $item['label'], 'scope_id' => $item['scope_id'], 'scope' => $item['scope']]
+                                [
+                                    'jobname' => $item['label'],
+                                    'scope_id' => $item['scope_id'],
+                                    'scope' => $item['scope']
+                                ]
                             ),
                             'label'   => __('Reset'),
                             'confirm' => [
                                 'title'   => __('Want to Reset Data for %1 Cron Job?', $item['label']),
                                 'message' => __('It will take some time to reset data. Please don\'t close this window.
                                 ')
-                            ]
+                            ],
+                            'ariaLabel' => $item['label'] . '_' . 'reset_label'
                         ];
                     }
                 }
