@@ -24,10 +24,12 @@ abstract class GraphQlTestBase extends GraphQlAbstract
     protected function executeQuery(string $query, ?string $token = ''): array
     {
         // Initialize headers array
-        $headers = [];
+        $headers                 = [];
+        $headers['store']        = "default";
+        $headers['content-type'] = "application/json";
 
         // Add Authorization header if token is provided
-        if ($token !== null) {
+        if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
         }
 
@@ -47,10 +49,12 @@ abstract class GraphQlTestBase extends GraphQlAbstract
     protected function executeMutation(string $query, array $variables = [], ?string $token = ''): array
     {
         // Initialize headers array
-        $headers = [];
+        $headers                 = [];
+        $headers['store']        = "default";
+        $headers['content-type'] = "application/json";
 
         // Add Authorization header if token is provided
-        if ($token !== null) {
+        if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
         }
 
@@ -65,14 +69,13 @@ abstract class GraphQlTestBase extends GraphQlAbstract
      */
     protected function loginAndFetchToken(): string
     {
-        $email    = getenv('EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
-        $password = getenv('PASSWORD') ?:
-            throw new \RuntimeException('TEST_USER_PASSWORD is not set in .env');
+        $email    = getenv('EMAIL') ?: throw new \RuntimeException('EMAIL is not set in .env');
+        $password = getenv('PASSWORD') ?: throw new \RuntimeException('PASSWORD is not set in .env');
 
         $loginMutation = <<<MUTATION
         mutation {
             generateCustomerToken(
-                email: "{$email}"
+                email: "{$email}",
                 password: "{$password}"
             ) {
                 token

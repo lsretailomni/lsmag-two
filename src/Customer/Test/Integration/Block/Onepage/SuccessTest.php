@@ -12,7 +12,6 @@ use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Customer\Test\Fixture\CustomerOrder;
 use \Ls\Customer\Test\Fixture\OrderCreateFixture;
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
-use Magento\Checkout\Api\Data\ShippingInformationInterfaceFactory;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Checkout\Test\Fixture\PlaceOrder as PlaceOrderFixture;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddressFixture;
@@ -167,7 +166,7 @@ class SuccessTest extends TestCase
             SetDeliveryMethodFixture::class,
             ['cart_id' => '$cart1.id$', 'carrier_code' => 'flatrate', 'method_code' => 'flatrate']
         ),
-        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart1.id$', 'method' => 'checkmo']),
+        DataFixture(SetPaymentMethodFixture::class, ['cart_id' => '$cart1.id$', 'method' => ['method' => 'checkmo']]),
         DataFixture(PlaceOrderFixture::class, ['cart_id' => '$cart1.id$'], 'order'),
         DataFixture(OrderCreateFixture::class, ['order' => '$order$'], 'order1'),
     ]

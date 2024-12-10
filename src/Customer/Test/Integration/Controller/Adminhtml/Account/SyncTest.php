@@ -16,6 +16,11 @@ use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\AbstractBackendController;
 
+/**
+ * @magentoAppArea adminhtml
+ * @magentoDbIsolation enabled
+ * @magentoAppIsolation enabled
+ */
 class SyncTest extends AbstractBackendController
 {
     public $objectManager;

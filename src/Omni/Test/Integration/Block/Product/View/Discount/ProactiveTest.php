@@ -60,7 +60,7 @@ class ProactiveTest extends AbstractIntegrationTest
     ]
     public function testGetProactiveDiscounts()
     {
-        $result = $this->proactive->getProactiveDiscounts(40100);
+        $result = $this->proactive->getProactiveDiscounts(40000);
 
         $this->assertNotEquals([], $result);
     }
@@ -77,7 +77,7 @@ class ProactiveTest extends AbstractIntegrationTest
     ]
     public function testGetProactiveDiscountsWithLSRDisabled()
     {
-        $result = $this->proactive->getProactiveDiscounts(40100);
+        $result = $this->proactive->getProactiveDiscounts(40000);
 
         $this->assertEquals([], $result);
     }
