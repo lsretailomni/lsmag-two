@@ -87,7 +87,7 @@
                 <field id="ls_central_timezone" translate="label comment" type="text" sortOrder="150" showInDefault="1"
                        showInWebsite="1" showInStore="0">
                     <label>LS Central Timezone</label>                    
-                    <comment>Configure the timezone configured under the My Settings page in LS Central. Default value is UTC.</comment>
+                    <comment>Configure the timezone code(For eg:- UTC, CET, MYT, etc.) corresponding to timezone configured under the My Settings page in LS Central. Default value is UTC.</comment>
                 </field>
             </group>
             <group id="ls_disaster_recovery"
