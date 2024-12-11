@@ -992,7 +992,7 @@ class BasketHelper extends AbstractHelper
             ->setStoreId($store_id);
         // @codingStandardsIgnoreEnd
 
-        if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+        if ($this->lsr->isEnabled() && version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
             $list->setSalesType(LSR::SALE_TYPE_POS);
         }
 

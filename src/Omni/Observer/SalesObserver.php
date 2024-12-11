@@ -46,10 +46,12 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
-        $total->setSubtotal($quote->getSubtotal());
-        $total->setSubtotalInclTax($quote->getSubtotal());
-        $total->setBaseSubtotalInclTax($quote->getSubtotal());
-        $total->setBaseSubtotalTotalInclTax($quote->getSubtotal());
+        if ($this->basketHelper->getLsrModel()->isEnabled()) {
+            $total->setSubtotal($quote->getBaseSubtotal());
+            $total->setSubtotalInclTax($quote->getBaseSubtotal());
+            $total->setBaseSubtotalInclTax($quote->getBaseSubtotal());
+            $total->setBaseSubtotalTotalInclTax($quote->getBaseSubtotal());
+        }
 
         $basketData = $this->basketHelper->getBasketSessionValue();
 
@@ -63,10 +65,10 @@ class SalesObserver implements ObserverInterface
 
             if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
                 (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
-                $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
+                $grandTotal = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal       = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
+                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
                     ->setSubtotal($basketData->getTotalNetAmount())
