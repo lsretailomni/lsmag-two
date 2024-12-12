@@ -277,6 +277,11 @@ class DiscountCreateTask
                                 false,
                                 ScopeInterface::SCOPE_STORES
                             );
+
+                            /* Delete the IsDeleted offers */
+                            $this->deleteOffers();
+                            /* Synchronize validation period */
+                            $this->syncValidationPeriod();
                         } else {
                             $this->replicationHelper->updateCronStatus(
                                 false,
@@ -296,10 +301,6 @@ class DiscountCreateTask
                             ScopeInterface::SCOPE_STORES
                         );
                     }
-                    /* Delete the IsDeleted offers */
-                    $this->deleteOffers();
-                    /* Synchronize validation period */
-                    $this->syncValidationPeriod();
                     $this->logger->debug('End DiscountCreateTask for store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
@@ -308,7 +309,7 @@ class DiscountCreateTask
     }
 
     /**
-     * Synchronize validaton period
+     * Synchronize validation period
      */
     public function syncValidationPeriod()
     {
