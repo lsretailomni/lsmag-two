@@ -27,6 +27,7 @@ use Magento\CatalogRule\Model\Rule\Condition\Product;
 use Magento\CatalogRule\Model\Rule\Job;
 use Magento\CatalogRule\Model\RuleFactory;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -736,8 +737,7 @@ class DiscountCreateSetupTask
         $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
         /** @var ReplDiscountValidation $replValidation */
         foreach ($replDiscountValidation->getItems() as $replValidation) {
-            $fromDate = $replValidation->getStartDate();
-            $toDate   = $replValidation->getEndDate();
+
             $filters  = [
                 ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
                 ['field' => 'ValidationPeriodId', 'value' => $replValidation->getNavId(), 'condition_type' => 'eq'],
@@ -758,24 +758,12 @@ class DiscountCreateSetupTask
                 } else {
                     $name = $replDiscount->getOfferNo();
                 }
-                $websiteIds     = [$this->store->getWebsiteId()];
-                $ruleCollection = $this->ruleCollectionFactory->create();
-                $ruleCollection->addFieldToFilter('name', $name);
-                $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+                $ruleCollection = $this->getCatalogRuleCollection($name);
+
                 try {
                     foreach ($ruleCollection as $rule) {
-                        if ($rule->getFromDate() != $fromDate || $rule->getToDate() != $toDate) {
-                            $rule->setFromDate(($fromDate) ?: $this->replicationHelper->getCurrentDate());
-                            if (strtolower($toDate ?? '') != strtolower('1753-01-01T00:00:00')
-                                && !empty($toDate)) {
-                                $rule->setToDate($toDate);
-                            }
-
-                            $this->catalogRule->save($rule);
-                            $index = true;
-                        }
+                        $index = $this->saveCatalogRuleBasedOnDiscountValidation($rule, $replValidation);
                     }
-
                 } catch (Exception $e) {
                     $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
                     $this->logger->debug($e->getMessage());
@@ -791,6 +779,43 @@ class DiscountCreateSetupTask
         if ($index) {
             $this->jobApply->applyAll();
         }
+    }
+
+    public function getCatalogRuleCollection($name)
+    {
+        $websiteIds     = [$this->store->getWebsiteId()];
+        $ruleCollection = $this->ruleCollectionFactory->create();
+        $ruleCollection->addFieldToFilter('name', $name);
+        $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+
+        return $ruleCollection;
+    }
+
+    /**
+     * Save catalog rule
+     *
+     * @param $rule
+     * @param $replValidation
+     * @return boolean
+     * @throws CouldNotSaveException
+     */
+    public function saveCatalogRuleBasedOnDiscountValidation($rule, $replValidation)
+    {
+        $fromDate = $replValidation->getStartDate();
+        $toDate   = $replValidation->getEndDate();
+
+        if ($rule->getFromDate() != $fromDate || $rule->getToDate() != $toDate) {
+            $rule->setFromDate(($fromDate) ?: $this->replicationHelper->getCurrentDate());
+            if (strtolower($toDate ?? '') != strtolower('1753-01-01T00:00:00')
+                && !empty($toDate)) {
+                $rule->setToDate($toDate);
+            }
+
+            $this->catalogRule->save($rule);
+            return true;
+        }
+
+        return false;
     }
 
     /**
