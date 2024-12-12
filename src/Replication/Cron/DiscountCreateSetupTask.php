@@ -718,7 +718,7 @@ class DiscountCreateSetupTask
     }
 
     /**
-     * synchronize validaton period
+     * synchronize validation period
      */
     public function syncValidationPeriod()
     {
@@ -781,6 +781,12 @@ class DiscountCreateSetupTask
         }
     }
 
+    /**
+     * Get catalog rule collection
+     *
+     * @param $name
+     * @return \Magento\CatalogRule\Model\ResourceModel\Rule\Collection
+     */
     public function getCatalogRuleCollection($name)
     {
         $websiteIds     = [$this->store->getWebsiteId()];
@@ -832,10 +838,7 @@ class DiscountCreateSetupTask
             $name = $replDiscount->getOfferNo() . '-' . $replDiscount->getLineNumber();
         }
         if (!empty($name)) {
-            $websiteIds     = [$this->store->getWebsiteId()];
-            $ruleCollection = $this->ruleCollectionFactory->create();
-            $ruleCollection->addFieldToFilter('name', $name);
-            $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+            $ruleCollection = $this->getCatalogRuleCollection($name);
             try {
                 foreach ($ruleCollection as $rule) {
                     $this->catalogRule->deleteById($rule->getId());
@@ -863,10 +866,7 @@ class DiscountCreateSetupTask
             $name   = $replDiscount->getOfferNo();
             $isItem = true;
         }
-        $websiteIds     = [$this->store->getWebsiteId()];
-        $ruleCollection = $this->ruleCollectionFactory->create();
-        $ruleCollection->addFieldToFilter('name', $name);
-        $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+        $ruleCollection = $this->getCatalogRuleCollection($name);
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
