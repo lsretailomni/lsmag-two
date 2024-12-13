@@ -62,6 +62,10 @@ class PrintRefunds extends AbstractOrderController implements HttpGetActionInter
             }
         }
 
+        if (empty($response)) {
+            $response = $transactions;
+        }
+
         if ($response) {
             $this->orderHelper->registerGivenValueInRegistry('current_order', $response);
         }

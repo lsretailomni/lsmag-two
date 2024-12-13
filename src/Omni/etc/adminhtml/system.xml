@@ -54,30 +54,42 @@
                     <source_model>Ls\Omni\Model\System\Source\NavStore</source_model>
                     <comment>Choose the web store</comment>
                 </field>
-                <field id="replicate_hierarchy_code" translate="label comment" type="select" sortOrder="100"
+                <field id="replicate_hierarchy_code" type="select" translate="label comment" sortOrder="100"
                        showInWebsite="1">
                     <label>Select Hierarchy Code</label>
                     <validate>required-entry</validate>
                     <comment>Required to get hierarchy node and leaf from omni</comment>
                     <source_model>Ls\Replication\Block\Adminhtml\System\Config\HierarchyCode</source_model>
                 </field>
-                <field id="debug" translate="label comment" type="select" sortOrder="110" showInDefault="1"
+                <field id="local_currency_code" translate="label comment" sortOrder="110"
+                       showInWebsite="1">
+                    <label>Local Currency Code</label>
+                    <comment>Local Currency Code can be found under General Ledger Setup > LCY Code in Central.</comment>
+                </field>
+                <field id="debug" translate="label comment" type="select" sortOrder="120" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Debug Mode for Commerce Service Client</comment>
                 </field>
-                <field id="timeout" translate="label comment" type="text" sortOrder="120" showInDefault="1"
+                <field id="timeout" translate="label comment" type="text" sortOrder="130" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Service Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
                     <comment>Max time in seconds to wait for commerce service response</comment>
                 </field>
-                <field id="heart_beat_timeout" translate="label comment" type="text" sortOrder="130" showInDefault="1"
+                <field id="heart_beat_timeout" translate="label comment" type="text" sortOrder="140" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Commerce Service Heartbeat Cache Timeout</label>
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
                     <comment>Commerce service heartbeat cache timeout in seconds. Make sure LS eCommerce Cache is enabled in order to use this.</comment>
+                </field>
+                <field id="ls_central_timezone" translate="label comment" type="text" sortOrder="150" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>LS Central Timezone</label>                    
+                    <comment><![CDATA[Configure the timezone code corresponding to timezone configured under the My Settings page in LS Central. Default value is UTC. <br/> 
+                    Refer <a href="https://www.php.net/manual/en/timezones.php" targe="_blank">here</a> to select desired region and timezone.( For eg:- UTC, Asia/Kuala_Lumpur, Europe/Belgrade, etc).
+                    ]]></comment>
                 </field>
             </group>
             <group id="ls_disaster_recovery"

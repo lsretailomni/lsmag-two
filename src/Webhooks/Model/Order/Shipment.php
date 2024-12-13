@@ -253,8 +253,7 @@ class Shipment
                     $storeId,
                     $magOrder,
                     $items,
-                    $statusMsg,
-                    LSR::LS_NOTIFICATION_PUSH_NOTIFICATION
+                    $statusMsg
                 );
             }
         }

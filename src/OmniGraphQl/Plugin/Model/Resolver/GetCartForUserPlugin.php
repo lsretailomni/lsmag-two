@@ -2,7 +2,8 @@
 
 namespace Ls\OmniGraphQl\Plugin\Model\Resolver;
 
-use \Ls\Omni\Helper\BasketHelper;
+use \Ls\OmniGraphQl\Helper\DataHelper;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
  * Interceptor to intercept GetCartForUser methods
@@ -10,17 +11,17 @@ use \Ls\Omni\Helper\BasketHelper;
 class GetCartForUserPlugin
 {
     /**
-     * @var BasketHelper
+     * @var DataHelper
      */
-    public $basketHelper;
+    public $dataHelper;
 
     /**
-     * @param BasketHelper $basketHelper
+     * @param DataHelper $dataHelper
      */
     public function __construct(
-        BasketHelper $basketHelper
+        DataHelper $dataHelper
     ) {
-        $this->basketHelper = $basketHelper;
+        $this->dataHelper = $dataHelper;
     }
 
     /**
@@ -29,15 +30,13 @@ class GetCartForUserPlugin
      * @param $subject
      * @param $result
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function afterExecute(
         $subject,
         $result
     ) {
-        if ($result && $result->getBasketResponse()) {
-            // phpcs:ignore Magento2.Security.InsecureFunction
-            $this->basketHelper->setOneListCalculationInCheckoutSession(unserialize($result->getBasketResponse()));
-        }
+        $this->dataHelper->setCurrentQuoteDataInCheckoutSession($result);
 
         return $result;
     }

@@ -116,7 +116,13 @@ class ReplicationHelper extends AbstractHelper
         'catalog_product_entity_varchar' => [
             'entity_id' => 'row_id'
         ],
-        'catalog_product_entity' => [
+        'catalog_product_entity'         => [
+            'entity_id' => 'row_id'
+        ],
+        'catalog_category_entity_varchar' => [
+            'entity_id' => 'row_id'
+        ],
+        'catalog_category_entity'         => [
             'entity_id' => 'row_id'
         ]
     ];
@@ -228,7 +234,8 @@ class ReplicationHelper extends AbstractHelper
         "ls_mag/replication/repl_item_modifier"              => [
             "nav_id",
             "VariantCode",
-            "Code", "SubCode",
+            "Code",
+            "SubCode",
             "TriggerCode",
             "UnitOfMeasure",
             "scope_id"
@@ -1278,6 +1285,7 @@ class ReplicationHelper extends AbstractHelper
     {
         $code = strtolower(trim($code));
         $code = str_replace(' ', '_', $code);
+        $code = str_replace('.', '_', $code);
         // convert all special characters and replace it with _
         $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
@@ -1344,8 +1352,13 @@ class ReplicationHelper extends AbstractHelper
      * @param bool $flushCache
      * @param string $scope
      */
-    public function updateCronStatus($data, $path, $storeId = false, $flushCache = true, $scope = ScopeInterface::SCOPE_WEBSITES)
-    {
+    public function updateCronStatus(
+        $data,
+        $path,
+        $storeId = false,
+        $flushCache = true,
+        $scope = ScopeInterface::SCOPE_WEBSITES
+    ) {
         /**
          * add a check here to see if new value is different from old one in order to avoid unnecessory flushing.
          */
@@ -1532,7 +1545,7 @@ class ReplicationHelper extends AbstractHelper
     ) {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
-        $second_table_name = $this->resource->getTableName($secondaryTableName);
+        $second_table_name = $this->getGivenTableName($secondaryTableName);
         // @codingStandardsIgnoreStart
         // In order to only select those records whose items are available
         if ($isReplaceJoin) {
@@ -1621,29 +1634,29 @@ class ReplicationHelper extends AbstractHelper
             $websiteId = $this->storeManager->getDefaultStoreView()->getWebsiteId();
         }
 
-        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
+        $itemIdTableAlias               = self::ITEM_ID_TABLE_ALIAS;
         $catalogProductEntityTableAlias = 'cpe';
-        $whereClause = $this->magentoEditionSpecificJoinWhereClause(
+        $whereClause                    = $this->magentoEditionSpecificJoinWhereClause(
             "$catalogProductEntityTableAlias.entity_id = $itemIdTableAlias.entity_id",
-            'catalog_product_entity_varchar',
+            $this->getGivenTableName('catalog_product_entity_varchar'),
             [$itemIdTableAlias]
         );
 
         $whereClause = $this->magentoEditionSpecificJoinWhereClause(
             $whereClause,
-            'catalog_product_entity',
+            $this->getGivenTableName('catalog_product_entity'),
             [$catalogProductEntityTableAlias]
         );
 
         $collection->getSelect()->joinInner(
-            [$catalogProductEntityTableAlias => 'catalog_product_entity'],
+            [$catalogProductEntityTableAlias => $this->getGivenTableName('catalog_product_entity')],
             $whereClause,
             []
         );
         $collection->getSelect()->joinInner(
-            ['cpw' => 'catalog_product_website'],
+            ['cpw' => $this->getGivenTableName('catalog_product_website')],
             "cpw.product_id = $catalogProductEntityTableAlias.entity_id" .
-                " AND cpw.website_id = $websiteId",
+            " AND cpw.website_id = $websiteId",
             []
         );
     }
@@ -1658,8 +1671,8 @@ class ReplicationHelper extends AbstractHelper
      */
     public function setCollectionPropertiesPlusJoinsForInventory(&$collection, SearchCriteriaInterface $criteria)
     {
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
-        $fourthTableName = $this->resource->getTableName('catalog_product_entity');
+        $thirdTableName  = $this->getGivenTableName('ls_replication_repl_item');
+        $fourthTableName = $this->getGivenTableName('catalog_product_entity');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1677,7 +1690,15 @@ class ReplicationHelper extends AbstractHelper
         $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
         $collection->getSelect()->joinInner(
             ['fourth' => $fourthTableName],
-            'fourth.entity_id = '. $itemIdTableAlias .'.entity_id',
+            $this->magentoEditionSpecificJoinWhereClause(
+                $this->magentoEditionSpecificJoinWhereClause(
+                    'fourth.entity_id = ' . $itemIdTableAlias . '.entity_id',
+                    $fourthTableName,
+                    ['fourth']
+                ),
+                $this->getGivenTableName('catalog_product_entity_varchar'),
+                [$itemIdTableAlias]
+            ),
             ['fourth.entity_id', 'fourth.sku']
         );
         /** For Xdebug only to check the query */
@@ -1720,6 +1741,17 @@ class ReplicationHelper extends AbstractHelper
         }
     }
 
+    public function getMappingColumns()
+    {
+        $mappingColumns = [];
+
+        foreach (self::COLUMNS_MAPPING as $tableName => $mapping) {
+            $mappingColumns[$this->getGivenTableName($tableName)] = $mapping;
+        }
+
+        return $mappingColumns;
+    }
+
     /**
      * Replace column names of joining tables based on mapping
      *
@@ -1733,10 +1765,12 @@ class ReplicationHelper extends AbstractHelper
         $tableName,
         $aliasNames
     ) {
+        $columnsMapping = $this->getMappingColumns();
+
         if ($this->productMetadata->getEdition() != ProductMetadata::EDITION_NAME &&
-            isset(self::COLUMNS_MAPPING[$tableName])
+            isset($columnsMapping[$tableName])
         ) {
-            $mappingColumns = self::COLUMNS_MAPPING[$tableName];
+            $mappingColumns = $columnsMapping[$tableName];
 
             foreach ($aliasNames as $alias) {
                 foreach ($mappingColumns as $columnName => $newColumnName) {
@@ -1771,11 +1805,11 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinInner(
-            [self::ITEM_ID_TABLE_ALIAS => 'catalog_product_entity_varchar'],
+            [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
                 " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias]
             ),
             []
@@ -1805,13 +1839,13 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinLeft(
-            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            [$variantIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "$mainTableAlias.$mainTableVariantIdColumn = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
                 " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
             []
@@ -1828,7 +1862,7 @@ class ReplicationHelper extends AbstractHelper
      */
     public function setCollectionPropertiesPlusJoinsForVendor(&$collection, SearchCriteriaInterface $criteria)
     {
-        $thirdTableName = $this->resource->getTableName('ls_replication_repl_vendor');
+        $thirdTableName = $this->getGivenTableName('ls_replication_repl_vendor');
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         $collection->getSelect()->joinInner(
@@ -1866,7 +1900,7 @@ class ReplicationHelper extends AbstractHelper
             $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
         }
 
-        $secondTableName = $this->resource->getTableName('ls_replication_repl_item_variant_registration');
+        $secondTableName = $this->getGivenTableName('ls_replication_repl_item_variant_registration');
         $collection
             ->getSelect()->where('ItemId NOT IN (?)', new \Zend_Db_Expr("select ItemId From $secondTableName"));
         /** For Xdebug only to check the query $query */
@@ -1888,9 +1922,9 @@ class ReplicationHelper extends AbstractHelper
         $variantIdTableAlias = self::VARIANT_ID_TABLE_ALIAS;
 
         if ($type == 'Item') {
-            $thirdTableName = $this->resource->getTableName('ls_replication_repl_item');
+            $thirdTableName = $this->getGivenTableName('ls_replication_repl_item');
         } else {
-            $thirdTableName = $this->resource->getTableName('ls_replication_repl_hierarchy_leaf');
+            $thirdTableName = $this->getGivenTableName('ls_replication_repl_hierarchy_leaf');
         }
 
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
@@ -1905,24 +1939,24 @@ class ReplicationHelper extends AbstractHelper
         )->getId();
 
         $collection->getSelect()->joinInner(
-            [$itemIdTableAlias => 'catalog_product_entity_varchar'],
+            [$itemIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(main_table.KeyValue, ',', 1)  = $itemIdTableAlias.value" .
                 " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias]
             ),
             []
         );
 
         $collection->getSelect()->joinLeft(
-            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            [$variantIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX (main_table.KeyValue, ',', - 1)  = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
                 " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
             []
@@ -1976,24 +2010,24 @@ class ReplicationHelper extends AbstractHelper
          * @codingStandardsIgnoreStart
          */
         $collection->getSelect()->joinInner(
-            [$itemIdTableAlias => 'catalog_product_entity_varchar'],
+            [$itemIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',1) = $itemIdTableAlias.value" .
                 " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias]
             ),
             []
         );
 
         $collection->getSelect()->joinLeft(
-            [$variantIdTableAlias => 'catalog_product_entity_varchar'],
+            [$variantIdTableAlias => $this->getGivenTableName('catalog_product_entity_varchar')],
             $this->magentoEditionSpecificJoinWhereClause(
                 "SUBSTRING_INDEX(REPLACE(REPLACE(SUBSTRING_INDEX (main_table.Key, ';', 3), 'Variant;', ''), 'Item;',''), ';',-1)  = $variantIdTableAlias.value" .
                 " AND $itemIdTableAlias.entity_id = $variantIdTableAlias.entity_id" .
                 " AND $variantIdTableAlias.attribute_id = $variantAttributeId" .
                 " AND $itemIdTableAlias.store_id = $variantIdTableAlias.store_id",
-                'catalog_product_entity_varchar',
+                $this->getGivenTableName('catalog_product_entity_varchar'),
                 [$itemIdTableAlias, $variantIdTableAlias]
             ),
             []
@@ -2039,8 +2073,16 @@ class ReplicationHelper extends AbstractHelper
         );
         $rootCategoryId = $store->getRootCategoryId();
         $collection->getSelect()->joinInner(
-            ['third' => 'catalog_category_entity'],
-            "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+            ['third' => $this->getGivenTableName('catalog_category_entity')],
+            $this->magentoEditionSpecificJoinWhereClause(
+            $this->magentoEditionSpecificJoinWhereClause(
+                "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+                $this->getGivenTableName('catalog_category_entity_varchar'),
+                ['second']
+            ),
+                $this->getGivenTableName('catalog_category_entity'),
+            ['third']
+            ),
             []
         );
 
@@ -2244,17 +2286,18 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * @param $dataTime
-     * @param null $format
+     * @param $format
+     * @param $useTimeZone
      * @return string
-     * @throws Exception
+     * @throws \DateMalformedStringException
      */
-    public function convertDateTimeIntoCurrentTimeZone($dataTime, $format = null)
+    public function convertDateTimeIntoCurrentTimeZone($dataTime, $format = null, $useTimeZone = true)
     {
         $formattedDate = "";
         if (isset($dataTime)
             && $dataTime !== "0000-00-00 00:00:00"
         ) {
-            $date = $this->timezone->date(new \DateTime($dataTime));
+            $date = $this->timezone->date(new \DateTime($dataTime),null,$useTimeZone);
             if ($format === null) {
                 $format = 'Y-m-d H:i:s';
             }
@@ -2310,7 +2353,7 @@ class ReplicationHelper extends AbstractHelper
                 $conditions['store_id = ?'] = $scopeId;
             }
             $this->deleteGivenTableDataGivenConditions(
-                $this->resource->getTableName('url_rewrite'),
+                $this->getGivenTableName('url_rewrite'),
                 $conditions
             );
         }
@@ -2336,7 +2379,12 @@ class ReplicationHelper extends AbstractHelper
         $criteria = $this->buildCriteriaForDirect($filters, 1);
         $items    = $this->itemRepository->getList($criteria)->getItems();
         foreach ($items as $item) {
-            return $item->getBaseUnitOfMeasure();
+            if (($item->getSalseUnitOfMeasure() != $item->getBaseUnitOfMeasure()) &&
+                !empty($item->getSalseUnitOfMeasure())) {
+                return $item->getSalseUnitOfMeasure();
+            } else {
+                return $item->getBaseUnitOfMeasure();
+            }
         }
 
         return null;
@@ -2386,8 +2434,9 @@ class ReplicationHelper extends AbstractHelper
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
             [
-                'field' => 'nav_id',
-                'value' => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), 'condition_type' => 'eq'
+                'field'          => 'nav_id',
+                'value'          => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                'condition_type' => 'eq'
             ]
         ];
         $criteria             = $this->buildCriteriaForDirect($filters);
@@ -2802,8 +2851,12 @@ class ReplicationHelper extends AbstractHelper
      * @param $storeId
      * @return array
      */
-    public function getRelatedVariantGivenConfAttributesValues($parentProduct, $variant, $storeId, $variantRemoval = false)
-    {
+    public function getRelatedVariantGivenConfAttributesValues(
+        $parentProduct,
+        $variant,
+        $storeId,
+        $variantRemoval = false
+    ) {
         $configurableAttributesFinal = $this->getAllConfigurableAttributesGivenProduct(
             $parentProduct,
             $variant,
@@ -2840,8 +2893,12 @@ class ReplicationHelper extends AbstractHelper
      * @param $storeId
      * @return array
      */
-    public function getAllConfigurableAttributesGivenProduct($parentProduct, $variant, $storeId, $variantRemoval = false)
-    {
+    public function getAllConfigurableAttributesGivenProduct(
+        $parentProduct,
+        $variant,
+        $storeId,
+        $variantRemoval = false
+    ) {
         $d1 = (($variant->getVariantDimension1()) ?: '');
         $d2 = (($variant->getVariantDimension2()) ?: '');
         $d3 = (($variant->getVariantDimension3()) ?: '');
@@ -2849,7 +2906,8 @@ class ReplicationHelper extends AbstractHelper
         $d5 = (($variant->getVariantDimension5()) ?: '');
         $d6 = (($variant->getVariantDimension6()) ?: '');
 
-        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE), $storeId, $variantRemoval);
+        $attributeCodes         = $this->_getAttributesCodes($parentProduct->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+            $storeId, $variantRemoval);
         $configurableAttributes = [];
 
         foreach ($attributeCodes as $keyCode => $valueCode) {
@@ -2966,18 +3024,41 @@ class ReplicationHelper extends AbstractHelper
             ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
         ];
 
-        $itemUom          = [];
-        $itemUom[$itemId] = [];
-        $searchCriteria   = $this->buildCriteriaForDirect($filters, -1);
+        $itemFilters = [
+            ['field' => 'nav_id', 'value' => $itemId, 'condition_type' => 'eq'],
+            ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
+        ];
 
+        $itemUom               = [];
+        $itemUom[$itemId]      = [];
+        $searchCriteria        = $this->buildCriteriaForDirect($filters, -1);
+        $searchCriteriaItem    = $this->buildCriteriaForDirect($itemFilters, -1);
+        $purchaseUnitOfMeasure = null;
+        $salesUnitOfMeasure    = null;
         /** @var ReplItemUnitOfMeasure $items */
         try {
-            $items = $this->replItemUomRepository->getList($searchCriteria)->getItems();
-
+            $items    = $this->replItemUomRepository->getList($searchCriteria)->getItems();
+            $replItem = $this->itemRepository->getList($searchCriteriaItem)->getItems();
+            foreach ($replItem as $rItem) {
+                $purchaseUnitOfMeasure = $rItem->getPurchUnitOfMeasure();
+                $salesUnitOfMeasure    = $rItem->getSalseUnitOfMeasure();
+            }
             foreach ($items as $item) {
-                $uomDescription = $this->getUomDescription($item);
-                /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
-                $itemUom[$itemId][$uomDescription] = $item->getCode();
+                $allowUom = true;
+                if ($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) {
+                    $allowUom = false;
+                }
+                if ($allowUom) {
+                    $uomDescription = $this->getUomDescription($item);
+                    /** @var \Ls\Replication\Model\ReplItemUnitOfMeasure $item */
+
+                    $itemUom[$itemId][$uomDescription] = $item->getCode();
+                } else {
+                    $item->setData('processed_at', $this->getDateTime());
+                    $item->setData('processed', 1);
+                    $item->setData('is_updated', 0);
+                    $this->replItemUomRepository->save($item);
+                }
             }
         } catch (Exception $e) {
             $this->_logger->debug($e->getMessage());
@@ -3229,11 +3310,10 @@ class ReplicationHelper extends AbstractHelper
 
         $searchCriteria = $this->buildCriteriaForDirect($filters, 1);
         /** @var ReplItem $item */
-        $item = $this->itemRepository->getList($searchCriteria)->getItems();
+        $items = $this->itemRepository->getList($searchCriteria)->getItems();
 
-        if (!empty($itemRepository)) {
+        foreach ($items as $item) {
             return $item->getType();
-
         }
 
         return null;
@@ -3265,7 +3345,7 @@ class ReplicationHelper extends AbstractHelper
                         ($replInvStatus->getQuantity() > 0) ? 1 : 0
                     );
 
-                    $productIds[]            = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]);
+                    $productIds[] = $this->getParentSkusOfChildrenSkus->getProductIdBySkus([$parentSku]);
                 }
             }
 
@@ -3358,7 +3438,7 @@ class ReplicationHelper extends AbstractHelper
         $parentStockItem
             ->setStockStatusChangedAuto(1)
             ->setStockStatusChangedAutomaticallyFlag(1)
-            ->setIsInStock((int) $childrenIsInStock);
+            ->setIsInStock((int)$childrenIsInStock);
 
         $this->stockItemRepository->save($parentStockItem);
     }
@@ -3827,12 +3907,12 @@ class ReplicationHelper extends AbstractHelper
      */
     public function getVariantIdsByDimension($itemId, $dimension, $storeId)
     {
-        $variantIds = [];
+        $variantIds     = [];
         $searchCriteria = $this->searchCriteriaBuilder->addFilter('VariantDimension1', $dimension)
             ->addFilter('ItemId', $itemId, 'eq')
             ->addFilter('scope_id', $storeId, 'eq')
             ->create();
-        $items = $this->itemVariantRegistrationRepository->getList($searchCriteria)->getItems();
+        $items          = $this->itemVariantRegistrationRepository->getList($searchCriteria)->getItems();
         foreach ($items as $item) {
             $variantIds [] = $item->getVariantId();
         }

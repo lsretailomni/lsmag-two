@@ -65,6 +65,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
     const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
+    const SC_SERVICE_LCY_CODE = 'ls_mag/service/local_currency_code';
+    const SC_SERVICE_LCY_TIMEZONE = 'ls_mag/service/ls_central_timezone';
     const SC_SERVICE_DEBUG = 'ls_mag/service/debug';
     const SC_SERVICE_TOKENIZED = 'ls_mag/service/tokenized_operations';
     const SC_SERVICE_TIMEOUT = 'ls_mag/service/timeout';
@@ -402,6 +404,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //Cache
     const IMAGE_CACHE = 'LS_IMAGE_';
     const POINTRATE = 'LS_POINT_RATE_';
+    const EXCHANGE_RATE = 'LS_EXCHANGE_RATE_';
     const PROACTIVE_DISCOUNTS = 'LS_PROACTIVE_';
     const COUPONS = 'LS_COUPONS_';
     const STORE = 'LS_STORE_';
@@ -452,6 +455,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const LS_DISASTER_RECOVERY_NOTIFICATION_EMAIL_STATUS = 'ls_mag/ls_disaster_recovery/email_sent';
 
     const SC_CRON_SYNC_ORDERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders';
+
+    const SC_CRON_SYNC_ORDERS_EDIT_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_orders_edit';
 
     const SC_CRON_SYNC_CUSTOMERS_CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_sync_customers';
 
@@ -983,22 +988,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get central version
      *
-     * @param $storeId
-     * @param $scope
+     * @param null $storeId
+     * @param null $scope
+     * @param bool $formatted
      * @return array|string
      * @throws NoSuchEntityException
      */
-    public function getCentralVersion($storeId = null, $scope = null)
+    public function getCentralVersion($storeId = null, $scope = null, $formatted = true)
     {
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+            $centralVersion = $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+
+            return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
         }
 
         //If StoreID is not passed they retrieve it from the global area.
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+        $centralVersion = $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
+
+        return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
     }
 
     /**
@@ -1397,11 +1407,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function setLicenseValidity($status)
     {
-        $str            = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES);
-        $centralVersion = strstr($str, " ", true);
-
-        if (version_compare($centralVersion, '25.0.0.0', '>=')) {
-            $this->data->setLicenseStatus($status);
+        if ($centralVersion = $this->getCentralVersion($this->getCurrentWebsiteId(), ScopeInterface::SCOPE_WEBSITES)) {
+            if (version_compare($centralVersion, '25.0.0.0', '>=')) {
+                $this->data->setLicenseStatus($status);
+            }
         }
     }
 

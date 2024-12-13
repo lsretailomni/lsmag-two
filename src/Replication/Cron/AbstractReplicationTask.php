@@ -246,21 +246,25 @@ abstract class AbstractReplicationTask
         if ($confPath == "ls_mag/replication/repl_discount_validation") {
             $source->setStartDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                 $source->getStartDate(),
-                LSR::DATE_FORMAT
+                LSR::DATE_FORMAT,
+                false
             ));
 
             $source->setStartTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                 $source->getStartTime(),
-                LSR::TIME_FORMAT
+                LSR::TIME_FORMAT,
+                false                
             ));
             $source->setEndDate($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                 $source->getEndDate(),
-                LSR::DATE_FORMAT
+                LSR::DATE_FORMAT,
+                false
             ));
 
             $source->setEndTime($this->rep_helper->convertDateTimeIntoCurrentTimeZone(
                 $source->getEndTime(),
-                LSR::TIME_FORMAT
+                LSR::TIME_FORMAT,
+                false
             ));
         }
         $checksum             = $this->getHashGivenString($source);
