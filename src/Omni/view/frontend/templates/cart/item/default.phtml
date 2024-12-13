@@ -70,7 +70,7 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                         </dd>
                     <?php endforeach; ?>
                 </dl>
-            <?php endif; ?>
+            <?php endif;?>
             <?php if (!empty($basketData)): ?>
                 <p><strong><?= $basketData[0] ?></strong></p>
             <?php endif; ?>
@@ -98,7 +98,7 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                     <a href="#" class="action help map"
                        id="<?= $escaper->escapeHtml($helpLinkId) ?>"
                        data-mage-init='{"addToCart":{"helpLinkId": "#<?= $escaper->escapeHtml(
-                           $helpLinkId) ?>","productName": "<?= $escaper->escapeHtml(
+                           $helpLinkId) ?>","productName": "<?=$escaper->escapeHtml(
                            $product->getName()) ?>","showAddToCart": false}}'>
                         <span><?= $escaper->escapeHtml(__("What's this?")) ?></span>
                     </a>
@@ -113,8 +113,7 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                         <?php if ($_item->getDiscountAmount() > 0): $price = $_item->getProduct()->getPrice() * (int)$block->getQty(); ?>
                             <div class="lsdiscountprice2">
                             <strike>
-                                <?= $priceCurrency->format($viewModel->getItemPriceIncludeCustomOptions($_item, $price),
-                                    true); ?>
+                                <?= $priceCurrency->format($viewModel->getItemPriceIncludeCustomOptions($_item, $price), true); ?>
                             </strike>
                             </div>
                         <?php endif; ?>
@@ -127,7 +126,7 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                     </div>
                 <?php endif; ?>
             <?php else: ?>
-                <?= $block->getUnitPriceExclTaxHtml($_item); ?>
+                <?= $block->getUnitPriceHtml($_item); ?>
             <?php endif; ?>
 
         </td>
@@ -163,7 +162,7 @@ $_item->setDiscountAmount($viewModel->getItemRowDiscount($_item));
                     </span>
         </span>
             <?php else: ?>
-                <?= $block->getRowTotalExclTaxHtml($_item) ?>
+                <?= $block->getRowTotalHtml($_item) ?>
             <?php endif; ?>
         <?php endif; ?>
     </td>

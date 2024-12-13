@@ -1303,6 +1303,28 @@ class BasketHelper extends AbstractHelper
             }
         }
 
+        if (empty($basketData) && $this->getCalculateBasket() == 1) {
+            $quoteItemList = $quote->getAllVisibleItems();
+            foreach ($quoteItemList as $quoteItem) {
+                $quoteItem->setOriginalCustomPrice($quoteItem->getPrice());
+                $quoteItem->setPriceInclTax($quoteItem->getPrice());
+                $quoteItem->setBasePriceInclTax($quoteItem->getPrice());
+                $quoteItem->setBasePrice($quoteItem->getPrice());
+                $quoteItem->setRowTotal($quoteItem->getRowTotal());
+                $quoteItem->setRowTotalInclTax($quoteItem->getRowTotal());
+                $quoteItem->getProduct()->setIsSuperMode(true);
+                try {
+                    // @codingStandardsIgnoreLine
+                    $this->getItemHelper()->itemResourceModel->save($quoteItem);
+                } catch (LocalizedException $e) {
+                    $this->_logger->critical(
+                        "Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage()
+                    );
+                }
+
+            }
+        }
+
         return $basketData;
     }
 
