@@ -84,6 +84,13 @@
                     <validate>required-entry validate-number validate-digits validate-greater-than-zero</validate>
                     <comment>Commerce service heartbeat cache timeout in seconds. Make sure LS eCommerce Cache is enabled in order to use this.</comment>
                 </field>
+                <field id="ls_central_timezone" translate="label comment" type="text" sortOrder="150" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>LS Central Timezone</label>                    
+                    <comment><![CDATA[Configure the timezone code corresponding to timezone configured under the My Settings page in LS Central. Default value is UTC. <br/> 
+                    Refer <a href="https://www.php.net/manual/en/timezones.php" targe="_blank">here</a> to select desired region and timezone.( For eg:- UTC, Asia/Kuala_Lumpur, Europe/Belgrade, etc).
+                    ]]></comment>
+                </field>
             </group>
             <group id="ls_disaster_recovery"
                    translate="label"
