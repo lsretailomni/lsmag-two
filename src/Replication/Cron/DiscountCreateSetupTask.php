@@ -582,27 +582,13 @@ class DiscountCreateSetupTask
 
             $conditions = $this->getConditions($key);
             $rule       = $this->ruleFactory->create();
-            $fromDate   = '';
-            $toDate     = '';
-            if (!empty($discountValidation)) {
-                foreach ($discountValidation->getItems() as $disValidation) {
-                    $fromDate = $disValidation->getStartDate();
-                    $toDate   = $disValidation->getEndDate();
-                }
-            }
-
+            
             $rule->setName($name)
                 ->setDescription($replDiscount->getDescription())
                 ->setIsActive(1)
                 ->setCustomerGroupIds($customerGroupIds)
-                ->setWebsiteIds($websiteId)
-                ->setFromDate(($fromDate) ?: $this->replicationHelper->getCurrentDate());
-
-            if (strtolower($toDate ?? '') != strtolower('1753-01-01T00:00:00')
-                && !empty($toDate)) {
-                $rule->setToDate($toDate);
-            }
-
+                ->setWebsiteIds($websiteId);
+            
             /**
              * Default Values for Action Types.
              * by_percent
@@ -632,6 +618,15 @@ class DiscountCreateSetupTask
             try {
                 $rule->loadPost($rule->getData());
                 $this->catalogRule->save($rule);
+
+                //set the rule dates and sync the discount validation
+                if (!empty($discountValidation)) {
+                    foreach ($discountValidation->getItems() as $disValidation) {
+                        $this->saveCatalogRuleBasedOnDiscountValidation($rule, $disValidation);
+                        break;
+                    }
+                }
+                
             } catch (Exception $e) {
                 $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
                 $this->logger->debug($e->getMessage());
@@ -799,10 +794,10 @@ class DiscountCreateSetupTask
 
     /**
      * Save catalog rule
-     *
+     * 
      * @param $rule
      * @param $replValidation
-     * @return boolean
+     * @return bool
      * @throws CouldNotSaveException
      */
     public function saveCatalogRuleBasedOnDiscountValidation($rule, $replValidation)
