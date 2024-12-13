@@ -174,7 +174,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     continue;
                 }
                 if (($cronName == 'repl_discount_setup' || $cronName == 'repl_discount_create_setup' ||
-                        $cronName == 'repl_discount_setup_status_reset' || $cronName == 'repl_discount_validation') &&
+                        $cronName == 'repl_discount_setup_status_reset') &&
                     !$versionRes) {
                     continue;
                 }

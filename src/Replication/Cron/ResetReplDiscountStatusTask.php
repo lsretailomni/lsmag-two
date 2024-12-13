@@ -128,6 +128,28 @@ class ResetReplDiscountStatusTask
                         $this->defaultScope
                     );
 
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommDiscountValidationsTask::CONFIG_PATH_STATUS,
+                        $store->getId(),
+                        false,
+                        $this->defaultScope
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommDiscountValidationsTask::CONFIG_PATH,
+                        $store->getId(),
+                        false,
+                        $this->defaultScope
+                    );
+                    $this->replicationHelper->updateCronStatus(
+                        false,
+                        ReplEcommDiscountValidationsTask::CONFIG_PATH_MAX_KEY,
+                        $store->getId(),
+                        false,
+                        $this->defaultScope
+                    );
+
                     $websiteId  = $store->getId();
                     // deleting the catalog rules data and delete flat table discount data
                     try {
