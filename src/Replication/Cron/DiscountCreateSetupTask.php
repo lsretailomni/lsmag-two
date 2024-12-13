@@ -623,6 +623,12 @@ class DiscountCreateSetupTask
                 if (!empty($discountValidation)) {
                     foreach ($discountValidation->getItems() as $disValidation) {
                         $this->saveCatalogRuleBasedOnDiscountValidation($rule, $disValidation);
+
+                        $disValidation->setData('processed_at', $this->replicationHelper->getDateTime());
+                        $disValidation->setData('processed', 1);
+                        $disValidation->setData('is_updated', 0);
+                        //@codingStandardsIgnoreLine
+                        $this->discountValidationRepository->save($disValidation);
                         break;
                     }
                 }
