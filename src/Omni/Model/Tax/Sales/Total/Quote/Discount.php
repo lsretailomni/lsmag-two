@@ -126,6 +126,9 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
         $paymentDiscount = $this->getGiftCardLoyaltyDiscount($quote);
         $total->addTotalAmount('grand_total', $paymentDiscount);
         $total->addBaseTotalAmount('grand_total', $paymentDiscount);
+        $address = $shippingAssignment->getShipping()->getAddress();
+        $address->setSubtotal($quote->getSubtotal());
+        $address->setBaseSubtotal($quote->getBaseSubtotal());
 
         if ($quote->getCouponCode()) {
             $total->setCouponCode($quote->getCouponCode());

@@ -46,15 +46,7 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
-        if ($this->basketHelper->getLsrModel()->isEnabled()) {
-            $total->setSubtotal($quote->getBaseSubtotal());
-            $total->setSubtotalInclTax($quote->getBaseSubtotal());
-            $total->setBaseSubtotalInclTax($quote->getBaseSubtotal());
-            $total->setBaseSubtotalTotalInclTax($quote->getBaseSubtotal());
-        }
-
-        $basketData = $this->basketHelper->getBasketSessionValue();
-
+        $basketData         = $this->basketHelper->getBasketSessionValue();
         if (!empty($basketData)) {
             $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
@@ -78,6 +70,12 @@ class SalesObserver implements ObserverInterface
                     ->setBaseSubtotalTotalInclTax($subTotal)
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($grandTotal);
+            }
+        } else {
+            if (($addressType == AbstractAddress::TYPE_SHIPPING && $this->basketHelper->getLsrModel()->isEnabled())) {
+                $address = $shippingAssignment->getShipping()->getAddress();
+                $address->setSubtotal($total->getSubtotal());
+                $address->setSubtotalInclTax($total->getSubtotal());
             }
         }
     }
