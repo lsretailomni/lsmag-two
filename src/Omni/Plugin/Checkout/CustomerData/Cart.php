@@ -134,10 +134,6 @@ class Cart
                     $result['items'][$key]['lsDiscountAmount'] = "";
                 }
             }
-            if ($this->lsr->isEnabled()) {
-                //$result['subtotalAmount'] = $quote->getGrandTotal();
-                //$result['subtotal']       = $this->checkoutHelper->formatPrice($quote->getGrandTotal());
-            }
         }
         return $result;
     }
