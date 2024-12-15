@@ -1303,7 +1303,7 @@ class BasketHelper extends AbstractHelper
             }
         }
 
-        if (empty($basketData) && $this->getCalculateBasket() == 1) {
+        if (empty($basketData) && $this->getCalculateBasket() == 1 && $this->lsr->isEnabled($quote->getStoreId())) {
             $quoteItemList = $quote->getAllVisibleItems();
             foreach ($quoteItemList as $quoteItem) {
                 $quoteItem->setOriginalCustomPrice($quoteItem->getPrice());
