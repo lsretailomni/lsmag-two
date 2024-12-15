@@ -1325,7 +1325,6 @@ class BasketHelper extends AbstractHelper
             }
         }
 
-
         return $basketData;
     }
 
