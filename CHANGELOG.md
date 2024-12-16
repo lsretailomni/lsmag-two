@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.0] - 2024-12-13
+
+### Added
+- Added support to apply giftcard with different currency then webstore currency. [52467](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/52467)
+- Added support to a cron job to sync the edited orders. [55940](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55940)
+- Added support to disable inventory lookup at checkout for hospitality. [58831](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/58831)
+- Added support for mageplaza one-step checkout extension. [60636](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60636)
+- Added support to restrict catalog rules based on time on adobe commerce. [61171](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/61171)
+
+### Bugs/Fixes
+- Fixed issue with updating shipping and payment line. [51580](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/51580)
+- Fixed issue with item mismatch between Central and Magento order lines. [57692](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/57692)
+- Fixed issues with payment methods when basket calculation is configured to run once on checkout. [56372](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/56372)
+- Fixed issues related to flat to magento crons found during integration tests. [58451](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/58451)
+- Fixed issue with customer session integrity while using redis as session storage. [58131](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/58131)
+- Fixed issue with setting discount based on store group or price group. [57755](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/57755)
+- Fixed issue with billing address update from customer dashboard in Magento. [59413](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59413)
+- Fixed issue with attribute data translation. [59412](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59412)
+- Fixed issue in configurable products creation and used only the sales unit of measure. [58941](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/58941)
+- Fixed issue in configurable products creation for item weight. [59500](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59500)
+- Fixed issue in collected status update in webhooks. [60412](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60412)
+- Fixed issue with license validity loading on admin configuration page. [60270](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60270)
+- Fixed miscellaneous issues. [60350](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60350)
+- Fixed product stability on Central 24.1 and CS  2024.6. [59961](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59961)
+- Fixed issue with image removal in SyncImage cron. [60194](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60194)
+- Fixed issue with meta title data translation. [60349](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60349)
+- Fixed issue with old DiscountCreateTask cron. [59719](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59719)
+- Fixed issue with data translation getting reset for hierarchy nodes and extended variant value on update. [59578](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/59578)
+- Fixed issue with collection in SyncInventory & DataTranslation cron on adobe commerce. [60526](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60526)
+- Fixed compatibility issues on magento version 2.4.7-p3. [60905](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/60905)
+- Fixed issue with replication job to process attribute codes with special character ".". [55162](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/55162)
+
+
 ## [2.8.0] - 2024-08-26
 
 ### Added

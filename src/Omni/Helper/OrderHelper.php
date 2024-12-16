@@ -294,7 +294,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreLine
             $request = new Entity\OrderCreate();
 
-            if (version_compare($this->lsr->getOmniVersion(), '2023.05.1', '>=')) {
+            if (version_compare($this->lsr->getOmniVersion($order->getStoreId()), '2023.05.1', '>=')) {
                 $request->setReturnOrderIdOnly(true);
             }
 
