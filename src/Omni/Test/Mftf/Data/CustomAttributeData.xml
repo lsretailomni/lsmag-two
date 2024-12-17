@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
-    <entity name="LsrItemIdProductAttribute1" type="custom_attribute">
+    <entity name="LsrItemIdSimpleProductAttribute1" type="custom_attribute">
         <data key="attribute_code">lsr_item_id</data>
         <data key="value">{{_ENV.SIMPLE_PRODUCT_1_ITEM_ID}}</data>
     </entity>
-    <entity name="LsrItemIdProductAttribute2" type="custom_attribute">
+    <entity name="LsrItemIdSimpleProductAttribute2" type="custom_attribute">
         <data key="attribute_code">lsr_item_id</data>
         <data key="value">{{_ENV.SIMPLE_PRODUCT_2_ITEM_ID}}</data>
+    </entity>
+    <entity name="LsrItemIdConfigurableProductAttribute1" type="custom_attribute">
+        <data key="attribute_code">lsr_item_id</data>
+        <data key="value">{{_ENV.CONFIGURABLE_PRODUCT_1_ITEM_ID}}</data>
+    </entity>
+    <entity name="LsrVariantIdVariantProductAttribute1" type="custom_attribute">
+        <data key="attribute_code">lsr_variant_id</data>
+        <data key="value">{{_ENV.CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID}}</data>
+    </entity>
+    <entity name="LsrVariantIdVariantProductAttribute2" type="custom_attribute">
+        <data key="attribute_code">lsr_variant_id</data>
+        <data key="value">{{_ENV.CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID}}</data>
     </entity>
 </entities>

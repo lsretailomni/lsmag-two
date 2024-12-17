@@ -5,11 +5,30 @@
     <entity name="LsSimpleProduct1" extends="SimpleProduct">
         <data key="sku">{{_ENV.SIMPLE_PRODUCT_1_ITEM_ID}}</data>
         <data key="price">95</data>
-        <requiredEntity type="custom_attribute_array">LsrItemIdProductAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute1</requiredEntity>
     </entity>
     <entity name="LsSimpleProduct2" extends="SimpleProduct">
         <data key="sku">{{_ENV.SIMPLE_PRODUCT_2_ITEM_ID}}</data>
         <data key="price">95</data>
-        <requiredEntity type="custom_attribute_array">LsrItemIdProductAttribute2</requiredEntity>
+        <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute2</requiredEntity>
+    </entity>
+    <entity name="LsConfigurableProduct1" extends="ApiConfigurableProduct">
+        <data key="sku">{{_ENV.CONFIGURABLE_PRODUCT_1_ITEM_ID}}</data>
+        <data key="price">45</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdConfigurableProductAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsVariantProduct1" extends="ApiSimpleOne">
+        <data key="sku">{{_ENV.CONFIGURABLE_VARIANT_PRODUCT_1_SKU}}</data>
+        <data key="price">45</data>
+        <data key="visibility">1</data>
+        <requiredEntity type="custom_attribute">LsrItemIdConfigurableProductAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute">LsrVariantIdVariantProductAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsVariantProduct2" extends="ApiSimpleOne">
+        <data key="sku">{{_ENV.CONFIGURABLE_VARIANT_PRODUCT_2_SKU}}</data>
+        <data key="price">45</data>
+        <data key="visibility">1</data>
+        <requiredEntity type="custom_attribute">LsrItemIdConfigurableProductAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute">LsrVariantIdVariantProductAttribute2</requiredEntity>
     </entity>
 </entities>
