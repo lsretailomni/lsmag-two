@@ -54,6 +54,11 @@ class ProactiveDiscount
     protected $Percentage = null;
 
     /**
+     * @property string $PeriodId
+     */
+    protected $PeriodId = null;
+
+    /**
      * @property string $PopUpLine1
      */
     protected $PopUpLine1 = null;
@@ -62,6 +67,11 @@ class ProactiveDiscount
      * @property string $PopUpLine2
      */
     protected $PopUpLine2 = null;
+
+    /**
+     * @property string $PopUpLine3
+     */
+    protected $PopUpLine3 = null;
 
     /**
      * @property float $Price
@@ -238,6 +248,24 @@ class ProactiveDiscount
     }
 
     /**
+     * @param string $PeriodId
+     * @return $this
+     */
+    public function setPeriodId($PeriodId)
+    {
+        $this->PeriodId = $PeriodId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPeriodId()
+    {
+        return $this->PeriodId;
+    }
+
+    /**
      * @param string $PopUpLine1
      * @return $this
      */
@@ -271,6 +299,24 @@ class ProactiveDiscount
     public function getPopUpLine2()
     {
         return $this->PopUpLine2;
+    }
+
+    /**
+     * @param string $PopUpLine3
+     * @return $this
+     */
+    public function setPopUpLine3($PopUpLine3)
+    {
+        $this->PopUpLine3 = $PopUpLine3;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPopUpLine3()
+    {
+        return $this->PopUpLine3;
     }
 
     /**
