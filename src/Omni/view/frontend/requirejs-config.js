@@ -24,6 +24,9 @@ var config = {
             },
             'Magento_Checkout/js/model/shipping-save-processor/payload-extender': {
                 'Ls_Omni/js/model/shipping-save-processor/default': true
+            },
+            'Mageplaza_Osc/js/model/shipping-save-processor/checkout': {
+                'Ls_Omni/js/model/shipping-save-processor/checkout': true
             }
         },
         shim: {

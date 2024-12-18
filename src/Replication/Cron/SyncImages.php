@@ -380,8 +380,9 @@ class SyncImages extends ProductCreateTask
         $mediaGalleryImages = $productData->getMediaGalleryImages();
 
         $productMediaPath = $this->getProductMediaPath();
-
+        $finalMediaGalleryIds = [];
         foreach ($mediaGalleryImages as $galleryImage) {
+            $finalMediaGalleryIds[] = $galleryImage->getId();
             $filePath = $galleryImage->getFile();
             $hash     = $this->getFileHash($this->joinFilePaths($productMediaPath, $filePath));
             if ($hash && !in_array($hash, $this->imageHashes)) {
@@ -395,8 +396,21 @@ class SyncImages extends ProductCreateTask
 
                     $this->deleteDuplicateCatalogImage($filePath);
                 }
-
             }
+        }
+
+        if (!empty($finalMediaGalleryIds)) {
+            $this->deleteRequiredMediaEntries(
+                'catalog_product_entity_media_gallery_value_to_entity',
+                $finalMediaGalleryIds,
+                $productData->getId()
+            );
+
+            $this->deleteRequiredMediaEntries(
+                'catalog_product_entity_media_gallery_value',
+                $finalMediaGalleryIds,
+                $productData->getId()
+            );
         }
     }
 
@@ -436,6 +450,38 @@ class SyncImages extends ProductCreateTask
             $this->logger->debug(
                 'Problem with Media path update in : ' . $catalogEntityVarcharTable .
                 ' for ' . $newFilePath . ' with '.$existingFilePath
+            );
+        }
+    }
+
+    /**
+     * Delete old media entry records
+     *
+     * @param $tableName
+     * @param $mediaEntries
+     * @param $productId
+     * @return void
+     */
+    public function deleteRequiredMediaEntries($tableName, $mediaEntries, $productId): void
+    {
+        $connection                     = $this->resourceConnection->getConnection();
+        $catalogEntityMediaGalleryValue = $this->resourceConnection
+            ->getTableName($tableName);
+        try {
+            $connection->startSetup();
+
+            $connection->delete(
+                $catalogEntityMediaGalleryValue,
+                [
+                    'value_id NOT IN (?)' => $mediaEntries,
+                    'entity_id = (?)' => $productId
+                ]
+            );
+            $connection->endSetup();
+        } catch (Exception $e) {
+            $this->logger->debug(
+                'Problem with Media path delete in : ' . $catalogEntityMediaGalleryValue .
+                ' for product_id:' . $productId
             );
         }
     }

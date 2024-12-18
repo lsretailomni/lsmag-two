@@ -94,7 +94,10 @@ class Request extends Action
      */
     public function execute()
     {
-        $orderId        = $this->getRequest()->getParam('order_id');
+        $orderId = $this->getRequest()->getParam('order_id');
+        $order   = $this->orderRepository->get($orderId);
+        $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
+        $this->lsr->setStoreId($order->getStoreId());
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
         try {
@@ -110,7 +113,7 @@ class Request extends Action
                         $oldOrder = $this->orderHelper->getMagentoOrderGivenEntityId(
                             $order->getRelationParentId()
                         );
-                        
+
                         if ($oldOrder && $this->lsr->getStoreConfig(LSR::LSR_ORDER_EDIT, $order->getStoreId())) {
                             $documentId = $oldOrder->getDocumentId();
                             if ($documentId) {
@@ -144,6 +147,7 @@ class Request extends Action
                             }
                         }
                     }
+
                     if (empty($documentId)) {
                         $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
                         $response = $this->orderHelper->placeOrder($request);
@@ -177,7 +181,8 @@ class Request extends Action
             $this->logger->error($e->getMessage());
             $this->messageManager->addErrorMessage($e->getMessage());
         }
-
+        $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
+        $this->lsr->setStoreId(null);
         return $resultRedirect;
     }
 }

@@ -100,7 +100,7 @@ class Cart
                     foreach ($result['items'] as $key => $itemAsArray) {
                         if ($item = $this->findItemById($itemAsArray['item_id'], $items)) {
                             $lineDiscount = $this->basketHelper->getItemRowDiscount($item);
-                            $customPrice = $this->basketHelper->getItemRowTotal($item);
+                            $customPrice  = $this->basketHelper->getItemRowTotal($item);
                             $item->setCustomPrice($customPrice);
                             $item->setDiscountAmount($lineDiscount);
                             $this->itemPriceRenderer->setItem($item);
@@ -112,7 +112,7 @@ class Cart
                             if ($item->getDiscountAmount() > 0) {
                                 $discountAmount = $this->checkoutHelper->formatPrice($item->getDiscountAmount());
                                 $originalPrice  = $item->getProductType() == Type::TYPE_BUNDLE ?
-                                    $item->getRowTotal()  : $item->getProduct()->getPrice() * $item->getQty();
+                                    $item->getRowTotal() : $item->getProduct()->getPrice() * $item->getQty();
                             }
                             $originalPrice = $this->basketHelper->getPriceAddingCustomOptions($item, $originalPrice);
                             $item->setPriceInclTax($customPrice);
@@ -133,11 +133,6 @@ class Cart
                     $result['items'][$key]['lsPriceOriginal']  = "";
                     $result['items'][$key]['lsDiscountAmount'] = "";
                 }
-            }
-
-            if ($this->lsr->isEnabled()) {
-                $result['subtotalAmount'] = $quote->getGrandTotal();
-                $result['subtotal']       = $this->checkoutHelper->formatPrice($quote->getGrandTotal());
             }
         }
         return $result;

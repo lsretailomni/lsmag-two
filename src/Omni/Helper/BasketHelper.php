@@ -423,7 +423,7 @@ class BasketHelper extends AbstractHelper
         }
 
         return [
-            'orderLinesArray' => ($basketResponse) ? $itemsArray : $orderLinesArray,
+            'orderLinesArray'         => ($basketResponse) ? $itemsArray : $orderLinesArray,
             'orderDiscountLinesArray' => $discountsArray
         ];
     }
@@ -992,7 +992,7 @@ class BasketHelper extends AbstractHelper
             ->setStoreId($store_id);
         // @codingStandardsIgnoreEnd
 
-        if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+        if ($this->lsr->isEnabled() && version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
             $list->setSalesType(LSR::SALE_TYPE_POS);
         }
 
@@ -1176,10 +1176,7 @@ class BasketHelper extends AbstractHelper
         $oneListCalc = $this->getOneListCalculationFromCheckoutSession();
 
         if ($oneListCalc == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $cartId = $this->checkoutSession->getQuoteId();
-            $this->setCalculateBasket('1');
-            $this->syncBasketWithCentral($cartId);
-
+            $this->calculate($this->get());
             // calculate updates the session, so we fetch again
             return $this->getOneListCalculationFromCheckoutSession();
             // @codingStandardsIgnoreEnd
@@ -1303,6 +1300,28 @@ class BasketHelper extends AbstractHelper
             if ($cartQuote->getLsGiftCardAmountUsed() > 0 ||
                 $cartQuote->getLsPointsSpent() > 0) {
                 $this->validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData);
+            }
+        }
+
+        if (empty($basketData) && $this->getCalculateBasket() == 1 && $this->lsr->isEnabled($quote->getStoreId())) {
+            $quoteItemList = $quote->getAllVisibleItems();
+            foreach ($quoteItemList as $quoteItem) {
+                $quoteItem->setOriginalCustomPrice($quoteItem->getPrice());
+                $quoteItem->setPriceInclTax($quoteItem->getPrice());
+                $quoteItem->setBasePriceInclTax($quoteItem->getPrice());
+                $quoteItem->setBasePrice($quoteItem->getPrice());
+                $quoteItem->setRowTotal($quoteItem->getRowTotal());
+                $quoteItem->setRowTotalInclTax($quoteItem->getRowTotal());
+                $quoteItem->getProduct()->setIsSuperMode(true);
+                try {
+                    // @codingStandardsIgnoreLine
+                    $this->getItemHelper()->itemResourceModel->save($quoteItem);
+                } catch (LocalizedException $e) {
+                    $this->_logger->critical(
+                        "Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage()
+                    );
+                }
+
             }
         }
 
@@ -1447,7 +1466,7 @@ class BasketHelper extends AbstractHelper
         if (!$quoteId) {
             return null;
         }
-        $quote   = $this->quoteRepository->get($quoteId);
+        $quote = $this->quoteRepository->get($quoteId);
 
         return $quote;
     }
@@ -1466,8 +1485,10 @@ class BasketHelper extends AbstractHelper
         if ($calculation && $quote) {
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $quote->setBasketResponse(serialize($calculation));
-            $this->quoteResourceModel->save($quote);
+        } else {
+            $quote->setBasketResponse(null);
         }
+        $this->quoteResourceModel->save($quote);
     }
 
     /**
