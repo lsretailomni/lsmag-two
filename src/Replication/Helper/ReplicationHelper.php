@@ -1286,6 +1286,7 @@ class ReplicationHelper extends AbstractHelper
     {
         $code = strtolower(trim($code));
         $code = str_replace(' ', '_', $code);
+        $code = str_replace('.', '_', $code);
         // convert all special characters and replace it with _
         $code = preg_replace('/[^a-zA-Z0-9_.]/', '_', $code);
         return 'ls_' . $code;
@@ -2286,17 +2287,18 @@ class ReplicationHelper extends AbstractHelper
 
     /**
      * @param $dataTime
-     * @param null $format
+     * @param $format
+     * @param $useTimeZone
      * @return string
-     * @throws Exception
+     * @throws \DateMalformedStringException
      */
-    public function convertDateTimeIntoCurrentTimeZone($dataTime, $format = null)
+    public function convertDateTimeIntoCurrentTimeZone($dataTime, $format = null, $useTimeZone = true)
     {
         $formattedDate = "";
         if (isset($dataTime)
             && $dataTime !== "0000-00-00 00:00:00"
         ) {
-            $date = $this->timezone->date(new \DateTime($dataTime));
+            $date = $this->timezone->date(new \DateTime($dataTime),null,$useTimeZone);
             if ($format === null) {
                 $format = 'Y-m-d H:i:s';
             }
