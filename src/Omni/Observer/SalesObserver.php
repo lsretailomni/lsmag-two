@@ -46,9 +46,7 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
-
-        $basketData = $this->basketHelper->getBasketSessionValue();
-
+        $basketData         = $this->basketHelper->getBasketSessionValue();
         if (!empty($basketData)) {
             $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
             $giftCardAmount = $quote->getLsGiftCardAmountUsed();
@@ -59,10 +57,10 @@ class SalesObserver implements ObserverInterface
 
             if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
                 (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
-                $grandTotal     = $basketData->getTotalAmount() + $total->getShippingInclTax()
+                $grandTotal = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
-                $taxAmount      = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
-                $subTotal       = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
+                $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
+                $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($taxAmount)
                     ->setSubtotal($basketData->getTotalNetAmount())
@@ -72,6 +70,12 @@ class SalesObserver implements ObserverInterface
                     ->setBaseSubtotalTotalInclTax($subTotal)
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($grandTotal);
+            }
+        } else {
+            if (($addressType == AbstractAddress::TYPE_SHIPPING && $this->basketHelper->getLsrModel()->isEnabled())) {
+                $address = $shippingAssignment->getShipping()->getAddress();
+                $address->setSubtotal($total->getSubtotal());
+                $address->setSubtotalInclTax($total->getSubtotal());
             }
         }
     }

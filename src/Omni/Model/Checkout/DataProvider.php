@@ -19,7 +19,7 @@ use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\View\LayoutFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
@@ -42,11 +42,6 @@ class DataProvider implements ConfigProviderInterface
 
     /** @var ScopeConfigInterface */
     public $scopeConfig;
-
-    /**
-     * @var PageFactory
-     */
-    public $resultPageFactory;
 
     /**
      * @var LSR
@@ -79,39 +74,44 @@ class DataProvider implements ConfigProviderInterface
     public $basketHelper;
 
     /**
+     * @var LayoutFactory
+     */
+    public $layoutFactory;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param CollectionFactory $storeCollectionFactory
      * @param ScopeConfigInterface $scopeConfig
-     * @param PageFactory $resultPageFactory
      * @param LSR $lsr
      * @param Session $checkoutSession
      * @param StockHelper $stockHelper
      * @param StoreHelper $storeHelper
      * @param GiftCardHelper $giftCardHelper
      * @param BasketHelper $basketHelper
+     * @param LayoutFactory $layoutFactory
      */
     public function __construct(
         StoreManagerInterface $storeManager,
         CollectionFactory $storeCollectionFactory,
         ScopeConfigInterface $scopeConfig,
-        PageFactory $resultPageFactory,
         LSR $lsr,
         Session $checkoutSession,
         StockHelper $stockHelper,
         StoreHelper $storeHelper,
         GiftCardHelper $giftCardHelper,
-        BasketHelper $basketHelper
+        BasketHelper $basketHelper,
+        LayoutFactory $layoutFactory
     ) {
         $this->storeManager           = $storeManager;
         $this->storeCollectionFactory = $storeCollectionFactory;
         $this->scopeConfig            = $scopeConfig;
-        $this->resultPageFactory      = $resultPageFactory;
         $this->lsr                    = $lsr;
         $this->checkoutSession        = $checkoutSession;
         $this->stockHelper            = $stockHelper;
         $this->storeHelper            = $storeHelper;
         $this->giftCardHelper         = $giftCardHelper;
         $this->basketHelper           = $basketHelper;
+        $this->layoutFactory          = $layoutFactory;
     }
 
     /**
@@ -153,13 +153,13 @@ class DataProvider implements ConfigProviderInterface
                 );
 
                 $storesResponse       = $this->getStores();
-                $resultPage           = $this->resultPageFactory->create();
-                $storesData           = $resultPage->getLayout()->createBlock(Stores::class)
+                $layout               = $this->layoutFactory->create();
+                $storesData           = $layout->createBlock(Stores::class)
                     ->setTemplate('Ls_Omni::stores/stores.phtml')
                     ->setData('data', $storesResponse)
                     ->setData('storeHours', 0)
                     ->toHtml();
-                $stores               = $storesResponse ? $storesResponse->toArray() : [];
+                $stores = $storesResponse ? $storesResponse->toArray() : [];
                 $stores['storesInfo'] = $storesData;
                 $encodedStores        = Json::encode($stores);
 
