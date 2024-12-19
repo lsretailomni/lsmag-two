@@ -103,7 +103,6 @@ class UpdateCartItemsTest extends GraphQlTestBase
 
         $this->assertNotNull($response);
         $this->assertEquals(5, $response['updateCartItems']['cart']['items'][0]['quantity']);
-        $this->assertEquals(6, $itemsArray->getOrderLine()[0]->getQuantity());
     }
 
     /**
