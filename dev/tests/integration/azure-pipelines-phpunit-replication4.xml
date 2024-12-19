@@ -11,13 +11,13 @@
     <!-- Test suites definition -->
     <coverage>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/DiscountCreateSetupTask.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/DiscountCreateSetupTaskTest.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncImages.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncImagesTest.php</directory>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/DiscountCreateSetupTaskTest.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncImagesTest.php</directory>
         </testsuite>
     </testsuites>
     <!-- Code coverage filters -->
