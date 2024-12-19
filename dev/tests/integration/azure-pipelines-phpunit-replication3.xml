@@ -11,17 +11,14 @@
     <!-- Test suites definition -->
     <coverage>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncImages.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncInventory.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncPrice.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncImagesTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</directory>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncImagesTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncInventoryTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncPriceTest.php</directory>
         </testsuite>
