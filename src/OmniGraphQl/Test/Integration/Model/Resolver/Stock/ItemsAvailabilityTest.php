@@ -3,13 +3,17 @@
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver\Stock;
 
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Test\Fixture\FlatDataReplication;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
+use \Ls\Replication\Cron\ReplEcommStoresTask;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
+use Magento\Store\Model\ScopeInterface;
 use Magento\TestFramework\Fixture\Config;
+use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
@@ -70,6 +74,14 @@ class ItemsAvailabilityTest extends GraphQlTestBase
      */
     #[
         AppArea('graphql'),
+        DataFixture(
+            FlatDataReplication::class,
+            [
+                'job_url' => ReplEcommStoresTask::class,
+                'scope'   => ScopeInterface::SCOPE_WEBSITE
+            ],
+            as: 'stores'
+        )
     ]
     public function testItemAvailability()
     {
