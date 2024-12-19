@@ -11,15 +11,15 @@
     <!-- Test suites definition -->
     <coverage>
         <include>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncOrders.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/SyncImages.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Cron/DiscountCreateSetupTask.php</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncOrdersTest.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncImagesTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/DiscountCreateSetupTaskTest.php</directory>
         </include>
     </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Integration_Tests">
-            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncOrdersTest.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/SyncImagesTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/Integration/Cron/DiscountCreateSetupTaskTest.php</directory>
         </testsuite>
     </testsuites>
