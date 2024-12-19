@@ -7,6 +7,7 @@ use \Ls\Omni\Helper\BasketHelper;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
+use Magento\TestFramework\Fixture\AppArea;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 
@@ -53,7 +54,6 @@ class SetShippingMethodsTest extends GraphQlTestBase
     public function setUp(): void
     {
         parent::setUp();
-        $this->authToken       = $this->loginAndFetchToken();
         $this->objectManager   = Bootstrap::getObjectManager();
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->maskedQuote     = $this->objectManager->get(QuoteIdToMaskedQuoteIdInterface::class);
@@ -62,10 +62,17 @@ class SetShippingMethodsTest extends GraphQlTestBase
         $this->basketHelper    = $this->objectManager->create(BasketHelper::class);
     }
 
+    /**
+     * @magentoAppIsolation enabled
+     */
+    #[
+        AppArea('graphql')
+    ]
     public function testShippingMethodsOnCart()
     {
         $customer  = $this->getOrCreateCustomer();
         $product   = $this->getOrCreateProduct();
+        $this->authToken       = $this->loginAndFetchToken();
         $emptyCart = $this->createCustomerEmptyCart($customer->getId());
         $cart      = $this->addSimpleProduct($emptyCart, $product);
         $cart      = $this->setShippingAddress($cart);

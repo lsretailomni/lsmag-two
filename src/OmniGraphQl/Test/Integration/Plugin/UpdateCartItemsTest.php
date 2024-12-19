@@ -58,7 +58,6 @@ class UpdateCartItemsTest extends GraphQlTestBase
     public function setUp(): void
     {
         parent::setUp();
-        $this->authToken       = $this->loginAndFetchToken();
         $this->objectManager   = Bootstrap::getObjectManager();
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->maskedQuote     = $this->objectManager->get(QuoteIdToMaskedQuoteIdInterface::class);
@@ -83,6 +82,7 @@ class UpdateCartItemsTest extends GraphQlTestBase
     {
         $customer      = $this->getOrCreateCustomer();
         $product       = $this->getOrCreateProduct();
+        $this->authToken       = $this->loginAndFetchToken();
         $emptyCart     = $this->createCustomerEmptyCart($customer->getId());
         $cart          = $this->addSimpleProduct($emptyCart, $product);
         $maskedQuoteId = $this->maskedQuote->execute($cart->getId());
