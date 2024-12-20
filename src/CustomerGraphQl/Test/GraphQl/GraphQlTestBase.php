@@ -50,9 +50,6 @@ abstract class GraphQlTestBase extends GraphQlAbstract
     {
         // Initialize headers array
         $headers                 = [];
-        $headers['store']        = "default";
-        $headers['content-type'] = "application/json";
-
         // Add Authorization header if token is provided
         if ($token !== "") {
             $headers['Authorization'] = "Bearer $token";
