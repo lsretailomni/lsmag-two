@@ -80,14 +80,14 @@ class UpdateCartItemsTest extends GraphQlTestBase
     ]
     public function testUpdateCartItem()
     {
-        $customer      = $this->getOrCreateCustomer();
-        $product       = $this->getOrCreateProduct();
-        $this->authToken       = $this->loginAndFetchToken();
-        $emptyCart     = $this->createCustomerEmptyCart($customer->getId());
-        $cart          = $this->addSimpleProduct($emptyCart, $product);
-        $maskedQuoteId = $this->maskedQuote->execute($cart->getId());
-        $item          = current($cart->getAllVisibleItems());
-        $query         = $this->getQuery($maskedQuoteId, $item->getId(), 5);
+        $customer        = $this->getOrCreateCustomer();
+        $product         = $this->getOrCreateProduct();
+        $this->authToken = $this->loginAndFetchToken();
+        $emptyCart       = $this->createCustomerEmptyCart($customer->getId());
+        $cart            = $this->addSimpleProduct($emptyCart, $product);
+        $maskedQuoteId   = $this->maskedQuote->execute($cart->getId());
+        $item            = current($cart->getAllVisibleItems());
+        $query           = $this->getQuery($maskedQuoteId, $item->getId(), 5);
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];

@@ -2,14 +2,11 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver\Stock;
 
-use \Ls\Core\Model\LSR;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Model\QuoteIdToMaskedQuoteIdInterface;
-use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;

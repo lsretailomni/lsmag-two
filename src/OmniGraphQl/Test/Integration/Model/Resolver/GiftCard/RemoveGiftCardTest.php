@@ -112,8 +112,6 @@ class RemoveGiftCardTest extends GraphQlTestBase
             $headerMap
         );
 
-        // $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
-
         $cart = $this->cartRepository->get($cart->getId());
 
         $this->assertNotNull($removeResponse);

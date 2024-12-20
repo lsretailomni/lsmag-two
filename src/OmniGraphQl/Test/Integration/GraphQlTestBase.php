@@ -11,14 +11,16 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Inventory\Model\ResourceModel\SourceItem\SaveMultiple;
-use Magento\Inventory\Model\SourceItem;
+use Magento\InventoryApi\Api\SourceItemsSaveInterface;
 use Magento\Quote\Api\CartManagementInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMask;
 use Magento\Quote\Model\QuoteIdMaskFactory;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\TestCase\GraphQlAbstract;
+use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
+use Magento\Framework\Indexer\IndexerRegistry;
+use Magento\Framework\Exception\LocalizedException;
 
 /**
  * Abstract class for graphql test
@@ -36,27 +38,34 @@ abstract class GraphQlTestBase extends GraphQlAbstract
 
     /** @var string */
     protected $password;
-    
+
+    /**
+     * @var SourceItemsSaveInterface
+     */
     protected $sourceItemsSaveInterface;
+
+    /**
+     * @var SourceItemInterfaceFactory
+     */
     protected $sourceItem;
-    protected $subject;
-    protected $stockRegistry;
+
+    /**
+     * @var IndexerRegistry
+     */
     protected $indexerFactory;
 
     protected function setUp(): void
     {
-        $this->objectManager = Bootstrap::getObjectManager();
-        $this->sourceItemsSaveInterface = $this->objectManager->create(\Magento\InventoryApi\Api\SourceItemsSaveInterface::class);
-        $this->sourceItem = $this->objectManager->create(\Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory::class);
-        $this->subject = $this->objectManager->get(SaveMultiple::class);
-        $this->indexerFactory = $this->objectManager->get(\Magento\Framework\Indexer\IndexerRegistry::class);
-        $this->stockRegistry = $this->objectManager->get(\Magento\CatalogInventory\Api\StockRegistryInterface::class);
-        
-        $this->productSku    = (defined('WEB_API_TEST_PRODUCT_SKU')) ?
+        $this->objectManager            = Bootstrap::getObjectManager();
+        $this->sourceItemsSaveInterface = $this->objectManager->create(SourceItemsSaveInterface::class);
+        $this->sourceItem               = $this->objectManager->create(SourceItemInterfaceFactory::class);
+        $this->indexerFactory           = $this->objectManager->get(IndexerRegistry::class);
+
+        $this->productSku = (defined('WEB_API_TEST_PRODUCT_SKU')) ?
             WEB_API_TEST_PRODUCT_SKU : AbstractIntegrationTest::ITEM_SIMPLE;
-        $this->email         = (defined('WEB_API_TEST_EMAIL')) ?
+        $this->email      = (defined('WEB_API_TEST_EMAIL')) ?
             WEB_API_TEST_EMAIL : 'pipeline_retail@lsretail.com';
-        $this->password      = (defined('PASSWORD')) ?
+        $this->password   = (defined('PASSWORD')) ?
             PASSWORD : 'Nmswer123@';
     }
 
@@ -202,33 +211,33 @@ abstract class GraphQlTestBase extends GraphQlAbstract
             ->setTypeId('simple')
             ->setStockData(
                 [
-                    'qty' => 10000, 
-                    'is_in_stock' => 1,
+                    'qty'                     => 10000,
+                    'is_in_stock'             => 1,
                     'use_config_manage_stock' => 1,
-                    'manage_stock' => 1
+                    'manage_stock'            => 1
                 ]
-            )            
+            )
             ->setCustomAttribute('unit_of_measure', 'PCS')
             ->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $this->productSku)
             ->save();
 
         try {
             $sourceItems = [];
-            $sourceItem = $this->sourceItem->create();
+            $sourceItem  = $this->sourceItem->create();
             $sourceItem->setSourceCode('default');
             $sourceItem->setQuantity(10000);
             $sourceItem->setSku($this->productSku);
             $sourceItem->setStatus(1);
             $sourceItems[] = $sourceItem;
-    
+
             $this->sourceItemsSaveInterface->execute($sourceItems);
 
             $indexer = $this->indexerFactory->get('cataloginventory_stock');
             $indexer->reindexAll();
         } catch (NoSuchEntityException $e) {
-            echo "Product with SKU $this->productSku does not exist.";
+            $this->fail("Product with SKU $this->productSku does not exist.");
         } catch (LocalizedException $e) {
-            echo "Error: " . $e->getMessage();
+            $this->fail("Error: " . $e->getMessage());
         }
 
         return $product;
@@ -252,7 +261,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
             ->setLsrUsername(AbstractIntegrationTest::USERNAME)
             ->setLsrId(AbstractIntegrationTest::LSR_ID)
             ->setLsrCardid(AbstractIntegrationTest::LSR_CARD_ID)
-            ->setLsrToken(AbstractIntegrationTest::CUSTOMER_ID)            
+            ->setLsrToken(AbstractIntegrationTest::CUSTOMER_ID)
             ->save();
 
         return $this->objectManager->get(CustomerRepositoryInterface::class)->get($this->email);

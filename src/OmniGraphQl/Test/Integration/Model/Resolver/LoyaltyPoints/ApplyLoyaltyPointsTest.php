@@ -2,8 +2,7 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver\LoyaltyPoints;
 
-use \Ls\Core\Model\LSR;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\ContactHelper;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;

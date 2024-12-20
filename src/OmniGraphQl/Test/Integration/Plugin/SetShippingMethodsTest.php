@@ -70,12 +70,12 @@ class SetShippingMethodsTest extends GraphQlTestBase
     ]
     public function testShippingMethodsOnCart()
     {
-        $customer  = $this->getOrCreateCustomer();
-        $product   = $this->getOrCreateProduct();
-        $this->authToken       = $this->loginAndFetchToken();
-        $emptyCart = $this->createCustomerEmptyCart($customer->getId());
-        $cart      = $this->addSimpleProduct($emptyCart, $product);
-        $cart      = $this->setShippingAddress($cart);
+        $customer        = $this->getOrCreateCustomer();
+        $product         = $this->getOrCreateProduct();
+        $this->authToken = $this->loginAndFetchToken();
+        $emptyCart       = $this->createCustomerEmptyCart($customer->getId());
+        $cart            = $this->addSimpleProduct($emptyCart, $product);
+        $cart            = $this->setShippingAddress($cart);
 
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
