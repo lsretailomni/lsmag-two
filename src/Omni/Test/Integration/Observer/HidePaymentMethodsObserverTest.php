@@ -220,11 +220,11 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         ));
 
         $cart->delete();
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $this->checkoutSession->clearQuote();
         $this->customerSession->logout();
         $this->customerSession->clearStorage();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
 
         $this->assertTrue($this->event->getResult()->getData('is_available'));
     }
@@ -298,8 +298,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
 
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $cart->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
 
         $this->assertNull($this->event->getResult()->getData('is_available'));
     }
@@ -374,8 +374,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
 
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $cart->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
 
         $this->assertNotTrue($this->event->getResult()->getData('is_available'));
     }
@@ -454,8 +454,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
 
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $cart->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
 
         $this->assertTrue($this->event->getResult()->getData('is_available'));
     }
@@ -534,8 +534,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
 
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $cart->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
 
         $this->assertNotTrue($this->event->getResult()->getData('is_available'));
     }
