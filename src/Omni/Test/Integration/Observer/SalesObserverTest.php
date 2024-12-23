@@ -255,9 +255,9 @@ class SalesObserverTest extends AbstractIntegrationTest
         );
         $this->assertEquals($expectedLsPointsDiscount, $this->checkoutSession->getQuote()->getLsPointsDiscount());
 
+        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
         $cart->delete();
         $this->checkoutSession->clearQuote();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 }

@@ -12,6 +12,7 @@ use \Ls\Omni\Test\Fixture\CustomerAddressFixture;
 use \Ls\Omni\Test\Fixture\CustomerOrder;
 use \Ls\Omni\Plugin\Block\Adminhtml\Order\Create\Shipping\FormPlugin;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
+use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Checkout\Test\Fixture\SetBillingAddress as SetBillingAddress;
 use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddress;
 use Magento\Backend\Model\Session\Quote;
@@ -79,6 +80,11 @@ class FormPluginTest extends AbstractIntegrationTest
     public $basketHelper;
 
     /**
+     * @var CheckoutSession
+     */
+    public $checkoutSession;
+
+    /**
      * @var ItemHelper
      */
     public $itemHelper;
@@ -89,16 +95,17 @@ class FormPluginTest extends AbstractIntegrationTest
     protected function setUp(): void
     {
         parent::setUp();
-        $this->objectManager = Bootstrap::getObjectManager();
-        $this->fixtures      = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
-        $this->form          = $this->objectManager->get(Form::class);
-        $this->formPlugin    = $this->objectManager->get(FormPlugin::class);
-        $this->eventManager  = $this->objectManager->create(ManagerInterface::class);
-        $this->urlBuilder    = $this->objectManager->get(UrlInterface::class);
-        $this->request       = $this->objectManager->get(RequestInterface::class);
-        $this->quoteSession  = $this->objectManager->get(Quote::class);
-        $this->basketHelper  = $this->objectManager->get(BasketHelper::class);
-        $this->itemHelper    = $this->objectManager->get(ItemHelper::class);
+        $this->objectManager   = Bootstrap::getObjectManager();
+        $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
+        $this->form            = $this->objectManager->get(Form::class);
+        $this->formPlugin      = $this->objectManager->get(FormPlugin::class);
+        $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
+        $this->urlBuilder      = $this->objectManager->get(UrlInterface::class);
+        $this->request         = $this->objectManager->get(RequestInterface::class);
+        $this->quoteSession    = $this->objectManager->get(Quote::class);
+        $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
+        $this->basketHelper    = $this->objectManager->get(BasketHelper::class);
+        $this->itemHelper      = $this->objectManager->get(ItemHelper::class);
     }
 
     /**
@@ -134,7 +141,6 @@ class FormPluginTest extends AbstractIntegrationTest
         DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
         DataFixture(SetBillingAddress::class, ['cart_id' => '$cart1.id$']),
         DataFixture(SetShippingAddress::class, ['cart_id' => '$cart1.id$']),
-        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart1$']),
         DataFixture(
             CustomerAddressFixture::class,
             [
@@ -151,15 +157,19 @@ class FormPluginTest extends AbstractIntegrationTest
                 'payment'  => 'free'
             ],
             as: 'order'
-        )
+        ),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart2'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 2]),
+        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart2.id$']),
+        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart2.id$'])
     ]
     public function testGetShippingRatesForCnc()
     {
-        $cart = $this->fixtures->get('cart1');
-
+        $cart = $this->fixtures->get('cart2');
         $this->setRequestUrl();
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+
         $this->quoteSession->setQuoteId($cart->getId());
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $oneList = $this->basketHelper->getOneListAdmin(
             $cart->getCustomerEmail(),
@@ -167,6 +177,7 @@ class FormPluginTest extends AbstractIntegrationTest
             false
         );
 
+        $this->checkoutSession->setQuoteId($cart->getId());
         $oneList = $this->basketHelper->setOneListQuote($cart, $oneList);
         $this->basketHelper->setOneListCalculationInCheckoutSession($oneList);
         $basketData = $this->basketHelper->update($oneList);
@@ -235,11 +246,15 @@ class FormPluginTest extends AbstractIntegrationTest
                 'payment'  => 'free'
             ],
             as: 'order'
-        )
+        ),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart2'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 2]),
+        DataFixture(SetBillingAddress::class, ['cart_id' => '$cart2.id$']),
+        DataFixture(SetShippingAddress::class, ['cart_id' => '$cart2.id$'])
     ]
     public function testGetShippingRatesForFlat()
     {
-        $cart = $this->fixtures->get('cart1');
+        $cart = $this->fixtures->get('cart2');
 
         $this->setRequestUrl();
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
@@ -251,6 +266,7 @@ class FormPluginTest extends AbstractIntegrationTest
             false
         );
 
+        $this->checkoutSession->setQuoteId($cart->getId());
         $oneList = $this->basketHelper->setOneListQuote($cart, $oneList);
         $this->basketHelper->setOneListCalculationInCheckoutSession($oneList);
         $basketData = $this->basketHelper->update($oneList);

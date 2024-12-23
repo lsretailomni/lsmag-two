@@ -91,7 +91,6 @@ class DataAssignObserverTest extends AbstractIntegrationTest
      */
     public $loyaltyHelper;
 
-
     /**
      * @return void
      */
@@ -166,9 +165,8 @@ class DataAssignObserverTest extends AbstractIntegrationTest
         $quote = $this->fixtures->get('cart1');
         $order = $this->fixtures->get('order');
 
+        $this->checkoutSession->setQuoteId($order->getQuoteId());
         $quote->getPayment()->setMethod("ls_payment_method_pay_at_store");
-
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $quote->getAllVisibleItems()]);
 
         $this->expectException(ValidatorException::class);
         // Execute the observer method
@@ -180,8 +178,8 @@ class DataAssignObserverTest extends AbstractIntegrationTest
         ));
 
         $quote->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
     }
 
     /**
@@ -242,6 +240,7 @@ class DataAssignObserverTest extends AbstractIntegrationTest
         $quote = $this->fixtures->get('cart1');
         $order = $this->fixtures->get('order');
 
+        $this->checkoutSession->setQuoteId($quote->getId());
         $quote->getShippingAddress()->setShippingMethod('clickandcollect_clickandcollect');
         $quote->setPickupStore(AbstractIntegrationTest::STORE_PICKUP);
         $quote->setCouponCode(AbstractIntegrationTest::VALID_COUPON_CODE);
@@ -262,7 +261,7 @@ class DataAssignObserverTest extends AbstractIntegrationTest
         $this->assertEquals(AbstractIntegrationTest::VALID_COUPON_CODE, $order->getCouponCode());
 
         $quote->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
     }
 }

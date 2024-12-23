@@ -174,8 +174,8 @@ class CartObserverTest extends AbstractIntegrationTest
         );
 
         $cart->delete();
-        $this->checkoutSession->clearQuote();
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+        $this->checkoutSession->clearQuote();
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
