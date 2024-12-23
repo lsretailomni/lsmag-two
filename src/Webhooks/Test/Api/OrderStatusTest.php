@@ -80,7 +80,7 @@ class OrderStatusTest extends AbstractWebhookTest
     }
 
     /**
-     * Test for the order status picked
+     * Test for the order status picked\
      */
     public function testSetOrderStatusPicked()
     {

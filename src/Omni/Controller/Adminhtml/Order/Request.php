@@ -100,12 +100,10 @@ class Request extends Action
         $this->lsr->setStoreId($order->getStoreId());
         $response       = null;
         $resultRedirect = $this->resultRedirectFactory->create();
-        try {
-            $order = $this->orderRepository->get($orderId);
-            $this->basketHelper->setCorrectStoreIdInCheckoutSession($order->getStoreId());
-            $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
+        $resultRedirect->setPath('sales/order/view', ['order_id' => $orderId]);
 
-            if ($this->lsr->isLSR($order->getStoreId())) {
+        if ($this->lsr->isLSR($order->getStoreId())) {
+            try {
                 $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
                 $documentId         = null;
                 if (!empty($oneListCalculation)) {
@@ -164,22 +162,15 @@ class Request extends Action
                         }
                     }
                 }
-                if (!$response) {
-                    $this->logger->critical(__(
-                        'Something terrible happened while placing order %1',
-                        $order->getIncrementId()
-                    ));
-                    $this->messageManager->addErrorMessage(
-                        __('The service is currently unavailable. Please try again later.')
-                    );
-                }
-                $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
-
+            } catch (Exception $e) {
+                $this->logger->error($e->getMessage());
+                $this->messageManager->addErrorMessage($e->getMessage());
             }
+        }
 
-        } catch (Exception $e) {
-            $this->logger->error($e->getMessage());
-            $this->messageManager->addErrorMessage($e->getMessage());
+        if (!$response) {
+            $this->logger->critical(__('Something terrible happened while placing order %1', $order->getIncrementId()));
+            $this->messageManager->addErrorMessage(__('The service is currently unavailable. Please try again later.'));
         }
         $this->basketHelper->unSetRequiredDataFromCustomerAndCheckoutSessions();
         $this->lsr->setStoreId(null);

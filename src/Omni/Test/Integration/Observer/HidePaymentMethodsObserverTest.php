@@ -186,7 +186,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         ]),
         DataFixture(SetPaymentMethod::class, [
             'cart_id' => '$cart2.id$',
-            'method'  => 'ls_payment_method_pay_at_store'
+            'method' => ['method' => 'ls_payment_method_pay_at_store']
         ])
     ]
     /**

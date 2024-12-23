@@ -11,21 +11,36 @@ use Magento\JwtUserToken\Api\RevokedRepositoryInterface;
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
 
+define('PASSWORD', getenv('PASSWORD'));
+define('EMAIL', getenv('EMAIL'));
+define('FIRST_NAME', getenv('FIRST_NAME'));
+define('LAST_NAME', getenv('LAST_NAME'));
+define('CUSTOMER_ID', getenv('CUSTOMER_ID'));
+define('CS_URL', getenv('CS_URL'));
+define('CS_VERSION', getenv('CS_VERSION'));
+define('LS_VERSION', getenv('LS_VERSION'));
+define('CS_STORE', getenv('CS_STORE'));
+define('ENABLED', getenv('ENABLED'));
+define('USERNAME', getenv('USERNAME_1'));
+define('LSR_ID', getenv('LSR_ID'));
+define('LSR_CARD_ID', getenv('LSR_CARD_ID'));
 class AbstractIntegrationTest extends TestCase
 {
-    public const PASSWORD = 'Nmswer123@';
-    public const EMAIL = 'pipeline_retail@lsretail.com';
-    public const FIRST_NAME = 'Umar';
-    public const LAST_NAME = 'Yousaf';
-    public const CUSTOMER_ID = '1';
-    public const CS_URL = 'http://20.6.33.78/commerceservice';
-    public const CS_VERSION = '2024.4.1';
-    public const LS_VERSION = '25.0.0.0';
-    public const CS_STORE = 'S0013';
-    public const ENABLED = '1';
-    public const USERNAME = 'mc_57745';
-    public const LSR_ID = 'MSO000012';
-    public const LSR_CARD_ID = '10051';
+    //php const need to defined in phpunit.xml file
+    public const PASSWORD = PASSWORD;
+    public const EMAIL = EMAIL;
+    public const FIRST_NAME = FIRST_NAME;
+    public const LAST_NAME = LAST_NAME;
+    public const CUSTOMER_ID = CUSTOMER_ID;
+    public const CS_URL = CS_URL;
+    public const CS_VERSION = CS_VERSION;
+    public const LS_VERSION = LS_VERSION;
+    public const CS_STORE = CS_STORE;
+    public const ENABLED =  ENABLED;
+    public const USERNAME = USERNAME;
+    public const LSR_ID = LSR_ID;
+    public const LSR_CARD_ID = LSR_CARD_ID;
+
     public static function createCustomerWithCustomAttributesFixture()
     {
         $objectManager = Bootstrap::getObjectManager();

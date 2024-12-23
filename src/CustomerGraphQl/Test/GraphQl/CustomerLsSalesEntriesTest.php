@@ -24,7 +24,7 @@ class CustomerLsSalesEntriesTest extends GraphQlTestBase
         $query = <<<'QUERY'
         query {
             customer {
-                lsSalesEntries {
+                lsSalesEntries(pageSize: 1) {
                       click_and_collect_order
                       contact_address {
                         address1
@@ -45,10 +45,6 @@ class CustomerLsSalesEntriesTest extends GraphQlTestBase
                       items {
                         amount
                         click_and_collect_line
-                        custom_options {
-                          label
-                          value
-                        }
                         discount_amount
                         discount_percent
                         item_description
@@ -62,27 +58,6 @@ class CustomerLsSalesEntriesTest extends GraphQlTestBase
                         price
                         quantity
                         store_id
-                        subitems {
-                          amount
-                          click_and_collect_line
-                          discount_amount
-                          discount_percent
-                          item_description
-                          item_id
-                          item_image_id
-                          line_number
-                          line_type
-                          net_amount
-                          net_price
-                          parent_line
-                          price
-                          quantity
-                          store_id
-                          tax_amount
-                          uom_id
-                          variant_description
-                          variant_id
-                        }
                         tax_amount
                         uom_id
                         variant_description
@@ -161,10 +136,6 @@ class CustomerLsSalesEntriesTest extends GraphQlTestBase
                   items {
                     amount
                     click_and_collect_line
-                    custom_options {
-                      label
-                      value
-                    }
                     discount_amount
                     discount_percent
                     item_description
@@ -178,27 +149,6 @@ class CustomerLsSalesEntriesTest extends GraphQlTestBase
                     price
                     quantity
                     store_id
-                    subitems {
-                      amount
-                      click_and_collect_line
-                      discount_amount
-                      discount_percent
-                      item_description
-                      item_id
-                      item_image_id
-                      line_number
-                      line_type
-                      net_amount
-                      net_price
-                      parent_line
-                      price
-                      quantity
-                      store_id
-                      tax_amount
-                      uom_id
-                      variant_description
-                      variant_id
-                    }
                     tax_amount
                     uom_id
                     variant_description
