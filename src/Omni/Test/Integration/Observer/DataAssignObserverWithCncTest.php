@@ -10,6 +10,7 @@ namespace Ls\Omni\Test\Integration\Observer;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Test\Fixture\ApplyLoyaltyPointsInCartFixture;
 use \Ls\Omni\Test\Fixture\CustomerAddressFixture;
+use \Ls\Omni\Test\Fixture\CustomerOrder;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Observer\DataAssignObserver;
@@ -36,7 +37,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
 
-class DataAssignObserverTest extends AbstractIntegrationTest
+class DataAssignObserverWithCncTest extends AbstractIntegrationTest
 {
     /**
      * @var \Magento\Framework\ObjectManagerInterface
@@ -138,7 +139,7 @@ class DataAssignObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, self::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
+        Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LICENSE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -147,7 +148,7 @@ class DataAssignObserverTest extends AbstractIntegrationTest
                 'lsr_cardid'   => AbstractIntegrationTest::LSR_CARD_ID,
                 'lsr_token'    => AbstractIntegrationTest::CUSTOMER_ID
             ],
-            as: 'customer'
+            as: 'customer2'
         ),
         DataFixture(
             CreateSimpleProductFixture::class,
@@ -156,45 +157,55 @@ class DataAssignObserverTest extends AbstractIntegrationTest
             ],
             as: 'p1'
         ),
-        DataFixture(CustomerCart::class, ['customer_id' => '$customer.id$'], 'cart1'),
-        DataFixture(AddProductToCart::class, ['cart_id' => '$cart1.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
+        DataFixture(CustomerCart::class, ['customer_id' => '$customer2.id$'], 'cart2'),
+        DataFixture(AddProductToCart::class, ['cart_id' => '$cart2.id$', 'product_id' => '$p1.id$', 'qty' => 1]),
         DataFixture(
             CustomerAddressFixture::class,
             [
-                'customer_id' => '$customer.entity_id$'
+                'customer_id' => '$customer2.entity_id$'
             ],
             as: 'address'
-        )
+        ),
+        DataFixture(ApplyLoyaltyPointsInCartFixture::class, ['cart' => '$cart2$'])
     ]
     /**
-     * Verify exception throw for order with click and collect payment method and
-     * flatrate shipping.
+     * Verify order object updates with click and collect shipping, pay at store payment method and
+     * LS Points and coupon code usage.
      */
-    public function testOrderUpdatesWithException()
+    public function testOrderUpdatesWithCncMethod()
     {
-        $address = $this->fixtures->get('address');
-        $quote   = $this->fixtures->get('cart1');
+        $customer = $this->fixtures->get('customer2');
+        $cart     = $this->fixtures->get('cart2');
+        $address  = $this->fixtures->get('address');
 
-        $this->checkoutSession->setQuoteId($quote->getId());
+        $this->checkoutSession->setQuoteId($cart->getId());
+        $this->customerSession->setData('customer_id', $customer->getId());
+        $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
+
         $quoteShippingAddress = $this->addressInterfaceFactory->create();
         $quoteShippingAddress->importCustomerAddressData(
             $this->addressRespositoryInterface->getById($address->getId())
         );
 
-        $quote->setShippingAddress($quoteShippingAddress);
-        $quote->setBillingAddress($quoteShippingAddress);
-        $quote->getShippingAddress()->setShippingMethod('flatrate_flatrate');
-        $quote->setPickupStore(AbstractIntegrationTest::STORE_PICKUP);
-        $quote->getShippingAddress()->setCollectShippingRates(true);
-        $quote->getShippingAddress()->collectShippingRates();
-        $quote->getPayment()->setMethod("ls_payment_method_pay_at_store");
+        $cart->setShippingAddress($quoteShippingAddress);
+        $cart->setBillingAddress($quoteShippingAddress);
+        $cart->getShippingAddress()->setShippingMethod('clickandcollect_clickandcollect');
+        $cart->setPickupStore(AbstractIntegrationTest::STORE_PICKUP);
+        $cart->getShippingAddress()->setCollectShippingRates(true);
+        $cart->getShippingAddress()->collectShippingRates();
+        $cart->setCouponCode(AbstractIntegrationTest::VALID_COUPON_CODE);
+        $cart->getPayment()->setMethod("ls_payment_method_pay_at_store");
 
-        $this->expectException(ValidatorException::class);
+        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
-        $order = $this->quoteManagement->submit($quote);
+        $order = $this->quoteManagement->submit($cart);
+
+        $this->assertEquals(AbstractIntegrationTest::LSR_LOY_POINTS, $order->getLsPointsSpent());
+        $this->assertEquals(AbstractIntegrationTest::STORE_PICKUP, $order->getPickupStore());
+        $this->assertEquals(AbstractIntegrationTest::VALID_COUPON_CODE, $order->getCouponCode());
 
         $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-        $quote->delete();
+        $cart->delete();
         $this->checkoutSession->clearQuote();
     }
 }
