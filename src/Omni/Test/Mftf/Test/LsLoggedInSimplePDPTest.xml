@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsLoggedInSimplePDPTest">
+        <annotations>
+            <features value="LsPDP"/>
+            <stories value="Logged in customer should be able to see all features available for a simple product"/>
+            <title value="Logged in customer should be able to see all features available for a simple product"/>
+            <description value="Logged in customer should be able to see all features available for a simple product"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsPDP"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct1" stepKey="product1" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+            <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <actionGroup ref="LoginToStorefrontWithUsernameActionGroup" stepKey="loginToStorefrontAccount">
+            <argument name="Customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="loginToStorefrontAccount" />
+
+        <amOnPage url="{{StorefrontProductPage.url($product1.custom_attributes[url_key]$)}}" stepKey="openProductPage" />
+        <wait stepKey="waitForSessionLoad" time="5"/>
+        <waitForPageLoad stepKey="waitForProductPageOpen" />
+        <actionGroup ref="LsAvailabilityPopupActionGroup" stepKey="validateCheckAvailabilityModal"/>
+        <actionGroup ref="LsDiscountRecommendationsActionGroup" stepKey="validateDiscountRecommendations"/>
+
+        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
+            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+        </actionGroup>
+        <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid"/>
+    </test>
+</tests>

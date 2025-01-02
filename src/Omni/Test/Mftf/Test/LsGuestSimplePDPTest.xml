@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="LsGuestPDPTest">
+    <test name="LsGuestSimplePDPTest">
         <annotations>
             <features value="LsPDP"/>
-            <stories value="Customer should be able to see check availability link"/>
-            <title value="Customer should be able to see check availability link"/>
-            <description value="Customer should be able to see check availability link"/>
+            <stories value="Guest customer should be able to see all features available for a simple product"/>
+            <title value="Guest customer should be able to see all features available for a simple product"/>
+            <description value="Guest customer should be able to see all features available for a simple product"/>
             <severity value="CRITICAL"/>
             <group value="ls"/>
             <group value="lsPDP"/>
