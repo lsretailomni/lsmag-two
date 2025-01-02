@@ -66,6 +66,17 @@ interface ReplPriceInterface
     public function getItemId();
 
     /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber);
+
+    /**
+     * @return int
+     */
+    public function getLineNumber();
+
+    /**
      * @param string $LoyaltySchemeCode
      * @return $this
      */
@@ -110,6 +121,17 @@ interface ReplPriceInterface
     public function getPriceInclVat();
 
     /**
+     * @param string $PriceListCode
+     * @return $this
+     */
+    public function setPriceListCode($PriceListCode);
+
+    /**
+     * @return string
+     */
+    public function getPriceListCode();
+
+    /**
      * @param int $Priority
      * @return $this
      */
@@ -143,13 +165,13 @@ interface ReplPriceInterface
     public function getSaleCode();
 
     /**
-     * @param int $SaleType
+     * @param PriceType $SaleType
      * @return $this
      */
     public function setSaleType($SaleType);
 
     /**
-     * @return int
+     * @return PriceType
      */
     public function getSaleType();
 
@@ -163,6 +185,17 @@ interface ReplPriceInterface
      * @return string
      */
     public function getStartingDate();
+
+    /**
+     * @param PriceStatus $Status
+     * @return $this
+     */
+    public function setStatus($Status);
+
+    /**
+     * @return PriceStatus
+     */
+    public function getStatus();
 
     /**
      * @param string $StoreId

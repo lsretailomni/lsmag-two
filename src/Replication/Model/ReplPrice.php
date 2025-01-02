@@ -46,6 +46,11 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     protected $ItemId = null;
 
     /**
+     * @property int $LineNumber
+     */
+    protected $LineNumber = null;
+
+    /**
      * @property string $LoyaltySchemeCode
      */
     protected $LoyaltySchemeCode = null;
@@ -66,6 +71,11 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     protected $PriceInclVat = null;
 
     /**
+     * @property string $PriceListCode
+     */
+    protected $PriceListCode = null;
+
+    /**
      * @property int $Priority
      */
     protected $Priority = null;
@@ -81,7 +91,7 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     protected $SaleCode = null;
 
     /**
-     * @property int $SaleType
+     * @property PriceType $SaleType
      */
     protected $SaleType = null;
 
@@ -89,6 +99,11 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
      * @property string $StartingDate
      */
     protected $StartingDate = null;
+
+    /**
+     * @property PriceStatus $Status
+     */
+    protected $Status = null;
 
     /**
      * @property string $StoreId
@@ -281,6 +296,26 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     }
 
     /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber)
+    {
+        $this->setData( 'LineNumber', $LineNumber );
+        $this->LineNumber = $LineNumber;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNumber()
+    {
+        return $this->getData( 'LineNumber' );
+    }
+
+    /**
      * @param string $LoyaltySchemeCode
      * @return $this
      */
@@ -361,6 +396,26 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     }
 
     /**
+     * @param string $PriceListCode
+     * @return $this
+     */
+    public function setPriceListCode($PriceListCode)
+    {
+        $this->setData( 'PriceListCode', $PriceListCode );
+        $this->PriceListCode = $PriceListCode;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceListCode()
+    {
+        return $this->getData( 'PriceListCode' );
+    }
+
+    /**
      * @param int $Priority
      * @return $this
      */
@@ -421,7 +476,7 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     }
 
     /**
-     * @param int $SaleType
+     * @param PriceType $SaleType
      * @return $this
      */
     public function setSaleType($SaleType)
@@ -433,7 +488,7 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     }
 
     /**
-     * @return int
+     * @return PriceType
      */
     public function getSaleType()
     {
@@ -458,6 +513,26 @@ class ReplPrice extends AbstractModel implements ReplPriceInterface, IdentityInt
     public function getStartingDate()
     {
         return $this->getData( 'StartingDate' );
+    }
+
+    /**
+     * @param PriceStatus $Status
+     * @return $this
+     */
+    public function setStatus($Status)
+    {
+        $this->setData( 'Status', $Status );
+        $this->Status = $Status;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return PriceStatus
+     */
+    public function getStatus()
+    {
+        return $this->getData( 'Status' );
     }
 
     /**
