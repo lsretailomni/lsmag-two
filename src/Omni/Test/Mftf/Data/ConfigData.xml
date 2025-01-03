@@ -44,4 +44,11 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.INDUSTRY}}</data>
     </entity>
+    <entity name="ReturnPolicy">
+        <data key="path">ls_mag/return_policy/show_return_policy</data>
+        <data key="label">ReturnPolicy</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">1</data>
+    </entity>
 </entities>

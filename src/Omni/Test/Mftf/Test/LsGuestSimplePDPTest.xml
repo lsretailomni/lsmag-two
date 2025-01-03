@@ -13,6 +13,7 @@
         </annotations>
         <before>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <magentoCLI command="config:set {{ReturnPolicy.path}} {{ReturnPolicy.value}}" stepKey="enableReturnPolicy"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
             <!--Create test data.-->
@@ -34,6 +35,8 @@
         <amOnPage url="{{StorefrontProductPage.url($product1.custom_attributes[url_key]$)}}" stepKey="openProductPage" />
         <wait stepKey="waitForSessionLoad" time="5"/>
         <waitForPageLoad stepKey="waitForProductPageOpen" />
+        <actionGroup ref="LsReturnPolicyActionGroup" stepKey="validateReturnPolicyModal"/>
+        <wait stepKey="waitForSessionLoad1" time="5"/>
         <actionGroup ref="LsAvailabilityPopupActionGroup" stepKey="validateCheckAvailabilityModal"/>
     </test>
 </tests>

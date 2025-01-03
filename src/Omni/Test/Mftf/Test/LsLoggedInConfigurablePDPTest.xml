@@ -87,6 +87,8 @@
         <see selector=".product-options-wrapper .field.configurable:nth-child(1) .control .mage-error" userInput="This is a required field." stepKey="seeValidationMsg"/>
         <wait stepKey="waitForSessionLoad1" time="5"/>
         <selectOption userInput="$$createConfigProductAttributeOption2.option[store_labels][1][label]$$" selector="{{StorefrontProductInfoMainSection.optionByAttributeId($$createConfigProductAttribute.attribute_id$$)}}" stepKey="cartConfigProductFillOption"/>
+        <actionGroup ref="LsReturnPolicyActionGroup" stepKey="validateReturnPolicyModal"/>
+        <wait stepKey="waitForSessionLoad2" time="5"/>
         <actionGroup ref="LsAvailabilityPopupActionGroup" stepKey="validateCheckAvailabilityModal"/>
         <actionGroup ref="LsDiscountRecommendationsActionGroup" stepKey="validateDiscountRecommendations"/>
 

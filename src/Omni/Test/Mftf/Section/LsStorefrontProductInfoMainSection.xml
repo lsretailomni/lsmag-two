@@ -12,6 +12,7 @@
         <element name="qty" type="input" selector="#qty"/>
         <element name="qtyByClassAndQuantity" type="input" selector="//input[contains(@class,'qty') and @value='{{quantity}}']" parameterized="true"/>
         <element name="checkAvailability" type="text" selector=".availability-link-container .checkavailability"/>
+        <element name="returnPolicyContainer" type="text" selector=".product-info-main .box-tocart .return-policy-container .return-policy"/>
         <element name="discountRecommendationsLabel" type="text" selector="#ls-discounts .proactive-discounts-container .discount-dropdown-label"/>
         <element name="discountRecommendationsDropdown" type="text" selector="#ls-discounts .proactive-discounts-container .action.primary"/>
         <element name="discountRecommendationsDropdownDiscount" type="text" selector="#ls-discounts .proactive-discounts-container .block-dropdown .dropdown-content-wrapper"/>
