@@ -142,7 +142,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $scope             = $this->request->getParam('scope');
         $pagingParam       = $this->request->getParam('paging');
 
-        if ($scopeId === null) {
+        if ($scopeId === null || !$this->lsr->isEnabled($scopeId)) {
             $scopeId = $this->getDefaultStoreId();
         }
 
@@ -174,7 +174,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     continue;
                 }
                 if (($cronName == 'repl_discount_setup' || $cronName == 'repl_discount_create_setup' ||
-                        $cronName == 'repl_discount_setup_status_reset' || $cronName == 'repl_discount_validation') &&
+                        $cronName == 'repl_discount_setup_status_reset') &&
                     !$versionRes) {
                     continue;
                 }
@@ -450,8 +450,9 @@ class CronsProvider extends DataProvider implements DataProviderInterface
         $storeId = '';
 
         foreach ($this->storeManager->getStoreCollection() as $store) {
-            $storeId = $store->getId();
-            break;
+            if($this->lsr->isEnabled($store->getId())) {
+                return $store->getId();
+            }
         }
 
         return $storeId;
