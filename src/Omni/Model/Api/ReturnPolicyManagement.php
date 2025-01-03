@@ -83,7 +83,7 @@ class ReturnPolicyManagement implements ReturnPolicyManagementInterface
         }
 
         if (!empty($childSku)) {
-            $product = $this->productRepository->get($childSku);
+            $product = $this->productRepository->getById($childSku);
         } else {
             $product = $this->productRepository->get($parentSku);
         }
