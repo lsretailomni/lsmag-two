@@ -40,7 +40,7 @@ class CreateSimpleProductFixture implements RevertibleDataFixtureInterface
         ],
         'extension_attributes'  => [
             'website_ids'    => [1],
-            'category_links' => [],
+            'category_links' => [['position' => 0, 'category_id' => '2']],
             'stock_item'     => [
                 'use_config_manage_stock' => true,
                 'qty'                     => 100,

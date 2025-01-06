@@ -6,6 +6,7 @@ use Exception;
 use Laminas\Validator\EmailAddress as ValidateEmailAddress;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\ListType;
 use \Ls\Omni\Client\Ecommerce\Entity\MemberContact;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
@@ -605,9 +606,9 @@ class ContactHelper extends AbstractHelper
                 $customer->setData('firstname', $parameters['firstname']);
                 $customer->setData('lastname', $parameters['lastname']);
                 $customer->setData('middlename', (array_key_exists(
-                    'middlename',
-                    $parameters
-                ) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                        'middlename',
+                        $parameters
+                    ) && $parameters['middlename']) ? $parameters['middlename'] : null);
                 $customer->setData(
                     'gender',
                     (array_key_exists('gender', $parameters) && $parameters['gender']) ? $parameters['gender'] : null
@@ -991,14 +992,14 @@ class ContactHelper extends AbstractHelper
      */
     public function getSchemes()
     {
-        $schemes = [];
+        $schemes       = [];
         $schemesGetAll = new Entity\SchemesGetAll();
-        $request = new Operation\SchemesGetAll();
+        $request       = new Operation\SchemesGetAll();
         try {
             $response = $request->execute($schemesGetAll);
-            foreach($response->getSchemesGetAllResult() as $scheme) {
+            foreach ($response->getSchemesGetAllResult() as $scheme) {
                 /** @var Entity\Scheme $scheme */
-               $schemes[$scheme->getId()] = $scheme->getClub()->getId();
+                $schemes[$scheme->getId()] = $scheme->getClub()->getId();
             }
         } catch (Exception $e) {
             $this->_logger->error($e->getMessage());
@@ -1209,10 +1210,10 @@ class ContactHelper extends AbstractHelper
             throw new UserLockedException(__('The account is locked.'));
         }
         if ($customer->getConfirmation() && $this->accountConfirmation->isConfirmationRequired(
-            $websiteId,
-            $customerId,
-            $customer->getEmail()
-        )) {
+                $websiteId,
+                $customerId,
+                $customer->getEmail()
+            )) {
             throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
         }
     }
@@ -2007,5 +2008,29 @@ class ContactHelper extends AbstractHelper
     public function unsetCustomerIdFromCustomerSession()
     {
         return $this->customerSession->unsetData(LSR::SESSION_CUSTOMER_ID);
+    }
+
+    /**
+     * Execute the OneListGetByCardId request
+     *
+     * @param $cardId
+     * @return Entity\OneListGetByCardIdResponse|ResponseInterface
+     * @throws InvalidEnumException
+     */
+    public function getOneListGetByCardId($cardId)
+    {
+        $request = new Operation\OneListGetByCardId();
+        // @codingStandardsIgnoreLine
+        $entity = new Entity\OneListGetByCardId();
+        $entity->setCardId($cardId);
+        $entity->setListType(ListType::WISH);
+        $entity->setIncludeLines(true);
+        try {
+            $response = $request->execute($entity);
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            $this->_logger->error($e->getMessage());
+        }
+
+        return $response;
     }
 }

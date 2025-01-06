@@ -7,28 +7,32 @@ declare(strict_types=1);
 
 namespace Ls\Omni\Test\Integration\Observer;
 
-use \Ls\Omni\Test\Fixture\CreateCustomerWishlistFixture;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\ContactHelper;
-use \Ls\Omni\Observer\WishlistObserver;
 use \Ls\Omni\Test\Fixture\CreateSimpleProductFixture;
 use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
 use Magento\Customer\Model\Session as CustomerSession;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\FrontController;
 use Magento\Framework\App\Request\Http as HttpRequest;
-use Magento\Framework\Event;
-use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Data\Form\FormKey;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
 use Magento\Framework\Registry;
-use Magento\Wishlist\Model\Wishlist;
+use Magento\TestFramework\Request as TestHttpRequest;
+use Magento\Framework\App\ResourceConnection;
 
+/**
+ * Test for sync wish list to CS.
+ *
+ * @magentoAppArea frontend
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation disabled
+ */
 class WishlistObserverTest extends AbstractIntegrationTest
 {
     /**
@@ -59,16 +63,6 @@ class WishlistObserverTest extends AbstractIntegrationTest
     /**
      * @var mixed
      */
-    public $checkoutSession;
-
-    /**
-     * @var mixed
-     */
-    public $controllerAction;
-
-    /**
-     * @var mixed
-     */
     public $contactHelper;
 
     /**
@@ -77,20 +71,24 @@ class WishlistObserverTest extends AbstractIntegrationTest
     public $basketHelper;
 
     /**
-     * @var mixed
+     * @var FrontController
      */
-    public $event;
+    private $frontController;
+
+    /**
+     * @var FormKey
+     */
+    public $formKey;
+
+    /**
+     * @var TestHttpRequest
+     */
+    public $requestInterface;
 
     /**
      * @var mixed
      */
-    public $eventManager;
-
-    public $wishlist;
-    /**
-     * @var WishlistObserver
-     */
-    public $wishlistObserver;
+    public $customerId;
 
     /**
      * @return void
@@ -99,21 +97,19 @@ class WishlistObserverTest extends AbstractIntegrationTest
     {
         $this->objectManager    = Bootstrap::getObjectManager();
         $this->request          = $this->objectManager->get(HttpRequest::class);
+        $this->requestInterface = $this->objectManager->get(TestHttpRequest::class);
         $this->fixtures         = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
         $this->customerSession  = $this->objectManager->get(CustomerSession::class);
-        $this->controllerAction = $this->objectManager->get(Action::class);
         $this->contactHelper    = $this->objectManager->get(ContactHelper::class);
         $this->basketHelper     = $this->objectManager->get(BasketHelper::class);
-        $this->eventManager     = $this->objectManager->create(ManagerInterface::class);
-        $this->event            = $this->objectManager->get(Event::class);
-        $this->wishlistObserver = $this->objectManager->get(WishlistObserver::class);
         $this->registry         = $this->objectManager->get(Registry::class);
-        $this->wishlist         = $this->objectManager->get(Wishlist::class);
+
+        $this->frontController = $this->objectManager->get(
+            FrontController::class
+        );
+        $this->formKey         = $this->objectManager->get(FormKey::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -137,44 +133,59 @@ class WishlistObserverTest extends AbstractIntegrationTest
                 LSR::LS_ITEM_ID_ATTRIBUTE_CODE => '40180',
             ],
             as: 'p1'
-        ),
-        DataFixture(
-            CreateCustomerWishlistFixture::class,
-            [
-                'customer' => '$customer$',
-                'product'  => '$p1.id$',
-                'qty'      => 1
-            ],
-            as: 'w1'
         )
     ]
     /**
-     * Show payment methods enabled for click and collect shipping method from admin
+     * Test wishlist sync to CS.
      */
     public function testUpdateWishlistInOmni()
     {
-        $customer       = $this->fixtures->get('customer');
-        $this->wishlist = $this->fixtures->get('w1');
-        $wid            = $this->wishlist->getId();
+        $customer         = $this->fixtures->get('customer');
+        $product          = $this->fixtures->get('p1');
+        $this->customerId = $customer->getId();
+
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
 
         $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
 
-        //$wishlist = $this->wishlist->loadByCustomerId($customer->getId())->getItemCollection();
+        $this->requestInterface->setMethod(HttpRequest::METHOD_GET);
+        $this->requestInterface->setParams([
+            'form_key' => $this->formKey->getFormKey(),
+            'product'  => $product->getId()
+        ]);
+        $this->requestInterface->setRequestUri('wishlist/index/add/');
+        $this->frontController->dispatch($this->requestInterface);
 
-        // Execute the observer method
-        $this->wishlistObserver->execute(new Observer(
-            [
-                'wishlist'          => $this->wishlist,
-                'request'           => $this->request,
-                'controller_action' => $this->controllerAction
-            ]
-        ));
+        $response = $this->contactHelper->getOneListGetByCardId($customer->getLsrCardid());
+        $result   = $response ? $response->getResult() : null;
 
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
+        $this->assertGreaterThan(0, count($result->getOneList()[0]->getItems()->getOneListItem()));
+        $this->assertEquals($product->getSku(), $result->getOneList()[0]->getItems()->getOneListItem()[0]->getItemId());
+    }
 
-//        $this->assertTrue($this->event->getResult()->getData('is_available'));
+    /**
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        $resource   = $this->objectManager->get(ResourceConnection::class);
+        $connection = $resource->getConnection();
+
+        if (!empty($this->customerId)) {
+            $connection->delete(
+                $resource->getTableName('customer_entity'),
+                ['entity_id IN (?)' => $this->customerId]
+            );
+
+            $connection->delete(
+                $resource->getTableName('customer_address_entity'),
+                ['parent_id IN (?)' => $this->customerId]
+            );
+        }
+
+        parent::tearDown();
     }
 }
