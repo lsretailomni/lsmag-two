@@ -152,7 +152,6 @@ class Status
                 $orderStatus = LSR::LS_STATE_CANCELED;
                 break;
             case LSR::LS_STATE_PICKED:
-                $orderStatus = '';
                 if ($isClickAndCollectOrder) {
                     $orderStatus = LSR::LS_STATE_PICKED;
                 }

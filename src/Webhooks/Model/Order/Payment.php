@@ -227,12 +227,15 @@ class Payment
                     }
                     $message = 'Invoice has been sent for order# ' . $documentId;
 
-                    $this->notificationHelper->processNotifications(
-                        $storeId,
-                        $order,
-                        $items,
-                        $message
-                    );
+                    if ($order->getShippingMethod() != "clickandcollect_clickandcollect") {
+                        $this->notificationHelper->processNotifications(
+                            $storeId,
+                            $order,
+                            $items,
+                            $message,
+                            ''
+                        );
+                    }
 
                     return $this->helper->outputMessage(
                         true,
