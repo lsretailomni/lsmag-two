@@ -225,9 +225,9 @@ class OrderObserverTest extends AbstractIntegrationTest
 
         $this->customerSession->setData('customer_id', $customer->getId());
         $this->customerSession->setData(LSR::SESSION_CUSTOMER_CARDID, $customer->getLsrCardid());
-        $this->checkoutSession->setQuoteId($cart->getId());
+        $this->checkoutSession->setQuoteId($order->getQuoteId());
 
-        $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
+        //$this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $result = $this->contactHelper->login(AbstractIntegrationTest::USERNAME, AbstractIntegrationTest::PASSWORD);
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
@@ -248,7 +248,6 @@ class OrderObserverTest extends AbstractIntegrationTest
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $cart->delete();
         $this->checkoutSession->clearQuote();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
     }
 
     /**
@@ -330,7 +329,6 @@ class OrderObserverTest extends AbstractIntegrationTest
         $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
         $cart->delete();
         $this->checkoutSession->clearQuote();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
 
         $this->assertNull($order->getDocumentId());
         $this->assertNotNull($this->basketHelper->getLastDocumentIdFromCheckoutSession());

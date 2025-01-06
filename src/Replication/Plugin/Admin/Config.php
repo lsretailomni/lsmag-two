@@ -40,7 +40,6 @@ class Config
                 $result->remove('Ls_Replication::discount_grid');
             } else {
                 $result->remove('Ls_Replication::discount_setup_grid');
-                $result->remove('Ls_Replication::discount_validation_grid');
             }
         }
 

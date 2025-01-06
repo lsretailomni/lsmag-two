@@ -154,7 +154,7 @@ abstract class AbstractOperation implements OperationInterface
         }
         $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
 
-        $this->debugLog($operation_name, $requestTime, $responseTime);
+        $this->debugLog($operation_name, $requestTime, $responseTime, $lsr->getWebsiteId());
 
         return $response;
     }
@@ -199,21 +199,22 @@ abstract class AbstractOperation implements OperationInterface
      * @param $operationName
      * @param $requestTime
      * @param $responseTime
+     * @param $websiteId
      * @return void
      */
-    private function debugLog($operationName, $requestTime, $responseTime)
+    private function debugLog($operationName, $requestTime, $responseTime, $websiteId)
     {
         //@codingStandardsIgnoreStart
         $lsr = $this->objectManager->get("\Ls\Core\Model\LSR");
         //@codingStandardsIgnoreEnd
         try {
             $sessionValue = $this->getValue();
-            $disableLog = $operationName == 'Ping' && $sessionValue == null;
+            $disableLog   = $operationName == 'Ping' && $sessionValue == null;
         } catch (Exception $e) {
             $disableLog = false;
         }
 
-        $isEnable    = $lsr->getStoreConfig(LSR::SC_SERVICE_DEBUG) && !$disableLog;
+        $isEnable    = $lsr->getWebsiteConfig(LSR::SC_SERVICE_DEBUG, $websiteId) && !$disableLog;
         $timeElapsed = $requestTime->diff($responseTime);
 
         if ($isEnable) {

@@ -36,7 +36,6 @@ class OrderPaymentTest extends AbstractWebhookTest
         $incrementId = "2000000" . rand(1, 10000);
         // Create order
         $order = $this->getOrCreateOrder($incrementId, $documentId, $this->customer, $this->product, true, false);
-
         // Bootstrapping Magento
         $objectManager = Bootstrap::getObjectManager();
         $serviceInfo   = [

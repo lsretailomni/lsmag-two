@@ -633,6 +633,7 @@ class OrderCreationMethodsTest extends OmniClientSetupTest
             ->setAmount('1')
             ->setLineNumber('3')
             ->setCardNumber($this->getEnvironmentVariableValueGivenName('GIFTCARDCODE'))
+            ->setAuthorizationCode($this->getEnvironmentVariableValueGivenName('GIFTCARDPIN'))
             ->setExternalReference('TEST0012345')
             ->setPreApprovedValidDate($preApprovedDate)
             ->setTenderType($this->getEnvironmentVariableValueGivenName('GIFT_CARD_TENDER_TYPE'));

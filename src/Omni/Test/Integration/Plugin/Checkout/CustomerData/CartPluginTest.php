@@ -15,6 +15,7 @@ use Magento\Checkout\Test\Fixture\SetShippingAddress as SetShippingAddress;
 use Magento\Checkout\CustomerData\Cart;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\View\LayoutFactory;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\AppArea;
@@ -64,6 +65,11 @@ class CartPluginTest extends AbstractIntegrationTest
     public $customerSession;
 
     /**
+     * @var LayoutFactory
+     */
+    public $layoutFactory;
+
+    /**
      * @return void
      */
     protected function setUp(): void
@@ -76,6 +82,7 @@ class CartPluginTest extends AbstractIntegrationTest
         $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
         $this->customerSession = $this->objectManager->get(CustomerSession::class);
+        $this->layoutFactory   = $this->objectManager->get(LayoutFactory::class)->create();
     }
 
     /**
@@ -90,6 +97,8 @@ class CartPluginTest extends AbstractIntegrationTest
         Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
+        Config('payment/payment_services/active', 0 , 'store', 'default'),
+
         DataFixture(
             CustomerFixture::class,
             [
@@ -131,6 +140,7 @@ class CartPluginTest extends AbstractIntegrationTest
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $this->checkoutSession->setLoadInactive(true);
+        $this->layoutFactory->createBlock(\Magento\Catalog\Block\ShortcutButtons::class)->toHtml();
         $result = $this->cart->getSectionData();
 
         $response = $this->cartPlugin->afterGetSectionData($this->cart, $result);
@@ -191,6 +201,7 @@ class CartPluginTest extends AbstractIntegrationTest
         $this->eventManager->dispatch('checkout_cart_save_after', ['items' => $cart->getAllVisibleItems()]);
 
         $this->checkoutSession->setLoadInactive(true);
+        $this->layoutFactory->createBlock(\Magento\Catalog\Block\ShortcutButtons::class)->toHtml();
         $result = $this->cart->getSectionData();
 
         $response = $this->cartPlugin->afterGetSectionData($this->cart, $result);

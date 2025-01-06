@@ -7,10 +7,13 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ReplDiscountType;
 use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Replication\Api\ReplDiscountRepositoryInterface;
+use \Ls\Replication\Api\ReplDiscountValidationRepositoryInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use \Ls\Replication\Model\ReplDiscount;
 use \Ls\Replication\Model\ReplDiscountSearchResults;
+use \Ls\Replication\Model\ReplDiscountSetup;
+use \Ls\Replication\Model\ReplDiscountValidation;
 use \Ls\Replication\Model\ResourceModel\ReplDiscount\Collection;
 use \Ls\Replication\Model\ResourceModel\ReplDiscount\CollectionFactory;
 use Magento\CatalogRule\Api\CatalogRuleRepositoryInterface;
@@ -20,6 +23,7 @@ use Magento\CatalogRule\Model\Rule\Condition\Product;
 use Magento\CatalogRule\Model\Rule\Job;
 use Magento\CatalogRule\Model\RuleFactory;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -62,6 +66,11 @@ class DiscountCreateTask
     public $replDiscountRepository;
 
     /**
+     * @var ReplDiscountValidationRepositoryInterface
+     */
+    public $discountValidationRepository;
+
+    /**
      * @var LSR
      */
     public $lsr;
@@ -100,6 +109,7 @@ class DiscountCreateTask
      * @param RuleCollectionFactory $ruleCollectionFactory
      * @param Job $jobApply
      * @param ReplDiscountRepositoryInterface $replDiscountRepository
+     * @param ReplDiscountValidationRepositoryInterface $discountValidationRepository
      * @param ReplicationHelper $replicationHelper
      * @param LSR $LSR
      * @param CollectionFactory $replDiscountCollection
@@ -112,22 +122,24 @@ class DiscountCreateTask
         RuleCollectionFactory $ruleCollectionFactory,
         Job $jobApply,
         ReplDiscountRepositoryInterface $replDiscountRepository,
+        ReplDiscountValidationRepositoryInterface $discountValidationRepository,
         ReplicationHelper $replicationHelper,
         LSR $LSR,
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         Logger $logger
     ) {
-        $this->catalogRule            = $catalogRule;
-        $this->ruleFactory            = $ruleFactory;
-        $this->ruleCollectionFactory  = $ruleCollectionFactory;
-        $this->jobApply               = $jobApply;
-        $this->replDiscountRepository = $replDiscountRepository;
-        $this->replicationHelper      = $replicationHelper;
-        $this->contactHelper          = $contactHelper;
-        $this->lsr                    = $LSR;
-        $this->replDiscountCollection = $replDiscountCollection;
-        $this->logger                 = $logger;
+        $this->catalogRule                  = $catalogRule;
+        $this->ruleFactory                  = $ruleFactory;
+        $this->ruleCollectionFactory        = $ruleCollectionFactory;
+        $this->jobApply                     = $jobApply;
+        $this->replDiscountRepository       = $replDiscountRepository;
+        $this->discountValidationRepository = $discountValidationRepository;
+        $this->replicationHelper            = $replicationHelper;
+        $this->contactHelper                = $contactHelper;
+        $this->lsr                          = $LSR;
+        $this->replDiscountCollection       = $replDiscountCollection;
+        $this->logger                       = $logger;
     }
 
     /**
@@ -183,8 +195,8 @@ class DiscountCreateTask
                             $filters = [
                                 ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
                                 [
-                                    'field' => 'StoreId',
-                                    'value' => $this->lsr->getActiveWebStore(),
+                                    'field'          => 'StoreId',
+                                    'value'          => $this->lsr->getActiveWebStore(),
                                     'condition_type' => 'eq'
                                 ],
                                 ['field' => 'OfferNo', 'value' => $item->getOfferNo(), 'condition_type' => 'eq'],
@@ -217,7 +229,22 @@ class DiscountCreateTask
                                     );
                                 }
 
-                                $this->getItemsInRequiredFormat($replDiscount, $skuAmountArray);
+                                try {
+                                    $this->getItemsInRequiredFormat($replDiscount, $skuAmountArray);
+                                } catch (\Exception $e) {
+                                    $this->logger->debug(
+                                        sprintf(
+                                            'Exception happened in %s for store: %s, item id: %s, variant id: %s',
+                                            __METHOD__,
+                                            $this->store->getName(),
+                                            $replDiscount->getNumber(),
+                                            $replDiscount->getVariantId()
+                                        )
+                                    );
+                                    $this->logger->debug($e->getMessage());
+                                    $replDiscount->setData('is_failed', 1);
+                                }
+
 
                                 $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
                                 $replDiscount->setData('processed', '1');
@@ -250,6 +277,11 @@ class DiscountCreateTask
                                 false,
                                 ScopeInterface::SCOPE_STORES
                             );
+
+                            /* Delete the IsDeleted offers */
+                            $this->deleteOffers();
+                            /* Synchronize validation period */
+                            $this->syncValidationPeriod();
                         } else {
                             $this->replicationHelper->updateCronStatus(
                                 false,
@@ -269,12 +301,68 @@ class DiscountCreateTask
                             ScopeInterface::SCOPE_STORES
                         );
                     }
-                    /* Delete the IsDeleted offers */
-                    $this->deleteOffers();
                     $this->logger->debug('End DiscountCreateTask for store ' . $this->store->getName());
                 }
                 $this->lsr->setStoreId(null);
             }
+        }
+    }
+
+    /**
+     * Synchronize validation period
+     */
+    public function syncValidationPeriod()
+    {
+        $index    = false;
+        $filters  = [
+            ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+        ];
+        $criteria = $this->replicationHelper->buildCriteriaForDirect(
+            $filters,
+            -1,
+            false,
+            ['field' => 'is_updated', 'value' => 1, 'condition_type' => 'eq'],
+            ['field' => 'processed', 'value' => 0, 'condition_type' => 'eq'],
+        );
+        /** @var ReplDiscountSearchResults $replDiscounts */
+        $replDiscountValidation = $this->discountValidationRepository->getList($criteria);
+        /** @var ReplDiscountValidation $replValidation */
+        foreach ($replDiscountValidation->getItems() as $replValidation) {
+            $filters  = [
+                ['field' => 'Type', 'value' => ReplDiscountType::DISC_OFFER, 'condition_type' => 'eq'],
+                ['field' => 'ValidationPeriodId', 'value' => $replValidation->getNavId(), 'condition_type' => 'eq'],
+                ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
+            ];
+            $criteria = $this->replicationHelper->buildCriteriaForDirect(
+                $filters,
+                -1,
+                true
+            );
+            /** @var ReplDiscountSearchResults $replDiscounts */
+            $replDiscounts = $this->replDiscountRepository->getList($criteria);
+            /** @var ReplDiscountSetup $replDiscount * */
+            foreach ($replDiscounts->getItems() as $replDiscount) {
+                $name           = $replDiscount->getOfferNo();
+                $ruleCollection = $this->getCatalogRuleCollection($name);
+                try {
+                    foreach ($ruleCollection as $rule) {
+                        $index = $this->saveCatalogRuleBasedOnDiscountValidation($rule, $replValidation);
+                    }
+
+                } catch (Exception $e) {
+                    $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
+                    $this->logger->debug($e->getMessage());
+                }
+            }
+            $replValidation->setData('processed_at', $this->replicationHelper->getDateTime());
+            $replValidation->setData('processed', 1);
+            $replValidation->setData('is_updated', 0);
+            //@codingStandardsIgnoreLine
+            $this->discountValidationRepository->save($replValidation);
+        }
+
+        if ($index) {
+            $this->jobApply->applyAll();
         }
     }
 
@@ -416,9 +504,7 @@ class DiscountCreateTask
         $replDiscounts = $this->replDiscountRepository->getList($criteria);
         /** @var ReplDiscount $replDiscount */
         foreach ($replDiscounts->getItems() as $replDiscount) {
-            /** @var RuleCollectionFactory $ruleCollection */
-            $ruleCollection = $this->ruleCollectionFactory->create();
-            $ruleCollection->addFieldToFilter('name', $replDiscount->getOfferNo());
+            $ruleCollection = $this->getCatalogRuleCollection($replDiscount->getOfferNo());
             try {
                 foreach ($ruleCollection as $rule) {
                     $this->catalogRule->deleteById($rule->getId());
@@ -444,10 +530,7 @@ class DiscountCreateTask
      */
     public function deleteOfferByName($name)
     {
-        $websiteIds     = [$this->store->getWebsiteId()];
-        $ruleCollection = $this->ruleCollectionFactory->create();
-        $ruleCollection->addFieldToFilter('name', $name);
-        $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+        $ruleCollection = $this->getCatalogRuleCollection($name);
         try {
             foreach ($ruleCollection as $rule) {
                 $this->catalogRule->deleteById($rule->getId());
@@ -531,7 +614,7 @@ class DiscountCreateTask
      */
     public function getItemsInRequiredFormat($replDiscount, &$skuAmountArray)
     {
-        $storeId = $this->getScopeId();
+        $storeId       = $this->getScopeId();
         $discountValue = (string)$replDiscount->getDiscountValue();
 
         $uomCodes[$replDiscount->getItemId()][] = '';
@@ -620,6 +703,49 @@ class DiscountCreateTask
         }
 
         return $customerGroupIds;
+    }
+
+    /**
+     * Save catalog rule
+     *
+     * @param $rule
+     * @param $replValidation
+     * @return boolean
+     * @throws CouldNotSaveException
+     */
+    public function saveCatalogRuleBasedOnDiscountValidation($rule, $replValidation)
+    {
+        $fromDate = $replValidation->getStartDate();
+        $toDate   = $replValidation->getEndDate();
+
+        if ($rule->getFromDate() != $fromDate || $rule->getToDate() != $toDate) {
+            $rule->setFromDate(($fromDate) ?: $this->replicationHelper->getCurrentDate());
+            if (strtolower($toDate ?? '') != strtolower('1753-01-01T00:00:00')
+                && !empty($toDate)) {
+                $rule->setToDate($toDate);
+            }
+
+            $this->catalogRule->save($rule);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get catalog rule collection
+     *
+     * @param $name
+     * @return \Magento\CatalogRule\Model\ResourceModel\Rule\Collection
+     */
+    public function getCatalogRuleCollection($name)
+    {
+        $websiteIds     = [$this->store->getWebsiteId()];
+        $ruleCollection = $this->ruleCollectionFactory->create();
+        $ruleCollection->addFieldToFilter('name', $name);
+        $ruleCollection->addFieldToFilter('website_ids', $websiteIds);
+
+        return $ruleCollection;
     }
 
     /**

@@ -65,14 +65,20 @@ class DashboardTest extends TestCase
         $this->block->setTemplate('Ls_Customer::club.phtml');
 
         $output = $this->block->toHtml();
+        $account = $this->block->getMembersInfo();
         $this->assertStringContainsString((string)__('Member Information'), $output);
         $this->assertStringContainsString((string)__('Club Name:'), $output);
         $this->assertStringContainsString((string)__('Loyalty Points Earned:'), $output);
         $this->assertStringContainsString((string)__('Loyalty Level:'), $output);
         $this->assertStringContainsString((string)__('Next Level'), $output);
-        $this->assertStringContainsString((string)__('Level:'), $output);
-        $this->assertStringContainsString((string)__('Points Needed:'), $output);
-        $this->assertStringContainsString((string)__('Benefits of Next Level:'), $output);
+
+        if ($account->getScheme()->getNextScheme()) {
+            $this->assertStringContainsString((string)__('Level:'), $output);
+            $this->assertStringContainsString((string)__('Points Needed:'), $output);
+            $this->assertStringContainsString((string)__('Benefits of Next Level:'), $output);
+        } else {
+            $this->assertStringContainsString((string)__('You are at the top level.'), $output);
+        }
     }
 
     #[
