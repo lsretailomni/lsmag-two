@@ -160,9 +160,9 @@ class Status
             case LSR::LS_STATE_COLLECTED:
                 if ($isClickAndCollectOrder) {
                     $orderStatus = LSR::LS_STATE_COLLECTED;
-                    if ($isOffline) {
-                        $this->payment->generateInvoice($data, false);
-                    }
+                }
+                if ($isOffline) {
+                    $this->payment->generateInvoice($data, false);
                 }
                 break;
             case LSR::LS_STATE_SHIPPED:
