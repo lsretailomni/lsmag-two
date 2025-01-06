@@ -6,6 +6,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Webhooks\Model\Notification\EmailNotification;
 use \Ls\Webhooks\Model\Notification\PushNotification;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\Data\OrderInterface;
 
 /**
  * Helper class to handle notification
@@ -46,19 +47,20 @@ class NotificationHelper
      *  Process notifications
      *
      * @param int $storeId
-     * @param \Magento\Sales\Api\Data\OrderInterface $magOrder
+     * @param OrderInterface $magOrder
      * @param array $items
      * @param string $statusMsg
+     * @param $orderStatus
      * @return void
      * @throws NoSuchEntityException
      */
-    public function processNotifications($storeId, $magOrder, $items, $statusMsg): void
+    public function processNotifications($storeId, $magOrder, $items, $statusMsg, $orderStatus): void
     {
         $configuredNotificationType = explode(',', $this->getNotificationType($storeId));
 
         foreach ($configuredNotificationType as $type) {
             if ($type == LSR::LS_NOTIFICATION_EMAIL) {
-                $this->emailNotification->setNotificationType($statusMsg);
+                $this->emailNotification->setNotificationType($orderStatus);
                 $this->emailNotification->setOrder($magOrder)->setItems($items);
                 $this->emailNotification->prepareAndSendNotification();
             }
