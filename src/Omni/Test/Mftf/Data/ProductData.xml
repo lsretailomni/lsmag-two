@@ -12,6 +12,11 @@
         <data key="price">95</data>
         <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute2</requiredEntity>
     </entity>
+    <entity name="LsSimpleProduct3" extends="SimpleProduct">
+        <data key="sku">{{_ENV.SIMPLE_PRODUCT_3_ITEM_ID}}</data>
+        <data key="price">95</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute3</requiredEntity>
+    </entity>
     <entity name="LsConfigurableProduct1" extends="ApiConfigurableProduct">
         <data key="sku">{{_ENV.CONFIGURABLE_PRODUCT_1_ITEM_ID}}</data>
         <data key="price">45</data>

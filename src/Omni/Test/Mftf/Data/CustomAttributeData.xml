@@ -9,6 +9,10 @@
         <data key="attribute_code">lsr_item_id</data>
         <data key="value">{{_ENV.SIMPLE_PRODUCT_2_ITEM_ID}}</data>
     </entity>
+    <entity name="LsrItemIdSimpleProductAttribute3" type="custom_attribute">
+        <data key="attribute_code">lsr_item_id</data>
+        <data key="value">{{_ENV.SIMPLE_PRODUCT_3_ITEM_ID}}</data>
+    </entity>
     <entity name="LsrItemIdConfigurableProductAttribute1" type="custom_attribute">
         <data key="attribute_code">lsr_item_id</data>
         <data key="value">{{_ENV.CONFIGURABLE_PRODUCT_1_ITEM_ID}}</data>
