@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsGiftCardOnShoppingCartTest">
+        <annotations>
+            <stories value="Ls Gift Card Display on Shopping Cart"/>
+            <features value="Checkout"/>
+            <title value="Add multiple products in cart. Check Gift Card display on shopping cart"/>
+            <description value="Verify, user is able to add multiple products in cart and see gift card on shopping cart."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsShoppingCart"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct3" stepKey="product1" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+        <actionGroup ref="LoginToStorefrontWithUsernameActionGroup" stepKey="loginToStorefrontAccount">
+            <argument name="Customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="loginToStorefrontAccount" />
+
+        <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
+            <argument name="product" value="$product1$"/>
+            <argument name="qty" value="1"/>
+        </actionGroup>
+
+        <actionGroup ref="ClickViewAndEditCartFromMiniCartActionGroup" stepKey="clickMiniCart1"/>
+
+        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage"/>
+
+        <click selector="#block-giftcard #block-giftcard-heading" stepKey="clickApplyGiftCardCollapsible" />
+        <fillField userInput="10000000" selector="#giftcard-form .field.gift-card-code-field .control .input-text" stepKey="fillGiftCardNo"/>
+        <fillField userInput="1" selector="#giftcard-form .field.gift-card-amount-field .control .input-text" stepKey="fillGiftCardAmount"/>
+
+        <wait stepKey="waitForSessionLoad1" time="5"/>
+        <click selector="#giftcard-form .applygiftcard" stepKey="clickApplyGiftCardBtn" />
+        <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage2"/>
+        <waitForElementVisible selector="#cart-totals .giftcard-discount" stepKey="validateGiftCardDiscountInSummary"/>
+        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
+            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+        </actionGroup>
+        <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid"/>
+    </test>
+</tests>
