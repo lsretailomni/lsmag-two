@@ -100,7 +100,6 @@ use Magento\Tax\Api\TaxClassRepositoryInterface;
 use Magento\Tax\Model\ClassModel;
 use Magento\Tax\Model\ClassModelFactory;
 use Symfony\Component\Filesystem\Filesystem as FileSystemDirectory;
-use Zend_Db_Statement_Interface;
 
 /**
  * Useful helper functions for replication

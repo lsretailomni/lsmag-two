@@ -342,7 +342,7 @@ class DiscountCreateTask
             $replDiscounts = $this->replDiscountRepository->getList($criteria);
             /** @var ReplDiscountSetup $replDiscount * */
             foreach ($replDiscounts->getItems() as $replDiscount) {
-                $name = $replDiscount->getOfferNo();
+                $name           = $replDiscount->getOfferNo();
                 $ruleCollection = $this->getCatalogRuleCollection($name);
                 try {
                     foreach ($ruleCollection as $rule) {

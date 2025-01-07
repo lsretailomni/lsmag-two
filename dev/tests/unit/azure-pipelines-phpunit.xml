@@ -5,6 +5,14 @@
          columns="max"
          beStrictAboutTestsThatDoNotTestAnything="false"
          bootstrap="./framework/bootstrap.php">
+    <coverage>
+        <include>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Client</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Model</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Unit</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/unit</directory>
+        </include>
+    </coverage>
     <testsuites>
         <testsuite name="Ls_Retail_Unit_Tests">
             <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Unit</directory>

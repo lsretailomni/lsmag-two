@@ -63,7 +63,7 @@ class LogFile implements DataFixtureInterface
     public function apply(array $data = []): ?DataObject
     {
         $data = array_merge(self::DEFAULT_DATA, $data);
-
+        $contents = '';
         if (isset($data['log_file_name'])) {
             $logDirectory = $this->filesystem->getDirectoryWrite(DirectoryList::LOG);
             $fileName     = $logDirectory->getAbsolutePath() . $data['log_file_name'];
@@ -74,7 +74,9 @@ class LogFile implements DataFixtureInterface
                 $logDirectory->writeFile($fileName, $contents);
             }
         }
-        return new DataObject();
+        return new DataObject([
+            'message' => $contents
+        ]);
     }
 
     public function deleteFile($fileName)

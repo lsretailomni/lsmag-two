@@ -51,7 +51,7 @@ class ConfigTest extends TestCase
         $val2 = $menu->get('Ls_Replication::discount_validation_grid');
         $val3 = $menu->get('Ls_Replication::discount_grid');
         $this->assertNull($val1);
-        $this->assertNull($val2);
+        $this->assertNotNull($val2);
         $this->assertNotNull($val3);
     }
 

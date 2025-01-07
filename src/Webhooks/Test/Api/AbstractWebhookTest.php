@@ -2,19 +2,25 @@
 
 namespace Ls\Webhooks\Test\Api;
 
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\InventoryApi\Api\SourceItemsSaveInterface;
+use Magento\InventoryApi\Api\Data\SourceItemInterfaceFactory;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\Customer;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Quote\Model\Quote;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Catalog\Model\ProductFactory;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Encryption\Encryptor;
 use Magento\TestFramework\TestCase\WebapiAbstract;
+use Braintree\Configuration;
 
 abstract class AbstractWebhookTest extends WebapiAbstract
 {
@@ -30,9 +36,30 @@ abstract class AbstractWebhookTest extends WebapiAbstract
     protected function setUp(): void
     {
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->productSku    = (defined('WEB_API_TEST_PRODUCT_SKU')) ? WEB_API_TEST_PRODUCT_SKU : '40000';
-        $this->email         = (defined('WEB_API_TEST_EMAIL')) ?
-            WEB_API_TEST_EMAIL : 'testcustomer@example.com';
+        $this->productSku    = $this->getEnvironment('SIMPLE_ITEM_ID');
+        $this->email         = $this->getEnvironment('EMAIL');
+        $braintreePrivateKey = $this->getEnvironment('BRAINTREE_PRIVATE_KEY');
+        $braintreePublicKey  = $this->getEnvironment('BRAINTREE_PUBLIC_KEY');
+        $braintreeMerchantId = $this->getEnvironment('BRAINTREE_MERCHANT_ID');
+
+        if ($braintreePrivateKey && $braintreePublicKey && $braintreeMerchantId) {
+            $encryptor                  = $this->objectManager->get(Encryptor::class);
+            $privateKeyPath             = 'payment/braintree/sandbox_private_key';
+            $publicKeyPath              = 'payment/braintree/sandbox_public_key';
+            $merchantIdPath             = 'payment/braintree/sandbox_merchant_id';
+            $braintreePublicKeyEncrypt  = $encryptor->encrypt($braintreePublicKey);
+            $braintreePrivateKeyEncrypt = $encryptor->encrypt($braintreePrivateKey);
+            Configuration::environment('sandbox');
+            Configuration::merchantId($braintreeMerchantId);
+            Configuration::publicKey($braintreePublicKey);
+            Configuration::privateKey($braintreePrivateKey);
+            Configuration::gateway()->plan()->all();
+            $replicationHelper = $this->objectManager->get(ReplicationHelper::class);
+            $replicationHelper->updateConfigValue($braintreePublicKeyEncrypt, $publicKeyPath);
+            $replicationHelper->updateConfigValue($braintreePrivateKeyEncrypt, $privateKeyPath);
+            $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
+            $replicationHelper->flushByTypeCode('config');
+        }
     }
 
     /**
@@ -103,16 +130,28 @@ abstract class AbstractWebhookTest extends WebapiAbstract
         $productFactory = $this->objectManager->get(ProductFactory::class);
         $product        = $productFactory->create();
         $product->setSku($this->productSku)
-            ->setName('Test Product')
+            ->setName('Webhook Product')
             ->setPrice(100)
-            ->setAttributeSetId(4) // Default attribute set
+            ->setFinalPrice(100)
+        ->setAttributeSetId(4) // Default attribute set
             ->setStatus(1) // Enabled
             ->setVisibility(4) // Catalog, Search
             ->setTypeId('simple')
-            ->setStockData(['qty' => 10000, 'is_in_stock' => 1])
+            ->setStockData(['use_config_manage_stock' => 1, 'qty' => 10000, 'is_in_stock' => 1])
             ->setCustomAttribute('unit_of_measure', 'PCS')
             ->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $this->productSku)
+            ->setWebsiteIds([1])
             ->save();
+
+        $indexerFactory = $this->objectManager->get('Magento\Indexer\Model\IndexerFactory');
+        $indexerCollectionFactory = $this->objectManager->get('Magento\Indexer\Model\Indexer\CollectionFactory');
+        $indexerCollection = $indexerCollectionFactory->create();
+        foreach ($indexerCollection as $indexer) {
+                $indexerCode = $indexer->getIndexerId();
+                $singleIndexer = $indexerFactory->create();
+                $singleIndexer->load($indexerCode);
+                $singleIndexer->reindexAll();
+            }
 
         return $product;
     }
@@ -157,7 +196,8 @@ abstract class AbstractWebhookTest extends WebapiAbstract
         $isOffline = true,
         $qty = 1
     ) {
-        $quote = $this->objectManager->create(\Magento\Quote\Model\Quote::class);
+        $quote = $this->objectManager->create(Quote::class);
+        $quote->load('test_order_1', 'reserved_order_id');
         $quote->setStoreId(1)
             ->setCustomerIsGuest(false)
             ->setCustomer($customer);
@@ -165,7 +205,6 @@ abstract class AbstractWebhookTest extends WebapiAbstract
         // Load region dynamically
         $regionFactory = $this->objectManager->get(\Magento\Directory\Model\RegionFactory::class);
         $region        = $regionFactory->create()->loadByCode('CA', 'US'); // Example for California, USA
-
         // Add product to quote
         $quoteItem = $quote->addProduct($product, $qty);
 
@@ -235,17 +274,31 @@ abstract class AbstractWebhookTest extends WebapiAbstract
             $item->setDiscountAmount(0);
             $item->setBaseDiscountAmount(0);
         }
+        $quote->setTotalsCollectedFlag(false);
         $quote->collectTotals();
-        $quote->save();
+        $cartRepository = $this->objectManager->create(\Magento\Quote\Api\CartRepositoryInterface::class);
+        $cartRepository->save($quote);
         // Convert quote to order
         $quoteManagement = $this->objectManager->create(\Magento\Quote\Model\QuoteManagement::class);
         $quote->setBaseDiscountAmount(0);
         $quote->setDiscountAmount(0);
-        $order           = $quoteManagement->submit($quote);
+        $order = $quoteManagement->submit($quote);
 
         // Set a custom increment ID and document ID
         $order->setIncrementId($incrementId)->setDocumentId($documentId)->save();
 
         return $order;
+    }
+
+    /**
+     * return environment variable
+     *
+     * @param $param
+     * @return array|false|string
+     */
+    public function getEnvironment($param)
+    {
+        // phpcs:ignore Magento2.Functions.DiscouragedFunction
+        return getenv($param);
     }
 }

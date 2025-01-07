@@ -19,14 +19,14 @@ class CustomerAddressFixture implements DataFixtureInterface
         'attribute_set_id' => 2,
         'telephone' => 4145700,
         'postcode' => 201,
-        'country_id' => 'IS',
+        'country_id' => 'US',
         'city' => 'Kopavogur',
         'company' => 'Ls Retail',
         'street' => 'LS Retail ehf.',
         'lastname' => 'Test',
         'firstname' => 'Test',
         'parent_id' => 1,
-        'region_id' => 830,
+        'region_id' => 1,
         'default_billing' => 1,
         'default_shipping' => 1
     ];
