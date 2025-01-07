@@ -1,5 +1,5 @@
 <!-- ko if: getEarning() -->
-<tr class="totals sub">
+<tr class="totals sub ls-points-earning">
     <th class="mark" scope="row" data-bind="text: getEarning().title"></th>
     <td class="amount">
         <span class="price" data-bind="html: getEarningValue(), style: {fontWeight: 'bold'}"></span>
@@ -8,7 +8,7 @@
 <!-- /ko -->
 
 <!-- ko if: getSpending() -->
-<tr class="totals sub">
+<tr class="totals sub ls-points-spending">
     <th class="mark" scope="row" data-bind="text: getSpending().title"></th>
     <td class="amount">
         <span class="price" data-bind="html: getSpendingValue(), style: {fontWeight: 'bold'}"></span>
