@@ -16,7 +16,6 @@ use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
 
 /**
- * @magentoAppArea adminhtml
  *
  * Represents ApplyLoyaltyPoints Model Class
  */
@@ -87,7 +86,6 @@ class ApplyLoyaltyPointsTest extends GraphQlTestBase
 
     /**
      * @magentoAppIsolation enabled
-     * @magentoAppArea adminhtml
      */
     public function testApplyLoyaltyPoints()
     {
