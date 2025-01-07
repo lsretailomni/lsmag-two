@@ -321,6 +321,7 @@ class OrderObserverTest extends AbstractIntegrationTest
             in_array('Order request has been sent to LS Central successfully', $statusMessages),
             'Expected validation message is generated.'
         );
+        $this->assertNotNull($order->getDocumentId());
     }
 
 }
