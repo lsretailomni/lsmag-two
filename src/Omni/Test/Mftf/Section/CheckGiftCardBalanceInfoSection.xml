@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="CheckGiftCardBalanceInfoSection">
+        <element name="giftCardInfo" type="text" selector=".giftcardinfo"/>
+        <element name="giftCardInfoBalanceLabel" type="text" selector=".giftcardinfo .gift-card-balance .label"/>
+        <element name="giftCardInfoBalanceValue" type="text" selector=".giftcardinfo .gift-card-balance .value"/>
+        <element name="giftCardInfoExpiryLabel" type="text" selector=".giftcardinfo .gift-card-expiry .label"/>
+        <element name="giftCardInfoExpiryValue" type="text" selector=".giftcardinfo .gift-card-expiry .value"/>
+    </section>
+</sections>
