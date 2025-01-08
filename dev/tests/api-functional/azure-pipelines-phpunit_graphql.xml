@@ -19,11 +19,14 @@
     <coverage>
         <include>
             <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl</directory>
         </include>
         <exclude>
             <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Helper</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Plugin</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/registration.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Helper</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/registration.php</directory>
         </exclude>
     </coverage>
     <!-- Test suites definition -->
