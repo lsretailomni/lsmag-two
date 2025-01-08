@@ -48,10 +48,7 @@ class GiftCardBalanceOutput implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "gift_card_no" is missing'));
         }
 
-        $giftCardPin     = $args['gift_card_pin'];
-        $giftCardBalance = '';
-        $currency        = '';
-        $pointRate = $storeCurrencyPointRate = $giftCardPointRate = 1;
+        $giftCardPin = $args['gift_card_pin'];
 
         $response = $this->giftCardHelper->getGiftCardBalance($args['gift_card_no'], $giftCardPin);
 
@@ -59,7 +56,11 @@ class GiftCardBalanceOutput implements ResolverInterface
             $convertedGiftCardBalanceArr = $this->giftCardHelper->getConvertedGiftCardBalance($response);
             return [
                 'currency' => $convertedGiftCardBalanceArr['gift_card_currency'],
-                'value'    => $this->priceHelper->currency($convertedGiftCardBalanceArr['gift_card_balance_amount'],true, false)
+                'value'    => $this->priceHelper->currency(
+                    $convertedGiftCardBalanceArr['gift_card_balance_amount'],
+                    true,
+                    false
+                )
             ];
         } else {
             return [

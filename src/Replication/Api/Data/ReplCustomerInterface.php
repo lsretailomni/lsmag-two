@@ -110,6 +110,17 @@ interface ReplCustomerInterface
     public function getCurrency();
 
     /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId);
+
+    /**
+     * @return string
+     */
+    public function getCustomerId();
+
+    /**
      * @param string $DiscountGroup
      * @return $this
      */
