@@ -1481,14 +1481,15 @@ class BasketHelper extends AbstractHelper
     public function setOneListCalculationInCheckoutSession($calculation)
     {
         $quote = $this->getCurrentQuote();
-
-        if ($calculation && $quote) {
-            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-            $quote->setBasketResponse(serialize($calculation));
-        } else {
-            $quote->setBasketResponse(null);
-        }
-        $this->quoteResourceModel->save($quote);
+        if($quote) {
+            if ($calculation && $quote) {
+                // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+                $quote->setBasketResponse(serialize($calculation));
+            } else {
+                $quote->setBasketResponse(null);
+            }
+            $this->quoteResourceModel->save($quote);
+        }        
     }
 
     /**
