@@ -48,6 +48,7 @@ define('GC_SHOW_ON_CHECKOUT', getenv('GC_SHOW_ON_CHECKOUT'));
 define('DISCOUNT_VALIDATION_ACTIVE', getenv('DISCOUNT_VALIDATION_ACTIVE'));
 define('PICKUP_TIMESLOTS_ENABLED', getenv('PICKUP_TIMESLOTS_ENABLED'));
 define('SC_CLICKCOLLECT_ENABLED', getenv('SC_CLICKCOLLECT_ENABLED'));
+define('ITEM_SIMPLE', getenv('ITEM_SIMPLE'));
 define('TENDER_TYPE_MAPPINGS', json_decode(getenv('TENDER_TYPE_MAPPINGS'), true));
 define('ADYEN_RESPONSE', json_decode(getenv('ADYEN_RESPONSE'), true));
 
@@ -93,6 +94,8 @@ class AbstractIntegrationTest extends TestCase
     public const SC_CLICKCOLLECT_ENABLED = SC_CLICKCOLLECT_ENABLED;
     public const TENDER_TYPE_MAPPINGS = TENDER_TYPE_MAPPINGS;
     public const ADYEN_RESPONSE = ADYEN_RESPONSE;
+    public const ITEM_SIMPLE = ITEM_SIMPLE;
+    
 
     protected function setUp(): void
     {
