@@ -44,12 +44,13 @@
         <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage"/>
 
         <click selector="#block-giftcard #block-giftcard-heading" stepKey="clickApplyGiftCardCollapsible" />
-        <fillField userInput="10000000" selector="#giftcard-form .field.gift-card-code-field .control .input-text" stepKey="fillGiftCardNo"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_1}}" selector="#giftcard-form .field.gift-card-code-field .control .input-text" stepKey="fillGiftCardNo"/>
         <fillField userInput="1" selector="#giftcard-form .field.gift-card-amount-field .control .input-text" stepKey="fillGiftCardAmount"/>
 
         <wait stepKey="waitForSessionLoad1" time="5"/>
         <click selector="#giftcard-form .applygiftcard" stepKey="clickApplyGiftCardBtn" />
         <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage2"/>
+        <waitForElementVisible selector="{{CheckoutCartMessageSection.successMessage}}" stepKey="assertSuccess"/>
         <waitForElementVisible selector="#cart-totals .giftcard-discount" stepKey="validateGiftCardDiscountInSummary"/>
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
