@@ -49,6 +49,7 @@
         <wait stepKey="waitForSessionLoad1" time="5"/>
         <click selector="#loyalty-points-form .apply.primary" stepKey="clickApplyLoyaltyPointsBtn" />
         <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage2"/>
+        <waitForElementVisible selector="{{CheckoutCartMessageSection.successMessage}}" stepKey="assertSuccess"/>
         <waitForElementVisible selector="#cart-totals .ls-points-earning" stepKey="validateLsPointEarningInSummary"/>
         <waitForElementVisible selector="#cart-totals .ls-points-spending" stepKey="validateLsPointSpendingInSummary"/>
         <waitForElementVisible selector="#cart-totals .ls-discounts" stepKey="validateLsPointDiscountInSummary"/>
