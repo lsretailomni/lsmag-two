@@ -123,7 +123,7 @@ abstract class GraphQlTestBase extends GraphQlAbstract
      */
     protected function loginAndFetchToken(): string
     {
-        $email    = getenv('WEB_API_TEST_EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
+        $email    = getenv('EMAIL') ?: throw new \RuntimeException('TEST_USER_EMAIL is not set in .env');
         $password = getenv('PASSWORD') ?:
             throw new \RuntimeException('TEST_USER_PASSWORD is not set in .env');
 
