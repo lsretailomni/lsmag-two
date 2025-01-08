@@ -50,6 +50,7 @@
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/GiftCardBalanceTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/OrderTakingCalendarTest.php</directory>
             <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ReturnPolicyTest.php</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration/Model/Resolver/ClickAndCollectStoresTest.php</directory>
         </testsuite>
     </testsuites>
 
