@@ -41,7 +41,7 @@
     <testsuites>
         <testsuite name="Ls_Retail_Api_Tests">
             <directory>../../../vendor/lsretail/lsmag-two/src/CustomerGraphQl/Test/GraphQl</directory>
-            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/GraphQl</directory>
+            <directory>../../../vendor/lsretail/lsmag-two/src/OmniGraphQl/Test/Integration</directory>
         </testsuite>
     </testsuites>
 
