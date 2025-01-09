@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsCouponCodeOnCheckoutTest"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls Coupon Code on Checkout"/>
+            <title value="Customer can see and apply coupon code on checkout"/>
+            <description value="Customer can see and apply coupon code on checkout"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+            <remove keyForRemoval="product1"/>
+            <createData entity="LsSimpleProduct3" stepKey="product1" before="reindexInvalidatedIndices"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+        </after>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <click selector=".checkout-payment-method .discount-code .action.action-toggle" stepKey="clickApplyDiscountCodeCollapsible" before="deleteNewUser" />
+
+        <waitForElementVisible selector=".checkout-payment-method .discount-code .available-coupons" stepKey="validateCouponsContainer" before="deleteNewUser"/>
+        <grabMultiple selector=".checkout-payment-method .discount-code .available-coupons .coupon-major" stepKey="eachCouponContainer" before="deleteNewUser"/>
+        <assertCount stepKey="assertCouponContainer" before="deleteNewUser">
+            <actualResult type="variable">eachCouponContainer</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertCount>
+        <click selector=".checkout-payment-method .discount-code .available-coupons .coupon-major:nth-child(1)" stepKey="clickCouponRecommendationLink" before="deleteNewUser"/>
+        <wait stepKey="waitForSessionLoad1" time="5" before="deleteNewUser"/>
+        <click selector=".checkout-payment-method .discount-code .action-apply" stepKey="clickApplyDiscountBtn" before="deleteNewUser" />
+        <waitForElementVisible selector=".checkout-payment-method .discount-code .messages" stepKey="assertSuccess" before="deleteNewUser"/>
+        <waitForElementVisible selector=".table-totals .discount" stepKey="validateDiscountInSummary" before="deleteNewUser"/>
+    </test>
+</tests>
