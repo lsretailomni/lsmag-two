@@ -34,8 +34,8 @@
         <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefrontAccount">
             <argument name="Customer" value="Ls_Simple_US_Customer"/>
         </actionGroup>
-        <actionGroup ref="StorefrontCustomerLogoutActionGroup" stepKey="logoutCustomer" />
-
+        <amOnPage url="{{StorefrontCustomerLogoutPage.url}}" stepKey="storefrontSignOut"/>
+        <waitForPageLoad time="10" stepKey="waitForSignOut"/>
         <!-- Add Simple Product to cart -->
         <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
             <argument name="product" value="$product1$"/>
@@ -44,9 +44,6 @@
 
         <!--Go to shopping cart-->
         <actionGroup ref="ClickViewAndEditCartFromMiniCartActionGroup" stepKey="goToShoppingCartFromMinicart"/>
-        <actionGroup ref="FillShippingZipForm" stepKey="fillShippingZipForm">
-            <argument name="address" value="US_Address_CA"/>
-        </actionGroup>
         <actionGroup ref="StorefrontClickProceedToCheckoutActionGroup" stepKey="clickProceedToCheckout"/>
         <comment userInput="Adding the comment to replace waitForProceedToCheckout action for preserving Backward Compatibility" stepKey="waitForProceedToCheckout"/>
         <actionGroup ref="LsFillCustomerSignInPopupFormActionGroup" stepKey="fillCustomerSignInPopupForm">
