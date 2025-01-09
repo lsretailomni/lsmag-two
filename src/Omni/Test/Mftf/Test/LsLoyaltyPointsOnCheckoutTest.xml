@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsLoyaltyPointsOnCheckoutTest"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls Loyalty Points on Checkout"/>
+            <title value="Customer can see and apply loyalty points on checkout"/>
+            <description value="Customer can see and apply loyalty points on checkout"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+        </after>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <click selector=".checkout-payment-method .loyaltypoints .action.action-toggle" stepKey="clickApplyGiftCardCollapsible" before="deleteNewUser" />
+        <fillField userInput="1" selector=".checkout-payment-method .loyaltypoints .form #loyalty-points" stepKey="fillLoyaltyPoints" before="deleteNewUser"/>
+
+        <wait stepKey="waitForSessionLoad1" time="5"/>
+        <click selector=".checkout-payment-method .loyaltypoints .action-apply" stepKey="clickApplyLoyaltyPointsBtn" before="deleteNewUser" />
+        <waitForElementVisible selector=".checkout-payment-method .loyaltypoints .messages" stepKey="assertSuccess" before="deleteNewUser"/>
+        <waitForElementVisible selector=".table-totals .ls-discounts" stepKey="validateLoyaltyPointsDiscountInSummary" before="deleteNewUser"/>
+        <waitForElementVisible selector=".table-totals .ls-points-earning" stepKey="validateLoyaltyPointsEarningInSummary" before="deleteNewUser"/>
+        <waitForElementVisible selector=".table-totals .ls-points-spending" stepKey="validateLoyaltyPointsSpendingInSummary" before="deleteNewUser"/>
+    </test>
+</tests>

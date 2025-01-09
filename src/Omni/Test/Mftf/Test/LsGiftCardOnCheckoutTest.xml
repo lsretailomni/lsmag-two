@@ -20,7 +20,7 @@
             <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
         </after>
         <!-- Fill Shipment form -->
-        <actionGroup ref="LoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
             <argument name="customerVar" value="Ls_Simple_US_Customer" />
             <argument name="customerAddressVar" value="US_Address_NY" />
         </actionGroup>
