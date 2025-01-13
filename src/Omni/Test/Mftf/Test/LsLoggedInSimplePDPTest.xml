@@ -13,6 +13,7 @@
         </annotations>
         <before>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <magentoCLI command="config:set {{ReturnPolicy.path}} {{ReturnPolicy.value}}" stepKey="enableReturnPolicy"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
             <!--Create test data.-->
@@ -27,6 +28,8 @@
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
                 <argument name="indices" value=""/>
             </actionGroup>
+            <magentoCLI command="config:set {{ReturnPolicy.path}} 0" stepKey="disableReturnPolicy"/>
+
             <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
         </after>

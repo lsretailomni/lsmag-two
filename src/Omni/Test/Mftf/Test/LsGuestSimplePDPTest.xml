@@ -28,6 +28,7 @@
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
                 <argument name="indices" value=""/>
             </actionGroup>
+            <magentoCLI command="config:set {{ReturnPolicy.path}} 0" stepKey="disableReturnPolicy"/>
             <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
         </after>
