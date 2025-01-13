@@ -36,5 +36,10 @@
             <expectedResult type="variable">grabTextFromSelectedElement1</expectedResult>
             <actualResult type="variable">grabTextFromSelectedElement2</actualResult>
         </assertEquals>
+        <grabMultiple selector="//div[@id='checkout-payment-method-load']//div[@class='payment-method']//label//span[contains(., 'Pay at the Store')]/../..//input" stepKey="grabPayAtTheStoreInput" before="waitForNextButton"/>
+        <assertGreaterOrEquals stepKey="assertPayAtTheStoreInput" before="waitForNextButton">
+            <actualResult type="variable">grabPayAtTheStoreInput</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertGreaterOrEquals>
     </actionGroup>
 </actionGroups>
