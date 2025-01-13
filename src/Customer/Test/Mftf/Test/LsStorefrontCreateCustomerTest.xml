@@ -13,7 +13,7 @@
             <group value="lsCustomer"/>
         </annotations>
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="-"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
                 <argument name="indices" value=""/>

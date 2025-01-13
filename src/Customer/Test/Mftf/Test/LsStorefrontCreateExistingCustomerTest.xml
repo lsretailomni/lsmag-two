@@ -13,7 +13,7 @@
             <group value="lsCustomer"/>
         </annotations>
         <before>
-            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="-"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
         </before>
 
         <actionGroup ref="StorefrontFillCustomerAccountCreationFormActionGroup" stepKey="fillCreateAccountForm">
