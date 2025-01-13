@@ -2,13 +2,13 @@
 
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="LsClickNCollectThroughDropdownOnCheckoutTest"
+    <test name="LsClickNCollectThroughGoogleMapsOnCheckoutTest"
           extends="LsCheckoutLoginTest">
         <annotations>
             <features value="Checkout"/>
-            <stories value="Ls Click And Collect through dropdown on Checkout"/>
-            <title value="Customer can use click and collect using dropdown on checkout"/>
-            <description value="Customer can use click and collect using dropdown on checkout"/>
+            <stories value="Ls Click And Collect through google maps on Checkout"/>
+            <title value="Customer can use click and collect using google maps on checkout"/>
+            <description value="Customer can use click and collect using google maps on checkout"/>
             <severity value="CRITICAL"/>
             <group value="ls"/>
             <group value="lsCheckout"/>
@@ -22,7 +22,7 @@
             <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores" after="DisablingGuestCheckoutLogin"/>
         </after>
         <!-- Fill Shipment form & select shipping method and proceed to payment step -->
-        <actionGroup ref="LsClickNCollectThroughDropdownLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+        <actionGroup ref="LsClickNCollectThroughGoogleMapsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
             <argument name="customerVar" value="Ls_Simple_US_Customer" />
             <argument name="customerAddressVar" value="US_Address_NY" />
         </actionGroup>

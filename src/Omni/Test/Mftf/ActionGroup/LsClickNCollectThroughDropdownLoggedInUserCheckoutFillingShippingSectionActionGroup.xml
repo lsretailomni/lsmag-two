@@ -2,7 +2,7 @@
 
 <actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
-    <actionGroup name="LsClickNCollectLoggedInUserCheckoutFillingShippingSectionActionGroup" extends="LoggedInUserCheckoutFillingShippingSectionActionGroup">
+    <actionGroup name="LsClickNCollectThroughDropdownLoggedInUserCheckoutFillingShippingSectionActionGroup" extends="LoggedInUserCheckoutFillingShippingSectionActionGroup">
         <selectOption selector="{{CheckoutShippingSection.country}}" userInput="{{customerAddressVar.country_id}}" stepKey="selectCountry" before="enterCity"/>
         <waitForElementVisible selector=".cnc-stores-container" time="30" stepKey="waitForClickNCollectStoresContainer" before="waitForNextButton"/>
         <grabMultiple selector=".cnc-stores-container .cnc-stores-dropdown .block-dropdown .dropdown-content-wrapper" stepKey="grabClickNCollectStoresFromDropdown" before="waitForNextButton"/>
