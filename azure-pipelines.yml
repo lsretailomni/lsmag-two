@@ -2,109 +2,35 @@ trigger:
   branches:
     exclude:
       - '*'
-resources:
-  containers:
-    - container: db
-      image: $(MARIA_DB_IMAGE)
-      ports:
-        - '3306:3306'
-      env:
-        MYSQL_DATABASE: users
-        MYSQL_USER: mysql
-        MYSQL_PASSWORD: mysql
-        MYSQL_ROOT_PASSWORD: mysql
-    - container: elasticsearch
-      image: $(ELASTIC_SEARCH_IMAGE)
-      ports:
-        - "9200:9200"
-        - "9300:9300"
-      env:
-        discovery.type: single-node
-        ES_JAVA_OPTS: -Xms1g -Xmx1g
-        cluster.routing.allocation.disk.threshold_enabled: false
+
+pr:
+  branches:
+    include:
+      - develop
+
 pool:
-  vmImage: ubuntu-24.04
-
-services:
-  db: db
-  elasticsearch: elasticsearch
-
-strategy:
-  matrix:
-    magento_2_4_7_php_8_3:
-      phpVersion: '8.3'
-      magentoVersion: '2.4.7'
-      databaseName: 'magento_2_4_7_php_8_3'
-      composerOverride: '{}'
-      phpunitVersion: '^9'
+  vmImage: 'ubuntu-latest'
 
 steps:
+  - script: echo "PR Created - Triggering Integration Tests"
+    displayName: "PR Detection"
 
-  - script: |
-      sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-      sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-      sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-      sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
-      sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-      php -version
-    displayName: 'Use PHP Version $(phpVersion)'
-
-  - script: |
-      sudo apt-get install default-mysql-client
-      printf 'Waiting for MySQL database to accept connections'
-      until mysql --host 127.0.0.1 --user=mysql --password=mysql --execute "SHOW DATABASES"; do
-        printf '.'
-        sleep 1;
-      done;
-    displayName: 'Wait for Database to initialise'
-
-  - script: |
-      printf 'Waiting for elasticsearch to accept connections'
-      until curl -XGET '0.0.0.0:9200/'; do
-      printf '.'
-      sleep 1;
-      done;
-    displayName: 'Wait for Elasticsearch to initialise'
-
-  - script: |
-      mkdir ../magento_$(magentoVersion)_$(phpVersion)
-      cd ../magento_$(magentoVersion)_$(phpVersion)
-      mkdir -p ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two
-      cp -a /home/vsts/work/1/s/. ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/
-      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
-      composer config use-include-path true
-      composer config --no-plugins allow-plugins true
-      php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
-      echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
-      composer install
-      composer require magento/magento-coding-standard --dev
-      find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
-    displayName: 'Magento Code Preparation'
-
-  - script: |
-      cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
-    displayName: 'Magento2 Coding Standards Validation'
-  - script: |
-      telnet 127.0.0.1 3306
-      mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
-    displayName: 'Magento Database Creation'
-
-  - script: ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:install --base-url=http://magento.$(magentoVersion).$(phpVersion).local/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
-    displayName: 'Magento Installation Testing'
-
-  - script: |
-      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
-    displayName: 'Magento Production mode Testing'
-
-  - script: |
-      sudo bash -c "echo \"xdebug.mode=coverage\" > /etc/php/$(phpVersion)/cli/php.ini"
-      cd ../magento_$(magentoVersion)_$(phpVersion)
-      cp ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml ../magento_$(magentoVersion)_$(phpVersion)/dev/tests/unit/
-      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --coverage-clover ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
-    displayName: 'Ls Retail Modules Unit Tests Validation'
-
-  - task: PublishCodeCoverageResults@2
+  - task: PowerShell@2
     inputs:
-      summaryFileLocation: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml'
-    displayName: 'Ls Retail Modules Unit Tests results Publishing'
+      targetType: 'inline'
+      script: |
+        $url = "https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_apis/pipelines/1221/runs?api-version=6.0-preview.1"
+        $body = @{
+          resources = @{
+            repositories = @{
+              self = @{
+                refName = "$(System.PullRequest.SourceBranch)"
+              }
+            }
+          }
+        } | ConvertTo-Json -Depth 10
+        $headers = @{
+          Authorization = "Bearer $(System.AccessToken)"
+        }
+        Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $body -ContentType "application/json"
+    displayName: "Trigger Integration Test Pipeline"
