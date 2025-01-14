@@ -2,7 +2,7 @@
 
 <actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
-    <actionGroup name="LsCheckoutSelectCheckMoneyOrderPaymentActionGroup" extends="CheckoutSelectCheckMoneyOrderPaymentActionGroup">
+    <actionGroup name="LsCheckoutSelectPayAtTheStoreOrderPaymentActionGroup" extends="CheckoutSelectCheckMoneyOrderPaymentActionGroup">
         <annotations>
             <description>Selects the 'Pay at the Store' Payment Method on the Storefront Checkout page.</description>
         </annotations>

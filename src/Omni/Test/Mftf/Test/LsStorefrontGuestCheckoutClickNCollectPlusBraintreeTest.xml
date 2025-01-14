@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="LsStorefrontGuestCheckoutTest">
+    <test name="LsStorefrontGuestCheckoutClickNCollectPlusBraintreeTest">
         <annotations>
             <features value="Checkout"/>
             <stories value="Ls Checkout via Guest Checkout"/>
-            <title value="Ls Guest Checkout - guest should be able to place an order"/>
-            <description value="Should be able to place an order as a Guest"/>
+            <title value="Ls Guest Checkout - guest should be able to place an order using click and collect, braintree"/>
+            <description value="Should be able to place an order as a Guest using click and collect, braintree"/>
             <severity value="BLOCKER"/>
             <group value="checkout"/>
             <group value="cloud"/>
         </annotations>
         <before>
             <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set payment/braintree/sandbox_merchant_id {{_CREDS.magento/braintree_enabled_merchant_id}}" stepKey="braintreeMerchantId"/>
+            <magentoCLI command="config:set payment/braintree/debug 1" stepKey="braintreeDebug"/>
+            <magentoCLI command="config:set {{ClickNCollectPaymentOptions.path}} {{ClickNCollectPaymentOptions.value}}" stepKey="EnablingBraintreeForClickNCollect"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="LsSetRequiredBraintreeConfigsActionGroup" stepKey="setRequiredBraintreeConfigs"/>
             <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
             <!--Create test data.-->
             <createData entity="LsSimpleProduct3" stepKey="product1" />
@@ -47,7 +51,7 @@
             <argument name="customerVar" value="CustomerEntityOne"/>
             <argument name="customerAddressVar" value="CustomerAddressSimple"/>
         </actionGroup>
-        <actionGroup ref="LsCheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="guestSelectPayAtTheStoreOrderPayment"/>
+        <actionGroup ref="LsCheckoutSelectBraintreeOrderPaymentActionGroup" stepKey="guestSelectBraintreeOrderPayment"/>
         <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="guestSeeAddress">
             <argument name="customerVar" value="CustomerEntityOne"/>
             <argument name="customerAddressVar" value="CustomerAddressSimple"/>

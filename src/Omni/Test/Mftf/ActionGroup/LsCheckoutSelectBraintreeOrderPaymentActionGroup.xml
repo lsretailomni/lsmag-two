@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsCheckoutSelectBraintreeOrderPaymentActionGroup" extends="CheckoutSelectCheckMoneyOrderPaymentActionGroup">
+        <annotations>
+            <description>Selects the 'Credit Card' Payment Method on the Storefront Checkout page.</description>
+        </annotations>
+
+        <remove keyForRemoval="selectCheckmoPaymentMethod"/>
+        <wait stepKey="waitForSessionLoad1" time="5" before="waitForLoadingMaskAfterPaymentMethodSelection"/>
+        <conditionalClick selector="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Credit Card')}}" dependentSelector="{{StorefrontCheckoutPaymentMethodSection.checkPaymentMethodByName('Credit Card')}}" visible="true" stepKey="selectCreditCardMethod" before="waitForLoadingMaskAfterPaymentMethodSelection"/>
+        <click selector=".payment-method-braintree .payment-method-title input" stepKey="clickBraintreeMethod" before="waitForLoadingMaskAfterPaymentMethodSelection"/>
+        <waitForElementVisible selector=".field.number #braintree-hosted-field-number input.number" stepKey="waitForCreditCardNumberField" after="waitForLoadingMaskAfterPaymentMethodSelection"/>
+        <fillField selector =".field.number #braintree-hosted-field-number input.number" userInput="4111111111111111" stepKey="inputCreditCardNumber" after="waitForCreditCardNumberField"/>
+        <fillField selector ="#expiration" userInput="12/26" stepKey="inputExpiration" after="inputCreditCardNumber"/>
+        <fillField selector ="#cvv" userInput="123" stepKey="inputCvv" after="inputExpiration"/>
+    </actionGroup>
+</actionGroups>
