@@ -49,6 +49,11 @@ class OneList extends Entity
     protected $CurrencyFactor = null;
 
     /**
+     * @property string $CustomerId
+     */
+    protected $CustomerId = null;
+
+    /**
      * @property string $Description
      */
     protected $Description = null;
@@ -69,6 +74,11 @@ class OneList extends Entity
     protected $ListType = null;
 
     /**
+     * @property string $MemberPriceGroupCode
+     */
+    protected $MemberPriceGroupCode = null;
+
+    /**
      * @property string $Name
      */
     protected $Name = null;
@@ -77,6 +87,11 @@ class OneList extends Entity
      * @property float $PointAmount
      */
     protected $PointAmount = null;
+
+    /**
+     * @property string $PriceGroupCode
+     */
+    protected $PriceGroupCode = null;
 
     /**
      * @property string $SalesType
@@ -245,6 +260,24 @@ class OneList extends Entity
     }
 
     /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId)
+    {
+        $this->CustomerId = $CustomerId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->CustomerId;
+    }
+
+    /**
      * @param string $Description
      * @return $this
      */
@@ -327,6 +360,24 @@ class OneList extends Entity
     }
 
     /**
+     * @param string $MemberPriceGroupCode
+     * @return $this
+     */
+    public function setMemberPriceGroupCode($MemberPriceGroupCode)
+    {
+        $this->MemberPriceGroupCode = $MemberPriceGroupCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberPriceGroupCode()
+    {
+        return $this->MemberPriceGroupCode;
+    }
+
+    /**
      * @param string $Name
      * @return $this
      */
@@ -360,6 +411,24 @@ class OneList extends Entity
     public function getPointAmount()
     {
         return $this->PointAmount;
+    }
+
+    /**
+     * @param string $PriceGroupCode
+     * @return $this
+     */
+    public function setPriceGroupCode($PriceGroupCode)
+    {
+        $this->PriceGroupCode = $PriceGroupCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceGroupCode()
+    {
+        return $this->PriceGroupCode;
     }
 
     /**
