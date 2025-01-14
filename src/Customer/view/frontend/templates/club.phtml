@@ -6,77 +6,89 @@ use \Ls\Customer\Block\Account\Dashboard;
 if ($account = $this->getMembersInfo()) : ?>
     <div class="block block-club-info">
         <div class="block-title">
-            <strong>Club Information</strong>
+            <strong><?= __('Club Information'); ?></strong>
         </div>
         <div class="block-content">
-            <div class="box">
+            <div class="box member-information">
                 <div class="box-title">
-                    <strong><span></span><?php echo __('Member Information'); ?></span></strong>
+                    <strong><span><?= __('Member Information'); ?></span></strong>
                 </div>
                 <div class="box-content">
-                    <p>
-                    <h6 class='header-inline'>
-                        <?php echo __('Club Name:'); ?>
-                    </h6>
-                    <?php echo $account->getScheme()
-                        ->getClub()
-                        ->getName(); ?><br>
-                    <h6 class='header-inline'>
-                        <?php echo __('Loyalty Points Earned:'); ?>
-                    </h6>
-                    <?php echo $account->getPointBalance(); ?><br>
+                    <div class="club-name">
+                        <h6 class='header-inline'>
+                            <?= __('Club Name:'); ?>
+                        </h6>
+                        <span>
+                            <?= $account->getScheme()->getClub()->getName(); ?>
+                        </span>
+                    </div>
+                    <div class="loyalty-point-earned">
+                        <h6 class='header-inline'>
+                            <?= __('Loyalty Points Earned:'); ?>
+                        </h6>
+                        <span>
+                            <?= $account->getPointBalance(); ?>
+                        </span>
+                    </div>
                     <?php if($account->getPointBalance() &&
                         ($expiry = $this->getPointBalanceExpiry($account))
                     ): ?>
+                    <div class="loyalty-points-expiry">
                         <h6 class='header-inline'>
-                            <?php echo __('Loyalty Points Expiry:'); ?>
+                            <?= __('Loyalty Points Expiry:'); ?>
                         </h6>
-                        <?php echo $expiry; ?><br>
+                        <span>
+                            <?= $expiry; ?>
+                        </span>
+                    </div>
+
                     <?php endif; ?>
-                    <h6 class='header-inline'>
-                        <?php echo __('Loyalty Level:'); ?>
-                    </h6>
-                    <?php echo $account->getScheme()
-                        ->getDescription(); ?>
-                    </p>
+                    <div class="loyalty-level">
+                        <h6 class='header-inline'>
+                            <?= __('Loyalty Level:'); ?>
+                        </h6>
+                        <span>
+                            <?= $account->getScheme()->getDescription(); ?>
+                        </span>
+                    </div>
                 </div>
             </div>
-            <div class="box">
+            <div class="box next-level">
                 <div class="box-title">
-                    <strong> <span></span><?php echo __('Next Level'); ?> </span></strong>
+                    <strong> <span><?= __('Next Level'); ?> </span></strong>
                 </div>
                 <div class="box-content">
                     <?php if ($account->getScheme()
                         ->getNextScheme()
                     ) : ?>
-                        <p>
-                        <h6 class='header-inline'>
-                            <?php echo __('Level:'); ?>
-                        </h6>
-                        <?php
-                        echo $account->getScheme()
-                            ->getNextScheme()
-                            ->getDescription();
-                        ?>
-                        <br>
-                        <h6 class='header-inline'>
-                            <?php echo __('Points Needed:'); ?>
-                        </h6>
-                        <?php echo $account->getScheme()
-                            ->getPointsNeeded(); ?>
-                        <br>
-                        <h6 class='header-inline'>
-                            <?php echo __('Benefits of Next Level:') ?>
-                        </h6>
-                        <?php echo $account->getScheme()
-                            ->getPerks(); ?>
-                        </p>
+                        <div class="level">
+                            <h6 class='header-inline'>
+                                <?= __('Level:'); ?>
+                            </h6>
+                            <span>
+                                <?= $account->getScheme()->getNextScheme()->getDescription(); ?>
+                            </span>
+                        </div>
+                        <div class="points-needed">
+                            <h6 class='header-inline'>
+                                <?= __('Points Needed:'); ?>
+                            </h6>
+                            <span>
+                                <?= $account->getScheme()->getPointsNeeded(); ?>
+                            </span>
+                        </div>
+                        <div class="perks">
+                            <h6 class='header-inline'>
+                                <?= __('Benefits of Next Level:') ?>
+                            </h6>
+                            <span>
+                                <?= $account->getScheme()->getPerks(); ?>
+                            </span>
+                        </div>
                     <?php else : ?>
-                        <p>
                         <h6 class='header-inline'>
-                            <?php echo __('You are at the top level.'); ?>
+                            <?= __('You are at the top level.'); ?>
                         </h6>
-                        </p>
                     <?php endif; ?>
                 </div>
             </div>
