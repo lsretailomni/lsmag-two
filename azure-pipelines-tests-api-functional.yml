@@ -1,7 +1,8 @@
 trigger:
   pr:
-    include:
-      - 62541
+    branches:
+      include:
+        - 62541
 resources:
   containers:
     - container: db
