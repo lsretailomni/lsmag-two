@@ -4,6 +4,7 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyLeaf;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
@@ -46,7 +47,7 @@ class SyncItemUpdates extends ProductCreateTask
                 $this->lsr->setStoreId($store->getId());
                 $this->store = $store;
                 if ($this->lsr->isLSR($this->store->getId())) {
-                    $cronCategoryCheck              = $this->lsr->getConfigValueFromDb(
+                    $cronCategoryCheck = $this->lsr->getConfigValueFromDb(
                         LSR::SC_SUCCESS_CRON_CATEGORY,
                         ScopeInterface::SCOPE_STORES,
                         $store->getId()
@@ -130,18 +131,27 @@ class SyncItemUpdates extends ProductCreateTask
             $criteria,
             'nav_id',
             null,
-            ['repl_hierarchy_leaf_id']
+            ['repl_hierarchy_leaf_id'],
+            true
         );
         $websiteId = $this->store->getWebsiteId();
         $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
         $sku = '';
         foreach ($collection as $hierarchyLeaf) {
             try {
-                $sku     = $hierarchyLeaf->getNavId();
-                $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                    $hierarchyLeaf->getNavId()
-                );
-                $this->replicationHelper->assignProductToCategories($product, $this->store);
+                $sku = $hierarchyLeaf->getNavId();
+                if ($hierarchyLeaf->getType() == HierarchyLeafType::ITEM_CATEGORY) {
+                    $products = $this->replicationHelper->getProductsByItemCategory($hierarchyLeaf->getNavId(),
+                        $this->store->getId());
+                    foreach ($products as $product) {
+                        $this->replicationHelper->assignProductToCategories($product, $this->store, true);
+                    }
+                } else {
+                    $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                        $hierarchyLeaf->getNavId()
+                    );
+                    $this->replicationHelper->assignProductToCategories($product, $this->store);
+                }
             } catch (Exception $e) {
                 $this->logger->debug(
                     sprintf(
@@ -183,27 +193,17 @@ class SyncItemUpdates extends ProductCreateTask
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
         foreach ($collection as $hierarchyLeaf) {
             try {
-                $sku               = $hierarchyLeaf->getNavId();
-                $product           = $this->productRepository->get($sku);
-                $categories        = $product->getCategoryIds();
-                $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
-                if (!empty($categoryExistData)) {
-                    $categoryId       = $categoryExistData->getEntityId();
-                    $parentCategoryId = $categoryExistData->getParentId();
-                    if (in_array($categoryId, $categories)) {
-                        $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
-                        $catIndex = array_search($categoryId, $categories);
-                        if ($catIndex !== false) {
-                            unset($categories[$catIndex]);
-                        }
+                $sku = $hierarchyLeaf->getNavId();
+                if ($hierarchyLeaf->getType() == HierarchyLeafType::ITEM_CATEGORY) {
+                    $products = $this->replicationHelper->getProductsByItemCategory($hierarchyLeaf->getNavId(),
+                        $this->store->getId());
+                    foreach ($products as $product) {
+                        $sku = $product->getSku();
+                        $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
                     }
-                    if (in_array($parentCategoryId, $categories)) {
-                        $childCategories = $this->categoryRepository->get($parentCategoryId)->getChildren();
-                        $childCat        = explode(",", $childCategories);
-                        if (count(array_intersect($childCat, $categories)) == 0) {
-                            $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
-                        }
-                    }
+                } else {
+                    $product = $this->productRepository->get($sku);
+                    $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
                 }
             } catch (Exception $e) {
                 $this->logger->debug(
@@ -247,6 +247,44 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
+     * For removing product from certain categories
+     *
+     * @param $hierarchyLeaf
+     * @param $product
+     * @param $sku
+     * @return void
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\StateException
+     */
+    public function categoryProductLinkRemoval($hierarchyLeaf, $product, $sku)
+    {
+        $categories        = $product->getCategoryIds();
+        $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
+        if (!empty($categoryExistData)) {
+            $categoryId       = $categoryExistData->getEntityId();
+            $parentCategoryId = $categoryExistData->getParentId();
+            if (in_array($categoryId, $categories)) {
+                $this->categoryLinkRepositoryInterface->deleteByIds($categoryId, $sku);
+                $catIndex = array_search($categoryId, $categories);
+                if ($catIndex !== false) {
+                    unset($categories[$catIndex]);
+                }
+            }
+            if (in_array($parentCategoryId, $categories)) {
+                $childCategories = $this->categoryRepository->get($parentCategoryId)->getChildren();
+                $childCat        = explode(",", $childCategories);
+                if (count(array_intersect($childCat, $categories)) == 0) {
+                    $this->categoryLinkRepositoryInterface->deleteByIds($parentCategoryId, $sku);
+                }
+            }
+        }
+    }
+
+
+    /**
      * Get remaining records
      *
      * @param mixed $storeData
@@ -256,7 +294,7 @@ class SyncItemUpdates extends ProductCreateTask
     public function getRemainingRecords($storeData)
     {
         if (!$this->remainingRecords) {
-            $filters = [
+            $filters  = [
                 ['field' => 'Type', 'value' => 'Deal', 'condition_type' => 'neq'],
                 ['field' => 'scope_id', 'value' => $this->getScopeId(), 'condition_type' => 'eq']
             ];
