@@ -23,7 +23,7 @@ resources:
         ES_JAVA_OPTS: -Xms1g -Xmx1g
         cluster.routing.allocation.disk.threshold_enabled: false
 pool:
-  vmImage: ubuntu-24.04
+  vmImage: ubuntu-latest
 
 services:
   db: db
@@ -31,31 +31,14 @@ services:
 
 strategy:
   matrix:
-    magento_2_4_7_php_8_3:
-      phpVersion: '8.3'
-      magentoVersion: '2.4.7'
-      databaseName: 'magento_2_4_7_php_8_3'
+    magento_2_4_6_php_8_1:
+      phpVersion: '8.1'
+      magentoVersion: '2.4.6-p1'
+      databaseName: 'magento_2_4_6_php_8_1'
       composerOverride: '{}'
       phpunitVersion: '^9'
 
 steps:
-  - task: PowerShell@2
-    inputs:
-      targetType: 'inline'
-      script: |
-        $phpVersion = "$(phpVersion)"
-        $magentoVersion = "$(magentoVersion)"
-        $composerName = "$(composerName)"
-        $composerVersion = "$(composerVersion)"
-        $phpunitVersion = "$(phpunitVersion)"
-        $composerOverride = "$(composerOverride)"
-        Write-Host "PHP Version: $phpVersion"
-        Write-Host "Magento Version: $magentoVersion"
-        Write-Host "Composer Name: $composerName"
-        Write-Host "Composer Version: $composerVersion"
-        Write-Host "PHPUnit Version: $phpunitVersion"
-        Write-Host "Composer Override: $composerOverride"
-    displayName: 'Set Variables'
 
   - script: |
       sudo update-alternatives --set php /usr/bin/php$(phpVersion)
@@ -100,7 +83,7 @@ steps:
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
+      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --warning-severity=8 --extensions=php artifacts/lsretail/
     displayName: 'Magento2 Coding Standards Validation'
   - script: |
       telnet 127.0.0.1 3306
@@ -115,13 +98,14 @@ steps:
     displayName: 'Magento Production mode Testing'
 
   - script: |
-      sudo bash -c "echo \"xdebug.mode=coverage\" > /etc/php/$(phpVersion)/cli/php.ini"
       cd ../magento_$(magentoVersion)_$(phpVersion)
       cp ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml ../magento_$(magentoVersion)_$(phpVersion)/dev/tests/unit/
-      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --coverage-clover ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
     displayName: 'Ls Retail Modules Unit Tests Validation'
 
-  - task: PublishCodeCoverageResults@2
+  - task: PublishTestResults@2
     inputs:
-      summaryFileLocation: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml'
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
+      searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
     displayName: 'Ls Retail Modules Unit Tests results Publishing'
