@@ -1,5 +1,5 @@
 trigger:
-  branches:
+  pr:
     include:
       - 62541
 resources:
