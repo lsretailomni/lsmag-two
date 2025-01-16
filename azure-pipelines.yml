@@ -109,3 +109,28 @@ steps:
       testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
       searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
     displayName: 'Ls Retail Modules Unit Tests results Publishing'
+
+  - task: Bash@3
+    displayName: "Set Permissions"
+    inputs:
+      targetType: 'inline'
+      script: |
+        chmod -R 777 var/ pub/ generated/
+
+  - task: Bash@3
+    displayName: "Output Magento Logs"
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Showing Magento Logs..."
+
+        # Check if logs directory exists
+        if [ -d "var/log" ]; then
+          echo "=== SYSTEM LOG ==="
+          cat var/log/system.log || echo "system.log not found"
+
+          echo "=== EXCEPTION LOG ==="
+          cat var/log/exception.log || echo "exception.log not found"
+        else
+          echo "Log directory does not exist."
+        fi
