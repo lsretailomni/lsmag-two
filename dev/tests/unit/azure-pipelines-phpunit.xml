@@ -13,6 +13,7 @@
             <directory>../../../vendor/lsretail/lsmag-two/src/Replication/Test/unit</directory>
         </include>
     </coverage>
+    <exclude-pattern>*/integration/etc/install-config-mysql.php</exclude-pattern>
     <testsuites>
         <testsuite name="Ls_Retail_Unit_Tests">
             <directory>../../../vendor/lsretail/lsmag-two/src/Omni/Test/Unit</directory>
