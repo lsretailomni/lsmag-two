@@ -100,7 +100,7 @@ steps:
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
       cp ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml ../magento_$(magentoVersion)_$(phpVersion)/dev/tests/unit/
-      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
     displayName: 'Ls Retail Modules Unit Tests Validation'
 
   - task: PublishTestResults@2
