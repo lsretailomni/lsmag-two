@@ -144,13 +144,17 @@ class SyncItemUpdates extends ProductCreateTask
                     $products = $this->replicationHelper->getProductsByItemCategory($hierarchyLeaf->getNavId(),
                         $this->store->getId());
                     foreach ($products as $product) {
-                        $this->replicationHelper->assignProductToCategories($product, $this->store, true);
+                        if ($product) {
+                            $this->replicationHelper->assignProductToCategories($product, $this->store, true);
+                        }
                     }
                 } else {
                     $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
                         $hierarchyLeaf->getNavId()
                     );
-                    $this->replicationHelper->assignProductToCategories($product, $this->store);
+                    if ($product) {
+                        $this->replicationHelper->assignProductToCategories($product, $this->store);
+                    }
                 }
             } catch (Exception $e) {
                 $this->logger->debug(
@@ -187,7 +191,8 @@ class SyncItemUpdates extends ProductCreateTask
             $criteria,
             'nav_id',
             null,
-            ['repl_hierarchy_leaf_id']
+            ['repl_hierarchy_leaf_id'],
+            true
         );
         $sku = '';
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
@@ -261,6 +266,7 @@ class SyncItemUpdates extends ProductCreateTask
      */
     public function categoryProductLinkRemoval($hierarchyLeaf, $product, $sku)
     {
+        $categories        = null;
         $categories        = $product->getCategoryIds();
         $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
         if (!empty($categoryExistData)) {
