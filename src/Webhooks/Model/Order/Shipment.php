@@ -246,14 +246,14 @@ class Shipment
                 $statusMsg = ($status) ? "Tracking Id updated successfully." : "Tracking Id update failed";
 
             }
-
-            if ($status) {
+            if ($magOrder->getShippingMethod() != "clickandcollect_clickandcollect" && $status) {
                 $items = $this->helper->getItems($magOrder, $lines, false);
                 $this->notificationHelper->processNotifications(
                     $storeId,
                     $magOrder,
                     $items,
-                    $statusMsg
+                    $statusMsg,
+                    ''
                 );
             }
         }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsGuestSimplePDPTest">
+        <annotations>
+            <features value="LsPDP"/>
+            <stories value="Guest customer should be able to see all features available for a simple product"/>
+            <title value="Guest customer should be able to see all features available for a simple product"/>
+            <description value="Guest customer should be able to see all features available for a simple product"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsPDP"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <magentoCLI command="config:set {{ReturnPolicy.path}} {{ReturnPolicy.value}}" stepKey="enableReturnPolicy"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct1" stepKey="product1" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+            <magentoCLI command="config:set {{ReturnPolicy.path}} 0" stepKey="disableReturnPolicy"/>
+            <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <amOnPage url="{{StorefrontProductPage.url($product1.custom_attributes[url_key]$)}}" stepKey="openProductPage" />
+        <wait stepKey="waitForSessionLoad" time="5"/>
+        <waitForPageLoad stepKey="waitForProductPageOpen" />
+        <actionGroup ref="LsReturnPolicyActionGroup" stepKey="validateReturnPolicyModal"/>
+        <wait stepKey="waitForSessionLoad1" time="5"/>
+        <actionGroup ref="LsAvailabilityPopupActionGroup" stepKey="validateCheckAvailabilityModal"/>
+    </test>
+</tests>

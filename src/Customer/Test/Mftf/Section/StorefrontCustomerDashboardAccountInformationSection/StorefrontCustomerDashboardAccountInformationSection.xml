@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="StorefrontCustomerDashboardAccountInformationSection">
+        <element name="clubInformationBlock" type="text" selector=".block-club-info"/>
+        <element name="clubInformationHeading" type="text" selector=".block-club-info .block-title strong"/>
+        <element name="clubInformationMemberInformationHeading" type="text" selector=".block-club-info .block-content .box.member-information .box-title strong"/>
+        <element name="clubInformationNextLevelHeading" type="text" selector=".block-club-info .block-content .box.next-level .box-title strong"/>
+        <element name="clubInformationMemberInformationClubName" type="text" selector=".block-club-info .block-content .box.member-information .box-content .club-name .header-inline"/>
+        <element name="clubInformationMemberInformationLoyaltyPointsEarned" type="text" selector=".block-club-info .block-content .box.member-information .box-content .loyalty-point-earned .header-inline"/>
+        <element name="clubInformationMemberInformationLoyaltyLevel" type="text" selector=".block-club-info .block-content .box.member-information .box-content .loyalty-level .header-inline"/>
+    </section>
+</sections>

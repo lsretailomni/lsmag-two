@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AssertStorefrontCustomerDashboardInformationActionGroup">
+        <annotations>
+            <description>Validates that the all required information is showing on customer dashboard.</description>
+        </annotations>
+
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationHeading}}" userInput="Club Information" stepKey="VerifyClubInformationHeading"/>
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationHeading}}" userInput="Member Information" stepKey="VerifyMemberInformationHeading"/>
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationNextLevelHeading}}" userInput="Next Level" stepKey="VerifyNextLevelHeading"/>
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationClubName}}" userInput="Club Name:" stepKey="VerifyClubNameHeading"/>
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyPointsEarned}}" userInput="Loyalty Points Earned:" stepKey="VerifyLoyaltyPointsEarnedHeading"/>
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyLevel}}" userInput="Loyalty Level:" stepKey="VerifyLoyaltyLevelHeading"/>
+
+    </actionGroup>
+</actionGroups>

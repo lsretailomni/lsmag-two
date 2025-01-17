@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LoginToStorefrontWithUsernameActionGroup" extends="LoginToStorefrontActionGroup">
+        <annotations>
+            <description>EXTENDS: LoginToStorefrontActionGroup. Use lsr_username for customer login.</description>
+        </annotations>
+        <arguments>
+            <argument name="Customer" type="entity"/>
+        </arguments>
+
+        <fillField userInput="{{LsrUsernameCustomerAttribute1.value}}" selector="{{StorefrontCustomerSignInFormSection.emailField}}" stepKey="fillEmail"/>
+    </actionGroup>
+</actionGroups>

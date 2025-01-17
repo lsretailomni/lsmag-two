@@ -48,7 +48,7 @@ define('GC_SHOW_ON_CHECKOUT', getenv('GC_SHOW_ON_CHECKOUT'));
 define('DISCOUNT_VALIDATION_ACTIVE', getenv('DISCOUNT_VALIDATION_ACTIVE'));
 define('PICKUP_TIMESLOTS_ENABLED', getenv('PICKUP_TIMESLOTS_ENABLED'));
 define('SC_CLICKCOLLECT_ENABLED', getenv('SC_CLICKCOLLECT_ENABLED'));
-define('TENDER_TYPE_MAPPINGS', json_decode(getenv('TENDER_TYPE_MAPPINGS'), true));
+define('TENDER_TYPE_MAPPINGS', getenv('TENDER_TYPE_MAPPINGS'));
 define('ADYEN_RESPONSE', json_decode(getenv('ADYEN_RESPONSE'), true));
 
 class AbstractIntegrationTest extends TestCase

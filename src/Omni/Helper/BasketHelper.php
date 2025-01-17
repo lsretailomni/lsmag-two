@@ -1481,7 +1481,8 @@ class BasketHelper extends AbstractHelper
     public function setOneListCalculationInCheckoutSession($calculation)
     {
         $quote = $this->getCurrentQuote();
-        if($quote) {
+        if ($quote) {
+
             if ($calculation && $quote) {
                 // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
                 $quote->setBasketResponse(serialize($calculation));
@@ -1489,7 +1490,7 @@ class BasketHelper extends AbstractHelper
                 $quote->setBasketResponse(null);
             }
             $this->quoteResourceModel->save($quote);
-        }        
+        }
     }
 
     /**

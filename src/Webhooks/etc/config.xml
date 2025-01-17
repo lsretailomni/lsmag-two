@@ -20,10 +20,6 @@
                             <order_status>CANCELED</order_status>
                             <email_template>ls_mag_webhooks_template_cancel</email_template>
                         </item3>
-                        <item4>
-                            <order_status>MISC</order_status>
-                            <email_template>ls_mag_webhooks_template_misc</email_template>
-                        </item4>
                     </webhooks_email_notification_order_status>
                 </email>
                 <notification_pickup>1</notification_pickup>

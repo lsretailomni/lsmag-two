@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="LsSimpleProduct1" extends="SimpleProduct">
+        <data key="sku">{{_ENV.SIMPLE_PRODUCT_1_ITEM_ID}}</data>
+        <data key="price">95</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsSimpleProduct2" extends="SimpleProduct">
+        <data key="sku">{{_ENV.SIMPLE_PRODUCT_2_ITEM_ID}}</data>
+        <data key="price">95</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute2</requiredEntity>
+    </entity>
+    <entity name="LsSimpleProduct3" extends="SimpleProduct">
+        <data key="sku">{{_ENV.SIMPLE_PRODUCT_3_ITEM_ID}}</data>
+        <data key="price">95</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdSimpleProductAttribute3</requiredEntity>
+    </entity>
+    <entity name="LsConfigurableProduct1" extends="ApiConfigurableProduct">
+        <data key="sku">{{_ENV.CONFIGURABLE_PRODUCT_1_ITEM_ID}}</data>
+        <data key="price">45</data>
+        <requiredEntity type="custom_attribute_array">LsrItemIdConfigurableProductAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsVariantProduct1" extends="ApiSimpleOne">
+        <data key="sku">{{_ENV.CONFIGURABLE_VARIANT_PRODUCT_1_SKU}}</data>
+        <data key="price">45</data>
+        <data key="visibility">1</data>
+        <requiredEntity type="custom_attribute">LsrItemIdConfigurableProductAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute">LsrVariantIdVariantProductAttribute1</requiredEntity>
+    </entity>
+    <entity name="LsVariantProduct2" extends="ApiSimpleOne">
+        <data key="sku">{{_ENV.CONFIGURABLE_VARIANT_PRODUCT_2_SKU}}</data>
+        <data key="price">45</data>
+        <data key="visibility">1</data>
+        <requiredEntity type="custom_attribute">LsrItemIdConfigurableProductAttribute1</requiredEntity>
+        <requiredEntity type="custom_attribute">LsrVariantIdVariantProductAttribute2</requiredEntity>
+    </entity>
+</entities>
