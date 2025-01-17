@@ -83,7 +83,7 @@ steps:
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
-      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=vendor/lsretail/lsmag-two/dev/tests/integration/etc/install-config-mysql.php --warning-severity=8 --extensions=php artifacts/lsretail/
+      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
     displayName: 'Magento2 Coding Standards Validation'
   - script: |
       telnet 127.0.0.1 3306
