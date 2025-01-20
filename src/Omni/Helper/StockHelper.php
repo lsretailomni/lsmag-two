@@ -131,7 +131,6 @@ class StockHelper extends AbstractHelper
     {
         $stockCollection = $stockItems = [];
         $useManageStockConfiguration = $this->configuration->getManageStock();
-
         foreach ($items as &$item) {
             $children = [];
             if ($item->getProductType() == Type::TYPE_BUNDLE) {

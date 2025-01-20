@@ -1485,7 +1485,7 @@ class BasketHelper extends AbstractHelper
         if ($calculation && $quote) {
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $quote->setBasketResponse(serialize($calculation));
-        } else {
+        } elseif ($quote) {
             $quote->setBasketResponse(null);
         }
         $this->quoteResourceModel->save($quote);
