@@ -223,7 +223,7 @@ class DataAssignObserver implements ObserverInterface
         if (!$stockCollection) {
             $message = __('Oops! Unable to do stock lookup currently.');
         }
-        if($stockCollection) {
+        if ($stockCollection) {
             foreach ($stockCollection as $stock) {
                 if (!$stock['status']) {
                     $message = __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.');
