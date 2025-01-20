@@ -6,6 +6,7 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\HierarchyLeafType;
 use \Ls\Omni\Client\Ecommerce\Entity\ReplHierarchyLeaf;
+use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Framework\DataObject;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -205,10 +206,19 @@ class SyncItemUpdates extends ProductCreateTask
                     foreach ($products as $product) {
                         $sku = $product->getSku();
                         $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
+                        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+                            $children = $product->getTypeInstance()->getUsedProducts($product);
+                            foreach ($children as $child) {
+                                $sku = $child->getSku();
+                                $this->categoryProductLinkRemoval($hierarchyLeaf, $child, $sku);
+                            }
+                        }
                     }
                 } else {
-                    $product = $this->productRepository->get($sku);
-                    $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
+                    if ($sku) {
+                        $product = $this->productRepository->get($sku);
+                        $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
+                    }
                 }
             } catch (Exception $e) {
                 $this->logger->debug(
