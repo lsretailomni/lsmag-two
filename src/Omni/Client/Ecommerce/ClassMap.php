@@ -793,6 +793,8 @@ class ClassMap
         		'HierarchyType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\HierarchyType',
         		'StoreGetType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\StoreGetType',
         		'ItemType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ItemType',
+        		'PriceType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\PriceType',
+        		'PriceStatus' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\PriceStatus',
         		'DiscountValueType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\DiscountValueType',
         		'ReplDiscountType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ReplDiscountType',
         		'ReplDiscountLineType' => 'Ls\\Omni\\Client\\Ecommerce\\Entity\\Enum\\ReplDiscountLineType',

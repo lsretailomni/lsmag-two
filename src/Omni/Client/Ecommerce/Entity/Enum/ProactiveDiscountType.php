@@ -18,6 +18,8 @@ use MyCLabs\Enum\Enum;
  * @$method static ProactiveDiscountType TOTAL_DISCOUNT()
  * @$method static ProactiveDiscountType TENDER_TYPE()
  * @$method static ProactiveDiscountType ITEM_POINT()
+ * @$method static ProactiveDiscountType TOTAL_DISCOUNT()
+ * @$method static ProactiveDiscountType TENDER_TYPE()
  * @$method static ProactiveDiscountType LINE_DISCOUNT()
  */
 class ProactiveDiscountType extends Enum
@@ -35,6 +37,10 @@ class ProactiveDiscountType extends Enum
     public const TENDER_TYPE = 'TenderType';
 
     public const ITEM_POINT = 'ItemPoint';
+
+    public const TOTAL_DISCOUNT = 'TotalDiscount';
+
+    public const TENDER_TYPE = 'TenderType';
 
     public const LINE_DISCOUNT = 'LineDiscount';
 }

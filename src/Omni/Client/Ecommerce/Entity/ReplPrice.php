@@ -8,6 +8,10 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PriceType;
+use Ls\Omni\Client\Ecommerce\Entity\Enum\PriceStatus;
+use Ls\Omni\Exception\InvalidEnumException;
+
 class ReplPrice
 {
     /**
@@ -36,6 +40,11 @@ class ReplPrice
     protected $ItemId = null;
 
     /**
+     * @property int $LineNumber
+     */
+    protected $LineNumber = null;
+
+    /**
      * @property string $LoyaltySchemeCode
      */
     protected $LoyaltySchemeCode = null;
@@ -56,6 +65,11 @@ class ReplPrice
     protected $PriceInclVat = null;
 
     /**
+     * @property string $PriceListCode
+     */
+    protected $PriceListCode = null;
+
+    /**
      * @property int $Priority
      */
     protected $Priority = null;
@@ -71,7 +85,7 @@ class ReplPrice
     protected $SaleCode = null;
 
     /**
-     * @property int $SaleType
+     * @property PriceType $SaleType
      */
     protected $SaleType = null;
 
@@ -79,6 +93,11 @@ class ReplPrice
      * @property string $StartingDate
      */
     protected $StartingDate = null;
+
+    /**
+     * @property PriceStatus $Status
+     */
+    protected $Status = null;
 
     /**
      * @property string $StoreId
@@ -211,6 +230,24 @@ class ReplPrice
     }
 
     /**
+     * @param int $LineNumber
+     * @return $this
+     */
+    public function setLineNumber($LineNumber)
+    {
+        $this->LineNumber = $LineNumber;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineNumber()
+    {
+        return $this->LineNumber;
+    }
+
+    /**
      * @param string $LoyaltySchemeCode
      * @return $this
      */
@@ -283,6 +320,24 @@ class ReplPrice
     }
 
     /**
+     * @param string $PriceListCode
+     * @return $this
+     */
+    public function setPriceListCode($PriceListCode)
+    {
+        $this->PriceListCode = $PriceListCode;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPriceListCode()
+    {
+        return $this->PriceListCode;
+    }
+
+    /**
      * @param int $Priority
      * @return $this
      */
@@ -337,17 +392,27 @@ class ReplPrice
     }
 
     /**
-     * @param int $SaleType
+     * @param PriceType|string $SaleType
      * @return $this
+     * @throws InvalidEnumException
      */
     public function setSaleType($SaleType)
     {
-        $this->SaleType = $SaleType;
+        if ( ! $SaleType instanceof PriceType ) {
+            if ( PriceType::isValid( $SaleType ) )
+                $SaleType = new PriceType( $SaleType );
+            elseif ( PriceType::isValidKey( $SaleType ) )
+                $SaleType = new PriceType( constant( "PriceType::$SaleType" ) );
+            elseif ( ! $SaleType instanceof PriceType )
+                throw new InvalidEnumException();
+        }
+        $this->SaleType = $SaleType->getValue();
+
         return $this;
     }
 
     /**
-     * @return int
+     * @return PriceType
      */
     public function getSaleType()
     {
@@ -370,6 +435,34 @@ class ReplPrice
     public function getStartingDate()
     {
         return $this->StartingDate;
+    }
+
+    /**
+     * @param PriceStatus|string $Status
+     * @return $this
+     * @throws InvalidEnumException
+     */
+    public function setStatus($Status)
+    {
+        if ( ! $Status instanceof PriceStatus ) {
+            if ( PriceStatus::isValid( $Status ) )
+                $Status = new PriceStatus( $Status );
+            elseif ( PriceStatus::isValidKey( $Status ) )
+                $Status = new PriceStatus( constant( "PriceStatus::$Status" ) );
+            elseif ( ! $Status instanceof PriceStatus )
+                throw new InvalidEnumException();
+        }
+        $this->Status = $Status->getValue();
+
+        return $this;
+    }
+
+    /**
+     * @return PriceStatus
+     */
+    public function getStatus()
+    {
+        return $this->Status;
     }
 
     /**
