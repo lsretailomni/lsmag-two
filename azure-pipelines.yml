@@ -94,8 +94,20 @@ steps:
     displayName: 'Magento Installation Testing'
 
   - script: |
-      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
-    displayName: 'Magento Production mode Testing'
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set developer -vvv || cat var/log/exception.log || cat var/log/system.log
+    displayName: 'Magento set developer mode'
+
+  - script: |
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:upgrade -vvv || cat var/log/exception.log
+    displayName: 'Magento setup upgrade'
+
+  - script: |
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:di:compile -vvv || cat var/log/exception.log
+    displayName: 'Magento setup di compile'
+
+  - script: |
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:static-content:deploy -f -vvv || cat var/log/exception.log
+    displayName: 'Magento static content deploy'
 
   - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
@@ -109,13 +121,6 @@ steps:
       testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
       searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
     displayName: 'Ls Retail Modules Unit Tests results Publishing'
-
-  - task: Bash@3
-    displayName: "Set Permissions"
-    inputs:
-      targetType: 'inline'
-      script: |
-        chmod -R 777 var/ pub/ generated/
 
   - task: Bash@3
     displayName: "Output Magento Logs"
