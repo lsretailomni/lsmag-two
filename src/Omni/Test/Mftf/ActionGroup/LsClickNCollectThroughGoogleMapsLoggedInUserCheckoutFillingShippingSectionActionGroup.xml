@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsClickNCollectThroughGoogleMapsLoggedInUserCheckoutFillingShippingSectionActionGroup" extends="LoggedInUserCheckoutFillingShippingSectionActionGroup">
+        <selectOption selector="{{CheckoutShippingSection.country}}" userInput="{{customerAddressVar.country_id}}" stepKey="selectCountry" before="enterCity"/>
+        <waitForElementVisible selector=".cnc-stores-container" time="30" stepKey="waitForClickNCollectStoresContainer" before="waitForNextButton"/>
+        <grabMultiple selector=".cnc-stores-container .cnc-stores-map" stepKey="grabClickNCollectStoresFromGoogleMap" before="waitForNextButton"/>
+        <assertGreaterOrEquals stepKey="assertClickNCollectStoresFromGoogleMap" before="waitForNextButton">
+            <actualResult type="variable">grabClickNCollectStoresFromGoogleMap</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertGreaterOrEquals>
+        <click selector=".cnc-stores-container .cnc-stores-map .action.primary" stepKey="clickOnClickNCollectGoogleMap" before="waitForNextButton"/>
+        <waitForElementVisible selector=".modals-wrapper #map-canvas" stepKey="waitForModalToOpen" before="waitForNextButton" />
+        <waitForElementVisible selector="div[aria-label='Cronus Super Market - ScanPayGo']" stepKey="waitForMarker" before="waitForNextButton"/>
+        <waitForElementClickable selector="div[aria-label='Cronus Super Market - ScanPayGo']" stepKey="waitForStoreMarkerTobeClickable" before="waitForNextButton"/>
+        <executeJS function="document.querySelector('div[aria-label=\'Cronus Super Market - ScanPayGo\']').click();" stepKey="clickOnFirstStoreFromClickNCollectGoogleMap" before="waitForNextButton"/>
+        <waitForElementVisible selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-name" time="30" stepKey="waitForClickNCollectModalStoreName" before="waitForNextButton"/>
+        <waitForElementVisible selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-address" time="30" stepKey="waitForClickNCollectModalStoreAddress" before="waitForNextButton"/>
+        <waitForElementVisible selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-phone" time="30" stepKey="waitForClickNCollectModalStorePhone" before="waitForNextButton"/>
+        <assertElementContainsAttribute stepKey="checkApplyStoreIsDisabled" before="waitForNextButton">
+            <expectedResult selector="#map-canvas .apply-store" attribute="disabled" type="string" />
+        </assertElementContainsAttribute>
+        <click selector="#map-canvas .check-store-availability" stepKey="clickOnCheckAvailabilityInGoogleMap" before="waitForNextButton"/>
+        <waitForElementVisible selector="#map-canvas .stock-remarks ul li" time="30" stepKey="waitForClickNCollectModalStoreAvailableProducts" before="waitForNextButton"/>
+        <grabMultiple selector="#map-canvas .stock-remarks ul li" stepKey="grabClickNCollectStoresAvailableItems" before="waitForNextButton"/>
+        <assertGreaterOrEquals stepKey="assertClickNCollectStoresAvailableItems" before="waitForNextButton">
+            <actualResult type="variable">grabClickNCollectStoresAvailableItems</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertGreaterOrEquals>
+        <waitForElementClickable selector="#map-canvas .apply-store" stepKey="waitForApplyStoreClickable" before="waitForNextButton"/>
+        <grabTextFrom selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-name span"  stepKey="grabTextFromSelectedElement1" before="waitForNextButton"/>
+        <executeJS function="document.querySelector('#map-canvas .apply-store').click();" stepKey="clickOnApplyStoreInGoogleMap" before="waitForNextButton"/>
+        <waitForElementVisible selector="#selected-store-msg span" time="30" stepKey="waitForClickNCollectSelectedStoreName"  before="waitForNextButton"/>
+        <grabTextFrom selector="#selected-store-msg span"  stepKey="grabTextFromSelectedElement2" before="waitForNextButton"/>
+        <assertEquals stepKey="assertContent" before="waitForNextButton">
+            <expectedResult type="variable">grabTextFromSelectedElement1</expectedResult>
+            <actualResult type="variable">grabTextFromSelectedElement2</actualResult>
+        </assertEquals>
+        <grabMultiple selector="//div[@id='checkout-payment-method-load']//div[@class='payment-method']//label//span[contains(., 'Pay at the Store')]/../..//input" stepKey="grabPayAtTheStoreInput" before="waitForNextButton"/>
+        <assertGreaterOrEquals stepKey="assertPayAtTheStoreInput" before="waitForNextButton">
+            <actualResult type="variable">grabPayAtTheStoreInput</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertGreaterOrEquals>
+    </actionGroup>
+</actionGroups>

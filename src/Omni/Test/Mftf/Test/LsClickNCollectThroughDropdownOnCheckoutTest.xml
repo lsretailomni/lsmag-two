@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsClickNCollectThroughDropdownOnCheckoutTest"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls Click And Collect through dropdown on Checkout"/>
+            <title value="Customer can use click and collect using dropdown on checkout"/>
+            <description value="Customer can use click and collect using dropdown on checkout"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <remove keyForRemoval="product1"/>
+            <createData entity="LsSimpleProduct3" stepKey="product1" before="reindexInvalidatedIndices"/>
+            <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores" before="reindexInvalidatedIndices"/>
+        </before>
+        <after>
+            <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores" after="DisablingGuestCheckoutLogin"/>
+        </after>
+        <!-- Fill Shipment form & select shipping method and proceed to payment step -->
+        <actionGroup ref="LsClickNCollectThroughDropdownLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+    </test>
+</tests>

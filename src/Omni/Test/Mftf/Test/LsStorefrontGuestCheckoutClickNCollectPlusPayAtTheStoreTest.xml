@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsStorefrontGuestCheckoutClickNCollectPlusPayAtTheStoreTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls Checkout via Guest Checkout"/>
+            <title value="Ls Guest Checkout - guest should be able to place an order using click and collect, pay at the store"/>
+            <description value="Should be able to place an order as a Guest using click and collect, pay at the store"/>
+            <severity value="BLOCKER"/>
+            <group value="checkout"/>
+            <group value="cloud"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct3" stepKey="product1" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
+                <argument name="indices" value=""/>
+            </actionGroup>
+            <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
+
+            <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 0" stepKey="DisablingGuestCheckoutLogin"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- Add Simple Product to cart -->
+        <actionGroup ref="LsStorefrontAddSimpleProductToShoppingCartActionGroup" stepKey="addProductToCart1">
+            <argument name="product" value="$product1$"/>
+            <argument name="qty" value="1"/>
+        </actionGroup>
+        <waitForElementVisible selector="{{StorefrontCategoryMainSection.SuccessMsg}}" time="30" stepKey="waitForProductAdded"/>
+        <see selector="{{StorefrontCategoryMainSection.SuccessMsg}}" userInput="You added $$product1.name$$ to your shopping cart." stepKey="seeAddedToCartMessage"/>
+        <see selector="{{StorefrontMinicartSection.quantity}}" userInput="1" stepKey="seeCartQuantity"/>
+        <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="guestGoToCheckoutFromMinicart"/>
+        <actionGroup ref="LsGuestCheckoutFillingShippingSectionActionGroup" stepKey="guestCheckoutFillingShippingSection">
+            <argument name="customerVar" value="CustomerEntityOne"/>
+            <argument name="customerAddressVar" value="CustomerAddressSimple"/>
+        </actionGroup>
+        <actionGroup ref="LsCheckoutSelectPayAtTheStoreOrderPaymentActionGroup" stepKey="guestSelectPayAtTheStoreOrderPayment"/>
+        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="guestSeeAddress">
+            <argument name="customerVar" value="CustomerEntityOne"/>
+            <argument name="customerAddressVar" value="CustomerAddressSimple"/>
+        </actionGroup>
+        <actionGroup ref="CheckoutPlaceOrderActionGroup" stepKey="guestPlaceorder">
+            <argument name="orderNumberMessage" value="CONST.successGuestCheckoutOrderNumberMessage"/>
+            <argument name="emailYouMessage" value="CONST.successCheckoutEmailYouMessage"/>
+        </actionGroup>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber}}" stepKey="grabOrderNumber"/>
+
+        <amOnPage url="{{AdminOrdersPage.url}}" stepKey="onOrdersPage"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearOnOrdersPage"/>
+        <click selector="{{AdminOrdersGridSection.filters}}" stepKey="clickFilterButton"/>
+        <actionGroup ref="ClearFiltersAdminDataGridActionGroup" stepKey="clearGridFilter"/>
+        <fillField selector="input[name='document_id']" userInput="{$grabOrderNumber}" stepKey="fillOrderNum"/>
+        <click selector="{{AdminOrdersGridSection.submitSearch}}" stepKey="submitSearchOrderNum"/>
+        <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearOnSearch"/>
+        <actionGroup ref="AdminOrderGridClickFirstRowActionGroup" stepKey="clickOrderRow"/>
+        <see selector="{{AdminOrderDetailsInformationSection.orderStatus}}" userInput="Pending" stepKey="seeAdminOrderStatus"/>
+        <see selector="{{AdminOrderDetailsInformationSection.accountInformation}}" userInput="{{CustomerEntityOne.fullname}}" stepKey="seeAdminOrderGuest"/>
+        <see selector="{{AdminOrderDetailsInformationSection.accountInformation}}" userInput="{{CustomerEntityOne.email}}" stepKey="seeAdminOrderEmail"/>
+        <see selector="{{AdminOrderDetailsInformationSection.billingAddress}}" userInput="{{CustomerAddressSimple.street[0]}}" stepKey="seeAdminOrderBillingAddress"/>
+        <see selector="{{AdminOrderDetailsInformationSection.shippingAddress}}" userInput="{{CustomerAddressSimple.street[0]}}" stepKey="seeAdminOrderShippingAddress"/>
+        <see selector="{{AdminOrderDetailsInformationSection.itemsOrdered}}" userInput="$$product1.name$$" stepKey="seeAdminOrderProduct"/>
+    </test>
+</tests>

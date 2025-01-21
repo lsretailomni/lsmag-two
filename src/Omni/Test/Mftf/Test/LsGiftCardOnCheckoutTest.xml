@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsGiftCardOnCheckoutTest"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls Gift Card on Checkout"/>
+            <title value="Customer can see and apply gift card on checkout"/>
+            <description value="Customer can see and apply gift card on checkout"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+        </after>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <click selector=".checkout-payment-method .giftcard .action.action-toggle" stepKey="clickApplyGiftCardCollapsible" before="deleteNewUser" />
+        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_1}}" selector=".checkout-payment-method .giftcard .form #gift_card_no" stepKey="fillGiftCardNo" before="deleteNewUser"/>
+        <fillField userInput="1" selector=".checkout-payment-method .giftcard .form #gift_card_amount" stepKey="fillGiftCardAmount" before="deleteNewUser"/>
+
+        <wait stepKey="waitForSessionLoad1" time="5"/>
+        <click selector=".checkout-payment-method .giftcard .action-apply" stepKey="clickApplyGiftCardBtn" before="deleteNewUser" />
+        <waitForElementVisible selector=".checkout-payment-method .giftcard .messages" stepKey="assertSuccess" before="deleteNewUser"/>
+        <waitForElementVisible selector=".table-totals .giftcard-discount" stepKey="validateGiftCardDiscountInSummary" before="deleteNewUser"/>
+    </test>
+</tests>

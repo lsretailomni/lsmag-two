@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsGuestCheckoutFillingShippingSectionActionGroup" extends="GuestCheckoutFillingShippingSectionActionGroup">
+        <waitForElementVisible selector=".cnc-stores-container" time="30" stepKey="waitForClickNCollectStoresContainer" before="waitForNextButton"/>
+        <grabMultiple selector=".cnc-stores-container .cnc-stores-dropdown .block-dropdown .dropdown-content-wrapper" stepKey="grabClickNCollectStoresFromDropdown" before="waitForNextButton"/>
+        <assertGreaterOrEquals stepKey="assertClickNCollectStoresFromDropdown" before="waitForNextButton">
+            <actualResult type="variable">grabClickNCollectStoresFromDropdown</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertGreaterOrEquals>
+        <click selector=".cnc-stores-container .cnc-stores-dropdown button" stepKey="clickOnClickNCollectDropdown" before="waitForNextButton"/>
+        <wait stepKey="waitSometime1" time="5" before="waitForNextButton"/>
+        <waitForElementClickable selector="//a[@class='dropdown-content-wrapper']" stepKey="waitForFirstClickNCollectStoresFromDropdownClickable" before="waitForNextButton"/>
+        <click selector="//a[@class='dropdown-content-wrapper']" stepKey="clickOnFirstStoreFromClickNCollectDropdown" before="waitForNextButton"/>
+        <waitForElementVisible selector=".modal-popup #popup-modal" time="30" stepKey="waitForClickNCollectModal" before="waitForNextButton"/>
+        <waitForElementVisible selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-name" time="30" stepKey="waitForClickNCollectModalStoreName" before="waitForNextButton"/>
+        <waitForElementVisible selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-address" time="30" stepKey="waitForClickNCollectModalStoreAddress" before="waitForNextButton"/>
+        <waitForElementVisible selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-phone" time="30" stepKey="waitForClickNCollectModalStorePhone" before="waitForNextButton"/>
+        <assertElementContainsAttribute stepKey="checkApplyStoreIsDisabled" before="waitForNextButton">
+            <expectedResult selector=".modal-popup #popup-modal .apply-store" attribute="disabled" type="string" />
+        </assertElementContainsAttribute>
+        <click selector=".modal-popup #popup-modal .check-store-availability" stepKey="clickOnCheckAvailabilityInDropdown" before="waitForNextButton"/>
+        <waitForElementVisible selector="#popup-modal .stock-remarks ul li" time="30" stepKey="waitForClickNCollectModalStoreAvailableProducts" before="waitForNextButton"/>
+        <grabMultiple selector="#popup-modal .stock-remarks ul li" stepKey="grabClickNCollectStoresAvailableItems" before="waitForNextButton"/>
+        <assertGreaterOrEquals stepKey="assertClickNCollectStoresAvailableItems" before="waitForNextButton">
+            <actualResult type="variable">grabClickNCollectStoresAvailableItems</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertGreaterOrEquals>
+        <waitForElementClickable selector=".modal-popup #popup-modal .apply-store" stepKey="waitForApplyStoreClickable" before="waitForNextButton"/>
+        <grabTextFrom selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-name span"  stepKey="grabTextFromSelectedElement1" before="waitForNextButton"/>
+        <click selector=".modal-popup #popup-modal .apply-store" stepKey="clickOnApplyStoreInDropdown" before="waitForNextButton"/>
+        <grabTextFrom selector="#selected-store-msg span"  stepKey="grabTextFromSelectedElement2" before="waitForNextButton"/>
+        <assertEquals stepKey="assertContent" before="waitForNextButton">
+            <expectedResult type="variable">grabTextFromSelectedElement1</expectedResult>
+            <actualResult type="variable">grabTextFromSelectedElement2</actualResult>
+        </assertEquals>
+    </actionGroup>
+</actionGroups>

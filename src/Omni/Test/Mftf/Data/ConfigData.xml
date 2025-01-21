@@ -44,11 +44,25 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.INDUSTRY}}</data>
     </entity>
+    <entity name="ServiceDebug">
+        <data key="path">ls_mag/service/debug</data>
+        <data key="label">Debug</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">1</data>
+    </entity>
     <entity name="ReturnPolicy">
         <data key="path">ls_mag/return_policy/show_return_policy</data>
         <data key="label">ReturnPolicy</data>
         <data key="scope">websites</data>
         <data key="scope_code">base</data>
         <data key="value">1</data>
+    </entity>
+    <entity name="ClickNCollectPaymentOptions">
+        <data key="path">carriers/clickandcollect/payment_option</data>
+        <data key="label">Click And Collect Allowed Payment Methods</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">ls_payment_method_pay_at_store,braintree</data>
     </entity>
 </entities>
