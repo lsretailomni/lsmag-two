@@ -15,8 +15,6 @@ use MyCLabs\Enum\Enum;
  * @$method static ProactiveDiscountType MULTIBUY()
  * @$method static ProactiveDiscountType MIX_MATCH()
  * @$method static ProactiveDiscountType DISC_OFFER()
- * @$method static ProactiveDiscountType TOTAL_DISCOUNT()
- * @$method static ProactiveDiscountType TENDER_TYPE()
  * @$method static ProactiveDiscountType ITEM_POINT()
  * @$method static ProactiveDiscountType TOTAL_DISCOUNT()
  * @$method static ProactiveDiscountType TENDER_TYPE()
@@ -31,10 +29,6 @@ class ProactiveDiscountType extends Enum
     public const MIX_MATCH = 'MixMatch';
 
     public const DISC_OFFER = 'DiscOffer';
-
-    public const TOTAL_DISCOUNT = 'TotalDiscount';
-
-    public const TENDER_TYPE = 'TenderType';
 
     public const ITEM_POINT = 'ItemPoint';
 
