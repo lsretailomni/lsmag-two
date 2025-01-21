@@ -1482,13 +1482,8 @@ class BasketHelper extends AbstractHelper
     {
         $quote = $this->getCurrentQuote();
         if ($quote) {
-
-            if ($calculation && $quote) {
-                // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-                $quote->setBasketResponse(serialize($calculation));
-            } else {
-                $quote->setBasketResponse(null);
-            }
+            // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
+            $quote->setBasketResponse($calculation ? serialize($calculation) : null);
             $this->quoteResourceModel->save($quote);
         }
     }

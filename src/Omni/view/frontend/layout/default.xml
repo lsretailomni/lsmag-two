@@ -14,6 +14,7 @@
             <block class="Magento\Framework\View\Element\Html\Link" name="omni.giftcardbalance" before="-"
                    ifconfig="ls_mag/service/base_url">
                 <arguments>
+                    <argument name="class" xsi:type="string">ls-footer-gift-card</argument>
                     <argument name="label" xsi:type="string" translate="true">Check Gift Card Balance</argument>
                     <argument name="path" xsi:type="string">omni/giftcardbalance</argument>
                 </arguments>
