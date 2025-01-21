@@ -31,6 +31,7 @@
         <waitForElementClickable selector="#map-canvas .apply-store" stepKey="waitForApplyStoreClickable" before="waitForNextButton"/>
         <grabTextFrom selector=".omni-stores-index .stores-maps-container .store-map-plus-info-container .store-name span"  stepKey="grabTextFromSelectedElement1" before="waitForNextButton"/>
         <executeJS function="document.querySelector('#map-canvas .apply-store').click();" stepKey="clickOnApplyStoreInGoogleMap" before="waitForNextButton"/>
+        <waitForElementVisible selector="#selected-store-msg span" time="30" stepKey="waitForClickNCollectSelectedStoreName"  before="waitForNextButton"/>
         <grabTextFrom selector="#selected-store-msg span"  stepKey="grabTextFromSelectedElement2" before="waitForNextButton"/>
         <assertEquals stepKey="assertContent" before="waitForNextButton">
             <expectedResult type="variable">grabTextFromSelectedElement1</expectedResult>
