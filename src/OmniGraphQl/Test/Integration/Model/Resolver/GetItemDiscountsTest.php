@@ -2,6 +2,7 @@
 
 namespace Ls\OmniGraphQl\Test\Integration\Model\Resolver;
 
+use Ls\OmniGraphQl\Test\Integration\AbstractIntegrationTest;
 use \Ls\OmniGraphQl\Test\Integration\GraphQlTestBase;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\Fixture\AppArea;
@@ -34,10 +35,9 @@ class GetItemDiscountsTest extends GraphQlTestBase
     #[
         AppArea('graphql'),
     ]
-    public function testClickAndCollectStores()
+    public function testgetItemsDiscount()
     {
-        $product = $this->getOrCreateProduct();
-        $query   = $this->getQuery($product->getSku());
+        $query   = $this->getQuery(AbstractIntegrationTest::DISCOUNT_SKU);
 
         $headerMap = ['Authorization' => 'Bearer ' . $this->authToken];
         $response  = $this->graphQlQuery(

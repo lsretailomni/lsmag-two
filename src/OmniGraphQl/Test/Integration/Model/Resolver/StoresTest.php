@@ -18,17 +18,6 @@ class StoresTest extends GraphQlTestBase
     /**
      * @magentoAppIsolation enabled
      */
-    #[
-        AppArea('graphql'),
-        DataFixture(
-            FlatDataReplication::class,
-            [
-                'job_url' => ReplEcommStoresTask::class,
-                'scope'   => ScopeInterface::SCOPE_WEBSITE
-            ],
-            as: 'stores'
-        )
-    ]
     public function testStores()
     {
         $query = $this->getQuery();

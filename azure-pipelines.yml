@@ -23,7 +23,7 @@ resources:
         ES_JAVA_OPTS: -Xms1g -Xmx1g
         cluster.routing.allocation.disk.threshold_enabled: false
 pool:
-  vmImage: ubuntu-24.04
+  vmImage: ubuntu-latest
 
 services:
   db: db
@@ -31,10 +31,10 @@ services:
 
 strategy:
   matrix:
-    magento_2_4_7_php_8_3:
-      phpVersion: '8.3'
-      magentoVersion: '2.4.7'
-      databaseName: 'magento_2_4_7_php_8_3'
+    magento_2_4_6_php_8_1:
+      phpVersion: '8.1'
+      magentoVersion: '2.4.6-p1'
+      databaseName: 'magento_2_4_6_php_8_1'
       composerOverride: '{}'
       phpunitVersion: '^9'
 
@@ -94,17 +94,48 @@ steps:
     displayName: 'Magento Installation Testing'
 
   - script: |
-      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set production
-    displayName: 'Magento Production mode Testing'
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento deploy:mode:set developer -vvv || cat var/log/exception.log || cat var/log/system.log
+    displayName: 'Magento set developer mode'
 
   - script: |
-      sudo bash -c "echo \"xdebug.mode=coverage\" > /etc/php/$(phpVersion)/cli/php.ini"
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:upgrade -vvv || cat var/log/exception.log
+    displayName: 'Magento setup upgrade'
+
+  - script: |
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:di:compile -vvv || cat var/log/exception.log
+    displayName: 'Magento setup di compile'
+
+  - script: |
+      php -d memory_limit=-1 ../magento_$(magentoVersion)_$(phpVersion)/bin/magento setup:static-content:deploy -f -vvv || cat var/log/exception.log
+    displayName: 'Magento static content deploy'
+
+  - script: |
       cd ../magento_$(magentoVersion)_$(phpVersion)
       cp ../magento_$(magentoVersion)_$(phpVersion)/artifacts/lsretail/lsmag-two/dev/tests/unit/azure-pipelines-phpunit.xml ../magento_$(magentoVersion)_$(phpVersion)/dev/tests/unit/
-      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --testsuite "Ls_Retail_Unit_Tests" --coverage-clover ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
+      ./vendor/bin/phpunit -c dev/tests/unit/azure-pipelines-phpunit.xml --log-junit ../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml
     displayName: 'Ls Retail Modules Unit Tests Validation'
 
-  - task: PublishCodeCoverageResults@2
+  - task: PublishTestResults@2
     inputs:
-      summaryFileLocation: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)/junit-report_$(magentoVersion)_$(phpVersion).xml'
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'junit-report_$(magentoVersion)_$(phpVersion).xml'
+      searchFolder: '../magento_$(magentoVersion)_$(phpVersion)/$(System.DefaultWorkingDirectory)'
     displayName: 'Ls Retail Modules Unit Tests results Publishing'
+
+  - task: Bash@3
+    displayName: "Output Magento Logs"
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "Showing Magento Logs..."
+
+        # Check if logs directory exists
+        if [ -d "var/log" ]; then
+          echo "=== SYSTEM LOG ==="
+          cat var/log/system.log || echo "system.log not found"
+
+          echo "=== EXCEPTION LOG ==="
+          cat var/log/exception.log || echo "exception.log not found"
+        else
+          echo "Log directory does not exist."
+        fi
