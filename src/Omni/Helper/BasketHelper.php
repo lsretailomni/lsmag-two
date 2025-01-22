@@ -816,6 +816,7 @@ class BasketHelper extends AbstractHelper
 
                 if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
                     $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate());
+                    $oneListRequest->setCurrency($this->lsr->getStoreCurrencyCode());
                 }
 
                 /** @var Entity\OneListCalculate $entity */

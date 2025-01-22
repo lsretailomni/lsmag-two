@@ -560,7 +560,7 @@ class DiscountCreateSetupTask
         $websiteId  = $replDiscount->getScopeId();
         if (version_compare(
             $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
-            '2024.10.0',
+            '2024.10.11',
             '<='
         ) || $this->validateWebsiteByStoreGroupCodeOrPriceGroup(
             $replDiscount->getPriceGroup(),
@@ -582,13 +582,13 @@ class DiscountCreateSetupTask
 
             $conditions = $this->getConditions($key);
             $rule       = $this->ruleFactory->create();
-            
+
             $rule->setName($name)
                 ->setDescription($replDiscount->getDescription())
                 ->setIsActive(1)
                 ->setCustomerGroupIds($customerGroupIds)
                 ->setWebsiteIds($websiteId);
-            
+
             /**
              * Default Values for Action Types.
              * by_percent
@@ -632,7 +632,7 @@ class DiscountCreateSetupTask
                         break;
                     }
                 }
-                
+
             } catch (Exception $e) {
                 $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
                 $this->logger->debug($e->getMessage());
@@ -800,7 +800,7 @@ class DiscountCreateSetupTask
 
     /**
      * Save catalog rule
-     * 
+     *
      * @param $rule
      * @param $replValidation
      * @return bool

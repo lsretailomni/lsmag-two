@@ -120,4 +120,9 @@ class CartViewModel implements ArgumentInterface
 
         return $result;
     }
+
+    public function getConvertedAmount($amount)
+    {
+        return $this->itemHelper->convertToCurrentStoreCurrency($amount);
+    }
 }
