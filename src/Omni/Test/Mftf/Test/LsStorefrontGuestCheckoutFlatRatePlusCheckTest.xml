@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="LsStorefrontGuestCheckoutClickNCollectPlusPayAtTheStoreTest">
+    <test name="LsStorefrontGuestCheckoutFlatRatePlusCheckTest">
         <annotations>
             <features value="Checkout"/>
             <stories value="Ls Checkout via Guest Checkout"/>
-            <title value="Ls Guest Checkout - guest should be able to place an order using click and collect, pay at the store"/>
-            <description value="Should be able to place an order as a Guest using click and collect, pay at the store"/>
+            <title value="Ls Guest Checkout - guest should be able to place an order using flat rate, check/money order"/>
+            <description value="Should be able to place an order as a Guest using flat rate, check/money order"/>
             <severity value="BLOCKER"/>
             <group value="checkout"/>
             <group value="cloud"/>
@@ -15,7 +15,6 @@
             <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
-            <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
             <!--Create test data.-->
             <createData entity="LsSimpleProduct3" stepKey="product1" />
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
@@ -28,7 +27,6 @@
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindexInvalidatedIndices">
                 <argument name="indices" value=""/>
             </actionGroup>
-            <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
 
             <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 0" stepKey="DisablingGuestCheckoutLogin"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
@@ -43,12 +41,12 @@
         <see selector="{{StorefrontCategoryMainSection.SuccessMsg}}" userInput="You added $$product1.name$$ to your shopping cart." stepKey="seeAddedToCartMessage"/>
         <see selector="{{StorefrontMinicartSection.quantity}}" userInput="1" stepKey="seeCartQuantity"/>
         <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="guestGoToCheckoutFromMinicart"/>
-        <actionGroup ref="LsGuestCheckoutFillingShippingFieldsPlusClickNCollectActionGroup" stepKey="guestCheckoutFillingShippingSection">
+        <actionGroup ref="GuestCheckoutFillingShippingSectionActionGroup" stepKey="guestCheckoutFillingShipping">
+            <argument name="shippingMethod" value="Flat Rate"/>
             <argument name="customerVar" value="CustomerEntityOne"/>
             <argument name="customerAddressVar" value="CustomerAddressSimple"/>
         </actionGroup>
-        <actionGroup ref="LsCheckoutSelectPayAtTheStoreOrderPaymentActionGroup" stepKey="guestSelectPayAtTheStoreOrderPayment"/>
-        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="guestSeeAddress">
+        <actionGroup ref="CheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="selectPaymentMethod"/>        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="guestSeeAddress">
             <argument name="customerVar" value="CustomerEntityOne"/>
             <argument name="customerAddressVar" value="CustomerAddressSimple"/>
         </actionGroup>
