@@ -59,6 +59,11 @@ class ReplCustomer
     protected $Currency = null;
 
     /**
+     * @property string $CustomerId
+     */
+    protected $CustomerId = null;
+
+    /**
      * @property string $DiscountGroup
      */
     protected $DiscountGroup = null;
@@ -358,6 +363,24 @@ class ReplCustomer
     public function getCurrency()
     {
         return $this->Currency;
+    }
+
+    /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId)
+    {
+        $this->CustomerId = $CustomerId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->CustomerId;
     }
 
     /**
