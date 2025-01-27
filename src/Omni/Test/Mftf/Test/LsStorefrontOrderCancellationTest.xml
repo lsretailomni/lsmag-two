@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsStorefrontOrderCancellationTest"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls logged in customer should be able to cancel the order"/>
+            <title value="Ls logged in customer should be able to cancel the order"/>
+            <description value="Ls logged in customer should be able to cancel the order"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set ls_mag/loyalty/allow_order_cancellation 1" stepKey="enableOrderCancellation" after="EnablingGuestCheckoutLogin"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set ls_mag/loyalty/allow_order_cancellation 0" stepKey="disableOrderCancellation" after="DisablingGuestCheckoutLogin"/>
+
+        </after>
+
+        <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
+            <argument name="customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="LsDeleteCustomerAddressActionGroup" stepKey="deleteCustomerAddress" before="addProductToCart1"/>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <actionGroup ref="CheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="selectCheckMoneyOrderPayment" before="deleteNewUser"/>
+        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="seeBillingAddress" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+        <actionGroup ref="CheckoutPlaceOrderActionGroup" stepKey="placeorder" before="deleteNewUser">
+            <argument name="orderNumberMessage" value="CONST.successCheckoutOrderNumberMessage" />
+            <argument name="emailYouMessage" value="CONST.successCheckoutEmailYouMessage" />
+        </actionGroup>
+
+        <grabMultiple selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumberLinkTag" before="deleteNewUser"/>
+        <assertNotEmpty stepKey="assertOrderLinkIsNotEmpty" before="deleteNewUser">
+            <actualResult type="const">$grabOrderNumberLinkTag</actualResult>
+        </assertNotEmpty>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber22}}" stepKey="grabOrderNumber" before="deleteNewUser"/>
+        <assertRegExp stepKey="assertDocumentIdEquals" message="pass" before="deleteNewUser">
+            <expectedResult type="string">/^CO/</expectedResult>
+            <actualResult type="variable">grabOrderNumber</actualResult>
+        </assertRegExp>
+        <click selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="goToOrderPageOnCustomerDashboard" before="deleteNewUser"/>
+        <seeInCurrentUrl url="customer/order/view/order_id/$grabOrderNumber" stepKey="assertUrl" before="deleteNewUser"/>
+
+        <grabMultiple selector=".order-actions-toolbar .action.cancel" stepKey="grabOrderCancelLinkTag" before="deleteNewUser"/>
+        <assertNotEmpty stepKey="assertOrderCancelLinkIsNotEmpty" before="deleteNewUser">
+            <actualResult type="const">$grabOrderCancelLinkTag</actualResult>
+        </assertNotEmpty>
+
+        <click selector=".order-actions-toolbar .action.cancel" stepKey="clickCancelBtn" before="deleteNewUser"/>
+        <waitForElementVisible selector=".modal-popup.confirm._show" time="30" stepKey="waitForConfirmModal" before="deleteNewUser"/>
+        <waitForElementVisible selector=".modal-popup.confirm._show .action-accept" stepKey="waitForOkBtn" before="deleteNewUser"/>
+        <click selector=".modal-popup.confirm._show .action-accept" stepKey="clickOkBtn" before="deleteNewUser"/>
+        <waitForPageLoad time="20" stepKey="waitForOrderViewPageToLoad" before="deleteNewUser"/>
+        <waitForElementVisible selector="{{StorefrontMessagesSection.messageByType('success')}}" stepKey="waitForOrderCancellationSuccessMessage" before="deleteNewUser"/>
+    </test>
+</tests>
