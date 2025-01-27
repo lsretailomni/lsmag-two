@@ -57,7 +57,10 @@
             <argument name="emailYouMessage" value="CONST.successCheckoutEmailYouMessage"/>
         </actionGroup>
         <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber}}" stepKey="grabOrderNumber"/>
-
+        <assertRegExp stepKey="assertDocumentIdEquals" message="pass">
+            <expectedResult type="string">/^CO/</expectedResult>
+            <actualResult type="variable">grabOrderNumber</actualResult>
+        </assertRegExp>
         <amOnPage url="{{AdminOrdersPage.url}}" stepKey="onOrdersPage"/>
         <waitForLoadingMaskToDisappear stepKey="waitForLoadingMaskToDisappearOnOrdersPage"/>
         <click selector="{{AdminOrdersGridSection.filters}}" stepKey="clickFilterButton"/>

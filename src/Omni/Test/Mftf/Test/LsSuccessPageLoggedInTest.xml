@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsSuccessPageLoggedInTest"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls logged in customer success page"/>
+            <title value="Customer can see order number with link on success page"/>
+            <description value="Customer can see order number with link on success page"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+        </after>
+
+        <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
+            <argument name="customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="LsDeleteCustomerAddressActionGroup" stepKey="deleteCustomerAddress" before="addProductToCart1"/>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <actionGroup ref="CheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="selectCheckMoneyOrderPayment" before="deleteNewUser"/>
+        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="seeBillingAddress" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+        <actionGroup ref="CheckoutPlaceOrderActionGroup" stepKey="placeorder" before="deleteNewUser">
+            <argument name="orderNumberMessage" value="CONST.successCheckoutOrderNumberMessage" />
+            <argument name="emailYouMessage" value="CONST.successCheckoutEmailYouMessage" />
+        </actionGroup>
+
+        <grabMultiple selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumberLinkTag" before="deleteNewUser"/>
+        <assertNotEmpty stepKey="assertOrderLinkIsNotEmpty" before="deleteNewUser">
+            <actualResult type="const">$grabOrderNumberLinkTag</actualResult>
+        </assertNotEmpty>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber22}}" stepKey="grabOrderNumber" before="deleteNewUser"/>
+        <assertRegExp stepKey="assertDocumentIdEquals" message="pass" before="deleteNewUser">
+            <expectedResult type="string">/^CO/</expectedResult>
+            <actualResult type="variable">grabOrderNumber</actualResult>
+        </assertRegExp>
+        <click selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="goToOrderPageOnCustomerDashboard" before="deleteNewUser"/>
+        <seeInCurrentUrl url="customer/order/view/order_id/$grabOrderNumber" stepKey="assertUrl" before="deleteNewUser"/>
+    </test>
+</tests>
