@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsStorefrontStoresPageTest">
+        <annotations>
+            <features value="CmsPage"/>
+            <stories value="Ls Customer should be able to find all available Central stores on the map"/>
+            <title value="Ls Customer should be able to find all available Central stores on the map"/>
+            <description value="Ls Customer should be able to find all available Central stores on the map"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCms"/>
+        </annotations>
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
+        </before>
+        <after>
+            <actionGroup ref="LsResetStoreDataActionGroup" stepKey="resetStores"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- 1. Go to storefront home page -->
+        <actionGroup ref="StorefrontOpenHomePageActionGroup" stepKey="goToHomePage"/>
+        <waitForElementVisible selector=".page-footer .ls-footer-stores" stepKey="assertStoresLink"/>
+        <amOnPage url="{{StorefrontStoresPage.url}}" stepKey="goToStoresPage"/>
+        <waitForPageLoad stepKey="waitForStorefrontPageLoad"/>
+        <seeInCurrentUrl url="{{StorefrontStoresPage.url}}" stepKey="verifyStoresPage"/>
+        <grabMultiple selector="#map" stepKey="grabAllStoresMapTag"/>
+        <assertNotEmpty stepKey="assertAllStoresMapIsNotEmpty">
+            <actualResult type="const">$grabAllStoresMapTag</actualResult>
+        </assertNotEmpty>
+        <grabMultiple selector="#store-S0001" stepKey="grabStoreMapTag"/>
+        <assertNotEmpty stepKey="assertStoreMapIsNotEmpty">
+            <actualResult type="const">$grabStoreMapTag</actualResult>
+        </assertNotEmpty>
+        <grabMultiple selector="#store-S0001 .store-name" stepKey="grabStoreNameTag"/>
+        <assertNotEmpty stepKey="assertStoreNameIsNotEmpty">
+            <actualResult type="const">$grabStoreNameTag</actualResult>
+        </assertNotEmpty>
+        <grabMultiple selector="#store-S0001 .store-address" stepKey="grabStoreAddressTag"/>
+        <assertNotEmpty stepKey="assertStoreAddressIsNotEmpty">
+            <actualResult type="const">$grabStoreAddressTag</actualResult>
+        </assertNotEmpty>
+        <grabMultiple selector="#store-S0001 .store-phone" stepKey="grabStorePhoneTag"/>
+        <assertNotEmpty stepKey="assertStorePhoneIsNotEmpty">
+            <actualResult type="const">$grabStorePhoneTag</actualResult>
+        </assertNotEmpty>
+        <grabMultiple selector="#store-S0001 .store-opening-hours" stepKey="grabStoreOpeningHoursTag"/>
+        <assertNotEmpty stepKey="assertStoreOpeningHoursIsNotEmpty">
+            <actualResult type="const">$grabStoreOpeningHoursTag</actualResult>
+        </assertNotEmpty>
+    </test>
+</tests>
