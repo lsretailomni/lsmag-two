@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AssertRecentOrderActionGroup">
+        <annotations>
+            <description>Validates that the all required information is showing on recent orders.</description>
+        </annotations>
+        <see selector=".block-dashboard-orders .block-title strong" userInput="Recent Orders" stepKey="VerifyRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Document ID #" stepKey="VerifyDocumentIdRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Date" stepKey="VerifyDateRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Ship To" stepKey="VerifyShipToRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Store Name" stepKey="VerifyShipNameRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Order Total" stepKey="VerifyOrderTotalRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Status" stepKey="VerifyStatusRecentOrdersHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Action" stepKey="VerifyActionRecentOrdersHeading"/>
+
+        <grabMultiple selector="#my-orders-table tbody tr" stepKey="grabAllRecentOrdersTag"/>
+        <assertNotEmpty stepKey="assertAllRecentOrdersTagNotEmpty">
+            <actualResult type="const">$grabAllRecentOrdersTag</actualResult>
+        </assertNotEmpty>
+
+        <click selector="//tr[td[contains(@class, 'status') and not(text() = 'Canceled')]]//a[contains(@class, 'view')]" stepKey="clickOrder"/>
+        <seeInCurrentUrl url="customer/order/view/order_id" stepKey="assertUrl"/>
+        <amOnPage url="{{StorefrontCustomerDashboardPage.url}}" stepKey="amOnSignInPage"/>
+    </actionGroup>
+</actionGroups>

@@ -16,6 +16,7 @@
         <before>
             <remove keyForRemoval="createCustomer"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
+            <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 1000" stepKey="settingLoyaltyPointsExpiryBefore" before="cleanInvalidatedCaches"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
                 <argument name="indices" value=""/>
@@ -23,13 +24,16 @@
         </before>
         <after>
             <remove keyForRemoval="deleteCustomer"/>
+            <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 90" stepKey="settingLoyaltyPointsExpiryAfter"  after="cleanInvalidatedCaches"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout" after="cleanInvalidatedCaches"/>
         </after>
 
         <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefrontAccount">
             <argument name="Customer" value="Ls_Simple_US_Customer"/>
         </actionGroup>
-        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="loginToStorefrontAccount" />
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  before="assertAccountLinkInUrl" />
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyPointsExpiry}}" userInput="Loyalty Points Expiry:" stepKey="VerifyLoyaltyPointsExpiryHeading" before="assertAccountLinkInUrl"/>
+        <actionGroup ref="AssertRecentOrderActionGroup" stepKey="validateRecentOrder"  before="assertAccountLinkInUrl" />
 
          <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
