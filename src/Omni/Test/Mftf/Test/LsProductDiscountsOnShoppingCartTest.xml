@@ -45,7 +45,7 @@
             <argument name="product" value="$product2$"/>
             <argument name="qty" value="1"/>
         </actionGroup>
-        <actionGroup ref="ClickViewAndEditCartFromMiniCartActionGroup" stepKey="clickMiniCart1"/>
+        <actionGroup ref="LsClickViewAndEditCartFromMiniCartActionGroup" stepKey="clickMiniCart1"/>
 
         <seeInCurrentUrl url="{{CheckoutCartPage.url}}" stepKey="verifyCartRedirectAfterAddingProductFromProductPage"/>
         <grabMultiple selector="{{CheckoutCartProductSection.ProductDiscount}}" stepKey="grabDiscountsDescription1"/>

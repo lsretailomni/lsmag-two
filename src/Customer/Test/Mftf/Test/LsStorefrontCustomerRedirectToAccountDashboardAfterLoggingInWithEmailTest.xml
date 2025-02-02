@@ -16,6 +16,7 @@
         <before>
             <remove keyForRemoval="createCustomer"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
+            <createData entity="LsSimpleProduct1" stepKey="product1" before="cleanInvalidatedCaches"/>
             <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 1000" stepKey="settingLoyaltyPointsExpiryBefore" before="cleanInvalidatedCaches"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
@@ -23,6 +24,8 @@
             </actionGroup>
         </before>
         <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
             <remove keyForRemoval="deleteCustomer"/>
             <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 90" stepKey="settingLoyaltyPointsExpiryAfter"  after="cleanInvalidatedCaches"/>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout" after="cleanInvalidatedCaches"/>
@@ -34,6 +37,14 @@
         <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  before="assertAccountLinkInUrl" />
         <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyPointsExpiry}}" userInput="Loyalty Points Expiry:" stepKey="VerifyLoyaltyPointsExpiryHeading" before="assertAccountLinkInUrl"/>
         <actionGroup ref="AssertRecentOrderActionGroup" stepKey="validateRecentOrder"  before="assertAccountLinkInUrl" />
+        <actionGroup ref="StorefrontCustomerGoToSidebarMenu" stepKey="goToSidebarMenu" before="assertAccountLinkInUrl">
+            <argument name="menu" value="My Orders"/>
+        </actionGroup>
+
+        <actionGroup ref="AssertOrderHistoryActionGroup" stepKey="validateOrderHistory"  before="assertAccountLinkInUrl" />
+        <actionGroup ref="AssertLoyaltyOffersPagesActionGroup" stepKey="validateLoyaltyOffersPages"  before="assertAccountLinkInUrl">
+            <argument name="product" value="$product1$"/>
+        </actionGroup>
 
          <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
             <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
