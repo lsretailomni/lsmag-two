@@ -16,7 +16,7 @@
         <before>
             <remove keyForRemoval="createCustomer"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
-            <createData entity="LsSimpleProduct1" stepKey="product1" before="cleanInvalidatedCaches"/>
+            <createData entity="LsSimpleProduct3" stepKey="product1" before="cleanInvalidatedCaches"/>
             <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 1000" stepKey="settingLoyaltyPointsExpiryBefore" before="cleanInvalidatedCaches"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
