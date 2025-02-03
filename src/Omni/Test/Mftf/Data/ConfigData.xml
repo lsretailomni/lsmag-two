@@ -23,6 +23,27 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.SERVICE_BASE_URL}}</data>
     </entity>
+    <entity name="ServiceBaseUrlDisable">
+        <data key="path">ls_mag/service/base_url</data>
+        <data key="label">Base URL</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.SERVICE_BASE_URL_DISABLE}}</data>
+    </entity>
+    <entity name="RestrictedOrderStatusDefault">
+        <data key="path">ls_mag/ls_order_management/sync_order_statuses</data>
+        <data key="label">Restricted Order Statuses</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.RESTRICTED_ORDER_STATUSES_DEFAULT}}</data>
+    </entity>
+    <entity name="RestrictedOrderStatusUpdated">
+        <data key="path">ls_mag/ls_order_management/sync_order_statuses</data>
+        <data key="label">Restricted Order Statuses</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.RESTRICTED_ORDER_STATUSES_UPDATED}}</data>
+    </entity>
     <entity name="ServiceVersion">
         <data key="path">ls_mag/service/version</data>
         <data key="label">CS Version</data>

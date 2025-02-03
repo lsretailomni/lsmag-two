@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminOrderSync"
+          extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="Checkout"/>
+            <stories value="Ls logged in customer should be able to cancel the order"/>
+            <title value="Ls logged in customer should be able to cancel the order"/>
+            <description value="Ls logged in customer should be able to cancel the order"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCheckout"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set {{RestrictedOrderStatusUpdated.path}} {{RestrictedOrderStatusUpdated.value}}" stepKey="UpdateRestrictedOrderStatuses"  after="EnablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set ls_mag/loyalty/allow_order_cancellation 1" stepKey="enableOrderCancellation" after="EnablingGuestCheckoutLogin"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set {{RestrictedOrderStatusDefault.path}} {{RestrictedOrderStatusDefault.value}}" stepKey="ResetRestrictedOrderStatuses" after="DisablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+            <magentoCLI command="config:set ls_mag/loyalty/allow_order_cancellation 0" stepKey="disableOrderCancellation" after="DisablingGuestCheckoutLogin"/>
+
+        </after>
+
+        <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
+            <argument name="customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="LsDeleteCustomerAddressActionGroup" stepKey="deleteCustomerAddress" before="addProductToCart1"/>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <actionGroup ref="CheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="selectCheckMoneyOrderPayment" before="deleteNewUser"/>
+        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="seeBillingAddress" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+        <actionGroup ref="CheckoutPlaceOrderActionGroup" stepKey="placeorder" before="deleteNewUser">
+            <argument name="orderNumberMessage" value="CONST.successCheckoutOrderNumberMessage" />
+            <argument name="emailYouMessage" value="CONST.successCheckoutEmailYouMessage" />
+        </actionGroup>
+
+        <grabMultiple selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumberLinkTag" before="deleteNewUser"/>
+        <assertNotEmpty stepKey="assertOrderLinkIsNotEmpty" before="deleteNewUser">
+            <actualResult type="const">$grabOrderNumberLinkTag</actualResult>
+        </assertNotEmpty>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber22}}" stepKey="grabOrderNumber" before="deleteNewUser"/>
+        <assertRegExp stepKey="assertDocumentIdNotEquals" message="pass" before="deleteNewUser">
+            <expectedResult type="string">/^(?!CO).*/</expectedResult>
+            <actualResult type="variable">grabOrderNumber</actualResult>
+        </assertRegExp>
+        <click selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="goToOrderPageOnCustomerDashboard" before="deleteNewUser"/>
+        <grabFromCurrentUrl regex="~/order_id/(\d+)/~" stepKey="orderId" before="deleteNewUser"/>
+
+        <!-- Login as admin -->
+        <magentoCLI command="config:set {{RestrictedOrderStatusDefault.path}} {{RestrictedOrderStatusDefault.value}}" stepKey="ResetRestrictedOrderStatuses" before="deleteNewUser"/>
+        <amOnPage url="{{AdminLoginPage.url}}" stepKey="navigateToAdmin" before="deleteNewUser"/>
+        <waitForPageLoad stepKey="waitForAdminLoginPageLoad" before="deleteNewUser"/>
+        <!-- Open created order in backend -->
+        <comment userInput="BIC workaround" stepKey="goToOrders" before="deleteNewUser"/>
+        <comment userInput="BIC workaround" stepKey="filterOrderGridById" before="deleteNewUser"/>
+        <actionGroup ref="AdminOpenOrderByEntityIdActionGroup" stepKey="filterOrdersGridById" before="deleteNewUser">
+            <argument name="entityId" value="{$orderId}"/>
+        </actionGroup>
+
+
+        <wait stepKey="waitForSessionLoad" time="5" before="deleteNewUser"/>
+        <waitForElementVisible selector="button.send-order-request" time="30" stepKey="waitForSyncToCentral"  before="deleteNewUser"/>
+        <click selector="button.send-order-request" stepKey="syncToCentral"  before="deleteNewUser"/>
+<!--        <executeJS function="return document.querySelectorAll('#send-order-request').click();" stepKey="actualTextFromHtmlCode"/>-->
+        <waitForElementVisible selector="{{AdminOrderViewSection.successMessage}}" time="30" stepKey="assertSuccess"  before="deleteNewUser"/>
+
+        <grabValueFrom selector="{{AdminOrderViewSection.successMessage}}"  stepKey="grabSuccessMessage" before="deleteNewUser"/>
+        <assertEquals stepKey="assertMessage" message="pass" before="deleteNewUser">
+            <expectedResult type="string">Order request has been sent to LS Central successfully</expectedResult>
+            <actualResult type="variable">grabSuccessMessage</actualResult>
+        </assertEquals>
+
+        <grabValueFrom selector="{{AdminOrderViewSection.customerorderlabel}}"  stepKey="grabCustomerOrderLabel" before="deleteNewUser"/>
+        <assertEquals stepKey="assertCoLabel" message="pass" before="deleteNewUser">
+            <expectedResult type="string">Ls Central Order Reference ID:</expectedResult>
+            <actualResult type="variable">grabCustomerOrderLabel</actualResult>
+        </assertEquals>
+
+        <grabValueFrom selector="{{AdminOrderViewSection.customerordernumber}}"  stepKey="grabCustomerOrderNumber" before="deleteNewUser" />
+        <assertRegExp stepKey="assertDocumentIdEquals" message="pass" before="deleteNewUser" >
+            <expectedResult type="string">/^CO/</expectedResult>
+            <actualResult type="variable">grabCustomerOrderNumber</actualResult>
+        </assertRegExp>
+    </test>
+</tests>

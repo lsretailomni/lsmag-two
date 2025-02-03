@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminOrderViewSection">
+        <element name="successMessage" type="text" selector="div.message-success div[data-ui-id='messages-message-success']"/>
+        <element name="customerorderlabel" type="text" selector="table.order-information-table tr:nth-of-type(3) > td:nth-of-type(1)"/>
+        <element name="customerordernumber" type="text" selector="table.order-information-table tr:nth-of-type(3) > td:nth-of-type(2)"/>
+    </section>
+</sections>
