@@ -2,8 +2,7 @@
 <sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
     <section name="AdminOrderViewSection">
-        <element name="successMessage" type="text" selector="div.message-success div[data-ui-id='messages-message-success']"/>
-        <element name="customerorderlabel" type="text" selector="table.order-information-table tr:nth-of-type(3) > td:nth-of-type(1)"/>
-        <element name="customerordernumber" type="text" selector="table.order-information-table tr:nth-of-type(3) > td:nth-of-type(2)"/>
+        <element name="customerorderlabel" type="text" selector=".order-information-table>tbody>tr:nth-child(3)>th"/>
+        <element name="customerordernumber" type="text" selector=".order-information-table>tbody>tr:nth-child(3)>td"/>
     </section>
 </sections>
