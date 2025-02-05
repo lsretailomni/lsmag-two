@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AssertOrderHistoryActionGroup">
+        <annotations>
+            <description>Validates that the all required information is showing on order history.</description>
+        </annotations>
+        <seeElement selector="{{StorefrontCustomerOrderSection.isMyOrdersSection}}" stepKey="waitOrderHistoryPage"/>
+        <wait stepKey="waitForSessionLoad1" time="5"/>
+        <see selector="#my-orders-table thead tr th" userInput="Doc ID" stepKey="VerifyDocumentIdOrderHistoryHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Date" stepKey="VerifyDateOrderHistoryHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Ship To" stepKey="VerifyShipToOrderHistoryHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Store Name" stepKey="VerifyShipNameOrderHistoryHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Total" stepKey="VerifyOrderTotalOrderHistoryHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Status" stepKey="VerifyStatusOrderHistoryHeading"/>
+        <see selector="#my-orders-table thead tr th" userInput="Action" stepKey="VerifyActionOrderHistoryHeading"/>
+
+        <grabMultiple selector="#my-orders-table tbody tr" stepKey="grabAllOrderHistoryTag"/>
+        <assertNotEmpty stepKey="assertAllOrderHistoryTagNotEmpty">
+            <actualResult type="const">$grabAllOrderHistoryTag</actualResult>
+        </assertNotEmpty>
+
+        <click selector="//tr[td[contains(@class, 'status') and not(text() = 'Canceled')]]//a[contains(@class, 'view')]" stepKey="clickOrder"/>
+        <seeInCurrentUrl url="customer/order/view/order_id" stepKey="assertUrl"/>
+        <amOnPage url="{{StorefrontCustomerDashboardPage.url}}" stepKey="amOnSignInPage"/>
+    </actionGroup>
+</actionGroups>

@@ -12,6 +12,5 @@
         <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationClubName}}" userInput="Club Name:" stepKey="VerifyClubNameHeading"/>
         <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyPointsEarned}}" userInput="Loyalty Points Earned:" stepKey="VerifyLoyaltyPointsEarnedHeading"/>
         <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyLevel}}" userInput="Loyalty Level:" stepKey="VerifyLoyaltyLevelHeading"/>
-
     </actionGroup>
 </actionGroups>

@@ -8,6 +8,7 @@
         <element name="clubInformationNextLevelHeading" type="text" selector=".block-club-info .block-content .box.next-level .box-title strong"/>
         <element name="clubInformationMemberInformationClubName" type="text" selector=".block-club-info .block-content .box.member-information .box-content .club-name .header-inline"/>
         <element name="clubInformationMemberInformationLoyaltyPointsEarned" type="text" selector=".block-club-info .block-content .box.member-information .box-content .loyalty-point-earned .header-inline"/>
+        <element name="clubInformationMemberInformationLoyaltyPointsExpiry" type="text" selector=".block-club-info .block-content .box.member-information .box-content .loyalty-points-expiry .header-inline"/>
         <element name="clubInformationMemberInformationLoyaltyLevel" type="text" selector=".block-club-info .block-content .box.member-information .box-content .loyalty-level .header-inline"/>
     </section>
 </sections>

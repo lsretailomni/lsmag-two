@@ -7,6 +7,7 @@
             <block class="Magento\Framework\View\Element\Html\Link" name="omni.stores" before="-"
                    ifconfig="ls_mag/service/base_url">
                 <arguments>
+                    <argument name="class" xsi:type="string">ls-footer-stores</argument>
                     <argument name="label" xsi:type="string" translate="true">Stores</argument>
                     <argument name="path" xsi:type="string">omni/stores</argument>
                 </arguments>

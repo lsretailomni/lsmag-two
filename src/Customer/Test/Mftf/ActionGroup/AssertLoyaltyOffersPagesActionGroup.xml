@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AssertLoyaltyOffersPagesActionGroup">
+        <arguments>
+            <argument name="product"/>
+        </arguments>
+        <annotations>
+            <description>Validates that all loyalty offers pages exists.</description>
+        </annotations>
+
+        <click selector=".panel.header .customer-welcome .action.switch" stepKey="clickHeaderLinksSwitch"/>
+        <waitForElementVisible selector="//a[contains(@href, 'customer/loyalty')]" stepKey="waitForLoyaltyLink"/>
+        <see selector=".customer-menu li a" userInput="Loyalty" stepKey="validateLinkText"/>
+        <click selector="//a[contains(@href, 'customer/loyalty')]" stepKey="clickLoyaltyLink"/>
+        <wait stepKey="waitForSessionLoad1" time="5"/>
+        <see selector=".page-title span" userInput="Loyalty Offers" stepKey="validatePageTitle"/>
+        <see selector="//a[text()='Member Offers']" userInput="Member Offers" stepKey="validateMemberOffersLink"/>
+        <see selector="//a[text()='Point Offers']" userInput="Point Offers" stepKey="validatePointOffersLink"/>
+        <see selector="//a[text()='General Offers']" userInput="General Offers" stepKey="validateGeneralOffersLink"/>
+        <see selector="//a[text()='Coupon Offers']" userInput="Coupon Offers" stepKey="validateCouponOffersLink"/>
+        <grabMultiple selector=".coupons-grid li.item" stepKey="grabAllProducts"/>
+        <assertNotEmpty stepKey="assertAllProductsNotEmpty">
+            <actualResult type="const">$grabAllProducts</actualResult>
+        </assertNotEmpty>
+        <waitForElementVisible selector=".coupons-grid li.item .item-img-cont"  stepKey="validateImage"/>
+        <waitForElementVisible selector=".coupons-grid li.item .coupon-info .title"  stepKey="validateTitle"/>
+        <waitForElementVisible selector=".coupons-grid li.item .coupon-info .code"  stepKey="validateCode"/>
+        <waitForElementVisible selector=".coupons-grid li.item .coupon-info .date"  stepKey="validateDate"/>
+        <waitForElementVisible selector=".coupons-grid li.item .coupon-info .coupon-description"  stepKey="validateDesc"/>
+        <click selector=".coupons-grid li.item .coupon-info p a" stepKey="clickGoToProductLink"/>
+        <seeInCurrentUrl url="{{StorefrontProductPage.url(product.custom_attributes[url_key])}}" stepKey="verifyProductPage"/>
+        <amOnPage url="{{StorefrontCustomerDashboardPage.url}}" stepKey="amOnCustomerDashboardPage"/>
+    </actionGroup>
+</actionGroups>
