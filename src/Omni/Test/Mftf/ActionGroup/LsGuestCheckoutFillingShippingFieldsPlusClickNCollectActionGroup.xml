@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
-    <actionGroup name="LsGuestCheckoutFillingShippingSectionActionGroup" extends="GuestCheckoutFillingShippingSectionActionGroup">
+    <actionGroup name="LsGuestCheckoutFillingShippingFieldsPlusClickNCollectActionGroup" extends="GuestCheckoutFillingShippingSectionActionGroup">
         <waitForElementVisible selector=".cnc-stores-container" time="30" stepKey="waitForClickNCollectStoresContainer" before="waitForNextButton"/>
         <grabMultiple selector=".cnc-stores-container .cnc-stores-dropdown .block-dropdown .dropdown-content-wrapper" stepKey="grabClickNCollectStoresFromDropdown" before="waitForNextButton"/>
         <assertGreaterOrEquals stepKey="assertClickNCollectStoresFromDropdown" before="waitForNextButton">

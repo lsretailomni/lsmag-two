@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsSetRequiredPaypalPayflowConfigsActionGroup">
+        <annotations>
+            <description>Set required configs</description>
+        </annotations>
+        <amOnPage url="{{AdminConfigPaymentMethodsPage.url}}" stepKey="navigateToPaymentConfigurationPage"/>
+        <waitForPageLoad stepKey="waitForConfigPageLoad"/>
+        <waitForElementVisible selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout-head .state-closed" stepKey="waitForPaypalPayflowSection"/>
+
+        <click selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout-head .state-closed" stepKey="clickPaypalPayflowConfigureBtn"/>
+        <waitForElementVisible selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_partner" stepKey="waitForPaypalPayflowPartnerField"/>
+        <scrollTo selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_partner" stepKey="scrollToBottom"/>
+        <fillField selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_partner" userInput="{{_CREDS.magento/payflow_pro_partner}}" stepKey="inputPartner"/>
+        <fillField selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_user" userInput="{{_CREDS.magento/payflow_pro_user}}" stepKey="inputUser"/>
+        <fillField selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_vendor" userInput="{{_CREDS.magento/payflow_pro_vendor}}" stepKey="inputVendor"/>
+        <fillField selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_pwd" userInput="{{_CREDS.magento/payflow_pro_pwd}}" stepKey="inputPassword"/>
+        <selectOption selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_sandbox_flag" userInput="Yes" stepKey="enableTestMode"/>
+        <selectOption selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_enable_paypal_payflow" userInput="Yes" stepKey="enableSolution"/>
+        <click selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_settings_paypal_payflow_settings_paypal_payflow_advanced-head" stepKey="openAdvancedSettings"/>
+        <waitForElementVisible selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_settings_paypal_payflow_settings_paypal_payflow_advanced_debug" stepKey="waitForPaypalPayflowDebugMode"/>
+        <selectOption selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_settings_paypal_payflow_settings_paypal_payflow_advanced_debug" userInput="Yes" stepKey="enableDebugMode"/>
+        <click selector="{{AdminConfigSection.saveButton}}" stepKey="saveConfig"/>
+        <waitForPageLoad stepKey="waitForSaving"/>
+        <waitForText selector="{{AdminMessagesSection.success}}" userInput="You saved the configuration." stepKey="seeSuccess"/>
+    </actionGroup>
+</actionGroups>

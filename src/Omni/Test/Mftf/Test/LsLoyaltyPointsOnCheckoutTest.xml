@@ -19,6 +19,13 @@
         <after>
             <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
         </after>
+
+        <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
+            <argument name="customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="LsDeleteCustomerAddressActionGroup" stepKey="deleteCustomerAddress" before="addProductToCart1"/>
+
         <!-- Fill Shipment form -->
         <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
             <argument name="customerVar" value="Ls_Simple_US_Customer" />

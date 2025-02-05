@@ -12,5 +12,6 @@
         <magentoCLI command="config:set {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion"/>
         <magentoCLI command="config:set {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
         <magentoCLI command="config:set {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
+        <magentoCLI command="config:set {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
     </actionGroup>
 </actionGroups>

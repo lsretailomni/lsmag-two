@@ -51,6 +51,13 @@
         <data key="scope_code">base</data>
         <data key="value">1</data>
     </entity>
+    <entity name="OrderPrefix">
+        <data key="path">ls_mag/ls_order_management/prefix</data>
+        <data key="label">Order Management Prefix</data>
+        <data key="scope">websites</data>
+        <data key="scope_code">base</data>
+        <data key="value">{{_ENV.ORDER_PREFIX}}</data>
+    </entity>
     <entity name="ReturnPolicy">
         <data key="path">ls_mag/return_policy/show_return_policy</data>
         <data key="label">ReturnPolicy</data>
