@@ -6,12 +6,12 @@
         <annotations>
             <description>Set required configs</description>
         </annotations>
-        <magentoCLI command="config:set {{ServiceStore.path}} {{ServiceStore.value}}" stepKey="serviceStore"/>
-        <magentoCLI command="config:set {{ServiceHierarchyCode.path}} {{ServiceHierarchyCode.value}}" stepKey="serviceHierarchyCode"/>
-        <magentoCLI command="config:set {{ServiceBaseUrl.path}} {{ServiceBaseUrl.value}}" stepKey="serviceBaseUrl"/>
-        <magentoCLI command="config:set {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion"/>
-        <magentoCLI command="config:set {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
-        <magentoCLI command="config:set {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
-        <magentoCLI command="config:set {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceStore.path}} {{ServiceStore.value}}" stepKey="serviceStore"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceHierarchyCode.path}} {{ServiceHierarchyCode.value}}" stepKey="serviceHierarchyCode"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceBaseUrl.path}} {{ServiceBaseUrl.value}}" stepKey="serviceBaseUrl"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
     </actionGroup>
 </actionGroups>

@@ -30,7 +30,6 @@
         <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
             <argument name="customer" value="Ls_Simple_US_Customer"/>
         </actionGroup>
-        <actionGroup ref="LsDeleteCustomerAddressActionGroup" stepKey="deleteCustomerAddress" before="addProductToCart1"/>
         <!-- Fill Shipment form -->
         <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
             <argument name="customerVar" value="Ls_Simple_US_Customer" />
@@ -73,33 +72,13 @@
 
         <wait stepKey="waitForSessionLoad" time="5" before="deleteNewUser"/>
         <waitForElementVisible selector="button.send-order-request" time="30" stepKey="waitForSyncToCentral"  before="deleteNewUser"/>
-<!--        <click selector="button.send-order-request" stepKey="syncToCentral"  before="deleteNewUser"/>-->
         <executeJS function="return document.querySelector('#send-order-request').click();" stepKey="actualTextFromHtmlCode" before="deleteNewUser"/>
         <waitForElementVisible selector="div.modal-inner-wrap button.action-accept" time="5" stepKey="waitForModalPopup" before="deleteNewUser"/>
         <executeJS function="return document.querySelector('div.modal-inner-wrap button.action-accept').click();" stepKey="confirmOrderSync" before="deleteNewUser"/>
         <wait stepKey="waitForSuccessMessage" time="5" before="deleteNewUser"/>
-<!--        <waitForElementVisible selector="{{AdminOrderViewSection.successMessage}}" time="30" stepKey="assertSuccess" before="deleteNewUser"/>-->
-
-<!--        <grabValueFrom selector="{{AdminOrderViewSection.successMessage}}"  stepKey="grabSuccessMessage" before="deleteNewUser"/>-->
-<!--        <assertEquals stepKey="assertMessage" message="pass" before="deleteNewUser">-->
-<!--            <expectedResult type="string">Order request has been sent to LS Central successfully</expectedResult>-->
-<!--            <actualResult type="variable">grabSuccessMessage</actualResult>-->
-<!--        </assertEquals>-->
 
         <actionGroup ref="AssertMessageInAdminPanelActionGroup" stepKey="assertSuccessMessage" before="deleteNewUser">
             <argument name="message" value="Order request has been sent to LS Central successfully"/>
         </actionGroup>
-
-<!--        <grabValueFrom selector="{{AdminOrderViewSection.customerorderlabel}}"  stepKey="grabCustomerOrderLabel" before="deleteNewUser"/>-->
-<!--        <assertEquals stepKey="assertCoLabel" message="pass" before="deleteNewUser">-->
-<!--            <expectedResult type="string">Ls Central Order Reference ID:</expectedResult>-->
-<!--            <actualResult type="variable">grabCustomerOrderLabel</actualResult>-->
-<!--        </assertEquals>-->
-
-<!--        <grabValueFrom selector="{{AdminOrderViewSection.customerordernumber}}"  stepKey="grabCustomerOrderNumber" before="deleteNewUser" />-->
-<!--        <assertRegExp stepKey="assertDocumentIdEquals" message="pass" before="deleteNewUser" >-->
-<!--            <expectedResult type="string">/^CO/</expectedResult>-->
-<!--            <actualResult type="variable">grabCustomerOrderNumber</actualResult>-->
-<!--        </assertRegExp>-->
     </test>
 </tests>
