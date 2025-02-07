@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="LsConfigManagementSection">
+        <element name="ServiceBaseUrl" type="text" selector="#ls_mag_service_base_url" timeout="60"/>
+        <element name="ServiceCentralType" type="select" selector="#ls_mag_service_central_type"/>
+        <element name="ValidateBaseUrl" type="button" selector="#validate_base_url"/>
+        <element name="SelectedStore" type="select" selector="#ls_mag_service_selected_store" timeout="60"/>
+        <element name="SelectedHierarchyCode" type="select" selector="#ls_mag_service_replicate_hierarchy_code"/>
+        <element name="Save" type="button" selector="#save" timeout="30"/>
+        <element name="StoreConfigurationPageSuccessMessage" type="text" selector="#messages [data-ui-id='messages-message-success']"/>
+    </section>
+</sections>
