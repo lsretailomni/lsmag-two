@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsTruncateDataActionGroup">
+        <annotations>
+            <description>Truncate replication data</description>
+        </annotations>
+        <amOnPage url="{{AdminLsConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <waitForPageLoad stepKey="waitForConfigPageLoad"/>
+        <waitForElementVisible selector="#ls_mag_restore_database-head" stepKey="waitForRestoreDatabaseSection"/>
+        <scrollTo selector="#ls_mag_restore_database" stepKey="scrollToBottom"/>
+        <wait stepKey="waitForPopup1" time="5"/>
+
+        <click selector="#ls_mag_restore_database-head" stepKey="clickRestoreDatabaseSection"/>
+        <waitForElementVisible selector="#ls_mag_restore_database_ls_tables" stepKey="waitForTruncateAllBtn"/>
+        <click selector="#ls_mag_restore_database_ls_tables" stepKey="clickTruncateAllBtn"/>
+        <wait stepKey="waitForPopup" time="5"/>
+        <acceptPopup stepKey="acceptEnablePopUp"/>
+    </actionGroup>
+</actionGroups>
