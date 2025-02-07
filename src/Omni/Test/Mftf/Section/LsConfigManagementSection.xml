@@ -13,6 +13,10 @@
         <element name="ValidateBaseUrl" type="button" selector="#validate_base_url"/>
         <element name="SelectedStore" type="select" selector="#ls_mag_service_selected_store" timeout="60"/>
         <element name="SelectedHierarchyCode" type="select" selector="#ls_mag_service_replicate_hierarchy_code"/>
+        <element name="ItemOnePaymentMethod" type="select" selector="#item1_payment_method"/>
+        <element name="ItemOneTenderType" type="select" selector="#item1_tender_type"/>
+        <element name="ItemTwoPaymentMethod" type="select" selector="#item2_payment_method"/>
+        <element name="ItemTwoTenderType" type="select" selector="#item2_tender_type"/>
         <element name="Save" type="button" selector="#save" timeout="30"/>
         <element name="StoreConfigurationPageSuccessMessage" type="text" selector="#messages [data-ui-id='messages-message-success']"/>
     </section>
