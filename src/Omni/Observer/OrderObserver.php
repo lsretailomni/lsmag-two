@@ -110,7 +110,8 @@ class OrderObserver implements ObserverInterface
             if (!empty($oneListCalculation)) {
                 if (($check || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                    $response = $this->orderHelper->placeOrder($request);
+                    $response = null;
+//                    $response = $this->orderHelper->placeOrder($request);
                     try {
                         if ($response) {
                             $documentId = $response->getResult()->getId();
