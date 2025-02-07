@@ -3,9 +3,8 @@
         'jquery',
         'prototype',
         'mage/validation',
-        'mage/translate',
-        'Magento_Ui/js/modal/modal'
-    ], function ($, p, v, $t, modal) {
+        'mage/translate'
+    ], function ($, p, v, $t) {
         function fetchStores() {
             let baseUrl = $('#ls_mag_service_base_url').val(),
                 lsKey = $('#ls_mag_service_ls_key').val(),
@@ -14,23 +13,6 @@
             if (!$('#ls_mag_service_base_url').validation('isValid')) {
                 return false;
             }
-
-            var modalElement = $('#ajax-response-modal');
-
-            // Ensure modal is initialized only once
-            var modalInstance = modal({
-                type: 'popup',
-                title: 'Base Url Validation Status',
-                modalClass: 'ajax-response-modal',
-                buttons: [{
-                    text: 'Ok',
-                    class: 'action-secondary confirm-validation',
-                    click: function () {
-                        this.closeModal();
-                    }
-                }]
-            }, modalElement);
-            
             $.ajax({
                 url: '<?php echo $block->getAjaxUrl(); ?>',
                 type: 'POST',
@@ -62,15 +44,7 @@
                             text: val.label
                         }));
                     });
-                    // alert($t(response.responseJSON.pong));
-                    $('#ajax-response-content').html($t(response.responseJSON.pong));
-                    // Ensure modal is initialized before opening
-                    if (!modalElement.data('modal')) {
-                        modalElement.modal(modalInstance);
-                    }
-
-                    // Open the modal
-                    modalElement.modal('openModal');
+                    alert($t(response.responseJSON.pong));
                 },
                 error: function (xhr, status, errorThrown) {
                     console.log('Error happens. Please try again.');
@@ -166,8 +140,3 @@
     });
 </script>
 <?php echo $block->getButtonHtml(); ?>
-<div id="ajax-response-modal" style="display: none;">
-    <div id="ajax-response-content">
-        <p>Loading...</p>
-    </div>
-</div>
