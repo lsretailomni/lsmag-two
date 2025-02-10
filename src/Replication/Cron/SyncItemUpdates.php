@@ -332,8 +332,6 @@ class SyncItemUpdates extends ProductCreateTask
             $this->replicationHelper->storeManager->getDefaultStoreView()->getRootCategoryId();
     }
 
-
-
     /**
      * Get remaining records
      *
