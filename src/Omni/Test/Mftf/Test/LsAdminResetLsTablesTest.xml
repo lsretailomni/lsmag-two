@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminResetLsTablesTest">
+        <annotations>
+            <features value="LsAdminResetLsTablesTest"/>
+            <stories value="Reset all ls tables - LS Retail"/>
+            <title value="Reset all ls tables and check row count randomly."/>
+            <description value="Reset all ls tables and check row count randomly."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsReplicateHierarchyNodeActionGroup" stepKey="replicateHierarchyNode"/>
+            <actionGroup ref="LsReplicateAttributeActionGroup" stepKey="replicateAttribute"/>
+        </before>
+        <after>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- Navigate to LS Configuration Page -->
+        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad1"/>
+        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" after="navigateToConfigurationPage"/>
+        <wait stepKey="waitForPageLoad2" time="30" after="scrollToResetDb"/>
+        <click selector="{{LsConfigManagementSection.ResetLsTablesButton}}" stepKey="resetLsTables" after="waitForPageLoad2"/>
+        <wait stepKey="waitForPopup" time="5" after="resetLsTables"/>
+        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
+        <wait stepKey="waitForSuccessMessage" time="5" after="clickOk"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="All ls_ tables truncated successfully." stepKey="seeDeleteSuccessMessage" after="waitForSuccessMessage"/>
+
+        <!-- Navigate to Admin Item Replication Page -->
+        <actionGroup ref="LsNavigateToItemReplicationActionGroup" stepKey="navigateToAdminSalesOrderPage" after="seeDeleteSuccessMessage" />
+        
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount1" after="navigateToAdminSalesOrderPage"/>
+        <assertRegExp stepKey="assertRowCount1" message="pass" after="grabRowCount1">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount1</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Hierarchy node Replication Page -->
+        <actionGroup ref="LsNavigateToHierarchyNodeReplicationActionGroup" stepKey="navigateToHierarchyNodePage" after="assertRowCount1" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount2" after="navigateToHierarchyNodePage"/>
+        <assertRegExp stepKey="assertRowCount2" message="pass" after="grabRowCount2">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount2</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Attribute Replication Page -->
+        <actionGroup ref="LsNavigateToAttributeReplicationActionGroup" stepKey="navigateToAttributePage" after="assertRowCount2" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount3" after="navigateToAttributePage"/>
+        <assertRegExp stepKey="assertRowCount3" message="pass" after="grabRowCount3">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount3</actualResult>
+        </assertRegExp>
+        
+    </test>
+</tests>

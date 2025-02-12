@@ -19,5 +19,10 @@
         <element name="ItemTwoTenderType" type="select" selector="#item2_tender_type"/>
         <element name="Save" type="button" selector="#save" timeout="30"/>
         <element name="StoreConfigurationPageSuccessMessage" type="text" selector="#messages [data-ui-id='messages-message-success']"/>
+        <element name="ResetCustomerDataButton" type="text" selector="#ls_mag_restore_database_customers"/>
+        <element name="ResetProductDataButton" type="text" selector="#ls_mag_restore_database_products"/>
+        <element name="ResetOrderDataButton" type="text" selector="#ls_mag_restore_database_orders"/>
+        <element name="ResetLsTablesButton" type="text" selector="#ls_mag_restore_database_ls_tables"/>
+        <element name="RowCount" type="text" selector="div.row-gutter div.row div.admin__control-support-text"/>
     </section>
 </sections>
