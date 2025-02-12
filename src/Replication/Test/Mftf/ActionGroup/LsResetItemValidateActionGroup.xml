@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsResetItemValidateActionGroup">
+        <annotations>
+            <description>Goes to the given grid page. Checks if processed item exists or not.</description>
+        </annotations>
+        <arguments>
+            <argument name="pageUrl" type="string"/>
+            <argument name="noDataRecord" type="string"/>
+        </arguments>
+        <amOnPage url="{{pageUrl}}" stepKey="navigateToItemsPage"/>
+        <waitForPageLoad stepKey="waitForAdminItemsPageLoad"/>
+        <click selector="{{AdminLsItemGridFiltersSection.filtersButton}}" stepKey="clickFilterButton"/>
+        <conditionalClick selector="{{AdminDataGridHeaderSection.clearFilters}}" dependentSelector="{{AdminDataGridHeaderSection.clearFilters}}" visible="true" stepKey="cleanFiltersIfTheySet"/>
+        <waitForPageLoad stepKey="waitForClearFilters"/>
+        <selectOption selector="{{AdminLsItemGridFiltersSection.processedSelect}}" userInput="1" stepKey="selectFlatToMagento"/>
+        <click selector="{{AdminLsItemGridFiltersSection.apply}}" stepKey="applyFilter"/>
+        <waitForPageLoad stepKey="waitForPageToLoad"/>
+        <grabMultiple selector=".ls-repl-grid-container .data-grid .data-grid-tr-no-data" stepKey="grabNoDataTag"/>
+        <assertCount stepKey="assertNoDataTag">
+            <actualResult type="variable">grabNoDataTag</actualResult>
+            <expectedResult type="string">{{noDataRecord}}</expectedResult>
+        </assertCount>
+    </actionGroup>
+</actionGroups>

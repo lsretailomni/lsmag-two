@@ -6,16 +6,23 @@
         <annotations>
             <description>Truncate replication data</description>
         </annotations>
-        <amOnPage url="{{AdminLsConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <amOnPage url="{{AdminLsConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToConfigurationPage"/>
         <waitForPageLoad stepKey="waitForConfigPageLoad"/>
-        <waitForElementVisible selector="#ls_mag_restore_database-head" stepKey="waitForRestoreDatabaseSection"/>
-        <scrollTo selector="#ls_mag_restore_database" stepKey="scrollToBottom"/>
-        <wait stepKey="waitForPopup1" time="5"/>
-
-        <click selector="#ls_mag_restore_database-head" stepKey="clickRestoreDatabaseSection"/>
         <waitForElementVisible selector="#ls_mag_restore_database_ls_tables" stepKey="waitForTruncateAllBtn"/>
         <click selector="#ls_mag_restore_database_ls_tables" stepKey="clickTruncateAllBtn"/>
-        <wait stepKey="waitForPopup" time="5"/>
-        <acceptPopup stepKey="acceptEnablePopUp"/>
+        <wait stepKey="waitForPopup2" time="5"/>
+        <acceptPopup stepKey="acceptEnablePopUp1"/>
+
+        <click selector="#ls_mag_restore_database_attributes" stepKey="clickTruncateAllAttributesBtn"/>
+        <wait stepKey="waitForPopup3" time="5"/>
+        <acceptPopup stepKey="acceptEnablePopUp2"/>
+
+        <click selector="#ls_mag_restore_database_categories" stepKey="clickTruncateAllCategoriesBtn"/>
+        <wait stepKey="waitForPopup4" time="5"/>
+        <acceptPopup stepKey="acceptEnablePopUp3"/>
+
+        <click selector="#ls_mag_restore_database_products" stepKey="clickTruncateAllProductsBtn"/>
+        <wait stepKey="waitForPopup5" time="5"/>
+        <acceptPopup stepKey="acceptEnablePopUp4"/>
     </actionGroup>
 </actionGroups>

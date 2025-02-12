@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="AdminLsItemGridFiltersSection">
+        <element name="filtersButton" type="button" selector="div.data-grid-filters-actions-wrap > div > button" timeout="30"/>
+        <element name="processedSelect" type="input" selector="select[name=processed]"/>
+        <element name="apply" type="button" selector="button[data-action=grid-filter-apply]" timeout="30"/>
+        <element name="clearAllFilters" type="text" selector=".admin__current-filters-actions-wrap.action-clear"/>
+        <element name="clearAll" type="button" selector=".admin__data-grid-header .action-tertiary.action-clear" timeout="30"/>
+    </section>
+</sections>
