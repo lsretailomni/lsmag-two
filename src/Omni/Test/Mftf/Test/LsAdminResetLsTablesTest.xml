@@ -21,7 +21,9 @@
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsReplicateHierarchyNodeActionGroup" stepKey="replicateHierarchyNode"/>
-            <actionGroup ref="LsReplicateAttributeActionGroup" stepKey="replicateAttribute"/>
+            <actionGroup ref="LsReplicateAttributeActionGroup" stepKey="replicateAttributes"/>
+            <actionGroup ref="LsReplicateDiscountsActionGroup" stepKey="replicateDiscounts"/>
+            <actionGroup ref="LsReplicateTaxRulesActionGroup" stepKey="replicateTaxRules"/>
         </before>
         <after>
             <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
@@ -57,13 +59,30 @@
         </assertRegExp>
 
         <!-- Navigate to Admin Attribute Replication Page -->
-        <actionGroup ref="LsNavigateToAttributeReplicationActionGroup" stepKey="navigateToAttributePage" after="assertRowCount2" />
+        <actionGroup ref="LsNavigateToAttributesReplicationActionGroup" stepKey="navigateToAttributePage" after="assertRowCount2" />
 
         <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount3" after="navigateToAttributePage"/>
         <assertRegExp stepKey="assertRowCount3" message="pass" after="grabRowCount3">
             <expectedResult type="string">/^0 records/</expectedResult>
             <actualResult type="variable">grabRowCount3</actualResult>
         </assertRegExp>
-        
+
+        <!-- Navigate to Admin Discount Replication Page -->
+        <actionGroup ref="LsNavigateToDiscountsReplicationActionGroup" stepKey="navigateToDiscountsPage" after="assertRowCount3" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount4" after="navigateToDiscountsPage"/>
+        <assertRegExp stepKey="assertRowCount4" message="pass" after="grabRowCount4">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount4</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Tax Rules Replication Page -->
+        <actionGroup ref="LsNavigateToTaxRulesReplicationActionGroup" stepKey="navigateToTaxRulesPage" after="assertRowCount4" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount5" after="navigateToTaxRulesPage"/>
+        <assertRegExp stepKey="assertRowCount5" message="pass" after="grabRowCount5">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount5</actualResult>
+        </assertRegExp>
     </test>
 </tests>

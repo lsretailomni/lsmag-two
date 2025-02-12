@@ -2,7 +2,7 @@
 
 <actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
-    <actionGroup name="LsNavigateToAttributeReplicationActionGroup">
+    <actionGroup name="LsNavigateToAttributesReplicationActionGroup">
         <annotations>
             <description>Goes to the Magento admin 'Attribute replication' page.</description>
         </annotations>
