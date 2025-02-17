@@ -23,12 +23,12 @@
         <data key="scope_code">base</data>
         <data key="value">{{_ENV.SERVICE_BASE_URL}}</data>
     </entity>
-    <entity name="ServiceBaseUrlDisable">
+    <entity name="ServiceBaseUrlDisabled">
         <data key="path">ls_mag/service/base_url</data>
         <data key="label">Base URL</data>
         <data key="scope">websites</data>
         <data key="scope_code">base</data>
-        <data key="value">{{_ENV.SERVICE_BASE_URL_DISABLE}}</data>
+        <data key="value">{{_ENV.SERVICE_BASE_URL_DISABLED}}</data>
     </entity>
     <entity name="RestrictedOrderStatusDefault">
         <data key="path">ls_mag/ls_order_management/sync_order_statuses</data>
