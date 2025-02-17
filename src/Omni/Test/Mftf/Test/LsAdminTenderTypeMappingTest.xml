@@ -23,8 +23,6 @@
         </before>
         <after>
             <actionGroup ref="LsResetStoreTenderTypeDataActionGroup" stepKey="resetStoreTenderTypeData"/>
-            <magentoCLI command="config:set --scope website --scope-code base ls_mag/ls_order_management/tender_type_mapping NULL" stepKey="setTenderTypeMapping"/>
-
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
                 <argument name="tags" value="config"/>
             </actionGroup>
