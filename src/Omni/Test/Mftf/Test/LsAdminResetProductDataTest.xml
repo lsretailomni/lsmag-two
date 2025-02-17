@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminResetProductDataTest">
+        <annotations>
+            <features value="LsAdminResetProductDataTest"/>
+            <stories value="Reset product data - LS Retail"/>
+            <title value="Reset product data from Ls Admin config page."/>
+            <description value="Reset product data from Ls Admin config page."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <!--Create test data.-->
+            <createData entity="LsSimpleProduct1" stepKey="product1" />
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
+                <argument name="indices" value=""/>
+            </actionGroup>
+            
+        </before>
+        <after>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+
+        <!-- Navigate to LS Configuration Page -->
+        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad1"/>
+        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" after="waitForPageLoad1"/>
+        <wait stepKey="waitForConfigPageLoad" time="30" after="scrollToResetDb"/>
+        <click selector="{{LsConfigManagementSection.ResetProductDataButton}}" stepKey="resetProductDataClick" after="waitForConfigPageLoad"/>
+        <wait stepKey="waitForPopup" time="5" after="resetProductDataClick"/>
+        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
+
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Products deleted successfully." stepKey="seeDeleteSuccessMessage" after="clickOk"/>
+
+        <!-- Navigate to Admin Product listing Page -->
+        <actionGroup ref="LsNavigateToAdminCatalogActionGroup" stepKey="navigateToAdminCatalogPage" after="seeDeleteSuccessMessage" />
+        <wait stepKey="waitForCatalogPageLoad" time="30" after="navigateToAdminCatalogPage"/>
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount" after="navigateToAdminCatalogPage"/>
+        <assertRegExp stepKey="assertRowCount" message="pass" after="grabRowCount">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount</actualResult>
+        </assertRegExp>
+    </test>
+</tests>

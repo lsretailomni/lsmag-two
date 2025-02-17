@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsReplicateTaxRulesAndZonesActionGroup">
+        <arguments>
+            <argument name="newWebsiteName" type="string"/>
+        </arguments>
+        <amOnPage url="{{AdminCronListingPage.url}}" stepKey="navigateToCronListingPage"/>
+        <waitForPageLoad stepKey="waitForCronListingPage"/>
+        <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='repl_tax_setup_execute_label']" stepKey="waitForGridLoad"/>
+        <click selector=".admin__data-grid-wrap a[aria-label='repl_tax_setup_execute_label']" stepKey="clickExecute"/>
+        <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForExecuteConfirmationModal"/>
+        <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage"/>
+        <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute"/>
+        <waitForPageLoad time="60" stepKey="waitForExecuteToFinish"/>
+
+        <click selector="{{AdminConfigSection.defaultConfigButton}}" stepKey="clickDefaultConfigButton" after="waitForExecuteToFinish"/>
+        <see selector="{{AdminConfigSection.defaultConfigDropdown}}" userInput="{{newWebsiteName}}" stepKey="seeAssertWebsiteInDefaultConfigDropdown"/>
+
+        <click selector="{{LsConfigManagementSection.selectStoreView(newWebsiteName)}}" stepKey="clickSaveStoreView"/>        
+
+        <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='repl_tax_rules_execute_label']" stepKey="waitForGridLoad1"/>
+        <click selector=".admin__data-grid-wrap a[aria-label='repl_tax_rules_execute_label']" stepKey="clickExecute1"/>
+        <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForExecuteConfirmationModal1"/>
+        <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage1"/>
+        <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute1"/>
+        <waitForPageLoad time="60" stepKey="waitForExecuteToFinish1"/>
+    </actionGroup>
+</actionGroups>

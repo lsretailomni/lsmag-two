@@ -2,12 +2,12 @@
 
 <actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
-    <actionGroup name="LsNavigateToTaxRulesReplicationActionGroup">
+    <actionGroup name="LsNavigateToAdminSalesOrderActionGroup">
         <annotations>
-            <description>Goes to the Magento admin 'Tax Rules replication' page.</description>
+            <description>Goes to the Magento admin 'Sales Orders' page.</description>
         </annotations>
 
-        <amOnPage url="{{AdminTaxRulesReplicationPage.url}}" stepKey="navigateToDiscountsReplicationPage"/>
+        <amOnPage url="{{AdminSalesOrderPage.url}}" stepKey="navigateToSalesOrderPage"/>
         <waitForPageLoad stepKey="waitForPageLoad1"/>
     </actionGroup>
 </actionGroups>

@@ -23,6 +23,9 @@
         <element name="ResetProductDataButton" type="text" selector="#ls_mag_restore_database_products"/>
         <element name="ResetOrderDataButton" type="text" selector="#ls_mag_restore_database_orders"/>
         <element name="ResetLsTablesButton" type="text" selector="#ls_mag_restore_database_ls_tables"/>
+        <element name="ResetTaxRulesButton" type="text" selector="#ls_mag_restore_database_tax_rules"/>
         <element name="RowCount" type="text" selector="div.row-gutter div.row div.admin__control-support-text"/>
+        <element name="TaxRowCount" type="text" selector="div#tax_rate_grid div.admin__control-support-text"/>
+        <element name="selectStoreView" type="button" selector="//a[@data-role='store-view-id' and contains(text(),'{{selectStoreView}}')]" parameterized="true"/>
     </section>
 </sections>
