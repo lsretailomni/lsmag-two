@@ -25,7 +25,7 @@
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
                 <argument name="indices" value=""/>
             </actionGroup>
-            
+
         </before>
         <after>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
@@ -36,7 +36,7 @@
 
 
         <!-- Navigate to LS Configuration Page -->
-        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" />
         <waitForPageLoad stepKey="waitForPageLoad1"/>
         <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" after="waitForPageLoad1"/>
         <wait stepKey="waitForConfigPageLoad" time="30" after="scrollToResetDb"/>

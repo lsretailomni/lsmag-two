@@ -19,9 +19,7 @@
         </annotations>
         <before>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
-            <actionGroup ref="LsNavigateToAdminPageActionGroup" stepKey="navigateToLsConfigurationPage">
-                <argument name="newWebsiteName" value="Main Website" />
-            </actionGroup>
+            <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection" />
         </before>
         <after>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
@@ -38,7 +36,7 @@
         <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore" after="waitForStoresLoad"/>
         <wait stepKey="waitForHierarchyLoad" time="5" after="fillStore"/>
         <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy" after="waitForHierarchyLoad"/>
-        
+
         <actionGroup ref="SaveStoreConfigurationActionGroup" stepKey="saveStoreConfiguration6"/>
         <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>
     </test>

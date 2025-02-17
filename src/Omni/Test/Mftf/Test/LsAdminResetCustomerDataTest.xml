@@ -23,7 +23,7 @@
             <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
                 <argument name="indices" value=""/>
             </actionGroup>
-            
+
         </before>
         <after>
             <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
@@ -38,29 +38,26 @@
             <argument name="message" value="Thank you for registering with Ls Retail."/>
         </actionGroup>
 
-        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="seeSuccessMessage" />
-        
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"/>
+
 
         <!-- Navigate to LS Configuration Page -->
-        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage" after="customerDashboardInformation"/>
-        <waitForPageLoad stepKey="waitForPageLoad1"/>
-        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" after="waitForPageLoad1"/>
-        <wait stepKey="waitForConfigPageLoad" time="30" after="scrollToResetDb"/>
-        <click selector="{{LsConfigManagementSection.ResetCustomerDataButton}}" stepKey="resetCustomerDataClick" after="waitForConfigPageLoad"/>
-        <wait stepKey="waitForPopup" time="5" after="resetCustomerDataClick"/>
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" />
+        <click selector="{{LsConfigManagementSection.ResetCustomerDataButton}}" stepKey="resetCustomerDataClick"/>
+        <wait stepKey="waitForPopup" time="5"/>
         <acceptPopup stepKey="clickOk" after="waitForPopup"/>
-        
-        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Customers deleted successfully." stepKey="seeDeleteSuccessMessage" after="clickOk"/>
+
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Customers deleted successfully." stepKey="seeDeleteSuccessMessage"/>
 
         <!-- Navigate to Admin Customer listing Page -->
-        <actionGroup ref="LsNavigateToAdminCustomerActionGroup" stepKey="navigateToAdminCustomerPage" after="seeDeleteSuccessMessage" />
-        <wait stepKey="waitForCatalogPageLoad" time="30" after="navigateToAdminCustomerPage"/>
-        
-        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount" after="navigateToAdminCustomerPage"/>
-        <assertRegExp stepKey="assertRowCount" message="pass" after="grabRowCount">
+        <actionGroup ref="LsNavigateToAdminCustomerActionGroup" stepKey="navigateToAdminCustomerPage"/>
+        <wait stepKey="waitForCatalogPageLoad" time="30"/>
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount"/>
+        <assertRegExp stepKey="assertRowCount" message="pass">
             <expectedResult type="string">/^0 records/</expectedResult>
             <actualResult type="variable">grabRowCount</actualResult>
         </assertRegExp>
-        
+
     </test>
 </tests>

@@ -57,7 +57,8 @@
         </assertRegExp>
 
         <!-- Navigate to LS Configuration Page -->
-        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage" before="deleteNewUser"/>
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" before="deleteNewUser"/>
+
         <waitForPageLoad stepKey="waitForPageLoad1"/>
         <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" before="deleteNewUser"/>
         <wait stepKey="waitForConfigPageLoad" time="30" after="scrollToResetDb"/>
@@ -69,12 +70,12 @@
 
         <!-- Navigate to Admin Sales Order listing Page -->
         <actionGroup ref="LsNavigateToAdminSalesOrderActionGroup" stepKey="navigateToAdminSalesOrderPage" before="deleteNewUser" />
-        
+
         <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount" before="deleteNewUser"/>
         <assertRegExp stepKey="assertRowCount" message="pass" before="deleteNewUser">
             <expectedResult type="string">/^0 records/</expectedResult>
             <actualResult type="variable">grabRowCount</actualResult>
         </assertRegExp>
-        
+
     </test>
 </tests>

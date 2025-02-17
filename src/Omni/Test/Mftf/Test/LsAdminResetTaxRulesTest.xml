@@ -29,21 +29,21 @@
         </after>
 
         <!-- Navigate to LS Configuration Page -->
-        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" />
         <waitForPageLoad stepKey="waitForPageLoad1"/>
-        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" after="navigateToConfigurationPage"/>
-        <wait stepKey="waitForPageLoad2" time="10" after="scrollToResetDb"/>
-        <click selector="{{LsConfigManagementSection.ResetTaxRulesButton}}" stepKey="resetTaxRules" after="waitForPageLoad2"/>
-        <wait stepKey="waitForPopup" time="5" after="resetTaxRules"/>
-        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
-        <wait stepKey="waitForSuccessMessage" time="5" after="clickOk"/>
-        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Tax Rules deleted successfully." stepKey="seeDeleteSuccessMessage" after="waitForSuccessMessage"/>
+        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb"/>
+        <wait stepKey="waitForPageLoad2" time="10"/>
+        <click selector="{{LsConfigManagementSection.ResetTaxRulesButton}}" stepKey="resetTaxRules"/>
+        <wait stepKey="waitForPopup" time="5"/>
+        <acceptPopup stepKey="clickOk"/>
+        <wait stepKey="waitForSuccessMessage" time="5"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Tax Rules deleted successfully." stepKey="seeDeleteSuccessMessage"/>
 
         <!-- Navigate to Admin Tax Zone and Rates Page -->
-        <actionGroup ref="LsNavigateToTaxZoneAndRatesActionGroup" stepKey="navigateToTaxZoneAndRatesPage" after="seeDeleteSuccessMessage" />
+        <actionGroup ref="LsNavigateToTaxZoneAndRatesActionGroup" stepKey="navigateToTaxZoneAndRatesPage"/>
 
-        <grabTextFrom selector="{{LsConfigManagementSection.TaxRowCount}}" stepKey="grabRowCount1" after="navigateToTaxZoneAndRatesPage"/>
-        <assertRegExp stepKey="assertRowCount1" message="pass" after="grabRowCount1">
+        <grabTextFrom selector="{{LsConfigManagementSection.TaxRowCount}}" stepKey="grabRowCount1"/>
+        <assertRegExp stepKey="assertRowCount1" message="pass">
             <expectedResult type="string">/^0 records/</expectedResult>
             <actualResult type="variable">grabRowCount1</actualResult>
         </assertRegExp>
