@@ -2,10 +2,6 @@ trigger:
   branches:
     include:
       - '*'
-pr:
-  branches:
-    include:
-      - develop
 resources:
   containers:
     - container: db
