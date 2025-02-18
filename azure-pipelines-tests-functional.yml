@@ -118,7 +118,7 @@ steps:
       cd $(magentoDirectory)
       mkdir -p artifacts/lsretail/lsmag-two
       cp -a /home/vsts/work/1/s/. $(magentoDirectory)/artifacts/lsretail/lsmag-two/
-      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:^4.7 --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
       composer config use-include-path true
       composer config --no-plugins allow-plugins true
       composer config minimum-stability stable
@@ -129,6 +129,8 @@ steps:
       composer require magento/magento-coding-standard --dev
       composer require lusitanian/oauth --dev
       find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
+      cat composer.json
+      ls -la vendor/bin/
     displayName: 'Magento Code Preparation'
 
   - script: |
