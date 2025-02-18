@@ -1,0 +1,292 @@
+trigger:
+  branches:
+    include:
+      - '*'
+pr:
+  branches:
+    include:
+      - develop
+resources:
+  containers:
+    - container: db
+      image: $(MARIA_DB_IMAGE)
+      ports:
+        - '3306:3306'
+      env:
+        MYSQL_DATABASE: users
+        MYSQL_USER: mysql
+        MYSQL_PASSWORD: mysql
+        MYSQL_ROOT_PASSWORD: mysql
+    - container: elasticsearch
+      image: $(ELASTIC_SEARCH_IMAGE)
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+      env:
+        discovery.type: single-node
+        ES_JAVA_OPTS: -Xms1g -Xmx1g
+        cluster.routing.allocation.disk.threshold_enabled: false
+    - container: selenium
+      image: selenium/standalone-chrome-debug:latest
+      ports:
+        - "5900:5900"
+        - "4444:4444"
+pool:
+  vmImage: ubuntu-24.04
+
+services:
+  db: db
+  elasticsearch: elasticsearch
+  selenium: selenium
+
+strategy:
+  matrix:
+    magento_2_4_7_php_8_3:
+      phpVersion: '8.3'
+      magentoVersion: '2.4.7-p3'
+      databaseName: 'magento_2_4_7_php_8_2'
+      composerOverride: '{}'
+      phpunitVersion: '^9'
+      magentoDirectory: "/var/www/html"
+
+steps:
+
+  - script: |
+      sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+      sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+      sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+      sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+      sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+      php -version
+    displayName: 'Use PHP Version $(phpVersion)'
+
+  - script: |
+      sudo apt-get install default-mysql-client
+      printf 'Waiting for MySQL database to accept connections'
+      until mysql --host 127.0.0.1 --user=mysql --password=mysql --execute "SHOW DATABASES"; do
+        printf '.'
+        sleep 1;
+      done;
+    displayName: 'Wait for Database to initialise'
+
+  - script: |
+      printf 'Waiting for elasticsearch to accept connections'
+      until curl -XGET '0.0.0.0:9200/'; do
+      printf '.'
+      sleep 1;
+      done;
+    displayName: 'Wait for Elasticsearch to initialise'
+
+  - script: |
+      printf 'Waiting for selenium to accept connections'
+      until curl -XGET '0.0.0.0:4444/'; do
+      printf '.'
+      sleep 1;
+      done;
+    displayName: 'Wait for Selenium to initialise'
+
+  - script: |
+      sudo apt-get update
+      sudo apt-get install -y apache2 libapache2-mod-php
+      sudo a2enmod rewrite
+      sudo service apache2 start
+      echo "Apache2 installed and started successfully."
+      AGENT_USER=$(whoami)
+      sudo sed -i "s/www-data/${AGENT_USER}/g" /etc/apache2/envvars
+      # Ensure the DocumentRoot directory has the correct permissions
+      sudo chown -R ${AGENT_USER}:${AGENT_USER} /var/www/html
+      sudo chmod -R 775 /var/www/html
+      sudo tee /etc/apache2/sites-available/magento.conf > /dev/null <<EOF
+          <VirtualHost *:80>
+              ServerAdmin webmaster@localhost
+              DocumentRoot /var/www/html
+              ServerName mag.localhost.com
+              DocumentRoot /var/www/html
+              <Directory /var/www/html>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+              </Directory>
+              ErrorLog \${APACHE_LOG_DIR}/error.log
+              CustomLog \${APACHE_LOG_DIR}/access.log combined
+        </VirtualHost>
+      EOF
+          sudo ln -s /etc/apache2/sites-available/magento.conf /etc/apache2/sites-enabled/magento.conf
+          echo "127.0.0.1 mag.localhost.com" | sudo tee -a /etc/hosts
+          sudo systemctl restart apache2
+          echo "Magento Apache2 configuration applied."
+    displayName: 'Install and Start Apache2'
+
+  - script: |
+      cd $(magentoDirectory)
+      mkdir -p artifacts/lsretail/lsmag-two
+      cp -a /home/vsts/work/1/s/. $(magentoDirectory)/artifacts/lsretail/lsmag-two/
+      composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+      composer config use-include-path true
+      composer config --no-plugins allow-plugins true
+      composer config minimum-stability stable
+      composer config prefer-stable true
+      php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
+      echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
+      composer install
+      composer require magento/magento-coding-standard --dev
+      composer require lusitanian/oauth --dev
+      find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
+    displayName: 'Magento Code Preparation'
+
+  - script: |
+      telnet 127.0.0.1 3306
+      mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
+    displayName: 'Magento Database Creation'
+
+  - script: |
+      cd $(magentoDirectory)
+      php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
+    displayName: 'Magento Installation Testing'
+
+  - script: |
+      cd $(magentoDirectory)
+      php -d memory_limit=-1 bin/magento deploy:mode:set developer
+    displayName: 'Magento developer mode Testing'
+
+  - script: |
+      cd $(magentoDirectory)
+      php bin/magento config:set --scope=websites --scope-code=base ls_mag/service/base_url "$(BASE_URL)"
+      php bin/magento config:set --scope=websites --scope-code=base ls_mag/service/selected_store "$(STORE_ID)"
+      php bin/magento config:set --scope=websites --scope-code=base ls_mag/service/replicate_hierarchy_code "$(HIERARCHY_CODE)"
+      php bin/magento config:set --scope=websites --scope-code=base ls_mag/service/version "$(CS_VERSION)"
+      php bin/magento config:set --scope=websites --scope-code=base ls_mag/service/ls_central_version "$(LS_VERSION)"
+      php bin/magento config:set cms/wysiwyg/enabled disabled
+      php bin/magento config:set admin/security/admin_account_sharing 1
+      php bin/magento config:set admin/security/use_form_key 0
+      php bin/magento cache:flush
+      vendor/bin/mftf build:project
+      sudo tee dev/tests/acceptance/.env > /dev/null <<EOF
+          MAGENTO_BASE_URL=http://mag.localhost.com/
+          MAGENTO_BACKEND_NAME=admin
+          MAGENTO_ADMIN_USERNAME=admin
+          SELENIUM_CLOSE_ALL_SESSIONS=true
+          BROWSER=chrome
+          WINDOW_WIDTH=1920
+          WINDOW_HEIGHT=1080
+          MODULE_ALLOWLIST=Magento_Framework,ConfigurableProductWishlist,ConfigurableProductCatalogSearch
+          WAIT_TIMEOUT=15
+          MAGENTO_CLI_WAIT_TIMEOUT=15
+          BROWSER_LOG_BLOCKLIST=other
+          ELASTICSEARCH_VERSION=7
+          SELENIUM_HOST=selenium
+          CUSTOM_MODULE_PATHS=/var/www/html/vendor/lsretail/lsmag-two/src/Omni/Test/Mftf,/var/www/html/vendor/lsretail/lsmag-two/src/Customer/Test/Mftf,/var/www/html/vendor/lsretail/lsmag-two/src/Replication/Test/Mftf
+          CENTRAL_STORE_CODE=S0013
+          HIERARCHY_CODE=FASHIONCOSMETICS
+          SERVICE_BASE_URL=http://20.6.33.78/commerceservice
+          CS_VERSION=2024.10.0
+          CENTRAL_VERSION="\"26.0.0.0 (26.0.0.0 [25900] CL:True EL:True)\""
+          INDUSTRY=retail
+          ORDER_PREFIX=UT06-
+          EXISTING_CUSTOMER_1_EMAIL=pipeline_retail@lsretail.com
+          EXISTING_CUSTOMER_1_PASSWORD=Nmswer123@
+          EXISTING_CUSTOMER_1_LSR_USERNAME=mc_57745
+          EXISTING_CUSTOMER_1_LSR_ID=MSO000012
+          EXISTING_CUSTOMER_1_LSR_CARDID=10051
+          SIMPLE_PRODUCT_1_ITEM_ID=40430
+          SIMPLE_PRODUCT_2_ITEM_ID=40440
+          SIMPLE_PRODUCT_3_ITEM_ID=40180
+          CONFIGURABLE_PRODUCT_1_ITEM_ID=40015
+          CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID=000
+          CONFIGURABLE_VARIANT_PRODUCT_2_VARIANT_ID=001
+          CONFIGURABLE_VARIANT_PRODUCT_1_SKU=40015-000
+          CONFIGURABLE_VARIANT_PRODUCT_2_SKU=40015-001
+          GIFT_CARD_NUMBER_1=10000000
+          RESTRICTED_ORDER_STATUSES_DEFAULT=canceled,fraud,payment_review
+          RESTRICTED_ORDER_STATUSES_UPDATED=canceled,fraud,payment_review,processing,pending
+          SERVICE_BASE_URL_DISABLED=http://20.6.33.78/commerceservice-1
+      EOF
+      cat tee dev/tests/acceptance/.env
+      touch dev/tests/acceptance/.credentials
+      sudo tee dev/tests/acceptance/.credentials > /dev/null <<EOF
+          #magento/tfa/OTP_SHARED_SECRET
+          magento/MAGENTO_ADMIN_PASSWORD=admin123
+
+          #magento/carriers_fedex_account=
+          #magento/carriers_fedex_meter_number=
+          #magento/carriers_fedex_key=
+          #magento/carriers_fedex_password=
+
+          #magento/carriers_ups_password=
+          #magento/carriers_ups_username=
+          #magento/carriers_ups_access_license_number=
+          #magento/carriers_ups_shipper_number=
+
+          #magento/carriers_usps_userid=
+          #magento/carriers_usps_password=
+
+          #magento/carriers_dhl_id_us=
+          #magento/carriers_dhl_password_us=
+          #magento/carriers_dhl_account_us=
+
+          #magento/carriers_dhl_id_eu=
+          #magento/carriers_dhl_password_eu=
+          #magento/carriers_dhl_account_eu=
+
+
+          #magento/payment_authorizenet_login=
+          #magento/payment_authorizenet_trans_key=
+          #magento/payment_authorizenet_trans_md5=
+
+          #magento/authorizenet_fraud_review_login=
+          #magento/authorizenet_fraud_review_trans_key=
+          #magento/authorizenet_fraud_review_md5=
+
+          #magento/braintree_enabled_fraud_merchant_account_id=
+          #magento/braintree_enabled_fraud_merchant_id=
+          #magento/braintree_enabled_fraud_public_key=
+          #magento/braintree_enabled_fraud_private_key=
+
+
+          magento/braintree_enabled_merchant_id=nv6dj438g72yzv48
+          magento/braintree_enabled_public_key=hgmryncq4zz7mxsn
+          magento/braintree_enabled_private_key=96cc091f17e83f2c13aba32cd81c4ff0
+
+          #magento/braintree_disabled_fraud_merchant_account_id=
+          #magento/braintree_disabled_fraud_merchant_id=
+          #magento/braintree_disabled_fraud_public_key=
+          #magento/braintree_disabled_fraud_private_key=
+
+          #magento/payment_paypal_group_all_in_one_wpp_usuk_wpp_required_settings_wpp_and_express_checkout_business_account=
+          #magento/payment_paypal_group_all_in_one_wpp_usuk_wpp_required_settings_wpp_and_express_checkout_api_username=
+          #magento/payment_paypal_group_all_in_one_wpp_usuk_wpp_required_settings_wpp_and_express_checkout_api_password=
+          #magento/payment_paypal_group_all_in_one_wpp_usuk_wpp_required_settings_wpp_and_express_checkout_api_signature=
+          #magento/payment_paypal_express_merchant_id=
+
+          #magento/payflow_pro_fraud_protection_enabled_business_account=
+          #magento/payflow_pro_fraud_protection_enabled_partner=
+          #magento/payflow_pro_fraud_protection_enabled_user=
+          #magento/payflow_pro_fraud_protection_enabled_pwd=
+          #magento/payflow_pro_fraud_protection_enabled_vendor=
+
+          #magento/payflow_pro_business_account=
+          magento/payflow_pro_partner=Paypal
+          magento/payflow_pro_user=lsretail
+          magento/payflow_pro_pwd=Nmswer123@
+          magento/payflow_pro_vendor=lsretail
+
+          #magento/payflow_link_business_account_email=
+          #magento/payflow_link_partner=
+          #magento/payflow_link_user=
+          #magento/payflow_link_password=
+          #magento/payflow_link_vendor=
+
+          #magento/payment_paypal_group_all_in_one_payments_pro_hosted_solution_with_express_checkout_pphs_required_settings_pphs_required_settings_pphs_business_account=
+          #magento/payment_paypal_group_all_in_one_payments_pro_hosted_solution_with_express_checkout_pphs_required_settings_pphs_required_settings_pphs_api_username=
+          #magento/payment_paypal_group_all_in_one_payments_pro_hosted_solution_with_express_checkout_pphs_required_settings_pphs_required_settings_pphs_api_password=
+          #magento/payment_paypal_group_all_in_one_payments_pro_hosted_solution_with_express_checkout_pphs_required_settings_pphs_required_settings_pphs_api_signature=
+
+          #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_business_account=
+          #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_username=
+          #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_password=
+          #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_signature=
+      EOF
+      cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
+      vendor/bin/mftf run:test AdminLoginSuccessfulTest --remove
+    displayName: 'Configure LS Retail Configuration'
