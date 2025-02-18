@@ -156,8 +156,6 @@ steps:
       php bin/magento config:set admin/security/use_form_key 0
       php bin/magento cache:flush
       vendor/bin/mftf build:project
-      pwd
-      ls -la dev/tests/acceptance
       sudo tee dev/tests/acceptance/.env > /dev/null <<EOF
           MAGENTO_BASE_URL=http://mag.localhost.com/
           MAGENTO_BACKEND_NAME=admin
@@ -263,8 +261,11 @@ steps:
           #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_password=
           #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_signature=
       EOF
+      cat dev/tests/acceptance/.credentials.example
       cat dev/tests/acceptance/.credentials
       cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
+      pwd
+      ls -la dev/tests/acceptance
       php bin/magento setup:upgrade
       vendor/bin/mftf doctor
       vendor/bin/mftf run:test AdminLoginSuccessfulTest --remove
