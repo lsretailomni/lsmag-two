@@ -198,6 +198,7 @@ steps:
       EOF
       touch dev/tests/acceptance/.credentials
       sudo tee dev/tests/acceptance/.credentials > /dev/null <<EOF
+      #magento/tfa/OTP_SHARED_SECRET
       magento/MAGENTO_ADMIN_PASSWORD=admin123
       #magento/carriers_fedex_account=
       #magento/carriers_fedex_meter_number=
@@ -261,12 +262,10 @@ steps:
       #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_password=
       #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_signature=
       EOF
-      cat dev/tests/acceptance/.credentials.example
-      cat dev/tests/acceptance/.credentials
       cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
       pwd
       ls -la dev/tests/acceptance
-      php bin/magento setup:upgrade
-      vendor/bin/mftf doctor
-      vendor/bin/mftf run:test AdminLoginSuccessfulTest --remove
+      cd dev/tests/acceptance
+      php ../../../vendor/bin/mftf doctor
+      php ../../../vendor/bin/mftf run:test AdminLoginSuccessfulTest --remove
     displayName: 'Configure LS Retail Configuration'
