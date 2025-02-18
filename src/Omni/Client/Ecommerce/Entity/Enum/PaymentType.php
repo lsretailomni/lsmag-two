@@ -17,6 +17,9 @@ use MyCLabs\Enum\Enum;
  * @$method static PaymentType REFUND()
  * @$method static PaymentType SHIPPED()
  * @$method static PaymentType COLLECTED()
+ * @$method static PaymentType ROUNDING()
+ * @$method static PaymentType REFUNDED_ON_P_O_S()
+ * @$method static PaymentType VOIDED()
  */
 class PaymentType extends Enum
 {
@@ -31,5 +34,11 @@ class PaymentType extends Enum
     public const SHIPPED = 'Shipped';
 
     public const COLLECTED = 'Collected';
+
+    public const ROUNDING = 'Rounding';
+
+    public const REFUNDED_ON_P_O_S = 'RefundedOnPOS';
+
+    public const VOIDED = 'Voided';
 }
 

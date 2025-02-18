@@ -113,7 +113,7 @@ class TenderTypesColumn extends Select
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [
-                    'value' => $storeTenderType->getOmniTenderTypeId(),
+                    'value' => $storeTenderType->getTenderTypeId(),
                     'label' => __($storeTenderType->getName())
                 ];
             }

@@ -12,6 +12,9 @@
             <ls_industry>
                 <ls_choose_industry>retail</ls_choose_industry>
             </ls_industry>
+            <ls_order_management>
+                <tender_type_mapping>{"item1":{"payment_method":"checkmo","tender_type":"2"},"item2":{"payment_method":"giftcard","tender_type":"8"},"item3":{"payment_method":"loypoints","tender_type":"4"}}</tender_type_mapping>
+            </ls_order_management>
         </ls_mag>
     </default>
 </config>
