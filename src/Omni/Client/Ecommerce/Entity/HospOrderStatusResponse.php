@@ -13,12 +13,12 @@ use Ls\Omni\Client\ResponseInterface;
 class HospOrderStatusResponse implements ResponseInterface
 {
     /**
-     * @property OrderHospStatus $HospOrderStatusResult
+     * @property ArrayOfOrderHospStatus $HospOrderStatusResult
      */
     protected $HospOrderStatusResult = null;
 
     /**
-     * @param OrderHospStatus $HospOrderStatusResult
+     * @param ArrayOfOrderHospStatus $HospOrderStatusResult
      * @return $this
      */
     public function setHospOrderStatusResult($HospOrderStatusResult)
@@ -28,7 +28,7 @@ class HospOrderStatusResponse implements ResponseInterface
     }
 
     /**
-     * @return OrderHospStatus
+     * @return ArrayOfOrderHospStatus
      */
     public function getHospOrderStatusResult()
     {
@@ -36,7 +36,7 @@ class HospOrderStatusResponse implements ResponseInterface
     }
 
     /**
-     * @return OrderHospStatus
+     * @return ArrayOfOrderHospStatus
      */
     public function getResult()
     {
