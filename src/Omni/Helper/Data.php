@@ -728,7 +728,7 @@ class Data extends AbstractHelper
         }
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
-                $storeTenderTypes[$storeTenderType->getOmniTenderTypeId()] = $storeTenderType->getName();
+                $storeTenderTypes[$storeTenderType->getTenderTypeId()] = $storeTenderType->getName();
             }
         }
 
