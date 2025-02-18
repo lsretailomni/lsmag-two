@@ -140,7 +140,7 @@ steps:
 
   - script: |
       cd $(magentoDirectory)
-      php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
+      php bin/magento setup:install --base-url=https://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
     displayName: 'Magento Installation Testing'
 
   - script: |
@@ -157,7 +157,7 @@ steps:
       php bin/magento cache:flush
       vendor/bin/mftf build:project
       sudo tee dev/tests/acceptance/.env > /dev/null <<EOF
-      MAGENTO_BASE_URL=http://mag.localhost.com/
+      MAGENTO_BASE_URL=https://mag.localhost.com/
       MAGENTO_BACKEND_NAME=admin
       MAGENTO_ADMIN_USERNAME=admin
       SELENIUM_CLOSE_ALL_SESSIONS=true
