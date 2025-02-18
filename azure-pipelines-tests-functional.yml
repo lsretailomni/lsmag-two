@@ -160,6 +160,8 @@ steps:
       php bin/magento config:set admin/security/use_form_key 0
       php bin/magento cache:flush
       vendor/bin/mftf build:project
+      pwd
+      ls -la dev/tests/acceptance
       sudo tee dev/tests/acceptance/.env > /dev/null <<EOF
           MAGENTO_BASE_URL=http://mag.localhost.com/
           MAGENTO_BACKEND_NAME=admin
@@ -200,7 +202,7 @@ steps:
           RESTRICTED_ORDER_STATUSES_UPDATED=canceled,fraud,payment_review,processing,pending
           SERVICE_BASE_URL_DISABLED=http://20.6.33.78/commerceservice-1
       EOF
-      cat tee dev/tests/acceptance/.env
+      cat dev/tests/acceptance/.env
       touch dev/tests/acceptance/.credentials
       sudo tee dev/tests/acceptance/.credentials > /dev/null <<EOF
           #magento/tfa/OTP_SHARED_SECRET
