@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminTenderTypeMappingTest">
+        <annotations>
+            <features value="LsAdminTenderTypeMappingTest"/>
+            <stories value="Tender Type mapping in Store Configuration - LS Retail"/>
+            <title value="Verify tender type mappings."/>
+            <description value="Verify tender type mappings."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <actionGroup ref="LsReplicateStoreTenderTypeDataActionGroup" stepKey="replicateStoreTenderTypeData"/>
+        </before>
+        <after>
+            <actionGroup ref="LsResetStoreTenderTypeDataActionGroup" stepKey="resetStoreTenderTypeData"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection" />
+
+        <wait stepKey="waitForConfigPageLoad" time="30"/>
+        <fillField selector="{{LsConfigManagementSection.ServiceBaseUrl}}" userInput="{{ServiceBaseUrl.value}}" stepKey="setServiceBaseUrl"/>
+        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl"/>
+        <wait stepKey="waitForPopup" time="5"/>
+        <acceptPopup stepKey="clickOk"/>
+        <wait stepKey="waitForStoresLoad" time="5"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore"/>
+        <wait stepKey="waitForHierarchyLoad" time="5"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy"/>
+
+        <wait stepKey="waitForHierarchy" time="5"/>
+        <actionGroup ref="SaveStoreConfigurationActionGroup" stepKey="saveStoreConfiguration5"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage2"/>
+
+        <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_ls_order_management-link" stepKey="navigateToOrderManagement" />
+        <selectOption selector="{{LsConfigManagementSection.ItemOnePaymentMethod}}" userInput="Check / Money order" stepKey="ItemOnePaymentMethod" />
+        <selectOption selector="{{LsConfigManagementSection.ItemOneTenderType}}" userInput="Check" stepKey="ItemOneTenderType"  />
+        <selectOption selector="{{LsConfigManagementSection.ItemTwoPaymentMethod}}" userInput="Gift Card" stepKey="ItemTwoPaymentMethod" />
+        <selectOption selector="{{LsConfigManagementSection.ItemTwoTenderType}}" userInput="Gift Card" stepKey="ItemTwoTenderType"/>
+        <wait stepKey="waitBeforeSave" time="5" after="ItemTwoTenderType"/>
+
+
+        <actionGroup ref="SaveStoreConfigurationActionGroup" stepKey="saveStoreConfiguration6"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>
+    </test>
+</tests>

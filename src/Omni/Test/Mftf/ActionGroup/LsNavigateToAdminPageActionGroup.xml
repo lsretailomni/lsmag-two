@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsNavigateToAdminPageActionGroup">
+        <annotations>
+            <description>Goes to the 'Configuration' page for 'LS Retail'.</description>
+        </annotations>
+        <arguments>
+            <argument name="newWebsiteName" type="string"/>
+        </arguments>
+
+        <amOnPage url="{{LsAdminConfigurationPage.url}}" stepKey="navigateToConfigurationPage"/>
+        <waitForPageLoad stepKey="waitForPageLoad1"/>
+
+        <click selector="{{AdminConfigSection.defaultConfigButton}}" stepKey="clickDefaultConfigButton"/>
+        <see selector="{{AdminConfigSection.defaultConfigDropdown}}" userInput="{{newWebsiteName}}" stepKey="seeAssertWebsiteInDefaultConfigDropdown"/>
+
+        <click selector="{{AdminConfigSection.selectWebsiteName(newWebsiteName)}}" stepKey="clickSaveWebsite"/>
+        <waitForElementVisible selector="{{AdminConfirmationModalSection.ok}}" stepKey="waitForElementVisible"/>
+        <click selector="{{AdminConfirmationModalSection.ok}}" stepKey="acceptMessage"/>
+    </actionGroup>
+</actionGroups>

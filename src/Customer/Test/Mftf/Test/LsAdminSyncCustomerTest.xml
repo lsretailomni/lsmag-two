@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminSyncCustomerTest" extends="StorefrontCreateCustomerTest">
+        <annotations>
+            <features value="Customer"/>
+            <stories value="Create a Customer via the Storefront and sync to central via admin"/>
+            <title value="As a Customer I should be able to register an account on Storefront and synced via magento admin"/>
+            <description value="As a Customer I should be able to register an account on Storefront and should see club information after syncing through magento admin"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="customer"/>
+            <group value="lsCustomerAdmin"/>
+        </annotations>
+        <before>
+            <magentoCLI command="config:set --scope website --scope-code base {{ServiceBaseUrlDisabled.path}} {{ServiceBaseUrlDisabled.value}}" stepKey="serviceBaseUrl"/>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="cleanCache" before="login">
+                <argument name="tags" value="config full_page"/>
+            </actionGroup>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser">
+                <argument name="email" value="{{Simple_US_Customer.email}}"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+        <actionGroup ref="AssertMessageCustomerCreateAccountActionGroup" stepKey="seeSuccessMessage">
+            <argument name="messageType" value="success"/>
+            <argument name="message" value="Thank you for registering with Ls Retail."/>
+        </actionGroup>
+
+        <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" after="seeSuccessMessage"/>
+        <actionGroup ref="CliCacheCleanActionGroup" stepKey="cleanCache" after="setRequiredConfigs">
+            <argument name="tags" value="config full_page"/>
+        </actionGroup>
+        <!-- Login as admin -->
+        <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" after="cleanCache"/>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" after="openCustomersGridPage">
+            <argument name="customer" value="Simple_US_Customer"/>
+        </actionGroup>
+
+        <waitForElementVisible selector="button.sync-ls-central" time="30" stepKey="waitForSyncToCentral"  after="openEditCustomerPage"/>
+        <executeJS function="return document.querySelector('#syncLsCentral').click();" stepKey="clickSyncToCentral" after="waitForSyncToCentral"/>
+        <waitForElementVisible selector="div.modal-inner-wrap button.action-accept" time="5" stepKey="waitForModalPopup" after="clickSyncToCentral"/>
+        <executeJS function="return document.querySelector('div.modal-inner-wrap button.action-accept').click();" stepKey="confirmCustomerSync" after="waitForModalPopup"/>
+        <wait stepKey="waitForSuccessMessage" time="5" after="confirmCustomerSync"/>
+        <actionGroup ref="AssertMessageInAdminPanelActionGroup" stepKey="assertSuccessMessage" after="confirmCustomerSync">
+            <argument name="message" value="Customer request has been sent to LS Central successfully."/>
+        </actionGroup>
+    </test>
+</tests>
