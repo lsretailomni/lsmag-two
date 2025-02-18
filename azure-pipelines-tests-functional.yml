@@ -1,11 +1,7 @@
 trigger:
   branches:
     include:
-      - '*'
-pr:
-  branches:
-    include:
-      - develop
+      - 49927
 resources:
   containers:
     - container: db
