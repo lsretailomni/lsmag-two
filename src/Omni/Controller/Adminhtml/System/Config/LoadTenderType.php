@@ -93,7 +93,7 @@ class LoadTenderType extends Action
                 $option_array = [['value' => '', 'label' => __('Select tender type')]];
                 foreach ($tenderTypes as $tenderType) {
                     $keyId        = '';
-                    $tenderTypeId = $tenderType->getOmniTenderTypeId();
+                    $tenderTypeId = $tenderType->getTenderTypeId();
                     if (!empty($paymentTenderTypesArray)) {
                         $key = array_search(
                             $tenderTypeId,
