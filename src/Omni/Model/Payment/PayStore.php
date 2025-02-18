@@ -192,10 +192,10 @@ class PayStore extends AbstractExtensibleModel implements
         ScopeConfigInterface $scopeConfig,
         DataObject $dataObject,
         Logger $logger,
+        DirectoryHelper $directory,
         AbstractResource $resource = null,
         AbstractDb $resourceCollection = null,
-        array $data = [],
-        DirectoryHelper $directory = null
+        array $data = []
     ) {
         parent::__construct(
             $context,
