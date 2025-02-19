@@ -274,6 +274,6 @@ steps:
       cd dev/tests/acceptance
       curl -I http://mag.localhost.com/
       docker exec -it $(SELENIUM_CONTAINER_ID) curl -I http://mag.localhost.com
-      php ../../../vendor/bin/mftf doctor
-      php ../../../vendor/bin/mftf run:test AdminLoginSuccessfulTest --remove
+      php ../../../vendor/bin/mftf doctor --verbose
+      php ../../../vendor/bin/mftf run:test LsStorefrontCustomerRedirectToAccountDashboardAfterLoggingInWithLsrUsernameTest --verbose
     displayName: 'Configure LS Retail Configuration'
