@@ -27,6 +27,7 @@ resources:
       ports:
         - "5900:5900"
         - "4444:4444"
+      options: --add-host=mag.localhost.com:host-gateway
 pool:
   vmImage: ubuntu-24.04
 
