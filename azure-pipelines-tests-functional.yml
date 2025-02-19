@@ -159,47 +159,46 @@ steps:
       php bin/magento config:set admin/security/admin_account_sharing 1
       php bin/magento config:set admin/security/use_form_key 0
       php bin/magento cache:flush
-      vendor/bin/mftf build:project
-      sudo tee dev/tests/acceptance/.env > /dev/null <<EOF
-      MAGENTO_BASE_URL=http://mag.localhost.com/
-      MAGENTO_BACKEND_NAME=admin
-      MAGENTO_ADMIN_USERNAME=admin
-      SELENIUM_CLOSE_ALL_SESSIONS=true
-      BROWSER=chrome
-      WINDOW_WIDTH=1920
-      WINDOW_HEIGHT=1080
-      MODULE_ALLOWLIST=Magento_Framework,ConfigurableProductWishlist,ConfigurableProductCatalogSearch
-      WAIT_TIMEOUT=60
-      MAGENTO_CLI_WAIT_TIMEOUT=15
-      BROWSER_LOG_BLOCKLIST=other
-      ELASTICSEARCH_VERSION=7
-      SELENIUM_HOST=127.0.0.1
-      CUSTOM_MODULE_PATHS=/var/www/html/vendor/lsretail/lsmag-two/src/Omni/Test/Mftf,/var/www/html/vendor/lsretail/lsmag-two/src/Customer/Test/Mftf,/var/www/html/vendor/lsretail/lsmag-two/src/Replication/Test/Mftf
-      CENTRAL_STORE_CODE=S0013
-      HIERARCHY_CODE=FASHIONCOSMETICS
-      SERVICE_BASE_URL=http://20.6.33.78/commerceservice
-      CS_VERSION=2024.10.0
-      CENTRAL_VERSION="\"26.0.0.0 (26.0.0.0 [25900] CL:True EL:True)\""
-      INDUSTRY=retail
-      ORDER_PREFIX=UT06-
-      EXISTING_CUSTOMER_1_EMAIL=pipeline_retail@lsretail.com
-      EXISTING_CUSTOMER_1_PASSWORD=Nmswer123@
-      EXISTING_CUSTOMER_1_LSR_USERNAME=mc_57745
-      EXISTING_CUSTOMER_1_LSR_ID=MSO000012
-      EXISTING_CUSTOMER_1_LSR_CARDID=10051
-      SIMPLE_PRODUCT_1_ITEM_ID=40430
-      SIMPLE_PRODUCT_2_ITEM_ID=40440
-      SIMPLE_PRODUCT_3_ITEM_ID=40180
-      CONFIGURABLE_PRODUCT_1_ITEM_ID=40015
-      CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID=000
-      CONFIGURABLE_VARIANT_PRODUCT_2_VARIANT_ID=001
-      CONFIGURABLE_VARIANT_PRODUCT_1_SKU=40015-000
-      CONFIGURABLE_VARIANT_PRODUCT_2_SKU=40015-001
-      GIFT_CARD_NUMBER_1=10000000
-      RESTRICTED_ORDER_STATUSES_DEFAULT=canceled,fraud,payment_review
-      RESTRICTED_ORDER_STATUSES_UPDATED=canceled,fraud,payment_review,processing,pending
-      SERVICE_BASE_URL_DISABLED=http://20.6.33.78/commerceservice-1
-      EOF
+      vendor/bin/mftf build:project \
+        --MAGENTO_BASE_URL=$(MAGENTO_BASE_URL) \
+        --MAGENTO_BACKEND_NAME=$(MAGENTO_BACKEND_NAME) \
+        --MAGENTO_ADMIN_USERNAME=$(MAGENTO_ADMIN_USERNAME) \
+        --SELENIUM_CLOSE_ALL_SESSIONS=$(SELENIUM_CLOSE_ALL_SESSIONS) \
+        --BROWSER=$(BROWSER) \
+        --WINDOW_WIDTH=$(WINDOW_WIDTH) \
+        --WINDOW_HEIGHT=$(WINDOW_HEIGHT) \
+        --MODULE_ALLOWLIST=$(MODULE_ALLOWLIST) \
+        --WAIT_TIMEOUT=$(WAIT_TIMEOUT) \
+        --MAGENTO_CLI_WAIT_TIMEOUT=$(MAGENTO_CLI_WAIT_TIMEOUT) \
+        --BROWSER_LOG_BLOCKLIST=$(BROWSER_LOG_BLOCKLIST) \
+        --ELASTICSEARCH_VERSION=$(ELASTICSEARCH_VERSION) \
+        --SELENIUM_HOST=$(SELENIUM_HOST) \
+        --CUSTOM_MODULE_PATHS=$(CUSTOM_MODULE_PATHS) \
+        --CENTRAL_STORE_CODE=$(CENTRAL_STORE_CODE) \
+        --HIERARCHY_CODE=$(HIERARCHY_CODE) \
+        --SERVICE_BASE_URL=$(SERVICE_BASE_URL) \
+        --CS_VERSION=$(CS_VERSION) \
+        --CENTRAL_VERSION=$(CENTRAL_VERSION) \
+        --INDUSTRY=$(INDUSTRY) \
+        --ORDER_PREFIX=$(ORDER_PREFIX) \
+        --EXISTING_CUSTOMER_1_EMAIL=$(EXISTING_CUSTOMER_1_EMAIL) \
+        --EXISTING_CUSTOMER_1_PASSWORD=$(EXISTING_CUSTOMER_1_PASSWORD) \
+        --EXISTING_CUSTOMER_1_LSR_USERNAME=$(EXISTING_CUSTOMER_1_LSR_USERNAME) \
+        --EXISTING_CUSTOMER_1_LSR_ID=$(EXISTING_CUSTOMER_1_LSR_ID) \
+        --EXISTING_CUSTOMER_1_LSR_CARDID=$(EXISTING_CUSTOMER_1_LSR_CARDID) \
+        --SIMPLE_PRODUCT_1_ITEM_ID=$(SIMPLE_PRODUCT_1_ITEM_ID) \
+        --SIMPLE_PRODUCT_2_ITEM_ID=$(SIMPLE_PRODUCT_2_ITEM_ID) \
+        --SIMPLE_PRODUCT_3_ITEM_ID=$(SIMPLE_PRODUCT_3_ITEM_ID) \
+        --CONFIGURABLE_PRODUCT_1_ITEM_ID=$(CONFIGURABLE_PRODUCT_1_ITEM_ID) \
+        --CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID=$(CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID) \
+        --CONFIGURABLE_VARIANT_PRODUCT_2_VARIANT_ID=$(CONFIGURABLE_VARIANT_PRODUCT_2_VARIANT_ID) \
+        --CONFIGURABLE_VARIANT_PRODUCT_1_SKU=$(CONFIGURABLE_VARIANT_PRODUCT_1_SKU) \
+        --CONFIGURABLE_VARIANT_PRODUCT_2_SKU=$(CONFIGURABLE_VARIANT_PRODUCT_2_SKU) \
+        --GIFT_CARD_NUMBER_1=$(GIFT_CARD_NUMBER_1) \
+        --RESTRICTED_ORDER_STATUSES_DEFAULT=$(RESTRICTED_ORDER_STATUSES_DEFAULT) \
+        --RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED) \
+        --SERVICE_BASE_URL_DISABLED=$(SERVICE_BASE_URL_DISABLED)
+      cat dev/tests/acceptance/.env
       touch dev/tests/acceptance/.credentials
       sudo tee dev/tests/acceptance/.credentials > /dev/null <<EOF
       #magento/tfa/OTP_SHARED_SECRET
@@ -269,12 +268,12 @@ steps:
       cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
       cd dev/tests/acceptance
       php ../../../vendor/bin/mftf doctor --verbose
-    displayName: 'Configure LS Retail Configuration & Validations'
+    displayName: 'Configure LS Retail & MFTF & Validations'
 
   - script: |
       cd $(magentoDirectory)/dev/tests/acceptance
-      php ../../../vendor/bin/mftf run:test --group lsCustomer --verbose
-    displayName: 'Running Functional tests group lsCustomer'
+      php ../../../vendor/bin/mftf run:group lsCustomer --verbose
+    displayName: 'Running Functional tests for group lsCustomer'
 
   - script: |
       docker logs $(SELENIUM_CONTAINER_ID)
