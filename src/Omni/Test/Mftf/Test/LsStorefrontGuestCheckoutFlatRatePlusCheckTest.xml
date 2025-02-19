@@ -8,8 +8,8 @@
             <title value="Ls Guest Checkout - guest should be able to place an order using flat rate, check/money order"/>
             <description value="Should be able to place an order as a Guest using flat rate, check/money order"/>
             <severity value="BLOCKER"/>
-            <group value="checkout"/>
-            <group value="cloud"/>
+            <group value="lsCheckout"/>
+            <group value="ls"/>
         </annotations>
         <before>
             <magentoCLI command="config:set checkout/options/enable_guest_checkout_login 1" stepKey="EnablingGuestCheckoutLogin"/>
