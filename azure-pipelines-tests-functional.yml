@@ -213,7 +213,7 @@ steps:
 
   - script: |
       cd $(magentoDirectory)/dev/tests/acceptance
-      php ../../../vendor/bin/mftf run:group lsCustomer --verbose
+      php ../../../vendor/bin/mftf run:group lsCustomer lsPDP --verbose
     displayName: 'Running Functional tests for group lsCustomer lsPDP'
 
   - script: |
