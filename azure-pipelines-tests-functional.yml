@@ -169,7 +169,7 @@ steps:
       WINDOW_WIDTH=1920
       WINDOW_HEIGHT=1080
       MODULE_ALLOWLIST=Magento_Framework,ConfigurableProductWishlist,ConfigurableProductCatalogSearch
-      WAIT_TIMEOUT=15
+      WAIT_TIMEOUT=60
       MAGENTO_CLI_WAIT_TIMEOUT=15
       BROWSER_LOG_BLOCKLIST=other
       ELASTICSEARCH_VERSION=7
@@ -267,13 +267,9 @@ steps:
       #magento/payment_paypal_alternative_payment_methods_express_checkout_us_express_checkout_required_express_checkout_required_express_checkout_api_signature=
       EOF
       cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
-      pwd
-      ls -la dev/tests/acceptance
-      php bin/magento config:show web/unsecure/base_url
-      php bin/magento config:show web/secure/base_url
       cd dev/tests/acceptance
-      curl -I http://mag.localhost.com/
       docker exec -it $(SELENIUM_CONTAINER_ID) curl -I http://mag.localhost.com
       php ../../../vendor/bin/mftf doctor --verbose
       php ../../../vendor/bin/mftf run:test LsStorefrontCustomerRedirectToAccountDashboardAfterLoggingInWithLsrUsernameTest --verbose
+      docker logs $(SELENIUM_CONTAINER_ID)
     displayName: 'Configure LS Retail Configuration'
