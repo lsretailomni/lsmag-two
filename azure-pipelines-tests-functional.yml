@@ -80,6 +80,9 @@ steps:
       printf '.'
       sleep 1;
       done;
+      CONTAINER_ID=$(docker ps --filter "ancestor=selenium/standalone-chrome-debug" --format "{{.ID}}")
+      echo "##vso[task.setvariable variable=SELENIUM_CONTAINER_ID]$CONTAINER_ID"
+      echo "Selenium Container ID: $CONTAINER_ID"
     displayName: 'Wait for Selenium to initialise'
 
   - script: |
@@ -270,6 +273,7 @@ steps:
       php bin/magento config:show web/secure/base_url
       cd dev/tests/acceptance
       curl -I http://mag.localhost.com/
+      docker exec -it $(SELENIUM_CONTAINER_ID) curl -I http://mag.localhost.com
       php ../../../vendor/bin/mftf doctor
       php ../../../vendor/bin/mftf run:test AdminLoginSuccessfulTest --remove
     displayName: 'Configure LS Retail Configuration'
