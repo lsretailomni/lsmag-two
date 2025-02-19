@@ -268,8 +268,14 @@ steps:
       EOF
       cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
       cd dev/tests/acceptance
-      docker exec -it $(SELENIUM_CONTAINER_ID) curl -I http://mag.localhost.com
       php ../../../vendor/bin/mftf doctor --verbose
-      php ../../../vendor/bin/mftf run:test LsStorefrontCustomerRedirectToAccountDashboardAfterLoggingInWithLsrUsernameTest --verbose
+    displayName: 'Configure LS Retail Configuration & Validations'
+
+  - script: |
+      cd $(magentoDirectory)/dev/tests/acceptance
+      php ../../../vendor/bin/mftf run:test --group lsCustomer --verbose
+    displayName: 'Running Functional tests group lsCustomer'
+
+  - script: |
       docker logs $(SELENIUM_CONTAINER_ID)
-    displayName: 'Configure LS Retail Configuration'
+    displayName: 'Printing selenium logs'
