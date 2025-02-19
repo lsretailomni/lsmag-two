@@ -178,7 +178,7 @@ steps:
       echo "HIERARCHY_CODE=$(HIERARCHY_CODE)" >> dev/tests/acceptance/.env
       echo "SERVICE_BASE_URL=$(SERVICE_BASE_URL)" >> dev/tests/acceptance/.env
       echo "CS_VERSION=$(CS_VERSION)" >> dev/tests/acceptance/.env
-      echo 'CENTRAL_VERSION="'"$(echo "'$(CENTRAL_VERSION)'" | sed 's/"/\\"/g')"'"' >> src/dev/tests/acceptance/.env
+      echo 'CENTRAL_VERSION="'"$(echo "\"$(CENTRAL_VERSION)\"" | sed 's/"/\\"/g')"'"' >> src/dev/tests/acceptance/.env
       echo "INDUSTRY=$(INDUSTRY)" >> dev/tests/acceptance/.env
       echo "ORDER_PREFIX=$(ORDER_PREFIX)" >> dev/tests/acceptance/.env
       echo "EXISTING_CUSTOMER_1_EMAIL=$(EXISTING_CUSTOMER_1_EMAIL)" >> dev/tests/acceptance/.env
@@ -198,6 +198,7 @@ steps:
       echo "RESTRICTED_ORDER_STATUSES_DEFAULT=$(RESTRICTED_ORDER_STATUSES_DEFAULT)" >> dev/tests/acceptance/.env
       echo "RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED)" >> dev/tests/acceptance/.env
       echo "SERVICE_BASE_URL_DISABLED=$(SERVICE_BASE_URL_DISABLED)" >> dev/tests/acceptance/.env
+      cat dev/tests/acceptance/.env
       touch dev/tests/acceptance/.credentials
       sudo tee dev/tests/acceptance/.credentials > /dev/null <<EOF
       #magento/tfa/OTP_SHARED_SECRET
