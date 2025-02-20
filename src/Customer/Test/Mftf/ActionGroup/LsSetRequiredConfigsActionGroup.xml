@@ -13,5 +13,6 @@
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
         <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
         <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
+        <magentoCLI command="config:set --scope website --scope-code base ls_mag/service/timeout 60" stepKey="serviceTimeout"/>
     </actionGroup>
 </actionGroups>
