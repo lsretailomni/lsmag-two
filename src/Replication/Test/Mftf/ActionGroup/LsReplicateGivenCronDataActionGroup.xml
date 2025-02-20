@@ -15,6 +15,7 @@
         <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage"/>
         <waitForElementVisible selector="{{AdminCronListingModalSection.ok}}" stepKey="waitForOkBtn"/>
         <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute"/>
+        <wait stepKey="customWait" time="10"/>
         <waitForPageLoad stepKey="waitForExecuteToFinish"/>
     </actionGroup>
 </actionGroups>
