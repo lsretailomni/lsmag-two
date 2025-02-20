@@ -233,7 +233,7 @@ steps:
 #      php ../../../vendor/bin/mftf run:group lsShoppingCart lsCheckout --verbose
 #    displayName: 'Running Functional tests for group lsShoppingCart, lsCheckout'
   - script: |
-      cat var/log/omniclient.log
+      cat $(magentoDirectory)/var/log/omniclient.log
     displayName: 'Printing logs'
 
   - script: |
