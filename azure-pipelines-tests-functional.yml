@@ -214,28 +214,28 @@ steps:
   - script: |
       cd $(magentoDirectory)/dev/tests/acceptance
       php ../../../vendor/bin/mftf run:group lsCustomer lsPDP --verbose
-      tail -f $(magentoDirectory)/var/log/*.log
+      timeout 15s tail -f $(magentoDirectory)/var/log/*.log
       find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
     displayName: 'Running Functional tests for group lsCustomer lsPDP'
 
   - script: |
       cd $(magentoDirectory)/dev/tests/acceptance
       php ../../../vendor/bin/mftf run:group lsReplication lsCms --verbose
-      tail -f $(magentoDirectory)/var/log/*.log
+      timeout 15s tail -f $(magentoDirectory)/var/log/*.log
       find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
     displayName: 'Running Functional tests for group lsReplication, lsCms'
 
   - script: |
       cd $(magentoDirectory)/dev/tests/acceptance
       php ../../../vendor/bin/mftf run:group lsConfig --verbose
-      tail -f $(magentoDirectory)/var/log/*.log
+      timeout 15s tail -f $(magentoDirectory)/var/log/*.log
       find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
     displayName: 'Running Functional tests for group lsConfig'
 
   - script: |
       cd $(magentoDirectory)/dev/tests/acceptance
       php ../../../vendor/bin/mftf run:group lsShoppingCart lsCheckout --verbose
-      tail -f $(magentoDirectory)/var/log/*.log
+      timeout 15s tail -f $(magentoDirectory)/var/log/*.log
       find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
     displayName: 'Running Functional tests for group lsShoppingCart, lsCheckout'
 
