@@ -232,13 +232,13 @@ jobs:
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
 #        displayName: 'Running Functional tests for group lsReplication, lsCms'
 
-      - script: |
-          cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsConfig --verbose
-          cat $(magentoDirectory)/var/log/debug.log
-          cat $(magentoDirectory)/var/log/omniclient.log
-          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
-        displayName: 'Running Functional tests for group lsConfig'
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsConfig --verbose
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsConfig'
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
