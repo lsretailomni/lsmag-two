@@ -18,6 +18,7 @@
             <group value="lsConfig"/>
         </annotations>
         <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
             <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
             <actionGroup ref="LsReplicateStoreTenderTypeDataActionGroup" stepKey="replicateStoreTenderTypeData"/>
         </before>
