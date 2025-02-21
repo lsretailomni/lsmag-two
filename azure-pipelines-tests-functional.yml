@@ -226,7 +226,6 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsReplication lsCms --verbose
           php ../../../vendor/bin/mftf run:test LsStorefrontStoresPageTest --verbose
           php ../../../vendor/bin/mftf run:test LsResetItemTest --verbose
           cat $(magentoDirectory)/var/log/*.log
