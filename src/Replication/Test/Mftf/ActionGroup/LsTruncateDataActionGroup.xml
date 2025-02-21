@@ -6,7 +6,7 @@
         <annotations>
             <description>Truncate replication data</description>
         </annotations>
-        <amOnPage url="{{AdminLsConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToConfigurationPage"/>
+        <amOnPage url="{{AdminLsConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToConfigurationPage1"/>
         <waitForPageLoad stepKey="waitForConfigPageLoad"/>
         <waitForElementVisible selector="#ls_mag_restore_database_ls_tables" stepKey="waitForTruncateAllBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_ls_tables" stepKey="WaitForTruncateAllBtnClickable"/>
@@ -14,18 +14,21 @@
         <wait stepKey="waitForPopup2" time="5"/>
         <acceptPopup stepKey="acceptEnablePopUp1"/>
 
+        <amOnPage url="{{AdminLsConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToConfigurationPage2"/>
         <waitForElementVisible selector="#ls_mag_restore_database_attributes" stepKey="WaitForTruncateAllAttributesBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_attributes" stepKey="WaitForTruncateAllAttributesBtnClickable"/>
         <click selector="#ls_mag_restore_database_attributes" stepKey="clickTruncateAllAttributesBtn"/>
         <wait stepKey="waitForPopup3" time="5"/>
         <acceptPopup stepKey="acceptEnablePopUp2"/>
 
+        <amOnPage url="{{AdminLsConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToConfigurationPage3"/>
         <waitForElementVisible selector="#ls_mag_restore_database_categories" stepKey="WaitForTruncateAllCategoriesBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_categories" stepKey="WaitForTruncateAllCategoriesBtnClickable"/>
         <click selector="#ls_mag_restore_database_categories" stepKey="clickTruncateAllCategoriesBtn"/>
         <wait stepKey="waitForPopup4" time="5"/>
         <acceptPopup stepKey="acceptEnablePopUp3"/>
 
+        <amOnPage url="{{AdminLsConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToConfigurationPage4"/>
         <waitForElementVisible selector="#ls_mag_restore_database_products" stepKey="WaitForTruncateAllProductsBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_products" stepKey="WaitForTruncateAllProductsBtnClickable"/>
         <click selector="#ls_mag_restore_database_products" stepKey="clickTruncateAllProductsBtn"/>
