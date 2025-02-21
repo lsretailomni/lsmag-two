@@ -14,16 +14,19 @@
         <wait stepKey="waitForPopup2" time="5"/>
         <acceptPopup stepKey="acceptEnablePopUp1"/>
 
+        <waitForElementVisible selector="#ls_mag_restore_database_attributes" stepKey="WaitForTruncateAllAttributesBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_attributes" stepKey="WaitForTruncateAllAttributesBtnClickable"/>
         <click selector="#ls_mag_restore_database_attributes" stepKey="clickTruncateAllAttributesBtn"/>
         <wait stepKey="waitForPopup3" time="5"/>
         <acceptPopup stepKey="acceptEnablePopUp2"/>
 
+        <waitForElementVisible selector="#ls_mag_restore_database_categories" stepKey="WaitForTruncateAllCategoriesBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_categories" stepKey="WaitForTruncateAllCategoriesBtnClickable"/>
         <click selector="#ls_mag_restore_database_categories" stepKey="clickTruncateAllCategoriesBtn"/>
         <wait stepKey="waitForPopup4" time="5"/>
         <acceptPopup stepKey="acceptEnablePopUp3"/>
 
+        <waitForElementVisible selector="#ls_mag_restore_database_products" stepKey="WaitForTruncateAllProductsBtn"/>
         <waitForElementClickable selector="#ls_mag_restore_database_products" stepKey="WaitForTruncateAllProductsBtnClickable"/>
         <click selector="#ls_mag_restore_database_products" stepKey="clickTruncateAllProductsBtn"/>
         <wait stepKey="waitForPopup5" time="5"/>
