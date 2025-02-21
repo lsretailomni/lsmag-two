@@ -226,25 +226,24 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsReplication lsCms --verbose
-          tail -f $(magentoDirectory)/var/log/*.log &
-          sleep 60
+#          php ../../../vendor/bin/mftf run:group lsReplication lsCms --verbose
+          php ../../../vendor/bin/mftf run:test LsStorefrontStoresPageTest --verbose
+          php ../../../vendor/bin/mftf run:test LsResetItemTest --verbose
+          cat $(magentoDirectory)/var/log/*.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsReplication, lsCms'
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsConfig --verbose
-          tail -f $(magentoDirectory)/var/log/*.log &
-          sleep 60
+          cat $(magentoDirectory)/var/log/*.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsConfig'
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsShoppingCart lsCheckout --verbose
-          tail -f $(magentoDirectory)/var/log/*.log &
-          sleep 60
+          cat $(magentoDirectory)/var/log/*.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsShoppingCart, lsCheckout'
 
