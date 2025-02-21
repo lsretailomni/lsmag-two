@@ -10,11 +10,12 @@
         <amOnPage url="{{AdminCronListingPage.url}}{{pageUrl}}" stepKey="navigateToCronListingPage"/>
         <waitForPageLoad stepKey="waitForCronListingPage"/>
         <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='{{cronLabel}}']" stepKey="waitForGridLoad"/>
+        <wait stepKey="customWait1" time="5"/>
         <click selector=".admin__data-grid-wrap a[aria-label='{{cronLabel}}']" stepKey="clickExecute"/>
         <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForExecuteConfirmationModal"/>
         <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage"/>
         <waitForElementVisible selector="{{AdminCronListingModalSection.ok}}" stepKey="waitForOkBtn"/>
-        <wait stepKey="customWait" time="10"/>
+        <wait stepKey="customWait2" time="5"/>
         <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute"/>
         <waitForPageLoad stepKey="waitForExecuteToFinish"/>
     </actionGroup>

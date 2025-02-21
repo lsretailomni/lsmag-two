@@ -24,6 +24,8 @@
 
         <!-- 1. Go to storefront home page -->
         <actionGroup ref="StorefrontOpenHomePageActionGroup" stepKey="goToHomePage"/>
+        <wait stepKey="customWait1" time="10"/>
+        <waitForElementVisible selector=".page-footer" stepKey="assertFooterDiv"/>
         <waitForElementVisible selector=".page-footer .ls-footer-stores" stepKey="assertStoresLink"/>
         <amOnPage url="{{StorefrontStoresPage.url}}" stepKey="goToStoresPage"/>
         <waitForPageLoad stepKey="waitForStorefrontPageLoad"/>
