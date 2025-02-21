@@ -226,7 +226,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:test LsResetItemTest --verbose
+          php ../../../vendor/bin/mftf run:group lsReplication lsCms --verbose
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -235,14 +235,16 @@ jobs:
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsConfig --verbose
-          cat $(magentoDirectory)/var/log/*.log
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsConfig'
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
           php ../../../vendor/bin/mftf run:group lsShoppingCart lsCheckout --verbose
-          cat $(magentoDirectory)/var/log/*.log
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
         displayName: 'Running Functional tests for group lsShoppingCart, lsCheckout'
 
