@@ -242,7 +242,8 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCheckout --verbose
+          php ../../../vendor/bin/mftf run:test LsStorefrontGuestCheckoutClickNCollectPlusPaypalPayFlowTest  --verbose
+          php ../../../vendor/bin/mftf run:test LsStorefrontGuestCheckoutFlatRatePlusPaypalPayFlowTest  --verbose
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
