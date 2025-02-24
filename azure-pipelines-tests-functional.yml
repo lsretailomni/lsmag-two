@@ -158,6 +158,13 @@ jobs:
         displayName: 'Magento developer mode Testing'
 
       - script: |
+          RANDOM_NUM=$(shuf -i 1000-9999 -n 1)  # Generate a random 4-digit number
+          ORDER_PREFIX="${RANDOM_NUM}-"  # Append '-' at the end
+          echo "##vso[task.setvariable variable=ORDER_PREFIX]$ORDER_PREFIX"
+          echo "Generated ORDER_PREFIX: $ORDER_PREFIX"
+        displayName: 'Generate Random Order Prefix'
+
+      - script: |
           cd $(magentoDirectory)
           php bin/magento module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth
           php bin/magento config:set cms/wysiwyg/enabled disabled
