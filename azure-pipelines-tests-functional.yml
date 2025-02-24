@@ -225,7 +225,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCustomer --verbose
+          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           tail -f $(magentoDirectory)/var/log/*.log &
           sleep 60
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -235,7 +235,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsPDP --verbose
+          php ../../../vendor/bin/mftf run:group lsPDP --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           tail -f $(magentoDirectory)/var/log/*.log &
           sleep 60
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -245,7 +245,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCms --verbose
+          php ../../../vendor/bin/mftf run:group lsCms --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -255,7 +255,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsReplication --verbose
+          php ../../../vendor/bin/mftf run:group lsReplication --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -265,7 +265,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsConfig --verbose
+          php ../../../vendor/bin/mftf run:group lsConfig --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -275,7 +275,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose
+          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -285,7 +285,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCheckout --verbose
+          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
           cat $(magentoDirectory)/var/log/debug.log
           cat $(magentoDirectory)/var/log/omniclient.log
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -296,3 +296,13 @@ jobs:
       - script: |
           docker logs $(SELENIUM_CONTAINER_ID)
         displayName: 'Printing selenium logs'
+
+      # Final step to check for failures
+      - script: |
+          if [ "$TEST_FAILURES" -gt 0 ]; then
+            echo "Some test groups failed. Failing the pipeline."
+            exit 1
+          else
+            echo "All tests passed successfully."
+          fi
+        displayName: 'Check test results and fail pipeline if necessary'
