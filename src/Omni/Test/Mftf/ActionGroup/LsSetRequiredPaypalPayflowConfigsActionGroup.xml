@@ -6,7 +6,7 @@
         <annotations>
             <description>Set required configs</description>
         </annotations>
-        <amOnPage url="{{AdminConfigPaymentMethodsPage.url}}#payment_us_paypal_payment_gateways-link" stepKey="navigateToPaymentConfigurationPage"/>
+        <amOnPage url="{{AdminConfigPaymentMethodsPage.url}}#payment_us_other_paypal_payment_solutions-link" stepKey="navigateToPaymentConfigurationPage"/>
         <waitForPageLoad stepKey="waitForConfigPageLoad"/>
         <executeJS function="document.querySelector('#row_payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout .paypal-other-section').classList.add('active');" stepKey="addClassToElement"/>
         <executeJS function="document.querySelector('#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout').style.display = 'block';" stepKey="removeDisplayNone"/>
