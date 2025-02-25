@@ -31,7 +31,7 @@ resources:
 
 jobs:
   - job: MainJob
-    timeoutInMinutes: 180  # ⏳ Set timeout to 2 hours (adjust as needed)
+    timeoutInMinutes: 180
 
     pool:
       vmImage: ubuntu-24.04
