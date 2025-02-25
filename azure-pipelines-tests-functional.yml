@@ -1,7 +1,7 @@
-pr:
+trigger:
   branches:
-    include:
-      - develop
+    exclude:
+      - '*'
 resources:
   containers:
     - container: db
