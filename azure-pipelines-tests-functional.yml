@@ -225,7 +225,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || TEST_FAILURES=$(( ${TEST_FAILURES:-0} + 1
+          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || TEST_FAILURES=$(( ${TEST_FAILURES:-0} + 1 ))
           tail -f $(magentoDirectory)/var/log/*.log &
           sleep 60
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
