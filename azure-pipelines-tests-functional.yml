@@ -304,3 +304,7 @@ jobs:
           fi
         displayName: 'Check TEST_FAILURES Count'
         condition: always()
+
+      - script: |
+          echo "Test step"
+        displayName: 'Test Step'
