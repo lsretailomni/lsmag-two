@@ -50,7 +50,6 @@ jobs:
           composerOverride: '{}'
           phpunitVersion: '^9'
           magentoDirectory: "/var/www/html"
-          TEST_FAILURES: "0"
 
     steps:
 
