@@ -319,5 +319,11 @@ jobs:
         condition: always()
 
       - script: |
-          echo "GITHUB"
+          cd $(magentoDirectory)/artifacts/lsretail/lsmag-two
+          git status
+          git remote rm origin
+          git remote add origin https://github.com/$(GITHUB_REPO_NAME).git
+          git remote -v
+          sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
+          git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git release1
         displayName: 'Publishing Changes to Github Repository'
