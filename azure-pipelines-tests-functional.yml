@@ -302,5 +302,5 @@ jobs:
             echo "Some tests have failed."
             exit 1
           fi
-          displayName: 'Check TEST_FAILURES Count'
-          condition: always()
+        displayName: 'Check TEST_FAILURES Count'
+        condition: always()
