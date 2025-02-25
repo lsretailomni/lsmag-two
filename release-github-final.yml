@@ -1,0 +1,323 @@
+trigger:
+  branches:
+    include:
+      - release1
+variables:
+  BRANCH_NAME: release1
+resources:
+  containers:
+    - container: db
+      image: $(MARIA_DB_IMAGE)
+      ports:
+        - '3306:3306'
+      env:
+        MYSQL_DATABASE: users
+        MYSQL_USER: mysql
+        MYSQL_PASSWORD: mysql
+        MYSQL_ROOT_PASSWORD: mysql
+    - container: elasticsearch
+      image: $(ELASTIC_SEARCH_IMAGE)
+      ports:
+        - "9200:9200"
+        - "9300:9300"
+      env:
+        discovery.type: single-node
+        ES_JAVA_OPTS: -Xms1g -Xmx1g
+        cluster.routing.allocation.disk.threshold_enabled: false
+    - container: selenium
+      image: selenium/standalone-chrome-debug:latest
+      ports:
+        - "5900:5900"
+        - "4444:4444"
+      options: --add-host=mag.localhost.com:host-gateway
+
+jobs:
+  - job: MainJob
+    timeoutInMinutes: 180
+
+    pool:
+      vmImage: ubuntu-24.04
+
+    services:
+      db: db
+      elasticsearch: elasticsearch
+      selenium: selenium
+
+    strategy:
+      matrix:
+        magento_2_4_7_php_8_3:
+          phpVersion: '8.3'
+          magentoVersion: '2.4.7-p3'
+          databaseName: 'magento_2_4_7_php_8_2'
+          composerOverride: '{}'
+          phpunitVersion: '^9'
+          magentoDirectory: "/var/www/html"
+
+    steps:
+      - checkout: self
+        fetchTags: true
+        fetchDepth: 0
+
+      - script: |
+          TAG_NAME=$(git describe --abbrev=0 --tags)
+          echo "##vso[task.setvariable variable=LATEST_TAG_NAME]$TAG_NAME"
+        displayName: 'Finding Latest Tag Name'
+
+      - script: |
+          sudo update-alternatives --set php /usr/bin/php$(phpVersion)
+          sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
+          sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
+          sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
+          sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
+          php -version
+        displayName: 'Use PHP Version $(phpVersion)'
+
+      - script: |
+          sudo apt-get install default-mysql-client
+          printf 'Waiting for MySQL database to accept connections'
+          until mysql --host 127.0.0.1 --user=mysql --password=mysql --execute "SHOW DATABASES"; do
+            printf '.'
+            sleep 1;
+          done;
+        displayName: 'Wait for Database to initialise'
+
+      - script: |
+          printf 'Waiting for elasticsearch to accept connections'
+          until curl -XGET '0.0.0.0:9200/'; do
+          printf '.'
+          sleep 1;
+          done;
+        displayName: 'Wait for Elasticsearch to initialise'
+
+      - script: |
+          printf 'Waiting for selenium to accept connections'
+          until curl -XGET 'http://127.0.0.1:4444/wd/hub/status'; do
+          printf '.'
+          sleep 1;
+          done;
+          CONTAINER_ID=$(docker ps --filter "ancestor=selenium/standalone-chrome-debug" --format "{{.ID}}")
+          echo "##vso[task.setvariable variable=SELENIUM_CONTAINER_ID]$CONTAINER_ID"
+          echo "Selenium Container ID: $CONTAINER_ID"
+        displayName: 'Wait for Selenium to initialise'
+
+      - script: |
+          sudo apt-get update
+          sudo apt-get install -y apache2 libapache2-mod-php
+          sudo a2enmod rewrite
+          sudo service apache2 start
+          echo "Apache2 installed and started successfully."
+          AGENT_USER=$(whoami)
+          sudo sed -i "s/www-data/${AGENT_USER}/g" /etc/apache2/envvars
+          # Ensure the DocumentRoot directory has the correct permissions
+          sudo chown -R ${AGENT_USER}:${AGENT_USER} /var/www/html
+          sudo chmod -R 775 /var/www/html
+          sudo tee /etc/apache2/sites-available/magento.conf > /dev/null <<EOF
+              <VirtualHost *:80>
+                  ServerAdmin webmaster@localhost
+                  DocumentRoot /var/www/html
+                  ServerName mag.localhost.com
+                  DocumentRoot /var/www/html
+                  <Directory /var/www/html>
+                    Options Indexes FollowSymLinks MultiViews
+                    AllowOverride All
+                    Order allow,deny
+                    allow from all
+                  </Directory>
+                  ErrorLog \${APACHE_LOG_DIR}/error.log
+                  CustomLog \${APACHE_LOG_DIR}/access.log combined
+            </VirtualHost>
+          EOF
+              sudo ln -s /etc/apache2/sites-available/magento.conf /etc/apache2/sites-enabled/magento.conf
+              echo "127.0.0.1 mag.localhost.com" | sudo tee -a /etc/hosts
+              sudo systemctl restart apache2
+              echo "Magento Apache2 configuration applied."
+        displayName: 'Install and Start Apache2'
+
+      - script: |
+          cd $(magentoDirectory)
+          mkdir -p artifacts/lsretail/lsmag-two
+          CORE_MODULE_REPO_URL=$(AZURE_MODULE_REPO_URL)
+          AUTH=$(echo -n ":$(AZURE_PERSONAL_ACCESS_TOKEN)" | openssl base64 | tr -d '\n')
+          git -c http.$CORE_MODULE_REPO_URL.extraheader="AUTHORIZATION: basic $AUTH" clone $CORE_MODULE_REPO_URL --branch $(BRANCH_NAME) artifacts/lsretail/lsmag-two
+
+          composer init --name=lsretail/magento2 --type=project --require magento/product-community-edition:$(magentoVersion) --require $(composerName):$(composerVersion) --require-dev phpunit/phpunit:$(phpunitVersion) --require-dev magento/magento2-functional-testing-framework:^4.7 --repository '{"type": "composer", "url": "https://repo.magento.com/"}' --repository '{"type": "path", "url": "artifacts/*/*", "options": {"symlink": true}}' -s alpha -n
+          composer config use-include-path true
+          composer config --no-plugins allow-plugins true
+          composer config minimum-stability stable
+          composer config prefer-stable true
+          php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
+          echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
+          composer install
+          composer require magento/magento-coding-standard --dev
+          composer require lusitanian/oauth --dev
+          find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
+          cat composer.json
+          ls -la vendor/bin/
+        displayName: 'Magento Code Preparation'
+
+      - script: |
+          telnet 127.0.0.1 3306
+          mysql --host 127.0.0.1 --user=root --password=mysql -e "CREATE DATABASE $(databaseName)"
+        displayName: 'Magento Database Creation'
+
+      - script: |
+          cd $(magentoDirectory)
+          php bin/magento setup:install --base-url=http://mag.localhost.com/ --backend-frontname=admin --db-host=127.0.0.1 --db-name=$(databaseName) --db-user=root --db-password=mysql --admin-firstname=John --admin-lastname=Doe --admin-email=john.doe@orba.co --admin-user=admin --admin-password=admin123 --language=en_US --currency=USD --timezone=America/Chicago --use-rewrites=1 --search-engine=elasticsearch7 --elasticsearch-host=127.0.0.1 --elasticsearch-port=9200
+        displayName: 'Magento Installation Testing'
+
+      - script: |
+          cd $(magentoDirectory)
+          php -d memory_limit=-1 bin/magento deploy:mode:set developer
+        displayName: 'Magento developer mode Testing'
+
+      - script: |
+          echo "##vso[task.setvariable variable=TEST_FAILURES]0"
+          echo "TEST_FAILURES initialized to 0"
+        displayName: 'Initialize TEST_FAILURES'
+
+      - script: |
+          RANDOM_NUM=$(shuf -i 1000-9999 -n 1)  # Generate a random 4-digit number
+          ORDER_PREFIX="${RANDOM_NUM}-"  # Append '-' at the end
+          echo "##vso[task.setvariable variable=ORDER_PREFIX]$ORDER_PREFIX"
+          echo "Generated ORDER_PREFIX: $ORDER_PREFIX"
+        displayName: 'Generate Random Order Prefix'
+
+      - script: |
+          cd $(magentoDirectory)
+          php bin/magento module:disable Magento_TwoFactorAuth Magento_AdminAdobeImsTwoFactorAuth
+          php bin/magento config:set cms/wysiwyg/enabled disabled
+          php bin/magento config:set admin/security/admin_account_sharing 1
+          php bin/magento config:set admin/security/use_form_key 0
+          php bin/magento cache:flush
+          vendor/bin/mftf build:project
+          echo "MAGENTO_BASE_URL=$(MAGENTO_BASE_URL)" > dev/tests/acceptance/.env
+          echo "MAGENTO_BACKEND_NAME=$(MAGENTO_BACKEND_NAME)" >> dev/tests/acceptance/.env
+          echo "MAGENTO_ADMIN_USERNAME=$(MAGENTO_ADMIN_USERNAME)" >> dev/tests/acceptance/.env
+          echo "SELENIUM_CLOSE_ALL_SESSIONS=$(SELENIUM_CLOSE_ALL_SESSIONS)" >> dev/tests/acceptance/.env
+          echo "BROWSER=$(BROWSER)" >> dev/tests/acceptance/.env
+          echo "WINDOW_WIDTH=$(WINDOW_WIDTH)" >> dev/tests/acceptance/.env
+          echo "WINDOW_HEIGHT=$(WINDOW_HEIGHT)" >> dev/tests/acceptance/.env
+          echo "MODULE_ALLOWLIST=$(MODULE_ALLOWLIST)" >> dev/tests/acceptance/.env
+          echo "WAIT_TIMEOUT=$(WAIT_TIMEOUT)" >> dev/tests/acceptance/.env
+          echo "MAGENTO_CLI_WAIT_TIMEOUT=$(MAGENTO_CLI_WAIT_TIMEOUT)" >> dev/tests/acceptance/.env
+          echo "BROWSER_LOG_BLOCKLIST=$(BROWSER_LOG_BLOCKLIST)" >> dev/tests/acceptance/.env
+          echo "ELASTICSEARCH_VERSION=$(ELASTICSEARCH_VERSION)" >> dev/tests/acceptance/.env
+          echo "SELENIUM_HOST=$(SELENIUM_HOST)" >> dev/tests/acceptance/.env
+          echo "CUSTOM_MODULE_PATHS=$(CUSTOM_MODULE_PATHS)" >> dev/tests/acceptance/.env
+          echo "CENTRAL_STORE_CODE=$(CENTRAL_STORE_CODE)" >> dev/tests/acceptance/.env
+          echo "HIERARCHY_CODE=$(HIERARCHY_CODE)" >> dev/tests/acceptance/.env
+          echo "SERVICE_BASE_URL=$(SERVICE_BASE_URL)" >> dev/tests/acceptance/.env
+          echo "CS_VERSION=$(CS_VERSION)" >> dev/tests/acceptance/.env
+          echo 'CENTRAL_VERSION="'"$(echo "\"$(CENTRAL_VERSION)\"" | sed 's/"/\\"/g')"'"' >> dev/tests/acceptance/.env
+          echo "INDUSTRY=$(INDUSTRY)" >> dev/tests/acceptance/.env
+          echo "ORDER_PREFIX=$(ORDER_PREFIX)" >> dev/tests/acceptance/.env
+          echo "EXISTING_CUSTOMER_1_EMAIL=$(EXISTING_CUSTOMER_1_EMAIL)" >> dev/tests/acceptance/.env
+          echo "EXISTING_CUSTOMER_1_PASSWORD=$(EXISTING_CUSTOMER_1_PASSWORD)" >> dev/tests/acceptance/.env
+          echo "EXISTING_CUSTOMER_1_LSR_USERNAME=$(EXISTING_CUSTOMER_1_LSR_USERNAME)" >> dev/tests/acceptance/.env
+          echo "EXISTING_CUSTOMER_1_LSR_ID=$(EXISTING_CUSTOMER_1_LSR_ID)" >> dev/tests/acceptance/.env
+          echo "EXISTING_CUSTOMER_1_LSR_CARDID=$(EXISTING_CUSTOMER_1_LSR_CARDID)" >> dev/tests/acceptance/.env
+          echo "SIMPLE_PRODUCT_1_ITEM_ID=$(SIMPLE_PRODUCT_1_ITEM_ID)" >> dev/tests/acceptance/.env
+          echo "SIMPLE_PRODUCT_2_ITEM_ID=$(SIMPLE_PRODUCT_2_ITEM_ID)" >> dev/tests/acceptance/.env
+          echo "SIMPLE_PRODUCT_3_ITEM_ID=$(SIMPLE_PRODUCT_3_ITEM_ID)" >> dev/tests/acceptance/.env
+          echo "CONFIGURABLE_PRODUCT_1_ITEM_ID=$(CONFIGURABLE_PRODUCT_1_ITEM_ID)" >> dev/tests/acceptance/.env
+          echo "CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID=$(CONFIGURABLE_VARIANT_PRODUCT_1_VARIANT_ID)" >> dev/tests/acceptance/.env
+          echo "CONFIGURABLE_VARIANT_PRODUCT_2_VARIANT_ID=$(CONFIGURABLE_VARIANT_PRODUCT_2_VARIANT_ID)" >> dev/tests/acceptance/.env
+          echo "CONFIGURABLE_VARIANT_PRODUCT_1_SKU=$(CONFIGURABLE_VARIANT_PRODUCT_1_SKU)" >> dev/tests/acceptance/.env
+          echo "CONFIGURABLE_VARIANT_PRODUCT_2_SKU=$(CONFIGURABLE_VARIANT_PRODUCT_2_SKU)" >> dev/tests/acceptance/.env
+          echo "GIFT_CARD_NUMBER_1=$(GIFT_CARD_NUMBER_1)" >> dev/tests/acceptance/.env
+          echo "RESTRICTED_ORDER_STATUSES_DEFAULT=$(RESTRICTED_ORDER_STATUSES_DEFAULT)" >> dev/tests/acceptance/.env
+          echo "RESTRICTED_ORDER_STATUSES_UPDATED=$(RESTRICTED_ORDER_STATUSES_UPDATED)" >> dev/tests/acceptance/.env
+          echo "SERVICE_BASE_URL_DISABLED=$(SERVICE_BASE_URL_DISABLED)" >> dev/tests/acceptance/.env
+          cat dev/tests/acceptance/.env
+          touch dev/tests/acceptance/.credentials
+          echo "magento/MAGENTO_ADMIN_PASSWORD=$(MAGENTO_ADMIN_PASSWORD)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_partner=$(payflow_pro_partner)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_user=$(payflow_pro_user)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_pwd=$(payflow_pro_pwd)" >> dev/tests/acceptance/.credentials
+          echo "magento/payflow_pro_vendor=$(payflow_pro_vendor)" >> dev/tests/acceptance/.credentials
+          cat dev/tests/acceptance/.credentials
+          cp dev/tests/acceptance/.htaccess.sample dev/tests/acceptance/.htaccess
+          cd dev/tests/acceptance
+          php ../../../vendor/bin/mftf doctor --verbose
+        displayName: 'Configure LS Retail & MFTF & Validations'
+
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          tail -f $(magentoDirectory)/var/log/*.log &
+#          sleep 60
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsCustomer'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          tail -f $(magentoDirectory)/var/log/*.log &
+#          sleep 60
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsPDP'
+#        continueOnError: true
+
+      - script: |
+          cd $(magentoDirectory)/dev/tests/acceptance
+          php ../../../vendor/bin/mftf run:group lsCms --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+          cat $(magentoDirectory)/var/log/debug.log
+          cat $(magentoDirectory)/var/log/omniclient.log
+          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+        displayName: 'Running Functional tests for group lsCms'
+        continueOnError: true
+
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsReplication'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsConfig'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsShoppingCart'
+#        continueOnError: true
+#
+#      - script: |
+#          cd $(magentoDirectory)/dev/tests/acceptance
+#          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
+#          cat $(magentoDirectory)/var/log/debug.log
+#          cat $(magentoDirectory)/var/log/omniclient.log
+#          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
+#        displayName: 'Running Functional tests for group lsCheckout'
+#        continueOnError: true
+
+      - script: |
+          docker logs $(SELENIUM_CONTAINER_ID)
+        displayName: 'Printing selenium logs'
+
+      # Final step to check for failures
+      - script: |
+          echo "Final TEST_FAILURES count: $(TEST_FAILURES)"
+          if [ $(TEST_FAILURES) -gt 0 ]; then
+            echo "Some tests have failed."
+            exit 1
+          fi
+        displayName: 'Check TEST_FAILURES Count'
+        condition: always()
+
+      - script: |
+          echo "GITHUB"
+        displayName: 'Publishing Changes to Github Repository'
