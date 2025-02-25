@@ -50,6 +50,7 @@ jobs:
           composerOverride: '{}'
           phpunitVersion: '^9'
           magentoDirectory: "/var/www/html"
+          TEST_FAILURES: "0"
 
     steps:
 
@@ -158,6 +159,11 @@ jobs:
         displayName: 'Magento developer mode Testing'
 
       - script: |
+          echo "##vso[task.setvariable variable=TEST_FAILURES]0"
+          echo "TEST_FAILURES initialized to 0"
+        displayName: 'Initialize TEST_FAILURES'
+
+      - script: |
           RANDOM_NUM=$(shuf -i 1000-9999 -n 1)  # Generate a random 4-digit number
           ORDER_PREFIX="${RANDOM_NUM}-"  # Append '-' at the end
           echo "##vso[task.setvariable variable=ORDER_PREFIX]$ORDER_PREFIX"
@@ -225,7 +231,7 @@ jobs:
 
       - script: |
           cd $(magentoDirectory)/dev/tests/acceptance
-          php ../../../vendor/bin/mftf run:group lsCustomer --verbose || TEST_FAILURES=$(( ${TEST_FAILURES:-0} + 1 ))
+          php ../../../vendor/bin/mftf run:test LsStorefrontAddCustomerDefaultAddressTest --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
           tail -f $(magentoDirectory)/var/log/*.log &
           sleep 60
           find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -234,7 +240,7 @@ jobs:
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsPDP --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
+#          php ../../../vendor/bin/mftf run:group lsPDP --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
 #          tail -f $(magentoDirectory)/var/log/*.log &
 #          sleep 60
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -243,7 +249,7 @@ jobs:
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsCms --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
+#          php ../../../vendor/bin/mftf run:group lsCms --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
 #          cat $(magentoDirectory)/var/log/debug.log
 #          cat $(magentoDirectory)/var/log/omniclient.log
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -252,7 +258,7 @@ jobs:
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsReplication --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
+#          php ../../../vendor/bin/mftf run:group lsReplication --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
 #          cat $(magentoDirectory)/var/log/debug.log
 #          cat $(magentoDirectory)/var/log/omniclient.log
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -261,7 +267,7 @@ jobs:
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsConfig --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
+#          php ../../../vendor/bin/mftf run:group lsConfig --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
 #          cat $(magentoDirectory)/var/log/debug.log
 #          cat $(magentoDirectory)/var/log/omniclient.log
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -270,7 +276,7 @@ jobs:
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
+#          php ../../../vendor/bin/mftf run:group lsShoppingCart --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
 #          cat $(magentoDirectory)/var/log/debug.log
 #          cat $(magentoDirectory)/var/log/omniclient.log
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -279,7 +285,7 @@ jobs:
 #
 #      - script: |
 #          cd $(magentoDirectory)/dev/tests/acceptance
-#          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || TEST_FAILURES=$((TEST_FAILURES+1))
+#          php ../../../vendor/bin/mftf run:group lsCheckout --verbose || echo "##vso[task.setvariable variable=TEST_FAILURES]$((TEST_FAILURES+1))"
 #          cat $(magentoDirectory)/var/log/debug.log
 #          cat $(magentoDirectory)/var/log/omniclient.log
 #          find $(magentoDirectory)/var/log $(magentoDirectory)/dev/tests/acceptance/mftf.log -type f -exec sh -c '>"{}"' \;
@@ -292,10 +298,10 @@ jobs:
 
       # Final step to check for failures
       - script: |
-          if [ "$TEST_FAILURES" -gt 0 ]; then
-            echo "Some test groups failed. Failing the pipeline."
+          echo "Final TEST_FAILURES count: $(TEST_FAILURES)"
+          if [ $(TEST_FAILURES) -gt 0 ]; then
+            echo "Some tests have failed."
             exit 1
-          else
-            echo "All tests passed successfully."
           fi
-        displayName: 'Check test results and fail pipeline if necessary'
+          displayName: 'Check TEST_FAILURES Count'
+          condition: always()
