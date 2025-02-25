@@ -31,7 +31,7 @@
         </actionGroup>
 
         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="checkNewAddressesPostcodeOnDefaultShipping">
-            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+            <argument name="email" value="umaryo@lsretail.com"/>
         </actionGroup>
         <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid" after="deleteNewUser"/>
     </test>
