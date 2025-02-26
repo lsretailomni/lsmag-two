@@ -327,5 +327,5 @@ jobs:
           sudo git config --global user.email $(EMAIL) & git config --global user.name $(USERNAME)
           git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git release1
           git checkout $(LATEST_TAG_NAME)
-          git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git $(LATEST_TAG_NAME)
+          git push https://$(USERNAME):$(GITHUB_PERSONAL_ACCESS_TOKEN)@github.com/$(GITHUB_REPO_NAME).git refs/heads/$(LATEST_TAG_NAME)
         displayName: 'Publishing Changes to Github Repository'
