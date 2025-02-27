@@ -66,6 +66,11 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     protected $Currency = null;
 
     /**
+     * @property string $CustomerId
+     */
+    protected $CustomerId = null;
+
+    /**
      * @property string $DiscountGroup
      */
     protected $DiscountGroup = null;
@@ -433,6 +438,26 @@ class ReplCustomer extends AbstractModel implements ReplCustomerInterface, Ident
     public function getCurrency()
     {
         return $this->getData( 'Currency' );
+    }
+
+    /**
+     * @param string $CustomerId
+     * @return $this
+     */
+    public function setCustomerId($CustomerId)
+    {
+        $this->setData( 'CustomerId', $CustomerId );
+        $this->CustomerId = $CustomerId;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerId()
+    {
+        return $this->getData( 'CustomerId' );
     }
 
     /**

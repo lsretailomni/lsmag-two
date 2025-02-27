@@ -195,6 +195,10 @@ class SyncItemUpdates extends ProductCreateTask
             ['repl_hierarchy_leaf_id'],
             true
         );
+
+        $websiteId = $this->store->getWebsiteId();
+        $this->replicationHelper->applyProductWebsiteJoin($collection, $websiteId);
+
         $sku = '';
         /** @var ReplHierarchyLeaf $hierarchyLeaf */
         foreach ($collection as $hierarchyLeaf) {
@@ -216,8 +220,18 @@ class SyncItemUpdates extends ProductCreateTask
                     }
                 } else {
                     if ($sku) {
-                        $product = $this->productRepository->get($sku);
+                        $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
+                            $sku
+                        );
                         $this->categoryProductLinkRemoval($hierarchyLeaf, $product, $sku);
+
+                        if ($product->getTypeId() == Configurable::TYPE_CODE) {
+                            $children = $product->getTypeInstance()->getUsedProducts($product);
+                            foreach ($children as $child) {
+                                $sku = $child->getSku();
+                                $this->categoryProductLinkRemoval($hierarchyLeaf, $child, $sku);
+                            }
+                        }
                     }
                 }
             } catch (Exception $e) {
@@ -242,17 +256,23 @@ class SyncItemUpdates extends ProductCreateTask
     }
 
     /**
-     * Is category exist
+     * Check if the category already exist or not
      *
-     * @param string $nav_id
-     * @return false|DataObject
+     * @param $nav_id
+     * @param bool $store
+     * @return bool|DataObject
      * @throws LocalizedException
      */
-    public function isCategoryExist($nav_id)
+    public function isCategoryExist($nav_id, $store = false)
     {
         $collection = $this->collectionFactory->create()
-            ->addAttributeToFilter('nav_id', $nav_id)
-            ->setPageSize(1);
+            ->addAttributeToSelect('name')
+            ->addAttributeToFilter('nav_id', $nav_id);
+
+        if ($store) {
+            $collection->addPathsFilter('1/' . $this->getRootCategoryId() . '/');
+        }
+        $collection->setPageSize(1);
         if ($collection->getSize()) {
             // @codingStandardsIgnoreStart
             return $collection->getFirstItem();
@@ -278,7 +298,7 @@ class SyncItemUpdates extends ProductCreateTask
     {
         $categories        = null;
         $categories        = $product->getCategoryIds();
-        $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId());
+        $categoryExistData = $this->isCategoryExist($hierarchyLeaf->getNodeId(), true);
         if (!empty($categoryExistData)) {
             $categoryId       = $categoryExistData->getEntityId();
             $parentCategoryId = $categoryExistData->getParentId();
@@ -299,6 +319,18 @@ class SyncItemUpdates extends ProductCreateTask
         }
     }
 
+    /**
+     * Get root category id
+     *
+     * @return int
+     * @throws NoSuchEntityException
+     */
+    public function getRootCategoryId()
+    {
+        return !$this->lsr->isSSM() ?
+            $this->store->getRootCategoryId() :
+            $this->replicationHelper->storeManager->getDefaultStoreView()->getRootCategoryId();
+    }
 
     /**
      * Get remaining records

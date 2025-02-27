@@ -14,6 +14,11 @@ use Ls\Omni\Exception\InvalidEnumException;
 class OrderHospStatus
 {
     /**
+     * @property ArrayOfOrderHospStatusLine $Lines
+     */
+    protected $Lines = null;
+
+    /**
      * @property boolean $Confirmed
      */
     protected $Confirmed = null;
@@ -47,6 +52,24 @@ class OrderHospStatus
      * @property KOTStatus $Status
      */
     protected $Status = null;
+
+    /**
+     * @param ArrayOfOrderHospStatusLine $Lines
+     * @return $this
+     */
+    public function setLines($Lines)
+    {
+        $this->Lines = $Lines;
+        return $this;
+    }
+
+    /**
+     * @return ArrayOfOrderHospStatusLine
+     */
+    public function getLines()
+    {
+        return $this->Lines;
+    }
 
     /**
      * @param boolean $Confirmed
