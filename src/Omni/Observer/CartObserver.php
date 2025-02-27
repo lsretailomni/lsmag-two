@@ -110,7 +110,7 @@ class CartObserver implements ObserverInterface
                 $this->basketHelper->quoteRepository->save($quote);
                 $this->basketHelper->setOneListCalculationInCheckoutSession(null);
             }
-//            $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
+            $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }

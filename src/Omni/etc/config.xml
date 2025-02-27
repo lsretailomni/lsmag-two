@@ -41,6 +41,7 @@
                 <timeformat>h:i A</timeformat>
             </ls_stores>
             <ls_basket_calculation>
+                <active>1</active>
                 <place_to_sync>0</place_to_sync>
             </ls_basket_calculation>
             <ls_order_management>
