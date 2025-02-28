@@ -628,7 +628,11 @@ class Data extends AbstractHelper
      */
     public function isCouponsEnabled($area)
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            (bool) $this->lsr->getBasketCalculationOnFrontend()
+        )) {
             if ($area == "cart") {
                 return ($this->lsr->getStoreConfig(
                     LSR::LS_ENABLE_COUPON_ELEMENTS,
