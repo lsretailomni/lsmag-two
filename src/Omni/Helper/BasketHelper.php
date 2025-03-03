@@ -374,12 +374,22 @@ class BasketHelper extends AbstractHelper
         $quoteItems = $quote->getAllVisibleItems();
 
         if (empty($itemsArray)) {
+            $websiteId     = $quote->getStore()->getWebsiteId();
+            $customerEmail = $quote->getCustomerEmail();
+            $customerGroupId = null;
+            if (!$quote->getCustomerIsGuest()) {
+                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+                $customerGroupId = $customer->getGroupId();
+            }
             foreach ($quoteItems as $quoteItem) {
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
-                $priceIncTax         = $discountPercentage = null;
+                $priceIncTax         = $discountPercentage = $discount = null;
                 $product             = $this->productRepository->get($quoteItem->getSku());
+                if ($customerGroupId) {
+                    $this->customerSession->setCustomerGroupId($customerGroupId);
+                }
                 $displayRegularPrice = $product->getPriceInfo()->getPrice(
                     RegularPrice::PRICE_CODE
                 )->getAmount()->getValue();
@@ -387,6 +397,7 @@ class BasketHelper extends AbstractHelper
                     FinalPrice::PRICE_CODE
                 )->getAmount()->getValue();
 
+                $this->customerSession->setCustomerGroupId(null);
                 if ($displayFinalPrice < $displayRegularPrice) {
                     $priceIncTax        = $displayRegularPrice;
                     $discount           = $displayRegularPrice - $displayFinalPrice;
@@ -407,14 +418,14 @@ class BasketHelper extends AbstractHelper
                     ->setPrice($priceIncTax ?? $quoteItem->getPriceInclTax())
                     ->setNetPrice($quoteItem->getPrice())
                     ->setTaxAmount($quoteItem->getTaxAmount())
-                    ->setDiscountAmount($quoteItem->getDiscountAmount())
-                    ->setDiscountPercent($discountPercentage);
+                    ->setDiscountAmount(($discount ?? $quoteItem->getDiscountAmount()) * $quoteItem->getData('qty'))
+                    ->setDiscountPercent($discountPercentage ?? $quoteItem->getDiscountPercent());
 
                 $itemsArray[] = $list_item;
-                if (empty($discountsArray) && $quoteItem->getDiscountAmount() > 0) {
+                if (empty($discountsArray) && ($discountPercentage || $quoteItem->getDiscountAmount() > 0)) {
                     $orderDiscountLine = new Entity\OrderDiscountLine();
-                    $orderDiscountLine->setDiscountAmount($quoteItem->getDiscountAmount());
-                    $orderDiscountLine->setDiscountPercent($discountPercentage);
+                    $orderDiscountLine->setDiscountAmount(($discount ?? $quoteItem->getDiscountAmount())* $quoteItem->getData('qty'));
+                    $orderDiscountLine->setDiscountPercent($discountPercentage ?? $quoteItem->getDiscountPercent());
                     $orderDiscountLine->setDiscountType(Entity\Enum\DiscountType::PERIODIC_DISC);
                     $discountsArray[] = $orderDiscountLine;
                 }
