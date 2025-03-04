@@ -1441,6 +1441,7 @@ class BasketHelper extends AbstractHelper
     /**
      * Get Basket Session Data
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getBasketSessionValue()
     {
