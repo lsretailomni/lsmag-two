@@ -1,7 +1,13 @@
 trigger:
   branches:
     exclude:
-      - '*'
+      - '*'  # Disables CI builds on branch push
+
+pr:
+  branches:
+    include:
+      - develop  # Enables PR builds when merging into 'develop'
+
 resources:
   containers:
     - container: db
