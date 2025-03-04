@@ -304,7 +304,7 @@
                 <label>Basket Calculation</label>
                 <field id="active" translate="label comment" type="select" sortOrder="2"
                        showInDefault="1" showInWebsite="0">
-                    <label>Enabled basket Calculation on Frontend</label>
+                    <label>Enable basket Calculation on Frontend</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="place_to_sync" translate="label comment" type="select" sortOrder="3"
