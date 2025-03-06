@@ -6,7 +6,6 @@ use \Ls\Core\Model\LSR;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\SalesRule\Model\Validator;
-use Magento\Store\Model\ScopeInterface;
 
 /**
  * Interceptor to intercept sales rule validation
@@ -40,7 +39,10 @@ class ValidatorPlugin
         $proceed,
         CartInterface $quote
     ) {
-        if (!$this->lsr->isEnabled($quote->getStoreId(), ScopeInterface::SCOPE_STORES)) {
+        if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getBasketCalculationOnFrontend()
+        )) {
             return $proceed($quote);
         }
 
