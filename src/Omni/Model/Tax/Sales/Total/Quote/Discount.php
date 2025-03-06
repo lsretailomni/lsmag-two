@@ -119,7 +119,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
             false,
             $lsr->getBasketCalculationOnFrontend()
         )) {
-            return parent::collect($quote, $shippingAssignment, $total);
+            parent::collect($quote, $shippingAssignment, $total);
         }
         $total->setData('discount_description', ''); //For fixing explode issue on graph ql
         $items = $shippingAssignment->getItems();
