@@ -295,7 +295,7 @@ class OrderHelper extends AbstractHelper
             $request = new Entity\OrderCreate();
 
             if (version_compare($this->lsr->getOmniVersion($order->getStoreId()), '2023.05.1', '>=')) {
-//                $request->setReturnOrderIdOnly(true);
+                $request->setReturnOrderIdOnly(true);
             }
 
             $oneListCalculateResponse->setOrderLines($orderLinesArray);
