@@ -387,13 +387,14 @@ class BasketHelper extends AbstractHelper
                     $quoteItem->getSku()
                 );
                 $priceIncTax         = $discountPercentage = $discount = null;
+                $product             = $this->productRepository->get($quoteItem->getSku());
                 if ($customerGroupId) {
                     $this->customerSession->setCustomerGroupId($customerGroupId);
                 }
-                $regularPrice = $quoteItem->getProduct()->getPriceInfo()->getPrice(
+                $regularPrice = $product->getPriceInfo()->getPrice(
                     RegularPrice::PRICE_CODE
                 )->getAmount()->getValue();
-                $finalPrice   = $quoteItem->getProduct()->getPriceInfo()->getPrice(
+                $finalPrice   = $product->getPriceInfo()->getPrice(
                     FinalPrice::PRICE_CODE
                 )->getAmount()->getValue();
 
@@ -401,7 +402,7 @@ class BasketHelper extends AbstractHelper
                 if ($finalPrice < $regularPrice) {
                     $priceIncTax        = $regularPrice;
                     $discount           = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
-                    $discountPercentage = (($regularPrice - $finalPrice) / $priceIncTax) * 100;
+                    $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
                 }
 
                 if ($quoteItem->getDiscountAmount() > 0) {
