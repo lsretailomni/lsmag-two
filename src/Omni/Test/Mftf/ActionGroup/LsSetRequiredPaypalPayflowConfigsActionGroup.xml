@@ -6,12 +6,11 @@
         <annotations>
             <description>Set required configs</description>
         </annotations>
-        <amOnPage url="{{AdminConfigPaymentMethodsPage.url}}" stepKey="navigateToPaymentConfigurationPage"/>
+        <amOnPage url="{{AdminConfigPaymentMethodsPage.url}}#payment_us_other_paypal_payment_solutions-link" stepKey="navigateToPaymentConfigurationPage"/>
         <waitForPageLoad stepKey="waitForConfigPageLoad"/>
-        <waitForElementVisible selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout-head .state-closed" stepKey="waitForPaypalPayflowSection"/>
+        <executeJS function="document.querySelector('#row_payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout .paypal-other-section').classList.add('active');" stepKey="addClassToElement"/>
+        <executeJS function="document.querySelector('#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout').style.display = 'block';" stepKey="removeDisplayNone"/>
 
-        <click selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout-head .state-closed" stepKey="clickPaypalPayflowConfigureBtn"/>
-        <waitForElementVisible selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_partner" stepKey="waitForPaypalPayflowPartnerField"/>
         <scrollTo selector="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_partner" stepKey="scrollToBottom"/>
         <fillField selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_partner" userInput="{{_CREDS.magento/payflow_pro_partner}}" stepKey="inputPartner"/>
         <fillField selector ="#payment_us_paypal_payment_gateways_paypal_payflowpro_with_express_checkout_paypal_payflow_required_paypal_payflow_api_settings_user" userInput="{{_CREDS.magento/payflow_pro_user}}" stepKey="inputUser"/>

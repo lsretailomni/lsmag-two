@@ -9,6 +9,7 @@
         </arguments>
         <amOnPage url="{{StorefrontProductPage.url(product.custom_attributes[url_key])}}" stepKey="openProductPage" />
         <waitForPageLoad time="20" stepKey="waitForProductPageOpen" />
+        <wait stepKey="waitForDiscountLoads" time="20"/>
         <fillField userInput="{{qty}}" selector="{{StorefrontProductInfoMainSection.qty}}" stepKey="fillQty" />
         <click selector="{{StorefrontProductInfoMainSection.AddToCart}}" stepKey="clickAddToCart" />
         <waitForElementVisible selector="{{StorefrontMessagesSection.messageByType('success')}}" stepKey="waitForSuccessMessage" />

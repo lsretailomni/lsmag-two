@@ -8,19 +8,19 @@
 
 ## Installation:
 
-Please visit [ Installation of the LS eCommerce - Magento Extension ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-Magento/Technical-Manual/Installation-Of-Extension.htm "Installation of the LS eCommerce - Magento Extension") section on our Online Help for instructions on how to install the extension.
+Please visit [ Installation of the LS eCommerce - Magento Extension ](https://help.lscentral.lsretail.com/Content/LS-Retail/eCommerce/eCommerce-Magento/Technical-Manual/Installation-Of-Extension.htm "Installation of the LS eCommerce - Magento Extension") section on our Online Help for instructions on how to install the extension.
 
 ## Configuration:
 
-Please visit [ General Configuration ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-Magento/Technical-Manual/General-Configuration-Retail.htm "LS eCommerce - Magento Configuration") section on our Online Help for instructions on how to configure the extension.
+Please visit [ General Configuration ](https://help.lscentral.lsretail.com/Content/LS-Retail/eCommerce/eCommerce-Magento/Technical-Manual/General-Configuration-Retail.htm "LS eCommerce - Magento Configuration") section on our Online Help for instructions on how to configure the extension.
 
 ## Supported Features:
 
-Please visit [ Features ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-Magento/Features/Introduction.htm "LS eCommerce - Magento - Supported Features") section on our Online Help for list of supported features.
+Please visit [ Features ](https://help.lscentral.lsretail.com/Content/LS-Retail/eCommerce/eCommerce-Magento/Features/Introduction.htm "LS eCommerce - Magento - Supported Features") section on our Online Help for list of supported features.
 
 ## LS Commerce Service (formerly Omni Server):
 
-To understand more about the LS Commerce Service API's, please visit [ eCommerce API for LS Commerce ](https://help.lscentral.lsretail.com/Content/LS-Retail/LS-eCommerce/LS-eCommerce-APIs/Unified-Commerce-Inferface/Introduction.htm "eCommerce API for LS Commerce") section on our Online Help.
+To understand more about the LS Commerce Service API's, please visit [ eCommerce API for LS Commerce ](https://help.lscentral.lsretail.com/Content/LS-Retail/eCommerce/eCommerce-APIs/Unified-Commerce-Inferface/Introduction.htm "eCommerce API for LS Commerce") section on our Online Help.
 
 ## Support
 All LS Retail active partners can use [ LS Retail Portal](https://portal.lsretail.com/ "LS Retail Partner & Customer Portal") to submit the technical support request.

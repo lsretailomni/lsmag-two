@@ -10,7 +10,7 @@
             <description value="As a Customer I should be able to register an account on Storefront and should see club information after syncing through magento admin"/>
             <severity value="CRITICAL"/>
             <group value="ls"/>
-            <group value="customer"/>
+            <group value="lsCustomer"/>
             <group value="lsCustomerAdmin"/>
         </annotations>
         <before>

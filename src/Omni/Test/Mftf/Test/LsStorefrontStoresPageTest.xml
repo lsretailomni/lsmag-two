@@ -15,6 +15,9 @@
         <before>
             <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
             <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="CliCacheFlushActionGroup" stepKey="flushCache">
+                <argument name="tags" value=""/>
+            </actionGroup>
             <actionGroup ref="LsReplicateStoreDataActionGroup" stepKey="replicateStores"/>
         </before>
         <after>
@@ -24,6 +27,7 @@
 
         <!-- 1. Go to storefront home page -->
         <actionGroup ref="StorefrontOpenHomePageActionGroup" stepKey="goToHomePage"/>
+        <waitForElementVisible selector=".page-footer" stepKey="assertFooterDiv"/>
         <waitForElementVisible selector=".page-footer .ls-footer-stores" stepKey="assertStoresLink"/>
         <amOnPage url="{{StorefrontStoresPage.url}}" stepKey="goToStoresPage"/>
         <waitForPageLoad stepKey="waitForStorefrontPageLoad"/>
