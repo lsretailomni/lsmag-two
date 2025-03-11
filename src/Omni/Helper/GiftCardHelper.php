@@ -230,7 +230,13 @@ class GiftCardHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        return $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL], false);
+        return str_replace(
+            ',',
+            '.',
+            $this->currencyHelper->format($value, ['display' => Currency::NO_SYMBOL],
+                false
+            )
+        );
     }
 
     /**
