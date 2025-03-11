@@ -772,7 +772,7 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function formatValue($value)
     {
-        if ($value) {
+        if ($value !== null && $value !== '') {
             $formattedValue = $this->currencyHelper->format(
                 $value,
                 ['display' => Currency::NO_SYMBOL],
@@ -781,6 +781,6 @@ class LoyaltyHelper extends AbstractHelperOmni
             return str_replace(',', '.', $formattedValue);
         }
 
-        return '';
+        return $value;
     }
 }
