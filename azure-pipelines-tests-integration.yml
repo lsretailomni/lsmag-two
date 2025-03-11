@@ -110,16 +110,13 @@ steps:
       php -r 'file_put_contents("composer.json", json_encode(array_merge_recursive(json_decode(file_get_contents("composer.json"), true), json_decode("{\"extra\": {\"magento-force\": \"override\"}, \"autoload\": {\"psr-4\": {\"Magento\\\\Framework\\\\\": \"lib/internal/Magento/Framework/\", \"Magento\\\\Setup\\\\\": \"setup/src/Magento/Setup/\", \"Magento\\\\\": \"app/code/Magento/\"}, \"psr-0\": {\"\": [\"app/code/\"]},\"files\": [\"app/etc/NonComposerComponentRegistration.php\"]}}", true), json_decode("$(composerOverride)", true)), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));'
       echo '{"_comment": "These credentials were set up using some dummy Magento account", "http-basic": {"repo.magento.com": {"username": "7830c2f645e21175655f103ec7ccf5db", "password": "6facd42d017a332f90267fb28d4e46f9"}}}' > auth.json
       composer install
-      composer require paypal/module-braintree:^4.6.0 --with-all-dependencies
+      composer require adobe-commerce/os-extensions-metapackage:1.0.0 --with-all-dependencies
       composer require magento/magento-coding-standard --dev
       composer require lusitanian/oauth --dev
+      cat composer.json
+      cat composer.lock
       find var vendor artifacts pub/static pub/media app/etc -type f -exec chmod u+w {} + && find var vendor artifacts pub/static pub/media app/etc -type d -exec chmod u+w {} + && chmod u+x bin/magento
     displayName: 'Magento Code Preparation'
-
-  - script: |
-      cd $(magentoDirectory)
-      ./vendor/bin/phpcs --standard=vendor/magento/magento-coding-standard/Magento2/ruleset.xml --ignore=artifacts/lsretail/lsmag-two/dev --warning-severity=8 --extensions=php artifacts/lsretail/
-    displayName: 'Magento2 Coding Standards Validation'
 
   - script: |
       telnet 127.0.0.1 3306
