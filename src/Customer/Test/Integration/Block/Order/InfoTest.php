@@ -214,19 +214,18 @@ class InfoTest extends TestCase
             $this->assertStringNotContainsString((string)__('Shipping Address'), $output);
 
             //All click and collect orders currently returning empty billing address
-            //$this->assertStringContainsString((string)__('Billing Address'), $output);
+            $this->assertStringContainsString((string)__('Billing Address'), $output);
             $elementPaths = [
                 "//div[contains(@class, 'block-order-details-view')]",
                 "//div[contains(@class, 'block-content')]",
-               # "//div[contains(@class, 'box-order-billing-address')]",
+                "//div[contains(@class, 'box-order-billing-address')]",
                 "//div[contains(@class, 'box-content')]",
             ];
 
             $this->validatePaths(
                 $output,
                 $elementPaths,
-                sprintf('Can\'t validate order useful information in Html: %s', $output),
-                2
+                sprintf('Can\'t validate order useful information in Html: %s', $output)
             );
             $this->assertStringContainsString((string)__('Shipping Method'), $output);
 
