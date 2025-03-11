@@ -1399,12 +1399,23 @@ class BasketHelper extends AbstractHelper
      */
     public function getPriceAddingCustomOptions($item, $price)
     {
-        $options = $item->getOptions();
-        if ($options) {
-            foreach ($options as $option) {
-                if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
-                    $price = $item->getProductType() == Type::TYPE_BUNDLE ?
-                        $item->getRowTotal() : $item->getPrice() * $item->getQty();
+        $optionIds = $item->getOptionByCode('option_ids');
+        if ($optionIds) {
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                $option = $item->getProduct()->getOptionById($optionId);
+                if ($option) {
+                    $itemOption = $item->getOptionByCode('option_' . $option->getId());
+                    if ($itemOption) {
+                        $optionValue = $itemOption->getValue();
+                        $values = explode(',', $optionValue); // Handle multiple selected values
+
+                        foreach ($values as $valueId) {
+                            $value = $option->getValueById($valueId);
+                            if ($value) {
+                                $price += $value->getPrice() * $item->getQty();
+                            }
+                        }
+                    }
                 }
             }
         }
