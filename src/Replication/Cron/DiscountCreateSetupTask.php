@@ -274,9 +274,9 @@ class DiscountCreateSetupTask
                                     try {
                                         $this->deleteOfferItemCategoryProductGroup($replDiscount);
                                         if (!$replDiscount->getIsPercentage()) {
-                                            $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
+                                            $discountValue = $replDiscount->getLineDiscountAmountInclVAT();
                                         } else {
-                                            $discountValue     = $replDiscount->getDealPriceDiscount();
+                                            $discountValue = $replDiscount->getDealPriceDiscount();
                                         }
                                         if (empty($customerGroupIds) && !$useAllGroupIds) {
                                             $customerGroupIds =
@@ -557,12 +557,8 @@ class DiscountCreateSetupTask
         $discountValueType,
         $amount = null
     ) {
-        $websiteId  = $replDiscount->getScopeId();
-        if (version_compare(
-            $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
-            '2024.10.11',
-            '<='
-        ) || $this->validateWebsiteByStoreGroupCodeOrPriceGroup(
+        $websiteId = $replDiscount->getScopeId();
+        if ($this->validateWebsiteByStoreGroupCodeOrPriceGroup(
             $replDiscount->getPriceGroup(),
             $replDiscount->getStoreGroupCodes(),
             $replDiscount->getScopeId(),
@@ -1048,6 +1044,9 @@ class DiscountCreateSetupTask
         $websiteId,
         $offerNo
     ) {
+        if (empty($storeGroup) && empty($priceGroup)) {
+            return true;
+        }
         $webStore      = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $storeGroups   = $priceGroups = $storeGroupCodes = [];
         $webStoreGroup = $webStorePriceGroup = '';

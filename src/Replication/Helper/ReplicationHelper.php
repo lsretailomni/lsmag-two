@@ -113,10 +113,10 @@ class ReplicationHelper extends AbstractHelper
     public const UNIQUE_HASH_COLUMN_NAME = 'identity_value';
 
     public const COLUMNS_MAPPING = [
-        'catalog_product_entity_varchar' => [
+        'catalog_product_entity_varchar'  => [
             'entity_id' => 'row_id'
         ],
-        'catalog_product_entity'         => [
+        'catalog_product_entity'          => [
             'entity_id' => 'row_id'
         ],
         'catalog_category_entity_varchar' => [
@@ -1596,7 +1596,8 @@ class ReplicationHelper extends AbstractHelper
         SearchCriteriaInterface $criteria,
         $primaryTableColumnName,
         $primaryTableColumnName2,
-        $groupColumns = []
+        $groupColumns = [],
+        $isItemCategory = false
     ) {
         $this->setFiltersOnTheBasisOfCriteria($collection, $criteria);
         $this->setSortOrdersOnTheBasisOfCriteria($collection, $criteria);
@@ -1611,7 +1612,7 @@ class ReplicationHelper extends AbstractHelper
                 $groupColumns
             );
         } else {
-            $this->applyItemIdJoin($collection, 'main_table', $primaryTableColumnName, $groupColumns);
+            $this->applyItemIdJoin($collection, 'main_table', $primaryTableColumnName, $groupColumns, $isItemCategory);
         }
         /** For Xdebug only to check the query */
         $query = $collection->getSelect()->__toString();
@@ -1787,7 +1788,7 @@ class ReplicationHelper extends AbstractHelper
     }
 
     /**
-     * Apply join for lsr_item_id custom attribute
+     * Apply join for lsr_item_id and item category custom attribute
      *
      * @param mixed $collection
      * @param mixed $mainTableAlias
@@ -1796,24 +1797,38 @@ class ReplicationHelper extends AbstractHelper
      * @return void
      * @throws LocalizedException
      */
-    public function applyItemIdJoin($collection, $mainTableAlias, $mainTableItemIdColumn, $groupColumns = [])
-    {
-        $itemIdTableAlias = self::ITEM_ID_TABLE_ALIAS;
-        $itemAttributeId  = $this->eavConfig->getAttribute(
+    public function applyItemIdJoin(
+        $collection,
+        $mainTableAlias,
+        $mainTableItemIdColumn,
+        $groupColumns = [],
+        $isItemCategory = false
+    ) {
+        $itemIdTableAlias        = self::ITEM_ID_TABLE_ALIAS;
+        $itemAttributeId         = $this->eavConfig->getAttribute(
             'catalog_product',
             LSR::LS_ITEM_ID_ATTRIBUTE_CODE
         )->getId();
-
-        $collection->getSelect()->joinInner(
-            [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
-            $this->magentoEditionSpecificJoinWhereClause(
-                "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
-                " AND $itemIdTableAlias.attribute_id = $itemAttributeId",
-                $this->getGivenTableName('catalog_product_entity_varchar'),
-                [$itemIdTableAlias]
-            ),
-            []
-        );
+        $itemCategoryAttributeId = $this->eavConfig->getAttribute(
+            'catalog_product',
+            LSR::LS_ITEM_CATEGORY
+        )->getId();
+        $itemCategoryClause      = '';
+        $itemIdClause            = " AND $itemIdTableAlias.attribute_id = $itemAttributeId";
+        if ($isItemCategory) {
+            $itemCategoryClause .= " OR $itemIdTableAlias.attribute_id = $itemCategoryAttributeId";
+        }
+        $itemCategoryClause =
+            $collection->getSelect()->joinInner(
+                [self::ITEM_ID_TABLE_ALIAS => $this->getGivenTableName('catalog_product_entity_varchar')],
+                $this->magentoEditionSpecificJoinWhereClause(
+                    "$mainTableAlias.$mainTableItemIdColumn = $itemIdTableAlias.value" .
+                    $itemIdClause . $itemCategoryClause,
+                    $this->getGivenTableName('catalog_product_entity_varchar'),
+                    [$itemIdTableAlias]
+                ),
+                []
+            );
 
         foreach ($groupColumns as $groupColumn) {
             $collection->getSelect()->group("$mainTableAlias.$groupColumn");
@@ -2075,13 +2090,13 @@ class ReplicationHelper extends AbstractHelper
         $collection->getSelect()->joinInner(
             ['third' => $this->getGivenTableName('catalog_category_entity')],
             $this->magentoEditionSpecificJoinWhereClause(
-            $this->magentoEditionSpecificJoinWhereClause(
-                "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
-                $this->getGivenTableName('catalog_category_entity_varchar'),
-                ['second']
-            ),
+                $this->magentoEditionSpecificJoinWhereClause(
+                    "second.entity_id = third.entity_id AND third.path LIKE '1/{$rootCategoryId}/%'",
+                    $this->getGivenTableName('catalog_category_entity_varchar'),
+                    ['second']
+                ),
                 $this->getGivenTableName('catalog_category_entity'),
-            ['third']
+                ['third']
             ),
             []
         );
@@ -2297,7 +2312,7 @@ class ReplicationHelper extends AbstractHelper
         if (isset($dataTime)
             && $dataTime !== "0000-00-00 00:00:00"
         ) {
-            $date = $this->timezone->date(new \DateTime($dataTime),null,$useTimeZone);
+            $date = $this->timezone->date(new \DateTime($dataTime), null, $useTimeZone);
             if ($format === null) {
                 $format = 'Y-m-d H:i:s';
             }
@@ -2419,9 +2434,10 @@ class ReplicationHelper extends AbstractHelper
      *
      * @param $product
      * @param $store
+     * @param bool $isItemCategory
      * @throws LocalizedException
      */
-    public function assignProductToCategories(&$product, $store)
+    public function assignProductToCategories(&$product, $store, $isItemCategory = false)
     {
         $hierarchyCode = $this->lsr->getStoreConfig(LSR::SC_REPLICATION_HIERARCHY_CODE, $store->getId());
         if (empty($hierarchyCode)) {
@@ -2429,13 +2445,18 @@ class ReplicationHelper extends AbstractHelper
                 . $store->getName());
             return;
         }
+        if ($isItemCategory) {
+            $attribute = LSR::LS_ITEM_CATEGORY;
+        } else {
+            $attribute = LSR::LS_ITEM_ID_ATTRIBUTE_CODE;
+        }
         $filters              = [
             ['field' => 'NodeId', 'value' => true, 'condition_type' => 'notnull'],
             ['field' => 'HierarchyCode', 'value' => $hierarchyCode, 'condition_type' => 'eq'],
             ['field' => 'scope_id', 'value' => $store->getWebsiteId(), 'condition_type' => 'eq'],
             [
                 'field'          => 'nav_id',
-                'value'          => $product->getData(LSR::LS_ITEM_ID_ATTRIBUTE_CODE),
+                'value'          => $product->getData($attribute),
                 'condition_type' => 'eq'
             ]
         ];
@@ -3831,6 +3852,52 @@ class ReplicationHelper extends AbstractHelper
         } else {
             throw new NoSuchEntityException();
         }
+    }
+
+
+    /**
+     * Get products data by item category
+     *
+     * @param $itemCategory
+     * @param $storeId
+     * @return ProductInterface[]|null
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
+     */
+    public function getProductsByItemCategory($itemCategory, $storeId)
+    {
+        $currentStoreId = $this->storeManager->getStore()->getId();
+        $searchCriteria = clone $this->searchCriteriaBuilder;
+
+        if (!empty($itemCategory)) {
+            $searchCriteria->addFilter(LSR::LS_ITEM_CATEGORY, $itemCategory);
+        } else {
+            return null;
+        }
+
+        if ($storeId !== '' && $storeId !== 'global') {
+            $searchCriteria = $searchCriteria->addFilter(
+                'store_id',
+                $storeId
+            )->create();
+        } elseif ($storeId === 'global') {
+            //add no store filter to fetch item id present in any store view
+            $searchCriteria = $searchCriteria->create();
+        } else {
+            $searchCriteria = $searchCriteria->addFilter(
+                'store_id',
+                $this->storeManager->getStore()->getId()
+            )->create();
+        }
+
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId(0);
+        }
+        $productList = $this->productRepository->getList($searchCriteria)->getItems();
+        if ($storeId === 'global') {
+            $this->lsr->setStoreId($currentStoreId);
+        }
+        return $productList;
     }
 
     /**

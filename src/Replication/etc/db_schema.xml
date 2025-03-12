@@ -634,15 +634,18 @@
     <column xsi:type="text" name="EndingDate" nullable="true" comment="EndingDate"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="IsDeleted"/>
     <column xsi:type="varchar" name="ItemId" length="200" nullable="true" comment="ItemId"/>
+    <column xsi:type="int" name="LineNumber" padding="11" nullable="true" comment="LineNumber"/>
     <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="LoyaltySchemeCode"/>
     <column xsi:type="decimal" name="MinimumQuantity" scale="4" precision="20" nullable="true" comment="MinimumQuantity"/>
     <column xsi:type="text" name="ModifyDate" nullable="true" comment="ModifyDate"/>
     <column xsi:type="boolean" name="PriceInclVat" default="0" nullable="true" comment="PriceInclVat"/>
+    <column xsi:type="text" name="PriceListCode" nullable="true" comment="PriceListCode"/>
     <column xsi:type="int" name="Priority" padding="11" nullable="true" comment="Priority"/>
     <column xsi:type="decimal" name="QtyPerUnitOfMeasure" scale="4" precision="20" nullable="true" comment="QtyPerUnitOfMeasure"/>
     <column xsi:type="text" name="SaleCode" nullable="true" comment="SaleCode"/>
-    <column xsi:type="int" name="SaleType" padding="11" nullable="true" comment="SaleType"/>
+    <column xsi:type="text" name="SaleType" nullable="true" comment="SaleType"/>
     <column xsi:type="text" name="StartingDate" nullable="true" comment="StartingDate"/>
+    <column xsi:type="text" name="Status" nullable="true" comment="Status"/>
     <column xsi:type="varchar" name="StoreId" length="200" nullable="true" comment="StoreId"/>
     <column xsi:type="varchar" name="UnitOfMeasure" length="200" nullable="true" comment="UnitOfMeasure"/>
     <column xsi:type="decimal" name="UnitPrice" scale="4" precision="20" nullable="true" comment="UnitPrice"/>
@@ -1857,6 +1860,7 @@
     <column xsi:type="text" name="Country" nullable="true" comment="Country"/>
     <column xsi:type="text" name="County" nullable="true" comment="County"/>
     <column xsi:type="text" name="Currency" nullable="true" comment="Currency"/>
+    <column xsi:type="text" name="CustomerId" nullable="true" comment="CustomerId"/>
     <column xsi:type="text" name="DiscountGroup" nullable="true" comment="DiscountGroup"/>
     <column xsi:type="text" name="Email" nullable="true" comment="Email"/>
     <column xsi:type="text" name="FirstName" nullable="true" comment="FirstName"/>
