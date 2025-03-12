@@ -115,8 +115,9 @@ class Cart
                                     $item->getRowTotal() : $this->basketHelper->itemHelper->convertToCurrentStoreCurrency(
                                         $item->getProduct()->getPrice() * $item->getQty()
                                     );
+                                $originalPrice = $this->basketHelper->getPriceAddingCustomOptions($item, $originalPrice);
                             }
-                            $originalPrice = $this->basketHelper->getPriceAddingCustomOptions($item, $originalPrice);
+
                             $item->setPriceInclTax($customPrice);
                             $result['items'][$key]['lsPriceOriginal']  = ($originalPrice != "") ?
                                 $this->checkoutHelper->formatPrice($originalPrice) : $originalPrice;
