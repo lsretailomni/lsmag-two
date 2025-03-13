@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminStoreConfigurationTest">
+        <annotations>
+            <features value="LsAdminStoreConfigurationTest"/>
+            <stories value="Store Configuration - LS Retail"/>
+            <title value="Verify settings for base url, store, hierarchy code, etc."/>
+            <description value="Verify settings for base url, store, hierarchy code, etc."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <amOnPage url="/admin/admin/system_config/edit/section/ls_mag/website/1/#ls_mag_service-link" stepKey="navigateToConfigurationSection" />
+        </before>
+        <after>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <fillField selector="{{LsConfigManagementSection.ServiceBaseUrl}}" userInput="{{ServiceBaseUrl.value}}" stepKey="setServiceBaseUrl"/>
+        <click selector="{{LsConfigManagementSection.ValidateBaseUrl}}" stepKey="validateBaseUrl" after="setServiceBaseUrl"/>
+        <wait stepKey="waitForPopup" time="5" after="validateBaseUrl"/>
+        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
+        <wait stepKey="waitForStoresLoad" time="5" after="clickOk"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedStore}}" userInput="Cronus Web Store" stepKey="fillStore" after="waitForStoresLoad"/>
+        <wait stepKey="waitForHierarchyLoad" time="5" after="fillStore"/>
+        <selectOption selector="{{LsConfigManagementSection.SelectedHierarchyCode}}" userInput="Clothing items" stepKey="fillHierarchy" after="waitForHierarchyLoad"/>
+
+        <actionGroup ref="SaveStoreConfigurationActionGroup" stepKey="saveStoreConfiguration6"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="You saved the configuration." stepKey="seeSuccessMessage3"/>
+    </test>
+</tests>

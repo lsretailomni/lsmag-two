@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsDeleteCustomerAddressActionGroup">
+        <click selector="{{AdminEditCustomerInformationSection.addresses}}" stepKey="openAddressesTab"/>
+        <conditionalClick selector="{{AdminCustomerAddressFiltersSection.clearAll}}" dependentSelector="{{AdminCustomerAddressFiltersSection.clearAll}}" visible="true" stepKey="clickOnButtonToRemoveFiltersIfPresent"/>
+        <click selector="{{AdminCustomerAddressesGridSection.firstRowCheckbox}}" stepKey="tickFirstRowCustomerAddressCheckbox"/>
+        <click selector="{{AdminCustomerAddressesGridActionsSection.actions}}" stepKey="openActionsDropdown"/>
+        <click selector="{{AdminCustomerAddressesGridActionsSection.delete}}" stepKey="chooseDeleteOption"/>
+        <waitForPageLoad stepKey="waitForCustomerAddressesGridPageLoad1"/>
+        <click selector="{{AdminCustomerAddressesGridActionsSection.ok}}" stepKey="clickOkOnPopup"/>
+        <waitForPageLoad stepKey="waitForCustomerAddressesGridPageLoad2"/>
+        <see userInput="We couldn't find any records." selector="{{AdminCustomerAddressesGridSection.customerAddressGrid}}" stepKey="checkThatCustomerAddressesGridHasNoRecords"/>
+    </actionGroup>
+</actionGroups>

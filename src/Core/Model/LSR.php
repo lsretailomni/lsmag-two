@@ -1425,7 +1425,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isPushNotificationsEnabled()
     {
-        $configuredNotificationType = explode(',', $this->getNotificationType());
+        $configuredNotificationType = $this->getNotificationType() != null ? explode(',', $this->getNotificationType()) : [];
 
         return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminResetTaxRulesTest">
+        <annotations>
+            <features value="LsAdminResetTaxRulesTest"/>
+            <stories value="Reset Tax Rules - LS Retail"/>
+            <title value="Reset tax rules and check row count randomly."/>
+            <description value="Reset tax rules and check row count randomly."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsReplicateTaxRulesAndZonesActionGroup" stepKey="replicateTaxRules">
+                <argument name="newWebsiteName" value="Default Store View" />
+            </actionGroup>
+        </before>
+        <after>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- Navigate to LS Configuration Page -->
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" />
+        <waitForPageLoad stepKey="waitForPageLoad1"/>
+        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb"/>
+        <wait stepKey="waitForPageLoad2" time="10"/>
+        <click selector="{{LsConfigManagementSection.ResetTaxRulesButton}}" stepKey="resetTaxRules"/>
+        <wait stepKey="waitForPopup" time="5"/>
+        <acceptPopup stepKey="clickOk"/>
+        <wait stepKey="waitForSuccessMessage" time="5"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Tax Rules deleted successfully." stepKey="seeDeleteSuccessMessage"/>
+
+        <!-- Navigate to Admin Tax Zone and Rates Page -->
+        <actionGroup ref="LsNavigateToTaxZoneAndRatesActionGroup" stepKey="navigateToTaxZoneAndRatesPage"/>
+
+        <grabTextFrom selector="{{LsConfigManagementSection.TaxRowCount}}" stepKey="grabRowCount1"/>
+        <assertRegExp stepKey="assertRowCount1" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount1</actualResult>
+        </assertRegExp>
+    </test>
+</tests>

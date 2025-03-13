@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsSetRequiredConfigsActionGroup">
+        <annotations>
+            <description>Set required configs</description>
+        </annotations>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceStore.path}} {{ServiceStore.value}}" stepKey="serviceStore"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceHierarchyCode.path}} {{ServiceHierarchyCode.value}}" stepKey="serviceHierarchyCode"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceBaseUrl.path}} {{ServiceBaseUrl.value}}" stepKey="serviceBaseUrl"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceVersion.path}} {{ServiceVersion.value}}" stepKey="serviceVersion"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceCentralVersion.path}} {{ServiceCentralVersion.value}}" stepKey="serviceCentralVersion"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{ServiceDebug.path}} {{ServiceDebug.value}}" stepKey="serviceDebug"/>
+        <magentoCLI command="config:set --scope website --scope-code base {{OrderPrefix.path}} {{OrderPrefix.value}}" stepKey="orderPrefix"/>
+        <magentoCLI command="config:set --scope website --scope-code base ls_mag/service/timeout 60" stepKey="serviceTimeout"/>
+    </actionGroup>
+</actionGroups>

@@ -11,10 +11,6 @@ use Magento\Quote\Model\Quote;
 use PHPUnit\Exception;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class PointsManagement
- * @package Mageplaza\RewardPoints\Model\Api
- */
 class PointsManagement implements PointsManagementInterface
 {
 
@@ -84,7 +80,7 @@ class PointsManagement implements PointsManagementInterface
      */
     protected function validateQuote(Quote $quote)
     {
-        if ($quote->getItemsCount() === 0) {
+        if ($quote->getItemsCount() == 0) {
             throw new LocalizedException(
                 __('Totals calculation is not applicable to empty cart.')
             );

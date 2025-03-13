@@ -103,7 +103,7 @@ class DataAssignObserver implements ObserverInterface
             false
         );
 
-        //For click and collect validate cart item inventory in store and pickup date and
+        // For click and collect validate cart item inventory in store and pickup date and
         // time with store opening hours
         if (!$errorMessage &&
             $quote->getShippingAddress()->getShippingMethod() == "clickandcollect_clickandcollect"

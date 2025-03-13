@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsValidateStoreGridActionGroup">
+        <annotations>
+            <description>Goes to the Admin store grid page. Check if given number of records exists.</description>
+        </annotations>
+        <arguments>
+            <argument name="NumOfRecords" type="string"/>
+        </arguments>
+        <amOnPage url="admin/ls_repl/grids/store/" stepKey="openStoreReplicationPage" />
+        <waitForPageLoad stepKey="waitForStoreReplicationPageOpen" />
+        <click selector="div.data-grid-filters-actions-wrap > div > button" stepKey="clickFilterButton"/>
+        <conditionalClick selector="{{AdminDataGridHeaderSection.clearFilters}}" dependentSelector="{{AdminDataGridHeaderSection.clearFilters}}" visible="true" stepKey="cleanFiltersIfTheySet"/>
+        <waitForPageLoad stepKey="waitForClearFilters"/>
+        <fillField selector="input[name=nav_id]" userInput="S0013" stepKey="filterNavId"/>
+        <click selector="button[data-action=grid-filter-apply]" stepKey="applyFilter"/>
+        <waitForPageLoad stepKey="waitForPageToLoad"/>
+        <grabMultiple selector="table.data-grid tbody .data-row" stepKey="grabDataRows"/>
+        <assertCount stepKey="assertDataRows">
+            <actualResult type="variable">grabDataRows</actualResult>
+            <expectedResult type="string">{{NumOfRecords}}</expectedResult>
+        </assertCount>
+    </actionGroup>
+</actionGroups>

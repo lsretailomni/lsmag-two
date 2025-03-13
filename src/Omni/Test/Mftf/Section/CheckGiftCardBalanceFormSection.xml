@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="CheckGiftCardBalanceFormSection">
+        <element name="giftCardCodeInput" type="input" selector="form .control #gift_card_code"/>
+        <element name="giftCardPinInput" type="input" selector="form #gift_card_pin"/>
+        <element name="checkBalanceBtn" type="button" selector="form .actions-toolbar .check-balance-btn"/>
+        <element name="resetBtn" type="button" selector="form .actions-toolbar .reset-btn"/>
+    </section>
+</sections>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsResetStoreDataActionGroup">
+        <amOnPage url="{{AdminCronListingPage.url}}" stepKey="navigateToCronListingPage"/>
+        <waitForPageLoad stepKey="waitForCronListingPage"/>
+        <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='repl_store_reset_label']" stepKey="waitForGridLoad"/>
+        <click selector=".admin__data-grid-wrap a[aria-label='repl_store_reset_label']" stepKey="clickReset"/>
+        <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForResetConfirmationModal"/>
+        <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to reset data. Please don't close this window." stepKey="seeResetConfirmationMessage"/>
+        <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmReset"/>
+        <waitForPageLoad time="60" stepKey="waitForResetToFinish"/>
+    </actionGroup>
+</actionGroups>
