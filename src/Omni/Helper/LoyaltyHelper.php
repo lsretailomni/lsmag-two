@@ -458,9 +458,7 @@ class LoyaltyHelper extends AbstractHelperOmni
             $group = $this->groupRepository->getById($customerGroupId)->getCode();
             $string->setString(is_array($itemId) ? $itemId : [$itemId]);
             $entity->setStoreId($webStore)->setItemIds($string);
-            if($group != "NOT LOGGED IN") {
-                $entity->setLoyaltySchemeCode($group);
-            }
+            ($group != "NOT LOGGED IN") ? $entity->setLoyaltySchemeCode($group) : $entity->setLoyaltySchemeCode("");
             try {
                 $response = $request->execute($entity);
             } catch (Exception $e) {
