@@ -1293,7 +1293,7 @@ class BasketHelper extends AbstractHelper
         }
 
         $basketData = $this->update($oneList);
-
+        $quote = $this->getCurrentQuote();
         if (is_object($basketData)) {
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             $cartQuote = $this->checkoutSession->getQuote();
