@@ -547,6 +547,7 @@ class ItemHelper extends AbstractHelper
      * @param $quoteItem
      * @param $unitPrice
      * @param int $type
+     * @throws NoSuchEntityException
      */
     public function setRelatedAmountsAgainstGivenQuoteItem($line, &$quoteItem, $unitPrice, $type = 1)
     {
@@ -593,9 +594,15 @@ class ItemHelper extends AbstractHelper
             ->setBasePriceInclTax($this->convertToBaseCurrency($unitPrice))
             ->setLsDiscountAmount($lsDiscountAmount)
             ->setRowTotal($type == 1 ? $netAmount : $rowTotal)
-            ->setBaseRowTotal($type == 1 ? $this->convertToBaseCurrency($netAmount) : $this->convertToBaseCurrency($rowTotal))
+            ->setBaseRowTotal(
+                $type == 1 ? $this->convertToBaseCurrency($netAmount) :
+                    $this->convertToBaseCurrency($rowTotal)
+            )
             ->setRowTotalInclTax($type == 1 ? $amount : $rowTotalIncTax)
-            ->setBaseRowTotalInclTax($type == 1 ? $this->convertToBaseCurrency($amount) : $this->convertToBaseCurrency($rowTotalIncTax));
+            ->setBaseRowTotalInclTax(
+                $type == 1 ? $this->convertToBaseCurrency($amount) :
+                    $this->convertToBaseCurrency($rowTotalIncTax)
+            );
     }
 
     /**
@@ -797,23 +804,49 @@ class ItemHelper extends AbstractHelper
         return $this->isValid($quoteItem, $line, $itemId, $variantId, $uom, $baseUnitOfMeasure);
     }
 
-    public function convertToCurrentStoreCurrency($price)
+    /**
+     * Convert to current store currency
+     *
+     * @param $price
+     * @param string $currentCurrencyCode
+     * @param string $baseCurrencyCode
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function convertToCurrentStoreCurrency($price, $currentCurrencyCode = null, $baseCurrencyCode = null)
     {
-        $currentCurrency = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        if (!$currentCurrencyCode) {
+            $currentCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        }
 
-        $baseCurrency = $this->storeManager->getStore()->getBaseCurrency()->getCode();
+        if (!$baseCurrencyCode) {
+            $baseCurrencyCode = $this->storeManager->getStore()->getBaseCurrency()->getCode();
+        }
 
-        $rate = $this->currencyFactory->create()->load($baseCurrency)->getAnyRate($currentCurrency);
+        $rate = $this->currencyFactory->create()->load($baseCurrencyCode)->getAnyRate($currentCurrencyCode);
         return $price * $rate;
     }
 
-    public function convertToBaseCurrency($price)
+    /**
+     * Convert to base currency
+     *
+     * @param $price
+     * @param string $currentCurrencyCode
+     * @param string $baseCurrencyCode
+     * @return float|int
+     * @throws NoSuchEntityException
+     */
+    public function convertToBaseCurrency($price, $currentCurrencyCode = null, $baseCurrencyCode = null)
     {
-        $currentCurrency = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        if (!$currentCurrencyCode) {
+            $currentCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+        }
 
-        $baseCurrency = $this->storeManager->getStore()->getBaseCurrency()->getCode();
+        if (!$baseCurrencyCode) {
+            $baseCurrencyCode = $this->storeManager->getStore()->getBaseCurrency()->getCode();
+        }
 
-        $rate = $this->currencyFactory->create()->load($currentCurrency)->getAnyRate($baseCurrency);
+        $rate = $this->currencyFactory->create()->load($currentCurrencyCode)->getAnyRate($baseCurrencyCode);
         return $price * $rate;
     }
 }

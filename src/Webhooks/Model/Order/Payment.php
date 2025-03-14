@@ -198,16 +198,31 @@ class Payment
                 $validateInvoice = $this->validateInvoice($invoice, $documentId);
             }
             if ($validateInvoice && $validateOrder['data']['success']) {
+                $baseTotalAmount = $totalAmount;
+                $baseSubtotal = $subtotal;
+
+                if ($order->getBaseCurrencyCode() !== $order->getOrderCurrencyCode()) {
+                    $baseTotalAmount = $this->helper->getItemHelper()->convertToBaseCurrency(
+                        $totalAmount,
+                        $order->getOrderCurrencyCode(),
+                        $order->getBaseCurrencyCode()
+                    );
+                    $baseSubtotal = $this->helper->getItemHelper()->convertToBaseCurrency(
+                        $subtotal,
+                        $order->getOrderCurrencyCode(),
+                        $order->getBaseCurrencyCode()
+                    );
+                }
                 $invoice->setRequestedCaptureCase(Invoice::CAPTURE_ONLINE);
                 $invoice->getOrder()->setCustomerNoteNotify(false);
                 $invoice->getOrder()->setIsInProcess(true);
                 $invoice->setShippingAmount($shippingAmount);
                 $invoice->setSubtotal($subtotal);
-                $invoice->setBaseSubtotal($subtotal);
+                $invoice->setBaseSubtotal($baseSubtotal);
                 $invoice->setSubtotalInclTax($subtotal);
-                $invoice->setBaseSubtotalInclTax($subtotal);
+                $invoice->setBaseSubtotalInclTax($baseSubtotal);
                 $invoice->setGrandTotal($totalAmount);
-                $invoice->setBaseGrandTotal($totalAmount);
+                $invoice->setBaseGrandTotal($baseTotalAmount);
                 $invoice->register();
                 $order->addCommentToStatusHistory('INVOICED FROM LS CENTRAL THROUGH WEBHOOK', false);
                 $transactionSave = $this->transactionFactory->create()->addObject($invoice)->
