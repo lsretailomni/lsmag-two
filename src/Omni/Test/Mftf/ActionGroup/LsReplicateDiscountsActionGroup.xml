@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsReplicateDiscountsActionGroup">
+        <amOnPage url="{{AdminCronListingPage.url}}" stepKey="navigateToCronListingPage"/>
+        <waitForPageLoad stepKey="waitForCronListingPage"/>
+        <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='repl_discount_setup_execute_label']" stepKey="waitForGridLoad"/>
+        <click selector=".admin__data-grid-wrap a[aria-label='repl_discount_setup_execute_label']" stepKey="clickExecute"/>
+        <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForExecuteConfirmationModal"/>
+        <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage"/>
+        <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute"/>
+        <waitForPageLoad time="60" stepKey="waitForExecuteToFinish"/>
+        
+        <waitForElementVisible selector=".admin__data-grid-wrap a[aria-label='repl_discount_validation_execute_label']" stepKey="waitForGridLoad2"/>
+        <click selector=".admin__data-grid-wrap a[aria-label='repl_discount_validation_execute_label']" stepKey="clickExecute2"/>
+        <waitForElementVisible selector="{{AdminCronListingModalSection.message}}" stepKey="waitForExecuteConfirmationModal2"/>
+        <see selector="{{AdminCronListingModalSection.message}}" userInput="It will take some time to process. Please don't close this window." stepKey="seeExecuteConfirmationMessage2"/>
+        <click selector="{{AdminCronListingModalSection.ok}}" stepKey="confirmExecute2"/>
+        <waitForPageLoad time="60" stepKey="waitForExecuteToFinish2"/>
+    </actionGroup>
+</actionGroups>

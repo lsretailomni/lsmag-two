@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsResetItemActionGroup">
+        <annotations>
+            <description>Goes to the Admin Item grid page. Selects processed item and reset it through bulk operations.</description>
+        </annotations>
+
+        <amOnPage url="{{AdminLsItemGridPage.url}}" stepKey="navigateToItemsPage"/>
+        <waitForPageLoad stepKey="waitForAdminItemsPageLoad"/>
+        <click selector="{{AdminLsItemGridFiltersSection.filtersButton}}" stepKey="clickFilterButton"/>
+        <conditionalClick selector="{{AdminDataGridHeaderSection.clearFilters}}" dependentSelector="{{AdminDataGridHeaderSection.clearFilters}}" visible="true" stepKey="cleanFiltersIfTheySet"/>
+        <waitForPageLoad stepKey="waitForClearFilters"/>
+        <selectOption selector="{{AdminLsItemGridFiltersSection.processedSelect}}" userInput="1" stepKey="selectFlatToMagento"/>
+        <click selector="{{AdminLsItemGridFiltersSection.apply}}" stepKey="applyFilter"/>
+        <waitForPageLoad stepKey="waitForPageToLoad"/>
+        <click selector="{{AdminLsItemGridSection.selectFirstRow}}" stepKey="clickOnFirstRecord"/>
+        <click selector="{{AdminLsItemGridMainActionsSection.actions}}" stepKey="clickActionsDropdown"/>
+        <click selector="{{AdminLsItemGridMainActionsSection.reset}}" stepKey="clickReset"/>
+        <waitForElementVisible selector="{{AdminLsItemGridMainActionsSection.ok}}" stepKey="waitForOkToVisible"/>
+        <click selector="{{AdminLsItemGridMainActionsSection.ok}}" stepKey="clickOkConfirmationButton"/>
+        <waitForElementVisible stepKey="waitForSuccessfullyDeletedMessage" selector="{{AdminLsItemGridMainActionsSection.deletedSuccessMessage}}" time="30"/>
+    </actionGroup>
+</actionGroups>

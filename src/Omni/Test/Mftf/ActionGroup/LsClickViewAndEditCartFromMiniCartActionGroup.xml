@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsClickViewAndEditCartFromMiniCartActionGroup" extends="ClickViewAndEditCartFromMiniCartActionGroup">
+        <grabMultiple selector=".minicart-items .product-item .lsdiscountprice" stepKey="grabAllLsDiscountPriceTag" before="waitForViewAndEditCartVisible"/>
+        <assertCount stepKey="assertAllLsDiscountPriceTagNotEmpty" before="waitForViewAndEditCartVisible">
+            <actualResult type="variable">grabAllLsDiscountPriceTag</actualResult>
+            <expectedResult type="string">2</expectedResult>
+        </assertCount>
+        <grabMultiple selector=".minicart-items .product-item .lsdiscountamount" stepKey="grabAllLsDiscountAmountTag" before="waitForViewAndEditCartVisible"/>
+        <assertCount stepKey="assertAllLsDiscountAmountTagNotEmpty" before="waitForViewAndEditCartVisible">
+            <actualResult type="variable">grabAllLsDiscountAmountTag</actualResult>
+            <expectedResult type="string">2</expectedResult>
+        </assertCount>
+    </actionGroup>
+</actionGroups>

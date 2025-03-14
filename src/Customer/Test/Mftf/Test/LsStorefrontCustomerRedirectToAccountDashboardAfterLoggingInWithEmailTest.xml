@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsStorefrontCustomerRedirectToAccountDashboardAfterLoggingInWithEmailTest"
+          extends="StorefrontCustomerRedirectToAccountDashboardAfterLoggingInTest">
+        <annotations>
+            <features value="Customer"/>
+            <stories value="Customer logs in with email and redirected to account dashboard"/>
+            <title value="Redirect to account dashboard"/>
+            <description value="Customer should be automatically redirected to account dashboard after login with email and should see club information"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCustomer"/>
+        </annotations>
+        <before>
+            <remove keyForRemoval="createCustomer"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
+            <createData entity="LsSimpleProduct3" stepKey="product1" before="cleanInvalidatedCaches"/>
+            <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 1000" stepKey="settingLoyaltyPointsExpiryBefore" before="cleanInvalidatedCaches"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <!--Delete test data.-->
+            <deleteData createDataKey="product1" stepKey="deleteSimpleProduct1"/>
+            <remove keyForRemoval="deleteCustomer"/>
+            <magentoCLI command="config:set ls_mag/loyalty/loyalty_points_expiry_interval 90" stepKey="settingLoyaltyPointsExpiryAfter"  after="cleanInvalidatedCaches"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout" after="cleanInvalidatedCaches"/>
+        </after>
+
+        <actionGroup ref="LoginToStorefrontActionGroup" stepKey="loginToStorefrontAccount">
+            <argument name="Customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  before="assertAccountLinkInUrl" />
+        <see selector="{{StorefrontCustomerDashboardAccountInformationSection.clubInformationMemberInformationLoyaltyPointsExpiry}}" userInput="Loyalty Points Expiry:" stepKey="VerifyLoyaltyPointsExpiryHeading" before="assertAccountLinkInUrl"/>
+        <actionGroup ref="AssertRecentOrderActionGroup" stepKey="validateRecentOrder"  before="assertAccountLinkInUrl" />
+        <actionGroup ref="StorefrontCustomerGoToSidebarMenu" stepKey="goToSidebarMenu" before="assertAccountLinkInUrl">
+            <argument name="menu" value="My Orders"/>
+        </actionGroup>
+
+        <actionGroup ref="AssertOrderHistoryActionGroup" stepKey="validateOrderHistory"  before="assertAccountLinkInUrl" />
+        <actionGroup ref="AssertLoyaltyOffersPagesActionGroup" stepKey="validateLoyaltyOffersPages"  before="assertAccountLinkInUrl">
+            <argument name="product" value="$product1$"/>
+        </actionGroup>
+
+         <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
+            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+        </actionGroup>
+        <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid" after="deleteNewUser"/>
+    </test>
+</tests>

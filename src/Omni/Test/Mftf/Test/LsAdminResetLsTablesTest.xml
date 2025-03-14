@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminResetLsTablesTest">
+        <annotations>
+            <features value="LsAdminResetLsTablesTest"/>
+            <stories value="Reset all ls tables - LS Retail"/>
+            <title value="Reset all ls tables and check row count randomly."/>
+            <description value="Reset all ls tables and check row count randomly."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+            <actionGroup ref="LsReplicateHierarchyNodeActionGroup" stepKey="replicateHierarchyNode"/>
+            <actionGroup ref="LsReplicateAttributeActionGroup" stepKey="replicateAttributes"/>
+            <actionGroup ref="LsReplicateDiscountsActionGroup" stepKey="replicateDiscounts"/>
+            <actionGroup ref="LsReplicateTaxRulesActionGroup" stepKey="replicateTaxRules"/>
+        </before>
+        <after>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- Navigate to LS Configuration Page -->
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" />
+
+        <wait stepKey="waitForPageLoad2" time="30"/>
+        <click selector="{{LsConfigManagementSection.ResetLsTablesButton}}" stepKey="resetLsTables"/>
+        <wait stepKey="waitForPopup" time="5"/>
+        <acceptPopup stepKey="clickOk"/>
+        <wait stepKey="waitForSuccessMessage" time="5"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="All ls_ tables truncated successfully." stepKey="seeDeleteSuccessMessage"/>
+
+        <!-- Navigate to Admin Item Replication Page -->
+        <actionGroup ref="LsNavigateToItemReplicationActionGroup" stepKey="navigateToAdminSalesOrderPage" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount1"/>
+        <assertRegExp stepKey="assertRowCount1" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount1</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Hierarchy node Replication Page -->
+        <actionGroup ref="LsNavigateToHierarchyNodeReplicationActionGroup" stepKey="navigateToHierarchyNodePage"/>
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount2"/>
+        <assertRegExp stepKey="assertRowCount2" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount2</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Attribute Replication Page -->
+        <actionGroup ref="LsNavigateToAttributesReplicationActionGroup" stepKey="navigateToAttributePage" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount3"/>
+        <assertRegExp stepKey="assertRowCount3" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount3</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Discount Replication Page -->
+        <actionGroup ref="LsNavigateToDiscountsReplicationActionGroup" stepKey="navigateToDiscountsPage" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount4"/>
+        <assertRegExp stepKey="assertRowCount4" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount4</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to Admin Tax Rules Replication Page -->
+        <actionGroup ref="LsNavigateToTaxRulesReplicationActionGroup" stepKey="navigateToTaxRulesPage" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount5"/>
+        <assertRegExp stepKey="assertRowCount5" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount5</actualResult>
+        </assertRegExp>
+    </test>
+</tests>
