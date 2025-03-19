@@ -18,6 +18,8 @@ use MyCLabs\Enum\Enum;
  * @$method static HierarchyLeafType WAREHOUSE_LOCATION()
  * @$method static HierarchyLeafType CUSTOMER()
  * @$method static HierarchyLeafType CUSTOMER_GROUP()
+ * @$method static HierarchyLeafType VENDOR()
+ * @$method static HierarchyLeafType ITEM_CATEGORY()
  */
 class HierarchyLeafType extends Enum
 {
@@ -34,5 +36,9 @@ class HierarchyLeafType extends Enum
     public const CUSTOMER = 'Customer';
 
     public const CUSTOMER_GROUP = 'CustomerGroup';
+
+    public const VENDOR = 'Vendor';
+
+    public const ITEM_CATEGORY = 'ItemCategory';
 }
 

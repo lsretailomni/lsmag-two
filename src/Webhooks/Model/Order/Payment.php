@@ -217,7 +217,7 @@ class Payment
                     $this->invoiceSender->send($invoice);
 
                     if ($order->getShippingMethod() == "clickandcollect_clickandcollect") {
-                        $this->createShipment($order, $lines);
+                        $this->createShipment($order, $lines, true);
                     }
 
                     foreach ($lines as $line) {
@@ -227,12 +227,15 @@ class Payment
                     }
                     $message = 'Invoice has been sent for order# ' . $documentId;
 
-                    $this->notificationHelper->processNotifications(
-                        $storeId,
-                        $order,
-                        $items,
-                        $message
-                    );
+                    if ($order->getShippingMethod() != "clickandcollect_clickandcollect") {
+                        $this->notificationHelper->processNotifications(
+                            $storeId,
+                            $order,
+                            $items,
+                            $message,
+                            ''
+                        );
+                    }
 
                     return $this->helper->outputMessage(
                         true,
@@ -329,11 +332,12 @@ class Payment
      *
      * @param $order
      * @param $lines
+     * @param bool $isClickandCollect
      * @return void
      * @throws LocalizedException
      * @throws NoSuchEntityException
      */
-    public function createShipment($order, $lines)
+    public function createShipment($order, $lines, $isClickandCollect = false)
     {
         if (!$order->canShip()) {
             throw new LocalizedException(
@@ -378,7 +382,9 @@ class Payment
             $this->shipmentRepository->save($orderShipment);
             $this->orderRepository->save($order);
             // Send Shipment Email
-            $this->shipmentNotifier->notify($orderShipment);
+            if (!$isClickandCollect) {
+                $this->shipmentNotifier->notify($orderShipment);
+            }
         } catch (\Exception $e) {
             throw new LocalizedException(
                 __($e->getMessage())

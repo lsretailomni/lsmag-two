@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<pages xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/PageObject.xsd">
+    <page name="AdminLsItemGridPage" url="/ls_repl/grids/item/" area="admin" module="Ls_Replication">
+        <section name="AdminLsItemGridMainActionsSection"/>
+        <section name="AdminLsItemGridFiltersSection"/>
+        <section name="AdminLsItemGridSection"/>
+    </page>
+</pages>

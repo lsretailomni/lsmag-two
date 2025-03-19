@@ -103,6 +103,8 @@ class CartObserver implements ObserverInterface
                 $quote->setLsGiftCardPin(null);
                 $quote->setLsPointsSpent(0);
                 $quote->setLsPointsEarn(0);
+                $quote->setSubtotal(0);
+                $quote->setBaseSubtotal(0);
                 $quote->setGrandTotal(0);
                 $quote->setBaseGrandTotal(0);
                 $this->basketHelper->quoteRepository->save($quote);

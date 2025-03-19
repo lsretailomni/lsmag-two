@@ -51,6 +51,7 @@ use MyCLabs\Enum\Enum;
  * @$method static FeatureFlagName USE_ONLINE_SEARCH()
  * @$method static FeatureFlagName CURRENCY_CODE()
  * @$method static FeatureFlagName ALLOWED_PAYMENT_TO_CUSTOMER_ACCOUNT()
+ * @$method static FeatureFlagName ENABLE_NOTIFICATIONS()
  * @$method static FeatureFlagName ENABLE_PLATFORM_PAYMENT()
  * @$method static FeatureFlagName CARD_PAYMENT_METHOD()
  * @$method static FeatureFlagName LS_PAY_SERVICE_IP_ADDRESS()
@@ -154,6 +155,8 @@ class FeatureFlagName extends Enum
     public const CURRENCY_CODE = 'CurrencyCode';
 
     public const ALLOWED_PAYMENT_TO_CUSTOMER_ACCOUNT = 'AllowedPaymentToCustomerAccount';
+
+    public const ENABLE_NOTIFICATIONS = 'EnableNotifications';
 
     public const ENABLE_PLATFORM_PAYMENT = 'EnablePlatformPayment';
 

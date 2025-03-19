@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="LsConfigManagementSection">
+        <element name="ServiceBaseUrl" type="text" selector="#ls_mag_service_base_url" timeout="60"/>
+        <element name="ServiceCentralType" type="select" selector="#ls_mag_service_central_type"/>
+        <element name="ValidateBaseUrl" type="button" selector="#validate_base_url"/>
+        <element name="SelectedStore" type="select" selector="#ls_mag_service_selected_store" timeout="60"/>
+        <element name="SelectedHierarchyCode" type="select" selector="#ls_mag_service_replicate_hierarchy_code"/>
+        <element name="ItemOnePaymentMethod" type="select" selector="#item1_payment_method"/>
+        <element name="ItemOneTenderType" type="select" selector="#item1_tender_type"/>
+        <element name="ItemTwoPaymentMethod" type="select" selector="#item2_payment_method"/>
+        <element name="ItemTwoTenderType" type="select" selector="#item2_tender_type"/>
+        <element name="Save" type="button" selector="#save" timeout="30"/>
+        <element name="StoreConfigurationPageSuccessMessage" type="text" selector="#messages [data-ui-id='messages-message-success']"/>
+        <element name="ResetCustomerDataButton" type="text" selector="#ls_mag_restore_database_customers"/>
+        <element name="ResetProductDataButton" type="text" selector="#ls_mag_restore_database_products"/>
+        <element name="ResetOrderDataButton" type="text" selector="#ls_mag_restore_database_orders"/>
+        <element name="ResetLsTablesButton" type="text" selector="#ls_mag_restore_database_ls_tables"/>
+        <element name="ResetTaxRulesButton" type="text" selector="#ls_mag_restore_database_tax_rules"/>
+        <element name="RowCount" type="text" selector="div.row-gutter div.row div.admin__control-support-text"/>
+        <element name="TaxRowCount" type="text" selector="div#tax_rate_grid div.admin__control-support-text"/>
+        <element name="selectStoreView" type="button" selector="//a[@data-role='store-view-id' and contains(text(),'{{selectStoreView}}')]" parameterized="true"/>
+    </section>
+</sections>

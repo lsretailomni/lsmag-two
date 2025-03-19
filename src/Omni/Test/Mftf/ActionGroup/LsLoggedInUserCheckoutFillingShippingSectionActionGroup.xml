@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" extends="LoggedInUserCheckoutFillingShippingSectionActionGroup">
+        <selectOption selector="{{CheckoutShippingSection.country}}" userInput="{{customerAddressVar.country_id}}" stepKey="selectCountry" before="enterCity"/>
+    </actionGroup>
+</actionGroups>

@@ -16,13 +16,18 @@ class RemoveGiftCard extends AbstractGiftCard
     {
         try {
             $maskedCartId = $args['input']['cart_id'];
-            $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-            $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
-            $cartId = $cart->getId();
-            $result = $this->giftCardManagement->remove($cartId);
+            $storeId      = (int)$context->getExtensionAttributes()->getStore()->getId();
+            $cart         = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+            $cartId       = $cart->getId();
+            $result       = $this->giftCardManagement->remove($cartId);
             if ($result) {
                 $storeId = (int)$context->getExtensionAttributes()->getStore()->getId();
-                $cart = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+                $cart    = $this->getCartForUser->execute($maskedCartId, $context->getUserId(), $storeId);
+                $cart->setLsGiftCardNo(null)
+                    ->setLsGiftCardPin(null)
+                    ->setLsGiftCardCnyFactor(null)
+                    ->setLsGiftCardCnyCode(null)
+                    ->save();
             }
         } catch (\Exception $e) {
             throw new GraphQlInputException(__($e->getMessage()));

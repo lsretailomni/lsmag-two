@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsResetItemTest">
+        <annotations>
+            <features value="LsReplication"/>
+            <stories value="Merchant should be able to reset an item"/>
+            <title value="Merchant should be able to reset an item"/>
+            <description value="Merchant should be able to reset an item"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsReplication"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <magentoCLI command="config:set ls_mag/replication/default_batch_size 5000" stepKey="setDefaultBatchSize"/>
+            <magentoCLI command="config:set ls_mag/replication/product_batch_size 1" stepKey="setProductBatchSize"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login"/>
+        </before>
+        <after>
+            <!--Delete test data.-->
+            <magentoCLI command="config:set ls_mag/replication/default_batch_size 2000" stepKey="resetDefaultBatchSize"/>
+            <magentoCLI command="config:set ls_mag/replication/product_batch_size 30" stepKey="resetProductBatchSize"/>
+            <actionGroup ref="LsTruncateDataActionGroup" stepKey="truncateData"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplItem">
+            <argument name="cronLabel" value="repl_item_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplPrice">
+            <argument name="cronLabel" value="repl_price_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplInvStatus">
+            <argument name="cronLabel" value="repl_inv_status_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplBarcode">
+            <argument name="cronLabel" value="repl_barcode_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplExtendedVariantValue">
+            <argument name="cronLabel" value="repl_extended_variant_value_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplImageLink">
+            <argument name="cronLabel" value="repl_image_link_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplItemVariantRegistration">
+            <argument name="cronLabel" value="repl_item_variant_registration_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplItemVariant">
+            <argument name="cronLabel" value="repl_item_variant_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplUnitOfMeasure">
+            <argument name="cronLabel" value="repl_unit_of_measure_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplItemUnitOfMeasure">
+            <argument name="cronLabel" value="repl_item_unit_of_measure_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplHierarchy">
+            <argument name="cronLabel" value="repl_hierarchy_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplHierarchyNode">
+            <argument name="cronLabel" value="repl_hierarchy_node_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplHierarchyLeaf">
+            <argument name="cronLabel" value="repl_hierarchy_leaf_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplAttribute">
+            <argument name="cronLabel" value="repl_attribute_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplAttributeValue">
+            <argument name="cronLabel" value="repl_attribute_value_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplAttributeOptionValue">
+            <argument name="cronLabel" value="repl_attribute_option_value_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplDiscountSetup">
+            <argument name="cronLabel" value="repl_discount_setup_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateReplDiscountValidation">
+            <argument name="cronLabel" value="repl_discount_validation_execute_label"/>
+        </actionGroup>
+
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateCreateAttributes">
+            <argument name="pageUrl" value="/scope_id/1/scope/stores/store/1/"/>
+            <argument name="cronLabel" value="repl_attributes_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateCreateCategories">
+            <argument name="pageUrl" value="/scope_id/1/scope/stores/store/1/"/>
+            <argument name="cronLabel" value="repl_category_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsReplicateGivenCronDataActionGroup" stepKey="replicateCreateProducts">
+            <argument name="pageUrl" value="/scope_id/1/scope/stores/store/1/"/>
+            <argument name="cronLabel" value="repl_products_execute_label"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplItem1">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/item/"/>
+            <argument name="noDataRecord" value="0"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplPrice1">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/price/"/>
+            <argument name="noDataRecord" value="0"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplInvStatus1">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/inventorystatus/"/>
+            <argument name="noDataRecord" value="0"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplItemVariantRegistration1">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/itemvariantregistration/"/>
+            <argument name="noDataRecord" value="0"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemActionGroup" stepKey="resetSpecificItem" />
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplItem2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/item/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplPrice2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/price/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplInvStatus2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/inventorystatus/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplImageLink2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/imagelink/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplItemVariantRegistration2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/itemvariantregistration/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplHierarchyLeaf2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/hierarchyleaf/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplAttributeValue2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/attributevalue/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+        <actionGroup ref="LsResetItemValidateActionGroup" stepKey="validateReplItemVendor2">
+            <argument name="pageUrl" value="/admin/ls_repl/grids/itemvendor/"/>
+            <argument name="noDataRecord" value="1"/>
+        </actionGroup>
+    </test>
+</tests>

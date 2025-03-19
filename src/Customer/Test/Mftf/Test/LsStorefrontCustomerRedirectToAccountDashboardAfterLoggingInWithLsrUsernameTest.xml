@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsStorefrontCustomerRedirectToAccountDashboardAfterLoggingInWithLsrUsernameTest"
+          extends="StorefrontCustomerRedirectToAccountDashboardAfterLoggingInTest">
+        <annotations>
+            <features value="Customer"/>
+            <stories value="Customer logs in with lsr_name and redirected to account dashboard"/>
+            <title value="Redirect to account dashboard"/>
+            <description value="Customer should be automatically redirected to account dashboard after login with lsr_username and should see club information"/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsCustomer"/>
+        </annotations>
+        <before>
+            <remove keyForRemoval="createCustomer"/>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs" before="cleanInvalidatedCaches"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="login" after="cleanInvalidatedCaches"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" after="login">
+                <argument name="indices" value=""/>
+            </actionGroup>
+        </before>
+        <after>
+            <remove keyForRemoval="deleteCustomer"/>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout" after="cleanInvalidatedCaches"/>
+        </after>
+
+        <actionGroup ref="LoginToStorefrontWithUsernameActionGroup" stepKey="loginToStorefrontAccount">
+            <argument name="Customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"  after="loginToStorefrontAccount" />
+        <actionGroup ref="DeleteCustomerByEmailActionGroup" stepKey="deleteNewUser" after="assertAccountLinkInUrl">
+            <argument name="email" value="{{Ls_Simple_US_Customer.email}}"/>
+        </actionGroup>
+        <actionGroup ref="ResetAdminDataGridToDefaultViewActionGroup" stepKey="resetGrid" after="deleteNewUser"/>
+    </test>
+</tests>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsGiftCardBalanceCheckTest">
+        <annotations>
+            <stories value="Ls Gift Card Balance Check"/>
+            <features value="Checkout"/>
+            <title value="Check Gift card link in the footer. Check Gift Card balance on the cms page."/>
+            <description value="Verify, user is able to see check gift card balance link in footer and can check gift card balance."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsShoppingCart"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+        </before>
+
+        <!-- 1. Go to storefront home page -->
+        <actionGroup ref="StorefrontOpenHomePageActionGroup" stepKey="goToHomePage"/>
+        <waitForElementVisible selector=".page-footer .ls-footer-gift-card" stepKey="assertCheckGiftCardLink"/>
+        <amOnPage url="{{StorefrontCheckGiftCardBalancePage.url}}" stepKey="goToCheckGiftCardBalancePage"/>
+        <waitForPageLoad stepKey="waitForStorefrontPageLoad"/>
+        <waitForElementVisible selector="{{CheckGiftCardBalanceFormSection.giftCardCodeInput}}" stepKey="assertCheckGiftCardCodeInput"/>
+        <fillField userInput="{{_ENV.GIFT_CARD_NUMBER_1}}" selector="{{CheckGiftCardBalanceFormSection.giftCardCodeInput}}" stepKey="fillGiftCardNo"/>
+        <click selector="{{CheckGiftCardBalanceFormSection.checkBalanceBtn}}" stepKey="clickCheckGiftCardBalanceBtn" />
+
+        <waitForElementVisible selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoBalanceLabel}}" stepKey="validateCheckGiftCardBalanceLabel"/>
+        <waitForElementVisible selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoBalanceValue}}" stepKey="validateCheckGiftCardBalanceValue"/>
+        <waitForElementVisible selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoExpiryLabel}}" stepKey="validateCheckGiftCardExpiryLabel"/>
+        <waitForElementVisible selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoExpiryValue}}" stepKey="validateCheckGiftCardExpiryValue"/>
+
+        <grabMultiple selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoBalanceLabel}}" stepKey="grabCheckGiftCardBalanceLabel"/>
+        <assertCount stepKey="assertCheckGiftCardBalanceLabel">
+            <actualResult type="variable">grabCheckGiftCardBalanceLabel</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertCount>
+        <grabMultiple selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoBalanceValue}}" stepKey="grabCheckGiftCardBalanceValue"/>
+        <assertCount stepKey="assertCheckGiftCardBalanceValue">
+            <actualResult type="variable">grabCheckGiftCardBalanceValue</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertCount>
+        <grabMultiple selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoExpiryLabel}}" stepKey="grabCheckGiftCardExpiryLabel"/>
+        <assertCount stepKey="assertCheckGiftCardExpiryLabel">
+            <actualResult type="variable">grabCheckGiftCardExpiryLabel</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertCount>
+        <grabMultiple selector="{{CheckGiftCardBalanceInfoSection.giftCardInfoExpiryValue}}" stepKey="grabCheckGiftCardExpiryValue"/>
+        <assertCount stepKey="assertCheckGiftCardExpiryValue">
+            <actualResult type="variable">grabCheckGiftCardExpiryValue</actualResult>
+            <expectedResult type="string">1</expectedResult>
+        </assertCount>
+    </test>
+</tests>

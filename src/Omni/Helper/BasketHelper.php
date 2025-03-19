@@ -423,7 +423,7 @@ class BasketHelper extends AbstractHelper
         }
 
         return [
-            'orderLinesArray' => ($basketResponse) ? $itemsArray : $orderLinesArray,
+            'orderLinesArray'         => ($basketResponse) ? $itemsArray : $orderLinesArray,
             'orderDiscountLinesArray' => $discountsArray
         ];
     }
@@ -992,7 +992,7 @@ class BasketHelper extends AbstractHelper
             ->setStoreId($store_id);
         // @codingStandardsIgnoreEnd
 
-        if (version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
+        if ($this->lsr->isEnabled() && version_compare($this->lsr->getOmniVersion(), '4.19', '>')) {
             $list->setSalesType(LSR::SALE_TYPE_POS);
         }
 
@@ -1176,10 +1176,7 @@ class BasketHelper extends AbstractHelper
         $oneListCalc = $this->getOneListCalculationFromCheckoutSession();
 
         if ($oneListCalc == null && $this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
-            $cartId = $this->checkoutSession->getQuoteId();
-            $this->setCalculateBasket('1');
-            $this->syncBasketWithCentral($cartId);
-
+            $this->calculate($this->get());
             // calculate updates the session, so we fetch again
             return $this->getOneListCalculationFromCheckoutSession();
             // @codingStandardsIgnoreEnd
@@ -1306,6 +1303,28 @@ class BasketHelper extends AbstractHelper
             }
         }
 
+        if (empty($basketData) && $this->getCalculateBasket() == 1 && $this->lsr->isEnabled($quote->getStoreId())) {
+            $quoteItemList = $quote->getAllVisibleItems();
+            foreach ($quoteItemList as $quoteItem) {
+                $quoteItem->setOriginalCustomPrice($quoteItem->getPrice());
+                $quoteItem->setPriceInclTax($quoteItem->getPrice());
+                $quoteItem->setBasePriceInclTax($quoteItem->getPrice());
+                $quoteItem->setBasePrice($quoteItem->getPrice());
+                $quoteItem->setRowTotal($quoteItem->getRowTotal());
+                $quoteItem->setRowTotalInclTax($quoteItem->getRowTotal());
+                $quoteItem->getProduct()->setIsSuperMode(true);
+                try {
+                    // @codingStandardsIgnoreLine
+                    $this->getItemHelper()->itemResourceModel->save($quoteItem);
+                } catch (LocalizedException $e) {
+                    $this->_logger->critical(
+                        "Error saving Quote Item:-" . $quoteItem->getSku() . " - " . $e->getMessage()
+                    );
+                }
+
+            }
+        }
+
         return $basketData;
     }
 
@@ -1380,12 +1399,23 @@ class BasketHelper extends AbstractHelper
      */
     public function getPriceAddingCustomOptions($item, $price)
     {
-        $options = $item->getOptions();
-        if ($options) {
-            foreach ($options as $option) {
-                if ($option->getCode() == 'option_ids' || $option->getCode() == 'bundle_option_ids') {
-                    $price = $item->getProductType() == Type::TYPE_BUNDLE ?
-                        $item->getRowTotal() : $item->getPrice() * $item->getQty();
+        $optionIds = $item->getOptionByCode('option_ids');
+        if ($optionIds) {
+            foreach (explode(',', $optionIds->getValue()) as $optionId) {
+                $option = $item->getProduct()->getOptionById($optionId);
+                if ($option) {
+                    $itemOption = $item->getOptionByCode('option_' . $option->getId());
+                    if ($itemOption) {
+                        $optionValue = $itemOption->getValue();
+                        $values = explode(',', $optionValue); // Handle multiple selected values
+
+                        foreach ($values as $valueId) {
+                            $value = $option->getValueById($valueId);
+                            if ($value) {
+                                $price += $value->getPrice() * $item->getQty();
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -1447,7 +1477,7 @@ class BasketHelper extends AbstractHelper
         if (!$quoteId) {
             return null;
         }
-        $quote   = $this->quoteRepository->get($quoteId);
+        $quote = $this->quoteRepository->get($quoteId);
 
         return $quote;
     }
@@ -1462,10 +1492,9 @@ class BasketHelper extends AbstractHelper
     public function setOneListCalculationInCheckoutSession($calculation)
     {
         $quote = $this->getCurrentQuote();
-
-        if ($calculation && $quote) {
+        if ($quote) {
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-            $quote->setBasketResponse(serialize($calculation));
+            $quote->setBasketResponse($calculation ? serialize($calculation) : null);
             $this->quoteResourceModel->save($quote);
         }
     }

@@ -34,6 +34,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Discount creation for discount offers support items, item category, product group, All
@@ -119,6 +120,11 @@ class DiscountCreateSetupTask
     public $message;
 
     /**
+     * @var StoreManagerInterface 
+     */
+    public $storeManager;
+
+    /**
      * @param CatalogRuleRepositoryInterface $catalogRule
      * @param RuleFactory $ruleFactory
      * @param RuleCollectionFactory $ruleCollectionFactory
@@ -130,6 +136,7 @@ class DiscountCreateSetupTask
      * @param CollectionFactory $replDiscountCollection
      * @param ContactHelper $contactHelper
      * @param StoreCollectionFactory $storeCollectionFactory
+     * @param StoreManagerInterface $storeManager
      * @param Logger $logger
      */
     public function __construct(
@@ -144,6 +151,7 @@ class DiscountCreateSetupTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         StoreCollectionFactory $storeCollectionFactory,
+        StoreManagerInterface $storeManager,
         Logger $logger
     ) {
         $this->catalogRule                  = $catalogRule;
@@ -158,6 +166,7 @@ class DiscountCreateSetupTask
         $this->replDiscountCollection       = $replDiscountCollection;
         $this->storeCollectionFactory       = $storeCollectionFactory;
         $this->logger                       = $logger;
+        $this->storeManager                 = $storeManager;
     }
 
     /**
@@ -274,9 +283,9 @@ class DiscountCreateSetupTask
                                     try {
                                         $this->deleteOfferItemCategoryProductGroup($replDiscount);
                                         if (!$replDiscount->getIsPercentage()) {
-                                            $discountValue     = $replDiscount->getLineDiscountAmountInclVAT();
+                                            $discountValue = $replDiscount->getLineDiscountAmountInclVAT();
                                         } else {
-                                            $discountValue     = $replDiscount->getDealPriceDiscount();
+                                            $discountValue = $replDiscount->getDealPriceDiscount();
                                         }
                                         if (empty($customerGroupIds) && !$useAllGroupIds) {
                                             $customerGroupIds =
@@ -557,12 +566,10 @@ class DiscountCreateSetupTask
         $discountValueType,
         $amount = null
     ) {
-        $websiteId  = $replDiscount->getScopeId();
-        if (version_compare(
-            $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITES),
-            '2024.10.0',
-            '<='
-        ) || $this->validateWebsiteByStoreGroupCodeOrPriceGroup(
+        $websiteId = !$this->lsr->isSSM() ?
+            $replDiscount->getScopeId() :
+            $this->storeManager->getDefaultStoreView()->getWebsiteId();
+        if ($this->validateWebsiteByStoreGroupCodeOrPriceGroup(
             $replDiscount->getPriceGroup(),
             $replDiscount->getStoreGroupCodes(),
             $replDiscount->getScopeId(),
@@ -582,13 +589,13 @@ class DiscountCreateSetupTask
 
             $conditions = $this->getConditions($key);
             $rule       = $this->ruleFactory->create();
-            
+
             $rule->setName($name)
                 ->setDescription($replDiscount->getDescription())
                 ->setIsActive(1)
                 ->setCustomerGroupIds($customerGroupIds)
                 ->setWebsiteIds($websiteId);
-            
+
             /**
              * Default Values for Action Types.
              * by_percent
@@ -632,7 +639,7 @@ class DiscountCreateSetupTask
                         break;
                     }
                 }
-                
+
             } catch (Exception $e) {
                 $this->logDetailedException(__METHOD__, $this->store->getName(), $replDiscount->getOfferNo());
                 $this->logger->debug($e->getMessage());
@@ -800,7 +807,7 @@ class DiscountCreateSetupTask
 
     /**
      * Save catalog rule
-     * 
+     *
      * @param $rule
      * @param $replValidation
      * @return bool
@@ -1048,6 +1055,9 @@ class DiscountCreateSetupTask
         $websiteId,
         $offerNo
     ) {
+        if (empty($storeGroup) && empty($priceGroup)) {
+            return true;
+        }
         $webStore      = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
         $storeGroups   = $priceGroups = $storeGroupCodes = [];
         $webStoreGroup = $webStorePriceGroup = '';

@@ -23,6 +23,11 @@ class OneListItemModify implements RequestInterface
     protected $item = null;
 
     /**
+     * @property string $cardId
+     */
+    protected $cardId = null;
+
+    /**
      * @property boolean $remove
      */
     protected $remove = null;
@@ -66,6 +71,24 @@ class OneListItemModify implements RequestInterface
     public function getItem()
     {
         return $this->item;
+    }
+
+    /**
+     * @param string $cardId
+     * @return $this
+     */
+    public function setCardId($cardId)
+    {
+        $this->cardId = $cardId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCardId()
+    {
+        return $this->cardId;
     }
 
     /**

@@ -43,9 +43,9 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
         LoyaltyHelper $loyaltyHelper,
         DataHelper $dataHelper
     ) {
-        $this->customerSession   = $customerSession;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->dataHelper        = $dataHelper;
+        $this->customerSession = $customerSession;
+        $this->loyaltyHelper   = $loyaltyHelper;
+        $this->dataHelper      = $dataHelper;
     }
 
     /**
@@ -58,7 +58,7 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
             throw new GraphQlInputException(__('Customer session not active. Please log in.'));
         }
 
-        $couponsObj   = $this->getAvailableCoupons();
+        $couponsObj = $this->getAvailableCoupons();
         $couponsArr = [];
 
         if (!empty($couponsObj != '')) {
@@ -70,11 +70,13 @@ class GetCustomerCartDiscountsOutput implements ResolverInterface
         }
 
         return [
-                    'coupons' =>  $couponsArr
+            'coupons' => $couponsArr
         ];
     }
 
     /**
+     * Get available coupons
+     *
      * @return array
      * @throws LocalizedException
      * @throws NoSuchEntityException

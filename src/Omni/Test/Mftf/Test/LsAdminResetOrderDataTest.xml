@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminResetOrderDataTest" extends="LsCheckoutLoginTest">
+        <annotations>
+            <features value="LsAdminResetOrderDataTest"/>
+            <stories value="Reset sales orders data - LS Retail"/>
+            <title value="Reset sales orders data Ls Config page."/>
+            <description value="Reset sales orders data Ls Config page."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <resizeWindow width="1920" height="1080" stepKey="resizeWindowToDesktop"/>
+            <magentoCLI command="config:set carriers/clickandcollect/active 0" stepKey="disableClickAndCollect" after="EnablingGuestCheckoutLogin"/>
+        </before>
+        <after>
+            <magentoCLI command="config:set carriers/clickandcollect/active 1" stepKey="enableClickAndCollect" after="DisablingGuestCheckoutLogin"/>
+        </after>
+
+        <actionGroup ref="AdminOpenCustomersGridActionGroup" stepKey="openCustomersGridPage" before="addProductToCart1"/>
+        <actionGroup ref="OpenEditCustomerFromAdminActionGroup" stepKey="openEditCustomerPage" before="addProductToCart1">
+            <argument name="customer" value="Ls_Simple_US_Customer"/>
+        </actionGroup>
+        <actionGroup ref="LsDeleteCustomerAddressActionGroup" stepKey="deleteCustomerAddress" before="addProductToCart1"/>
+        <!-- Fill Shipment form -->
+        <actionGroup ref="LsLoggedInUserCheckoutFillingShippingSectionActionGroup" stepKey="checkoutFillingShippingSection" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+
+        <actionGroup ref="CheckoutSelectCheckMoneyOrderPaymentActionGroup" stepKey="selectCheckMoneyOrderPayment" before="deleteNewUser"/>
+        <actionGroup ref="CheckBillingAddressInCheckoutActionGroup" stepKey="seeBillingAddress" before="deleteNewUser">
+            <argument name="customerVar" value="Ls_Simple_US_Customer" />
+            <argument name="customerAddressVar" value="US_Address_NY" />
+        </actionGroup>
+        <actionGroup ref="CheckoutPlaceOrderActionGroup" stepKey="placeorder" before="deleteNewUser">
+            <argument name="orderNumberMessage" value="CONST.successCheckoutOrderNumberMessage" />
+            <argument name="emailYouMessage" value="CONST.successCheckoutEmailYouMessage" />
+        </actionGroup>
+
+        <grabMultiple selector="{{CheckoutSuccessMainSection.orderLink}}" stepKey="grabOrderNumberLinkTag" before="deleteNewUser"/>
+        <assertNotEmpty stepKey="assertOrderLinkIsNotEmpty" before="deleteNewUser">
+            <actualResult type="const">$grabOrderNumberLinkTag</actualResult>
+        </assertNotEmpty>
+        <grabTextFrom selector="{{CheckoutSuccessMainSection.orderNumber22}}" stepKey="grabOrderNumber" before="deleteNewUser"/>
+        <assertRegExp stepKey="assertDocumentIdEquals" message="pass" before="deleteNewUser">
+            <expectedResult type="string">/^CO/</expectedResult>
+            <actualResult type="variable">grabOrderNumber</actualResult>
+        </assertRegExp>
+
+        <!-- Navigate to LS Configuration Page -->
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" before="deleteNewUser"/>
+
+        <waitForPageLoad stepKey="waitForPageLoad1"/>
+        <scrollTo selector="#ls_mag_restore_database-head" stepKey="scrollToResetDb" before="deleteNewUser"/>
+        <wait stepKey="waitForConfigPageLoad" time="30" after="scrollToResetDb"/>
+        <click selector="{{LsConfigManagementSection.ResetOrderDataButton}}" stepKey="resetOrderDataClick" before="deleteNewUser"/>
+        <wait stepKey="waitForPopup" time="5" before="deleteNewUser"/>
+        <acceptPopup stepKey="clickOk" before="deleteNewUser"/>
+        <wait stepKey="waitForSuccessMessage" time="5" before="deleteNewUser"/>
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Orders deleted successfully." stepKey="seeDeleteSuccessMessage" before="deleteNewUser"/>
+
+        <!-- Navigate to Admin Sales Order listing Page -->
+        <actionGroup ref="LsNavigateToAdminSalesOrderActionGroup" stepKey="navigateToAdminSalesOrderPage" before="deleteNewUser" />
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount" before="deleteNewUser"/>
+        <assertRegExp stepKey="assertRowCount" message="pass" before="deleteNewUser">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount</actualResult>
+        </assertRegExp>
+
+    </test>
+</tests>

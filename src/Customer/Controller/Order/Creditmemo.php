@@ -51,14 +51,17 @@ class Creditmemo extends AbstractOrderController implements HttpGetActionInterfa
         if (!is_array($transactions)) {
             $transactions = [$transactions];
         }
-
+        $transactionIds = [];
         foreach ($transactions as $transaction) {
-            $returnTransactions = $this->orderHelper->getReturnDetailsAgainstId($transaction->getId());
+            if (!in_array($transaction->getId(), $transactionIds)) {
+                $returnTransactions = $this->orderHelper->getReturnDetailsAgainstId($transaction->getId());
 
-            if (!empty($returnTransactions)) {
-                // @codingStandardsIgnoreStart
-                $response = array_merge($response, $returnTransactions);
-                // @codingStandardsIgnoreEnd
+                if (!empty($returnTransactions)) {
+                    // @codingStandardsIgnoreStart
+                    $response = array_merge($response, $returnTransactions);
+                    // @codingStandardsIgnoreEnd
+                    $transactionIds[] = $transaction->getId();
+                }
             }
         }
 
