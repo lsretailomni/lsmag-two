@@ -64,7 +64,7 @@
         <click selector=".order-actions-toolbar .action.cancel" stepKey="clickCancelBtn" before="deleteNewUser"/>
         <waitForElementVisible selector=".modal-popup.confirm._show" time="30" stepKey="waitForConfirmModal" before="deleteNewUser"/>
         <waitForElementVisible selector=".modal-popup.confirm._show .action-accept" stepKey="waitForOkBtn" before="deleteNewUser"/>
-        <click selector=".modal-popup.confirm._show .action-accept" stepKey="clickOkBtn" before="deleteNewUser"/>
+        <executeJS function="return document.querySelector('.modal-popup.confirm._show .action-accept').click();" stepKey="clickOkBtn" before="deleteNewUser"/>
         <waitForPageLoad time="20" stepKey="waitForOrderViewPageToLoad" before="deleteNewUser"/>
         <waitForElementVisible selector="{{StorefrontMessagesSection.messageByType('success')}}" stepKey="waitForOrderCancellationSuccessMessage" before="deleteNewUser"/>
     </test>

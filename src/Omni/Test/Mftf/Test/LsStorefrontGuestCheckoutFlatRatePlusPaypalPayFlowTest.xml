@@ -46,6 +46,7 @@
         <see selector="{{StorefrontCategoryMainSection.SuccessMsg}}" userInput="You added $$product1.name$$ to your shopping cart." stepKey="seeAddedToCartMessage"/>
         <see selector="{{StorefrontMinicartSection.quantity}}" userInput="1" stepKey="seeCartQuantity"/>
         <actionGroup ref="GoToCheckoutFromMinicartActionGroup" stepKey="guestGoToCheckoutFromMinicart"/>
+        <amOnPage url="{{CheckoutPage.url}}" stepKey="reloadCheckoutPage1"/>
         <actionGroup ref="GuestCheckoutFillingShippingSectionActionGroup" stepKey="guestCheckoutFillingShipping">
             <argument name="shippingMethod" value="Flat Rate"/>
             <argument name="customerVar" value="CustomerEntityOne"/>
