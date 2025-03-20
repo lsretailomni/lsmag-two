@@ -147,6 +147,11 @@ class ReplDiscountSetup
     protected $MemberAttribute = null;
 
     /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
+
+    /**
      * @property float $MemberPoints
      */
     protected $MemberPoints = null;
@@ -777,6 +782,24 @@ class ReplDiscountSetup
     public function getMemberAttribute()
     {
         return $this->MemberAttribute;
+    }
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue)
+    {
+        $this->MemberAttributeValue = $MemberAttributeValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue()
+    {
+        return $this->MemberAttributeValue;
     }
 
     /**
