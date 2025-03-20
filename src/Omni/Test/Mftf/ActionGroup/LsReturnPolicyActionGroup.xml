@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="LsReturnPolicyActionGroup">
+        <waitForElementVisible selector="{{StorefrontProductInfoMainSection.returnPolicyContainer}}" stepKey="returnPolicyLink"/>
+        <click selector="{{StorefrontProductInfoMainSection.returnPolicyContainer}}" stepKey="clickReturnPolicyLink" />
+        <waitForElementVisible selector=".modals-wrapper .return-policy-content" stepKey="waitForReturnPolicyModalToOpen" />
+        <click selector=".modals-wrapper .action-close" stepKey="closeModal" />
+    </actionGroup>
+</actionGroups>

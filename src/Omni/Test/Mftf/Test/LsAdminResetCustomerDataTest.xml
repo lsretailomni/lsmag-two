@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ /**
+  * Copyright © Magento, Inc. All rights reserved.
+  * See COPYING.txt for license details.
+  */
+-->
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="LsAdminResetCustomerDataTest" extends="StorefrontCreateCustomerTest">
+        <annotations>
+            <features value="LsAdminResetCustomerDataTest"/>
+            <stories value="Reset customer data in Store Configuration - LS Retail"/>
+            <title value="Reset customer data from Ls Admin config page."/>
+            <description value="Reset customer data from Ls Admin config page."/>
+            <severity value="CRITICAL"/>
+            <group value="ls"/>
+            <group value="lsConfig"/>
+        </annotations>
+        <before>
+            <actionGroup ref="LsSetRequiredConfigsActionGroup" stepKey="setRequiredConfigs"/>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <actionGroup ref="CliIndexerReindexActionGroup" stepKey="reindex" >
+                <argument name="indices" value=""/>
+            </actionGroup>
+
+        </before>
+        <after>
+            <actionGroup ref="CliCacheCleanActionGroup" stepKey="flushCache">
+                <argument name="tags" value="config"/>
+            </actionGroup>
+            <actionGroup ref="AdminLogoutActionGroup" stepKey="logout"/>
+        </after>
+
+        <!-- Create Customer via store front-->
+        <actionGroup ref="AssertMessageCustomerCreateAccountActionGroup" stepKey="seeSuccessMessage">
+            <argument name="messageType" value="success"/>
+            <argument name="message" value="Thank you for registering with Ls Retail."/>
+        </actionGroup>
+
+        <actionGroup ref="AssertStorefrontCustomerDashboardInformationActionGroup" stepKey="customerDashboardInformation"/>
+
+
+        <!-- Navigate to LS Configuration Page -->
+        <amOnPage url="{{LsAdminConfigurationPage.url}}#ls_mag_restore_database-link" stepKey="navigateToRestoreDatabaseSection" />
+        <click selector="{{LsConfigManagementSection.ResetCustomerDataButton}}" stepKey="resetCustomerDataClick"/>
+        <wait stepKey="waitForPopup" time="5"/>
+        <acceptPopup stepKey="clickOk" after="waitForPopup"/>
+
+        <see selector="{{ContentManagementSection.StoreConfigurationPageSuccessMessage}}" userInput="Customers deleted successfully." stepKey="seeDeleteSuccessMessage"/>
+
+        <!-- Navigate to Admin Customer listing Page -->
+        <actionGroup ref="LsNavigateToAdminCustomerActionGroup" stepKey="navigateToAdminCustomerPage"/>
+        <wait stepKey="waitForCatalogPageLoad" time="30"/>
+
+        <grabTextFrom selector="{{LsConfigManagementSection.RowCount}}" stepKey="grabRowCount"/>
+        <assertRegExp stepKey="assertRowCount" message="pass">
+            <expectedResult type="string">/^0 records/</expectedResult>
+            <actualResult type="variable">grabRowCount</actualResult>
+        </assertRegExp>
+
+    </test>
+</tests>

@@ -1,6 +1,28 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
+
+## [2.10.0] - 2025-03-14
+
+### Added
+- Added support for functional tests by adding required css classes for club information & order totals on frontend and cron listing grid on backend to help reference them in functional tests. [61073](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/61073)
+- Added support for functional tests by adding required css classes for footer links and gift card balance check page to help reference them in functional tests. [62301](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/62301)
+- Added support for item category in hierarchy leaf replication. [62108](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/62108)
+- Added support for functional tests by adding required css classes for footer links to help reference them in functional tests. [62904](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/62904)
+
+### Bugs/Fixes
+- Fixed issue with store group and price group checking in discount setup replication. [63016](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/63016)
+- Fixed issue in case of fetching return policy for a child product. [61073](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/61073)
+- Fixed issue encountered when the commerce service was unavailable. [62734](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/62734)
+- Fixed issues in case if default website is disabled. [61454](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/61454)
+- Fixed issue using pay at the store payment method on pwa. [63432](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/63432)
+- Fixed issue with hierarchy leaf deletion in case of multi website setup. [63692](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/63692)
+- Fixed issue with TenderTypeId passed as null. [64097](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64097)
+- Fixed issue with original price display for discounted items with modifiers & ingredients in hospitality. [64744](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64744)
+- Fixed issue in basket calculation when point rate = 0. [64326](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64326)
+- Fixed issue while applying gift card when we have comma instead of dot being used as decimal place. [64195](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64195)
+- Fixed issue with proactive discounts not showing on PDP for newly created user. [64191](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64191)
+- Fixed issue with loyalty scheme code for guest users while fetching proactive discounts. [64189](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64189)
+- Fixed issue with catalog rule creation in case of single store mode. [64271](https://dev.azure.com/dev-lsretail/LS%20Ecommerce/_workitems/edit/64271)
 
 ## [2.9.0] - 2024-12-13
 

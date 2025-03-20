@@ -34,6 +34,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 /**
  * Discount creation for discount offers support items, item category, product group, All
@@ -119,6 +120,11 @@ class DiscountCreateSetupTask
     public $message;
 
     /**
+     * @var StoreManagerInterface 
+     */
+    public $storeManager;
+
+    /**
      * @param CatalogRuleRepositoryInterface $catalogRule
      * @param RuleFactory $ruleFactory
      * @param RuleCollectionFactory $ruleCollectionFactory
@@ -130,6 +136,7 @@ class DiscountCreateSetupTask
      * @param CollectionFactory $replDiscountCollection
      * @param ContactHelper $contactHelper
      * @param StoreCollectionFactory $storeCollectionFactory
+     * @param StoreManagerInterface $storeManager
      * @param Logger $logger
      */
     public function __construct(
@@ -144,6 +151,7 @@ class DiscountCreateSetupTask
         CollectionFactory $replDiscountCollection,
         ContactHelper $contactHelper,
         StoreCollectionFactory $storeCollectionFactory,
+        StoreManagerInterface $storeManager,
         Logger $logger
     ) {
         $this->catalogRule                  = $catalogRule;
@@ -158,6 +166,7 @@ class DiscountCreateSetupTask
         $this->replDiscountCollection       = $replDiscountCollection;
         $this->storeCollectionFactory       = $storeCollectionFactory;
         $this->logger                       = $logger;
+        $this->storeManager                 = $storeManager;
     }
 
     /**
@@ -557,7 +566,9 @@ class DiscountCreateSetupTask
         $discountValueType,
         $amount = null
     ) {
-        $websiteId = $replDiscount->getScopeId();
+        $websiteId = !$this->lsr->isSSM() ?
+            $replDiscount->getScopeId() :
+            $this->storeManager->getDefaultStoreView()->getWebsiteId();
         if ($this->validateWebsiteByStoreGroupCodeOrPriceGroup(
             $replDiscount->getPriceGroup(),
             $replDiscount->getStoreGroupCodes(),
