@@ -141,9 +141,10 @@ class Payment
      *
      * @param $data
      * @param bool $linesMerged
+     * @param null $magentoOrder
      * @return array[]
      */
-    public function generateInvoice($data, $linesMerged = true)
+    public function generateInvoice($data, $linesMerged = true, $magentoOrder = null)
     {
         $documentId = $data['OrderId'];
         $lines      = $data['Lines'];
@@ -156,7 +157,8 @@ class Payment
         $itemsToInvoice = [];
         $subtotal       = 0;
         try {
-            $order           = $this->helper->getOrderByDocumentId($documentId);
+            $order           = (!empty($magentoOrder)) ? $magentoOrder :
+                $this->helper->getOrderByDocumentId($documentId);
             $storeId         = $order->getStoreId();
             $isOffline       = $order->getPayment()->getMethodInstance()->isOffline();
             $validateOrder   = $this->validateOrder($order, $documentId);

@@ -129,60 +129,63 @@ class Status
      *
      * @param string $status
      * @param array $itemsInfo
-     * @param OrderInterface $magOrder
+     * @param OrderInterface|array $magOrder
      * @param array $data
      * @throws NoSuchEntityException|LocalizedException
      */
-    public function checkAndProcessStatus($status, $itemsInfo, $magOrder, $data)
+    public function checkAndProcessStatus($status, $itemsInfo, $magentoOrder, $data)
     {
-        $items                  = $this->helper->getItems($magOrder, $itemsInfo, false);
-        $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
-        $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
-        $storeId                = $magOrder->getStoreId();
-        $orderStatus            = null;
-        $industry               = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $storeId);
-        $message                = '';
-        if ($industry == LSR::LS_INDUSTRY_VALUE_RETAIL) {
-            $message = __("Your order has been");
-        }
-        switch ($status) {
-            case LSR::LS_STATE_CANCELED:
-            case LSR::LS_STATE_SHORTAGE:
-                $this->cancel($magOrder, $itemsInfo, $items);
-                $orderStatus = LSR::LS_STATE_CANCELED;
-                break;
-            case LSR::LS_STATE_PICKED:
-                if ($isClickAndCollectOrder) {
-                    $orderStatus = LSR::LS_STATE_PICKED;
-                }
-                $message = __("Your order is ready for");
-                break;
-            case LSR::LS_STATE_COLLECTED:
-                if ($isClickAndCollectOrder) {
-                    $orderStatus = LSR::LS_STATE_COLLECTED;
-                }
-                if ($isOffline) {
-                    $this->payment->generateInvoice($data, false);
-                }
-                break;
-            case LSR::LS_STATE_SHIPPED:
-                if ($isOffline) {
-                    $this->payment->generateInvoice($data, false);
-                }
-                break;
-            default:
-                $orderStatus = $status;
-                break;
-        }
+        $magentoOrders = is_array($magentoOrder) ? $magentoOrder : [$magentoOrder];
+        foreach ($magentoOrders as $magOrder) {
+            $items                  = $this->helper->getItems($magOrder, $itemsInfo, false);
+            $isOffline              = $magOrder->getPayment()->getMethodInstance()->isOffline();
+            $isClickAndCollectOrder = $this->helper->isClickAndcollectOrder($magOrder);
+            $storeId                = $magOrder->getStoreId();
+            $orderStatus            = null;
+            $industry               = $this->helper->getLsrObject()->getStoreConfig(LSR::LS_INDUSTRY_VALUE, $storeId);
+            $message                = '';
+            if ($industry == LSR::LS_INDUSTRY_VALUE_RETAIL) {
+                $message = __("Your order has been");
+            }
+            switch ($status) {
+                case LSR::LS_STATE_CANCELED:
+                case LSR::LS_STATE_SHORTAGE:
+                    $this->cancel($magOrder, $itemsInfo, $items);
+                    $orderStatus = LSR::LS_STATE_CANCELED;
+                    break;
+                case LSR::LS_STATE_PICKED:
+                    if ($isClickAndCollectOrder) {
+                        $orderStatus = LSR::LS_STATE_PICKED;
+                    }
+                    $message = __("Your order is ready for");
+                    break;
+                case LSR::LS_STATE_COLLECTED:
+                    if ($isClickAndCollectOrder) {
+                        $orderStatus = LSR::LS_STATE_COLLECTED;
+                    }
+                    if ($isOffline) {
+                        $this->payment->generateInvoice($data, false);
+                    }
+                    break;
+                case LSR::LS_STATE_SHIPPED:
+                    if ($isOffline) {
+                        $this->payment->generateInvoice($data, false);
+                    }
+                    break;
+                default:
+                    $orderStatus = $status;
+                    break;
+            }
 
-        if ($orderStatus !== null) {
-            $this->notificationHelper->processNotifications(
-                $storeId,
-                $magOrder,
-                $items,
-                $message . ' ' . $orderStatus,
-                $orderStatus
-            );
+            if ($orderStatus !== null) {
+                $this->notificationHelper->processNotifications(
+                    $storeId,
+                    $magOrder,
+                    $items,
+                    $message . ' ' . $orderStatus,
+                    $orderStatus
+                );
+            }
         }
     }
 

@@ -274,7 +274,7 @@ class Data
      * @return array
      * @throws NoSuchEntityException
      */
-    public function getItems($order, $itemsInfo, $linesMerged = true)
+        public function getItems($order, $itemsInfo, $linesMerged = true)
     {
         $items                = [];
         $globalCounter        = 0;
