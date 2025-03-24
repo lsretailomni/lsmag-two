@@ -233,11 +233,8 @@ class ReplicationHelper extends AbstractHelper
         "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
         "ls_mag/replication/repl_item_modifier"              => [
             "nav_id",
-            "VariantCode",
             "Code",
             "SubCode",
-            "TriggerCode",
-            "UnitOfMeasure",
             "scope_id"
         ],
         "ls_mag/replication/loy_item"                        => ["nav_id", "scope_id"],
