@@ -120,7 +120,7 @@ class DiscountCreateSetupTask
     public $message;
 
     /**
-     * @var StoreManagerInterface 
+     * @var StoreManagerInterface
      */
     public $storeManager;
 
@@ -242,6 +242,19 @@ class DiscountCreateSetupTask
                             /** @var ReplDiscountSetup $item */
                             foreach ($publishedOfferCollection as $item) {
                                 $this->deleteOfferByName($item);
+
+                                if($item->getMemberAttribute() || $item->getMemberAttributeValue()) {
+                                    $replDiscount->setData('is_failed', 0);
+                                    $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
+                                    $replDiscount->setData('processed', '1');
+                                    $replDiscount->setData('is_updated', '0');
+                                    // @codingStandardsIgnoreStart
+                                    $this->replDiscountRepository->save($replDiscount);
+                                    // @codingStandardsIgnoreEnd
+                                    continue;
+                                }
+
+
                                 $filters  = [
                                     ['field' => 'scope_id', 'value' => $storeId, 'condition_type' => 'eq'],
                                     [
