@@ -20,7 +20,7 @@ if (!empty($coupons)) {
     ?>
     <?php
     foreach ($coupons as $coupon) {
-        if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION) {
+        if ($coupon->getCode() == DiscountType::COUPON || $coupon->getCode() == DiscountType::PROMOTION || $coupon->getCode() == DiscountType::DISCOUNT_OFFER) {
             echo "<div class='dropdown-content-wrapper content-coupon'>
                 " . $block->getFormattedDescriptionCoupon($coupon) . "
             </div>";

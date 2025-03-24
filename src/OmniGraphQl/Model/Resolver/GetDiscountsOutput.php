@@ -190,11 +190,13 @@ class GetDiscountsOutput implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "item_id" is missing'));
         }
 
-        $itemId     = $args['item_id'];
-        $couponsObj = $this->getCoupons($itemId);
-
+        $itemId       = $args['item_id'];
         $discountsArr = $couponsArr = [];
-        $discountsObj = $this->getProactiveDiscounts($itemId);
+        if($this->customerSession->isLoggedIn()) {
+            $couponsObj = $this->getCoupons($itemId);
+        } else {
+            $discountsObj = $this->getProactiveDiscounts($itemId);
+        }
 
         if (!empty($discountsObj)) {
             foreach ($discountsObj as $discount) {

@@ -350,7 +350,7 @@ class Proactive extends Template
         <span class='coupon-expiration-date-value discount-value'>" .
                     $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . '</span>';
             }
-            if ($coupon->getOfferId()) {
+            if ($coupon->getOfferId() && $coupon->getCode() != DiscountType::DISCOUNT_OFFER) {
                 $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __('Coupon Code :') . "</span>
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';

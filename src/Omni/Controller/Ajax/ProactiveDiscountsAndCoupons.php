@@ -4,6 +4,7 @@ namespace Ls\Omni\Controller\Ajax;
 
 use \Ls\Omni\Block\Product\View\Discount\Proactive;
 use \Ls\Omni\Helper\SessionHelper;
+use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
@@ -48,6 +49,11 @@ class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
     public RequestInterface $request;
 
     /**
+     * @var CustomerSession
+     */
+    public $customerSession;
+
+    /**
      * @param Context $context
      * @param PageFactory $resultPageFactory
      * @param JsonFactory $resultJsonFactory
@@ -61,12 +67,14 @@ class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
         JsonFactory $resultJsonFactory,
         RedirectFactory $resultRedirectFactory,
         SessionHelper $sessionHelper,
+        CustomerSession $customerSession,
         RequestInterface $request
     ) {
         $this->resultPageFactory     = $resultPageFactory;
         $this->resultJsonFactory     = $resultJsonFactory;
         $this->resultRedirectFactory = $resultRedirectFactory;
         $this->sessionHelper         = $sessionHelper;
+        $this->customerSession       = $customerSession;
         $this->request               = $request;
     }
 
@@ -88,19 +96,28 @@ class ProactiveDiscountsAndCoupons implements HttpGetActionInterface
         $result            = $this->resultJsonFactory->create();
         $resultPage        = $this->resultPageFactory->create();
         $currentProductSku = $this->request->getParam('currentProduct');
-        $data              = ['productSku' => $currentProductSku];
-        $blockCoupons      = $resultPage->getLayout()
-            ->createBlock(Proactive::class)
-            ->setTemplate('Ls_Omni::product/view/coupons.phtml')
-            ->setData('data', $data)
-            ->toHtml();
-        $data              = array_merge($data, ['coupons' => $blockCoupons]);
+        $data              = ['productSku' => $currentProductSku, 'loggedIn' => false];
+        if($this->customerSession->isLoggedIn()) {
+            //For logged in users display offer from PublishedOffersGetByCardId
+            //to filter and display offers based on Member Attribute and Member
+            // Attribute Value configuration in Discount offer setup in central.
+            $data['loggedIn'] = true;
+            $blockCoupons      = $resultPage->getLayout()
+                ->createBlock(Proactive::class)
+                ->setTemplate('Ls_Omni::product/view/coupons.phtml')
+                ->setData('data', $data)
+                ->toHtml();
+            $data              = array_merge($data, ['coupons' => $blockCoupons]);
+        }
+        //For guest users users display offer from DiscountGet
         $block             = $resultPage->getLayout()
             ->createBlock(Proactive::class)
             ->setTemplate('Ls_Omni::product/view/proactive.phtml')
             ->setData('data', $data)
             ->toHtml();
         $result->setData(['output' => $block]);
+
+
 
         return $result;
     }

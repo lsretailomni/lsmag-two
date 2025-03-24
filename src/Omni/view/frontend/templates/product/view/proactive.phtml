@@ -13,13 +13,13 @@ if ($product->getTypeId() == Type::TYPE_BUNDLE) {
     $itemId  = $block->getLsCentralItemIdBySku($productData['data']['productSku']);
 }
 
-$coupons = $productData['data']['coupons'];
+$coupons = array_key_exists('coupons',$productData['data']) ? $productData['data']['coupons'] : '';
 ?>
 <div class="proactive-discounts-container">
     <?php
-    $discounts = $block->getProactiveDiscounts($itemId);
+    $discounts = (!$productData['data']['loggedIn']) ? $block->getProactiveDiscounts($itemId) : [];
     if (!empty($discounts) || !(trim($coupons) == '')) {
-        ?>
+    ?>
         <div class="discount-dropdown-label">
             <span><?php echo $block->escapeHtml(__("Offers and Promotions:")); ?></span>
         </div>
