@@ -230,7 +230,7 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_hierarchy_hosp_deal"        => ["DealNo", "No", "LineNo", "UnitOfMeasure", "scope_id"],
-        "ls_mag/replication/repl_item_recipe"                => ["ItemNo", "RecipeNo", "UnitOfMeasure", "scope_id"],
+        "ls_mag/replication/repl_item_recipe"                => ["RecipeNo", "LineNo", "scope_id"],
         "ls_mag/replication/repl_item_modifier"              => [
             "nav_id",
             "Code",
