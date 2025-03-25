@@ -1250,7 +1250,7 @@ class AttributesCreateTask
         if ($isVisualSwatchAttributes) {
             $swatchTypeAttributes = explode(",", $swatchTypeAttributes);
             foreach ($swatchTypeAttributes as $swatchTypeAttribute) {
-                $this->addVisualSwatchTypeOptions($swatchTypeAttribute);
+                $this->addVisualSwatchTypeOptions(trim($swatchTypeAttribute));
             }
         }
     }
