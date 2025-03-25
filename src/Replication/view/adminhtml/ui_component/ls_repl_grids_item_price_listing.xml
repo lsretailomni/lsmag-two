@@ -78,9 +78,31 @@
             </argument>
         </paging>
         <filters name="listing_filters" />
+        <!-- Mass action -->
+        <massaction name="listing_massaction">
+            <action name="reset">
+                <settings>
+                    <confirm>
+                        <message translate="true">Reset selected item(s) price?</message>
+                        <title translate="true">Reset item(s) price</title>
+                    </confirm>
+                    <url path="ls_repl/reset/massResetPrice"/>
+                    <type>reset</type>
+                    <label translate="true">Reset</label>
+                </settings>
+            </action>
+        </massaction>
     </listingToolbar>
     <columns name="ls_repl_grids_item_price_columns">
         <!--The list of columns-->
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">repl_price_id</item>
+                    <item name="sortOrder" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </selectionsColumn>
         <column name="scope_id" class="Ls\Replication\Ui\Component\Listing\Column\Websites">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Ls\Replication\Model\Websites</item>

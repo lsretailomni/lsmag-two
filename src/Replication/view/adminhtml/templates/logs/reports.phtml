@@ -24,6 +24,9 @@ $displayLogData = $block->getData("message");
         <option <?php if (!empty($logFileName == "replication.log")) { ?> selected="selected" <?php } ?>
                 value="replication.log">Replication
         </option>
+        <option <?php if (!empty($logFileName == "flat_replication.log")) { ?> selected="selected" <?php } ?>
+            value="flat_replication.log">Flat Replication
+        </option>
         <option <?php if (!empty($logFileName == "webhookstatus.log")) { ?> selected="selected" <?php } ?>
                 value="webhookstatus.log">WebHook Status
         </option>

@@ -2505,6 +2505,15 @@ class ProductCreateTask
         $productData->setDescription($item->getDetails());
         $productData->setWeight($item->getGrossWeight());
         $productData->setCustomAttribute(LSR::LS_ITEM_ID_ATTRIBUTE_CODE, $item->getNavId());
+        if (!empty($item->getTaxItemGroupId())) {
+            $taxClass = $this->replicationHelper->getTaxClassGivenName(
+                $item->getTaxItemGroupId()
+            );
+
+            if (!empty($taxClass)) {
+                $productData->setTaxClassId($taxClass->getClassId());
+            }
+        }
         if (!empty($uomCode)) {
             $uomDescription = $this->replicationHelper->getUomDescription($uomCode);
             $this->syncUomAdditionalAttributes($productData, $uomCode, $item);
@@ -2789,6 +2798,15 @@ class ProductCreateTask
         $productV->setDescription($item->getDetails());
         $productV->setSku($sku);
         $productV->setWeight($item->getGrossWeight());
+        if (!empty($item->getTaxItemGroupId())) {
+            $taxClass = $this->replicationHelper->getTaxClassGivenName(
+                $item->getTaxItemGroupId()
+            );
+
+            if (!empty($taxClass)) {
+                $productV->setTaxClassId($taxClass->getClassId());
+            }
+        }
         $unitOfMeasure = null;
         if (!empty($uomCode)) {
             if ($uomCode->getCode() != $item->getBaseUnitOfMeasure()) {

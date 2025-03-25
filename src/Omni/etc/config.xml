@@ -41,6 +41,7 @@
                 <timeformat>h:i A</timeformat>
             </ls_stores>
             <ls_basket_calculation>
+                <active>1</active>
                 <place_to_sync>0</place_to_sync>
             </ls_basket_calculation>
             <ls_order_management>
@@ -116,6 +117,8 @@
             <calculation>
                 <apply_tax_on>1</apply_tax_on>
                 <price_includes_tax>1</price_includes_tax>
+                <discount_tax>1</discount_tax>
+                <cross_border_trade_enabled>1</cross_border_trade_enabled>
             </calculation>
             <sales_display>
                 <subtotal>2</subtotal>
