@@ -319,19 +319,19 @@ class BasketHelper extends AbstractHelper
                     }
 
                     if (!$match) {
+                        $price = $quoteItem->getCalculationPrice();
+                        $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
+                            $quoteItem->getData('qty');
                         // @codingStandardsIgnoreLine
                         $list_item = (new Entity\OneListItem())
-                            ->setQuantity(
-                                $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
-                                    $quoteItem->getData('qty')
-                            )
+                            ->setQuantity($qty)
                             ->setItemId($itemId)
                             ->setId($child->getItemId())
                             ->setBarcodeId($barCode)
                             ->setVariantId($variantId)
                             ->setUnitOfMeasureId($uom)
-                            ->setAmount($quoteItem->getPrice())
-                            ->setPrice($quoteItem->getPrice())
+                            ->setAmount($quoteItem->getRowTotal())
+                            ->setPrice($price)
                             ->setImmutable(true);
 
                         $itemsArray[] = $list_item;

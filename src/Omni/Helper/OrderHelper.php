@@ -266,6 +266,12 @@ class OrderHelper extends AbstractHelper
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
+                $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
+            }
+
             if ($isClickCollect) {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
             } else {
@@ -295,7 +301,7 @@ class OrderHelper extends AbstractHelper
             $request = new Entity\OrderCreate();
 
             if (version_compare($this->lsr->getOmniVersion($order->getStoreId()), '2023.05.1', '>=')) {
-//                $request->setReturnOrderIdOnly(true);
+                $request->setReturnOrderIdOnly(true);
             }
 
             $oneListCalculateResponse->setOrderLines($orderLinesArray);
