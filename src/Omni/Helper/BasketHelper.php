@@ -319,9 +319,11 @@ class BasketHelper extends AbstractHelper
                     }
 
                     if (!$match) {
-                        $price = $quoteItem->getCalculationPrice();
+                        $price = $quoteItem->getProduct()->getPrice();
+                        $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
                         $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
                             $quoteItem->getData('qty');
+                        $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
                         $list_item = (new Entity\OneListItem())
                             ->setQuantity($qty)
@@ -330,7 +332,7 @@ class BasketHelper extends AbstractHelper
                             ->setBarcodeId($barCode)
                             ->setVariantId($variantId)
                             ->setUnitOfMeasureId($uom)
-                            ->setAmount($quoteItem->getRowTotal())
+                            ->setAmount($amount)
                             ->setPrice($price)
                             ->setImmutable(true);
 

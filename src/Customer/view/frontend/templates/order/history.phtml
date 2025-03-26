@@ -44,6 +44,7 @@ use Magento\Framework\Data\Helper\PostHelper; ?>
                             continue;
                         }
                         $magOrder = $block->getOrderByDocumentId($_order);
+                        $block->registerValueInRegistry($magOrder);
                         ?>
                         <tr>
                             <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
