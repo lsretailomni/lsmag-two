@@ -40,8 +40,6 @@ class DiscountType extends Enum
 
     public const PROMOTION = 'Promotion';
 
-    public const DISCOUNT_OFFER = 'DiscountOffer';
-
     public const DEAL = 'Deal';
 
     public const TOTAL_DISCOUNT = 'TotalDiscount';
