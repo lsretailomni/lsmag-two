@@ -151,6 +151,11 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     protected $MemberAttribute = null;
 
     /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
+
+    /**
      * @property float $MemberPoints
      */
     protected $MemberPoints = null;
@@ -863,6 +868,26 @@ class ReplDiscountSetup extends AbstractModel implements ReplDiscountSetupInterf
     public function getMemberAttribute()
     {
         return $this->getData( 'MemberAttribute' );
+    }
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue)
+    {
+        $this->setData( 'MemberAttributeValue', $MemberAttributeValue );
+        $this->MemberAttributeValue = $MemberAttributeValue;
+        $this->setDataChanges( TRUE );
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue()
+    {
+        return $this->getData( 'MemberAttributeValue' );
     }
 
     /**

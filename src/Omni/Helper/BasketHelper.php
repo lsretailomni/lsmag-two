@@ -374,50 +374,82 @@ class BasketHelper extends AbstractHelper
         $quoteItems = $quote->getAllVisibleItems();
 
         if (empty($itemsArray)) {
+            $websiteId     = $quote->getStore()->getWebsiteId();
+            $customerEmail = $quote->getCustomerEmail();
+            $customerGroupId = null;
+            if (!$quote->getCustomerIsGuest()) {
+                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
+                $customerGroupId = $customer->getGroupId();
+            }
+            $lineNumber = 10000;
             foreach ($quoteItems as $quoteItem) {
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
-                $priceIncTax         = $discountPercentage = null;
+                $priceIncTax         = $discountPercentage = $discount = null;
                 $product             = $this->productRepository->get($quoteItem->getSku());
-                $displayRegularPrice = $product->getPriceInfo()->getPrice(
+                if ($customerGroupId) {
+                    $this->customerSession->setCustomerGroupId($customerGroupId);
+                }
+                $regularPrice = $product->getPriceInfo()->getPrice(
                     RegularPrice::PRICE_CODE
                 )->getAmount()->getValue();
-                $displayFinalPrice   = $product->getPriceInfo()->getPrice(
+                $finalPrice   = $product->getPriceInfo()->getPrice(
                     FinalPrice::PRICE_CODE
                 )->getAmount()->getValue();
 
-                if ($displayFinalPrice < $displayRegularPrice) {
-                    $priceIncTax        = $displayRegularPrice;
-                    $discount           = $displayRegularPrice - $displayFinalPrice;
-                    $discountPercentage = ($discount / $priceIncTax) * 100;
+                $this->customerSession->setCustomerGroupId(null);
+                if ($finalPrice < $regularPrice) {
+                    $priceIncTax        = $regularPrice;
+                    $discount           = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
+                    $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
+                }
+
+                if ($quoteItem->getDiscountAmount() > 0) {
+                    if (!$discount && !$discountPercentage) {
+                        $discount = $quoteItem->getDiscountAmount();
+                        $discountPercentage = $quoteItem->getDiscountPercent();
+
+                        if ($discountPercentage == 0) {
+                            $rowTotalInclTax = $quoteItem->getRowTotalInclTax();
+                            $discountPercentage = ($discount / $rowTotalInclTax) * 100;
+                        }
+                    } else {
+                        $rowTotalInclTax = $quoteItem->getRowTotalInclTax() + $discount;
+                        $discount += $quoteItem->getDiscountAmount();
+                        $discountPercentage = ($discount / $rowTotalInclTax) * 100;
+                    }
                 }
 
                 // @codingStandardsIgnoreLine
-                $list_item = (new Entity\OrderLine())
+                $orderLine = (new Entity\OrderLine())
                     ->setValidateTax(1)
+                    ->setLineNumber($lineNumber)
                     ->setQuantity($quoteItem->getData('qty'))
                     ->setItemId($itemId)
                     ->setId('')
                     ->setVariantId($variantId)
                     ->setUomId($uom)
                     ->setLineType(Entity\Enum\LineType::ITEM)
-                    ->setAmount($quoteItem->getRowTotalInclTax())
+                    ->setAmount($quoteItem->getRowTotalInclTax() - $quoteItem->getDiscountAmount())
                     ->setNetAmount($quoteItem->getRowTotal())
                     ->setPrice($priceIncTax ?? $quoteItem->getPriceInclTax())
                     ->setNetPrice($quoteItem->getPrice())
                     ->setTaxAmount($quoteItem->getTaxAmount())
-                    ->setDiscountAmount($quoteItem->getDiscountAmount())
+                    ->setDiscountAmount($discount)
                     ->setDiscountPercent($discountPercentage);
 
-                $itemsArray[] = $list_item;
-                if (empty($discountsArray) && $quoteItem->getDiscountAmount() > 0) {
-                    $orderDiscountLine = new Entity\OrderDiscountLine();
-                    $orderDiscountLine->setDiscountAmount($quoteItem->getDiscountAmount());
-                    $orderDiscountLine->setDiscountPercent($discountPercentage);
-                    $orderDiscountLine->setDiscountType(Entity\Enum\DiscountType::PERIODIC_DISC);
+                $itemsArray[] = $orderLine;
+                if ($discountPercentage && $discount) {
+                    $orderDiscountLine = (new Entity\OrderDiscountLine())
+                        ->setDiscountAmount($discount)
+                        ->setDiscountPercent($discountPercentage)
+                        ->setDiscountType(Entity\Enum\DiscountType::LINE)
+                        ->setLineNumber($lineNumber);
                     $discountsArray[] = $orderDiscountLine;
                 }
+
+                $lineNumber += 10000;
             }
             $orderLinesArray->setOrderLine($itemsArray);
         }
@@ -767,7 +799,11 @@ class BasketHelper extends AbstractHelper
      */
     public function calculate(Entity\OneList $oneList)
     {
-        if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if (!$this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            (bool) $this->lsr->getBasketCalculationOnFrontend()
+        )) {
             return null;
         }
 
@@ -1048,7 +1084,7 @@ class BasketHelper extends AbstractHelper
             list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                 $item->getSku()
             );
-            $rowTotal   = $item->getRowTotal();
+            $rowTotal   = $item->getRowTotalInclTax();
             $basketData = $this->getOneListCalculation();
             $orderLines = $basketData ? $basketData->getOrderLines()->getOrderLine() : [];
 
@@ -1426,6 +1462,7 @@ class BasketHelper extends AbstractHelper
     /**
      * Get Basket Session Data
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getBasketSessionValue()
     {

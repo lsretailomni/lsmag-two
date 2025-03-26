@@ -90,7 +90,11 @@ class OrderObserver implements ObserverInterface
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            (bool) $this->lsr->getBasketCalculationOnFrontend()
+        )) {
             //checking for Adyen payment gateway
             $adyenResponse = $observer->getEvent()->getData('adyen_response');
             $order         = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
@@ -110,6 +114,7 @@ class OrderObserver implements ObserverInterface
             if (!empty($oneListCalculation)) {
                 if (($check || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
+                    $response = null;
                     $response = $this->orderHelper->placeOrder($request);
                     try {
                         if ($response) {

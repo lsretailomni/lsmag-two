@@ -1696,6 +1696,7 @@
     <column xsi:type="text" name="LoyaltySchemeCode" nullable="true" comment="LoyaltySchemeCode"/>
     <column xsi:type="decimal" name="MaxDiscountAmount" scale="4" precision="20" nullable="true" comment="MaxDiscountAmount"/>
     <column xsi:type="text" name="MemberAttribute" nullable="true" comment="MemberAttribute"/>
+    <column xsi:type="text" name="MemberAttributeValue" nullable="true" comment="MemberAttributeValue"/>
     <column xsi:type="decimal" name="MemberPoints" scale="4" precision="20" nullable="true" comment="MemberPoints"/>
     <column xsi:type="text" name="MemberType" nullable="true" comment="MemberType"/>
     <column xsi:type="text" name="Number" nullable="true" comment="Number"/>
