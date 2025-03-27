@@ -156,7 +156,10 @@ class Proactive extends Template
             $tempArray = [];
             foreach ($response as $key => $responseData) {
                 $uniqueKey = $responseData->getId();
-                if (!in_array($uniqueKey, $tempArray, true)) {
+                if (!in_array($uniqueKey, $tempArray, true)
+                    && !$responseData->getMemberAttribute()
+                    && !$responseData->getMemberAttributeValue()
+                ) {
                     $tempArray[] = $uniqueKey;
                     continue;
                 }
