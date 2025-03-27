@@ -280,7 +280,9 @@ class DiscountCreateSetupTask
 
                                 /** @var ReplDiscountSetup $replDiscount */
                                 foreach ($replDiscounts->getItems() as $replDiscount) {
-                                    if($replDiscount->getMemberAttribute() || $replDiscount->getMemberAttributeValue()) {
+                                    if ($replDiscount->getMemberAttribute() ||
+                                        $replDiscount->getMemberAttributeValue()
+                                    ) {
                                         $replDiscount->setData('is_failed', 0);
                                         $replDiscount->setData('processed_at', $this->replicationHelper->getDateTime());
                                         $replDiscount->setData('processed', '1');
