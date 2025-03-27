@@ -613,8 +613,10 @@ class InfoTest extends TestCase
         $order  = null;
 
         foreach ($orders->getSalesEntry() as $order) {
+            $orderAddress = $this->orderHelper->getParameterValues($order, "ContactAddress");
             if (($isClickAndCollect && !$order->getClickAndCollectOrder()) ||
-                !$isClickAndCollect && $order->getClickAndCollectOrder()
+                !$isClickAndCollect && $order->getClickAndCollectOrder() ||
+                empty($orderAddress->getCountry())
             ) {
                 continue;
             }
