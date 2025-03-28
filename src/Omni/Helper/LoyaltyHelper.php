@@ -544,7 +544,11 @@ class LoyaltyHelper extends AbstractHelperOmni
      */
     public function getAvailableCouponsForLoggedInCustomers()
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            (bool) $this->lsr->getBasketCalculationOnFrontend()
+        )) {
             $storeId = $this->lsr->getActiveWebStore();
             $cardId  = $this->contactHelper->getCardIdFromCustomerSession();
             if (!$cardId) { //fetch card id from customer object if session value not available

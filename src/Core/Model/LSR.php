@@ -422,6 +422,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
 
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
+    const LS_BASKET_CALCULATION_ACTIVE = 'ls_mag/ls_basket_calculation/active';
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
@@ -680,9 +681,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      * @return bool
      * @throws NoSuchEntityException
      */
-    public function isLSR($storeId = false, $scope = false)
+    public function isLSR($storeId = false, $scope = false, $force = true)
     {
-        if (!$this->isEnabled($storeId, $scope)) {
+        if (!$this->isEnabled($storeId, $scope) || !$force) {
             return false;
         }
 
@@ -1103,6 +1104,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->scopeConfig->getValue(
             self::LS_PLACE_TO_SYNC_BASKET_CALCULATION,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    /**
+     * Returns basket calculation on frontend
+     *
+     * @return mixed
+     */
+    public function getBasketCalculationOnFrontend()
+    {
+        return $this->scopeConfig->getValue(
+            self::LS_BASKET_CALCULATION_ACTIVE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
     }

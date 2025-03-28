@@ -10,6 +10,7 @@ use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Helper\CacheHelper;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
+use \Ls\Replication\Logger\FlatReplicationLogger;
 use \Ls\Replication\Logger\OmniLogger;
 use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Session\SessionManagerInterface;
@@ -38,9 +39,9 @@ abstract class AbstractOperation implements OperationInterface
     public $token = null;
 
     /**
-     * @var Logger
+     * @var OmniLogger
      */
-    public $logger;
+    public $omniLogger;
 
     /**
      * @var Stream
@@ -68,17 +69,23 @@ abstract class AbstractOperation implements OperationInterface
     public $cacheHelper;
 
     /**
+     * @var FlatReplicationLogger
+     */
+    public $flatReplicationLogger;
+
+    /**
      * @param ServiceType $service_type
      */
     public function __construct(
         ServiceType $service_type
     ) {
-        $this->service_type  = $service_type;
+        $this->service_type = $service_type;
         $this->objectManager = ObjectManager::getInstance();
-        $this->logger        = $this->objectManager->get(OmniLogger::class);
+        $this->omniLogger = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
-        $this->session       = $this->objectManager->get(SessionManagerInterface::class);
-        $this->cacheHelper   = $this->objectManager->get(CacheHelper::class);
+        $this->flatReplicationLogger = $this->objectManager->get(FlatReplicationLogger::class);
+        $this->session = $this->objectManager->get(SessionManagerInterface::class);
+        $this->cacheHelper = $this->objectManager->get(CacheHelper::class);
     }
 
     /**
@@ -218,7 +225,12 @@ abstract class AbstractOperation implements OperationInterface
         $timeElapsed = $requestTime->diff($responseTime);
 
         if ($isEnable) {
-            $this->logger->debug(
+            $logger = $this->omniLogger;
+
+            if (str_starts_with($operationName, 'ReplEcomm')) {
+                $logger = $this->flatReplicationLogger;
+            }
+            $logger->debug(
                 sprintf(
                     "==== REQUEST ==== %s ==== %s ====",
                     $requestTime->format("m-d-Y H:i:s.u"),
@@ -227,10 +239,10 @@ abstract class AbstractOperation implements OperationInterface
             );
 
             if (!empty($this->getClient()->getLastRequest())) {
-                $this->logger->debug($this->formatXML($this->getClient()->getLastRequest()));
+                $logger->debug($this->formatXML($this->getClient()->getLastRequest()));
             }
 
-            $this->logger->debug(
+            $logger->debug(
                 sprintf(
                     "==== RESPONSE ==== %s ==== %s ====",
                     $responseTime->format("m-d-Y H:i:s.u"),
@@ -238,7 +250,7 @@ abstract class AbstractOperation implements OperationInterface
                 )
             );
             $seconds = $timeElapsed->s + $timeElapsed->f;
-            $this->logger->debug(
+            $logger->debug(
                 sprintf(
                     "==== Time Elapsed ==== %s ==== %s ====",
                     $timeElapsed->format("%i minute(s) " . $seconds . " second(s)"),
@@ -247,7 +259,7 @@ abstract class AbstractOperation implements OperationInterface
             );
 
             if (!empty($this->getClient()->getLastResponse())) {
-                $this->logger->debug($this->formatXML($this->getClient()->getLastResponse()));
+                $logger->debug($this->formatXML($this->getClient()->getLastResponse()));
             }
         }
     }

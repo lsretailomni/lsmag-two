@@ -62,14 +62,14 @@ class SalesObserver implements ObserverInterface
                 $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
                 $subTotal   = $basketData->getTotalAmount() + $basketData->getTotalDiscount();
                 $total->setTaxAmount($taxAmount)
-                    ->setBaseTaxAmount($taxAmount)
+                    ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount))
                     ->setSubtotal($basketData->getTotalNetAmount())
-                    ->setBaseSubtotal($basketData->getTotalNetAmount())
+                    ->setBaseSubtotal($this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount()))
                     ->setSubtotalInclTax($subTotal)
-                    ->setBaseSubtotalInclTax($subTotal)
-                    ->setBaseSubtotalTotalInclTax($subTotal)
+                    ->setBaseSubtotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))
+                    ->setBaseSubtotalTotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))
                     ->setGrandTotal($grandTotal)
-                    ->setBaseGrandTotal($grandTotal);
+                    ->setBaseGrandTotal($this->basketHelper->itemHelper->convertToBaseCurrency($grandTotal));
             }
         } else {
             if (($addressType == AbstractAddress::TYPE_SHIPPING && $this->basketHelper->getLsrModel()->isEnabled())) {

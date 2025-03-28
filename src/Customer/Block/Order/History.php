@@ -261,4 +261,15 @@ class History extends \Magento\Sales\Block\Order\History
     {
         return $this->lsr->getOmniVersion();
     }
+
+    /**
+     * Register magento order in registry as current_mag_order
+     *
+     * @param $value
+     * @return void
+     */
+    public function registerValueInRegistry($value)
+    {
+        $this->orderHelper->registerGivenValueInRegistry('current_mag_order', $value);
+    }
 }

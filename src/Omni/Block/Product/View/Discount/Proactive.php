@@ -139,6 +139,19 @@ class Proactive extends Template
     }
 
     /**
+     * Return discounts recommendation only if we are doing basket calculation on frontend
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        if (!$this->lsr->getBasketCalculationOnFrontend()) {
+            return '';
+        }
+        return parent::toHtml();
+    }
+
+    /**
      * Get proactive discounts
      *
      * @param string $itemId

@@ -239,6 +239,7 @@ class CronsProvider extends DataProvider implements DataProviderInterface
                     'label'                 => $cronName,
                     'lastexecuted'          => $lastExecute,
                     'value'                 => $joblist['_attribute']['instance'],
+                    'frequency'             => $joblist['_value']['schedule'],
                     'condition'             => $condition,
                     'scope'                 => $scope
                 ];
