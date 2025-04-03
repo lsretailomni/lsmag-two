@@ -13,7 +13,6 @@ use \Ls\Omni\Client\Ecommerce\Entity\SalesEntryGetSalesByOrderIdResponse;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
-use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Locale\ConfigInterface;
@@ -124,12 +123,7 @@ class OrderHelper extends AbstractHelper
     /**
      * @var mixed
      */
-    private $currentOrder;
-
-    /**
-     * @var mixed
-     */
-    private $storeData;
+    public $currentOrder;
 
     /**
      *
@@ -266,6 +260,12 @@ class OrderHelper extends AbstractHelper
                 ->setContactAddress($contactAddress)
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId($storeId);
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+                $oneListCalculateResponse->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
+                $oneListCalculateResponse->setCurrency($order->getOrderCurrencyCode());
+            }
+
             if ($isClickCollect) {
                 $oneListCalculateResponse->setOrderType(Entity\Enum\OrderType::CLICK_AND_COLLECT);
             } else {
@@ -561,7 +561,7 @@ class OrderHelper extends AbstractHelper
             // @codingStandardsIgnoreEnd
             //default values for all payment typoes.
             $orderPayment->setCurrencyCode($order->getOrderCurrency()->getCurrencyCode())
-                ->setCurrencyFactor($order->getBaseToOrderRate())
+                ->setCurrencyFactor(1)
                 ->setLineNumber('1')
                 ->setExternalReference($order->getIncrementId())
                 ->setAmount($order->getGrandTotal());
@@ -1349,12 +1349,31 @@ class OrderHelper extends AbstractHelper
      * @param $amount
      * @param $currency
      * @param $storeId
-     * @param $orderType
+     * @param null $orderType
      * @return mixed
+     * @throws NoSuchEntityException
      */
-    public function getPriceWithCurrency($priceCurrency, $amount, $currency, $storeId, $orderType = null)
-    {
+    public function getPriceWithCurrency(
+        $priceCurrency,
+        $amount,
+        $currency,
+        $storeId,
+        $orderType = null
+    ) {
+        $magentoOrder = $this->getGivenValueFromRegistry('current_mag_order');
         $currencyObject = null;
+        $currentStoreCurrencyCode = $this->storeManager->getStore()->getCurrentCurrency()->getCode();
+
+        if ($magentoOrder) {
+            if ($magentoOrder->getOrderCurrencyCode() !== $currentStoreCurrencyCode) {
+                $amount = $this->basketHelper->getItemHelper()->convertToCurrentStoreCurrency(
+                    $amount,
+                    $currentStoreCurrencyCode,
+                    $magentoOrder->getOrderCurrencyCode()
+                );
+            }
+            $currency = $currentStoreCurrencyCode;
+        }
 
         if (empty($currency) && empty($storeId) && !$this->currentOrder) {
             $this->currentOrder = $this->getGivenValueFromRegistry('current_order');

@@ -76,11 +76,10 @@ class Data
      */
     public $jsonSerializer;
 
-
     /**
      * @var ProductRepository
      */
-    private ProductRepository $productRepository;
+    public ProductRepository $productRepository;
 
     /**
      * @param Logger $logger
@@ -104,9 +103,8 @@ class Data
         ItemHelper $itemHelper,
         LoyaltyHelper $loyaltyHelper,
         SerializerJson $jsonSerializer,
-        \Magento\Catalog\Model\ProductRepository $productRepository
+        ProductRepository $productRepository
     ) {
-
         $this->logger                = $logger;
         $this->orderRepository       = $orderRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -608,6 +606,15 @@ class Data
     public function getLsrObject()
     {
         return $this->lsr;
+    }
 
+    /**
+     * Get item helper object
+     *
+     * @return ItemHelper
+     */
+    public function getItemHelper()
+    {
+        return $this->itemHelper;
     }
 }

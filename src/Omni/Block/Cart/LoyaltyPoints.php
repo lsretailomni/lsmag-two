@@ -11,6 +11,7 @@ use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Pricing\PriceCurrencyInterface;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Framework\Pricing\Helper\Data;
 
@@ -27,6 +28,11 @@ class LoyaltyPoints extends AbstractCart
     public $priceHelper;
 
     /**
+     * @var PriceCurrencyInterface
+     */
+    public $priceCurrency;
+
+    /**
      * @param LoyaltyHelper $loyaltyHelper
      * @param Data $priceHelper
      * @param Context $context
@@ -40,11 +46,13 @@ class LoyaltyPoints extends AbstractCart
         Context $context,
         CustomerSession $customerSession,
         CheckoutSession $checkoutSession,
+        PriceCurrencyInterface $priceCurrency,
         array $data = []
     ) {
         parent::__construct($context, $customerSession, $checkoutSession, $data);
         $this->loyaltyHelper   = $loyaltyHelper;
         $this->priceHelper = $priceHelper;
+        $this->priceCurrency = $priceCurrency;
     }
 
     /**
@@ -95,11 +103,11 @@ class LoyaltyPoints extends AbstractCart
      * Get formatted price
      *
      * @param $price
-     * @return float|string
+     * @return string
      */
     public function getFormattedPrice($price)
     {
-        return $this->priceHelper->currency($price, true, false);
+        return $this->priceCurrency->format($price, false);
     }
 
     /**

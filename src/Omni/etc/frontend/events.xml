@@ -33,6 +33,9 @@
     <event name="controller_action_postdispatch_sales_order_reorder">
         <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
     </event>
+    <event name="controller_action_postdispatch_stores_store_switch">
+        <observer name="CartObserver" instance="Ls\Omni\Observer\CartObserver"/>
+    </event>
     <!-- event for Adyen -->
     <event name="adyen_payment_process_resulturl_after">
         <observer name="OrderObserver" instance="Ls\Omni\Observer\OrderObserver"/>

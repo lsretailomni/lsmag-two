@@ -65,6 +65,9 @@ use Magento\Framework\Escaper;
                                     continue;
                                 }
                                 $magOrder = $block->getOrderByDocumentId($_order);
+                                if ($magOrder) {
+                                    $block->registerValueInRegistry($magOrder);
+                                }
                                 ?>
                                 <tr>
                                     <td data-th="<?= $block->escapeHtml(__('Document ID #')) ?>"
