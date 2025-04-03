@@ -71,7 +71,11 @@ class PostLoginObserver implements ObserverInterface
                 );
             }
             if (empty($this->contactHelper->getBasketUpdateChecking()) &&
-                $this->contactHelper->lsr->isLSR($this->contactHelper->lsr->getCurrentStoreId())
+                $this->contactHelper->lsr->isLSR(
+                    $this->contactHelper->lsr->getCurrentStoreId(),
+                    false,
+                    (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+                )
             ) {
                 $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
                     $customer->getEmail(),

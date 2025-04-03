@@ -420,6 +420,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     //offer with no time limit for the discounts
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
+    const LS_CUSTOMER_INTEGRATION_ACTIVE = 'ls_mag/standalone_features/customer';
+
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
     const LS_BASKET_CALCULATION_ACTIVE = 'ls_mag/ls_basket_calculation/active';
@@ -1117,6 +1119,19 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     {
         return $this->scopeConfig->getValue(
             self::LS_BASKET_CALCULATION_ACTIVE,
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    /**
+     * Returns basket calculation on frontend
+     *
+     * @return mixed
+     */
+    public function getCustomerIntegrationOnFrontend()
+    {
+        return $this->scopeConfig->getValue(
+            self::LS_CUSTOMER_INTEGRATION_ACTIVE,
             ScopeConfigInterface::SCOPE_TYPE_DEFAULT
         );
     }

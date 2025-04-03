@@ -123,6 +123,7 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_features/customer">1</field>
                 </depends>
                 <label>Loyalty Points</label>
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"
@@ -158,6 +159,7 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_features/customer">1</field>
                 </depends>
                 <label>Coupons</label>
                 <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1"

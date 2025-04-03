@@ -77,9 +77,12 @@ class SaveAfter implements ObserverInterface
             }
             do {
                 $userName = $this->contactHelper->generateRandomUsername();
-            } while ($this->contactHelper->isUsernameExist($userName) ||
-            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
-                $this->contactHelper->isUsernameExistInLsCentral($userName) : false
+            } while (($this->contactHelper->isUsernameExist($userName) ||
+                ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    (bool)$this->lsr->getCustomerIntegrationOnFrontend()
+                ))) && $this->contactHelper->isUsernameExistInLsCentral($userName)
             );
 
             if ($customer->getId() && !empty($userName)

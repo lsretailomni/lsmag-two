@@ -111,7 +111,11 @@ class CheckUserCreate
         $isNotValid = false;
 
         if (!empty($parameters['email']) && $this->contactHelper->isValid($parameters['email'])) {
-            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+            ) && $this->lsr->getStoreConfig(
                 LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL,
                 $this->lsr->getCurrentStoreId()
             )) {

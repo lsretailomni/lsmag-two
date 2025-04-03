@@ -90,7 +90,11 @@ class LoginObserver implements ObserverInterface
         if (!empty($login['username']) && !empty($login['password'])) {
             $email    = $username = $login['username'];
             $is_email = $this->contactHelper->isValid($username);
-            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+            )) {
                 try {
                     if ($is_email) {
                         $search = $this->contactHelper->search($username);
