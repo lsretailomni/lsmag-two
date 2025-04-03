@@ -190,6 +190,12 @@ class GetDiscountsOutput implements ResolverInterface
             throw new GraphQlInputException(__('Required parameter "item_id" is missing'));
         }
 
+        if (!empty($context->getUserId())) {
+            $websiteId       = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
+            $userId          = $context->getUserId();
+            $this->dataHelper->setCustomerValuesInSession($userId, $websiteId);
+        }
+
         $itemId     = $args['item_id'];
         $couponsObj = $this->getCoupons($itemId);
 

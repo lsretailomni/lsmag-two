@@ -319,19 +319,21 @@ class BasketHelper extends AbstractHelper
                     }
 
                     if (!$match) {
+                        $price = $quoteItem->getProduct()->getPrice();
+                        $price = $this->itemHelper->convertToCurrentStoreCurrency($price);
+                        $qty = $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
+                            $quoteItem->getData('qty');
+                        $amount = $this->itemHelper->convertToCurrentStoreCurrency($quoteItem->getPrice() * $qty);
                         // @codingStandardsIgnoreLine
                         $list_item = (new Entity\OneListItem())
-                            ->setQuantity(
-                                $isBundle ? $child->getData('qty') * $quoteItem->getData('qty') :
-                                    $quoteItem->getData('qty')
-                            )
+                            ->setQuantity($qty)
                             ->setItemId($itemId)
                             ->setId($child->getItemId())
                             ->setBarcodeId($barCode)
                             ->setVariantId($variantId)
                             ->setUnitOfMeasureId($uom)
-                            ->setAmount($quoteItem->getPrice())
-                            ->setPrice($quoteItem->getPrice())
+                            ->setAmount($amount)
+                            ->setPrice($price)
                             ->setImmutable(true);
 
                         $itemsArray[] = $list_item;
@@ -852,6 +854,7 @@ class BasketHelper extends AbstractHelper
 
                 if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
                     $oneListRequest->setCurrencyFactor($this->loyaltyHelper->getPointRate());
+                    $oneListRequest->setCurrency($this->lsr->getStoreCurrencyCode());
                 }
 
                 /** @var Entity\OneListCalculate $entity */
@@ -1328,7 +1331,7 @@ class BasketHelper extends AbstractHelper
         }
 
         $basketData = $this->update($oneList);
-
+        $quote = $this->getCurrentQuote();
         if (is_object($basketData)) {
             $this->itemHelper->setDiscountedPricesForItems($quote, $basketData);
             $cartQuote = $this->checkoutSession->getQuote();

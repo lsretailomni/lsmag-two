@@ -65,6 +65,16 @@ class ReplDiscount
     protected $LoyaltySchemeCode = null;
 
     /**
+     * @property string $MemberAttribute
+     */
+    protected $MemberAttribute = null;
+
+    /**
+     * @property string $MemberAttributeValue
+     */
+    protected $MemberAttributeValue = null;
+
+    /**
      * @property float $MinimumQuantity
      */
     protected $MinimumQuantity = null;
@@ -312,6 +322,42 @@ class ReplDiscount
     public function getLoyaltySchemeCode()
     {
         return $this->LoyaltySchemeCode;
+    }
+
+    /**
+     * @param string $MemberAttribute
+     * @return $this
+     */
+    public function setMemberAttribute($MemberAttribute)
+    {
+        $this->MemberAttribute = $MemberAttribute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttribute()
+    {
+        return $this->MemberAttribute;
+    }
+
+    /**
+     * @param string $MemberAttributeValue
+     * @return $this
+     */
+    public function setMemberAttributeValue($MemberAttributeValue)
+    {
+        $this->MemberAttributeValue = $MemberAttributeValue;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMemberAttributeValue()
+    {
+        return $this->MemberAttributeValue;
     }
 
     /**

@@ -7,6 +7,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\OrderType;
 use \Ls\Omni\Client\Ecommerce\Entity\OrderCancelExResponse;
 use \Ls\Omni\Client\ResponseInterface;
+use Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Client\Ecommerce\Entity\Order as CommerceOrder;
@@ -46,21 +47,29 @@ class OrderEdit
     private $itemHelper;
 
     /**
+     * @var LoyaltyHelper
+     */
+    public $loyaltyHelper;
+
+    /**
      * @param OrderHelper $orderHelper
      * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
      * @param LSR $LSR
+     * @param LoyaltyHelper $loyaltyHelper
      */
     public function __construct(
         OrderHelper $orderHelper,
         ItemHelper $itemHelper,
         LoggerInterface $logger,
-        LSR $LSR
+        LSR $LSR,
+        LoyaltyHelper $loyaltyHelper,
     ) {
         $this->orderHelper = $orderHelper;
         $this->itemHelper  = $itemHelper;
         $this->logger      = $logger;
         $this->lsr         = $LSR;
+        $this->loyaltyHelper = $loyaltyHelper;
     }
 
     /**
@@ -146,6 +155,11 @@ class OrderEdit
                 ->setShipToAddress($shipToAddress)
                 ->setStoreId(($oldOrder->getPickupStore()) ? $oldOrder->getPickupStore() :
                     $oneListCalculateResponse->getStoreId());
+
+            if (version_compare($this->lsr->getOmniVersion(), '2023.08.1', '>=')) {
+                $orderObject->setCurrencyFactor($this->loyaltyHelper->getPointRate($order->getStoreId()));
+                $orderObject->setCurrency($order->getOrderCurrencyCode());
+            }
 
             if ($isClickCollect) {
                 $orderObject->setOrderType(OrderType::CLICK_AND_COLLECT);

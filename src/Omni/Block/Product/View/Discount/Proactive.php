@@ -5,12 +5,12 @@ namespace Ls\Omni\Block\Product\View\Discount;
 use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\DiscountsGetResponse;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\DiscountType;
+use \Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\ProactiveDiscountType;
 use \Ls\Omni\Client\Ecommerce\Entity\ProactiveDiscount;
 use \Ls\Omni\Client\Ecommerce\Entity\PublishedOffer;
 use \Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Helper\ContactHelper;
+use \Ls\Omni\Helper\ContactHelper;
 use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Catalog\Api\Data\ProductInterface;
@@ -169,7 +169,10 @@ class Proactive extends Template
             $tempArray = [];
             foreach ($response as $key => $responseData) {
                 $uniqueKey = $responseData->getId();
-                if (!in_array($uniqueKey, $tempArray, true)) {
+                if (!in_array($uniqueKey, $tempArray, true)
+                    && !$responseData->getMemberAttribute()
+                    && !$responseData->getMemberAttributeValue()
+                ) {
                     $tempArray[] = $uniqueKey;
                     continue;
                 }
@@ -200,7 +203,12 @@ class Proactive extends Template
                     $publishedOffers = $this->loyaltyHelper->getPublishedOffers($cardId, $storeId, $id);
 
                     foreach ($publishedOffers as $publishedOffer) {
-                        $response[$publishedOffer->getOfferId()] = $publishedOffer;
+                        if ($publishedOffer->getCode() == OfferDiscountType::COUPON ||
+                            $publishedOffer->getCode() == OfferDiscountType::PROMOTION ||
+                            $publishedOffer->getCode() == OfferDiscountType::DISCOUNT_OFFER
+                        ) {
+                            $response[$publishedOffer->getOfferId()] = $publishedOffer;
+                        }
                     }
                 }
 
@@ -356,14 +364,14 @@ class Proactive extends Template
         if ($coupon->getDetails()) {
             $description[] = "<span class='coupon-details'>" . $coupon->getDetails() . '</span>';
         }
-        if ($coupon->getCode() != DiscountType::PROMOTION) {
+        if ($coupon->getCode() != OfferDiscountType::PROMOTION) {
             if ($coupon->getExpirationDate()) {
                 $description[] = "
         <span class='coupon-expiration-date-label discount-label'>" . __('Expiry :') . "</span>
         <span class='coupon-expiration-date-value discount-value'>" .
                     $this->getFormattedOfferExpiryDate($coupon->getExpirationDate()) . '</span>';
             }
-            if ($coupon->getOfferId()) {
+            if ($coupon->getOfferId() && $coupon->getCode() != OfferDiscountType::DISCOUNT_OFFER) {
                 $description[] = "
         <span class='coupon-offer-id-label discount-label'>" . __('Coupon Code :') . "</span>
         <span class='coupon-offer-id-value discount-value'>" . $coupon->getOfferId() . '</span>';
