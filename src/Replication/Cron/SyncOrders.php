@@ -134,6 +134,9 @@ class SyncOrders
                                             if (!empty($response->getResult()->getId())) {
                                                 $documentId = $response->getResult()->getId();
                                                 $order->setDocumentId($documentId);
+                                                $order->addCommentToStatusHistory(
+                                                    __('Order request has been sent to LS Central successfully by the cron.')
+                                                );
                                                 $this->orderResourceModel->save($order);
                                             }
                                         }

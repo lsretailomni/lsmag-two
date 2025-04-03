@@ -421,10 +421,10 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     const NO_TIME_LIMIT = '1753-01-01T00:00:00';
 
     const LS_CUSTOMER_INTEGRATION_ACTIVE = 'ls_mag/standalone_features/customer';
-
+    const LS_BASKET_INTEGRATION_ACTIVE = 'ls_mag/standalone_features/basket';
+    const LS_ORDER_INTEGRATION_ACTIVE = 'ls_mag/standalone_features/order';
     //Basket Calculation
     const LS_PLACE_TO_SYNC_BASKET_CALCULATION = 'ls_mag/ls_basket_calculation/place_to_sync';
-    const LS_BASKET_CALCULATION_ACTIVE = 'ls_mag/ls_basket_calculation/active';
 
     //Order Management
     const LS_ORDER_NUMBER_PREFIX_PATH = 'ls_mag/ls_order_management/prefix';
@@ -1111,29 +1111,43 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     }
 
     /**
-     * Returns basket calculation on frontend
+     * Returns customer integration flag on frontend
      *
-     * @return mixed
+     * @return bool
      */
-    public function getBasketCalculationOnFrontend()
+    public function getCustomerIntegrationOnFrontend(): bool
     {
-        return $this->scopeConfig->getValue(
-            self::LS_BASKET_CALCULATION_ACTIVE,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
+        return (bool) $this->scopeConfig->getValue(self::LS_CUSTOMER_INTEGRATION_ACTIVE);
     }
 
     /**
-     * Returns basket calculation on frontend
+     * Returns basket integration flag on frontend
      *
-     * @return mixed
+     * @param bool $computed
+     * @return bool
      */
-    public function getCustomerIntegrationOnFrontend()
+    public function getBasketIntegrationOnFrontend(bool $computed = true): bool
     {
-        return $this->scopeConfig->getValue(
-            self::LS_CUSTOMER_INTEGRATION_ACTIVE,
-            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
-        );
+        if (!$computed) {
+            return (bool) $this->scopeConfig->getValue(self::LS_BASKET_INTEGRATION_ACTIVE);
+        }
+
+        return $this->getCustomerIntegrationOnFrontend() && $this->getBasketIntegrationOnFrontend(false);
+    }
+
+    /**
+     * Returns order integration flag on frontend
+     *
+     * @param bool $computed
+     * @return bool
+     */
+    public function getOrderIntegrationOnFrontend(bool $computed = true): bool
+    {
+        if (!$computed) {
+            return (bool) $this->scopeConfig->getValue(self::LS_ORDER_INTEGRATION_ACTIVE);
+        }
+
+        return $this->getCustomerIntegrationOnFrontend() && $this->getOrderIntegrationOnFrontend(false);
     }
 
     /**

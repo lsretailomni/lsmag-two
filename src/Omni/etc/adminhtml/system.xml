@@ -302,21 +302,14 @@
                    showInStore="0">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_features/basket">1</field>
                 </depends>
                 <label>Basket Calculation</label>
-                <field id="active" translate="label comment" type="select" sortOrder="2"
-                       showInDefault="1" showInWebsite="0">
-                    <label>Enable basket Calculation on Frontend</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
                 <field id="place_to_sync" translate="label comment" type="select" sortOrder="3"
                        showInDefault="1" showInWebsite="0">
                     <label>Calculate basket at</label>
                     <comment>Please select the desired area where you want to synchronize basket with Central</comment>
                     <source_model>Ls\Omni\Block\Adminhtml\System\Config\BasketCalculation</source_model>
-                    <depends>
-                        <field id="*/*/active">1</field>
-                    </depends>
                 </field>
             </group>
             <group id="ls_order_management"

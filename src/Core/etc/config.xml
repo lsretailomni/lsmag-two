@@ -14,6 +14,8 @@
             </ls_industry>
             <standalone_features>
                 <customer>1</customer>
+                <basket>1</basket>
+                <order>1</order>
             </standalone_features>
             <ls_order_management>
                 <tender_type_mapping>{"item1":{"payment_method":"checkmo","tender_type":"2"},"item2":{"payment_method":"giftcard","tender_type":"8"},"item3":{"payment_method":"loypoints","tender_type":"4"}}</tender_type_mapping>

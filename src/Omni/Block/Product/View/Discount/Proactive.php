@@ -145,7 +145,7 @@ class Proactive extends Template
      */
     public function toHtml()
     {
-        if (!$this->lsr->getBasketCalculationOnFrontend()) {
+        if (!$this->lsr->getBasketIntegrationOnFrontend()) {
             return '';
         }
         return parent::toHtml();

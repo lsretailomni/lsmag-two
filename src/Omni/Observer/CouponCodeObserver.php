@@ -75,7 +75,7 @@ class CouponCodeObserver implements ObserverInterface
         if ($this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
-            $this->lsr->getBasketCalculationOnFrontend()
+            $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             $controller = $observer->getControllerAction();
             $couponCode = $controller->getRequest()->getParam('coupon_code');

@@ -117,7 +117,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
 
         if (!$lsr->isLSR($lsr->getCurrentStoreId(),
             false,
-            $lsr->getBasketCalculationOnFrontend()
+            $lsr->getBasketIntegrationOnFrontend()
         )) {
             parent::collect($quote, $shippingAssignment, $total);
         }
@@ -150,7 +150,7 @@ class Discount extends \Magento\SalesRule\Model\Quote\Discount
 
         if (!$lsr->isLSR($lsr->getCurrentStoreId(),
             false,
-            $lsr->getBasketCalculationOnFrontend()
+            $lsr->getBasketIntegrationOnFrontend()
         )) {
             return parent::fetch($quote, $total);
         }

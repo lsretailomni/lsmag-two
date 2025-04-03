@@ -41,7 +41,7 @@ class ValidatorPlugin
     ) {
         if (!$this->lsr->isLSR($this->lsr->getCurrentStoreId(),
             false,
-            $this->lsr->getBasketCalculationOnFrontend()
+            $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             return $proceed($quote);
         }
