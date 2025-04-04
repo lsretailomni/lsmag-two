@@ -89,7 +89,7 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
             if ($this->lsr->isLSR(
                 $this->lsr->getCurrentStoreId(),
                 false,
-                (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+                $this->lsr->getCustomerIntegrationOnFrontend()
             ) &&
                 $this->lsr->getStoreConfig(
                     LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL,
@@ -109,6 +109,9 @@ class CustomerRegisterPreDispatchObserver implements ObserverInterface
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
+            } else {
+                $session = $this->customerSession;
+                $this->contactHelper->syncCustomerToCentral($observer, $session);
             }
         } else {
             $this->messageManager->addErrorMessage(__('Your email address is invalid.'));

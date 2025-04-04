@@ -49,7 +49,7 @@ class Link extends \Magento\Framework\View\Element\Html\Link implements SortLink
             $this->lsr->isLSR(
                 $this->lsr->getCurrentStoreId(),
                 false,
-                (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+                $this->lsr->getCustomerIntegrationOnFrontend()
             )) {
             return parent::_toHtml();
         }

@@ -590,9 +590,12 @@ class ContactHelper extends AbstractHelper
             do {
                 $parameters['lsr_username'] = $this->generateRandomUsername();
             } while ($this->isUsernameExist($parameters['lsr_username']) ||
-            $this->lsr->isLSR($this->lsr->getCurrentStoreId()) ?
-                $this->isUsernameExistInLsCentral($parameters['lsr_username']) : false
-            );
+            ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            ) && $this->isUsernameExistInLsCentral($parameters['lsr_username'])
+            ));
             /** @var Customer $customer */
             $customer = $session->getCustomer();
             $request  = $observer->getControllerAction()->getRequest();
@@ -606,9 +609,9 @@ class ContactHelper extends AbstractHelper
                 $customer->setData('firstname', $parameters['firstname']);
                 $customer->setData('lastname', $parameters['lastname']);
                 $customer->setData('middlename', (array_key_exists(
-                        'middlename',
-                        $parameters
-                    ) && $parameters['middlename']) ? $parameters['middlename'] : null);
+                    'middlename',
+                    $parameters
+                ) && $parameters['middlename']) ? $parameters['middlename'] : null);
                 $customer->setData(
                     'gender',
                     (array_key_exists('gender', $parameters) && $parameters['gender']) ? $parameters['gender'] : null
@@ -617,7 +620,11 @@ class ContactHelper extends AbstractHelper
                     'dob',
                     (array_key_exists('dob', $parameters) && $parameters['dob']) ? $parameters['dob'] : null
                 );
-                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                if ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                )) {
                     /** @var Entity\MemberContact $contact */
                     $contact = $this->contact($customer);
                     if (is_object($contact) && $contact->getId()) {
@@ -1110,16 +1117,19 @@ class ContactHelper extends AbstractHelper
         $customer         = $this->setCustomerAttributesValues($result, $customer);
         $customer         = $this->setCustomerAdditionalValues($result, $customer);
         $customerSecure   = $this->customerRegistry->retrieveSecureData($customer->getId());
-        $validatePassword = $this->encryptorInterface->validateHash(
-            $credentials['password'],
-            $customerSecure->getPasswordHash()
-        );
-        if (!$validatePassword) {
-            $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
-            $customerSecure->setRpToken(null);
-            $customerSecure->setRpTokenCreatedAt(null);
-            $customerSecure->setPasswordHash($passwordHash);
-            $customer->setPasswordHash($passwordHash);
+
+        if (isset($credentials['password'])) {
+            $validatePassword = $this->encryptorInterface->validateHash(
+                $credentials['password'],
+                $customerSecure->getPasswordHash()
+            );
+            if (!$validatePassword) {
+                $passwordHash = $this->encryptorInterface->getHash($credentials['password'], true);
+                $customerSecure->setRpToken(null);
+                $customerSecure->setRpTokenCreatedAt(null);
+                $customerSecure->setPasswordHash($passwordHash);
+                $customer->setPasswordHash($passwordHash);
+            }
         }
         $this->customerResourceModel->save($customer);
         $this->customerRegistry->_resetState();
@@ -1211,10 +1221,10 @@ class ContactHelper extends AbstractHelper
             throw new UserLockedException(__('The account is locked.'));
         }
         if ($customer->getConfirmation() && $this->accountConfirmation->isConfirmationRequired(
-                $websiteId,
-                $customerId,
-                $customer->getEmail()
-            )) {
+            $websiteId,
+            $customerId,
+            $customer->getEmail()
+        )) {
             throw new EmailNotConfirmedException(__("This account isn't confirmed. Verify and try again."));
         }
     }
@@ -1388,9 +1398,7 @@ class ContactHelper extends AbstractHelper
             if (empty($userName)) {
                 do {
                     $userName = $this->generateRandomUsername();
-                } while ($this->isUsernameExist($userName) ?
-                    $this->isUsernameExistInLsCentral($userName) : false
-                );
+                } while ($this->isUsernameExist($userName) && $this->isUsernameExistInLsCentral($userName));
                 $customer->setData('lsr_username', $userName);
             }
             //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
@@ -1398,21 +1406,18 @@ class ContactHelper extends AbstractHelper
             if (empty($customer->getData('lsr_password'))) {
                 $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
             }
-            $contactUserName = $this->getCustomerByUsernameOrEmailFromLsCentral(
-                $customer->getData('lsr_username'),
-                Entity\Enum\ContactSearchType::USER_NAME
-            );
             $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
                 $customer->getEmail(),
                 Entity\Enum\ContactSearchType::EMAIL
             );
-            if (!empty($contactUserName) && !empty($contactEmail)) {
-                $contact  = $contactUserName;
+            if (!empty($contactEmail)) {
+                $contact  = $contactEmail;
                 $password = $this->encryptorInterface->decrypt($customer->getData('lsr_password'));
                 if (!empty($password)) {
                     $customerPost['password'] = $password;
-                    $resetCode                = $this->forgotPassword($userName);
+                    $resetCode                = $this->forgotPassword($contact->getUsername());
                     $customer->setData('lsr_resetcode', $resetCode);
+                    $customer->setData('lsr_username', $contact->getUsername());
                     $this->resetPassword($customer, $customerPost);
                     $customer->setData('lsr_resetcode', null);
                 }
@@ -1425,6 +1430,7 @@ class ContactHelper extends AbstractHelper
                     $token = $contact->getLoggedOnToDevice()->getSecurityToken();
                     $customer->setData('lsr_token', $token);
                 }
+
                 $customer->setData('lsr_id', $contact->getId());
                 $customer->setData('lsr_cardid', $contact->getCards()->getCard()[0]->getId());
                 $customer->setData('lsr_password', null);

@@ -72,7 +72,7 @@ class SaveBefore implements ObserverInterface
             if ($this->lsr->isLSR(
                 $this->lsr->getCurrentStoreId(),
                 false,
-                (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+                $this->lsr->getCustomerIntegrationOnFrontend()
             )) {
                 if ($this->contactHelper->isEmailExistInLsCentral($parameters->getData('email'))) {
                     $parameters->setData('ls_validation', false);

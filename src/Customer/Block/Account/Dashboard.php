@@ -49,7 +49,7 @@ class Dashboard extends Template
         if ($this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
-            (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+            $this->lsr->getCustomerIntegrationOnFrontend()
         ) &&
             $this->lsr->getStoreConfig(
                 LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_CONTACT_BY_CARD_ID_API_CALL,

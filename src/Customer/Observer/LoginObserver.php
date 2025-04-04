@@ -93,7 +93,7 @@ class LoginObserver implements ObserverInterface
             if ($this->lsr->isLSR(
                 $this->lsr->getCurrentStoreId(),
                 false,
-                (bool) $this->lsr->getCustomerIntegrationOnFrontend()
+                $this->lsr->getCustomerIntegrationOnFrontend()
             )) {
                 try {
                     if ($is_email) {

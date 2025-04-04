@@ -81,15 +81,18 @@ class SaveAfter implements ObserverInterface
                 ($this->lsr->isLSR(
                     $this->lsr->getCurrentStoreId(),
                     false,
-                    (bool)$this->lsr->getCustomerIntegrationOnFrontend()
+                    $this->lsr->getCustomerIntegrationOnFrontend()
                 ))) && $this->contactHelper->isUsernameExistInLsCentral($userName)
             );
 
             if ($customer->getId() && !empty($userName)
                 && !empty($customer->getData('ls_password'))) {
                 $customer->setData('lsr_username', $userName);
-                $customer->setData('password', $customer->decryptPassword($customer->getData('ls_password')));
-                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                if ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                )) {
                     $contact = $this->contactHelper->getCustomerByUsernameOrEmailFromLsCentral(
                         $customer->getEmail(),
                         Entity\Enum\ContactSearchType::EMAIL
@@ -112,7 +115,6 @@ class SaveAfter implements ObserverInterface
                         $this->customerResourceModel->save($customer);
                     }
                 } else {
-                    $customer->setData('lsr_password', $customer->getData('ls_password'));
                     $customer->setData('ls_password', null);
                     $this->customerResourceModel->save($customer);
                 }

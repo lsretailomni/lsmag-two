@@ -3,14 +3,24 @@
 namespace Ls\Omni\Helper;
 
 use \Ls\Core\Model\LSR;
+use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Model\ProductRepository;
+use Magento\Checkout\Model\Cart;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable;
 use Magento\Customer\Api\GroupRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Directory\Model\Currency;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Filesystem;
+use Magento\Framework\Registry;
+use Magento\Framework\Session\SessionManagerInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Magento\Quote\Api\CartRepositoryInterface;
+use Magento\Quote\Model\ResourceModel\Quote;
 
 /**
  * Abstract Helper for merging common data members and member functions
@@ -107,6 +117,51 @@ class AbstractHelperOmni extends AbstractHelper
      */
     public $storeHelper;
 
+    /** @var Cart $cart */
+    public $cart;
+
+    /** @var ProductRepository $productRepository */
+    public $productRepository;
+
+    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
+    public $searchCriteriaBuilder;
+
+    /**
+     * @var Configurable
+     */
+    public $catalogProductTypeConfigurable;
+
+    /** @var ProductFactory $productFactory */
+    public $productFactory;
+
+    /** @var Registry $registry */
+    public $registry;
+
+    /**
+     * @var SessionManagerInterface
+     */
+    public $session;
+
+    /**
+     * @var $quoteRepository
+     */
+    public $quoteRepository;
+
+    /**
+     * @var Quote
+     */
+    public $quoteResourceModel;
+
+    /**
+     * @var CartRepositoryInterface
+     */
+    public $cartRepository;
+
+    /**
+     * @var DateTime
+     */
+    public $dateTime;
+
     /**
      * @param Context $context
      * @param BasketHelper $basketHelper
@@ -127,47 +182,90 @@ class AbstractHelperOmni extends AbstractHelper
      * @param GroupRepositoryInterface $groupRepository
      * @param LSR $lsr
      * @param Currency $currencyHelper
+     * @param Cart $cart
+     * @param ProductRepository $productRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param Configurable $catalogProductTypeConfigurable
+     * @param ProductFactory $productFactory
+     * @param Registry $registry
+     * @param SessionManagerInterface $session
+     * @param CartRepositoryInterface $quoteRepository
+     * @param Quote $quoteResourceModel
+     * @param CartRepositoryInterface $cartRepository
+     * @param DateTime $dateTime
      */
     public function __construct(
-        Context $context,
-        BasketHelper $basketHelper,
-        CacheHelper $cacheHelper,
-        ContactHelper $contactHelper,
-        Data $dataHelper,
-        GiftCardHelper $giftCardHelper,
-        ItemHelper $itemHelper,
-        LoyaltyHelper $loyaltyHelper,
-        OrderHelper $orderHelper,
-        SessionHelper $sessionHelper,
-        StockHelper $stockHelper,
-        StoreHelper $storeHelper,
-        CustomerFactory $customerFactory,
-        CustomerSession $customerSession,
-        CheckoutSession $checkoutSession,
-        Filesystem $Filesystem,
+        Context                  $context,
+        BasketHelper             $basketHelper,
+        CacheHelper              $cacheHelper,
+        ContactHelper            $contactHelper,
+        Data                     $dataHelper,
+        GiftCardHelper           $giftCardHelper,
+        ItemHelper               $itemHelper,
+        LoyaltyHelper            $loyaltyHelper,
+        OrderHelper              $orderHelper,
+        SessionHelper            $sessionHelper,
+        StockHelper              $stockHelper,
+        StoreHelper              $storeHelper,
+        CustomerFactory          $customerFactory,
+        CustomerSession          $customerSession,
+        CheckoutSession          $checkoutSession,
+        Filesystem               $Filesystem,
         GroupRepositoryInterface $groupRepository,
-        LSR $lsr,
-        Currency $currencyHelper
+        LSR                      $lsr,
+        Currency                 $currencyHelper,
+        Cart                     $cart,
+        ProductRepository        $productRepository,
+        SearchCriteriaBuilder    $searchCriteriaBuilder,
+        Configurable             $catalogProductTypeConfigurable,
+        ProductFactory           $productFactory,
+        Registry                 $registry,
+        SessionManagerInterface  $session,
+        CartRepositoryInterface  $quoteRepository,
+        Quote                    $quoteResourceModel,
+        CartRepositoryInterface  $cartRepository,
+        DateTime                 $dateTime
     ) {
         parent::__construct($context);
-        $this->basketHelper      = $basketHelper;
-        $this->cacheHelper       = $cacheHelper;
-        $this->contactHelper     = $contactHelper;
-        $this->dataHelper        = $dataHelper;
-        $this->giftCardHelper    = $giftCardHelper;
-        $this->itemHelper        = $itemHelper;
-        $this->loyaltyHelper     = $loyaltyHelper;
-        $this->orderHelper       = $orderHelper;
-        $this->sessionHelper     = $sessionHelper;
-        $this->stockHelper       = $stockHelper;
-        $this->storeHelper       = $storeHelper;
-        $this->customerFactory   = $customerFactory;
-        $this->customerSession   = $customerSession;
-        $this->checkoutSession   = $checkoutSession;
-        $this->filesystem        = $Filesystem;
-        $this->groupRepository   = $groupRepository;
-        $this->lsr               = $lsr;
-        $this->currencyHelper    = $currencyHelper;
+        $this->basketHelper                   = $basketHelper;
+        $this->cacheHelper                    = $cacheHelper;
+        $this->contactHelper                  = $contactHelper;
+        $this->dataHelper                     = $dataHelper;
+        $this->giftCardHelper                 = $giftCardHelper;
+        $this->itemHelper                     = $itemHelper;
+        $this->loyaltyHelper                  = $loyaltyHelper;
+        $this->orderHelper                    = $orderHelper;
+        $this->sessionHelper                  = $sessionHelper;
+        $this->stockHelper                    = $stockHelper;
+        $this->storeHelper                    = $storeHelper;
+        $this->customerFactory                = $customerFactory;
+        $this->customerSession                = $customerSession;
+        $this->checkoutSession                = $checkoutSession;
+        $this->filesystem                     = $Filesystem;
+        $this->groupRepository                = $groupRepository;
+        $this->lsr                            = $lsr;
+        $this->currencyHelper                 = $currencyHelper;
+        $this->cart                           = $cart;
+        $this->productRepository              = $productRepository;
+        $this->searchCriteriaBuilder          = $searchCriteriaBuilder;
+        $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
+        $this->productFactory                 = $productFactory;
+        $this->registry                       = $registry;
+        $this->session                        = $session;
+        $this->quoteRepository                = $quoteRepository;
+        $this->quoteResourceModel             = $quoteResourceModel;
+        $this->cartRepository                 = $cartRepository;
+        $this->dateTime                       = $dateTime;
+        $this->initialize();
+    }
+
+    /**
+     * Initialize specific properties
+     *
+     * @return void
+     */
+    public function initialize(): void
+    {
     }
 
     /**

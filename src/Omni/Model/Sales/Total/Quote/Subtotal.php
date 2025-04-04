@@ -56,7 +56,7 @@ class Subtotal
         if (!$this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
-            (bool) $this->lsr->getBasketIntegrationOnFrontend()
+            $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             return $proceed($quote, $shippingAssignment, $total);
         }

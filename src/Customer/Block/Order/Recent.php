@@ -4,8 +4,11 @@ namespace Ls\Customer\Block\Order;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Client\Ecommerce\Entity\ArrayOfSalesEntry;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\DocumentIdType;
+use Ls\Omni\Client\Ecommerce\Entity\SalesEntriesGetByCardIdResponse;
 use \Ls\Omni\Client\Ecommerce\Entity\SalesEntry;
+use Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -84,13 +87,17 @@ class Recent extends Template
     /**
      * Get recent order history
      *
-     * @return array|bool|ArrayOfSalesEntry|null
+     * @return array|ArrayOfSalesEntry|SalesEntriesGetByCardIdResponse|ResponseInterface|null
      * @throws NoSuchEntityException
      */
     public function getOrderHistory()
     {
         $customerId = $this->customerSession->getCustomerId();
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             $response = [];
             $orders   = $this->orderHelper->getCurrentCustomerOrderHistory(LSR::MAX_RECENT_ORDER);
             if ($orders) {
