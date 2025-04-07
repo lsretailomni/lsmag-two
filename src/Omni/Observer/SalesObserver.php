@@ -46,17 +46,18 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
-        $basketData         = $this->basketHelper->getBasketSessionValue();
-        if (!empty($basketData)) {
-            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        $pointDiscount      = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+        $giftCardAmount     = $quote->getLsGiftCardAmountUsed();
 
-            if ($pointDiscount > 0.001) {
-                $quote->setLsPointsDiscount($pointDiscount);
-            }
+        if ($pointDiscount > 0.001) {
+            $quote->setLsPointsDiscount($pointDiscount);
+        }
 
-            if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
-                (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
+        if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
+            (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
+            $basketData = $this->basketHelper->getBasketSessionValue();
+
+            if (!empty($basketData)) {
                 $grandTotal = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
@@ -64,18 +65,22 @@ class SalesObserver implements ObserverInterface
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount))
                     ->setSubtotal($basketData->getTotalNetAmount())
-                    ->setBaseSubtotal($this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount()))
+                    ->setBaseSubtotal(
+                        $this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount())
+                    )
                     ->setSubtotalInclTax($subTotal)
                     ->setBaseSubtotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))
                     ->setBaseSubtotalTotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($this->basketHelper->itemHelper->convertToBaseCurrency($grandTotal));
-            }
-        } else {
-            if (($addressType == AbstractAddress::TYPE_SHIPPING && $this->basketHelper->getLsrModel()->isEnabled())) {
-                $address = $shippingAssignment->getShipping()->getAddress();
-                $address->setSubtotal($total->getSubtotal());
-                $address->setSubtotalInclTax($total->getSubtotal());
+            } else {
+                if (($addressType == AbstractAddress::TYPE_SHIPPING &&
+                    $this->basketHelper->getLsrModel()->isEnabled())
+                ) {
+                    $address = $shippingAssignment->getShipping()->getAddress();
+                    $address->setSubtotal($total->getSubtotal());
+                    $address->setSubtotalInclTax($total->getSubtotal());
+                }
             }
         }
     }

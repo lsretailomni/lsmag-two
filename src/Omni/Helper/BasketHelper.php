@@ -33,7 +33,7 @@ class BasketHelper extends AbstractHelperOmni
     public $store_id = null;
 
     /** @var string */
-    public string $couponCode;
+    public string $couponCode = '';
 
     /**
      * @var boolean
@@ -604,6 +604,7 @@ class BasketHelper extends AbstractHelperOmni
                 $cartQuote->collectTotals();
             }
             $this->quoteResourceModel->save($cartQuote);
+            $this->quoteRepository->_resetState();
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
         }
@@ -1391,6 +1392,7 @@ class BasketHelper extends AbstractHelperOmni
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $quote->setBasketResponse($calculation ? serialize($calculation) : null);
             $this->quoteResourceModel->save($quote);
+            $this->quoteRepository->_resetState();
         }
     }
 
@@ -1419,11 +1421,10 @@ class BasketHelper extends AbstractHelperOmni
         if (!$quote) {
             return null;
         }
+
         $basketData = $quote->getBasketResponse();
         // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-        $oneListCalculate = ($basketData) ? unserialize($basketData) : $basketData;
-
-        return $oneListCalculate;
+        return ($basketData) ? unserialize($basketData) : $basketData;
     }
 
     /**

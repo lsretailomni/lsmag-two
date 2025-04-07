@@ -115,7 +115,6 @@ class LoginObserver implements ObserverInterface
                     }
                     if ($result instanceof Entity\MemberContact) {
                         $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                        $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
                     } else {
                         $this->customerSession->addError(
                             __('The service is currently unavailable. Please try again later.')
