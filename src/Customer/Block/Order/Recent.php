@@ -146,13 +146,20 @@ class Recent extends Template
     }
 
     /**
+     * Get order view url
+     *
      * @param $order
      * @param null $magOrder
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getViewUrl($order, $magOrder = null)
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
                 // This condition is added to support viewing of orders created by POS
                 if (!empty($magOrder)) {

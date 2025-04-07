@@ -151,6 +151,8 @@ class History extends \Magento\Sales\Block\Order\History
     }
 
     /**
+     * Get order view url
+     *
      * @param object $order
      * @param null $magOrder
      * @return string
@@ -161,7 +163,11 @@ class History extends \Magento\Sales\Block\Order\History
         /*
         * Adding condition to only process if LSR is enabled.
         */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             if (version_compare($this->lsr->getOmniVersion(), '4.5.0', '==')) {
                 // This condition is added to support viewing of orders created by POS
                 if (!empty($magOrder)) {
