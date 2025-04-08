@@ -1122,7 +1122,7 @@ class ContactHelper extends AbstractHelper
             $customer->setPasswordHash($passwordHash);
         }
         $this->customerResourceModel->save($customer);
-        $this->customerRegistry->_resetState();
+        $this->customerRegistry->remove($customer->getId());
         $this->registry->register(LSR::REGISTRY_LOYALTY_LOGINRESULT, $result);
         $this->basketHelper->unSetOneList();
         $this->basketHelper->unSetOneListCalculation();
