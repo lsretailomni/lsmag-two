@@ -16,7 +16,9 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
-/** Class for order process*/
+/**
+ * This observer is responsible for order integration
+ */
 class OrderObserver implements ObserverInterface
 {
     /**
@@ -45,7 +47,6 @@ class OrderObserver implements ObserverInterface
     private $lsr;
 
     /***
-     * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
@@ -70,12 +71,13 @@ class OrderObserver implements ObserverInterface
      * Entry point for the observer
      *
      * @param Observer $observer
-     * @return $this|null
+     * @return $this
      * @throws AlreadyExistsException
      * @throws InputException
      * @throws NoSuchEntityException
      * @throws InvalidEnumException
      * @throws LocalizedException
+     * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function execute(Observer $observer)
     {
@@ -90,7 +92,7 @@ class OrderObserver implements ObserverInterface
 
         if (!$this->orderHelper->isAllowed($order)) {
             $this->basketHelper->unSetLastDocumentId();
-            return null;
+            return $this;
         }
 
         /*

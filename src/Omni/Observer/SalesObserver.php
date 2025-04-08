@@ -7,9 +7,10 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Setting grand_total & base_grand_total coming from omni
+ * This observer is responsible for setting grand_total & base_grand_total coming from omni
  */
 class SalesObserver implements ObserverInterface
 {
@@ -24,7 +25,6 @@ class SalesObserver implements ObserverInterface
     private $loyaltyHelper;
 
     /**
-     * SalesObserver constructor.
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      */
@@ -37,7 +37,11 @@ class SalesObserver implements ObserverInterface
     }
 
     /**
-     * @inheritDoc
+     * Entry point for the observer
+     *
+     * @param Observer $observer
+     * @return $this
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
@@ -83,5 +87,7 @@ class SalesObserver implements ObserverInterface
                 }
             }
         }
+
+        return $this;
     }
 }

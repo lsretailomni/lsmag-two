@@ -12,12 +12,10 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Wishlist\Model\Wishlist;
 
 /**
- * Class CartObserver
- * @package Ls\Omni\Observer
+ * This observer is responsible for wishlist sync
  */
 class WishlistObserver implements ObserverInterface
 {
-
     /** @var BasketHelper */
     private $basketHelper;
 
@@ -35,7 +33,6 @@ class WishlistObserver implements ObserverInterface
     private $wishlist;
 
     /**
-     * WishlistObserver constructor.
      * @param BasketHelper $basketHelper
      * @param CustomerSession $customerSession
      * @param LSR $LSR
@@ -54,17 +51,22 @@ class WishlistObserver implements ObserverInterface
     }
 
     /**
+     * Entry point for the observer
+     *
      * @param Observer $observer
      * @return $this
      * @throws NoSuchEntityException|InvalidEnumException
      */
-    // @codingStandardsIgnoreLine
     public function execute(Observer $observer)
     {
         /*
           * Adding condition to only process if LSR is enabled.
           */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getOrderIntegrationOnFrontend()
+        )) {
             $customerId = $this->customerSession->getCustomer()->getId();
             $wishlist   = $this->wishlist->loadByCustomerId($customerId)->getItemCollection();
             $oneList    = $this->basketHelper->fetchCurrentCustomerWishlist();
