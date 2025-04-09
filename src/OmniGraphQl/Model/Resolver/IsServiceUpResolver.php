@@ -15,13 +15,14 @@ class IsServiceUpResolver implements ResolverInterface
     /**
      * @var LSR
      */
-    private LSR $lsr;
+    public LSR $lsr;
 
     private const CONFIG_PATHS_MAPPING = [
         'ls_coupons_active'       => LSR::LS_ENABLE_COUPON_ELEMENTS,
         'ls_giftcard_active'      => LSR::LS_ENABLE_GIFTCARD_ELEMENTS,
         'loyalty_points_active'   => LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS,
-        'ls_mag_product_availability' => LSR::SC_CART_PRODUCT_AVAILABILITY
+        'ls_mag_product_availability' => LSR::SC_CART_PRODUCT_AVAILABILITY,
+        'ls_discounts_product_page' => LSR::LS_DISCOUNT_SHOW_ON_PRODUCT
     ];
 
     /**

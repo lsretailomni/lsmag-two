@@ -50,7 +50,7 @@
                     <source_model>Ls\Core\Model\Config\Source\Industry</source_model>
                 </field>
             </group>
-            <group id="standalone_features"
+            <group id="standalone_integration"
                    translate="label"
                    type="text"
                    sortOrder="40"
@@ -58,7 +58,7 @@
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
                 </depends>
-                <label>Standalone features</label>
+                <label>Standalone Integrations</label>
                 <field id="customer"
                        translate="label comment"
                        type="select"

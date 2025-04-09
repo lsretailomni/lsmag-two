@@ -159,6 +159,7 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_features/basket">1</field>
                     <field id="ls_mag/standalone_features/customer">1</field>
                 </depends>
                 <label>Coupons</label>
@@ -246,6 +247,8 @@
                    showInStore="1">
                 <depends>
                     <field id="ls_mag/ls_enable/enabled">1</field>
+                    <field id="ls_mag/standalone_features/basket">1</field>
+                    <field id="ls_mag/standalone_features/customer">1</field>
                 </depends>
                 <label>Discount Management</label>
                 <field id="discount" translate="label" type="select" sortOrder="1" showInDefault="1"
