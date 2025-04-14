@@ -3,5 +3,7 @@
     <extension_attributes for="Magento\Customer\Api\Data\CustomerInterface">
         <attribute code="ls_password" type="string">
         </attribute>
+        <attribute code="lsr_password" type="string">
+        </attribute>
     </extension_attributes>
 </config>
