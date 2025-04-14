@@ -17,11 +17,11 @@ define('FIRST_NAME', getenv('FIRST_NAME'));
 define('LAST_NAME', getenv('LAST_NAME'));
 define('CUSTOMER_ID', getenv('CUSTOMER_ID'));
 define('CS_URL', getenv('CS_URL'));
-define('CS_VERSION', getenv('CS_VERSION'));
+//define('CS_VERSION', getenv('CS_VERSION'));
 define('LS_VERSION', getenv('LS_VERSION'));
 define('CS_STORE', getenv('CS_STORE'));
 define('ENABLED', getenv('ENABLED'));
-define('USERNAME', getenv('USERNAME_1'));
+define('USERNAME', getenv('USERNAME'));
 define('LSR_ID', getenv('LSR_ID'));
 define('LSR_CARD_ID', getenv('LSR_CARD_ID'));
 class AbstractIntegrationTest extends TestCase

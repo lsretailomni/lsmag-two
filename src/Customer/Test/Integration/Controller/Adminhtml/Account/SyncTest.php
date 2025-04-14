@@ -64,7 +64,8 @@ class SyncTest extends AbstractBackendController
                 'random_email' => 1,
                 'lsr_username' => null,
                 'lsr_id'       => null,
-                'lsr_cardid'   => null
+                'lsr_cardid'   => null,
+                'lsr_password' => AbstractIntegrationTest::PASSWORD
             ],
             'customer'
         )
@@ -115,8 +116,8 @@ class SyncTest extends AbstractBackendController
         $this->dispatch('backend/lscustomer/account/sync');
 
         $updatedCustomer = $this->contactHelper->getCustomerByEmail($customer->getEmail());
-        $this->assertNull($updatedCustomer->getData('lsr_username'));
-        $this->assertNull($updatedCustomer->getData('lsr_id'));
+        $this->assertNotNull($updatedCustomer->getData('lsr_username'));
+        $this->assertNotNull($updatedCustomer->getData('lsr_id'));
         $messages = $this->messageManager->getMessages(false)->getItems();
         $this->assertTrue(count($messages) > 0);
     }

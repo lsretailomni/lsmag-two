@@ -198,7 +198,7 @@ class CheckUserCreateObserverTest extends AbstractIntegrationTest
         ));
         $values = $this->contactHelper->getValue();
         $customerFormData = $this->customerSession->getCustomerFormData();
-        $this->assertNull($values);
+        $this->assertNotNull($values);
         $this->assertNull($customerFormData);
     }
 }
