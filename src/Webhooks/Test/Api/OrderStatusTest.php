@@ -227,7 +227,7 @@ class OrderStatusTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData. 'rest');
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
 
         // Bootstrapping Magento
         $objectManager = Bootstrap::getObjectManager();
