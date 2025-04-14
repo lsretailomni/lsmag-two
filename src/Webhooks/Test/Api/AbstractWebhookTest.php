@@ -280,7 +280,17 @@ abstract class AbstractWebhookTest extends WebapiAbstract
         $quote->setTotalsCollectedFlag(false);
         $quote->collectTotals();
         $cartRepository = $this->objectManager->create(\Magento\Quote\Api\CartRepositoryInterface::class);
+        foreach ($quote->getAllItems() as $item) {
+            $item->getBasePrice($item->getPrice());
+        }
         $cartRepository->save($quote);
+
+        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/custom.log');
+        $logger = new \Zend_Log();
+        $logger->addWriter($writer);
+        foreach ($quote->getAllItems() as $item) {
+            $logger->info(print_r($item->getData(), true));
+        }
         // Convert quote to order
         $quoteManagement = $this->objectManager->create(\Magento\Quote\Model\QuoteManagement::class);
         $quote->setBaseDiscountAmount(0);

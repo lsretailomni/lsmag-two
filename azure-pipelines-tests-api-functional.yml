@@ -148,6 +148,7 @@ steps:
       ./vendor/bin/phpunit -c $(pwd)/dev/tests/api-functional/$(phpunitFile) --testsuite "Ls_Retail_Api_Tests" --coverage-clover  $(magentoDirectory)/report/coverage.xml
       cat $(magentoDirectory)/var/log/debug.log
       cat $(magentoDirectory)/var/log/payment.log
+      cat $(magentoDirectory)/var/log/custom.log
     displayName: 'Ls Retail Modules API Tests Validation'
 
   - task: PublishCodeCoverageResults@2
