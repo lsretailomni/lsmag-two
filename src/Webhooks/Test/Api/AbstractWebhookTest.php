@@ -47,6 +47,7 @@ abstract class AbstractWebhookTest extends WebapiAbstract
             $privateKeyPath             = 'payment/braintree/sandbox_private_key';
             $publicKeyPath              = 'payment/braintree/sandbox_public_key';
             $merchantIdPath             = 'payment/braintree/sandbox_merchant_id';
+            $debug                      = 'payment/braintree/debug';
             $braintreePublicKeyEncrypt  = $encryptor->encrypt($braintreePublicKey);
             $braintreePrivateKeyEncrypt = $encryptor->encrypt($braintreePrivateKey);
             Configuration::environment('sandbox');
@@ -58,6 +59,8 @@ abstract class AbstractWebhookTest extends WebapiAbstract
             $replicationHelper->updateConfigValue($braintreePublicKeyEncrypt, $publicKeyPath);
             $replicationHelper->updateConfigValue($braintreePrivateKeyEncrypt, $privateKeyPath);
             $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
+            $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
+            $replicationHelper->updateConfigValue('1', $debug);
             $replicationHelper->flushByTypeCode('config');
         }
     }

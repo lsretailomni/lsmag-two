@@ -71,7 +71,7 @@ class OrderStatusTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);
@@ -120,7 +120,7 @@ class OrderStatusTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         $this->assertEquals(is_array($response), true);
         if ($response) {
             foreach ($response as $result) {
@@ -170,7 +170,7 @@ class OrderStatusTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         $this->assertEquals(is_array($response), true);
         if ($response) {
             foreach ($response as $result) {
@@ -227,7 +227,7 @@ class OrderStatusTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData. 'rest');
 
         // Bootstrapping Magento
         $objectManager = Bootstrap::getObjectManager();
@@ -260,7 +260,7 @@ class OrderStatusTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo1, $requestData1);
+        $response = $this->_webApiCall($serviceInfo1, $requestData1, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);
