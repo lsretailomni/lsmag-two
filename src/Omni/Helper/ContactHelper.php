@@ -1401,11 +1401,6 @@ class ContactHelper extends AbstractHelper
                 } while ($this->isUsernameExist($userName) && $this->isUsernameExistInLsCentral($userName));
                 $customer->setData('lsr_username', $userName);
             }
-            //Incase if lsr_password not set due to some exception from LS Central/ Migrating the existing customer.
-            // Setting username as password.
-            if (empty($customer->getData('lsr_password'))) {
-                $customer->setData('lsr_password', $this->encryptorInterface->encrypt($userName));
-            }
             $contactEmail    = $this->getCustomerByUsernameOrEmailFromLsCentral(
                 $customer->getEmail(),
                 Entity\Enum\ContactSearchType::EMAIL
