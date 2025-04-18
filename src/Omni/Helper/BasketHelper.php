@@ -236,31 +236,15 @@ class BasketHelper extends AbstractHelperOmni
         $quoteItems = $quote->getAllVisibleItems();
 
         if (empty($itemsArray)) {
-            $websiteId     = $quote->getStore()->getWebsiteId();
-            $customerEmail = $quote->getCustomerEmail();
-            $customerGroupId = null;
-            if (!$quote->getCustomerIsGuest()) {
-                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
-                $customerGroupId = $customer->getGroupId();
-            }
             $lineNumber = 10000;
             foreach ($quoteItems as $quoteItem) {
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
                 $priceIncTax         = $discountPercentage = $discount = null;
-                $product             = $this->productRepository->get($quoteItem->getSku());
-                if ($customerGroupId) {
-                    $this->customerSession->setCustomerGroupId($customerGroupId);
-                }
-                $regularPrice = $product->getPriceInfo()->getPrice(
-                    RegularPrice::PRICE_CODE
-                )->getAmount()->getValue();
-                $finalPrice   = $product->getPriceInfo()->getPrice(
-                    FinalPrice::PRICE_CODE
-                )->getAmount()->getValue();
+                $regularPrice = $quoteItem->getOriginalPrice();
+                $finalPrice   = $quoteItem->getPriceInclTax();
 
-                $this->customerSession->setCustomerGroupId(null);
                 if ($finalPrice < $regularPrice) {
                     $priceIncTax        = $regularPrice;
                     $discount           = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
