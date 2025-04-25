@@ -73,13 +73,8 @@ abstract class AbstractOperation implements OperationInterface
      */
     public $flatReplicationLogger;
 
-    /**
-     * @param ServiceType $service_type
-     */
     public function __construct(
-        ServiceType $service_type
     ) {
-        $this->service_type = $service_type;
         $this->objectManager = ObjectManager::getInstance();
         $this->omniLogger = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
@@ -166,11 +161,6 @@ abstract class AbstractOperation implements OperationInterface
         return $response;
     }
     // @codingStandardsIgnoreEnd
-
-    /**
-     * @return OmniClient
-     */
-    abstract public function getClient();
 
     /**
      * @param string $token

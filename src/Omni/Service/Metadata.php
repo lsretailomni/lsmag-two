@@ -72,34 +72,17 @@ class Metadata
         'guid'
     ];
 
-    /**
-     * @param Client $client
-     * @param bool $with_replication
-     */
-    public function __construct(Client $client, $with_replication = false)
+    public function __construct($xpath)
     {
-        $this->client = $client;
-        $this->wsdl   = $this->client->getWsdlXml();
         // @codingStandardsIgnoreLine
-        $this->xpath            = new DOMXPath($this->wsdl);
-        $this->with_replication = $with_replication;
+        $this->xpath            = $xpath;
         $this->build();
     }
 
     public function build()
     {
-        $omni_namespace_regex = '/(lsomni|lsretail)/';
-
-        $schemas = $this->wsdl->getElementsByTagName('schema');
-        /** @var DOMElement $schema */
-        foreach ($schemas as $schema) {
-            $namespace = strtolower($schema->getAttribute('targetNamespace'));
-            if (preg_match($omni_namespace_regex, $namespace)) {
-                $this->processOmniSchema($schema);
-            }
-        }
-        $this->processOmniOperations();
         $this->processEntities();
+        $this->processOmniOperations();
     }
 
     /**
@@ -278,29 +261,31 @@ class Metadata
      */
     public function processOmniOperations()
     {
-        $regex_operation = '/^(?\'response\'.+)\s(?\'operation\'.+)\((?\'request\'.+)\s.*$/';
-        $operations      = $this->client->getSoapClient()->__getFunctions();
+        $xpath = $this->xpath;
+        $xpath->registerNamespace('wsdl', 'http://schemas.xmlsoap.org/wsdl/');
+        $xpath->registerNamespace('soap', 'http://schemas.xmlsoap.org/wsdl/soap/');
 
-        foreach ($operations as $operation) {
-            preg_match($regex_operation, $operation, $match);
+        $operations = $xpath->query('//wsdl:binding[@name="OmniWrapper_Binding"]/wsdl:operation');
+        foreach ($operations as $op) {
+            $opName = $op->getAttribute('name');
 
-            $name     = $match['operation'];
-            $request  = $match['request'];
-            $response = $match['response'];
+            $soapOp = $xpath->query('soap:operation', $op)->item(0);
+            $soapAction = $soapOp?->getAttribute('soapAction');
 
-            $this->elements[$request]->setRequest(true);
-            $this->elements[$response]->setResponse(true);
-            // @codingStandardsIgnoreLine
+            $input = $xpath->query('wsdl:input', $op)->item(0);
+            $inputName = $input?->getAttribute('name');
+
+            $output = $xpath->query('wsdl:output', $op)->item(0);
+            $outputName = $output?->getAttribute('name');
+
             $operation                             = new Operation(
-                $name,
-                $this->elements[$request],
-                $this->elements[$response]
+                $opName,
+                $this->getEntities()[$inputName],
+                $this->getEntities()[$outputName],
+                $soapAction
             );
-            $this->operations[$match['operation']] = $operation;
 
-            if ($this->with_replication && strpos($name, 'ReplEcomm') !== false) {
-                $this->processReplicationOperation($operation);
-            }
+            $this->operations[$opName] = $operation;
         }
     }
 
@@ -318,38 +303,59 @@ class Metadata
 
     public function processEntities()
     {
-        $types = $this->client->getSoapClient()->__getTypes();
-        foreach ($types as $soap_type) {
-            $properties = [];
+        $xpath = $this->xpath;
 
-            $lines = explode("\n", $soap_type);
-            if (!preg_match('/struct (.*) {/', $lines[0], $matches)) {
-                continue;
-            }
-            $entity_name = $matches[1];
+        $namedTypes = $xpath->query('//xsd:complexType[@name]');
+        foreach ($namedTypes as $typeNode) {
+            $name = $typeNode->getAttribute('name');
+            $classes[$name] = $this->extractProperties($typeNode, $xpath);
+        }
 
-            foreach (array_slice($lines, 1) as $line) {
-                if ($line == '}') {
-                    continue;
-                }
-                preg_match('/\s* (.*) (.*);/', $line, $matches);
-                $property_type = $matches[1];
-                $property_name = $matches[2];
+        $inlineTypes = $xpath->query('//xsd:element[xsd:complexType]');
+        foreach ($inlineTypes as $elementNode) {
+            $name = $elementNode->getAttribute('name');
+            $complexNode = $xpath->query('xsd:complexType', $elementNode)->item(0);
+            $classes[$name] = $this->extractProperties($complexNode, $xpath);
+        }
 
-                if (array_key_exists($property_type, $this->types)) {
-                    $property_type = $this->types[$property_type];
-                } elseif (array_key_exists($property_type, $this->restrictions)) {
-                    $property_type = $this->restrictions[$property_type];
-                }
-                $properties[$property_name] = $property_type;
-            }
-            // @codingStandardsIgnoreLine
-            $this->entities[$entity_name] = new Entity(
-                $entity_name,
-                $this->elements[$entity_name],
+        foreach ($classes as $className => $properties) {
+            $className = preg_replace('/[-._]/', '', $className);
+            $this->entities[$className] = new Entity(
+                $className,
+                $className,
                 $properties
             );
         }
+
+        ksort($this->entities, SORT_STRING);
+    }
+
+    public function mapXsdToPhp(string $xsdType): string
+    {
+        return match ($xsdType) {
+            'string' => 'string',
+            'int' => 'int',
+            'decimal' => 'float',
+            'dateTime', 'date', 'time' => '\\DateTime',
+            'boolean' => 'bool',
+            default => 'string', // fallback
+        };
+    }
+
+    public function extractProperties(\DOMNode $complexTypeNode, \DOMXPath $xpath): array
+    {
+        $elements = $xpath->query('.//xsd:sequence/xsd:element', $complexTypeNode);
+        $props = [];
+
+        foreach ($elements as $el) {
+            $type = $this->mapXsdToPhp($el->getAttribute('type'));
+            $props[] = [
+                'name' => $el->getAttribute('name'),
+                'type' => $type
+            ];
+        }
+
+        return $props;
     }
 
     public function getReplicationOperationByName($operation_name)

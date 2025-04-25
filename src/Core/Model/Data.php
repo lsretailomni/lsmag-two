@@ -3,6 +3,7 @@
 namespace Ls\Core\Model;
 
 use Exception;
+use Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Client\Ecommerce\Entity\PingResponse;
 use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
@@ -65,6 +66,11 @@ class Data
     public $scopeConfig;
 
     /**
+     * @var TokenRequestService
+     */
+    public $tokenRequestService;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
@@ -73,6 +79,7 @@ class Data
      * @param CacheHelper $cacheHelper
      * @param ScopeConfigInterface $scopeConfig
      * @param LoggerInterface $logger
+     * @param TokenRequestService $tokenRequestService
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -82,7 +89,8 @@ class Data
         ConfigCollectionFactory $configDataCollectionFactory,
         CacheHelper $cacheHelper,
         ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        TokenRequestService $tokenRequestService
     ) {
         $this->storeManager                = $storeManager;
         $this->transportBuilder            = $transportBuilder;
@@ -92,6 +100,7 @@ class Data
         $this->scopeConfig                 = $scopeConfig;
         $this->configDataCollectionFactory = $configDataCollectionFactory;
         $this->logger                      = $logger;
+        $this->tokenRequestService         = $tokenRequestService;
     }
 
     /**
@@ -121,7 +130,6 @@ class Data
         );
         return $enabled === '1' || $enabled === 1;
     }
-
 
     /**
      * @return mixed

@@ -32,7 +32,7 @@ class ClassMapGenerator extends AbstractOmniGenerator
 
         $body = '';
         foreach ($this->metadata->getEntities() as $entity_name => $entity) {
-            $fqn  = self::fqn($this->base_namespace, 'Entity', $entity->getElement()->getType());
+            $fqn  = self::fqn($this->base_namespace, 'Entity', $entity->getElement());
             $fqn  = str_replace('\\', '\\\\', $fqn);
             $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $entity_name, $fqn);
         }

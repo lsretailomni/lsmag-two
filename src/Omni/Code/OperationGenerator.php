@@ -3,23 +3,17 @@
 namespace Ls\Omni\Code;
 
 use Exception;
+use Laminas\Code\Generator\AbstractMemberGenerator;
 use \Ls\Omni\Client\AbstractOperation;
 use \Ls\Omni\Client\RequestInterface;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Service\Metadata;
-use \Ls\Omni\Service\Service;
-use \Ls\Omni\Service\ServiceType;
-use \Ls\Omni\Service\Soap\Client;
 use \Ls\Omni\Service\Soap\Operation;
 use Laminas\Code\Generator\DocBlock\Tag;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\ParameterGenerator;
 
-/**
- * Class OperationGenerator
- * @package Ls\Omni\Code
- */
 class OperationGenerator extends AbstractOmniGenerator
 {
     /** @var  Operation */
@@ -30,6 +24,7 @@ class OperationGenerator extends AbstractOmniGenerator
     /**
      * @param Operation $operation
      * @param Metadata $metadata
+     * @throws Exception
      */
     public function __construct(Operation $operation, Metadata $metadata)
     {
@@ -42,9 +37,9 @@ class OperationGenerator extends AbstractOmniGenerator
      */
     public function generate()
     {
-        $request_type        = $this->operation->getRequest()->getType();
-        $response_type       = $this->operation->getResponse()->getType();
-        $service_folder      = ucfirst($this->getServiceType()->getValue());
+        $request_type        = $this->operation->getRequest()->getName();
+        $response_type       = $this->operation->getResponse()->getName();
+        $service_folder      = ucfirst($this->getServiceType());
         $base_namespace      = self::fqn('Ls', 'Omni', 'Client', $service_folder);
         $operation_name      = $this->operation->getName();
         $operation_namespace = self::fqn($base_namespace, 'Operation');
@@ -56,34 +51,19 @@ class OperationGenerator extends AbstractOmniGenerator
 
         $is_tokenized = array_search($operation_name, $this->tokenized_operations) !== false ? 'TRUE' : 'FALSE';
 
-        // CLASS DECLARATION
-
-        // NAMESPACE
         $this->class->setNamespaceName($operation_namespace);
 
-        // USE STATEMENTS
         $this->class->addUse(RequestInterface::class);
         $this->class->addUse(ResponseInterface::class);
         $this->class->addUse(AbstractOperation::class);
-        $this->class->addUse(Service::class, 'OmniService');
-        $this->class->addUse(ServiceType::class);
-        $this->class->addUse(Client::class, 'OmniClient');
-        $this->class->addUse(self::fqn($base_namespace, 'ClassMap'));
         $this->class->addUse($request_fqn, $request_alias);
         $this->class->addUse($response_fqn, $response_alias);
 
-        // CLASS DEFINITION
-        // class OPERATION extends AbstractOperation implements OperationInterface
         $this->class->setName($this->operation->getName());
         $this->class->setExtendedClass(AbstractOperation::class);
 
-        // SOME NICE TO HAVE STRING VALUES
-        // const OPERATION_NAME = 'OPERATION_NAME'
-
-        $this->class->addConstant('OPERATION_NAME', $this->operation->getScreamingSnakeName());
-        $this->class->addConstant('SERVICE_TYPE', $this->metadata->getClient()->getServiceType()->getValue());
-
-        // ADD METHODS
+        $this->class->addConstant('OPERATION_NAME', $operation_name);
+        $this->class->addConstant('SOAP_ACTION', $this->operation->getSoapAction());
         $this->class->addMethodFromGenerator($this->getConstructorMethod());
         $this->class->addMethodFromGenerator($this->getExecuteMethod(
             $request_alias,
@@ -91,11 +71,8 @@ class OperationGenerator extends AbstractOmniGenerator
             $operation_name
         ));
         $this->class->addMethodFromGenerator($this->getInputMethod($request_alias));
-        $this->class->addMethodFromGenerator($this->getClassMapMethod());
-        $this->class->addMethod('isTokenized', [], MethodGenerator::FLAG_PUBLIC, "return $is_tokenized;");
+        $this->class->addMethod('isTokenized', [], AbstractMemberGenerator::FLAG_PUBLIC, "return $is_tokenized;");
 
-        // CLASS PROPERTIES TO BE USED BY THE AbstractOperation
-        $this->createProperty('client', 'OmniClient');
         $this->createProperty('request', $request_alias);
         $this->createProperty('response', $response_alias);
         $this->createProperty('requestXml', 'string');
@@ -119,12 +96,11 @@ COMMENT;
             $content
         );
         $content = str_replace('extends Ls\\Omni\\Client\\AbstractOperation', 'extends AbstractOperation', $content);
-        $content = str_replace(
+        return str_replace(
             'public function getOperationInput()',
             'public function & getOperationInput()',
             $content
         );
-        return $content;
     }
 
     /**
@@ -138,11 +114,6 @@ COMMENT;
         $method->setName('__construct');
         $method->setBody(
             <<<CODE
-\$service_type = new ServiceType( self::SERVICE_TYPE );
-parent::__construct( \$service_type );
-\$url = OmniService::getUrl( \$service_type,\$baseUrl );
-\$this->client = new OmniClient( \$url, \$service_type );
-\$this->client->setClassmap( \$this->getClassMap() );
 CODE
         );
 
@@ -183,7 +154,7 @@ CODE
 if ( !is_null( \$request ) ) {
     \$this->setRequest( \$request );
 }
-return \$this->makeRequest( '$operation_name' );
+return \$this->makeRequest(self::OPERATION_NAME);
 CODE
         );
 
@@ -209,28 +180,6 @@ if ( is_null( \$this->request ) ) {
     \$this->request = new $request_alias();
 }
 return \$this->request;
-CODE
-        );
-        return $method;
-    }
-
-    /**
-     * @return MethodGenerator
-     */
-    private function getClassMapMethod()
-    {
-        // @codingStandardsIgnoreLine
-        $method = new MethodGenerator();
-        $method->setName('getClassMap');
-        $method->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        // @codingStandardsIgnoreStart
-        $method->setDocBlock(
-            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['array'])]])
-        );
-        // @codingStandardsIgnoreEnd
-        $method->setBody(
-            <<<CODE
-return ClassMap::getClassMap();
 CODE
         );
         return $method;

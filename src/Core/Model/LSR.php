@@ -16,6 +16,9 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class LSR
 {
+    const TOKEN_ENDPOINT = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token';
+    const TOKEN_SCOPE = 'https://api.businesscentral.dynamics.com/.default';
+    const TOKEN_GRANT_TYPE = 'client_credentials';
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
@@ -63,6 +66,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
+
+    const SC_SERVICE_TOKEN = 'ls_mag/service/token';
+    const SC_SERVICE_TOKEN_EXPIRY = 'ls_mag/service/token_expiry';
+    const SC_TENANT = 'ls_mag/service/tenant';
+    const SC_ENVIRONMENT_NAME = 'ls_mag/service/environment_name';
+    const SC_COMPANY_NAME = 'ls_mag/service/company_name';
+    const SC_CLIENT_ID = 'ls_mag/service/client_id';
+    const SC_CLIENT_SECRET = 'ls_mag/service/client_secret';
+
     const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
     const SC_SERVICE_LCY_CODE = 'ls_mag/service/local_currency_code';
@@ -993,27 +1005,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get central version
      *
-     * @param null $storeId
-     * @param null $scope
-     * @param bool $formatted
-     * @return array|string
+     * @param string|null $storeId
+     * @param string|null $scope
+     * @return string
      * @throws NoSuchEntityException
      */
-    public function getCentralVersion($storeId = null, $scope = null, $formatted = true)
+    public function getCentralVersion($storeId = null, $scope = null)
     {
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $centralVersion = $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
-
-            return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
+            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
         }
 
         //If StoreID is not passed they retrieve it from the global area.
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-        $centralVersion = $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
-
-        return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
+        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
     }
 
     /**

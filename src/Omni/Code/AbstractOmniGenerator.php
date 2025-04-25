@@ -36,8 +36,8 @@ abstract class AbstractOmniGenerator extends CoreGenerator
         parent::__construct();
 
         $this->metadata       = $metadata;
-        $this->service_type   = $metadata->getClient()->getServiceType();
-        $this->base_namespace = $this->fqn('Ls', 'Omni', 'Client', ucfirst($this->service_type->getValue()));
+        $this->service_type   = 'ecommerce';
+        $this->base_namespace = $this->fqn('Ls', 'Omni', 'Client', ucfirst($this->service_type));
     }
 
     /**

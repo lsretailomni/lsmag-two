@@ -1,0 +1,32 @@
+<?php
+// @codingStandardsIgnoreFile
+/** @var AutopopulateButton $block */
+
+use \Ls\Omni\Block\Adminhtml\System\Config\AutopopulateButton;
+?>
+<script>
+    require([
+        'jquery',
+        'prototype',
+        'mage/validation',
+        'mage/translate'
+    ], function ($, p, v, $t) {
+        function autoPopulateUrl() {
+            let tenant = $('#ls_mag_service_tenant').val(),
+                environmentName = $('#ls_mag_service_environment_name').val(),
+                companyName = $('#ls_mag_service_company_name').val();
+
+            if (tenant && environmentName && companyName) {
+                let derivedUrl = 'https://lscentral.api.bc.dynamics.com/V2.0/' + tenant + '/' + environmentName + '/' + 'ODataV4'
+                $('#ls_mag_service_base_url').val(derivedUrl);
+            } else {
+                alert($t('Please configure tenant, environment name, company name first.'))
+            }
+        }
+
+        $('body').on('click', '#autopopulate_base_url', function(){
+            autoPopulateUrl();
+        })
+    });
+</script>
+<?= $block->getButtonHtml(); ?>

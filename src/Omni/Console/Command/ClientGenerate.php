@@ -9,6 +9,8 @@ use \Ls\Omni\Code\EntityGenerator;
 use \Ls\Omni\Code\OperationGenerator;
 use \Ls\Omni\Code\RestrictionGenerator;
 use \Ls\Omni\Console\Command;
+use Ls\Omni\Helper\Data;
+use Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\Soap\Client;
 use Magento\Framework\Module\Dir\Reader;
@@ -25,19 +27,20 @@ class ClientGenerate extends Command
 {
     const COMMAND_NAME = 'omni:client:generate';
 
+    public Data $helper;
     /**
      * ClientGenerate constructor.
      * @param Service $service
      * @param Reader $dirReader
      */
-    public function __construct(Service $service, Reader $dirReader)
+    public function __construct(Service $service, Reader $dirReader, Data $helper)
     {
+        $this->helper = $helper;
         parent::__construct($service, $dirReader);
     }
 
     public function configure()
     {
-
         $this->setName(self::COMMAND_NAME)
             ->setDescription('Generate class based on OMNI endpoints. Run this one first before replication generate')
             ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
@@ -55,12 +58,10 @@ class ClientGenerate extends Command
         // @codingStandardsIgnoreLine
         $fs  = new Filesystem();
         $cwd = getcwd();
-
-        $wsdl = Service::getUrl($this->type, $this->base_url);
+        $xpath = $this->helper->fetchOmniWrapperCodeUnit();
+        $metadata = new Metadata($xpath);
+//        $wsdl = Service::getUrl($this->type, 'http://20.6.33.78/commerceservice');
         // @codingStandardsIgnoreLine
-        $client       = new Client($wsdl, $this->type);
-        $metadata     = $client->getMetadata();
-        $restrictions = array_keys($metadata->getRestrictions());
 
         $interface_folder = ucfirst($this->type->getValue());
 
@@ -71,8 +72,7 @@ class ClientGenerate extends Command
         $this->clean($base_dir);
 
         foreach ($metadata->getEntities() as $entity) {
-            // RESTRICTIONS ARE CREATED IN ANOTHER LOOP SO WE FILTER THEM OUT
-            if (array_search($entity->getName(), $restrictions) === false) {
+            try {
                 $filename = AbstractGenerator::path($entity_dir, "{$entity->getName()}.php");
                 // @codingStandardsIgnoreStart
                 $generator = new EntityGenerator($entity, $metadata);
@@ -82,34 +82,25 @@ class ClientGenerate extends Command
 
                 $ok = sprintf('generated entity ( %1$s )', $fs->makePathRelative($filename, $cwd));
                 $this->output->writeln($ok);
-            }
-        }
-
-        $restriction_blacklist = ['char', 'duration', 'guid', 'StreamBody'];
-        foreach ($metadata->getRestrictions() as $restriction) {
-            if (array_search($restriction->getName(), $restriction_blacklist) === false) {
-                $filename = AbstractGenerator::path($entity_dir, 'Enum', "{$restriction->getName()}.php");
-                // @codingStandardsIgnoreStart
-                $generator = new RestrictionGenerator($restriction, $metadata);
-                $content   = $generator->generate();
-                file_put_contents($filename, $content);
-                // @codingStandardsIgnoreEnd
-
-                $ok = sprintf('generated restriction ( %1$s )', $fs->makePathRelative($filename, $cwd));
-                $this->output->writeln($ok);
+            } catch (\Exception $e) {
+                $here = 1;
             }
         }
 
         foreach ($metadata->getOperations() as $operation) {
-            $filename = AbstractGenerator::path($operation_dir, "{$operation->getName()}.php");
-            // @codingStandardsIgnoreStart
-            $generator = new OperationGenerator($operation, $metadata);
-            $content   = $generator->generate();
-            file_put_contents($filename, $content);
-            // @codingStandardsIgnoreEnd
+            try {
+                $filename = AbstractGenerator::path($operation_dir, "{$operation->getName()}.php");
+                // @codingStandardsIgnoreStart
+                $generator = new OperationGenerator($operation, $metadata);
+                $content   = $generator->generate();
+                file_put_contents($filename, $content);
+                // @codingStandardsIgnoreEnd
 
-            $ok = sprintf('generated operation ( %1$s )', $fs->makePathRelative($filename, $cwd));
-            $this->output->writeln($ok);
+                $ok = sprintf('generated operation ( %1$s )', $fs->makePathRelative($filename, $cwd));
+                $this->output->writeln($ok);
+            } catch (\Exception $e) {
+                $here = 1;
+            }
         }
 
         $filename = AbstractGenerator::path($base_dir, 'ClassMap.php');

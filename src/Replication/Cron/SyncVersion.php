@@ -83,7 +83,7 @@ class SyncVersion
                     );
                     $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $this->store->getId());
                     $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $this->store->getId());
-                    $pong    = $this->helper->omniPing($baseUrl, $lsKey);
+                    $pong    = $this->helper->omniPing($baseUrl, $lsKey, '', '','', '');
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
                 }
                 $this->lsr->setStoreId(null);

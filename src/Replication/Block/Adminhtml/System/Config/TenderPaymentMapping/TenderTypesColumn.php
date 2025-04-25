@@ -2,6 +2,7 @@
 
 namespace Ls\Replication\Block\Adminhtml\System\Config\TenderPaymentMapping;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -78,6 +79,8 @@ class TenderTypesColumn extends Select
      * Render block HTML
      *
      * @return string
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
     public function _toHtml(): string
     {
@@ -92,29 +95,42 @@ class TenderTypesColumn extends Select
      *
      * @return array
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     private function getSourceOptions(): array
     {
         $storeTenderTypes = [];
 
-        $scopeId = (int)$this->request->getParam('website');
-        
-        if ($scopeId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
+        $websiteId = (int)$this->request->getParam('website');
+        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
+
+        if ($websiteId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
             $stores               = $this->lsr->getAllStores();
             $store                = reset($stores);
             $storeTenderTypeArray = $this->helper->getTenderTypes($store->getId());
         } else {
-            $storeTenderTypeArray = $this->helper->getTenderTypes($scopeId);
+            $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId);
         }
         if (empty($storeTenderTypeArray)) {
-            $storeTenderTypeArray = $this->dataHelper->getTenderTypesDirectly($scopeId);
+            $storeTenderTypeArray = $this->dataHelper->fetchWebStoreTenderTypes(
+                '',
+                [],
+                [],
+                [
+                    'storeNo' => $webStore,
+                    'batchSize' => 100,
+                    'fullRepl' => true,
+                    'lastKey' => '',
+                    'lastEntryNo' => 0
+                ]
+            );
         }
         $storeTenderTypes[] = ['value' => '', 'label' => __('Select tender type')];
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [
-                    'value' => $storeTenderType->getTenderTypeId(),
-                    'label' => __($storeTenderType->getName())
+                    'value' => $storeTenderType['Code'],
+                    'label' => $storeTenderType['Description']
                 ];
             }
         }
