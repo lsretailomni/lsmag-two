@@ -69,7 +69,7 @@ class ClientGenerate extends Command
         $base_dir      = AbstractGenerator::path($modulePath, 'Client', $interface_folder);
         $operation_dir = AbstractGenerator::path($base_dir, 'Operation');
         $entity_dir    = AbstractGenerator::path($base_dir, 'Entity');
-        $this->clean($base_dir);
+//        $this->clean($base_dir);
 
         foreach ($metadata->getEntities() as $entity) {
             try {
