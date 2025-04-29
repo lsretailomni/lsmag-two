@@ -2,6 +2,7 @@
 // @codingStandardsIgnoreFile
 /** @var AutopopulateButton $block */
 
+use Ls\Core\Model\LSR;
 use \Ls\Omni\Block\Adminhtml\System\Config\AutopopulateButton;
 ?>
 <script>
@@ -17,7 +18,7 @@ use \Ls\Omni\Block\Adminhtml\System\Config\AutopopulateButton;
                 companyName = $('#ls_mag_service_company_name').val();
 
             if (tenant && environmentName && companyName) {
-                let derivedUrl = 'https://lscentral.api.bc.dynamics.com/V2.0/' + tenant + '/' + environmentName + '/' + 'ODataV4'
+                let derivedUrl = '<?= LSR::BC_BASE_URL?>' + '/' + tenant + '/' + environmentName
                 $('#ls_mag_service_base_url').val(derivedUrl);
             } else {
                 alert($t('Please configure tenant, environment name, company name first.'))

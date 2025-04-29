@@ -8,6 +8,7 @@ use \Ls\Core\Model\LSR;
 use \Ls\Omni\Exception\NavException;
 use \Ls\Omni\Exception\NavObjectReferenceNotAnInstanceException;
 use \Ls\Omni\Helper\CacheHelper;
+use Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
 use \Ls\Replication\Logger\FlatReplicationLogger;
@@ -73,14 +74,23 @@ abstract class AbstractOperation implements OperationInterface
      */
     public $flatReplicationLogger;
 
-    public function __construct(
-    ) {
+    /**
+     * @var Data
+     */
+    public $dataHelper;
+
+    /**
+     * Constructor function
+     */
+    public function __construct()
+    {
         $this->objectManager = ObjectManager::getInstance();
         $this->omniLogger = $this->objectManager->get(OmniLogger::class);
         $this->magentoLogger = $this->objectManager->get(LoggerInterface::class);
         $this->flatReplicationLogger = $this->objectManager->get(FlatReplicationLogger::class);
         $this->session = $this->objectManager->get(SessionManagerInterface::class);
         $this->cacheHelper = $this->objectManager->get(CacheHelper::class);
+        $this->dataHelper  = $this->objectManager->get(Data::class);
     }
 
     /**
@@ -105,29 +115,23 @@ abstract class AbstractOperation implements OperationInterface
     {
         $request_input = $this->getOperationInput();
         $client        = $this->getClient();
-        $header        = self::$header;
         $response      = null;
         $lsr           = $this->objectManager->get("\Ls\Core\Model\LSR");
-        if (empty($this->token)) {
-            $this->setToken($lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $lsr->getWebsiteId()));
-        }
-        //@codingStandardsIgnoreStart
-        $client->setStreamContext(
-            stream_context_create(
-                [
-                    'http' =>
-                        [
-                            'header'  => "$header: {$this->token}",
-                            'timeout' => floatval($lsr->getWebsiteConfig(LSR::SC_SERVICE_TIMEOUT, $lsr->getWebsiteId()))
-                        ]
-                ]
-            )
-        );
         $client->setLocation($client->getWSDL());
         //@codingStandardsIgnoreEnd
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
-            $response = $client->{$operation_name}($request_input);
+            $isDataObject = $request_input instanceof \Magento\Framework\DataObject;
+            $response = $client->{$operation_name}(
+                $isDataObject ?
+                    $request_input->getData() :
+                    $request_input
+            );
+            if (is_object($response)) {
+                if ($isDataObject) {
+                    $response = $this->convertSoapResponseToDataObject($response);
+                }
+            }
 
             if ($operation_name == 'OrderCreate') {
                 $lsr->setLicenseValidity("1");
@@ -161,6 +165,39 @@ abstract class AbstractOperation implements OperationInterface
         return $response;
     }
     // @codingStandardsIgnoreEnd
+
+    private function convertSoapResponseToDataObject($response): \Magento\Framework\DataObject
+    {
+        $data = [];
+
+        foreach (get_object_vars($response) as $key => $value) {
+            // Handle nested objects recursively
+            if (is_object($value)) {
+                $data[$key] = $this->convertSoapResponseToDataObject($value);
+            } elseif (is_array($value)) {
+                $data[$key] = $this->convertSoapResponseArray($value);
+            } else {
+                $data[$key] = $value;
+            }
+        }
+
+        return new \Magento\Framework\DataObject($data);
+    }
+
+    private function convertSoapResponseArray(array $array): array
+    {
+        $result = [];
+        foreach ($array as $key => $item) {
+            if (is_object($item)) {
+                $result[$key] = $this->convertSoapResponseToDataObject($item);
+            } elseif (is_array($item)) {
+                $result[$key] = $this->convertSoapResponseArray($item);
+            } else {
+                $result[$key] = $item;
+            }
+        }
+        return $result;
+    }
 
     /**
      * @param string $token

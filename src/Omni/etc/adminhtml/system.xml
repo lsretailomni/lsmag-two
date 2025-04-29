@@ -34,9 +34,9 @@
                     <validate>required-entry</validate>
                 </field>
                 <field id="base_url" translate="label" type="text" sortOrder="20" showInWebsite="1">
-                    <label>Service Base URL (ODataV4)</label>
+                    <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
-                    <comment>https://lscentral.api.bc.dynamics.com/V2.0/{tenant}/{environment_name}/ODataV4</comment>
+                    <comment>https://lscentral.api.bc.dynamics.com/V2.0/{tenant}/{environment_name}</comment>
                 </field>
                 <field id="autopopulate_base_url" translate="label comment" type="button" sortOrder="30"
                        showInWebsite="1">

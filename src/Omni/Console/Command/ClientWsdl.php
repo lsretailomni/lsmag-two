@@ -9,37 +9,45 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class ClientWsdl
- * @package Ls\Omni\Console\Command
- */
 class ClientWsdl extends Command
 {
-    const COMMAND_NAME = 'omni:client:wsdl';
+    public const COMMAND_NAME = 'omni:client:wsdl';
 
+    /**
+     * Configures the command by setting its name, description, and available options.
+     *
+     * @return void
+     */
     public function configure()
     {
-
         $this->setName(self::COMMAND_NAME)
-            ->setDescription('show WSDL contents')
-            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
-            ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
+            ->setDescription('Show WSDL contents')
+            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Omni service type', 'ecommerce')
+            ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'Omni service base URL');
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int|null|void
+     * Executes the command to fetch and display the WSDL XML of the specified Omni service.
+     *
+     * @param InputInterface  $input  The input interface containing command options
+     * @param OutputInterface $output The output interface for displaying results
+     *
+     * @return int Return code (0 indicates success)
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        // Fetch the WSDL URL for the specified Omni service
+        $wsdlUrl = Service::getUrl($this->type, $this->baseUrl);
 
-        $wsdl = Service::getUrl($this->type, $this->base_url);
+        // Instantiate the SOAP client with the WSDL URL and service type
+        /** @var Client $soapClient */
         // @codingStandardsIgnoreLine
-        $client = new Client($wsdl, $this->type);
+        $soapClient = new Client($wsdlUrl, $this->type);
 
-        $this->output->writeln($client->getWsdlXml()->saveXML());
+        // Output the WSDL XML content
+        $output->writeln($soapClient->getWsdlXml()->saveXML());
 
+        // Return success code
         return 0;
     }
 }

@@ -42,7 +42,7 @@ class LoadTenderType extends Action
      */
     public function execute()
     {
-        $optionList = [];
+        $optionList = $tenderTypes = [];
         try {
             $storeId         = $this->getRequest()->getParam('storeId');
             $baseUrl         = $this->getRequest()->getParam('baseUrl');
@@ -51,6 +51,7 @@ class LoadTenderType extends Action
             $clientSecret    = $this->getRequest()->getParam('client_secret');
             $companyName     = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
+            $scopeId         = $this->getRequest()->getParam('scopeId');
             $baseUrl = $this->helper->getBaseUrl($baseUrl);
             $connectionParams = [
                 'tenant' => $tenant,
@@ -59,18 +60,26 @@ class LoadTenderType extends Action
                 'environmentName' => $environmentName,
             ];
 
-            $tenderTypes = $this->helper->fetchWebStoreTenderTypes(
+            if ($this->lsr->validateBaseUrl(
                 $baseUrl,
                 $connectionParams,
                 ['company' => $companyName],
-                [
-                    'storeNo' => $storeId,
-                    'batchSize' => 100,
-                    'fullRepl' => true,
-                    'lastKey' => '',
-                    'lastEntryNo' => 0
-                ]
-            );
+                $scopeId
+            )) {
+                $tenderTypes = $this->helper->fetchWebStoreTenderTypes(
+                    $baseUrl,
+                    $connectionParams,
+                    ['company' => $companyName],
+                    [
+                        'storeNo' => $storeId,
+                        'batchSize' => 100,
+                        'fullRepl' => true,
+                        'lastKey' => '',
+                        'lastEntryNo' => 0
+                    ]
+                );
+            }
+
             if (!empty($tenderTypes)) {
                 $paymentTenderTypesArray = $this->lsr->getStoreConfig(
                     LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,

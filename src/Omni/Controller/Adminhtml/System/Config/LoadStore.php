@@ -77,13 +77,20 @@ class LoadStore extends Action
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);
             }
-
-            $stores = $this->helper->fetchWebStores(
+            if ($this->lsr->validateBaseUrl(
                 $baseUrl,
                 $connectionParams,
                 ['company' => $companyName],
-                ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
-            );
+                $scopeId
+            )) {
+                $stores = $this->helper->fetchWebStores(
+                    $baseUrl,
+                    $connectionParams,
+                    ['company' => $companyName],
+                    ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
+                );
+            }
+
             if (!empty($stores)) {
                 $optionList = null;
                 $optionList = [['value' => '', 'label' => __('Please select your web store')]];

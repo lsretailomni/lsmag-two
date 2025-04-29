@@ -9,13 +9,10 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use \Ls\Omni\Client\Ecommerce\Operation;
-use \Ls\Omni\Client\Ecommerce\Operation\Ping;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
-use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
-use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Model\Cache\Type;
-use Ls\Omni\Model\Central\GuzzleClient;
-use Ls\Omni\Model\Central\TokenRequestService;
+use \Ls\Omni\Model\Central\GuzzleClient;
+use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Service\Service as OmniService;
 use \Ls\Omni\Service\ServiceType;
 use \Ls\Omni\Service\Soap\Client as OmniClient;
@@ -1034,7 +1031,7 @@ class Data extends AbstractHelper
             $lsKey = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $scopeId);
         }
 
-        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey, $scopeId) && $storeId != '') {
+        if ($this->lsr->validateBaseUrl($baseUrl, $scopeId) && $storeId != '') {
             try {
                 $request = $this->formulateTenderTypesRequest($baseUrl, $lsKey, $storeId, $scopeId);
                 $result  = $request->execute();

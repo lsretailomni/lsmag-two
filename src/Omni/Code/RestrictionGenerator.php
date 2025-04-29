@@ -11,12 +11,13 @@ use Laminas\Code\Generator\DocBlockGenerator;
 
 class RestrictionGenerator extends AbstractOmniGenerator
 {
-    /** @var array */
-    private static $reserved_words = ['new', 'final'];
+    /** @var array Reserved words that need special handling */
+    private static $reservedWords = ['new', 'final'];
 
+    /** @var CaseHelperFactory */
     private $caseHelperFactory;
 
-    /** @var array */
+    /** @var array Data type equivalences for normalization */
     public $equivalences = [
         'decimal'  => 'float',
         'long'     => 'int',
@@ -27,7 +28,6 @@ class RestrictionGenerator extends AbstractOmniGenerator
     private $restriction;
 
     /**
-     * RestrictionGenerator constructor.
      * @param Restriction $restriction
      * @param Metadata $metadata
      * @throws Exception
@@ -36,61 +36,68 @@ class RestrictionGenerator extends AbstractOmniGenerator
     {
         parent::__construct($metadata);
         $this->restriction = $restriction;
-        $this->case_helper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
+        $this->caseHelperFactory = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
     }
 
     /**
-     * @param $name
-     * @return string
+     * Sanitizes a constant name by checking for reserved words and converting it to a valid constant name.
+     *
+     * @param string $name The name to sanitize.
+     * @return string The sanitized constant name.
      */
-
     public function sanitizeConstantValue($name)
     {
-        if ($name && array_search(strtolower($name), self::$reserved_words) !== false) {
+        if ($name && array_search(strtolower($name), self::$reservedWords) !== false) {
             $name = ucfirst($name);
             $name = "Type$name";
         }
 
-        return $this->case_helper->toScreamingSnakeCase($name);
+        return $this->caseHelperFactory->toScreamingSnakeCase($name);
     }
 
     /**
-     * @return mixed|string
+     * Generates the enum class based on the restriction definition.
+     *
+     * @return string The generated enum class content.
      */
     public function generate()
     {
-        $service_folder   = ucfirst($this->getServiceType());
-        $base_namespace   = self::fqn('Ls', 'Omni', 'Client', $service_folder);
-        $entity_namespace = self::fqn($base_namespace, 'Entity', 'Enum');
-        $restriction_name = $this->restriction->getName();
-        $enum_class       = Enum::class;
+        $serviceFolder = ucfirst($this->getServiceType()->getValue());
+        $baseNamespace = self::fqn('Ls', 'Omni', 'Client', $serviceFolder);
+        $entityNamespace = self::fqn($baseNamespace, 'Entity', 'Enum');
+        $restrictionName = $this->restriction->getName();
+        $enumClass = Enum::class;
 
-        $this->class->setNamespaceName($entity_namespace);
+        // Set up class namespace and imports
+        $this->class->setNamespaceName($entityNamespace);
         $this->class->addUse(Enum::class);
-        $this->class->setName($restriction_name);
+        $this->class->setName($restrictionName);
         $this->class->setExtendedClass(Enum::class);
 
+        // Add constants based on the restriction definition
         $docblock = '';
         foreach ($this->restriction->getDefinition() as $definition) {
-            $enum_key = $this->sanitizeConstantValue($definition->getValue());
-            $this->class->addConstant($enum_key, $definition->getValue());
-            $docblock .= "@\$method static $restriction_name $enum_key()\n";
+            $enumKey = $this->sanitizeConstantValue($definition->getValue());
+            $this->class->addConstant($enumKey, $definition->getValue());
+            $docblock .= "@\$method static $restrictionName $enumKey()\n";
         }
         $this->class->setDocBlock(DocBlockGenerator::fromArray(['shortdescription' => $docblock]));
 
+        // Generate class content and replace Enum class reference
         $content = $this->file->generate();
-
-        $content = str_replace("extends {$enum_class}", 'extends Enum', $content);
+        $content = str_replace("extends {$enumClass}", 'extends Enum', $content);
 
         return $content;
     }
 
     /**
-     * @param $data_type
-     * @return mixed
+     * Normalizes a data type to its equivalent type based on predefined mappings.
+     *
+     * @param string $dataType The data type to normalize.
+     * @return mixed The normalized data type.
      */
-    protected function normalizeDataType($data_type)
+    protected function normalizeDataType($dataType)
     {
-        return array_key_exists($data_type, $this->equivalences) ? $this->equivalences[$data_type] : $data_type;
+        return array_key_exists($dataType, $this->equivalences) ? $this->equivalences[$dataType] : $dataType;
     }
 }

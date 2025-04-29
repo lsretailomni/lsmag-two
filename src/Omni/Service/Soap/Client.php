@@ -3,57 +3,119 @@
 namespace Ls\Omni\Service\Soap;
 
 use DOMDocument;
+use Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\CacheHelper;
+use Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
-use Laminas\Http\ClientStatic;
 use Laminas\Soap\Client as LaminasSoapClient;
 use Laminas\Uri\Uri;
 use Magento\Framework\App\ObjectManager;
 
 /**
- * soap client class to read xml
+ * SOAP client class to read XML
  */
 class Client extends LaminasSoapClient
 {
     /** @var Uri */
-    public $URL;
+    public $url;
 
-    /** @var  ServiceType */
+    /** @var ServiceType */
     public $type;
 
     /**
-     * Client constructor.
      * @param Uri $uri
      * @param ServiceType $type
      */
     public function __construct(Uri $uri, ServiceType $type)
     {
-        $this->URL  = $uri;
+        $this->url = $uri;
         $this->type = $type;
 
         $this->execute();
     }
+
     /**
-     * Get cache helper wsdl options
+     * Get cache helper WSDL options
+     *
      * @return void
      */
     public function execute()
     {
         $cacheHelper = ObjectManager::getInstance()->get(CacheHelper::class);
-        parent::__construct($this->URL->toString(), $cacheHelper->getWsdlOptions());
+        $soapOptions = $cacheHelper->getWsdlOptions();
+        $token       = $this->getToken();
+        $opts        = ['http' => ['header' => "Authorization: Bearer " . $token, 'timeout' => $this->getTimeout()]];
+        // @codingStandardsIgnoreStart
+        $context                       = stream_context_create($opts);
+        $soapOptions['stream_context'] = $context;
+        $this->url->setQuery([
+            'company' => $this->getCompanyName()
+        ]);
+
+        parent::__construct($this->url->toString(), $soapOptions);
     }
 
     /**
+     * Get configured timeout
+     *
+     * @return float
+     */
+    public function getTimeout()
+    {
+        $lsr = ObjectManager::getInstance()->get(LSR::class);
+
+        return floatval($lsr->getWebsiteConfig(LSR::SC_SERVICE_TIMEOUT, $lsr->getWebsiteId()));
+    }
+
+    /**
+     * Get valid token
+     *
+     * @return string
+     */
+    public function getToken()
+    {
+        $lsr          = ObjectManager::getInstance()->get(LSR::class);
+        $dataHelper   = ObjectManager::getInstance()->get(Data::class);
+        $clientId     = $lsr->getWebsiteConfig(LSR::SC_CLIENT_ID, $lsr->getWebsiteId());
+        $clientSecret = $lsr->getWebsiteConfig(LSR::SC_CLIENT_SECRET, $lsr->getWebsiteId());
+        $tenant       = $lsr->getWebsiteConfig(LSR::SC_TENANT, $lsr->getWebsiteId());
+
+        return $dataHelper->fetchValidToken($tenant, $clientId, $clientSecret);
+    }
+
+    /**
+     * Get configured company name
+     *
+     * @return string
+     */
+    public function getCompanyName()
+    {
+        $lsr = ObjectManager::getInstance()->get(LSR::class);
+
+        return $lsr->getWebsiteConfig(LSR::SC_COMPANY_NAME, $lsr->getWebsiteId());
+    }
+
+    /**
+     * Get dom xml from wsdl
+     *
      * @return DOMDocument
      */
     public function getWsdlXml()
     {
+        $opts = [
+            'http' => [
+                'header' => [
+                    "Authorization: Bearer " . $this->getToken(),
+                ]
+            ]
+        ];
 
-        $response = ClientStatic::get($this->URL);
-        // @codingStandardsIgnoreLine
-        $xml = new DomDocument('1.0');
-        $xml->loadXML($response->getBody());
+        $context = stream_context_create($opts);
+
+        $response = file_get_contents($this->url->toString(), false, $context);
+        $xml      = new DomDocument('1.0');
+        $xml->loadXML($response);
         $xml->preserveWhiteSpace = false;
         $xml->formatOutput       = true;
 
@@ -61,6 +123,8 @@ class Client extends LaminasSoapClient
     }
 
     /**
+     * Get service type
+     *
      * @return ServiceType
      */
     public function getServiceType()
@@ -69,13 +133,14 @@ class Client extends LaminasSoapClient
     }
 
     /**
-     * @param bool $with_replication
+     * Get meta data
+     *
+     * @param bool $withReplication
      *
      * @return Metadata
      */
-    public function getMetadata($with_replication = false)
+    public function getMetadata($withReplication = false)
     {
-        // @codingStandardsIgnoreLine
-        return new Metadata($this, $with_replication);
+        return new Metadata($this, $withReplication);
     }
 }

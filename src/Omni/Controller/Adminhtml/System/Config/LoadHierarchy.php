@@ -39,7 +39,7 @@ class LoadHierarchy extends Action
      */
     public function execute()
     {
-        $optionList = [];
+        $optionList = $hierarchies = [];
         try {
             $storeId         = $this->getRequest()->getParam('storeId');
             $baseUrl         = $this->getRequest()->getParam('baseUrl');
@@ -48,6 +48,7 @@ class LoadHierarchy extends Action
             $clientSecret    = $this->getRequest()->getParam('client_secret');
             $companyName     = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
+            $scopeId         = $this->getRequest()->getParam('scopeId');
 
             $baseUrl = $this->helper->getBaseUrl($baseUrl);
             $connectionParams = [
@@ -56,18 +57,27 @@ class LoadHierarchy extends Action
                 'clientSecret' => $clientSecret,
                 'environmentName' => $environmentName,
             ];
-            $hierarchies = $this->helper->fetchWebStoreHierarchies(
+
+            if ($this->lsr->validateBaseUrl(
                 $baseUrl,
                 $connectionParams,
                 ['company' => $companyName],
-                [
-                    'storeNo' => $storeId,
-                    'batchSize' => 100,
-                    'fullRepl' => true,
-                    'lastKey' => '',
-                    'lastEntryNo' => 0
-                ]
-            );
+                $scopeId
+            )) {
+                $hierarchies = $this->helper->fetchWebStoreHierarchies(
+                    $baseUrl,
+                    $connectionParams,
+                    ['company' => $companyName],
+                    [
+                        'storeNo' => $storeId,
+                        'batchSize' => 100,
+                        'fullRepl' => true,
+                        'lastKey' => '',
+                        'lastEntryNo' => 0
+                    ]
+                );
+            }
+
             if (!empty($hierarchies)) {
                 $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {

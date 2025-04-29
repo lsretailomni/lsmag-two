@@ -7,72 +7,73 @@ use Magento\Framework\App\ObjectManager;
 use Laminas\Uri\Uri;
 use Laminas\Uri\UriFactory;
 
-/**
- * Class Service
- * @package Ls\Omni\Service
- */
 class Service
 {
-    const DEFAULT_BASE_URL = null;
+    public const DEFAULT_BASE_URL = null; // Default value for base URL
 
-    /** @var  LSR $_lsr */
+    /** @var LSR $lsr */
     public $lsr;
 
-    /** @var null|string */
-    public $baseurl = null;
+    /** @var null|string $baseUrl */
+    public $baseUrl = null;
 
+    /** @var array $endpoints */
     public static $endpoints = [
-        ServiceType::ECOMMERCE => 'UCService.svc'
+        ServiceType::ECOMMERCE => 'WS/Codeunit/OmniWrapper'
     ];
-
-    /**
-     * Service constructor.
-     * @param LSR $Lsr
-     */
-    public function __construct()
-    {
-        //Commented because we are not using it
-        //$this->baseurl = $this->getOmniBaseUrl();
-    }
 
     // @codingStandardsIgnoreStart
     /**
-     * @param ServiceType $type
-     * @param string $base_url
-     * @param bool $wsdl
+     * Generates a URI for a specified service type.
      *
-     * @return Uri
+     * @param ServiceType $serviceType The type of service (e.g., Ecommerce).
+     * @param string $baseUrl The base URL to use (optional).
+     * @param bool $wsdl Flag to indicate whether to include WSDL (optional).
+     *
+     * @return Uri The generated URI.
      */
     public static function getUrl(
-        ServiceType $type,
-        $base_url = self::DEFAULT_BASE_URL,
-        $wsdl = true
+        ServiceType $serviceType,
+                    $baseUrl = self::DEFAULT_BASE_URL,
+                    $wsdl = true
     ) {
-        if ($base_url == null) {
+        // If no base URL is provided, use the default Omni base URL.
+        if ($baseUrl == null) {
             // @codingStandardsIgnoreLine
-            $base_url = (new self())->getOmniBaseUrl();
+            $baseUrl = (new self())->getOmniBaseUrl();
         }
-        $url = join('/', [$base_url, static::$endpoints[$type->getValue()]]);
-        if ($wsdl) {
-            $url .= '?singlewsdl';
-        }
+
+        // Build the full URL by joining the base URL and the corresponding service endpoint.
+        $url = join('/', [$baseUrl, static::$endpoints[$serviceType->getValue()]]);
         return UriFactory::factory($url);
     }
     // @codingStandardsIgnoreEnd
 
     /**
-     * @return string
-     * Use this in combination with \Ls\Core\Model\LSR::isLSR funciton
+     * Gets the base URL for the Omni service.
+     *
+     * @param string $magentoStoreId The Magento store ID (optional).
+     *
+     * @return string The base URL for the Omni service.
+     *
+     * @see \Ls\Core\Model\LSR::isLSR
      */
     public function getOmniBaseUrl($magentoStoreId = '')
     {
+        // Initialize the ObjectManager instance
         $objectManager = ObjectManager::getInstance();
+
+        // Create an instance of the LSR model
         // @codingStandardsIgnoreLine
         $lsr = $objectManager->create('Ls\Core\Model\LSR');
+
+        // If no store ID is provided, fetch it from the current store context
         if ($magentoStoreId == '') {
-            // get storeId from default loaded store.
+            // Get storeId from the default loaded store.
             $magentoStoreId = $lsr->getCurrentStoreId();
         }
+
+        // Retrieve the base URL from the LSR store configuration
         return $lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $magentoStoreId);
     }
 }

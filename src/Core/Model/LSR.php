@@ -2,6 +2,7 @@
 
 namespace Ls\Core\Model;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -17,6 +18,7 @@ use Magento\Store\Model\StoreManagerInterface;
 class LSR
 {
     const TOKEN_ENDPOINT = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token';
+    const BC_BASE_URL = 'https://lscentral.api.bc.dynamics.com/V2.0';
     const TOKEN_SCOPE = 'https://api.businesscentral.dynamics.com/.default';
     const TOKEN_GRANT_TYPE = 'client_credentials';
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
@@ -664,25 +666,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Validate base url
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @param $websiteId
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param array $query
+     * @param string $websiteId
      * @return bool
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null, $lsKey = null, $websiteId = null)
+    public function validateBaseUrl($baseUrl = '', $connectionParams = [], $query = [], $websiteId = '0')
     {
-        if ($baseUrl == null) {
+        if (empty($baseUrl)) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
-        }
-        if ($lsKey == null) {
-            $lsKey = $this->getStoreConfig(self::SC_SERVICE_LS_KEY);
         }
         if (empty($baseUrl)) {
             return false;
         }
+
+        $this->data->getOmniDataHelper()->setMissingParameters($baseUrl, $connectionParams, $query);
         $websiteId = ($websiteId) ?: $this->getWebsiteId();
-        return $this->data->isEndpointResponding($baseUrl, $lsKey, $websiteId);
+
+        return $this->data->isEndpointResponding($baseUrl, $connectionParams, $query, $websiteId);
     }
 
     /**
@@ -690,7 +694,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      *
      * @param bool $storeId
      * @param bool $scope
-     * @return bool
+     * @param bool $force
+     * @return bool|null
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function isLSR($storeId = false, $scope = false, $force = true)
@@ -710,19 +716,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             $baseUrl                    = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
             $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey                      = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $websiteId                  = $storeId;
             $this->validateBaseUrlScope = $scope;
         } else {
             $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
             $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey                      = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $this->validateBaseUrlScope = false;
         }
         if (empty($baseUrl) || empty($store)) {
             $this->validateBaseUrlResponse = false;
         } else {
-            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, $lsKey, $websiteId);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, [], [], $websiteId);
         }
 
         return $this->validateBaseUrlResponse;

@@ -11,15 +11,11 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class Command
- * @package Ls\Omni\Console
- */
 class Command extends SymfonyCommand
 {
-    const TYPE = 'type';
+    public const TYPE = 'type';
 
-    const BASE_URL = 'base';
+    public const BASE_URL = 'base';
 
     /** @var InputInterface */
     public $input;
@@ -31,36 +27,39 @@ class Command extends SymfonyCommand
     public $type;
 
     /** @var string */
-    public $base_url;
+    public $baseUrl;
 
-    /**
-     * @var Service
-     */
+    /** @var Service */
     public $service;
 
     /** @var Reader */
     public $dirReader;
 
+    /**
+     * @param Service $service
+     * @param Reader $dirReader
+     */
     public function __construct(
         Service $service,
         Reader $dirReader
     ) {
-        $this->service   = $service;
+        $this->service = $service;
         $this->dirReader = $dirReader;
         parent::__construct();
     }
 
     /**
+     * Initialize required properties
+     *
      * @param InputInterface $input
      * @param OutputInterface $output
      * @throws InvalidServiceTypeException
      */
     public function initialize(InputInterface $input, OutputInterface $output)
     {
-
         parent::initialize($input, $output);
 
-        $this->input  = $input;
+        $this->input = $input;
         $this->output = $output;
 
         if ($this->type == null) {
@@ -68,22 +67,26 @@ class Command extends SymfonyCommand
             if (!ServiceType::isValid($type)) {
                 throw new InvalidServiceTypeException();
             }
-            // @codingStandardsIgnoreLine
             $this->type = new ServiceType($type);
         }
 
-        // user lSR function to get base url.
-        $this->base_url = $input->getOption(self::BASE_URL);
-        !empty($this->base_url) || $this->base_url = $this->getBaseUrl();
+        // use LSR function to get base url.
+        $this->baseUrl = $input->getOption(self::BASE_URL);
+        !empty($this->baseUrl) || $this->baseUrl = $this->getBaseUrl();
     }
 
+    /**
+     * Get base Url
+     *
+     * @return string
+     */
     public function getBaseUrl()
     {
         $objectManager = ObjectManager::getInstance();
 
         /** @var Service $service */
-        // @codingStandardsIgnoreLine
-        $service = $objectManager->create('Ls\Omni\Service\Service');
-        $service->getOmniBaseUrl();
+        $service = $objectManager->create(Service::class);
+
+        return $service->getOmniBaseUrl();
     }
 }

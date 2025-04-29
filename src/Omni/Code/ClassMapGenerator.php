@@ -2,66 +2,75 @@
 
 namespace Ls\Omni\Code;
 
-use Exception;
-use \Ls\Omni\Service\Metadata;
 use Laminas\Code\Generator\MethodGenerator;
 
-/**
- * Class ClassMapGenerator
- * @package Ls\Omni\Code
- */
 class ClassMapGenerator extends AbstractOmniGenerator
 {
-
     /**
-     * ClassMapGenerator constructor.
-     * @param Metadata $metadata
-     * @throws Exception
+     * Generates a class map for the entities and restrictions.
+     *
+     * It maps each entity and restriction to its fully qualified namespace.
+     *
+     * @return string The generated class file as a string.
      */
-    public function __construct(Metadata $metadata)
-    {
-        parent::__construct($metadata);
-    }
-
-    /**
-     * @return string
-     */
-
     public function generate()
     {
+        // Initialize the class map body as an empty string.
+        $classMapBody = '';
 
-        $body = '';
-        foreach ($this->metadata->getEntities() as $entity_name => $entity) {
-            $fqn  = self::fqn($this->base_namespace, 'Entity', $entity->getElement());
-            $fqn  = str_replace('\\', '\\\\', $fqn);
-            $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $entity_name, $fqn);
+        // Loop through all entities in the metadata and add their FQNs to the class map.
+        foreach ($this->metadata->getEntities() as $entityName => $entity) {
+            // Generate the fully qualified name (FQN) for the entity.
+            $fqn = self::fqn(
+                $this->baseNamespace,
+                'Entity',
+                preg_replace('/[-._]/', '', $entity->getElement()->getType())
+            );
+            $fqn = str_replace('\\', '\\\\', $fqn);
+
+            // Append the entity's name and FQN to the class map.
+            $classMapBody .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $entityName, $fqn);
         }
-        $restriction_blacklist = [
+
+        // Define a blacklist of restrictions to exclude from the class map.
+        $restrictionBlacklist = [
             'char',
             'duration',
             'guid',
             'StreamBody',
-            //'NotificationStatus','OrderQueueStatusFilterType',
+            //'NotificationStatus', 'OrderQueueStatusFilterType',
         ];
-        foreach ($this->metadata->getRestrictions() as $restriction_name => $restriction) {
-            if (array_search($restriction_name, $restriction_blacklist) === false) {
-                $fqn  = self::fqn($this->base_namespace, 'Entity', 'Enum', $restriction_name);
-                $fqn  = str_replace('\\', '\\\\', $fqn);
-                $body .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $restriction_name, $fqn);
+
+        // Loop through all restrictions in the metadata and add them to the class map if not blacklisted.
+        foreach ($this->metadata->getRestrictions() as $restrictionName => $restriction) {
+            // Check if the restriction is not in the blacklist.
+            if (array_search($restrictionName, $restrictionBlacklist) === false) {
+                // Generate the fully qualified name (FQN) for the restriction.
+                $fqn = self::fqn($this->baseNamespace, 'Entity', 'Enum', $restrictionName);
+                $fqn = str_replace('\\', '\\\\', $fqn);
+
+                // Append the restriction's name and FQN to the class map.
+                $classMapBody .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $restrictionName, $fqn);
             }
         }
+
+        // Create the 'getClassMap' method for the class map generation.
         // @codingStandardsIgnoreLine
-        $map_method = new MethodGenerator();
-        $map_method->setName('getClassMap');
-        $map_method->setFinal(true);
-        $map_method->setStatic(true);
-        $map_method->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        $map_method->setBody(sprintf('return [%1$s];', $body));
+        $classMapMethod = new MethodGenerator();
+        $classMapMethod->setName('getClassMap');
+        $classMapMethod->setFinal(true);
+        $classMapMethod->setStatic(true);
+        $classMapMethod->setVisibility(MethodGenerator::FLAG_PROTECTED);
+        $classMapMethod->setBody(sprintf('return [%1$s];', $classMapBody));
+
+        // Set the name and namespace for the class.
         $this->class->setName('ClassMap');
+        $this->class->setNamespaceName($this->baseNamespace);
 
-        $this->class->setNamespaceName($this->base_namespace);
-        $this->class->addMethodFromGenerator($map_method);
+        // Add the generated method to the class.
+        $this->class->addMethodFromGenerator($classMapMethod);
 
+        // Generate and return the final file content.
         return $this->file->generate();
     }
 }
