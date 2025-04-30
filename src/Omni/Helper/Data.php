@@ -816,15 +816,15 @@ class Data extends AbstractHelper
      * @return \DOMXPath
      * @throws GuzzleException|NoSuchEntityException
      */
-    public function fetchOmniWrapperCodeUnit($baseUrl = '', $connectionParams = [], $query = [], $data = [])
+    public function fetchOdataV4($baseUrl = '', $connectionParams = [], $query = [], $data = [])
     {
         $this->setMissingParameters($baseUrl, $connectionParams, $query);
 
         $response = $this->guzzleClient->makeRequest(
             $baseUrl,
-            'OmniWrapper',
+            '$metadata',
             'GET',
-            'codeunit',
+            'odata',
             $connectionParams,
             $query,
             $data
@@ -835,7 +835,7 @@ class Data extends AbstractHelper
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
         $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('xsd', 'http://www.w3.org/2001/XMLSchema');
+        $xpath->registerNamespace('edm', 'http://docs.oasis-open.org/odata/ns/edm');
 
         return $xpath;
     }

@@ -8,157 +8,78 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferDiscountType;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\OfferType;
-use Ls\Omni\Exception\InvalidEnumException;
-
-class PublishedOffer extends Entity
+class PublishedOffer extends \Magento\Framework\DataObject
 {
-    /**
-     * @property ArrayOfImageView $Images
-     */
-    protected $Images = null;
+    public const CLASS_NAME = 'PublishedOffer';
+
+    public const NO = 'No';
+
+    public const DISCOUNT_TYPE = 'DiscountType';
+
+    public const DISCOUNT_NO = 'DiscountNo';
+
+    public const DESCRIPTION = 'Description';
+
+    public const OFFER_CATEGORY = 'OfferCategory';
+
+    public const PRIMARY_TEXT = 'PrimaryText';
+
+    public const SECONDARY_TEXT = 'SecondaryText';
+
+    public const ENDING_DATE = 'EndingDate';
 
     /**
-     * @property ArrayOfOfferDetails $OfferDetails
-     */
-    protected $OfferDetails = null;
-
-    /**
-     * @property ArrayOfPublishedOfferLine $OfferLines
-     */
-    protected $OfferLines = null;
-
-    /**
-     * @property OfferDiscountType $Code
-     */
-    protected $Code = null;
-
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property string $Details
-     */
-    protected $Details = null;
-
-    /**
-     * @property string $ExpirationDate
-     */
-    protected $ExpirationDate = null;
-
-    /**
-     * @property string $MemberAttribute
-     */
-    protected $MemberAttribute = null;
-
-    /**
-     * @property string $MemberAttributeValue
-     */
-    protected $MemberAttributeValue = null;
-
-    /**
-     * @property string $OfferId
-     */
-    protected $OfferId = null;
-
-    /**
-     * @property boolean $Selected
-     */
-    protected $Selected = null;
-
-    /**
-     * @property OfferType $Type
-     */
-    protected $Type = null;
-
-    /**
-     * @property string $ValidationText
-     */
-    protected $ValidationText = null;
-
-    /**
-     * @param ArrayOfImageView $Images
+     * @param string $No
      * @return $this
      */
-    public function setImages($Images)
+    public function setNo($No)
     {
-        $this->Images = $Images;
+        $this->setData(self::NO, $No);
         return $this;
     }
 
     /**
-     * @return ArrayOfImageView
+     * @return string
      */
-    public function getImages()
+    public function getNo()
     {
-        return $this->Images;
+        return $this->getData(self::NO);
     }
 
     /**
-     * @param ArrayOfOfferDetails $OfferDetails
+     * @param string $DiscountType
      * @return $this
      */
-    public function setOfferDetails($OfferDetails)
+    public function setDiscountType($DiscountType)
     {
-        $this->OfferDetails = $OfferDetails;
+        $this->setData(self::DISCOUNT_TYPE, $DiscountType);
         return $this;
     }
 
     /**
-     * @return ArrayOfOfferDetails
+     * @return string
      */
-    public function getOfferDetails()
+    public function getDiscountType()
     {
-        return $this->OfferDetails;
+        return $this->getData(self::DISCOUNT_TYPE);
     }
 
     /**
-     * @param ArrayOfPublishedOfferLine $OfferLines
+     * @param string $DiscountNo
      * @return $this
      */
-    public function setOfferLines($OfferLines)
+    public function setDiscountNo($DiscountNo)
     {
-        $this->OfferLines = $OfferLines;
+        $this->setData(self::DISCOUNT_NO, $DiscountNo);
         return $this;
     }
 
     /**
-     * @return ArrayOfPublishedOfferLine
+     * @return string
      */
-    public function getOfferLines()
+    public function getDiscountNo()
     {
-        return $this->OfferLines;
-    }
-
-    /**
-     * @param OfferDiscountType|string $Code
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setCode($Code)
-    {
-        if ( ! $Code instanceof OfferDiscountType ) {
-            if ( OfferDiscountType::isValid( $Code ) )
-                $Code = new OfferDiscountType( $Code );
-            elseif ( OfferDiscountType::isValidKey( $Code ) )
-                $Code = new OfferDiscountType( constant( "OfferDiscountType::$Code" ) );
-            elseif ( ! $Code instanceof OfferDiscountType )
-                throw new InvalidEnumException();
-        }
-        $this->Code = $Code->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return OfferDiscountType
-     */
-    public function getCode()
-    {
-        return $this->Code;
+        return $this->getData(self::DISCOUNT_NO);
     }
 
     /**
@@ -167,7 +88,7 @@ class PublishedOffer extends Entity
      */
     public function setDescription($Description)
     {
-        $this->Description = $Description;
+        $this->setData(self::DESCRIPTION, $Description);
         return $this;
     }
 
@@ -176,161 +97,79 @@ class PublishedOffer extends Entity
      */
     public function getDescription()
     {
-        return $this->Description;
+        return $this->getData(self::DESCRIPTION);
     }
 
     /**
-     * @param string $Details
+     * @param string $OfferCategory
      * @return $this
      */
-    public function setDetails($Details)
+    public function setOfferCategory($OfferCategory)
     {
-        $this->Details = $Details;
+        $this->setData(self::OFFER_CATEGORY, $OfferCategory);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getDetails()
+    public function getOfferCategory()
     {
-        return $this->Details;
+        return $this->getData(self::OFFER_CATEGORY);
     }
 
     /**
-     * @param string $ExpirationDate
+     * @param string $PrimaryText
      * @return $this
      */
-    public function setExpirationDate($ExpirationDate)
+    public function setPrimaryText($PrimaryText)
     {
-        $this->ExpirationDate = $ExpirationDate;
+        $this->setData(self::PRIMARY_TEXT, $PrimaryText);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getExpirationDate()
+    public function getPrimaryText()
     {
-        return $this->ExpirationDate;
+        return $this->getData(self::PRIMARY_TEXT);
     }
 
     /**
-     * @param string $MemberAttribute
+     * @param string $SecondaryText
      * @return $this
      */
-    public function setMemberAttribute($MemberAttribute)
+    public function setSecondaryText($SecondaryText)
     {
-        $this->MemberAttribute = $MemberAttribute;
+        $this->setData(self::SECONDARY_TEXT, $SecondaryText);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getMemberAttribute()
+    public function getSecondaryText()
     {
-        return $this->MemberAttribute;
+        return $this->getData(self::SECONDARY_TEXT);
     }
 
     /**
-     * @param string $MemberAttributeValue
+     * @param date $EndingDate
      * @return $this
      */
-    public function setMemberAttributeValue($MemberAttributeValue)
+    public function setEndingDate($EndingDate)
     {
-        $this->MemberAttributeValue = $MemberAttributeValue;
+        $this->setData(self::ENDING_DATE, $EndingDate);
         return $this;
     }
 
     /**
-     * @return string
+     * @return date
      */
-    public function getMemberAttributeValue()
+    public function getEndingDate()
     {
-        return $this->MemberAttributeValue;
-    }
-
-    /**
-     * @param string $OfferId
-     * @return $this
-     */
-    public function setOfferId($OfferId)
-    {
-        $this->OfferId = $OfferId;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOfferId()
-    {
-        return $this->OfferId;
-    }
-
-    /**
-     * @param boolean $Selected
-     * @return $this
-     */
-    public function setSelected($Selected)
-    {
-        $this->Selected = $Selected;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getSelected()
-    {
-        return $this->Selected;
-    }
-
-    /**
-     * @param OfferType|string $Type
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setType($Type)
-    {
-        if ( ! $Type instanceof OfferType ) {
-            if ( OfferType::isValid( $Type ) )
-                $Type = new OfferType( $Type );
-            elseif ( OfferType::isValidKey( $Type ) )
-                $Type = new OfferType( constant( "OfferType::$Type" ) );
-            elseif ( ! $Type instanceof OfferType )
-                throw new InvalidEnumException();
-        }
-        $this->Type = $Type->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return OfferType
-     */
-    public function getType()
-    {
-        return $this->Type;
-    }
-
-    /**
-     * @param string $ValidationText
-     * @return $this
-     */
-    public function setValidationText($ValidationText)
-    {
-        $this->ValidationText = $ValidationText;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getValidationText()
-    {
-        return $this->ValidationText;
+        return $this->getData(self::ENDING_DATE);
     }
 }
 

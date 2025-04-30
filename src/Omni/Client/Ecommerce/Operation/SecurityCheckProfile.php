@@ -16,11 +16,11 @@ use Ls\Omni\Service\ServiceType;
 use Ls\Omni\Service\Soap\Client as OmniClient;
 use Ls\Omni\Client\Ecommerce\ClassMap;
 use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfile as SecurityCheckProfileRequest;
-use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfileResponse as SecurityCheckProfileResponse;
+use Ls\Omni\Client\Ecommerce\Entity\SecurityCheckProfileResult as SecurityCheckProfileResponse;
 
 class SecurityCheckProfile extends AbstractOperation
 {
-    public const OPERATION_NAME = 'SECURITY_CHECK_PROFILE';
+    public const OPERATION_NAME = 'SecurityCheckProfile';
 
     public const SERVICE_TYPE = 'ecommerce';
 
@@ -50,19 +50,20 @@ class SecurityCheckProfile extends AbstractOperation
     protected $response_xml = null;
 
     /**
-     * @property Exception $error
+     * @property \Exception $error
      */
     protected $error = null;
 
     public function __construct($baseUrl = '')
     {
-        $service_type = new ServiceType( self::SERVICE_TYPE );
-        parent::__construct( $service_type );
-        $url = OmniService::getUrl( $service_type,$baseUrl );
-        $this->client = new OmniClient( $url, $service_type );
+        $serviceType = new ServiceType( self::SERVICE_TYPE );
+        parent::__construct( $serviceType );
+        $url = OmniService::getUrl( $serviceType, $baseUrl );
+        $this->client = new OmniClient( $url, $serviceType );
         $this->client->setClassmap( $this->getClassMap() );
     }
 
+/** @noinspection PhpDocSignatureInspection */
     /**
      * @param SecurityCheckProfileRequest $request
      * @return ResponseInterface|SecurityCheckProfileResponse
@@ -72,7 +73,7 @@ class SecurityCheckProfile extends AbstractOperation
         if ( !is_null( $request ) ) {
             $this->setRequest( $request );
         }
-        return $this->makeRequest( 'SecurityCheckProfile' );
+        return $this->makeRequest( self::OPERATION_NAME );
     }
 
     /**
@@ -117,6 +118,7 @@ class SecurityCheckProfile extends AbstractOperation
         return $this->client;
     }
 
+/** @noinspection PhpDocSignatureInspection */
     /**
      * @param SecurityCheckProfileRequest $request
      * @return $this
@@ -190,7 +192,7 @@ class SecurityCheckProfile extends AbstractOperation
     }
 
     /**
-     * @param Exception $error
+     * @param \Exception $error
      * @return $this
      */
     public function setError($error)
@@ -200,7 +202,7 @@ class SecurityCheckProfile extends AbstractOperation
     }
 
     /**
-     * @return Exception
+     * @return \Exception
      */
     public function getError()
     {

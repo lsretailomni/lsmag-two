@@ -8,695 +8,176 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\Gender;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\MaritalStatus;
-use Ls\Omni\Client\Ecommerce\Entity\Enum\SendEmail;
-use Ls\Omni\Exception\InvalidEnumException;
-
-class MemberContact extends Entity
+class MemberContact extends \Magento\Framework\DataObject
 {
-    /**
-     * @property ArrayOfAddress $Addresses
-     */
-    protected $Addresses = null;
+    public const CLASS_NAME = 'MemberContact';
+
+    public const ACCOUNT_NO = 'AccountNo';
+
+    public const CLUB_CODE = 'ClubCode';
+
+    public const SCHEME_CODE = 'SchemeCode';
+
+    public const CONTACT_NO = 'ContactNo';
+
+    public const MAIN_CONTACT = 'MainContact';
+
+    public const NAME = 'Name';
+
+    public const SEARCH_NAME = 'SearchName';
+
+    public const NAME2 = 'Name2';
+
+    public const ADDRESS = 'Address';
+
+    public const ADDRESS2 = 'Address2';
+
+    public const CITY = 'City';
+
+    public const HOUSE_APARTMENT_NO = 'HouseApartmentNo';
+
+    public const POST_CODE = 'PostCode';
+
+    public const E_MAIL = 'E-Mail';
+
+    public const HOME_PAGE = 'HomePage';
+
+    public const PHONE_NO = 'PhoneNo';
+
+    public const MOBILE_PHONE_NO = 'MobilePhoneNo';
+
+    public const TERRITORY_CODE = 'TerritoryCode';
+
+    public const COUNTY = 'County';
+
+    public const COUNTRY = 'Country';
+
+    public const GENDER = 'Gender';
+
+    public const DATEOF_BIRTH = 'DateofBirth';
+
+    public const BIRTHDAY = 'Birthday';
+
+    public const MARITAL_STATUS = 'MaritalStatus';
+
+    public const BLOCKED = 'Blocked';
+
+    public const REASON_BLOCKED = 'ReasonBlocked';
+
+    public const DATE_BLOCKED = 'DateBlocked';
+
+    public const BLOCKEDBY = 'Blockedby';
+
+    public const CREATED_DATE = 'CreatedDate';
+
+    public const CREATEDBY = 'Createdby';
+
+    public const NO_SERIES = 'NoSeries';
+
+    public const EXTERNAL_I_D = 'ExternalID';
+
+    public const EXTERNAL_SYSTEM = 'ExternalSystem';
+
+    public const FIRST_NAME = 'FirstName';
+
+    public const MIDDLE_NAME = 'MiddleName';
+
+    public const SURNAME = 'Surname';
+
+    public const SALUTATION_CODE = 'SalutationCode';
+
+    public const SEARCH_E_MAIL = 'SearchE-Mail';
+
+    public const SEND_RECEIPTBY_EMAIL = 'SendReceiptbyE-mail';
 
     /**
-     * @property ArrayOfCard $Cards
-     */
-    protected $Cards = null;
-
-    /**
-     * @property ArrayOfProfile $MemberAttributes
-     */
-    protected $MemberAttributes = null;
-
-    /**
-     * @property ArrayOfNotification $Notifications
-     */
-    protected $Notifications = null;
-
-    /**
-     * @property ArrayOfOneList $OneLists
-     */
-    protected $OneLists = null;
-
-    /**
-     * @property ArrayOfProfile $Profiles
-     */
-    protected $Profiles = null;
-
-    /**
-     * @property ArrayOfPublishedOffer $PublishedOffers
-     */
-    protected $PublishedOffers = null;
-
-    /**
-     * @property ArrayOfSalesEntry $SalesEntries
-     */
-    protected $SalesEntries = null;
-
-    /**
-     * @property Account $Account
-     */
-    protected $Account = null;
-
-    /**
-     * @property string $AlternateId
-     */
-    protected $AlternateId = null;
-
-    /**
-     * @property string $AuthenticationId
-     */
-    protected $AuthenticationId = null;
-
-    /**
-     * @property string $Authenticator
-     */
-    protected $Authenticator = null;
-
-    /**
-     * @property string $BirthDay
-     */
-    protected $BirthDay = null;
-
-    /**
-     * @property boolean $Blocked
-     */
-    protected $Blocked = null;
-
-    /**
-     * @property string $BlockedBy
-     */
-    protected $BlockedBy = null;
-
-    /**
-     * @property string $BlockedReason
-     */
-    protected $BlockedReason = null;
-
-    /**
-     * @property string $DateBlocked
-     */
-    protected $DateBlocked = null;
-
-    /**
-     * @property string $Email
-     */
-    protected $Email = null;
-
-    /**
-     * @property OmniEnvironment $Environment
-     */
-    protected $Environment = null;
-
-    /**
-     * @property string $ExternalSystem
-     */
-    protected $ExternalSystem = null;
-
-    /**
-     * @property string $FirstName
-     */
-    protected $FirstName = null;
-
-    /**
-     * @property Gender $Gender
-     */
-    protected $Gender = null;
-
-    /**
-     * @property string $GuestType
-     */
-    protected $GuestType = null;
-
-    /**
-     * @property string $Initials
-     */
-    protected $Initials = null;
-
-    /**
-     * @property string $LastName
-     */
-    protected $LastName = null;
-
-    /**
-     * @property Device $LoggedOnToDevice
-     */
-    protected $LoggedOnToDevice = null;
-
-    /**
-     * @property MaritalStatus $MaritalStatus
-     */
-    protected $MaritalStatus = null;
-
-    /**
-     * @property string $MiddleName
-     */
-    protected $MiddleName = null;
-
-    /**
-     * @property string $Name
-     */
-    protected $Name = null;
-
-    /**
-     * @property string $Password
-     */
-    protected $Password = null;
-
-    /**
-     * @property SendEmail $SendReceiptByEMail
-     */
-    protected $SendReceiptByEMail = null;
-
-    /**
-     * @property string $UserName
-     */
-    protected $UserName = null;
-
-    /**
-     * @param ArrayOfAddress $Addresses
+     * @param string $AccountNo
      * @return $this
      */
-    public function setAddresses($Addresses)
+    public function setAccountNo($AccountNo)
     {
-        $this->Addresses = $Addresses;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfAddress
-     */
-    public function getAddresses()
-    {
-        return $this->Addresses;
-    }
-
-    /**
-     * @param ArrayOfCard $Cards
-     * @return $this
-     */
-    public function setCards($Cards)
-    {
-        $this->Cards = $Cards;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfCard
-     */
-    public function getCards()
-    {
-        return $this->Cards;
-    }
-
-    /**
-     * @param ArrayOfProfile $MemberAttributes
-     * @return $this
-     */
-    public function setMemberAttributes($MemberAttributes)
-    {
-        $this->MemberAttributes = $MemberAttributes;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfProfile
-     */
-    public function getMemberAttributes()
-    {
-        return $this->MemberAttributes;
-    }
-
-    /**
-     * @param ArrayOfNotification $Notifications
-     * @return $this
-     */
-    public function setNotifications($Notifications)
-    {
-        $this->Notifications = $Notifications;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfNotification
-     */
-    public function getNotifications()
-    {
-        return $this->Notifications;
-    }
-
-    /**
-     * @param ArrayOfOneList $OneLists
-     * @return $this
-     */
-    public function setOneLists($OneLists)
-    {
-        $this->OneLists = $OneLists;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfOneList
-     */
-    public function getOneLists()
-    {
-        return $this->OneLists;
-    }
-
-    /**
-     * @param ArrayOfProfile $Profiles
-     * @return $this
-     */
-    public function setProfiles($Profiles)
-    {
-        $this->Profiles = $Profiles;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfProfile
-     */
-    public function getProfiles()
-    {
-        return $this->Profiles;
-    }
-
-    /**
-     * @param ArrayOfPublishedOffer $PublishedOffers
-     * @return $this
-     */
-    public function setPublishedOffers($PublishedOffers)
-    {
-        $this->PublishedOffers = $PublishedOffers;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfPublishedOffer
-     */
-    public function getPublishedOffers()
-    {
-        return $this->PublishedOffers;
-    }
-
-    /**
-     * @param ArrayOfSalesEntry $SalesEntries
-     * @return $this
-     */
-    public function setSalesEntries($SalesEntries)
-    {
-        $this->SalesEntries = $SalesEntries;
-        return $this;
-    }
-
-    /**
-     * @return ArrayOfSalesEntry
-     */
-    public function getSalesEntries()
-    {
-        return $this->SalesEntries;
-    }
-
-    /**
-     * @param Account $Account
-     * @return $this
-     */
-    public function setAccount($Account)
-    {
-        $this->Account = $Account;
-        return $this;
-    }
-
-    /**
-     * @return Account
-     */
-    public function getAccount()
-    {
-        return $this->Account;
-    }
-
-    /**
-     * @param string $AlternateId
-     * @return $this
-     */
-    public function setAlternateId($AlternateId)
-    {
-        $this->AlternateId = $AlternateId;
+        $this->setData(self::ACCOUNT_NO, $AccountNo);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAlternateId()
+    public function getAccountNo()
     {
-        return $this->AlternateId;
+        return $this->getData(self::ACCOUNT_NO);
     }
 
     /**
-     * @param string $AuthenticationId
+     * @param string $ClubCode
      * @return $this
      */
-    public function setAuthenticationId($AuthenticationId)
+    public function setClubCode($ClubCode)
     {
-        $this->AuthenticationId = $AuthenticationId;
+        $this->setData(self::CLUB_CODE, $ClubCode);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAuthenticationId()
+    public function getClubCode()
     {
-        return $this->AuthenticationId;
+        return $this->getData(self::CLUB_CODE);
     }
 
     /**
-     * @param string $Authenticator
+     * @param string $SchemeCode
      * @return $this
      */
-    public function setAuthenticator($Authenticator)
+    public function setSchemeCode($SchemeCode)
     {
-        $this->Authenticator = $Authenticator;
+        $this->setData(self::SCHEME_CODE, $SchemeCode);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAuthenticator()
+    public function getSchemeCode()
     {
-        return $this->Authenticator;
+        return $this->getData(self::SCHEME_CODE);
     }
 
     /**
-     * @param string $BirthDay
+     * @param string $ContactNo
      * @return $this
      */
-    public function setBirthDay($BirthDay)
+    public function setContactNo($ContactNo)
     {
-        $this->BirthDay = $BirthDay;
+        $this->setData(self::CONTACT_NO, $ContactNo);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getBirthDay()
+    public function getContactNo()
     {
-        return $this->BirthDay;
+        return $this->getData(self::CONTACT_NO);
     }
 
     /**
-     * @param boolean $Blocked
+     * @param boolean $MainContact
      * @return $this
      */
-    public function setBlocked($Blocked)
+    public function setMainContact($MainContact)
     {
-        $this->Blocked = $Blocked;
+        $this->setData(self::MAIN_CONTACT, $MainContact);
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getBlocked()
+    public function getMainContact()
     {
-        return $this->Blocked;
-    }
-
-    /**
-     * @param string $BlockedBy
-     * @return $this
-     */
-    public function setBlockedBy($BlockedBy)
-    {
-        $this->BlockedBy = $BlockedBy;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockedBy()
-    {
-        return $this->BlockedBy;
-    }
-
-    /**
-     * @param string $BlockedReason
-     * @return $this
-     */
-    public function setBlockedReason($BlockedReason)
-    {
-        $this->BlockedReason = $BlockedReason;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getBlockedReason()
-    {
-        return $this->BlockedReason;
-    }
-
-    /**
-     * @param string $DateBlocked
-     * @return $this
-     */
-    public function setDateBlocked($DateBlocked)
-    {
-        $this->DateBlocked = $DateBlocked;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDateBlocked()
-    {
-        return $this->DateBlocked;
-    }
-
-    /**
-     * @param string $Email
-     * @return $this
-     */
-    public function setEmail($Email)
-    {
-        $this->Email = $Email;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->Email;
-    }
-
-    /**
-     * @param OmniEnvironment $Environment
-     * @return $this
-     */
-    public function setEnvironment($Environment)
-    {
-        $this->Environment = $Environment;
-        return $this;
-    }
-
-    /**
-     * @return OmniEnvironment
-     */
-    public function getEnvironment()
-    {
-        return $this->Environment;
-    }
-
-    /**
-     * @param string $ExternalSystem
-     * @return $this
-     */
-    public function setExternalSystem($ExternalSystem)
-    {
-        $this->ExternalSystem = $ExternalSystem;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExternalSystem()
-    {
-        return $this->ExternalSystem;
-    }
-
-    /**
-     * @param string $FirstName
-     * @return $this
-     */
-    public function setFirstName($FirstName)
-    {
-        $this->FirstName = $FirstName;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFirstName()
-    {
-        return $this->FirstName;
-    }
-
-    /**
-     * @param Gender|string $Gender
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setGender($Gender)
-    {
-        if ( ! $Gender instanceof Gender ) {
-            if ( Gender::isValid( $Gender ) )
-                $Gender = new Gender( $Gender );
-            elseif ( Gender::isValidKey( $Gender ) )
-                $Gender = new Gender( constant( "Gender::$Gender" ) );
-            elseif ( ! $Gender instanceof Gender )
-                throw new InvalidEnumException();
-        }
-        $this->Gender = $Gender->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return Gender
-     */
-    public function getGender()
-    {
-        return $this->Gender;
-    }
-
-    /**
-     * @param string $GuestType
-     * @return $this
-     */
-    public function setGuestType($GuestType)
-    {
-        $this->GuestType = $GuestType;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGuestType()
-    {
-        return $this->GuestType;
-    }
-
-    /**
-     * @param string $Initials
-     * @return $this
-     */
-    public function setInitials($Initials)
-    {
-        $this->Initials = $Initials;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getInitials()
-    {
-        return $this->Initials;
-    }
-
-    /**
-     * @param string $LastName
-     * @return $this
-     */
-    public function setLastName($LastName)
-    {
-        $this->LastName = $LastName;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName()
-    {
-        return $this->LastName;
-    }
-
-    /**
-     * @param Device $LoggedOnToDevice
-     * @return $this
-     */
-    public function setLoggedOnToDevice($LoggedOnToDevice)
-    {
-        $this->LoggedOnToDevice = $LoggedOnToDevice;
-        return $this;
-    }
-
-    /**
-     * @return Device
-     */
-    public function getLoggedOnToDevice()
-    {
-        return $this->LoggedOnToDevice;
-    }
-
-    /**
-     * @param MaritalStatus|string $MaritalStatus
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setMaritalStatus($MaritalStatus)
-    {
-        if ( ! $MaritalStatus instanceof MaritalStatus ) {
-            if ( MaritalStatus::isValid( $MaritalStatus ) )
-                $MaritalStatus = new MaritalStatus( $MaritalStatus );
-            elseif ( MaritalStatus::isValidKey( $MaritalStatus ) )
-                $MaritalStatus = new MaritalStatus( constant( "MaritalStatus::$MaritalStatus" ) );
-            elseif ( ! $MaritalStatus instanceof MaritalStatus )
-                throw new InvalidEnumException();
-        }
-        $this->MaritalStatus = $MaritalStatus->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return MaritalStatus
-     */
-    public function getMaritalStatus()
-    {
-        return $this->MaritalStatus;
-    }
-
-    /**
-     * @param string $MiddleName
-     * @return $this
-     */
-    public function setMiddleName($MiddleName)
-    {
-        $this->MiddleName = $MiddleName;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMiddleName()
-    {
-        return $this->MiddleName;
+        return $this->getData(self::MAIN_CONTACT);
     }
 
     /**
@@ -705,7 +186,7 @@ class MemberContact extends Entity
      */
     public function setName($Name)
     {
-        $this->Name = $Name;
+        $this->setData(self::NAME, $Name);
         return $this;
     }
 
@@ -714,71 +195,601 @@ class MemberContact extends Entity
      */
     public function getName()
     {
-        return $this->Name;
+        return $this->getData(self::NAME);
     }
 
     /**
-     * @param string $Password
+     * @param string $SearchName
      * @return $this
      */
-    public function setPassword($Password)
+    public function setSearchName($SearchName)
     {
-        $this->Password = $Password;
+        $this->setData(self::SEARCH_NAME, $SearchName);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getPassword()
+    public function getSearchName()
     {
-        return $this->Password;
+        return $this->getData(self::SEARCH_NAME);
     }
 
     /**
-     * @param SendEmail|string $SendReceiptByEMail
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setSendReceiptByEMail($SendReceiptByEMail)
-    {
-        if ( ! $SendReceiptByEMail instanceof SendEmail ) {
-            if ( SendEmail::isValid( $SendReceiptByEMail ) )
-                $SendReceiptByEMail = new SendEmail( $SendReceiptByEMail );
-            elseif ( SendEmail::isValidKey( $SendReceiptByEMail ) )
-                $SendReceiptByEMail = new SendEmail( constant( "SendEmail::$SendReceiptByEMail" ) );
-            elseif ( ! $SendReceiptByEMail instanceof SendEmail )
-                throw new InvalidEnumException();
-        }
-        $this->SendReceiptByEMail = $SendReceiptByEMail->getValue();
-
-        return $this;
-    }
-
-    /**
-     * @return SendEmail
-     */
-    public function getSendReceiptByEMail()
-    {
-        return $this->SendReceiptByEMail;
-    }
-
-    /**
-     * @param string $UserName
+     * @param string $Name2
      * @return $this
      */
-    public function setUserName($UserName)
+    public function setName2($Name2)
     {
-        $this->UserName = $UserName;
+        $this->setData(self::NAME2, $Name2);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getUserName()
+    public function getName2()
     {
-        return $this->UserName;
+        return $this->getData(self::NAME2);
+    }
+
+    /**
+     * @param string $Address
+     * @return $this
+     */
+    public function setAddress($Address)
+    {
+        $this->setData(self::ADDRESS, $Address);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->getData(self::ADDRESS);
+    }
+
+    /**
+     * @param string $Address2
+     * @return $this
+     */
+    public function setAddress2($Address2)
+    {
+        $this->setData(self::ADDRESS2, $Address2);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress2()
+    {
+        return $this->getData(self::ADDRESS2);
+    }
+
+    /**
+     * @param string $City
+     * @return $this
+     */
+    public function setCity($City)
+    {
+        $this->setData(self::CITY, $City);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCity()
+    {
+        return $this->getData(self::CITY);
+    }
+
+    /**
+     * @param string $HouseApartmentNo
+     * @return $this
+     */
+    public function setHouseApartmentNo($HouseApartmentNo)
+    {
+        $this->setData(self::HOUSE_APARTMENT_NO, $HouseApartmentNo);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHouseApartmentNo()
+    {
+        return $this->getData(self::HOUSE_APARTMENT_NO);
+    }
+
+    /**
+     * @param string $PostCode
+     * @return $this
+     */
+    public function setPostCode($PostCode)
+    {
+        $this->setData(self::POST_CODE, $PostCode);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostCode()
+    {
+        return $this->getData(self::POST_CODE);
+    }
+
+    /**
+     * @param string $EMail
+     * @return $this
+     */
+    public function setEMail($EMail)
+    {
+        $this->setData(self::E_MAIL, $EMail);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEMail()
+    {
+        return $this->getData(self::E_MAIL);
+    }
+
+    /**
+     * @param string $HomePage
+     * @return $this
+     */
+    public function setHomePage($HomePage)
+    {
+        $this->setData(self::HOME_PAGE, $HomePage);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHomePage()
+    {
+        return $this->getData(self::HOME_PAGE);
+    }
+
+    /**
+     * @param string $PhoneNo
+     * @return $this
+     */
+    public function setPhoneNo($PhoneNo)
+    {
+        $this->setData(self::PHONE_NO, $PhoneNo);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNo()
+    {
+        return $this->getData(self::PHONE_NO);
+    }
+
+    /**
+     * @param string $MobilePhoneNo
+     * @return $this
+     */
+    public function setMobilePhoneNo($MobilePhoneNo)
+    {
+        $this->setData(self::MOBILE_PHONE_NO, $MobilePhoneNo);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobilePhoneNo()
+    {
+        return $this->getData(self::MOBILE_PHONE_NO);
+    }
+
+    /**
+     * @param string $TerritoryCode
+     * @return $this
+     */
+    public function setTerritoryCode($TerritoryCode)
+    {
+        $this->setData(self::TERRITORY_CODE, $TerritoryCode);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTerritoryCode()
+    {
+        return $this->getData(self::TERRITORY_CODE);
+    }
+
+    /**
+     * @param string $County
+     * @return $this
+     */
+    public function setCounty($County)
+    {
+        $this->setData(self::COUNTY, $County);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCounty()
+    {
+        return $this->getData(self::COUNTY);
+    }
+
+    /**
+     * @param string $Country
+     * @return $this
+     */
+    public function setCountry($Country)
+    {
+        $this->setData(self::COUNTRY, $Country);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->getData(self::COUNTRY);
+    }
+
+    /**
+     * @param string $Gender
+     * @return $this
+     */
+    public function setGender($Gender)
+    {
+        $this->setData(self::GENDER, $Gender);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->getData(self::GENDER);
+    }
+
+    /**
+     * @param date $DateofBirth
+     * @return $this
+     */
+    public function setDateofBirth($DateofBirth)
+    {
+        $this->setData(self::DATEOF_BIRTH, $DateofBirth);
+        return $this;
+    }
+
+    /**
+     * @return date
+     */
+    public function getDateofBirth()
+    {
+        return $this->getData(self::DATEOF_BIRTH);
+    }
+
+    /**
+     * @param string $Birthday
+     * @return $this
+     */
+    public function setBirthday($Birthday)
+    {
+        $this->setData(self::BIRTHDAY, $Birthday);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBirthday()
+    {
+        return $this->getData(self::BIRTHDAY);
+    }
+
+    /**
+     * @param string $MaritalStatus
+     * @return $this
+     */
+    public function setMaritalStatus($MaritalStatus)
+    {
+        $this->setData(self::MARITAL_STATUS, $MaritalStatus);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMaritalStatus()
+    {
+        return $this->getData(self::MARITAL_STATUS);
+    }
+
+    /**
+     * @param boolean $Blocked
+     * @return $this
+     */
+    public function setBlocked($Blocked)
+    {
+        $this->setData(self::BLOCKED, $Blocked);
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getBlocked()
+    {
+        return $this->getData(self::BLOCKED);
+    }
+
+    /**
+     * @param string $ReasonBlocked
+     * @return $this
+     */
+    public function setReasonBlocked($ReasonBlocked)
+    {
+        $this->setData(self::REASON_BLOCKED, $ReasonBlocked);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReasonBlocked()
+    {
+        return $this->getData(self::REASON_BLOCKED);
+    }
+
+    /**
+     * @param date $DateBlocked
+     * @return $this
+     */
+    public function setDateBlocked($DateBlocked)
+    {
+        $this->setData(self::DATE_BLOCKED, $DateBlocked);
+        return $this;
+    }
+
+    /**
+     * @return date
+     */
+    public function getDateBlocked()
+    {
+        return $this->getData(self::DATE_BLOCKED);
+    }
+
+    /**
+     * @param string $Blockedby
+     * @return $this
+     */
+    public function setBlockedby($Blockedby)
+    {
+        $this->setData(self::BLOCKEDBY, $Blockedby);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBlockedby()
+    {
+        return $this->getData(self::BLOCKEDBY);
+    }
+
+    /**
+     * @param date $CreatedDate
+     * @return $this
+     */
+    public function setCreatedDate($CreatedDate)
+    {
+        $this->setData(self::CREATED_DATE, $CreatedDate);
+        return $this;
+    }
+
+    /**
+     * @return date
+     */
+    public function getCreatedDate()
+    {
+        return $this->getData(self::CREATED_DATE);
+    }
+
+    /**
+     * @param string $Createdby
+     * @return $this
+     */
+    public function setCreatedby($Createdby)
+    {
+        $this->setData(self::CREATEDBY, $Createdby);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedby()
+    {
+        return $this->getData(self::CREATEDBY);
+    }
+
+    /**
+     * @param string $NoSeries
+     * @return $this
+     */
+    public function setNoSeries($NoSeries)
+    {
+        $this->setData(self::NO_SERIES, $NoSeries);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNoSeries()
+    {
+        return $this->getData(self::NO_SERIES);
+    }
+
+    /**
+     * @param string $ExternalID
+     * @return $this
+     */
+    public function setExternalID($ExternalID)
+    {
+        $this->setData(self::EXTERNAL_I_D, $ExternalID);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalID()
+    {
+        return $this->getData(self::EXTERNAL_I_D);
+    }
+
+    /**
+     * @param string $ExternalSystem
+     * @return $this
+     */
+    public function setExternalSystem($ExternalSystem)
+    {
+        $this->setData(self::EXTERNAL_SYSTEM, $ExternalSystem);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExternalSystem()
+    {
+        return $this->getData(self::EXTERNAL_SYSTEM);
+    }
+
+    /**
+     * @param string $FirstName
+     * @return $this
+     */
+    public function setFirstName($FirstName)
+    {
+        $this->setData(self::FIRST_NAME, $FirstName);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->getData(self::FIRST_NAME);
+    }
+
+    /**
+     * @param string $MiddleName
+     * @return $this
+     */
+    public function setMiddleName($MiddleName)
+    {
+        $this->setData(self::MIDDLE_NAME, $MiddleName);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->getData(self::MIDDLE_NAME);
+    }
+
+    /**
+     * @param string $Surname
+     * @return $this
+     */
+    public function setSurname($Surname)
+    {
+        $this->setData(self::SURNAME, $Surname);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurname()
+    {
+        return $this->getData(self::SURNAME);
+    }
+
+    /**
+     * @param string $SalutationCode
+     * @return $this
+     */
+    public function setSalutationCode($SalutationCode)
+    {
+        $this->setData(self::SALUTATION_CODE, $SalutationCode);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalutationCode()
+    {
+        return $this->getData(self::SALUTATION_CODE);
+    }
+
+    /**
+     * @param string $SearchEMail
+     * @return $this
+     */
+    public function setSearchEMail($SearchEMail)
+    {
+        $this->setData(self::SEARCH_E_MAIL, $SearchEMail);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSearchEMail()
+    {
+        return $this->getData(self::SEARCH_E_MAIL);
+    }
+
+    /**
+     * @param string $SendReceiptbyEmail
+     * @return $this
+     */
+    public function setSendReceiptbyEMail($SendReceiptbyEmail)
+    {
+        $this->setData(self::SEND_RECEIPTBY_EMAIL, $SendReceiptbyEmail);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSendReceiptbyEMail()
+    {
+        return $this->getData(self::SEND_RECEIPTBY_EMAIL);
     }
 }
 

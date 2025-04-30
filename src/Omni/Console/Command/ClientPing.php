@@ -4,8 +4,6 @@ namespace Ls\Omni\Console\Command;
 
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Console\Command;
-use \Ls\Omni\Helper\Data;
-use Magento\Framework\App\ObjectManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,11 +11,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ClientPing extends Command
 {
     public const COMMAND_NAME = 'omni:client:ping';
-
-    /**
-     * @var Data
-     */
-    public $omniDataHelper;
 
     /**
      * Configures the command options and description.
@@ -56,21 +49,5 @@ class ClientPing extends Command
 
         // Return success code
         return 0;
-    }
-
-    /**
-     * Get omni data helper using lazy load
-     *
-     * @return Data
-     */
-    public function getOmniDataHelper()
-    {
-        if ($this->omniDataHelper) {
-            return $this->omniDataHelper;
-        }
-
-        $this->omniDataHelper = ObjectManager::getInstance()->get(Data::class);
-
-        return $this->omniDataHelper;
     }
 }
