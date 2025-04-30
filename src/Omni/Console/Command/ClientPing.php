@@ -46,12 +46,12 @@ class ClientPing extends Command
         $pingResponse = $this->getOmniDataHelper()->omniPing();
 
         // Output the result based on the ping response
-        if (is_array($pingResponse)) {
+        if (is_array($pingResponse) && !empty($pingResponse)) {
             foreach ($pingResponse as $index => $response) {
                 $output->writeln(sprintf('%s:%s', $index, $response));
             }
         } else {
-            $output->writeln("ERROR: Unable to establish connection with the Commerce Service");
+            $output->writeln("ERROR: Unable to establish connection with the endpoint");
         }
 
         // Return success code

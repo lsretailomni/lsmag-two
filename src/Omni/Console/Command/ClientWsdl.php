@@ -40,12 +40,17 @@ class ClientWsdl extends Command
         $wsdlUrl = Service::getUrl($this->type, $this->baseUrl);
 
         // Instantiate the SOAP client with the WSDL URL and service type
-        /** @var Client $soapClient */
         // @codingStandardsIgnoreLine
         $soapClient = new Client($wsdlUrl, $this->type);
+        try {
+            $wsdl = $soapClient->getWsdlXml()->saveXML();
+        } catch (\Exception $e) {
+            $output->writeln("ERROR: Unable to establish connection with the endpoint");
+            return 0;
+        }
 
         // Output the WSDL XML content
-        $output->writeln($soapClient->getWsdlXml()->saveXML());
+        $output->writeln($wsdl);
 
         // Return success code
         return 0;

@@ -47,8 +47,13 @@ class ClientGenerate extends Command
         $cwd    = getcwd();
         $wsdl   = Service::getUrl($this->type, $this->baseUrl);
         $client = new Client($wsdl, $this->type);
+        try {
+            $metadata     = $client->getMetadata();
+        } catch (\Exception $e) {
+            $output->writeln("ERROR: Unable to establish connection with the endpoint");
+            return 0;
+        }
 
-        $metadata     = $client->getMetadata();
         $restrictions = array_keys($metadata->getRestrictions());
 
         $interfaceFolder = ucfirst($this->type->getValue());

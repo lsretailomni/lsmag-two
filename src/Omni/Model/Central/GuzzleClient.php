@@ -86,13 +86,19 @@ class GuzzleClient
                     return $body;
                 }
             }
-        } catch (RequestException $e) {
+        } catch (\Exception $e) {
             $this->logger->error('Guzzle Business Central Error: ' . $e->getMessage());
         }
 
         return null;
     }
 
+    /**
+     * Check if the response is a valid json object
+     *
+     * @param string $string
+     * @return bool
+     */
     public function isJson($string)
     {
         json_decode($string);
