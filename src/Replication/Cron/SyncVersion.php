@@ -2,12 +2,12 @@
 
 namespace Ls\Replication\Cron;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Api\Data\StoreInterface;
-use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 
 /**
@@ -34,7 +34,6 @@ class SyncVersion
     public $store;
 
     /**
-     * SyncVersion constructor.
      * @param LSR $lsr
      * @param Data $helper
      * @param ReplicationHelper $replicationHelper
@@ -44,7 +43,6 @@ class SyncVersion
         Data $helper,
         ReplicationHelper $replicationHelper
     ) {
-
         $this->lsr               = $lsr;
         $this->helper            = $helper;
         $this->replicationHelper = $replicationHelper;
@@ -56,6 +54,7 @@ class SyncVersion
      * @param $storeData
      * @return array|void
      * @throws NoSuchEntityException
+     * @throws GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -81,9 +80,7 @@ class SyncVersion
                         $this->store->getId(),
                         ScopeInterface::SCOPE_STORES
                     );
-                    $baseUrl = $this->lsr->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $this->store->getId());
-                    $lsKey   = $this->lsr->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $this->store->getId());
-                    $pong    = $this->helper->omniPing($baseUrl, $lsKey, '', '','', '');
+                    $pong    = $this->helper->omniPing();
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
                 }
                 $this->lsr->setStoreId(null);
@@ -99,7 +96,7 @@ class SyncVersion
      *
      * @param $storeData
      * @return array|null
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function executeManually($storeData = null)
     {
