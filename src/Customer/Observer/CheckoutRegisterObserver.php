@@ -4,19 +4,23 @@ namespace Ls\Customer\Observer;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\ContactHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\ResourceModel\Customer;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\AlreadyExistsException;
+use Magento\Framework\Exception\InputException;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Exception\State\InvalidTransitionException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
- * Class CheckoutRegisterObserver
- * @package Ls\Customer\Observer
+ * Observer responsible for customer register from checkout
  */
 class CheckoutRegisterObserver implements ObserverInterface
 {
@@ -42,7 +46,6 @@ class CheckoutRegisterObserver implements ObserverInterface
     private $lsr;
 
     /**
-     * CheckoutRegisterObserver constructor.
      * @param ContactHelper $contactHelper
      * @param CheckoutSession $checkoutSession
      * @param OrderRepositoryInterface $orderRepository
@@ -71,9 +74,16 @@ class CheckoutRegisterObserver implements ObserverInterface
     }
 
     /**
+     * Entry point for the observer
+     *
      * @param Observer $observer
-     * @throws Exception
+     * @return $this
      * @throws LocalizedException
+     * @throws InvalidEnumException
+     * @throws AlreadyExistsException
+     * @throws InputException
+     * @throws NoSuchEntityException
+     * @throws InvalidTransitionException
      */
     // @codingStandardsIgnoreStart
     public function execute(Observer $observer)
@@ -81,7 +91,11 @@ class CheckoutRegisterObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             $orderId = $this->checkoutSession->getLastOrderId();
             $order   = $this->orderRepository->get($orderId);
             if ($order->getCustomerId()) {

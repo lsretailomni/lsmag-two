@@ -69,7 +69,11 @@ class SaveBefore implements ObserverInterface
         }
 
         if (!empty($parameters->getData('email')) && $parameters->getData('ls_validation')) {
-            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            )) {
                 if ($this->contactHelper->isEmailExistInLsCentral($parameters->getData('email'))) {
                     $parameters->setData('ls_validation', false);
                     throw new AlreadyExistsException(

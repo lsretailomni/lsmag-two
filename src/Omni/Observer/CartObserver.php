@@ -6,8 +6,6 @@ use Exception;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity\OneList;
 use \Ls\Omni\Helper\BasketHelper;
-use \Ls\Omni\Helper\Data;
-use \LS\Omni\Helper\ItemHelper;
 use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
@@ -16,101 +14,91 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Psr\Log\LoggerInterface;
 
 /**
- * CartObserver Observer
- * This class is overriding in hospitality module
+ * This observer is responsible for basket integration
  */
 class CartObserver implements ObserverInterface
 {
-
     /**
      * @var BasketHelper
      */
-    public $basketHelper;
-
-    /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
+    private $basketHelper;
 
     /**
      * @var LoggerInterface
      */
-    public $logger;
+    private $logger;
 
     /**
      * @var CheckoutSession
      */
-    public $checkoutSession;
+    private $checkoutSession;
 
     /**
      * @var LSR
      */
-    public $lsr;
-
-    /**
-     * @var Data
-     */
-    public $data;
+    private $lsr;
 
     /**
      * @param BasketHelper $basketHelper
-     * @param ItemHelper $itemHelper
      * @param LoggerInterface $logger
      * @param CheckoutSession $checkoutSession
      * @param LSR $LSR
-     * @param Data $data
      */
     public function __construct(
         BasketHelper $basketHelper,
-        ItemHelper $itemHelper,
         LoggerInterface $logger,
         CheckoutSession $checkoutSession,
-        LSR $LSR,
-        Data $data
+        LSR $LSR
     ) {
         $this->basketHelper    = $basketHelper;
-        $this->itemHelper      = $itemHelper;
         $this->logger          = $logger;
         $this->checkoutSession = $checkoutSession;
         $this->lsr             = $LSR;
-        $this->data            = $data;
     }
 
     /**
+     * Entry point for the observer
+     *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this
      * @throws NoSuchEntityException
      * @throws LocalizedException
      */
     public function execute(Observer $observer)
     {
         try {
-            $salesQuoteItems = $observer->getItems();
-            if (!empty($salesQuoteItems)) {
-                $salesQuoteItem = reset($salesQuoteItems);
-                $quote          = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
-            } else {
-                $quote = $this->checkoutSession->getQuote();
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getBasketIntegrationOnFrontend()
+            )) {
+                $salesQuoteItems = $observer->getItems();
+                if (!empty($salesQuoteItems)) {
+                    $salesQuoteItem = reset($salesQuoteItems);
+                    $quote          = $this->basketHelper->getQuoteRepository()->get($salesQuoteItem->getQuoteId());
+                } else {
+                    $quote = $this->checkoutSession->getQuote();
+                }
+                // This will create one list if not created and will return onelist if its already created.
+                /** @var OneList|null $oneList */
+                $oneList = $this->basketHelper->get();
+                // add items from the quote to the oneList and return the updated onelist
+                $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
+                if (count($quote->getAllItems()) == 0) {
+                    $quote->setLsGiftCardAmountUsed(0);
+                    $quote->setLsGiftCardNo(null);
+                    $quote->setLsGiftCardPin(null);
+                    $quote->setLsPointsSpent(0);
+                    $quote->setLsPointsEarn(0);
+                    $quote->setSubtotal(0);
+                    $quote->setBaseSubtotal(0);
+                    $quote->setGrandTotal(0);
+                    $quote->setBaseGrandTotal(0);
+                    $this->basketHelper->quoteRepository->save($quote);
+                    $this->basketHelper->setOneListCalculationInCheckoutSession(null);
+                }
+                $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
             }
-            // This will create one list if not created and will return onelist if its already created.
-            /** @var OneList|null $oneList */
-            $oneList = $this->basketHelper->get();
-            // add items from the quote to the oneList and return the updated onelist
-            $oneList = $this->basketHelper->setOneListQuote($quote, $oneList);
-            if (count($quote->getAllItems()) == 0) {
-                $quote->setLsGiftCardAmountUsed(0);
-                $quote->setLsGiftCardNo(null);
-                $quote->setLsGiftCardPin(null);
-                $quote->setLsPointsSpent(0);
-                $quote->setLsPointsEarn(0);
-                $quote->setSubtotal(0);
-                $quote->setBaseSubtotal(0);
-                $quote->setGrandTotal(0);
-                $quote->setBaseGrandTotal(0);
-                $this->basketHelper->quoteRepository->save($quote);
-                $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-            }
-            $this->basketHelper->updateBasketAndSaveTotals($oneList, $quote);
         } catch (Exception $e) {
             $this->logger->error($e->getMessage());
         }

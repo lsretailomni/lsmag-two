@@ -10,10 +10,12 @@ use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\ActionFlag;
 use Magento\Framework\App\RequestInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Json\Helper\Data;
 use Psr\Log\LoggerInterface;
 
@@ -45,7 +47,6 @@ class AjaxLoginObserver implements ObserverInterface
     private $lsr;
 
     /**
-     * AjaxLoginObserver constructor.
      * @param ContactHelper $contactHelper
      * @param LoggerInterface $logger
      * @param CustomerSession $customerSession
@@ -73,9 +74,12 @@ class AjaxLoginObserver implements ObserverInterface
     }
 
     /**
+     * Entry point for the observer
+     *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this|Json
      * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
@@ -89,7 +93,11 @@ class AjaxLoginObserver implements ObserverInterface
             if (!empty($credentials['username']) && !empty($credentials['password'])) {
                 $email     = $username = $credentials['username'];
                 $is_email  = $this->contactHelper->isValid($username);
-                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                if ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                )) {
                     try {
                         // CASE FOR EMAIL LOGIN := TRANSLATION TO USERNAME
                         if ($is_email) {
@@ -138,6 +146,8 @@ class AjaxLoginObserver implements ObserverInterface
     }
 
     /**
+     * Generate message
+     *
      * @param Observer $observer
      * @param $message
      * @param bool $isError

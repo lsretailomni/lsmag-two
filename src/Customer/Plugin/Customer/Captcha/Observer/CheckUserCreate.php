@@ -15,6 +15,7 @@ use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
+use Zend_Log_Exception;
 
 /**
  * Plugin to sync customer to central after captcha validation
@@ -103,7 +104,7 @@ class CheckUserCreate
      * @param Observer $observer
      * @return $this
      * @throws LocalizedException
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|Zend_Log_Exception
      */
     public function customerRegisterationOnCentral($observer)
     {
@@ -111,7 +112,11 @@ class CheckUserCreate
         $isNotValid = false;
 
         if (!empty($parameters['email']) && $this->contactHelper->isValid($parameters['email'])) {
-            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId()) && $this->lsr->getStoreConfig(
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            ) && $this->lsr->getStoreConfig(
                 LSR::SC_LOYALTY_CUSTOMER_REGISTRATION_EMAIL_API_CALL,
                 $this->lsr->getCurrentStoreId()
             )) {
@@ -129,6 +134,9 @@ class CheckUserCreate
                 } catch (Exception $e) {
                     $this->logger->error($e->getMessage());
                 }
+            } else {
+                $session = $this->customerSession;
+                $this->contactHelper->syncCustomerToCentral($observer, $session);
             }
         } else {
             $this->messageManager->addErrorMessage(__('Your email address is invalid.'));

@@ -49,7 +49,7 @@ class SetCouponData
 
         if (!$lsr->isLSR($lsr->getCurrentStoreId(),
             false,
-            $lsr->getBasketCalculationOnFrontend()
+            $lsr->getBasketIntegrationOnFrontend()
         )) {
             return $proceed();
         }

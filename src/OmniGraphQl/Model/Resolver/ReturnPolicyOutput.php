@@ -47,7 +47,7 @@ class ReturnPolicyOutput implements ResolverInterface
             $childSku = $args['child_sku'];
         }
 
-        $response = $this->returnPolicyManagement->getReturnPolicy($parentSku, $childSku, $storeId);
+        $response = $this->returnPolicyManagement->getReturnPolicy($parentSku, $childSku, $storeId, true);
 
         return [
             'text' => $response,

@@ -140,6 +140,6 @@ class Coupons extends Coupon
         ) && $this->lsr->getStoreConfig(
             LSR::LS_COUPON_RECOMMENDATIONS_SHOW_ON_CART_CHECKOUT,
             $this->lsr->getCurrentStoreId()
-        ) && $this->lsr->getBasketCalculationOnFrontend());
+        ) && $this->lsr->getBasketIntegrationOnFrontend());
     }
 }

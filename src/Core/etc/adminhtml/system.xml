@@ -50,6 +50,46 @@
                     <source_model>Ls\Core\Model\Config\Source\Industry</source_model>
                 </field>
             </group>
+            <group id="standalone_integration"
+                   translate="label"
+                   type="text"
+                   sortOrder="40"
+                   showInDefault="1">
+                <depends>
+                    <field id="ls_mag/ls_enable/enabled">1</field>
+                </depends>
+                <label>Standalone Integrations</label>
+                <field id="customer"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="10"
+                       showInDefault="1">
+                    <label>Enable customer integration on frontend</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="basket"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1">
+                    <depends>
+                        <field id="*/*/customer">1</field>
+                    </depends>
+                    <label>Enable basket integration on Frontend</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="order"
+                       translate="label comment"
+                       type="select"
+                       sortOrder="20"
+                       showInDefault="1">
+                    <depends>
+                        <field id="*/*/customer">1</field>
+                    </depends>
+                    <label>Enable order integration on Frontend</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
         </section>
         <section id="general">
             <group id="single_store_mode"

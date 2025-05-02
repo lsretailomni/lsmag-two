@@ -11,25 +11,14 @@ use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Exception\InvalidEnumException;
 use Magento\Catalog\Model\Product\Type;
-use Magento\Catalog\Model\ProductFactory;
-use Magento\Catalog\Model\ProductRepository;
 use Magento\Catalog\Pricing\Price\FinalPrice;
 use Magento\Catalog\Pricing\Price\RegularPrice;
-use Magento\Checkout\Model\Cart;
-use Magento\Checkout\Model\Session as CheckoutSession;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
-use Magento\Customer\Model\CustomerFactory;
-use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Magento\Framework\App\Helper\AbstractHelper;
-use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Phrase;
-use Magento\Framework\Registry;
-use Magento\Framework\Session\SessionManagerInterface;
-use Magento\Framework\Stdlib\DateTime\DateTime;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\Quote;
 use Magento\Quote\Model\Quote\Item;
@@ -38,61 +27,13 @@ use Magento\Quote\Model\Quote\Item;
  * Useful helper functions for basket
  *
  */
-class BasketHelper extends AbstractHelper
+class BasketHelper extends AbstractHelperOmni
 {
-    /** @var Cart $cart */
-    public $cart;
-
-    /** @var ProductRepository $productRepository */
-    public $productRepository;
-
-    /**
-     * @var CheckoutSession
-     */
-    public $checkoutSession;
-
-    /**
-     * @var CustomerSession
-     */
-    public $customerSession;
-
-    /** @var SearchCriteriaBuilder $searchCriteriaBuilder */
-    public $searchCriteriaBuilder;
-
-    /**
-     * @var \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable
-     */
-    public $catalogProductTypeConfigurable;
-
-    /** @var ProductFactory $productFactory */
-    public $productFactory;
-
-    /** @var ItemHelper $itemHelper */
-    public $itemHelper;
-
-    /** @var Registry $registry */
-    public $registry;
-
     /** @var null|string */
     public $store_id = null;
 
-    /** @var  LSR $lsr */
-    public $lsr;
-
-    /**
-     * @var SessionManagerInterface
-     */
-    public $session;
-
-    /**
-     * @var $quoteRepository
-     */
-    public $quoteRepository;
-
-    /**
-     * @var $couponCode
-     */
-    public $couponCode;
+    /** @var string */
+    public string $couponCode = '';
 
     /**
      * @var boolean
@@ -100,95 +41,14 @@ class BasketHelper extends AbstractHelper
     public $calculateBasket;
 
     /**
-     * @var $data
+     * Initialize specific properties
+     *
+     * @return void
      */
-    public $data;
-
-    /**
-     * @var \Magento\Quote\Model\ResourceModel\Quote
-     */
-    public $quoteResourceModel;
-
-    /** @var CustomerFactory */
-    public $customerFactory;
-
-    /**
-     * @var CartRepositoryInterface
-     */
-    public $cartRepository;
-
-    /**
-     * @var LoyaltyHelper
-     */
-    public $loyaltyHelper;
-
-    /**
-     * @var DateTime
-     */
-    public $dateTime;
-
-    /**
-     * @param Context $context
-     * @param Cart $cart
-     * @param ProductRepository $productRepository
-     * @param CheckoutSession $checkoutSession
-     * @param CustomerSession $customerSession
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
-     * @param \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable
-     * @param ProductFactory $productFactory
-     * @param ItemHelper $itemHelper
-     * @param Registry $registry
-     * @param LSR $Lsr
-     * @param Data $data
-     * @param SessionManagerInterface $session
-     * @param CartRepositoryInterface $quoteRepository
-     * @param \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel
-     * @param CustomerFactory $customerFactory
-     * @param CartRepositoryInterface $cartRepository
-     * @param LoyaltyHelper $loyaltyHelper
-     * @param DateTime $dateTime
-     */
-    public function __construct(
-        Context $context,
-        Cart $cart,
-        ProductRepository $productRepository,
-        CheckoutSession $checkoutSession,
-        CustomerSession $customerSession,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        \Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable $catalogProductTypeConfigurable,
-        ProductFactory $productFactory,
-        ItemHelper $itemHelper,
-        Registry $registry,
-        LSR $Lsr,
-        Data $data,
-        SessionManagerInterface $session,
-        CartRepositoryInterface $quoteRepository,
-        \Magento\Quote\Model\ResourceModel\Quote $quoteResourceModel,
-        CustomerFactory $customerFactory,
-        CartRepositoryInterface $cartRepository,
-        LoyaltyHelper $loyaltyHelper,
-        DateTime $dateTime
-    ) {
-        parent::__construct($context);
-        $this->cart                           = $cart;
-        $this->productRepository              = $productRepository;
-        $this->checkoutSession                = $checkoutSession;
-        $this->customerSession                = $customerSession;
-        $this->searchCriteriaBuilder          = $searchCriteriaBuilder;
-        $this->catalogProductTypeConfigurable = $catalogProductTypeConfigurable;
-        $this->productFactory                 = $productFactory;
-        $this->itemHelper                     = $itemHelper;
-        $this->registry                       = $registry;
-        $this->lsr                            = $Lsr;
-        $this->data                           = $data;
-        $this->session                        = $session;
-        $this->quoteRepository                = $quoteRepository;
-        $this->quoteResourceModel             = $quoteResourceModel;
-        $this->customerFactory                = $customerFactory;
-        $this->cartRepository                 = $cartRepository;
-        $this->calculateBasket                = $this->lsr->getPlaceToCalculateBasket();
-        $this->loyaltyHelper                  = $loyaltyHelper;
-        $this->dateTime                       = $dateTime;
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->calculateBasket = $this->lsr->getPlaceToCalculateBasket();
     }
 
     /**
@@ -376,31 +236,15 @@ class BasketHelper extends AbstractHelper
         $quoteItems = $quote->getAllVisibleItems();
 
         if (empty($itemsArray)) {
-            $websiteId     = $quote->getStore()->getWebsiteId();
-            $customerEmail = $quote->getCustomerEmail();
-            $customerGroupId = null;
-            if (!$quote->getCustomerIsGuest()) {
-                $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
-                $customerGroupId = $customer->getGroupId();
-            }
             $lineNumber = 10000;
             foreach ($quoteItems as $quoteItem) {
                 list($itemId, $variantId, $uom) = $this->itemHelper->getComparisonValues(
                     $quoteItem->getSku()
                 );
                 $priceIncTax         = $discountPercentage = $discount = null;
-                $product             = $this->productRepository->get($quoteItem->getSku());
-                if ($customerGroupId) {
-                    $this->customerSession->setCustomerGroupId($customerGroupId);
-                }
-                $regularPrice = $product->getPriceInfo()->getPrice(
-                    RegularPrice::PRICE_CODE
-                )->getAmount()->getValue();
-                $finalPrice   = $product->getPriceInfo()->getPrice(
-                    FinalPrice::PRICE_CODE
-                )->getAmount()->getValue();
+                $regularPrice = $quoteItem->getOriginalPrice();
+                $finalPrice   = $quoteItem->getPriceInclTax();
 
-                $this->customerSession->setCustomerGroupId(null);
                 if ($finalPrice < $regularPrice) {
                     $priceIncTax        = $regularPrice;
                     $discount           = ($regularPrice - $finalPrice) * $quoteItem->getData('qty');
@@ -678,7 +522,7 @@ class BasketHelper extends AbstractHelper
             $this->get()
         );
 
-        $checkCouponAmount = $this->data->orderBalanceCheck(
+        $checkCouponAmount = $this->dataHelper->orderBalanceCheck(
             $this->checkoutSession->getQuote()->getLsGiftCardNo(),
             $this->checkoutSession->getQuote()->getLsGiftCardAmountUsed(),
             $this->checkoutSession->getQuote()->getLsPointsSpent(),
@@ -744,6 +588,7 @@ class BasketHelper extends AbstractHelper
                 $cartQuote->collectTotals();
             }
             $this->quoteResourceModel->save($cartQuote);
+            $this->quoteRepository->_resetState();
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
         }
@@ -804,7 +649,7 @@ class BasketHelper extends AbstractHelper
         if (!$this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
-            (bool) $this->lsr->getBasketCalculationOnFrontend()
+            $this->lsr->getBasketIntegrationOnFrontend()
         )) {
             return null;
         }
@@ -1061,14 +906,6 @@ class BasketHelper extends AbstractHelper
     }
 
     /**
-     * Return Item Helper which can be used on multiple areas where we have dependency injection issue.
-     */
-    public function getItemHelper()
-    {
-        return $this->itemHelper;
-    }
-
-    /**
      * This function is overriding in hospitality module
      *
      * Get Correct Item Row Total for mini-cart after comparison
@@ -1273,9 +1110,12 @@ class BasketHelper extends AbstractHelper
         if (!$order->getCustomerIsGuest()) {
             $customer = $this->customerFactory->create()->setWebsiteId($websiteId)->loadByEmail($customerEmail);
 
-            if (!empty($customer->getData('lsr_cardid'))) {
-                $orderEntity->setCardId($customer->getData('lsr_cardid'));
+            if (empty($customer->getData('lsr_cardid'))) {
+                $this->contactHelper->syncCustomerAndAddress($customer);
+                $customer = $this->contactHelper->loadCustomerByEmailAndWebsiteId($customerEmail, $websiteId);
             }
+
+            $orderEntity->setCardId($customer->getData('lsr_cardid'));
         }
         $orderDetails            = $this->getOrderLinesQuote($quote);
         $orderLinesArray         = $orderDetails['orderLinesArray'];
@@ -1378,14 +1218,14 @@ class BasketHelper extends AbstractHelper
      */
     public function validateLoyaltyPointsAgainstOrderTotal($cartQuote, $basketData)
     {
-        $this->data->orderBalanceCheck(
+        $this->dataHelper->orderBalanceCheck(
             $cartQuote->getLsGiftCardNo(),
             $cartQuote->getLsGiftCardAmountUsed(),
             $cartQuote->getLsPointsSpent(),
             $basketData
         );
         $loyaltyPoints      = $cartQuote->getLsPointsSpent();
-        $orderBalance       = $this->data->getOrderBalance(
+        $orderBalance       = $this->dataHelper->getOrderBalance(
             $cartQuote->getLsGiftCardAmountUsed(),
             0,
             $this->getBasketSessionValue()
@@ -1536,6 +1376,7 @@ class BasketHelper extends AbstractHelper
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $quote->setBasketResponse($calculation ? serialize($calculation) : null);
             $this->quoteResourceModel->save($quote);
+            $this->quoteRepository->_resetState();
         }
     }
 
@@ -1564,11 +1405,10 @@ class BasketHelper extends AbstractHelper
         if (!$quote) {
             return null;
         }
+
         $basketData = $quote->getBasketResponse();
         // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
-        $oneListCalculate = ($basketData) ? unserialize($basketData) : $basketData;
-
-        return $oneListCalculate;
+        return ($basketData) ? unserialize($basketData) : $basketData;
     }
 
     /**
