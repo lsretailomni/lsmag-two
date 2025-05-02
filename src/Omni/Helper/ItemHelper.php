@@ -537,8 +537,6 @@ class ItemHelper extends AbstractHelper
             $quote->setTotalsCollectedFlag(false)->collectTotals();
             $quote->setIsActive(1);
             $this->quoteResourceModel->save($quote);
-            $this->quoteRepository->_resetState();
-            $this->checkoutSession->_resetState();
         }
     }
 

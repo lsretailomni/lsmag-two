@@ -134,21 +134,23 @@ class SetShippingMethodsOnCartPlugin
                     $scopeId,
                     $storeId
                 );
+                if (empty($this->dataHelper->getCheckoutSession()->getNoManageStock())) {
+                    if (!$stockCollection) {
+                        throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));
+                    }
 
-                if (!$stockCollection) {
-                    throw new LocalizedException(__('Oops! Unable to do stock lookup currently.'));
-                }
-
-                foreach ($stockCollection as $stock) {
-                    if (!$stock['status']) {
-                        throw new LocalizedException(
-                            __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.')
-                        );
+                    foreach ($stockCollection as $stock) {
+                        if (!$stock['status']) {
+                            throw new LocalizedException(
+                                __('Unable to use selected shipping method since some or all of the cart items are not available in selected store.')
+                            );
+                        }
                     }
                 }
                 $validForClickAndCollect = true;
             }
         }
+
         $result = $proceed($field, $context, $info, $value, $args);
         if (!empty($this->dataHelper->getCheckoutSession()->getNoManageStock())) {
             $validForClickAndCollect = true;
