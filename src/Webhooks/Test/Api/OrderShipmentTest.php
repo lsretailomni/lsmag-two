@@ -69,7 +69,7 @@ class OrderShipmentTest extends AbstractWebhookTest
         ];
 
         // Using the Magento Web API client to send the request
-        $response = $this->_webApiCall($serviceInfo, $requestData);
+        $response = $this->_webApiCall($serviceInfo, $requestData, 'rest');
         if ($response) {
             foreach ($response as $result) {
                 $this->assertEquals(true, $result['success']);

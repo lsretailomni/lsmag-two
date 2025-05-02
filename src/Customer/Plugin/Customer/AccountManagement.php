@@ -76,6 +76,7 @@ class AccountManagement
         if (!empty($password)) {
             $extensionAttributes = $customer->getExtensionAttributes();
             $extensionAttributes->setData('ls_password', $this->contactHelper->encryptPassword($password));
+            $extensionAttributes->setData('lsr_password', $this->contactHelper->encryptPassword($password));
             $customer->setExtensionAttributes($extensionAttributes);
             if (empty($customer->getStoreId())) {
                 $customer->setStoreId($this->lsr->getCurrentStoreId());

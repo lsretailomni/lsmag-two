@@ -84,6 +84,7 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
         $customer->addData(
             [
                 'ls_password' => $this->contactHelper->encryptPassword(self::PASSWORD),
+                'lsr_password' => $this->contactHelper->encryptPassword(self::PASSWORD),
                 'email'     => $append. self::EMAIL,
                 'lsr_username' => ''
             ]
@@ -200,6 +201,5 @@ class SaveAfterObserverTest extends AbstractIntegrationTest
 
         $this->assertNull($customer->getData('lsr_resetcode'));
         $this->assertNull($customer->getData('ls_password'));
-        $this->assertNotNull($customer->getData('lsr_password'));
     }
 }

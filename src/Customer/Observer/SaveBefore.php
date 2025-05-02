@@ -49,7 +49,7 @@ class SaveBefore implements ObserverInterface
      *
      * @param Observer $observer
      * @return $this|void
-     * @throws AlreadyExistsException
+     * @throws AlreadyExistsException~
      * @throws InputException
      * @throws InvalidEnumException
      * @throws NoSuchEntityException

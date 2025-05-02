@@ -89,7 +89,6 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         Config(LSR::LS_COUPONS_SHOW_ON_CHECKOUT, 0, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-
         Config(LSR::LS_ENABLE_COUPON_ELEMENTS, 0, 'store', 'default'),
         Config(LSR::LS_COUPONS_SHOW_ON_CHECKOUT, 0, 'store', 'default'),
         Config(LSR::LS_ENABLE_LOYALTYPOINTS_ELEMENTS, 0, 'store', 'default'),
@@ -99,6 +98,7 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         Config(LSR::LSR_DISCOUNT_VALIDATION_ACTIVE, 0, 'store', 'default'),
         Config(LSR::PICKUP_TIMESLOTS_ENABLED, 0, 'website'),
         Config(LSR::SC_CLICKCOLLECT_ENABLED, 0, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website')
 
     ]
     public function testAfterProcessWithCouponsAndLoyDisabled()
@@ -144,7 +144,7 @@ class LayoutProcessorPluginTest extends AbstractIntegrationTest
         Config(LSR::SC_CLICKCOLLECT_ENABLED, self::SC_CLICKCOLLECT_ENABLED, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LS_CENTRAL_VERSION, 'website'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
-
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website')
     ]
     public function testAfterProcessWithAllDiscountOptionsEnabled()
     {
