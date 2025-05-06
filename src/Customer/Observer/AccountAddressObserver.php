@@ -50,7 +50,11 @@ class AccountAddressObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             /** @var $customerAddress Address */
             $customerAddress = $observer->getCustomerAddress();
             if (empty($customerAddress->getCustomer()->getData('lsr_cardid'))) {

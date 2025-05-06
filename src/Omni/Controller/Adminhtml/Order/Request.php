@@ -89,7 +89,7 @@ class Request extends Action
     /**
      * Send order to Ls Central admin controller execute
      *
-     * @return ResponseInterface|Redirect|ResultInterface
+     * @return Redirect
      * @throws NoSuchEntityException
      */
     public function execute()
@@ -154,6 +154,9 @@ class Request extends Action
                             if (!empty($response->getResult()->getId())) {
                                 $documentId = $response->getResult()->getId();
                                 $order->setDocumentId($documentId);
+                                $order->addCommentToStatusHistory(
+                                    __('Order request has been sent to LS Central successfully by the admin manually.')
+                                );
                                 $this->orderRepository->save($order);
                             }
                             $this->messageManager->addSuccessMessage(

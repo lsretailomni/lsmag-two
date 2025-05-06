@@ -4,17 +4,21 @@ namespace Ls\Omni\Observer;
 
 use Exception;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\BasketHelper;
 use \Ls\Omni\Helper\OrderHelper;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Exception\AlreadyExistsException;
 use Magento\Framework\Exception\InputException;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Sales\Model\ResourceModel\Order;
 use Psr\Log\LoggerInterface;
 
-/** Class for order process*/
+/**
+ * This observer is responsible for order integration
+ */
 class OrderObserver implements ObserverInterface
 {
     /**
@@ -43,7 +47,6 @@ class OrderObserver implements ObserverInterface
     private $lsr;
 
     /***
-     * OrderObserver constructor.
      * @param BasketHelper $basketHelper
      * @param OrderHelper $orderHelper
      * @param LoggerInterface $logger
@@ -65,11 +68,16 @@ class OrderObserver implements ObserverInterface
     }
 
     /**
+     * Entry point for the observer
+     *
      * @param Observer $observer
-     * @return $this|void
+     * @return $this
+     * @throws AlreadyExistsException
      * @throws InputException
      * @throws NoSuchEntityException
-     * @throws AlreadyExistsException
+     * @throws InvalidEnumException
+     * @throws LocalizedException
+     * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function execute(Observer $observer)
     {
@@ -84,7 +92,7 @@ class OrderObserver implements ObserverInterface
 
         if (!$this->orderHelper->isAllowed($order)) {
             $this->basketHelper->unSetLastDocumentId();
-            return null;
+            return $this;
         }
 
         /*
@@ -93,8 +101,11 @@ class OrderObserver implements ObserverInterface
         if ($this->lsr->isLSR(
             $this->lsr->getCurrentStoreId(),
             false,
-            (bool) $this->lsr->getBasketCalculationOnFrontend()
+            $this->lsr->getOrderIntegrationOnFrontend()
         )) {
+            if (empty($oneListCalculation) && empty($order->getDocumentId())) {
+                $oneListCalculation = $this->basketHelper->formulateCentralOrderRequestFromMagentoOrder($order);
+            }
             //checking for Adyen payment gateway
             $adyenResponse = $observer->getEvent()->getData('adyen_response');
             $order         = $this->orderHelper->setAdyenParameters($adyenResponse, $order);
@@ -110,11 +121,10 @@ class OrderObserver implements ObserverInterface
                 }
             }
             //add condition for free payment method when nothing is required i-e Payment is done through
-            // Loyalty Points/Giftcard
+            // Loyalty Points/Gift card
             if (!empty($oneListCalculation)) {
                 if (($check || !empty($transId))) {
                     $request  = $this->orderHelper->prepareOrder($order, $oneListCalculation);
-                    $response = null;
                     $response = $this->orderHelper->placeOrder($request);
                     try {
                         if ($response) {

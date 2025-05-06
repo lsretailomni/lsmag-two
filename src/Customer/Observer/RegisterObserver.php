@@ -80,7 +80,11 @@ class RegisterObserver implements ObserverInterface
             ) {
                 $customer->setData('lsr_username', $additionalParams['lsr_username']);
                 $customer->setData('password', $additionalParams['password']);
-                if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+                if ($this->lsr->isLSR(
+                    $this->lsr->getCurrentStoreId(),
+                    false,
+                    $this->lsr->getCustomerIntegrationOnFrontend()
+                )) {
                     /** @var Entity\MemberContact $contact */
                     if (is_array($additionalParams) && $additionalParams['lsr_id']) {
                         $customer = $this->contactHelper->setCustomerAttributesValues($additionalParams, $customer);

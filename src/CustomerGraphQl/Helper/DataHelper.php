@@ -15,7 +15,6 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper as Helper;
 use \Ls\Omni\Helper\OrderHelper;
 use \Ls\Omni\Helper\Data;
-use \Ls\Omni\Helper\ItemHelper;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -25,7 +24,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
  */
 class DataHelper
 {
-
     /**
      * @var LoyaltyHelper
      */
@@ -47,11 +45,6 @@ class DataHelper
     private $data;
 
     /**
-     * @var ItemHelper
-     */
-    public $itemHelper;
-
-    /**
      * @var LSR
      */
     private $lsr;
@@ -66,7 +59,6 @@ class DataHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
      * @param Data $data
-     * @param ItemHelper $itemHelper
      * @param Currency $currencyHelper
      * @param LSR $lsr
      */
@@ -75,7 +67,6 @@ class DataHelper
         OrderHelper $orderHelper,
         Helper $helper,
         Data $data,
-        ItemHelper $itemHelper,
         Currency $currencyHelper,
         LSR $lsr
     ) {
@@ -83,7 +74,6 @@ class DataHelper
         $this->orderHelper    = $orderHelper;
         $this->helper         = $helper;
         $this->data           = $data;
-        $this->itemHelper     = $itemHelper;
         $this->currencyHelper = $currencyHelper;
         $this->lsr            = $lsr;
     }
@@ -160,7 +150,12 @@ class DataHelper
     public function getSalesEntries($context, $maxNumberOfEntries)
     {
         $salesEntriesArray = [];
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             $websiteId = (int)$context->getExtensionAttributes()->getStore()->getWebsiteId();
             $userId    = $context->getUserId();
             $this->helper->setCustomerValuesInSession($userId, $websiteId);

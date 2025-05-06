@@ -28,8 +28,6 @@ use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
-use Magento\TestFramework\Fixture\AppArea;
 
 class CouponCodeObserverTest extends AbstractIntegrationTest
 {
@@ -106,16 +104,13 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
         $this->couponCodeObserver = $this->objectManager->get(CouponCodeObserver::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
-        AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -138,6 +133,8 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Valid Coupon Code scenario
+     *
+     * @magentoAppIsolation enabled
      */
     public function testValidCouponCode()
     {
@@ -172,22 +169,15 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             AbstractIntegrationTest::VALID_COUPON_CODE,
             $this->checkoutSession->getQuote()->getCouponCode()
         );
-
-        $cart->delete();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-        $this->checkoutSession->clearQuote();
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -212,6 +202,8 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
      * Invalid Coupon code scenario
      *
      * @return void
+     *
+     * @magentoAppIsolation enabled
      */
     public function testInvalidCouponCode()
     {
@@ -247,22 +239,15 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             AbstractIntegrationTest::INVALID_COUPON_CODE,
             $this->checkoutSession->getQuote()->getCouponCode()
         );
-
-        $cart->delete();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-        $this->checkoutSession->clearQuote();
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
         Config(LSR::SC_SERVICE_BASE_URL, AbstractIntegrationTest::CS_URL, 'store', 'default'),
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -287,6 +272,8 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
      * Posting empty Coupon code
      *
      * @return void
+     *
+     * @magentoAppIsolation enabled
      */
     public function testEmptyCouponCode()
     {
@@ -320,10 +307,5 @@ class CouponCodeObserverTest extends AbstractIntegrationTest
             '',
             $this->checkoutSession->getQuote()->getCouponCode()
         );
-
-        $cart->delete();
-        $this->basketHelper->setOneListCalculationInCheckoutSession(null);
-        $this->checkoutSession->clearQuote();
-        $this->registry->unregister(LSR::REGISTRY_LOYALTY_LOGINRESULT);
     }
 }

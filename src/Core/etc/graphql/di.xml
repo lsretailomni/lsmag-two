@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\StoreGraphQl\Model\Resolver\Store\StoreConfigDataProvider">
+        <arguments>
+            <argument name="extendedConfigData">
+                <item name="standalone_integration_customer" xsi:type="string">ls_mag/standalone_integration/customer</item>
+                <item name="standalone_integration_basket" xsi:type="string">ls_mag/standalone_integration/basket</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

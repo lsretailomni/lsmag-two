@@ -16,18 +16,14 @@ use \Ls\Customer\Test\Fixture\CustomerFixture;
 use \Ls\Omni\Test\Fixture\CustomerAddressFixture;
 use \Ls\Omni\Test\Fixture\CustomerOrder;
 use \Ls\Omni\Test\Integration\AbstractIntegrationTest;
-use Magento\Framework\App\Request\Http as HttpRequest;
 use Magento\Framework\Event\Observer;
-use Magento\Framework\Event\ManagerInterface;
 use Magento\Quote\Test\Fixture\AddProductToCart;
 use Magento\Quote\Test\Fixture\CustomerCart;
 use Magento\TestFramework\Fixture\Config;
 use Magento\TestFramework\Fixture\DataFixture;
 use Magento\TestFramework\Fixture\DataFixtureStorageManager;
 use Magento\TestFramework\Helper\Bootstrap;
-use Magento\Quote\Model\QuoteFactory;
 use Magento\TestFramework\Fixture\AppArea;
-use Magento\Framework\Registry;
 use Magento\Framework\Event;
 use Magento\Customer\Model\Session as CustomerSession;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -44,29 +40,14 @@ class OrderObserverTest extends AbstractIntegrationTest
     public $objectManager;
 
     /**
-     * @var mixed
-     */
-    public $request;
-
-    /**
      * @var DataFixtureStorageManager
      */
     public $fixtures;
 
     /**
-     * @var mixed
-     */
-    public $registry;
-
-    /**
      * @var CheckoutSession
      */
     public $checkoutSession;
-
-    /**
-     * @var mixed
-     */
-    public $eventManager;
 
     /**
      * @var OrderObserver
@@ -102,12 +83,9 @@ class OrderObserverTest extends AbstractIntegrationTest
     protected function setUp(): void
     {
         $this->objectManager   = Bootstrap::getObjectManager();
-        $this->request         = $this->objectManager->get(HttpRequest::class);
         $this->fixtures        = $this->objectManager->get(DataFixtureStorageManager::class)->getStorage();
-        $this->eventManager    = $this->objectManager->create(ManagerInterface::class);
         $this->event           = $this->objectManager->get(Event::class);
         $this->orderObserver   = $this->objectManager->get(OrderObserver::class);
-        $this->registry        = $this->objectManager->get(Registry::class);
         $this->basketHelper    = $this->objectManager->get(BasketHelper::class);
         $this->itemHelper      = $this->objectManager->get(ItemHelper::class);
         $this->messageManager  = $this->objectManager->get(MessageManager::class);
@@ -115,9 +93,6 @@ class OrderObserverTest extends AbstractIntegrationTest
         $this->checkoutSession = $this->objectManager->get(CheckoutSession::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
@@ -128,6 +103,7 @@ class OrderObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
         Config(LSR::LSR_ORDER_EDIT, self::LSR_ORDER_EDIT, 'store', 'default'),
         Config(LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING, self::TENDER_TYPE_MAPPINGS, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -186,6 +162,8 @@ class OrderObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Test admin order edit creation
+     *
+     * @magentoAppIsolation enabled
      */
     public function testAdminOrderEdit()
     {
@@ -233,9 +211,6 @@ class OrderObserverTest extends AbstractIntegrationTest
         $this->assertNotNull($order2->getDocumentId());
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('adminhtml'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
@@ -244,6 +219,7 @@ class OrderObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, self::LICENSE, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -283,6 +259,8 @@ class OrderObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Test admin order creation
+     *
+     * @magentoAppIsolation enabled
      */
     public function testAdminOrderCreate()
     {

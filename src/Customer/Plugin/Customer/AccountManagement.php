@@ -76,6 +76,7 @@ class AccountManagement
         if (!empty($password)) {
             $extensionAttributes = $customer->getExtensionAttributes();
             $extensionAttributes->setData('ls_password', $this->contactHelper->encryptPassword($password));
+            $extensionAttributes->setData('lsr_password', $this->contactHelper->encryptPassword($password));
             $customer->setExtensionAttributes($extensionAttributes);
             if (empty($customer->getStoreId())) {
                 $customer->setStoreId($this->lsr->getCurrentStoreId());
@@ -109,7 +110,11 @@ class AccountManagement
         $email = $username;
         if (!empty($username) && !empty($password)) {
             $isEmail = $this->contactHelper->isValid($username);
-            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            )) {
                 if ($isEmail) {
                     $search = $this->contactHelper->search($username);
                     $found  = $search !== null
