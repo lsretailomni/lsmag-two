@@ -41,6 +41,10 @@ strategy:
 steps:
 
   - script: |
+      sudo apt-get update
+      sudo add-apt-repository ppa:ondrej/php -y
+      sudo apt-get update
+      sudo apt-get install -y php8.1 php8.1-cli php8.1-common php8.1-mbstring php8.1-xml php8.1-curl php8.1-mysql php8.1-bcmath php8.1-intl php8.1-soap php8.1-zip php8.1-readline php8.1-cgi php8.1-phpdbg php8.1-dev php8.1-opcache php8.1-cli php8.1-json php8.1-tokenizer
       sudo update-alternatives --set php /usr/bin/php$(phpVersion)
       sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
       sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
