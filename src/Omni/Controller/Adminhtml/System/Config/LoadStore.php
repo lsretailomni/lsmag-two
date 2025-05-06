@@ -70,33 +70,33 @@ class LoadStore extends Action
                 ['company' => $companyName]
             );
 
-            if (empty($pong)) {
-                $pong = 'Omni Ping failed. Please try with valid service base URL.';
-            }
-            if (!empty($pong)) {
+            if (is_array($pong) && !empty($pong)) {
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);
-            }
-            if ($this->lsr->validateBaseUrl(
-                $baseUrl,
-                $connectionParams,
-                ['company' => $companyName],
-                $scopeId
-            )) {
-                $stores = $this->helper->fetchWebStores(
+
+                if ($this->lsr->validateBaseUrl(
                     $baseUrl,
                     $connectionParams,
                     ['company' => $companyName],
-                    ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
-                );
-            }
-
-            if (!empty($stores)) {
-                $optionList = null;
-                $optionList = [['value' => '', 'label' => __('Please select your web store')]];
-                foreach ($stores as $store) {
-                    $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
+                    $scopeId
+                )) {
+                    $stores = $this->helper->fetchWebStores(
+                        $baseUrl,
+                        $connectionParams,
+                        ['company' => $companyName],
+                        ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
+                    );
                 }
+
+                if (!empty($stores)) {
+                    $optionList = null;
+                    $optionList = [['value' => '', 'label' => __('Please select your web store')]];
+                    foreach ($stores as $store) {
+                        $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
+                    }
+                }
+            } else {
+                $pong = __('Unfortunately, commerce service ping fails. Please try with valid connection details.');
             }
         } catch (Exception $e) {
             $this->logger->critical($e);

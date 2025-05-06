@@ -81,7 +81,10 @@ class SyncVersion
                         ScopeInterface::SCOPE_STORES
                     );
                     $pong    = $this->helper->omniPing();
-                    $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
+
+                    if (is_array($pong) && !empty($pong)) {
+                        $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
+                    }
                 }
                 $this->lsr->setStoreId(null);
             }
