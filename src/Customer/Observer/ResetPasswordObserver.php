@@ -17,8 +17,7 @@ use Magento\Framework\Message\ManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class ResetPasswordObserver
- * @package Ls\Customer\Observer
+ * Observer responsible for syncing customer password in case if it is reset
  */
 class ResetPasswordObserver implements ObserverInterface
 {
@@ -89,7 +88,11 @@ class ResetPasswordObserver implements ObserverInterface
         /*
          * Adding condition to only process if LSR is enabled.
          */
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             try {
                 $controller_action = $observer->getData('controller_action');
                 $post_param        = $controller_action->getRequest()->getParams();

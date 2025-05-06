@@ -90,7 +90,11 @@ class LoginObserver implements ObserverInterface
         if (!empty($login['username']) && !empty($login['password'])) {
             $email    = $username = $login['username'];
             $is_email = $this->contactHelper->isValid($username);
-            if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+            if ($this->lsr->isLSR(
+                $this->lsr->getCurrentStoreId(),
+                false,
+                $this->lsr->getCustomerIntegrationOnFrontend()
+            )) {
                 try {
                     if ($is_email) {
                         $search = $this->contactHelper->search($username);
@@ -111,7 +115,6 @@ class LoginObserver implements ObserverInterface
                     }
                     if ($result instanceof Entity\MemberContact) {
                         $this->contactHelper->processCustomerLogin($result, $login, $is_email);
-                        $this->contactHelper->updateBasketAndWishlistAfterLogin($result);
                     } else {
                         $this->customerSession->addError(
                             __('The service is currently unavailable. Please try again later.')

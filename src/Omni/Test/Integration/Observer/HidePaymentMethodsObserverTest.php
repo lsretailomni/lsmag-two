@@ -148,9 +148,6 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         $this->quoteIdMaskFactory         = $this->objectManager->get(QuoteIdMaskFactory::class);
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -158,6 +155,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -191,6 +189,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Show payment methods enabled for click and collect shipping method from admin
+     *
+     * @magentoAppIsolation enabled
      */
     public function testShowPayAtStorePaymentMethod()
     {
@@ -229,9 +229,6 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         $this->assertTrue($this->event->getResult()->getData('is_available'));
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -239,6 +236,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -268,6 +266,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Hide pay at store payment method for shipping methods other than click and collect
+     *
+     * @magentoAppIsolation enabled
      */
     public function testHidePayAtStorePaymentMethod()
     {
@@ -304,9 +304,6 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         $this->assertNull($this->event->getResult()->getData('is_available'));
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -314,6 +311,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -344,6 +342,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Hide payment method for click and collect shipping method if not enabled from admin.
+     *
+     * @magentoAppIsolation enabled
      */
     public function testHidePaymentMethodIfNotEnabledForClickandCollect()
     {
@@ -380,9 +380,6 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         $this->assertNotTrue($this->event->getResult()->getData('is_available'));
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -390,6 +387,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -420,6 +418,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Show Free payment method for zero order totals
+     *
+     * @magentoAppIsolation enabled
      */
     public function testShowFreeMethodForZeroOrderTotals()
     {
@@ -460,9 +460,6 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         $this->assertTrue($this->event->getResult()->getData('is_available'));
     }
 
-    /**
-     * @magentoDbIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, AbstractIntegrationTest::LS_MAG_ENABLE, 'store', 'default'),
@@ -470,6 +467,7 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_STORE, AbstractIntegrationTest::CS_STORE, 'store', 'default'),
         Config(LSR::SC_SERVICE_VERSION, AbstractIntegrationTest::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, AbstractIntegrationTest::RETAIL_INDUSTRY, 'store', 'default'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -500,6 +498,8 @@ class HidePaymentMethodsObserverTest extends AbstractIntegrationTest
     ]
     /**
      * Hide payment method for zero order totals
+     *
+     * @magentoAppIsolation enabled
      */
     public function testHidePaymentMethodForZeroOrderTotals()
     {

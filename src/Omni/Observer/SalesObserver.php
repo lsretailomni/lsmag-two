@@ -7,9 +7,10 @@ use \Ls\Omni\Helper\LoyaltyHelper;
 use Magento\Customer\Model\Address\AbstractAddress;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 /**
- * Setting grand_total & base_grand_total coming from omni
+ * This observer is responsible for setting grand_total & base_grand_total coming from omni
  */
 class SalesObserver implements ObserverInterface
 {
@@ -24,7 +25,6 @@ class SalesObserver implements ObserverInterface
     private $loyaltyHelper;
 
     /**
-     * SalesObserver constructor.
      * @param BasketHelper $basketHelper
      * @param LoyaltyHelper $loyaltyHelper
      */
@@ -37,7 +37,11 @@ class SalesObserver implements ObserverInterface
     }
 
     /**
-     * @inheritDoc
+     * Entry point for the observer
+     *
+     * @param Observer $observer
+     * @return $this
+     * @throws NoSuchEntityException
      */
     public function execute(Observer $observer)
     {
@@ -46,17 +50,18 @@ class SalesObserver implements ObserverInterface
         $shippingAssignment = $event->getShippingAssignment();
         $addressType        = $shippingAssignment->getShipping()->getAddress()->getAddressType();
         $total              = $event->getTotal();
-        $basketData         = $this->basketHelper->getBasketSessionValue();
-        if (!empty($basketData)) {
-            $pointDiscount  = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
-            $giftCardAmount = $quote->getLsGiftCardAmountUsed();
+        $pointDiscount      = $quote->getLsPointsSpent() * $this->loyaltyHelper->getPointRate();
+        $giftCardAmount     = $quote->getLsGiftCardAmountUsed();
 
-            if ($pointDiscount > 0.001) {
-                $quote->setLsPointsDiscount($pointDiscount);
-            }
+        if ($pointDiscount > 0.001) {
+            $quote->setLsPointsDiscount($pointDiscount);
+        }
 
-            if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
-                (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
+        if (($quote->isVirtual() && $addressType == AbstractAddress::TYPE_BILLING) ||
+            (!$quote->isVirtual() && $addressType == AbstractAddress::TYPE_SHIPPING)) {
+            $basketData = $this->basketHelper->getBasketSessionValue();
+
+            if (!empty($basketData)) {
                 $grandTotal = $basketData->getTotalAmount() + $total->getShippingInclTax()
                     - $pointDiscount - $giftCardAmount;
                 $taxAmount  = $basketData->getTotalAmount() - $basketData->getTotalNetAmount();
@@ -64,19 +69,25 @@ class SalesObserver implements ObserverInterface
                 $total->setTaxAmount($taxAmount)
                     ->setBaseTaxAmount($this->basketHelper->itemHelper->convertToBaseCurrency($taxAmount))
                     ->setSubtotal($basketData->getTotalNetAmount())
-                    ->setBaseSubtotal($this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount()))
+                    ->setBaseSubtotal(
+                        $this->basketHelper->itemHelper->convertToBaseCurrency($basketData->getTotalNetAmount())
+                    )
                     ->setSubtotalInclTax($subTotal)
                     ->setBaseSubtotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))
                     ->setBaseSubtotalTotalInclTax($this->basketHelper->itemHelper->convertToBaseCurrency($subTotal))
                     ->setGrandTotal($grandTotal)
                     ->setBaseGrandTotal($this->basketHelper->itemHelper->convertToBaseCurrency($grandTotal));
-            }
-        } else {
-            if (($addressType == AbstractAddress::TYPE_SHIPPING && $this->basketHelper->getLsrModel()->isEnabled())) {
-                $address = $shippingAssignment->getShipping()->getAddress();
-                $address->setSubtotal($total->getSubtotal());
-                $address->setSubtotalInclTax($total->getSubtotal());
+            } else {
+                if (($addressType == AbstractAddress::TYPE_SHIPPING &&
+                    $this->basketHelper->getLsrModel()->isEnabled())
+                ) {
+                    $address = $shippingAssignment->getShipping()->getAddress();
+                    $address->setSubtotal($total->getSubtotal());
+                    $address->setSubtotalInclTax($total->getSubtotal());
+                }
             }
         }
+
+        return $this;
     }
 }

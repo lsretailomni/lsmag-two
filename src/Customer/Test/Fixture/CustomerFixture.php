@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Ls\Customer\Test\Fixture;
 
 use \Ls\Customer\Test\Integration\AbstractIntegrationTest;
+use Ls\Omni\Helper\ContactHelper;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Customer\Model\CustomerRegistry;
 use Magento\Customer\Model\ResourceModel\Customer;
@@ -43,22 +44,28 @@ class CustomerFixture implements DataFixtureInterface
     /** @var CustomerRegistry */
     public $customerRegistry;
 
+    /** @var ContactHelper $contactHelper */
+    public $contactHelper;
+
     /**
      * @param CustomerFactory $customerFactory
      * @param Customer $customerResourceModel
      * @param StoreManagerInterface $storeManager
      * @param CustomerRegistry $customerRegistry
+     * @param ContactHelper $contactHelper
      */
     public function __construct(
         CustomerFactory $customerFactory,
         Customer $customerResourceModel,
         StoreManagerInterface $storeManager,
-        CustomerRegistry $customerRegistry
+        CustomerRegistry $customerRegistry,
+        ContactHelper $contactHelper
     ) {
         $this->customerFactory       = $customerFactory;
         $this->customerResourceModel = $customerResourceModel;
         $this->storeManager          = $storeManager;
         $this->customerRegistry      = $customerRegistry;
+        $this->contactHelper         = $contactHelper;
     }
 
     /**
@@ -75,6 +82,10 @@ class CustomerFixture implements DataFixtureInterface
         if (isset($data['random_email'])) {
             $append = 'test' . substr(sha1((uniqid((string)rand(), true))), 0, 40);
             $data['email'] = $append . AbstractIntegrationTest::EMAIL;
+        }
+
+        if (isset($data['lsr_password'])) {
+            $data['lsr_password'] = $this->contactHelper->encryptPassword($data['lsr_password']);
         }
         $data['website_id'] = $this->storeManager->getWebsite()->getWebsiteId();
         $data['store_id']   = $this->storeManager->getStore()->getId();

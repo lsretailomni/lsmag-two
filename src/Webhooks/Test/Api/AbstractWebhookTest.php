@@ -47,6 +47,8 @@ abstract class AbstractWebhookTest extends WebapiAbstract
             $privateKeyPath             = 'payment/braintree/sandbox_private_key';
             $publicKeyPath              = 'payment/braintree/sandbox_public_key';
             $merchantIdPath             = 'payment/braintree/sandbox_merchant_id';
+            $debug                      = 'payment/braintree/debug';
+            $sendLies                   = 'payment/braintree/send_line_items';
             $braintreePublicKeyEncrypt  = $encryptor->encrypt($braintreePublicKey);
             $braintreePrivateKeyEncrypt = $encryptor->encrypt($braintreePrivateKey);
             Configuration::environment('sandbox');
@@ -58,6 +60,9 @@ abstract class AbstractWebhookTest extends WebapiAbstract
             $replicationHelper->updateConfigValue($braintreePublicKeyEncrypt, $publicKeyPath);
             $replicationHelper->updateConfigValue($braintreePrivateKeyEncrypt, $privateKeyPath);
             $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
+            $replicationHelper->updateConfigValue($braintreeMerchantId, $merchantIdPath);
+            $replicationHelper->updateConfigValue('1', $debug);
+            $replicationHelper->updateConfigValue('0', $sendLies);
             $replicationHelper->flushByTypeCode('config');
         }
     }
@@ -277,6 +282,9 @@ abstract class AbstractWebhookTest extends WebapiAbstract
         $quote->setTotalsCollectedFlag(false);
         $quote->collectTotals();
         $cartRepository = $this->objectManager->create(\Magento\Quote\Api\CartRepositoryInterface::class);
+        foreach ($quote->getAllItems() as $item) {
+            $item->setBasePrice($item->getPrice());
+        }
         $cartRepository->save($quote);
         // Convert quote to order
         $quoteManagement = $this->objectManager->create(\Magento\Quote\Model\QuoteManagement::class);

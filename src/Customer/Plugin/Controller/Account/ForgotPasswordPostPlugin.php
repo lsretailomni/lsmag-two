@@ -91,7 +91,11 @@ class ForgotPasswordPostPlugin
      */
     public function aroundExecute(ForgotPasswordPost $subject, $proceed)
     {
-        if ($this->lsr->isLSR($this->lsr->getCurrentStoreId())) {
+        if ($this->lsr->isLSR(
+            $this->lsr->getCurrentStoreId(),
+            false,
+            $this->lsr->getCustomerIntegrationOnFrontend()
+        )) {
             $email = (string)$subject->getRequest()->getPost('email');
 
             if ($email) {

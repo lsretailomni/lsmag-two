@@ -129,9 +129,6 @@ class DataAssignObserverWithCncTest extends AbstractIntegrationTest
         $this->addressRespositoryInterface = $this->objectManager->create(AddressRepositoryInterface::class);
     }
 
-    /**
-     * @magentoAppIsolation enabled
-     */
     #[
         AppArea('frontend'),
         Config(LSR::SC_SERVICE_ENABLE, self::LS_MAG_ENABLE, 'store', 'default'),
@@ -140,6 +137,7 @@ class DataAssignObserverWithCncTest extends AbstractIntegrationTest
         Config(LSR::SC_SERVICE_VERSION, self::CS_VERSION, 'store', 'default'),
         Config(LSR::LS_INDUSTRY_VALUE, self::RETAIL_INDUSTRY, 'store', 'default'),
         Config(LSR::SC_SERVICE_LS_CENTRAL_VERSION, AbstractIntegrationTest::LICENSE, 'website'),
+        Config(LSR::SC_SERVICE_DEBUG, AbstractIntegrationTest::LS_MAG_ENABLE, 'website'),
         DataFixture(
             CustomerFixture::class,
             [
@@ -171,6 +169,8 @@ class DataAssignObserverWithCncTest extends AbstractIntegrationTest
     /**
      * Verify order object updates with click and collect shipping, pay at store payment method and
      * LS Points and coupon code usage.
+     *
+     * @magentoAppIsolation enabled
      */
     public function testOrderUpdatesWithCncMethod()
     {

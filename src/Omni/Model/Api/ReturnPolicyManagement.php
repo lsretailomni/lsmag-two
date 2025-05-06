@@ -20,7 +20,6 @@ use Psr\Log\LoggerInterface;
  */
 class ReturnPolicyManagement implements ReturnPolicyManagementInterface
 {
-
     /**
      * @var LSR
      */
@@ -74,18 +73,29 @@ class ReturnPolicyManagement implements ReturnPolicyManagementInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get return policy data
+     *
+     * @param string $itemId
+     * @param string $variantId
+     * @param string $storeId
+     * @param boolean $variantIdIsSku
+     * @return mixed
+     * @throws NoSuchEntityException
      */
-    public function getReturnPolicy($parentSku, $childSku, $storeId)
+    public function getReturnPolicy($itemId, $variantId, $storeId, $variantIdIsSku = false)
     {
         if (empty($storeId)) {
             $storeId = $this->lsr->getActiveWebStore();
         }
 
-        if (!empty($childSku)) {
-            $product = $this->productRepository->getById($childSku);
+        if (!empty($variantId)) {
+            if ($variantIdIsSku) {
+                $product = $this->productRepository->get($variantId);
+            } else {
+                $product = $this->productRepository->getById($variantId);
+            }
         } else {
-            $product = $this->productRepository->get($parentSku);
+            $product = $this->productRepository->get($itemId);
         }
 
         $itemId = $product->getLsrItemId();

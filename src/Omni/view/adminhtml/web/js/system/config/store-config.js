@@ -1,8 +1,7 @@
 define([
     'jquery',
-    'mage/translate',
     'mage/validation'
-], function ($, $t) {
+], function ($) {
     'use strict';
 
     return function (config) {
@@ -46,11 +45,11 @@ define([
                         // Update version and license display
                         centralVersionLabel.html(data.version || '');
                         licenseValidityLabel.html(data.licenseHtml || '');
-
+                        let isValidObject = typeof data.pong === 'object'
                         // Show success/failure message
-                        const message = data.pong
+                        const message = isValidObject
                             ? Object.entries(data.pong).map(([k, v]) => `${k}: ${v}`).join('\n')
-                            : $t('Unsuccessful!');
+                            : data.pong;
                         alert(message);
                     }
                 });
