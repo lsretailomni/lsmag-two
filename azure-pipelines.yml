@@ -32,38 +32,15 @@ services:
 strategy:
   matrix:
     magento_2_4_6_php_8_1:
-      phpVersion: '8.1'
-      magentoVersion: '2.4.6-p1'
-      databaseName: 'magento_2_4_6_php_8_1'
+      phpVersion: '8.3'
+      magentoVersion: '2.4.7-p3'
+      databaseName: 'magento_2_4_7_php_8_3'
       composerOverride: '{}'
       phpunitVersion: '^9'
 
 steps:
 
   - script: |
-      PHP_VERSION=$(phpVersion)
-      sudo apt-get update
-      sudo add-apt-repository ppa:ondrej/php -y
-      sudo apt-get update
-      sudo apt-get install -y \
-      php$PHP_VERSION \
-      php$PHP_VERSION-cli \
-      php$PHP_VERSION-common \
-      php$PHP_VERSION-mbstring \
-      php$PHP_VERSION-xml \
-      php$PHP_VERSION-curl \
-      php$PHP_VERSION-mysql \
-      php$PHP_VERSION-bcmath \
-      php$PHP_VERSION-intl \
-      php$PHP_VERSION-soap \
-      php$PHP_VERSION-zip \
-      php$PHP_VERSION-readline \
-      php$PHP_VERSION-cgi \
-      php$PHP_VERSION-phpdbg \
-      php$PHP_VERSION-dev \
-      php$PHP_VERSION-opcache \
-      php$PHP_VERSION-tokenizer \
-      php$PHP_VERSION-gd
       sudo update-alternatives --set php /usr/bin/php$(phpVersion)
       sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
       sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
