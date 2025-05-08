@@ -41,11 +41,6 @@ class NavStore implements OptionSourceInterface
      */
     public function getNavStores()
     {
-        return $this->helper->fetchWebStores(
-            '',
-            [],
-            [],
-            ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
-        );
+        return $this->helper->fetchWebStores();
     }
 }

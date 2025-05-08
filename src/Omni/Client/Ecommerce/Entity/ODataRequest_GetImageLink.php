@@ -5,12 +5,10 @@
  * @codingStandardsIgnoreFile
  */
 
-require_once __DIR__ . '/BaseODataRequest.php';
+namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ODataRequest_GetImageLink extends BaseODataRequest
 {
-    public function getActionName(): string
-    {
-        return 'ODataRequest_GetImageLink';
-    }
+    public const ACTION_NAME = 'ODataRequest_GetImageLink';
+
 }

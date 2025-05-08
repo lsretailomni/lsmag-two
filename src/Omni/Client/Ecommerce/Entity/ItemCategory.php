@@ -5,78 +5,391 @@
  * @codingStandardsIgnoreFile
  */
 
-
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ItemCategory extends Entity
+use Magento\Framework\DataObject;
+
+class ItemCategory extends DataObject
 {
-    /**
-     * @property ArrayOfImageView $Images
-     */
-    protected $Images = null;
+    public const CODE = 'Code';
+    public const PARENT_CATEGORY = 'Parent Category';
+    public const DESCRIPTION = 'Description';
+    public const INDENTATION = 'Indentation';
+    public const PRESENTATION_ORDER = 'Presentation Order';
+    public const HAS_CHILDREN = 'Has Children';
+    public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
+    public const DEFAULT_SUST_ACCOUNT = 'Default Sust. Account';
+    public const L_S_C_ITEM_NO_MISCELLANEOUS = 'LSC Item No. Miscellaneous';
+    public const L_S_C_NEGATIVE = 'LSC Negative';
+    public const L_S_C_NOT_DISCOUNTABLE = 'LSC Not Discountable';
+    public const L_S_C_ITEM_TEMPLATE_CODE = 'LSC Item Template Code';
+    public const L_S_C_DIFFERENCE_L_C_Y = 'LSC Difference (LCY)';
+    public const L_S_C_ITEM_HIERARCHY_VALUE = 'LSC Item Hierarchy Value';
+    public const L_S_C_P_O_S_INVENTORY_LOOKUP = 'LSC POS Inventory Lookup';
+    public const L_S_C_DEFAULT_PROFIT = 'LSC Default Profit %';
+    public const L_S_C_DISPENSE_PRINTER_GROUP = 'LSC Dispense Printer Group';
+    public const L_S_C_DISPENSE_PRINT_SEQ_NO = 'LSC Dispense Print Seq. No.';
+    public const L_S_C_DIVISION_CODE = 'LSC Division Code';
+    public const L_S_C_ITEM_ERROR_CHECK_CODE = 'LSC Item Error Check Code';
+    public const L_S_C_SUGGESTED_QTY_ON_P_O_S = 'LSC Suggested Qty. on POS';
+    public const L_S_C_PROFIT_GOAL = 'LSC Profit Goal %';
+    public const L_S_C_BUYER_GROUP_CODE = 'LSC Buyer Group Code';
+    public const L_S_C_REPLEN_DATA_PROFILE = 'LSC Replen. Data Profile';
+    public const L_S_C_BUYER_I_D = 'LSC Buyer ID';
+    public const L_S_C_REPLEN_TRANSFER_RULE_CODE = 'LSC Replen. Transfer Rule Code';
+    public const L_S_C_DEF_ITEM_DISTR_TYPE = 'LSC Def. Item Distr. Type';
+    public const L_S_C_DEF_ITEM_DISTR_CODE = 'LSC Def. Item Distr. Code';
+    public const L_S_C_EXCLUDE_FROM_REPLENISHMENT = 'LSC Exclude from Replenishment';
+    public const L_S_C_EXCLUDE_FROM_O_O_S_CALC = 'LSC Exclude from OOS Calc.';
+    public const L_S_C_PHYS_INVT_COUNT_PER_CODE = 'LSC Phys Invt Count. Per. Code';
+    public const L_S_C_ALLOCATION_RULE_CODE = 'LSC Allocation Rule Code';
+    public const L_S_C_P_L_B_CATEGORY = 'LSC PLB Category';
+    public const SYSTEM_ID = '$systemId';
+    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
+    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
+    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
+    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
-    /**
-     * @property ArrayOfProductGroup $ProductGroups
-     */
-    protected $ProductGroups = null;
-
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @param ArrayOfImageView $Images
-     * @return $this
-     */
-    public function setImages($Images)
+    public function getCode(): ?string
     {
-        $this->Images = $Images;
-        return $this;
+        return $this->getData(self::CODE);
     }
 
-    /**
-     * @return ArrayOfImageView
-     */
-    public function getImages()
+    public function setCode(string $value): self
     {
-        return $this->Images;
+        return $this->setData(self::CODE, $value);
+    }
+    public function getParentCategory(): ?string
+    {
+        return $this->getData(self::PARENT_CATEGORY);
     }
 
-    /**
-     * @param ArrayOfProductGroup $ProductGroups
-     * @return $this
-     */
-    public function setProductGroups($ProductGroups)
+    public function setParentCategory(string $value): self
     {
-        $this->ProductGroups = $ProductGroups;
-        return $this;
+        return $this->setData(self::PARENT_CATEGORY, $value);
+    }
+    public function getDescription(): ?string
+    {
+        return $this->getData(self::DESCRIPTION);
     }
 
-    /**
-     * @return ArrayOfProductGroup
-     */
-    public function getProductGroups()
+    public function setDescription(string $value): self
     {
-        return $this->ProductGroups;
+        return $this->setData(self::DESCRIPTION, $value);
+    }
+    public function getIndentation(): ?int
+    {
+        return $this->getData(self::INDENTATION);
     }
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
+    public function setIndentation(int $value): self
     {
-        $this->Description = $Description;
-        return $this;
+        return $this->setData(self::INDENTATION, $value);
+    }
+    public function getPresentationOrder(): ?int
+    {
+        return $this->getData(self::PRESENTATION_ORDER);
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function setPresentationOrder(int $value): self
     {
-        return $this->Description;
+        return $this->setData(self::PRESENTATION_ORDER, $value);
+    }
+    public function getHasChildren(): ?bool
+    {
+        return $this->getData(self::HAS_CHILDREN);
+    }
+
+    public function setHasChildren(bool $value): self
+    {
+        return $this->setData(self::HAS_CHILDREN, $value);
+    }
+    public function getLastModifiedDateTime(): ?\DateTime
+    {
+        return $this->getData(self::LAST_MODIFIED_DATE_TIME);
+    }
+
+    public function setLastModifiedDateTime(\DateTime $value): self
+    {
+        return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
+    }
+    public function getDefaultSustAccount(): ?string
+    {
+        return $this->getData(self::DEFAULT_SUST_ACCOUNT);
+    }
+
+    public function setDefaultSustAccount(string $value): self
+    {
+        return $this->setData(self::DEFAULT_SUST_ACCOUNT, $value);
+    }
+    public function getLSCItemNoMiscellaneous(): ?string
+    {
+        return $this->getData(self::L_S_C_ITEM_NO_MISCELLANEOUS);
+    }
+
+    public function setLSCItemNoMiscellaneous(string $value): self
+    {
+        return $this->setData(self::L_S_C_ITEM_NO_MISCELLANEOUS, $value);
+    }
+    public function getLSCNegative(): ?bool
+    {
+        return $this->getData(self::L_S_C_NEGATIVE);
+    }
+
+    public function setLSCNegative(bool $value): self
+    {
+        return $this->setData(self::L_S_C_NEGATIVE, $value);
+    }
+    public function getLSCNotDiscountable(): ?bool
+    {
+        return $this->getData(self::L_S_C_NOT_DISCOUNTABLE);
+    }
+
+    public function setLSCNotDiscountable(bool $value): self
+    {
+        return $this->setData(self::L_S_C_NOT_DISCOUNTABLE, $value);
+    }
+    public function getLSCItemTemplateCode(): ?string
+    {
+        return $this->getData(self::L_S_C_ITEM_TEMPLATE_CODE);
+    }
+
+    public function setLSCItemTemplateCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_ITEM_TEMPLATE_CODE, $value);
+    }
+    public function getLSCDifferenceLCY(): ?string
+    {
+        return $this->getData(self::L_S_C_DIFFERENCE_L_C_Y);
+    }
+
+    public function setLSCDifferenceLCY(string $value): self
+    {
+        return $this->setData(self::L_S_C_DIFFERENCE_L_C_Y, $value);
+    }
+    public function getLSCItemHierarchyValue(): ?string
+    {
+        return $this->getData(self::L_S_C_ITEM_HIERARCHY_VALUE);
+    }
+
+    public function setLSCItemHierarchyValue(string $value): self
+    {
+        return $this->setData(self::L_S_C_ITEM_HIERARCHY_VALUE, $value);
+    }
+    public function getLSCPOSInventoryLookup(): ?bool
+    {
+        return $this->getData(self::L_S_C_P_O_S_INVENTORY_LOOKUP);
+    }
+
+    public function setLSCPOSInventoryLookup(bool $value): self
+    {
+        return $this->setData(self::L_S_C_P_O_S_INVENTORY_LOOKUP, $value);
+    }
+    public function getLSCDefaultProfit(): ?string
+    {
+        return $this->getData(self::L_S_C_DEFAULT_PROFIT);
+    }
+
+    public function setLSCDefaultProfit(string $value): self
+    {
+        return $this->setData(self::L_S_C_DEFAULT_PROFIT, $value);
+    }
+    public function getLSCDispensePrinterGroup(): ?string
+    {
+        return $this->getData(self::L_S_C_DISPENSE_PRINTER_GROUP);
+    }
+
+    public function setLSCDispensePrinterGroup(string $value): self
+    {
+        return $this->setData(self::L_S_C_DISPENSE_PRINTER_GROUP, $value);
+    }
+    public function getLSCDispensePrintSeqNo(): ?int
+    {
+        return $this->getData(self::L_S_C_DISPENSE_PRINT_SEQ_NO);
+    }
+
+    public function setLSCDispensePrintSeqNo(int $value): self
+    {
+        return $this->setData(self::L_S_C_DISPENSE_PRINT_SEQ_NO, $value);
+    }
+    public function getLSCDivisionCode(): ?string
+    {
+        return $this->getData(self::L_S_C_DIVISION_CODE);
+    }
+
+    public function setLSCDivisionCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_DIVISION_CODE, $value);
+    }
+    public function getLSCItemErrorCheckCode(): ?string
+    {
+        return $this->getData(self::L_S_C_ITEM_ERROR_CHECK_CODE);
+    }
+
+    public function setLSCItemErrorCheckCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_ITEM_ERROR_CHECK_CODE, $value);
+    }
+    public function getLSCSuggestedQtyOnPOS(): ?string
+    {
+        return $this->getData(self::L_S_C_SUGGESTED_QTY_ON_P_O_S);
+    }
+
+    public function setLSCSuggestedQtyOnPOS(string $value): self
+    {
+        return $this->setData(self::L_S_C_SUGGESTED_QTY_ON_P_O_S, $value);
+    }
+    public function getLSCProfitGoal(): ?string
+    {
+        return $this->getData(self::L_S_C_PROFIT_GOAL);
+    }
+
+    public function setLSCProfitGoal(string $value): self
+    {
+        return $this->setData(self::L_S_C_PROFIT_GOAL, $value);
+    }
+    public function getLSCBuyerGroupCode(): ?string
+    {
+        return $this->getData(self::L_S_C_BUYER_GROUP_CODE);
+    }
+
+    public function setLSCBuyerGroupCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_BUYER_GROUP_CODE, $value);
+    }
+    public function getLSCReplenDataProfile(): ?string
+    {
+        return $this->getData(self::L_S_C_REPLEN_DATA_PROFILE);
+    }
+
+    public function setLSCReplenDataProfile(string $value): self
+    {
+        return $this->setData(self::L_S_C_REPLEN_DATA_PROFILE, $value);
+    }
+    public function getLSCBuyerID(): ?string
+    {
+        return $this->getData(self::L_S_C_BUYER_I_D);
+    }
+
+    public function setLSCBuyerID(string $value): self
+    {
+        return $this->setData(self::L_S_C_BUYER_I_D, $value);
+    }
+    public function getLSCReplenTransferRuleCode(): ?string
+    {
+        return $this->getData(self::L_S_C_REPLEN_TRANSFER_RULE_CODE);
+    }
+
+    public function setLSCReplenTransferRuleCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_REPLEN_TRANSFER_RULE_CODE, $value);
+    }
+    public function getLSCDefItemDistrType(): ?string
+    {
+        return $this->getData(self::L_S_C_DEF_ITEM_DISTR_TYPE);
+    }
+
+    public function setLSCDefItemDistrType(string $value): self
+    {
+        return $this->setData(self::L_S_C_DEF_ITEM_DISTR_TYPE, $value);
+    }
+    public function getLSCDefItemDistrCode(): ?string
+    {
+        return $this->getData(self::L_S_C_DEF_ITEM_DISTR_CODE);
+    }
+
+    public function setLSCDefItemDistrCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_DEF_ITEM_DISTR_CODE, $value);
+    }
+    public function getLSCExcludeFromReplenishment(): ?bool
+    {
+        return $this->getData(self::L_S_C_EXCLUDE_FROM_REPLENISHMENT);
+    }
+
+    public function setLSCExcludeFromReplenishment(bool $value): self
+    {
+        return $this->setData(self::L_S_C_EXCLUDE_FROM_REPLENISHMENT, $value);
+    }
+    public function getLSCExcludeFromOOSCalc(): ?bool
+    {
+        return $this->getData(self::L_S_C_EXCLUDE_FROM_O_O_S_CALC);
+    }
+
+    public function setLSCExcludeFromOOSCalc(bool $value): self
+    {
+        return $this->setData(self::L_S_C_EXCLUDE_FROM_O_O_S_CALC, $value);
+    }
+    public function getLSCPhysInvtCountPerCode(): ?string
+    {
+        return $this->getData(self::L_S_C_PHYS_INVT_COUNT_PER_CODE);
+    }
+
+    public function setLSCPhysInvtCountPerCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_PHYS_INVT_COUNT_PER_CODE, $value);
+    }
+    public function getLSCAllocationRuleCode(): ?string
+    {
+        return $this->getData(self::L_S_C_ALLOCATION_RULE_CODE);
+    }
+
+    public function setLSCAllocationRuleCode(string $value): self
+    {
+        return $this->setData(self::L_S_C_ALLOCATION_RULE_CODE, $value);
+    }
+    public function getLSCPLBCategory(): ?bool
+    {
+        return $this->getData(self::L_S_C_P_L_B_CATEGORY);
+    }
+
+    public function setLSCPLBCategory(bool $value): self
+    {
+        return $this->setData(self::L_S_C_P_L_B_CATEGORY, $value);
+    }
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
+    }
+    public function getSystemCreatedAt(): ?\DateTime
+    {
+        return $this->getData(self::SYSTEM_CREATED_AT);
+    }
+
+    public function setSystemCreatedAt(\DateTime $value): self
+    {
+        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+    }
+    public function getSystemCreatedBy(): ?string
+    {
+        return $this->getData(self::SYSTEM_CREATED_BY);
+    }
+
+    public function setSystemCreatedBy(string $value): self
+    {
+        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+    }
+    public function getSystemModifiedAt(): ?\DateTime
+    {
+        return $this->getData(self::SYSTEM_MODIFIED_AT);
+    }
+
+    public function setSystemModifiedAt(\DateTime $value): self
+    {
+        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+    }
+    public function getSystemModifiedBy(): ?string
+    {
+        return $this->getData(self::SYSTEM_MODIFIED_BY);
+    }
+
+    public function setSystemModifiedBy(string $value): self
+    {
+        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
     }
 }
-

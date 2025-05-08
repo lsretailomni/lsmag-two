@@ -5,12 +5,16 @@
  * @codingStandardsIgnoreFile
  */
 
-require_once __DIR__ . '/BaseODataRequest.php';
+namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ODataRequest_GetWIDiscounts extends BaseODataRequest
 {
-    public function getActionName(): string
+    public const ACTION_NAME = 'ODataRequest_GetWIDiscounts';
+    public string $storeNo;
+
+    public function __construct(array $data)
     {
-        return 'ODataRequest_GetWIDiscounts';
+        $this->storeNo = (string)($data['storeNo'] ?? '');
+        parent::__construct($data);
     }
 }

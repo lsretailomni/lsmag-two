@@ -5,6 +5,8 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetHierarchy;
+use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -61,13 +63,10 @@ class LoadHierarchy extends Action
             if ($this->lsr->validateBaseUrl(
                 $baseUrl,
                 $connectionParams,
-                ['company' => $companyName],
+                ['companyName' => $companyName],
                 $scopeId
             )) {
-                $hierarchies = $this->helper->fetchWebStoreHierarchies(
-                    $baseUrl,
-                    $connectionParams,
-                    ['company' => $companyName],
+                $hierarchyRequest = new ODataRequest_GetHierarchy(
                     [
                         'storeNo' => $storeId,
                         'batchSize' => 100,
@@ -76,14 +75,20 @@ class LoadHierarchy extends Action
                         'lastEntryNo' => 0
                     ]
                 );
+                $hierarchyOperation = new HierarchyView(
+                    $baseUrl,
+                    $connectionParams,
+                    $companyName,
+                );
+                $hierarchies = $hierarchyOperation->execute($hierarchyRequest)->getRecords();
             }
 
             if (!empty($hierarchies)) {
                 $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {
                     $optionList[] = [
-                        'value' => $hierarchy['Hierarchy Code'],
-                        'label' => $hierarchy['Description']
+                        'value' => $hierarchy->getHierarchyCode(),
+                        'label' => $hierarchy->getDescription()
                     ];
                 }
             } else {

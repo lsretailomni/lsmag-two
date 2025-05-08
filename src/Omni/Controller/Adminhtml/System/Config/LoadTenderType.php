@@ -5,6 +5,8 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetTenderType;
+use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -66,10 +68,7 @@ class LoadTenderType extends Action
                 ['company' => $companyName],
                 $scopeId
             )) {
-                $tenderTypes = $this->helper->fetchWebStoreTenderTypes(
-                    $baseUrl,
-                    $connectionParams,
-                    ['company' => $companyName],
+                $tenderTypeRequest = new ODataRequest_GetTenderType(
                     [
                         'storeNo' => $storeId,
                         'batchSize' => 100,
@@ -78,6 +77,15 @@ class LoadTenderType extends Action
                         'lastEntryNo' => 0
                     ]
                 );
+                $tenderTypeOperation = new LSCTenderType(
+                    $baseUrl,
+                    $connectionParams,
+                    $companyName,
+                );
+
+                $tenderTypes = $tenderTypeOperation->execute(
+                    $tenderTypeRequest
+                )->getRecords();
             }
 
             if (!empty($tenderTypes)) {
@@ -92,7 +100,7 @@ class LoadTenderType extends Action
                 $optionList = [['value' => '', 'label' => __('Select tender type')]];
                 foreach ($tenderTypes as $tenderType) {
                     $keyId        = '';
-                    $tenderTypeId = $tenderType['Code'];
+                    $tenderTypeId = $tenderType->getCode();
                     if (!empty($paymentTenderTypesArray)) {
                         $key = array_search(
                             $tenderTypeId,
@@ -106,7 +114,7 @@ class LoadTenderType extends Action
 
                     $optionList[] = [
                         'value'       => $tenderTypeId,
-                        'label'       => $tenderType['Description'],
+                        'label'       => $tenderType->getDescription(),
                         'selectedKey' => $keyId
                     ];
                 }

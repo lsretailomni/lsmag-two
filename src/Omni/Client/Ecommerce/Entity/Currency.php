@@ -5,308 +5,421 @@
  * @codingStandardsIgnoreFile
  */
 
-
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Ls\Omni\Client\Ecommerce\Entity\Enum\CurrencyRoundingMethod;
-use Ls\Omni\Exception\InvalidEnumException;
+use Magento\Framework\DataObject;
 
-class Currency extends Entity
+class Currency extends DataObject
 {
-    /**
-     * @property CurrencyRoundingMethod $AmountRoundingMethod
-     */
-    protected $AmountRoundingMethod = null;
+    public const CODE = 'Code';
+    public const LAST_DATE_MODIFIED = 'Last Date Modified';
+    public const LAST_DATE_ADJUSTED = 'Last Date Adjusted';
+    public const I_S_O_CODE = 'ISO Code';
+    public const I_S_O_NUMERIC_CODE = 'ISO Numeric Code';
+    public const UNREALIZED_GAINS_ACC = 'Unrealized Gains Acc.';
+    public const REALIZED_GAINS_ACC = 'Realized Gains Acc.';
+    public const UNREALIZED_LOSSES_ACC = 'Unrealized Losses Acc.';
+    public const REALIZED_LOSSES_ACC = 'Realized Losses Acc.';
+    public const INVOICE_ROUNDING_PRECISION = 'Invoice Rounding Precision';
+    public const INVOICE_ROUNDING_TYPE = 'Invoice Rounding Type';
+    public const AMOUNT_ROUNDING_PRECISION = 'Amount Rounding Precision';
+    public const UNIT_AMOUNT_ROUNDING_PRECISION = 'Unit-Amount Rounding Precision';
+    public const DESCRIPTION = 'Description';
+    public const AMOUNT_DECIMAL_PLACES = 'Amount Decimal Places';
+    public const UNIT_AMOUNT_DECIMAL_PLACES = 'Unit-Amount Decimal Places';
+    public const REALIZED_G_L_GAINS_ACCOUNT = 'Realized G/L Gains Account';
+    public const REALIZED_G_L_LOSSES_ACCOUNT = 'Realized G/L Losses Account';
+    public const APPLN_ROUNDING_PRECISION = 'Appln. Rounding Precision';
+    public const E_M_U_CURRENCY = 'EMU Currency';
+    public const CURRENCY_FACTOR = 'Currency Factor';
+    public const RESIDUAL_GAINS_ACCOUNT = 'Residual Gains Account';
+    public const RESIDUAL_LOSSES_ACCOUNT = 'Residual Losses Account';
+    public const CONV_L_C_Y_RNDG_DEBIT_ACC = 'Conv. LCY Rndg. Debit Acc.';
+    public const CONV_L_C_Y_RNDG_CREDIT_ACC = 'Conv. LCY Rndg. Credit Acc.';
+    public const MAX_V_A_T_DIFFERENCE_ALLOWED = 'Max. VAT Difference Allowed';
+    public const V_A_T_ROUNDING_TYPE = 'VAT Rounding Type';
+    public const PAYMENT_TOLERANCE = 'Payment Tolerance %';
+    public const MAX_PAYMENT_TOLERANCE_AMOUNT = 'Max. Payment Tolerance Amount';
+    public const SYMBOL = 'Symbol';
+    public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
+    public const L_S_C_LOWEST_ACCEPT_DENOM_AMT = 'LSC Lowest Accept. Denom. Amt.';
+    public const L_S_C_DENOMINATION_ROUNDING_TYPE = 'LSC Denomination Rounding Type';
+    public const L_S_C_P_O_S_CURRENCY_SYMBOL = 'LSC POS Currency Symbol';
+    public const L_S_C_PLACEMENT_OF_CURR_SYMBOL = 'LSC Placement Of Curr. Symbol';
+    public const L_S_C_FISCAL_PRINTER_I_D = 'LSC Fiscal Printer ID';
+    public const SYSTEM_ID = '$systemId';
+    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
+    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
+    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
+    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
-    /**
-     * @property string $Culture
-     */
-    protected $Culture = null;
-
-    /**
-     * @property int $DecimalPlaces
-     */
-    protected $DecimalPlaces = null;
-
-    /**
-     * @property string $DecimalSeparator
-     */
-    protected $DecimalSeparator = null;
-
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property string $Postfix
-     */
-    protected $Postfix = null;
-
-    /**
-     * @property string $Prefix
-     */
-    protected $Prefix = null;
-
-    /**
-     * @property float $RoundOffAmount
-     */
-    protected $RoundOffAmount = null;
-
-    /**
-     * @property float $RoundOffSales
-     */
-    protected $RoundOffSales = null;
-
-    /**
-     * @property CurrencyRoundingMethod $SaleRoundingMethod
-     */
-    protected $SaleRoundingMethod = null;
-
-    /**
-     * @property string $Symbol
-     */
-    protected $Symbol = null;
-
-    /**
-     * @property string $ThousandSeparator
-     */
-    protected $ThousandSeparator = null;
-
-    /**
-     * @param CurrencyRoundingMethod|string $AmountRoundingMethod
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setAmountRoundingMethod($AmountRoundingMethod)
+    public function getCode(): ?string
     {
-        if ( ! $AmountRoundingMethod instanceof CurrencyRoundingMethod ) {
-            if ( CurrencyRoundingMethod::isValid( $AmountRoundingMethod ) )
-                $AmountRoundingMethod = new CurrencyRoundingMethod( $AmountRoundingMethod );
-            elseif ( CurrencyRoundingMethod::isValidKey( $AmountRoundingMethod ) )
-                $AmountRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$AmountRoundingMethod" ) );
-            elseif ( ! $AmountRoundingMethod instanceof CurrencyRoundingMethod )
-                throw new InvalidEnumException();
-        }
-        $this->AmountRoundingMethod = $AmountRoundingMethod->getValue();
-
-        return $this;
+        return $this->getData(self::CODE);
     }
 
-    /**
-     * @return CurrencyRoundingMethod
-     */
-    public function getAmountRoundingMethod()
+    public function setCode(string $value): self
     {
-        return $this->AmountRoundingMethod;
+        return $this->setData(self::CODE, $value);
+    }
+    public function getLastDateModified(): ?string
+    {
+        return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    /**
-     * @param string $Culture
-     * @return $this
-     */
-    public function setCulture($Culture)
+    public function setLastDateModified(string $value): self
     {
-        $this->Culture = $Culture;
-        return $this;
+        return $this->setData(self::LAST_DATE_MODIFIED, $value);
+    }
+    public function getLastDateAdjusted(): ?string
+    {
+        return $this->getData(self::LAST_DATE_ADJUSTED);
     }
 
-    /**
-     * @return string
-     */
-    public function getCulture()
+    public function setLastDateAdjusted(string $value): self
     {
-        return $this->Culture;
+        return $this->setData(self::LAST_DATE_ADJUSTED, $value);
+    }
+    public function getISOCode(): ?string
+    {
+        return $this->getData(self::I_S_O_CODE);
     }
 
-    /**
-     * @param int $DecimalPlaces
-     * @return $this
-     */
-    public function setDecimalPlaces($DecimalPlaces)
+    public function setISOCode(string $value): self
     {
-        $this->DecimalPlaces = $DecimalPlaces;
-        return $this;
+        return $this->setData(self::I_S_O_CODE, $value);
+    }
+    public function getISONumericCode(): ?string
+    {
+        return $this->getData(self::I_S_O_NUMERIC_CODE);
     }
 
-    /**
-     * @return int
-     */
-    public function getDecimalPlaces()
+    public function setISONumericCode(string $value): self
     {
-        return $this->DecimalPlaces;
+        return $this->setData(self::I_S_O_NUMERIC_CODE, $value);
+    }
+    public function getUnrealizedGainsAcc(): ?string
+    {
+        return $this->getData(self::UNREALIZED_GAINS_ACC);
     }
 
-    /**
-     * @param string $DecimalSeparator
-     * @return $this
-     */
-    public function setDecimalSeparator($DecimalSeparator)
+    public function setUnrealizedGainsAcc(string $value): self
     {
-        $this->DecimalSeparator = $DecimalSeparator;
-        return $this;
+        return $this->setData(self::UNREALIZED_GAINS_ACC, $value);
+    }
+    public function getRealizedGainsAcc(): ?string
+    {
+        return $this->getData(self::REALIZED_GAINS_ACC);
     }
 
-    /**
-     * @return string
-     */
-    public function getDecimalSeparator()
+    public function setRealizedGainsAcc(string $value): self
     {
-        return $this->DecimalSeparator;
+        return $this->setData(self::REALIZED_GAINS_ACC, $value);
+    }
+    public function getUnrealizedLossesAcc(): ?string
+    {
+        return $this->getData(self::UNREALIZED_LOSSES_ACC);
     }
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
+    public function setUnrealizedLossesAcc(string $value): self
     {
-        $this->Description = $Description;
-        return $this;
+        return $this->setData(self::UNREALIZED_LOSSES_ACC, $value);
+    }
+    public function getRealizedLossesAcc(): ?string
+    {
+        return $this->getData(self::REALIZED_LOSSES_ACC);
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function setRealizedLossesAcc(string $value): self
     {
-        return $this->Description;
+        return $this->setData(self::REALIZED_LOSSES_ACC, $value);
+    }
+    public function getInvoiceRoundingPrecision(): ?string
+    {
+        return $this->getData(self::INVOICE_ROUNDING_PRECISION);
     }
 
-    /**
-     * @param string $Postfix
-     * @return $this
-     */
-    public function setPostfix($Postfix)
+    public function setInvoiceRoundingPrecision(string $value): self
     {
-        $this->Postfix = $Postfix;
-        return $this;
+        return $this->setData(self::INVOICE_ROUNDING_PRECISION, $value);
+    }
+    public function getInvoiceRoundingType(): ?string
+    {
+        return $this->getData(self::INVOICE_ROUNDING_TYPE);
     }
 
-    /**
-     * @return string
-     */
-    public function getPostfix()
+    public function setInvoiceRoundingType(string $value): self
     {
-        return $this->Postfix;
+        return $this->setData(self::INVOICE_ROUNDING_TYPE, $value);
+    }
+    public function getAmountRoundingPrecision(): ?string
+    {
+        return $this->getData(self::AMOUNT_ROUNDING_PRECISION);
     }
 
-    /**
-     * @param string $Prefix
-     * @return $this
-     */
-    public function setPrefix($Prefix)
+    public function setAmountRoundingPrecision(string $value): self
     {
-        $this->Prefix = $Prefix;
-        return $this;
+        return $this->setData(self::AMOUNT_ROUNDING_PRECISION, $value);
+    }
+    public function getUnitAmountRoundingPrecision(): ?string
+    {
+        return $this->getData(self::UNIT_AMOUNT_ROUNDING_PRECISION);
     }
 
-    /**
-     * @return string
-     */
-    public function getPrefix()
+    public function setUnitAmountRoundingPrecision(string $value): self
     {
-        return $this->Prefix;
+        return $this->setData(self::UNIT_AMOUNT_ROUNDING_PRECISION, $value);
+    }
+    public function getDescription(): ?string
+    {
+        return $this->getData(self::DESCRIPTION);
     }
 
-    /**
-     * @param float $RoundOffAmount
-     * @return $this
-     */
-    public function setRoundOffAmount($RoundOffAmount)
+    public function setDescription(string $value): self
     {
-        $this->RoundOffAmount = $RoundOffAmount;
-        return $this;
+        return $this->setData(self::DESCRIPTION, $value);
+    }
+    public function getAmountDecimalPlaces(): ?string
+    {
+        return $this->getData(self::AMOUNT_DECIMAL_PLACES);
     }
 
-    /**
-     * @return float
-     */
-    public function getRoundOffAmount()
+    public function setAmountDecimalPlaces(string $value): self
     {
-        return $this->RoundOffAmount;
+        return $this->setData(self::AMOUNT_DECIMAL_PLACES, $value);
+    }
+    public function getUnitAmountDecimalPlaces(): ?string
+    {
+        return $this->getData(self::UNIT_AMOUNT_DECIMAL_PLACES);
     }
 
-    /**
-     * @param float $RoundOffSales
-     * @return $this
-     */
-    public function setRoundOffSales($RoundOffSales)
+    public function setUnitAmountDecimalPlaces(string $value): self
     {
-        $this->RoundOffSales = $RoundOffSales;
-        return $this;
+        return $this->setData(self::UNIT_AMOUNT_DECIMAL_PLACES, $value);
+    }
+    public function getRealizedGLGainsAccount(): ?string
+    {
+        return $this->getData(self::REALIZED_G_L_GAINS_ACCOUNT);
     }
 
-    /**
-     * @return float
-     */
-    public function getRoundOffSales()
+    public function setRealizedGLGainsAccount(string $value): self
     {
-        return $this->RoundOffSales;
+        return $this->setData(self::REALIZED_G_L_GAINS_ACCOUNT, $value);
+    }
+    public function getRealizedGLLossesAccount(): ?string
+    {
+        return $this->getData(self::REALIZED_G_L_LOSSES_ACCOUNT);
     }
 
-    /**
-     * @param CurrencyRoundingMethod|string $SaleRoundingMethod
-     * @return $this
-     * @throws InvalidEnumException
-     */
-    public function setSaleRoundingMethod($SaleRoundingMethod)
+    public function setRealizedGLLossesAccount(string $value): self
     {
-        if ( ! $SaleRoundingMethod instanceof CurrencyRoundingMethod ) {
-            if ( CurrencyRoundingMethod::isValid( $SaleRoundingMethod ) )
-                $SaleRoundingMethod = new CurrencyRoundingMethod( $SaleRoundingMethod );
-            elseif ( CurrencyRoundingMethod::isValidKey( $SaleRoundingMethod ) )
-                $SaleRoundingMethod = new CurrencyRoundingMethod( constant( "CurrencyRoundingMethod::$SaleRoundingMethod" ) );
-            elseif ( ! $SaleRoundingMethod instanceof CurrencyRoundingMethod )
-                throw new InvalidEnumException();
-        }
-        $this->SaleRoundingMethod = $SaleRoundingMethod->getValue();
-
-        return $this;
+        return $this->setData(self::REALIZED_G_L_LOSSES_ACCOUNT, $value);
+    }
+    public function getApplnRoundingPrecision(): ?string
+    {
+        return $this->getData(self::APPLN_ROUNDING_PRECISION);
     }
 
-    /**
-     * @return CurrencyRoundingMethod
-     */
-    public function getSaleRoundingMethod()
+    public function setApplnRoundingPrecision(string $value): self
     {
-        return $this->SaleRoundingMethod;
+        return $this->setData(self::APPLN_ROUNDING_PRECISION, $value);
+    }
+    public function getEMUCurrency(): ?bool
+    {
+        return $this->getData(self::E_M_U_CURRENCY);
     }
 
-    /**
-     * @param string $Symbol
-     * @return $this
-     */
-    public function setSymbol($Symbol)
+    public function setEMUCurrency(bool $value): self
     {
-        $this->Symbol = $Symbol;
-        return $this;
+        return $this->setData(self::E_M_U_CURRENCY, $value);
+    }
+    public function getCurrencyFactor(): ?string
+    {
+        return $this->getData(self::CURRENCY_FACTOR);
     }
 
-    /**
-     * @return string
-     */
-    public function getSymbol()
+    public function setCurrencyFactor(string $value): self
     {
-        return $this->Symbol;
+        return $this->setData(self::CURRENCY_FACTOR, $value);
+    }
+    public function getResidualGainsAccount(): ?string
+    {
+        return $this->getData(self::RESIDUAL_GAINS_ACCOUNT);
     }
 
-    /**
-     * @param string $ThousandSeparator
-     * @return $this
-     */
-    public function setThousandSeparator($ThousandSeparator)
+    public function setResidualGainsAccount(string $value): self
     {
-        $this->ThousandSeparator = $ThousandSeparator;
-        return $this;
+        return $this->setData(self::RESIDUAL_GAINS_ACCOUNT, $value);
+    }
+    public function getResidualLossesAccount(): ?string
+    {
+        return $this->getData(self::RESIDUAL_LOSSES_ACCOUNT);
     }
 
-    /**
-     * @return string
-     */
-    public function getThousandSeparator()
+    public function setResidualLossesAccount(string $value): self
     {
-        return $this->ThousandSeparator;
+        return $this->setData(self::RESIDUAL_LOSSES_ACCOUNT, $value);
+    }
+    public function getConvLCYRndgDebitAcc(): ?string
+    {
+        return $this->getData(self::CONV_L_C_Y_RNDG_DEBIT_ACC);
+    }
+
+    public function setConvLCYRndgDebitAcc(string $value): self
+    {
+        return $this->setData(self::CONV_L_C_Y_RNDG_DEBIT_ACC, $value);
+    }
+    public function getConvLCYRndgCreditAcc(): ?string
+    {
+        return $this->getData(self::CONV_L_C_Y_RNDG_CREDIT_ACC);
+    }
+
+    public function setConvLCYRndgCreditAcc(string $value): self
+    {
+        return $this->setData(self::CONV_L_C_Y_RNDG_CREDIT_ACC, $value);
+    }
+    public function getMaxVATDifferenceAllowed(): ?string
+    {
+        return $this->getData(self::MAX_V_A_T_DIFFERENCE_ALLOWED);
+    }
+
+    public function setMaxVATDifferenceAllowed(string $value): self
+    {
+        return $this->setData(self::MAX_V_A_T_DIFFERENCE_ALLOWED, $value);
+    }
+    public function getVATRoundingType(): ?string
+    {
+        return $this->getData(self::V_A_T_ROUNDING_TYPE);
+    }
+
+    public function setVATRoundingType(string $value): self
+    {
+        return $this->setData(self::V_A_T_ROUNDING_TYPE, $value);
+    }
+    public function getPaymentTolerance(): ?string
+    {
+        return $this->getData(self::PAYMENT_TOLERANCE);
+    }
+
+    public function setPaymentTolerance(string $value): self
+    {
+        return $this->setData(self::PAYMENT_TOLERANCE, $value);
+    }
+    public function getMaxPaymentToleranceAmount(): ?string
+    {
+        return $this->getData(self::MAX_PAYMENT_TOLERANCE_AMOUNT);
+    }
+
+    public function setMaxPaymentToleranceAmount(string $value): self
+    {
+        return $this->setData(self::MAX_PAYMENT_TOLERANCE_AMOUNT, $value);
+    }
+    public function getSymbol(): ?string
+    {
+        return $this->getData(self::SYMBOL);
+    }
+
+    public function setSymbol(string $value): self
+    {
+        return $this->setData(self::SYMBOL, $value);
+    }
+    public function getLastModifiedDateTime(): ?\DateTime
+    {
+        return $this->getData(self::LAST_MODIFIED_DATE_TIME);
+    }
+
+    public function setLastModifiedDateTime(\DateTime $value): self
+    {
+        return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
+    }
+    public function getLSCLowestAcceptDenomAmt(): ?string
+    {
+        return $this->getData(self::L_S_C_LOWEST_ACCEPT_DENOM_AMT);
+    }
+
+    public function setLSCLowestAcceptDenomAmt(string $value): self
+    {
+        return $this->setData(self::L_S_C_LOWEST_ACCEPT_DENOM_AMT, $value);
+    }
+    public function getLSCDenominationRoundingType(): ?string
+    {
+        return $this->getData(self::L_S_C_DENOMINATION_ROUNDING_TYPE);
+    }
+
+    public function setLSCDenominationRoundingType(string $value): self
+    {
+        return $this->setData(self::L_S_C_DENOMINATION_ROUNDING_TYPE, $value);
+    }
+    public function getLSCPOSCurrencySymbol(): ?string
+    {
+        return $this->getData(self::L_S_C_P_O_S_CURRENCY_SYMBOL);
+    }
+
+    public function setLSCPOSCurrencySymbol(string $value): self
+    {
+        return $this->setData(self::L_S_C_P_O_S_CURRENCY_SYMBOL, $value);
+    }
+    public function getLSCPlacementOfCurrSymbol(): ?string
+    {
+        return $this->getData(self::L_S_C_PLACEMENT_OF_CURR_SYMBOL);
+    }
+
+    public function setLSCPlacementOfCurrSymbol(string $value): self
+    {
+        return $this->setData(self::L_S_C_PLACEMENT_OF_CURR_SYMBOL, $value);
+    }
+    public function getLSCFiscalPrinterID(): ?int
+    {
+        return $this->getData(self::L_S_C_FISCAL_PRINTER_I_D);
+    }
+
+    public function setLSCFiscalPrinterID(int $value): self
+    {
+        return $this->setData(self::L_S_C_FISCAL_PRINTER_I_D, $value);
+    }
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
+    }
+    public function getSystemCreatedAt(): ?\DateTime
+    {
+        return $this->getData(self::SYSTEM_CREATED_AT);
+    }
+
+    public function setSystemCreatedAt(\DateTime $value): self
+    {
+        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+    }
+    public function getSystemCreatedBy(): ?string
+    {
+        return $this->getData(self::SYSTEM_CREATED_BY);
+    }
+
+    public function setSystemCreatedBy(string $value): self
+    {
+        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+    }
+    public function getSystemModifiedAt(): ?\DateTime
+    {
+        return $this->getData(self::SYSTEM_MODIFIED_AT);
+    }
+
+    public function setSystemModifiedAt(\DateTime $value): self
+    {
+        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+    }
+    public function getSystemModifiedBy(): ?string
+    {
+        return $this->getData(self::SYSTEM_MODIFIED_BY);
+    }
+
+    public function setSystemModifiedBy(string $value): self
+    {
+        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
     }
 }
-

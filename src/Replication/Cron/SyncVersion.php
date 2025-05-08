@@ -82,7 +82,7 @@ class SyncVersion
                     );
                     $pong    = $this->helper->omniPing();
 
-                    if (is_array($pong) && !empty($pong)) {
+                    if (!empty($pong)) {
                         $this->helper->parsePingResponseAndSaveToConfigData($pong, $this->getScopeId());
                     }
                 }

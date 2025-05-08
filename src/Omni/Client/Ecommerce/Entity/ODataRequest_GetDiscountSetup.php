@@ -5,12 +5,10 @@
  * @codingStandardsIgnoreFile
  */
 
-require_once __DIR__ . '/BaseODataRequest.php';
+namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ODataRequest_GetDiscountSetup extends BaseODataRequest
 {
-    public function getActionName(): string
-    {
-        return 'ODataRequest_GetDiscountSetup';
-    }
+    public const ACTION_NAME = 'ODataRequest_GetDiscountSetup';
+
 }

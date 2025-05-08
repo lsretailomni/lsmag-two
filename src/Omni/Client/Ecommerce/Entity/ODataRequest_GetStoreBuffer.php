@@ -5,12 +5,10 @@
  * @codingStandardsIgnoreFile
  */
 
-require_once __DIR__ . '/BaseODataRequest.php';
+namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ODataRequest_GetStoreBuffer extends BaseODataRequest
 {
-    public function getActionName(): string
-    {
-        return 'ODataRequest_GetStoreBuffer';
-    }
+    public const ACTION_NAME = 'ODataRequest_GetStoreBuffer';
+
 }

@@ -5,12 +5,10 @@
  * @codingStandardsIgnoreFile
  */
 
-require_once __DIR__ . '/BaseODataRequest.php';
+namespace Ls\Omni\Client\Ecommerce\Entity;
 
 class ODataRequest_GetAttribute extends BaseODataRequest
 {
-    public function getActionName(): string
-    {
-        return 'ODataRequest_GetAttribute';
-    }
+    public const ACTION_NAME = 'ODataRequest_GetAttribute';
+
 }

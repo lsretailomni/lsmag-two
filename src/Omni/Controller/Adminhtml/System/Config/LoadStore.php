@@ -5,6 +5,10 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
+use \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection;
+use \Ls\Omni\Client\Ecommerce\Operation\LSCStore;
+use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -67,10 +71,18 @@ class LoadStore extends Action
             $pong = $this->helper->omniPing(
                 $baseUrl,
                 $connectionParams,
-                ['company' => $companyName]
+                ['companyName' => $companyName]
             );
 
-            if (is_array($pong) && !empty($pong)) {
+            $testConnection = new TestConnectionOData_TestConnection();
+            $testConnectionOperation = new TestConnectionResponse(
+                $baseUrl,
+                $connectionParams,
+                $companyName,
+            );
+            $pong = current($testConnectionOperation->execute($testConnection)->getRecords());
+
+            if (!empty($pong)) {
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);
 
@@ -80,19 +92,22 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $stores = $this->helper->fetchWebStores(
-                        $baseUrl,
-                        $connectionParams,
-                        ['company' => $companyName],
+                    $webStoreRequest = new GetStores_GetStores(
                         ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
                     );
+                    $webStoreOperation = new LSCStore(
+                        $baseUrl,
+                        $connectionParams,
+                        $companyName,
+                    );
+                    $stores = $webStoreOperation->execute($webStoreRequest)->getRecords();
                 }
 
                 if (!empty($stores)) {
                     $optionList = null;
                     $optionList = [['value' => '', 'label' => __('Please select your web store')]];
                     foreach ($stores as $store) {
-                        $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
+                        $optionList[] = ['value' => $store->getNo(), 'label' => $store->getName()];
                     }
                 }
             } else {
@@ -110,7 +125,7 @@ class LoadStore extends Action
                 'store' => $optionList,
                 'hierarchy' => $hierarchyPlaceholder,
                 'version' => $lsCentralVersion,
-                'pong' => $pong,
+                'pong' => $pong->getData(),
                 'licenseHtml' => $licenseHtml
             ]
         );
