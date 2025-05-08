@@ -588,7 +588,6 @@ class BasketHelper extends AbstractHelperOmni
                 $cartQuote->collectTotals();
             }
             $this->quoteResourceModel->save($cartQuote);
-            $this->quoteRepository->_resetState();
         } catch (Exception $e) {
             $this->_logger->critical($e->getMessage());
         }
@@ -1376,7 +1375,6 @@ class BasketHelper extends AbstractHelperOmni
             // phpcs:ignore Magento2.Security.InsecureFunction.FoundWithAlternative
             $quote->setBasketResponse($calculation ? serialize($calculation) : null);
             $this->quoteResourceModel->save($quote);
-            $this->quoteRepository->_resetState();
         }
     }
 
