@@ -2,6 +2,7 @@
 
 namespace Ls\Core\Model;
 
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -16,6 +17,10 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class LSR
 {
+    const TOKEN_ENDPOINT = 'https://login.microsoftonline.com/%s/oauth2/v2.0/token';
+    const BC_BASE_URL = 'https://lscentral.api.bc.dynamics.com/V2.0';
+    const TOKEN_SCOPE = 'https://api.businesscentral.dynamics.com/.default';
+    const TOKEN_GRANT_TYPE = 'client_credentials';
     const LSR_INVALID_MESSAGE = '<strong>LS Retail Setup Incomplete</strong><br/>
 Please define the LS Retail Service Base URL and Web Store to proceed.<br/>
 Go to Stores > Configuration > LS Retail > General Configuration.';
@@ -63,6 +68,15 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     // SERVICE
     const SC_SERVICE_ENABLE = 'ls_mag/service/enabled';
     const SC_SERVICE_BASE_URL = 'ls_mag/service/base_url';
+
+    const SC_SERVICE_TOKEN = 'ls_mag/service/token';
+    const SC_SERVICE_TOKEN_EXPIRY = 'ls_mag/service/token_expiry';
+    const SC_TENANT = 'ls_mag/service/tenant';
+    const SC_ENVIRONMENT_NAME = 'ls_mag/service/environment_name';
+    const SC_COMPANY_NAME = 'ls_mag/service/company_name';
+    const SC_CLIENT_ID = 'ls_mag/service/client_id';
+    const SC_CLIENT_SECRET = 'ls_mag/service/client_secret';
+
     const SC_SERVICE_LS_KEY = 'ls_mag/service/ls_key';
     const SC_SERVICE_STORE = 'ls_mag/service/selected_store';
     const SC_SERVICE_LCY_CODE = 'ls_mag/service/local_currency_code';
@@ -654,25 +668,27 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Validate base url
      *
-     * @param $baseUrl
-     * @param $lsKey
-     * @param $websiteId
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param array $query
+     * @param string $websiteId
      * @return bool
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function validateBaseUrl($baseUrl = null, $lsKey = null, $websiteId = null)
+    public function validateBaseUrl($baseUrl = '', $connectionParams = [], $query = [], $websiteId = '0')
     {
-        if ($baseUrl == null) {
+        if (empty($baseUrl)) {
             $baseUrl = $this->getStoreConfig(self::SC_SERVICE_BASE_URL);
-        }
-        if ($lsKey == null) {
-            $lsKey = $this->getStoreConfig(self::SC_SERVICE_LS_KEY);
         }
         if (empty($baseUrl)) {
             return false;
         }
+
+        $this->data->getOmniDataHelper()->setMissingParameters($baseUrl, $connectionParams, $query);
         $websiteId = ($websiteId) ?: $this->getWebsiteId();
-        return $this->data->isEndpointResponding($baseUrl, $lsKey, $websiteId);
+
+        return $this->data->isEndpointResponding($baseUrl, $connectionParams, $query, $websiteId);
     }
 
     /**
@@ -680,7 +696,9 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      *
      * @param bool $storeId
      * @param bool $scope
-     * @return bool
+     * @param bool $force
+     * @return bool|null
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function isLSR($storeId = false, $scope = false, $force = true)
@@ -700,19 +718,17 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
             $baseUrl                    = $this->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
             $store                      = $this->getWebsiteConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey                      = $this->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $websiteId                  = $storeId;
             $this->validateBaseUrlScope = $scope;
         } else {
             $baseUrl                    = $this->getStoreConfig(LSR::SC_SERVICE_BASE_URL, $storeId);
             $store                      = $this->getStoreConfig(LSR::SC_SERVICE_STORE, $storeId);
-            $lsKey                      = $this->getStoreConfig(LSR::SC_SERVICE_LS_KEY, $storeId);
             $this->validateBaseUrlScope = false;
         }
         if (empty($baseUrl) || empty($store)) {
             $this->validateBaseUrlResponse = false;
         } else {
-            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, $lsKey, $websiteId);
+            $this->validateBaseUrlResponse = $this->validateBaseUrl($baseUrl, [], [], $websiteId);
         }
 
         return $this->validateBaseUrlResponse;
@@ -995,27 +1011,22 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     /**
      * Get central version
      *
-     * @param null $storeId
-     * @param null $scope
-     * @param bool $formatted
-     * @return array|string
+     * @param string|null $storeId
+     * @param string|null $scope
+     * @return string
      * @throws NoSuchEntityException
      */
-    public function getCentralVersion($storeId = null, $scope = null, $formatted = true)
+    public function getCentralVersion($storeId = null, $scope = null)
     {
         if ($scope == ScopeInterface::SCOPE_WEBSITES || $scope == ScopeInterface::SCOPE_WEBSITE) {
-            $centralVersion = $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
-
-            return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
+            return $this->getWebsiteConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
         }
 
         //If StoreID is not passed they retrieve it from the global area.
         if ($storeId === null) {
             $storeId = $this->getCurrentStoreId();
         }
-        $centralVersion = $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
-
-        return $formatted && $centralVersion ? strstr($centralVersion, " ", true) : $centralVersion;
+        return $this->getStoreConfig(self::SC_SERVICE_LS_CENTRAL_VERSION, $storeId);
     }
 
     /**

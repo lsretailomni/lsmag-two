@@ -3,8 +3,10 @@
 namespace Ls\Core\Model;
 
 use Exception;
-use \Ls\Omni\Client\Ecommerce\Entity\PingResponse;
-use \Ls\Omni\Client\Ecommerce\Operation\Ping;
+use GuzzleHttp\Exception\GuzzleException;
+use \Ls\Omni\Client\Ecommerce\Entity\TestConnection;
+use \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResult;
+use \Ls\Omni\Model\Central\TokenRequestService;
 use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
 use \Ls\Omni\Client\ResponseInterface;
 use \Ls\Omni\Helper\CacheHelper;
@@ -17,6 +19,7 @@ use Magento\Config\Model\ResourceModel\Config\Data\Collection as ConfigDataColle
 use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ObjectManager;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
@@ -65,6 +68,16 @@ class Data
     public $scopeConfig;
 
     /**
+     * @var TokenRequestService
+     */
+    public $tokenRequestService;
+
+    /**
+     * @var \Ls\Omni\Helper\Data
+     */
+    public $omniDataHelper;
+
+    /**
      * @param StoreManagerInterface $storeManager
      * @param TransportBuilder $transportBuilder
      * @param StateInterface $state
@@ -73,6 +86,7 @@ class Data
      * @param CacheHelper $cacheHelper
      * @param ScopeConfigInterface $scopeConfig
      * @param LoggerInterface $logger
+     * @param TokenRequestService $tokenRequestService
      */
     public function __construct(
         StoreManagerInterface $storeManager,
@@ -82,7 +96,8 @@ class Data
         ConfigCollectionFactory $configDataCollectionFactory,
         CacheHelper $cacheHelper,
         ScopeConfigInterface $scopeConfig,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        TokenRequestService $tokenRequestService
     ) {
         $this->storeManager                = $storeManager;
         $this->transportBuilder            = $transportBuilder;
@@ -92,6 +107,7 @@ class Data
         $this->scopeConfig                 = $scopeConfig;
         $this->configDataCollectionFactory = $configDataCollectionFactory;
         $this->logger                      = $logger;
+        $this->tokenRequestService         = $tokenRequestService;
     }
 
     /**
@@ -121,7 +137,6 @@ class Data
         );
         return $enabled === '1' || $enabled === 1;
     }
-
 
     /**
      * @return mixed
@@ -196,34 +211,59 @@ class Data
      * Function for commerce service ping
      *
      * @param $baseUrl
-     * @param $lsKey
-     * @return PingResponse|ResponseInterface
+     * @return TestConnectionResult|ResponseInterface
      */
-    public function omniPing($baseUrl, $lsKey)
+    public function omniPing($baseUrl)
     {
         //@codingStandardsIgnoreStart
         $service_type = new ServiceType(StoresGetAll::SERVICE_TYPE);
         $url          = OmniService::getUrl($service_type, $baseUrl);
         $client       = new OmniClient($url, $service_type);
-        $ping         = new Ping();
+        $testConnection = new \Ls\Omni\Client\Ecommerce\Operation\TestConnection();
+        $testConnection->setRequest(
+            (new TestConnection())
+                ->setLSRetailVersion('')
+                ->setLSRetailCopyright('')
+                ->setApplicationVersion('')
+                ->setApplicationBuild('')
+                ->setResponseCode('')
+                ->setErrorText('')
+        );
         //@codingStandardsIgnoreEnd
-        $ping->setClient($client);
-        $ping->setToken($lsKey);
-        $client->setClassmap($ping->getClassMap());
+        $testConnection->setClient($client);
+        $client->setClassMap($testConnection->getClassMap());
 
-        return $ping->execute();
+        return $testConnection->execute();
+    }
+
+    /**
+     * Get omni data helper using lazy load
+     *
+     * @return \Ls\Omni\Helper\Data
+     */
+    public function getOmniDataHelper()
+    {
+        if ($this->omniDataHelper) {
+            return $this->omniDataHelper;
+        }
+
+        $this->omniDataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+
+        return $this->omniDataHelper;
     }
 
     /**
      * Checks heartbeat of commerce service
      *
-     * @param $url
-     * @param $lsKey
-     * @param $websiteId
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param array $query
+     * @param string $websiteId
      * @return bool
+     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
-    public function isEndpointResponding($url, $lsKey, $websiteId)
+    public function isEndpointResponding($baseUrl, $connectionParams, $query, $websiteId)
     {
         try {
             $cacheId       = LSR::PING_RESPONSE_CACHE . $websiteId;
@@ -233,15 +273,16 @@ class Data
                 return true;
             }
 
-            $response = $this->omniPing($url, $lsKey);
+            $omniDataHelper = $this->getOmniDataHelper();
+
+            $response = $omniDataHelper->omniPing($baseUrl, $connectionParams, $query);
 
             if ($response &&
-                strpos($response->getResult(), 'ERROR') === false &&
-                strpos($response->getResult(), 'Failed') === false
+                !empty($response['LSRetailVersion'])
             ) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response->getResult(),
+                    $response,
                     [Type::CACHE_TAG],
                     $this->getCommerceServiceHeartbeatTimeout()
                 );
@@ -250,13 +291,12 @@ class Data
                     $this->setNotificationEmailSent(0);
                 }
 
-                //Set license validity
-                if (strpos($response->getResult(), 'CL:') !== false) {
-                    if (strpos($response->getResult(), 'CL:True EL:True') !== false) {
-                        $this->setLicenseStatus("1");
-                    } else {
-                        $this->setLicenseStatus("0");
-                    }
+                if (!empty($response['LSRetailLicenseKeyActive']) &&
+                    !empty($response['LSRetailLicenseUnitEcom'])
+                ) {
+                    $this->setLicenseStatus("1");
+                } else {
+                    $this->setLicenseStatus("0");
                 }
 
                 return true;

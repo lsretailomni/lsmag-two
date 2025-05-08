@@ -2,8 +2,10 @@
 
 namespace Ls\Omni\Console\Command;
 
-use \Ls\Omni\Client\OperationInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Omni\Console\Command;
+use \Ls\Omni\Helper\Data;
+use Magento\Framework\App\ObjectManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,40 +15,62 @@ class ClientPing extends Command
     public const COMMAND_NAME = 'omni:client:ping';
 
     /**
-     * Configure command
+     * @var Data
+     */
+    public $omniDataHelper;
+
+    /**
+     * Configures the command options and description.
      *
      * @return void
      */
     public function configure()
     {
         $this->setName(self::COMMAND_NAME)
-            ->setDescription('show WSDL contents')
-            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'omni service type', 'ecommerce')
-            ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'omni service base url');
+            ->setDescription('Show ping response')
+            ->addOption('type', 't', InputOption::VALUE_REQUIRED, 'Omni service type', 'ecommerce')
+            ->addOption('base', 'b', InputOption::VALUE_OPTIONAL, 'Omni service base URL');
     }
 
     /**
-     * Entry point for the command
+     * Executes the command by pinging the specified Omni service.
      *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
+     * @param InputInterface $input The input interface containing command options
+     * @param OutputInterface $output The output interface for displaying results
+     *
+     * @return int Return code (0 indicates success)
+     * @throws GuzzleException
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $uc_type = ucfirst($this->type->getValue());
-        $class   = "Ls\\Omni\\Client\\$uc_type\\Operation\\Ping";
-        /** @var OperationInterface $ping */
-        // @codingStandardsIgnoreLine
-        $ping = new $class();
-        $pong = $ping->execute();
+        $pingResponse = $this->getOmniDataHelper()->omniPing();
 
-        if ($pong) {
-            $this->output->writeln($pong->getResult());
+        // Output the result based on the ping response
+        if (is_array($pingResponse) && !empty($pingResponse)) {
+            foreach ($pingResponse as $index => $response) {
+                $output->writeln(sprintf('%s:%s', $index, $response));
+            }
         } else {
-            $this->output->writeln("ERROR: Unable to establish connection with Commerce Service");
+            $output->writeln("ERROR: Unable to establish connection with the endpoint");
         }
 
+        // Return success code
         return 0;
+    }
+
+    /**
+     * Get omni data helper using lazy load
+     *
+     * @return Data
+     */
+    public function getOmniDataHelper()
+    {
+        if ($this->omniDataHelper) {
+            return $this->omniDataHelper;
+        }
+
+        $this->omniDataHelper = ObjectManager::getInstance()->get(Data::class);
+
+        return $this->omniDataHelper;
     }
 }

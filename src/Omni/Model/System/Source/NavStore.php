@@ -2,94 +2,50 @@
 
 namespace Ls\Omni\Model\System\Source;
 
-use \Ls\Core\Model\LSR;
-use Ls\Omni\Client\Ecommerce\Entity\ArrayOfStore;
-use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreGetType;
-use \Ls\Omni\Client\Ecommerce\Entity\Store;
-use Ls\Omni\Client\Ecommerce\Entity\StoresGetAllResponse;
-use Ls\Omni\Client\Ecommerce\Entity\StoresGetResponse;
-use \Ls\Omni\Client\Ecommerce\Operation\StoresGet;
-use \Ls\Omni\Client\Ecommerce\Operation\StoresGetAll;
-use Ls\Omni\Client\ResponseInterface;
-use Ls\Omni\Exception\InvalidEnumException;
+use GuzzleHttp\Exception\GuzzleException;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Data\OptionSourceInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Store\Model\ScopeInterface;
 
-/**
- * Class NavStore
- * @package Ls\Omni\Model\System\Source
- */
 class NavStore implements OptionSourceInterface
 {
     /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /** @var \Magento\Framework\App\RequestInterface */
-    public $request;
-
-    /**
-     * NavStore constructor.
-     * @param LSR $lsr
+     * @param Data $helper
      */
     public function __construct(
-        LSR $lsr,
-        \Magento\Framework\App\RequestInterface $request
+        public Data $helper
     ) {
-        $this->lsr     = $lsr;
-        $this->request = $request;
     }
 
+    /**
+     * Get options list
+     *
+     * @return array|array[]
+     * @throws GuzzleException|NoSuchEntityException
+     */
     public function toOptionArray()
     {
-        $option_array = [['value' => '', 'label' => __('Please select your web store')]];
         $stores       = $this->getNavStores();
-        if (!empty($stores)) {
-            foreach ($stores as $nav_store) {
-                $option_array[] = ['value' => $nav_store->getId(), 'label' => $nav_store->getDescription()];
-            }
+        $optionList = [['value' => '', 'label' => __('Please select your web store')]];
+        foreach ($stores as $store) {
+            $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
         }
-        return $option_array;
+        return $optionList;
     }
 
     /**
      * Get nav stores
      *
-     * @return array|ArrayOfStore|StoresGetAllResponse|StoresGetResponse|ResponseInterface|null
-     * @throws InvalidEnumException
-     * @throws NoSuchEntityException
+     * @return array
+     * @throws GuzzleException|NoSuchEntityException
      */
     public function getNavStores()
     {
-        // get current Website Id.
-        $websiteId = (int)$this->request->getParam('website');
-        $baseUrl   = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_BASE_URL, $websiteId);
-        $lsKey     = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_LS_KEY, $websiteId);
-
-        if ($this->lsr->validateBaseUrl($baseUrl, $lsKey)) {
-            // @codingStandardsIgnoreLine
-            if (version_compare(
-                $this->lsr->getOmniVersion($websiteId, ScopeInterface::SCOPE_WEBSITE), '2023.01', '>')
-            ) {
-                $get_nav_stores = new StoresGet($baseUrl);
-                $get_nav_stores->getOperationInput()->setStoreType(StoreGetType::WEB_STORE);
-            } else {
-                $get_nav_stores = new StoresGetAll($baseUrl);
-            }
-            $get_nav_stores->setToken($lsKey);
-            $result = $get_nav_stores->execute();
-
-            if ($result != null) {
-                $result = $result->getResult();
-            }
-            if (!is_array($result)) {
-                return $resultArray[] = $result;
-            } else {
-                return $result;
-            }
-        }
-        return [];
+        return $this->helper->fetchWebStores(
+            '',
+            [],
+            [],
+            ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
+        );
     }
 }

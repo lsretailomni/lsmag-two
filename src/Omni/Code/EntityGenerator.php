@@ -15,18 +15,12 @@ use Laminas\Code\Generator\DocBlock\Tag;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\ParameterGenerator;
-use Laminas\Code\Generator\PropertyGenerator;
-use \Ls\Omni\Service\Soap\ComplexTypeDefinition;
+use Magento\Framework\DataObject;
 
-/**
- * Class EntityGenerator
- * @package Ls\Omni\Code
- */
 class EntityGenerator extends AbstractOmniGenerator
 {
-
-    /** @var array */
-    public $equivalences = [
+    /** @var array Mapping of data types to their equivalents */
+    public $dataTypeEquivalences = [
         'decimal'    => 'float',
         'long'       => 'int',
         'dateTime'   => 'string',
@@ -39,123 +33,115 @@ class EntityGenerator extends AbstractOmniGenerator
     private $entity;
 
     /**
-     * EntityGenerator constructor.
-     * @param Entity $restriction
+     * @param Entity $entity
      * @param Metadata $metadata
      * @throws Exception
      */
-    public function __construct(Entity $restriction, Metadata $metadata)
+    public function __construct(Entity $entity, Metadata $metadata)
     {
         parent::__construct($metadata);
-        $this->entity = $restriction;
+        $this->entity = $entity;
     }
 
     /**
-     * @return mixed|string
+     * Generates the entity class based on metadata and the entity's WSDL definition.
+     *
+     * @return string The generated entity class content.
      */
-    function generate()
+    public function generate()
     {
-        $service_folder   = ucfirst($this->getServiceType()->getValue());
-        $base_namespace   = self::fqn('Ls', 'Omni', 'Client', $service_folder);
-        $entity_namespace = self::fqn($base_namespace, 'Entity');
+        // Define the namespace and class name for the entity
+        $serviceFolder = ucfirst($this->getServiceType()->getValue());
+        $baseNamespace = self::fqn('Ls', 'Omni', 'Client', $serviceFolder);
+        $entityNamespace = self::fqn($baseNamespace, 'Entity');
 
         $element = $this->entity->getElement();
-        $types   = $this->metadata->getTypes();
+        $types = $this->metadata->getTypes();
+        $classNameOptimized = preg_replace('/[-._]/', '', $this->entity->getName());
+        $this->class->setName($classNameOptimized);
+        $this->class->setExtendedClass(DataObject::class);
+        $this->class->setNamespaceName($entityNamespace);
+        $this->class->addConstant('CLASS_NAME', $this->entity->getName());
 
-        $this->class->setName($this->entity->getName());
-
-        $this->class->setNamespaceName($entity_namespace);
-
+        // Get the type of the element
         $type = $element->getType();
-
         $type = $types[$type];
 
-        $is_array = $type->getSoapType() == SoapType::ARRAY_OF();
+        $isArray = $type->getSoapType() == SoapType::ARRAY_OF();
 
-        //Force those Response classes to put the iterator methods to be first
-        //See Replication/Cron/AbstractReplicationTask->getIterator for how these Entity classes are used by Replication
+        // Rearrange the type definition for proper handling
         $typeDefinition = $type->getDefinition();
-
         $typeDefinitionArray = [];
-        foreach ($typeDefinition as $k => $v) {
-            if (strpos($v->getDataType(), "ArrayOf") !== false) {
-                $typeDefinitionArray[$k] = $v;
+
+        // Separate ArrayOf types
+        foreach ($typeDefinition as $key => $value) {
+            if (strpos($value->getDataType(), "ArrayOf") !== false) {
+                $typeDefinitionArray[$key] = $value;
             }
         }
-        foreach ($typeDefinition as $k => $v) {
-            if (strpos($v->getDataType(), "ArrayOf") !== true) {
-                $typeDefinitionArray[$k] = $v;
+        foreach ($typeDefinition as $key => $value) {
+            if (strpos($value->getDataType(), "ArrayOf") === false) {
+                $typeDefinitionArray[$key] = $value;
             }
         }
 
-        /**
-         * Some dirty code to add scopeId and Scope functions directly in the array.
-         * and bypass un-necessary functions in there.
-         */
+        // Handle special case for repl entities (e.g., adding scopeId)
         $lowerString = strtolower($this->entity->getName());
-        if (!$is_array && $lowerString &&
-            substr($lowerString, 0, 4) == 'repl' &&
+        if (!$isArray && $lowerString && substr($lowerString, 0, 4) == 'repl' &&
             strpos($lowerString, 'replecom') === false &&
             strpos($lowerString, 'response') === false &&
             $lowerString != 'replrequest') {
-            $typeDefinitionArray ['scope']    = new ComplexTypeDefinition('scope', 'string', '0');
-            $typeDefinitionArray ['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
+            $typeDefinitionArray['scope'] = new ComplexTypeDefinition('scope', 'string', '0');
+            $typeDefinitionArray['scope_id'] = new ComplexTypeDefinition('scope_id', 'int', '0');
         }
 
-        // TRAVERSE THE COMPLEX TYPE DISCOVERED BY THE WSDL PROCESSOR
-        // OUR ENTITIES HAVE A NASTY MERGE SO THEM CAN WORK ON OVERLAPPING SCHEMA DEFINITIONS
+        // Generate methods based on type definitions
         if ($typeDefinitionArray != null) {
-            foreach ($typeDefinitionArray as $field_name => $field_type) {
-                $field_data_type = $this->normalizeDataType($field_type->getDataType()) . ($is_array ? '[]' : '');
+            foreach ($typeDefinitionArray as $fieldName => $fieldType) {
+                $fieldDataType = $this->normalizeDataType($fieldType->getDataType()) . ($isArray ? '[]' : '');
 
-                //To convert functions from scope_id into ScopeId;
-                $field_name_optimized   = str_replace('_', ' ', $field_name);
-                $field_name_capitalized = ucwords($field_name_optimized);
-                $field_name_capitalized = str_replace(' ', '', $field_name_capitalized);
-                //End of customization for scope_id into ScopeId
+                // Sanitize field name for use in method names
+                $fieldNameOptimized = preg_replace('/[-._]/', '', $fieldName);
+                $fieldNameForMethodName = preg_replace('/[-._]/', ' ', $fieldName);
+                $fieldNameCapitalized = ucwords($fieldNameForMethodName);
+                $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
 
-                $field_is_restriction = array_key_exists($field_data_type, $this->metadata->getRestrictions());
-                if ($field_is_restriction) {
-                    $this->class->addUse(self::fqn($entity_namespace, 'Enum', $field_data_type));
+                // Create constant for the field
+                $constantName = strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldNameOptimized));
+                $this->class->addConstant($constantName, $fieldName);
+
+                // Check if the field is a restriction type
+                $fieldIsRestriction = array_key_exists($fieldDataType, $this->metadata->getRestrictions());
+                if ($fieldIsRestriction) {
+                    $this->class->addUse(self::fqn($entityNamespace, 'Enum', $fieldDataType));
                 }
-                $this->class->addPropertyFromGenerator(PropertyGenerator::fromArray(
-                    [
-                        'name'         => $field_name,
-                        'defaultvalue' => $is_array ? [] : null,
-                        'docblock'     => DocBlockGenerator::fromArray(
-                            ['tags' => [new Tag\PropertyTag($field_name, [$field_data_type])]]
-                        ),
-                        'flags'        => [PropertyGenerator::FLAG_PROTECTED]
-                    ]
-                ));
 
-                $set_method_name = "set{$field_name_capitalized}";
-                $get_method_name = "get{$field_name_capitalized}";
-
-                if (!$this->class->hasMethod($set_method_name)) {
-                    $set_method = new MethodGenerator();
-                    $set_method->setName($set_method_name);
-                    $set_method->setParameter(ParameterGenerator::fromArray(['name' => $field_name]));
-                    $set_method->setDocBlock(
+                // Generate setter method
+                $setMethodName = "set{$fieldNameCapitalized}";
+                if (!$this->class->hasMethod($setMethodName)) {
+                    $setMethod = new MethodGenerator();
+                    $setMethod->setName($setMethodName);
+                    $setMethod->setParameter(ParameterGenerator::fromArray(['name' => $fieldNameOptimized]));
+                    $setMethod->setDocBlock(
                         DocBlockGenerator::fromArray([
                             'tags' => [
-                                new Tag\ParamTag($field_name, [$field_data_type]),
-                                new Tag\ReturnTag(['$this',])
+                                new Tag\ParamTag($fieldNameOptimized, [$fieldDataType]),
+                                new Tag\ReturnTag(['$this'])
                             ]
                         ])
                     );
-                    $set_method->setBody(<<<CODE
-\$this->$field_name = \$$field_name;
+                    $setMethod->setBody(<<<CODE
+\$this->setData(self::$constantName, \$$fieldNameOptimized);
 return \$this;
 CODE
                     );
-                    if ($field_is_restriction) {
-                        $set_method->setDocBlock(
+                    if ($fieldIsRestriction) {
+                        $setMethod->setDocBlock(
                             DocBlockGenerator::fromArray([
                                 'tags' => [
                                     new Tag\ParamTag(
-                                        $field_name,
-                                        [$field_data_type, 'string']
+                                        $fieldName,
+                                        [$fieldDataType, 'string']
                                     ),
                                     new Tag\ReturnTag(['$this']),
                                     new Tag\ThrowsTag(['InvalidEnumException'])
@@ -163,80 +149,81 @@ CODE
                             ])
                         );
                         $this->class->addUse(InvalidEnumException::class);
-                        $set_method->setBody(<<<CODE
-if ( ! \$$field_name instanceof $field_data_type ) {
-    if ( $field_data_type::isValid( \$$field_name ) )
-        \$$field_name = new $field_data_type( \$$field_name );
-    elseif ( $field_data_type::isValidKey( \$$field_name ) )
-        \$$field_name = new $field_data_type( constant( "$field_data_type::\$$field_name" ) );
-    elseif ( ! \$$field_name instanceof $field_data_type )
+                        $setMethod->setBody(<<<CODE
+if ( ! \$$fieldName instanceof $fieldDataType ) {
+    if ( $fieldDataType::isValid( \$$fieldName ) )
+        \$$fieldName = new $fieldDataType( \$$fieldName );
+    elseif ( $fieldDataType::isValidKey( \$$fieldName ) )
+        \$$fieldName = new $fieldDataType( constant( "$fieldDataType::\$$fieldName" ) );
+    elseif ( ! \$$fieldName instanceof $fieldDataType )
         throw new InvalidEnumException();
 }
-\$this->$field_name = \${$field_name}->getValue();
-
+\$this->$fieldName = \$$fieldName->getValue();
 return \$this;
 CODE
                         );
                     }
 
-                    $this->class->addMethodFromGenerator($set_method);
+                    $this->class->addMethodFromGenerator($setMethod);
 
-                    // ADD ArrayOf's ARRAY ACCESS SUPPORT
-                    if ($is_array) {
+                    // Add support for array access if the type is an array
+                    if ($isArray) {
                         $this->class->addUse(IteratorAggregate::class);
                         $this->class->addUse(ArrayIterator::class);
                         $this->class->setImplementedInterfaces([IteratorAggregate::class]);
-                        $iterator_method = new MethodGenerator();
-                        $iterator_method->setDocBlock(
+                        $iteratorMethod = new MethodGenerator();
+                        $iteratorMethod->setDocBlock(
                             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['\Traversable'])]])
                         );
-                        $iterator_method->setName('getIterator');
-                        $iterator_method->setReturnType('Traversable');
-                        $iterator_method->setBody(<<<CODE
-return new ArrayIterator( \$this->$field_name );
+                        $iteratorMethod->setName('getIterator');
+                        $iteratorMethod->setReturnType('Traversable');
+                        $iteratorMethod->setBody(<<<CODE
+return new ArrayIterator( \$this->$fieldName );
 CODE
                         );
-                        $this->class->addMethodFromGenerator($iterator_method);
+                        $this->class->addMethodFromGenerator($iteratorMethod);
                     }
                 }
 
-                if (!$this->class->hasMethod($get_method_name)) {
-                    $get_method = new MethodGenerator();
-                    $get_method->setName($get_method_name)
+                // Generate getter method
+                $getMethodName = "get{$fieldNameCapitalized}";
+                if (!$this->class->hasMethod($getMethodName)) {
+                    $getMethod = new MethodGenerator();
+                    $getMethod->setName($getMethodName)
                         ->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$fieldDataType])]])
                         );
-                    $get_method->setBody(<<<CODE
-return \$this->$field_name;
+                    $getMethod->setBody(<<<CODE
+return \$this->getData(self::$constantName);
 CODE
                     );
 
-                    $this->class->addMethodFromGenerator($get_method);
+                    $this->class->addMethodFromGenerator($getMethod);
                 }
             }
         }
 
-        // ADD REQUEST INTERFACE
+        // Add Request and Response interfaces if necessary
         if ($element->isRequest()) {
             $this->class->addUse(RequestInterface::class);
             $this->class->setImplementedInterfaces([RequestInterface::class]);
         }
-        // ADD RESPONSE INTERFACE
+
         if ($element->isResponse()) {
             $this->class->addUse(ResponseInterface::class);
             $this->class->setImplementedInterfaces([ResponseInterface::class]);
-            foreach ($type->getDefinition() as $field_name => $field_type) {
-                $field_data_type = $this->normalizeDataType($field_type->getDataType());
-                $method_name     = "getResult";
+            foreach ($type->getDefinition() as $fieldName => $fieldType) {
+                $fieldDataType = $this->normalizeDataType($fieldType->getDataType());
+                $methodName = "getResult";
 
-                if (!$this->class->hasMethod($method_name)) {
+                if (!$this->class->hasMethod($methodName)) {
                     $method = new MethodGenerator();
-                    $method->setName($method_name)
+                    $method->setName($methodName)
                         ->setDocBlock(
-                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$field_data_type])]])
+                            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$fieldDataType])]])
                         );
                     $method->setBody(<<<CODE
-return \$this->$field_name;
+return \$this->$fieldName;
 CODE
                     );
 
@@ -245,19 +232,20 @@ CODE
             }
         }
 
+        // Set base class for internal development if specified
         if ($type->getBase()) {
-            // for internal development only.
             $this->class->setExtendedClass("meannothing" . $type->getBase());
         }
 
+        // Generate the class content
         $content = $this->file->generate();
 
-        // Laminas add / in the start of base class which we dont need. so replace this with blah.
+        // Clean up any unwanted class references
         if ($type->getBase()) {
             $content = str_replace("\\meannothing" . $type->getBase(), $type->getBase(), $content);
         }
 
-
+        // Final cleanup of interface implementations
         $content = str_replace(array(
             'implements \\IteratorAggregate',
             'implements Ls\\Omni\\Client\\RequestInterface',
@@ -269,12 +257,13 @@ CODE
     }
 
     /**
-     * @param string $data_type
+     * Normalizes a data type by looking up its equivalence.
      *
-     * @return string
+     * @param string $dataType The data type to normalize.
+     * @return string The normalized data type.
      */
-    protected function normalizeDataType($data_type)
+    protected function normalizeDataType($dataType)
     {
-        return array_key_exists($data_type, $this->equivalences) ? $this->equivalences[$data_type] : $data_type;
+        return array_key_exists($dataType, $this->dataTypeEquivalences) ? $this->dataTypeEquivalences[$dataType] : $dataType;
     }
 }

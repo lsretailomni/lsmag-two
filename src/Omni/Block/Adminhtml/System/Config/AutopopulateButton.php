@@ -9,7 +9,7 @@ use Magento\Config\Block\System\Config\Form\Field;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Exception\LocalizedException;
 
-class Stores extends Field
+class AutopopulateButton extends Field
 {
     /**
      * @var LSR
@@ -20,7 +20,7 @@ class Stores extends Field
      * @var string
      */
     // @codingStandardsIgnoreLine
-    protected $_template = 'Ls_Omni::system/config/store.phtml';
+    protected $_template = 'Ls_Omni::system/config/auto-populate-btn.phtml';
 
     /**
      * Stores constructor.
@@ -61,39 +61,9 @@ class Stores extends Field
     }
 
     /**
+     * Get button html
+     *
      * @return string
-     */
-    public function getAjaxUrl()
-    {
-        return $this->getUrl('omni/system_config/loadStore');
-    }
-
-    /**
-     * @return string
-     */
-    public function getAjaxHierarchyUrl()
-    {
-        return $this->getUrl('omni/system_config/loadHierarchy');
-    }
-
-    /**
-     * @return string
-     */
-    public function getAjaxStoreTenderTypesUrl()
-    {
-        return $this->getUrl('omni/system_config/loadTenderType');
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getWebsiteId()
-    {
-        return $this->_request->getParam('website');
-    }
-
-    /**
-     * @return mixed
      * @throws LocalizedException
      */
     public function getButtonHtml()
@@ -102,8 +72,8 @@ class Stores extends Field
             Button::class
         )->setData(
             [
-                'id'    => 'validate_base_url',
-                'label' => __('Validate Base URL'),
+                'id'    => 'autopopulate_base_url',
+                'label' => __('Autopopulate Base URL'),
             ]
         );
         return $button->toHtml();

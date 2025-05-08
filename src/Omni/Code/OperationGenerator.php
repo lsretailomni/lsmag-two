@@ -2,7 +2,6 @@
 
 namespace Ls\Omni\Code;
 
-use Exception;
 use \Ls\Omni\Client\AbstractOperation;
 use \Ls\Omni\Client\RequestInterface;
 use \Ls\Omni\Client\ResponseInterface;
@@ -16,20 +15,18 @@ use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\ParameterGenerator;
 
-/**
- * Class OperationGenerator
- * @package Ls\Omni\Code
- */
 class OperationGenerator extends AbstractOmniGenerator
 {
-    /** @var  Operation */
+    /** @var Operation */
     private $operation;
 
-    private $tokenized_operations = ['AccountGetById', 'ChangePassword', 'TransactionGetById', 'OneListDeleteById'];
+    /** @var array */
+    private $tokenizedOperations = ['AccountGetById', 'ChangePassword', 'TransactionGetById', 'OneListDeleteById'];
 
     /**
      * @param Operation $operation
      * @param Metadata $metadata
+     * @throws \Exception
      */
     public function __construct(Operation $operation, Metadata $metadata)
     {
@@ -38,28 +35,31 @@ class OperationGenerator extends AbstractOmniGenerator
     }
 
     /**
-     * @return mixed|string
+     * Generates the operation class based on the operation and metadata.
+     *
+     * @return string The generated operation class content.
      */
     public function generate()
     {
-        $request_type        = $this->operation->getRequest()->getType();
-        $response_type       = $this->operation->getResponse()->getType();
-        $service_folder      = ucfirst($this->getServiceType()->getValue());
-        $base_namespace      = self::fqn('Ls', 'Omni', 'Client', $service_folder);
-        $operation_name      = $this->operation->getName();
-        $operation_namespace = self::fqn($base_namespace, 'Operation');
-        $entity_namespace    = self::fqn($base_namespace, 'Entity');
-        $request_fqn         = self::fqn($entity_namespace, $request_type);
-        $request_alias       = "{$operation_name}Request";
-        $response_fqn        = self::fqn($entity_namespace, $response_type);
-        $response_alias      = "{$operation_name}Response";
+        $requestType        = preg_replace('/[-._]/', '', $this->operation->getRequest()->getType());
+        $responseType       = preg_replace('/[-._]/', '', $this->operation->getResponse()->getType());
+        $serviceFolder      = ucfirst($this->getServiceType()->getValue());
+        $baseNamespace      = self::fqn('Ls', 'Omni', 'Client', $serviceFolder);
+        $operationName      = $this->operation->getName();
+        $operationNamespace = self::fqn($baseNamespace, 'Operation');
+        $entityNamespace    = self::fqn($baseNamespace, 'Entity');
+        $requestFqn         = self::fqn($entityNamespace, $requestType);
+        $requestAlias       = "{$operationName}Request";
+        $responseFqn        = self::fqn($entityNamespace, $responseType);
+        $responseAlias      = "{$operationName}Response";
 
-        $is_tokenized = array_search($operation_name, $this->tokenized_operations) !== false ? 'TRUE' : 'FALSE';
+        // Determine if the operation is tokenized
+        $isTokenized = in_array($operationName, $this->tokenizedOperations) ? 'TRUE' : 'FALSE';
 
         // CLASS DECLARATION
 
         // NAMESPACE
-        $this->class->setNamespaceName($operation_namespace);
+        $this->class->setNamespaceName($operationNamespace);
 
         // USE STATEMENTS
         $this->class->addUse(RequestInterface::class);
@@ -68,50 +68,47 @@ class OperationGenerator extends AbstractOmniGenerator
         $this->class->addUse(Service::class, 'OmniService');
         $this->class->addUse(ServiceType::class);
         $this->class->addUse(Client::class, 'OmniClient');
-        $this->class->addUse(self::fqn($base_namespace, 'ClassMap'));
-        $this->class->addUse($request_fqn, $request_alias);
-        $this->class->addUse($response_fqn, $response_alias);
+        $this->class->addUse(self::fqn($baseNamespace, 'ClassMap'));
+        $this->class->addUse($requestFqn, $requestAlias);
+        $this->class->addUse($responseFqn, $responseAlias);
 
         // CLASS DEFINITION
-        // class OPERATION extends AbstractOperation implements OperationInterface
         $this->class->setName($this->operation->getName());
         $this->class->setExtendedClass(AbstractOperation::class);
 
-        // SOME NICE TO HAVE STRING VALUES
-        // const OPERATION_NAME = 'OPERATION_NAME'
-
-        $this->class->addConstant('OPERATION_NAME', $this->operation->getScreamingSnakeName());
+        // ADDING CONSTANTS
+        $this->class->addConstant('OPERATION_NAME', $operationName);
         $this->class->addConstant('SERVICE_TYPE', $this->metadata->getClient()->getServiceType()->getValue());
 
-        // ADD METHODS
+        // ADDING METHODS
         $this->class->addMethodFromGenerator($this->getConstructorMethod());
         $this->class->addMethodFromGenerator($this->getExecuteMethod(
-            $request_alias,
-            $response_alias,
-            $operation_name
+            $requestAlias,
+            $responseAlias,
+            $operationName
         ));
-        $this->class->addMethodFromGenerator($this->getInputMethod($request_alias));
+        $this->class->addMethodFromGenerator($this->getInputMethod($requestAlias));
         $this->class->addMethodFromGenerator($this->getClassMapMethod());
-        $this->class->addMethod('isTokenized', [], MethodGenerator::FLAG_PUBLIC, "return $is_tokenized;");
+        $this->class->addMethod('isTokenized', [], MethodGenerator::FLAG_PUBLIC, "return $isTokenized;");
 
-        // CLASS PROPERTIES TO BE USED BY THE AbstractOperation
+        // CLASS PROPERTIES
         $this->createProperty('client', 'OmniClient');
-        $this->createProperty('request', $request_alias);
-        $this->createProperty('response', $response_alias);
+        $this->createProperty('request', $requestAlias);
+        $this->createProperty('response', $responseAlias);
         $this->createProperty('requestXml', 'string');
         $this->createProperty('responseXml', 'string');
-        $this->createProperty('error', Exception::class);
+        $this->createProperty('error', '\Exception');
 
-        // THE CLASS
+        // GENERATE FINAL CLASS CONTENT
         $content = $this->file->generate();
 
-        $no_inspection    = '/** @noinspection PhpDocSignatureInspection */';
-        $execute_docblock = <<<COMMENT
-	/**
-     * @param $request_alias \$request
+        // Adjust docblock and fully qualified names
+        $noInspection    = '/** @noinspection PhpDocSignatureInspection */';
+        $executeDocBlock = <<<COMMENT
+    /**
+     * @param $requestAlias \$request
 COMMENT;
-        $content          = str_replace($execute_docblock, "$no_inspection\n$execute_docblock", $content);
-        // USE SIMPLIFIED FULLY QUALIFIED NAME
+        $content          = str_replace($executeDocBlock, "$noInspection\n$executeDocBlock", $content);
         $content = str_replace('execute(\\RequestInterface', 'execute(RequestInterface', $content);
         $content = str_replace(
             'implements Ls\\Omni\\Client\\OperationInterface',
@@ -128,20 +125,21 @@ COMMENT;
     }
 
     /**
-     * @return MethodGenerator
+     * Generates the constructor method for the operation class.
+     *
+     * @return MethodGenerator The generated constructor method.
      */
     private function getConstructorMethod()
     {
-        // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setParameters([new ParameterGenerator('baseUrl', null, '')]);
         $method->setName('__construct');
         $method->setBody(
             <<<CODE
-\$service_type = new ServiceType( self::SERVICE_TYPE );
-parent::__construct( \$service_type );
-\$url = OmniService::getUrl( \$service_type,\$baseUrl );
-\$this->client = new OmniClient( \$url, \$service_type );
+\$serviceType = new ServiceType( self::SERVICE_TYPE );
+parent::__construct( \$serviceType );
+\$url = OmniService::getUrl( \$serviceType, \$baseUrl );
+\$this->client = new OmniClient( \$url, \$serviceType );
 \$this->client->setClassmap( \$this->getClassMap() );
 CODE
         );
@@ -150,14 +148,16 @@ CODE
     }
 
     /**
-     * @param $request_alias
-     * @param $response_alias
-     * @param $operation_name
-     * @return MethodGenerator
+     * Generates the execute method for the operation class.
+     *
+     * @param string $requestAlias The alias for the request class.
+     * @param string $responseAlias The alias for the response class.
+     * @param string $operationName The name of the operation.
+     *
+     * @return MethodGenerator The generated execute method.
      */
-    private function getExecuteMethod($request_alias, $response_alias, $operation_name)
+    private function getExecuteMethod($requestAlias, $responseAlias, $operationName)
     {
-        // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('execute');
         $method->setParameter(ParameterGenerator::fromArray([
@@ -165,25 +165,22 @@ CODE
             'type'         => 'RequestInterface',
             'defaultvalue' => null
         ]));
-        // @codingStandardsIgnoreStart
+
         $method->setDocBlock(
             DocBlockGenerator::fromArray([
                 'tags' => [
-                    new Tag\ParamTag('request', $request_alias),
-                    new Tag\ReturnTag([
-                        'ResponseInterface',
-                        $response_alias
-                    ])
+                    new Tag\ParamTag('request', $requestAlias),
+                    new Tag\ReturnTag(['ResponseInterface', $responseAlias])
                 ]
             ])
         );
-        // @codingStandardsIgnoreEnd
+
         $method->setBody(
             <<<CODE
 if ( !is_null( \$request ) ) {
     \$this->setRequest( \$request );
 }
-return \$this->makeRequest( '$operation_name' );
+return \$this->makeRequest( self::OPERATION_NAME );
 CODE
         );
 
@@ -191,22 +188,23 @@ CODE
     }
 
     /**
-     * @param $request_alias
-     * @return MethodGenerator
+     * Generates the method to get the operation input.
+     *
+     * @param string $requestAlias The alias for the request class.
+     *
+     * @return MethodGenerator The generated method for getting operation input.
      */
-    private function getInputMethod($request_alias)
+    private function getInputMethod($requestAlias)
     {
-        // @codingStandardsIgnoreStart
         $method = new MethodGenerator();
         $method->setName('getOperationInput');
         $method->setDocBlock(
-            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$request_alias])]])
+            DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag([$requestAlias])]])
         );
-        // @codingStandardsIgnoreEnd
         $method->setBody(
             <<<CODE
 if ( is_null( \$this->request ) ) {
-    \$this->request = new $request_alias();
+    \$this->request = new $requestAlias();
 }
 return \$this->request;
 CODE
@@ -215,19 +213,18 @@ CODE
     }
 
     /**
-     * @return MethodGenerator
+     * Generates the method to get the class map for the operation.
+     *
+     * @return MethodGenerator The generated method for getting the class map.
      */
     private function getClassMapMethod()
     {
-        // @codingStandardsIgnoreLine
         $method = new MethodGenerator();
         $method->setName('getClassMap');
         $method->setVisibility(MethodGenerator::FLAG_PROTECTED);
-        // @codingStandardsIgnoreStart
         $method->setDocBlock(
             DocBlockGenerator::fromArray(['tags' => [new Tag\ReturnTag(['array'])]])
         );
-        // @codingStandardsIgnoreEnd
         $method->setBody(
             <<<CODE
 return ClassMap::getClassMap();

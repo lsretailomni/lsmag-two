@@ -3,6 +3,7 @@
 namespace Ls\Omni\Controller\Adminhtml\System\Config;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
@@ -12,37 +13,8 @@ use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Serialize\Serializer\Json as SerializerJson;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class for loading tender type
- */
 class LoadTenderType extends Action
 {
-
-    /**
-     * @var JsonFactory
-     */
-    public $resultJsonFactory;
-
-    /**
-     * @var LSR
-     */
-    public $lsr;
-
-    /**
-     * @var LoggerInterface
-     */
-    public $logger;
-
-    /**
-     * @var Data
-     */
-    public $helper;
-
-    /**
-     * @var SerializerJson
-     */
-    public $serializerJson;
-
     /**
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
@@ -52,18 +24,13 @@ class LoadTenderType extends Action
      * @param LoggerInterface $logger
      */
     public function __construct(
-        Context $context,
-        JsonFactory $resultJsonFactory,
-        LSR $lsr,
-        Data $helper,
-        SerializerJson $serializerJson,
-        LoggerInterface $logger
+        public Context $context,
+        public JsonFactory $resultJsonFactory,
+        public LSR $lsr,
+        public Data $helper,
+        public SerializerJson $serializerJson,
+        public LoggerInterface $logger
     ) {
-        $this->resultJsonFactory = $resultJsonFactory;
-        $this->lsr               = $lsr;
-        $this->serializerJson    = $serializerJson;
-        $this->logger            = $logger;
-        $this->helper            = $helper;
         parent::__construct($context);
     }
 
@@ -71,16 +38,48 @@ class LoadTenderType extends Action
      * Get tender type Data
      *
      * @return Json
+     * @throws GuzzleException
      */
     public function execute()
     {
-        $option_array = [];
+        $optionList = $tenderTypes = [];
         try {
-            $baseUrl     = $this->getRequest()->getParam('baseUrl');
-            $storeId     = $this->getRequest()->getParam('storeId');
-            $lsKey       = $this->getRequest()->getParam('lsKey');
-            $scopeId     = $this->getRequest()->getParam('scopeId');
-            $tenderTypes = $this->helper->getTenderTypesDirectly($scopeId, $storeId, $baseUrl, $lsKey);
+            $storeId         = $this->getRequest()->getParam('storeId');
+            $baseUrl         = $this->getRequest()->getParam('baseUrl');
+            $tenant          = $this->getRequest()->getParam('tenant');
+            $clientId        = $this->getRequest()->getParam('client_id');
+            $clientSecret    = $this->getRequest()->getParam('client_secret');
+            $companyName     = $this->getRequest()->getParam('company_name');
+            $environmentName = $this->getRequest()->getParam('environment_name');
+            $scopeId         = $this->getRequest()->getParam('scopeId');
+            $baseUrl = $this->helper->getBaseUrl($baseUrl);
+            $connectionParams = [
+                'tenant' => $tenant,
+                'clientId' => $clientId,
+                'clientSecret' => $clientSecret,
+                'environmentName' => $environmentName,
+            ];
+
+            if ($this->lsr->validateBaseUrl(
+                $baseUrl,
+                $connectionParams,
+                ['company' => $companyName],
+                $scopeId
+            )) {
+                $tenderTypes = $this->helper->fetchWebStoreTenderTypes(
+                    $baseUrl,
+                    $connectionParams,
+                    ['company' => $companyName],
+                    [
+                        'storeNo' => $storeId,
+                        'batchSize' => 100,
+                        'fullRepl' => true,
+                        'lastKey' => '',
+                        'lastEntryNo' => 0
+                    ]
+                );
+            }
+
             if (!empty($tenderTypes)) {
                 $paymentTenderTypesArray = $this->lsr->getStoreConfig(
                     LSR::LSR_PAYMENT_TENDER_TYPE_MAPPING,
@@ -90,10 +89,10 @@ class LoadTenderType extends Action
                 if (!is_array($paymentTenderTypesArray)) {
                     $paymentTenderTypesArray = $this->serializerJson->unserialize($paymentTenderTypesArray);
                 }
-                $option_array = [['value' => '', 'label' => __('Select tender type')]];
+                $optionList = [['value' => '', 'label' => __('Select tender type')]];
                 foreach ($tenderTypes as $tenderType) {
                     $keyId        = '';
-                    $tenderTypeId = $tenderType->getTenderTypeId();
+                    $tenderTypeId = $tenderType['Code'];
                     if (!empty($paymentTenderTypesArray)) {
                         $key = array_search(
                             $tenderTypeId,
@@ -105,20 +104,20 @@ class LoadTenderType extends Action
                         }
                     }
 
-                    $option_array[] = [
+                    $optionList[] = [
                         'value'       => $tenderTypeId,
-                        'label'       => $tenderType->getName(),
+                        'label'       => $tenderType['Description'],
                         'selectedKey' => $keyId
                     ];
                 }
             } else {
-                $option_array = [['value' => '', 'label' => __('No tender type found')]];
+                $optionList = [['value' => '', 'label' => __('No tender type found')]];
             }
         } catch (Exception $e) {
             $this->logger->critical($e);
         }
-        /** @var Json $result */
         $result = $this->resultJsonFactory->create();
-        return $result->setData(['success' => true, 'storeTenderTypes' => $option_array]);
+
+        return $result->setData(['success' => true, 'storeTenderTypes' => $optionList]);
     }
 }

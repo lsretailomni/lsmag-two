@@ -20,17 +20,22 @@ class Operation
     /** @var Element */
     public $response;
 
+    /** @var string */
+    public $soapAction;
+
     /**
      * @param string $name
      * @param Element $request
      * @param Element|null $response
+     * @param string $soapAction
      * @throws \Exception
      */
-    public function __construct($name, Element $request, Element $response = null)
+    public function __construct($name, $request, $response = null, $soapAction = '')
     {
         $this->name        = $name;
         $this->request     = $request;
         $this->response    = $response;
+        $this->soapAction  = $soapAction;
         $this->case_helper = CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_PASCAL_CASE);
     }
 
@@ -88,5 +93,15 @@ class Operation
     public function setResponse($response)
     {
         $this->response = $response;
+    }
+
+    public function setSoapAction($soapAction)
+    {
+        $this->soapAction = $soapAction;
+    }
+
+    public function getSoapAction()
+    {
+        return $this->soapAction;
     }
 }

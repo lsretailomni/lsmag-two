@@ -8,48 +8,51 @@ use \Ls\Core\Code\AbstractGenerator as CoreGenerator;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
 
-/**
- * Class AbstractOmniGenerator
- * @package Ls\Omni\Code
- */
 abstract class AbstractOmniGenerator extends CoreGenerator
 {
-    /** @var ServiceType */
-    public $service_type;
+    /** @var ServiceType $serviceType */
+    public $serviceType;
 
-    /** @var Metadata */
+    /** @var Metadata $metadata */
     public $metadata;
 
-    /** @var string */
-    public $base_namespace;
+    /** @var string $baseNamespace */
+    public $baseNamespace;
 
-    /** @var CaseHelperInterface */
-    public $case_helper;
+    /** @var CaseHelperInterface $caseHelper */
+    public $caseHelper;
 
     /**
-     * AbstractOmniGenerator constructor.
      * @param Metadata $metadata
      * @throws Exception
      */
     public function __construct(Metadata $metadata)
     {
+        // Call the parent constructor to initialize the base generator class.
         parent::__construct();
 
-        $this->metadata       = $metadata;
-        $this->service_type   = $metadata->getClient()->getServiceType();
-        $this->base_namespace = $this->fqn('Ls', 'Omni', 'Client', ucfirst($this->service_type->getValue()));
+        // Initialize the properties with values from the provided metadata.
+        $this->metadata = $metadata;
+        $this->serviceType = $metadata->getClient()->getServiceType();
+
+        // Build the base namespace based on the service type.
+        $this->baseNamespace = $this->fqn('Ls', 'Omni', 'Client', ucfirst($this->serviceType->getValue()));
     }
 
     /**
-     * @return ServiceType
+     * Returns the service type for the current Omni generator instance.
+     *
+     * @return ServiceType The service type used in the Omni generator.
      */
     public function getServiceType()
     {
-        return $this->service_type;
+        return $this->serviceType;
     }
 
     /**
-     * @return Metadata
+     * Returns the metadata object associated with the Omni generator.
+     *
+     * @return Metadata The metadata containing service information.
      */
     public function getMetadata()
     {

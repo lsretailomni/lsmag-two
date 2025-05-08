@@ -21,22 +21,39 @@
                     <label>Version</label>
                     <backend_model>Ls\Omni\Model\System\Backend\ExtensionVersion</backend_model>
                 </field>
+                <field id="tenant" translate="label" type="text" sortOrder="20" showInWebsite="1">
+                    <label>Tenant</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="environment_name" translate="label" type="text" sortOrder="20" showInWebsite="1">
+                    <label>Environment Name</label>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="company_name" translate="label" type="text" sortOrder="20" showInWebsite="1">
+                    <label>Company Name</label>
+                    <validate>required-entry</validate>
+                </field>
                 <field id="base_url" translate="label" type="text" sortOrder="20" showInWebsite="1">
                     <label>Service Base URL</label>
                     <validate>required-entry validate-url</validate>
-                    <comment>http://lsretail.cloudapp.net/lsomniservice</comment>
+                    <comment>https://lscentral.api.bc.dynamics.com/V2.0/{tenant}/{environment_name}</comment>
                 </field>
-                <field id="ls_key" translate="label comment" type="text" sortOrder="30" showInWebsite="1">
-                    <label>LS Key</label>
-                    <comment>For Multi Tenant Web Services</comment>
+                <field id="autopopulate_base_url" translate="label comment" type="button" sortOrder="30"
+                       showInWebsite="1">
+                    <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\AutopopulateButton</frontend_model>
+                    <comment>Press to autopopulate base url (ODataV4)</comment>
+                </field>
+                <field id="client_id" translate="label comment" type="text" sortOrder="30" showInWebsite="1">
+                    <label>Client ID</label>
+                </field>
+                <field id="client_secret" translate="label comment" type="obscure" sortOrder="30" showInWebsite="1">
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <label>Client Secret</label>
                 </field>
                 <field id="validate_base_url" translate="label comment" type="button" sortOrder="50"
                        showInWebsite="1">
                     <frontend_model>Ls\Omni\Block\Adminhtml\System\Config\Stores</frontend_model>
                     <comment>Please validate your base url by clicking on button above</comment>
-                </field>
-                <field id="version" translate="label" type="label" sortOrder="60" showInWebsite="1">
-                    <label>LS Commerce Service Version</label>
                 </field>
                 <field id="ls_central_version" translate="label" type="label" sortOrder="70"
                        showInWebsite="1">
