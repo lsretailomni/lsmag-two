@@ -42,6 +42,7 @@ class LSCInventoryLookupTable extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -51,6 +52,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -60,6 +62,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getLocation(): ?string
     {
         return $this->getData(self::LOCATION);
@@ -69,6 +72,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::LOCATION, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -78,6 +82,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getPhysInventory(): ?string
     {
         return $this->getData(self::PHYS_INVENTORY);
@@ -87,6 +92,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::PHYS_INVENTORY, $value);
     }
+
     public function getPurchaseOrder(): ?string
     {
         return $this->getData(self::PURCHASE_ORDER);
@@ -96,6 +102,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::PURCHASE_ORDER, $value);
     }
+
     public function getTotalSales(): ?string
     {
         return $this->getData(self::TOTAL_SALES);
@@ -105,6 +112,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::TOTAL_SALES, $value);
     }
+
     public function getCOResEntries(): ?string
     {
         return $this->getData(self::C_O_RES_ENTRIES);
@@ -114,6 +122,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::C_O_RES_ENTRIES, $value);
     }
+
     public function getVarPhysInventory(): ?string
     {
         return $this->getData(self::VAR_PHYS_INVENTORY);
@@ -123,6 +132,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_PHYS_INVENTORY, $value);
     }
+
     public function getVarPurchaseOrder(): ?string
     {
         return $this->getData(self::VAR_PURCHASE_ORDER);
@@ -132,6 +142,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_PURCHASE_ORDER, $value);
     }
+
     public function getVarTotalSales(): ?string
     {
         return $this->getData(self::VAR_TOTAL_SALES);
@@ -141,6 +152,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_TOTAL_SALES, $value);
     }
+
     public function getVarCOResEntries(): ?string
     {
         return $this->getData(self::VAR_C_O_RES_ENTRIES);
@@ -150,6 +162,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_C_O_RES_ENTRIES, $value);
     }
+
     public function getPostedSales(): ?string
     {
         return $this->getData(self::POSTED_SALES);
@@ -159,6 +172,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::POSTED_SALES, $value);
     }
+
     public function getVarPostedSales(): ?string
     {
         return $this->getData(self::VAR_POSTED_SALES);
@@ -168,6 +182,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_POSTED_SALES, $value);
     }
+
     public function getSerialNo(): ?string
     {
         return $this->getData(self::SERIAL_NO);
@@ -177,6 +192,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::SERIAL_NO, $value);
     }
+
     public function getLotNo(): ?string
     {
         return $this->getData(self::LOT_NO);
@@ -186,6 +202,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::LOT_NO, $value);
     }
+
     public function getExpirationDate(): ?string
     {
         return $this->getData(self::EXPIRATION_DATE);
@@ -195,6 +212,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::EXPIRATION_DATE, $value);
     }
+
     public function getTotalInvAdjmt(): ?string
     {
         return $this->getData(self::TOTAL_INV_ADJMT);
@@ -204,6 +222,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::TOTAL_INV_ADJMT, $value);
     }
+
     public function getVarTotalInvAdjmt(): ?string
     {
         return $this->getData(self::VAR_TOTAL_INV_ADJMT);
@@ -213,6 +232,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_TOTAL_INV_ADJMT, $value);
     }
+
     public function getPostedInvAdjmt(): ?string
     {
         return $this->getData(self::POSTED_INV_ADJMT);
@@ -222,6 +242,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::POSTED_INV_ADJMT, $value);
     }
+
     public function getVarPostedInvAdjmt(): ?string
     {
         return $this->getData(self::VAR_POSTED_INV_ADJMT);
@@ -231,6 +252,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::VAR_POSTED_INV_ADJMT, $value);
     }
+
     public function getNetInventory(): ?string
     {
         return $this->getData(self::NET_INVENTORY);
@@ -240,6 +262,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::NET_INVENTORY, $value);
     }
+
     public function getLocationProfile(): ?string
     {
         return $this->getData(self::LOCATION_PROFILE);
@@ -249,6 +272,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::LOCATION_PROFILE, $value);
     }
+
     public function getReplicationCounter(): ?int
     {
         return $this->getData(self::REPLICATION_COUNTER);
@@ -258,6 +282,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::REPLICATION_COUNTER, $value);
     }
+
     public function getSourcingLocationInventory(): ?string
     {
         return $this->getData(self::SOURCING_LOCATION_INVENTORY);
@@ -267,6 +292,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::SOURCING_LOCATION_INVENTORY, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -276,6 +302,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -285,6 +312,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -294,6 +322,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -303,6 +332,7 @@ class LSCInventoryLookupTable extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

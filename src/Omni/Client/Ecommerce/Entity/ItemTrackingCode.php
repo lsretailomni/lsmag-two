@@ -77,6 +77,7 @@ class ItemTrackingCode extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -86,6 +87,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -95,6 +97,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getWarrantyDateFormula(): ?string
     {
         return $this->getData(self::WARRANTY_DATE_FORMULA);
@@ -104,6 +107,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::WARRANTY_DATE_FORMULA, $value);
     }
+
     public function getManWarrantyDateEntryReqd(): ?bool
     {
         return $this->getData(self::MAN_WARRANTY_DATE_ENTRY_REQD);
@@ -113,6 +117,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::MAN_WARRANTY_DATE_ENTRY_REQD, $value);
     }
+
     public function getManExpirDateEntryReqd(): ?bool
     {
         return $this->getData(self::MAN_EXPIR_DATE_ENTRY_REQD);
@@ -122,6 +127,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::MAN_EXPIR_DATE_ENTRY_REQD, $value);
     }
+
     public function getStrictExpirationPosting(): ?bool
     {
         return $this->getData(self::STRICT_EXPIRATION_POSTING);
@@ -131,6 +137,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::STRICT_EXPIRATION_POSTING, $value);
     }
+
     public function getUseExpirationDates(): ?bool
     {
         return $this->getData(self::USE_EXPIRATION_DATES);
@@ -140,6 +147,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::USE_EXPIRATION_DATES, $value);
     }
+
     public function getSNSpecificTracking(): ?bool
     {
         return $this->getData(self::S_N_SPECIFIC_TRACKING);
@@ -149,6 +157,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_SPECIFIC_TRACKING, $value);
     }
+
     public function getSNInfoInboundMustExist(): ?bool
     {
         return $this->getData(self::S_N_INFO_INBOUND_MUST_EXIST);
@@ -158,6 +167,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_INFO_INBOUND_MUST_EXIST, $value);
     }
+
     public function getSNInfoOutboundMustExist(): ?bool
     {
         return $this->getData(self::S_N_INFO_OUTBOUND_MUST_EXIST);
@@ -167,6 +177,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_INFO_OUTBOUND_MUST_EXIST, $value);
     }
+
     public function getSNWarehouseTracking(): ?bool
     {
         return $this->getData(self::S_N_WAREHOUSE_TRACKING);
@@ -176,6 +187,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_WAREHOUSE_TRACKING, $value);
     }
+
     public function getSNPurchaseInboundTracking(): ?bool
     {
         return $this->getData(self::S_N_PURCHASE_INBOUND_TRACKING);
@@ -185,6 +197,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_PURCHASE_INBOUND_TRACKING, $value);
     }
+
     public function getSNPurchaseOutboundTracking(): ?bool
     {
         return $this->getData(self::S_N_PURCHASE_OUTBOUND_TRACKING);
@@ -194,6 +207,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_PURCHASE_OUTBOUND_TRACKING, $value);
     }
+
     public function getSNSalesInboundTracking(): ?bool
     {
         return $this->getData(self::S_N_SALES_INBOUND_TRACKING);
@@ -203,6 +217,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_SALES_INBOUND_TRACKING, $value);
     }
+
     public function getSNSalesOutboundTracking(): ?bool
     {
         return $this->getData(self::S_N_SALES_OUTBOUND_TRACKING);
@@ -212,6 +227,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_SALES_OUTBOUND_TRACKING, $value);
     }
+
     public function getSNPosAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::S_N_POS_ADJMT_INB_TRACKING);
@@ -221,6 +237,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_POS_ADJMT_INB_TRACKING, $value);
     }
+
     public function getSNPosAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::S_N_POS_ADJMT_OUTB_TRACKING);
@@ -230,6 +247,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_POS_ADJMT_OUTB_TRACKING, $value);
     }
+
     public function getSNNegAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::S_N_NEG_ADJMT_INB_TRACKING);
@@ -239,6 +257,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_NEG_ADJMT_INB_TRACKING, $value);
     }
+
     public function getSNNegAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::S_N_NEG_ADJMT_OUTB_TRACKING);
@@ -248,6 +267,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_NEG_ADJMT_OUTB_TRACKING, $value);
     }
+
     public function getSNTransferTracking(): ?bool
     {
         return $this->getData(self::S_N_TRANSFER_TRACKING);
@@ -257,6 +277,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_TRANSFER_TRACKING, $value);
     }
+
     public function getSNManufInboundTracking(): ?bool
     {
         return $this->getData(self::S_N_MANUF_INBOUND_TRACKING);
@@ -266,6 +287,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_MANUF_INBOUND_TRACKING, $value);
     }
+
     public function getSNManufOutboundTracking(): ?bool
     {
         return $this->getData(self::S_N_MANUF_OUTBOUND_TRACKING);
@@ -275,6 +297,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_MANUF_OUTBOUND_TRACKING, $value);
     }
+
     public function getSNAssemblyInboundTracking(): ?bool
     {
         return $this->getData(self::S_N_ASSEMBLY_INBOUND_TRACKING);
@@ -284,6 +307,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_ASSEMBLY_INBOUND_TRACKING, $value);
     }
+
     public function getSNAssemblyOutboundTracking(): ?bool
     {
         return $this->getData(self::S_N_ASSEMBLY_OUTBOUND_TRACKING);
@@ -293,6 +317,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::S_N_ASSEMBLY_OUTBOUND_TRACKING, $value);
     }
+
     public function getCreateSNInfoOnPosting(): ?bool
     {
         return $this->getData(self::CREATE_S_N_INFO_ON_POSTING);
@@ -302,6 +327,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::CREATE_S_N_INFO_ON_POSTING, $value);
     }
+
     public function getLotSpecificTracking(): ?bool
     {
         return $this->getData(self::LOT_SPECIFIC_TRACKING);
@@ -311,6 +337,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_SPECIFIC_TRACKING, $value);
     }
+
     public function getLotInfoInboundMustExist(): ?bool
     {
         return $this->getData(self::LOT_INFO_INBOUND_MUST_EXIST);
@@ -320,6 +347,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_INFO_INBOUND_MUST_EXIST, $value);
     }
+
     public function getLotInfoOutboundMustExist(): ?bool
     {
         return $this->getData(self::LOT_INFO_OUTBOUND_MUST_EXIST);
@@ -329,6 +357,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_INFO_OUTBOUND_MUST_EXIST, $value);
     }
+
     public function getLotWarehouseTracking(): ?bool
     {
         return $this->getData(self::LOT_WAREHOUSE_TRACKING);
@@ -338,6 +367,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_WAREHOUSE_TRACKING, $value);
     }
+
     public function getLotPurchaseInboundTracking(): ?bool
     {
         return $this->getData(self::LOT_PURCHASE_INBOUND_TRACKING);
@@ -347,6 +377,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_PURCHASE_INBOUND_TRACKING, $value);
     }
+
     public function getLotPurchaseOutboundTracking(): ?bool
     {
         return $this->getData(self::LOT_PURCHASE_OUTBOUND_TRACKING);
@@ -356,6 +387,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_PURCHASE_OUTBOUND_TRACKING, $value);
     }
+
     public function getLotSalesInboundTracking(): ?bool
     {
         return $this->getData(self::LOT_SALES_INBOUND_TRACKING);
@@ -365,6 +397,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_SALES_INBOUND_TRACKING, $value);
     }
+
     public function getLotSalesOutboundTracking(): ?bool
     {
         return $this->getData(self::LOT_SALES_OUTBOUND_TRACKING);
@@ -374,6 +407,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_SALES_OUTBOUND_TRACKING, $value);
     }
+
     public function getLotPosAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::LOT_POS_ADJMT_INB_TRACKING);
@@ -383,6 +417,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_POS_ADJMT_INB_TRACKING, $value);
     }
+
     public function getLotPosAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::LOT_POS_ADJMT_OUTB_TRACKING);
@@ -392,6 +427,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_POS_ADJMT_OUTB_TRACKING, $value);
     }
+
     public function getLotNegAdjmtInbTracking(): ?bool
     {
         return $this->getData(self::LOT_NEG_ADJMT_INB_TRACKING);
@@ -401,6 +437,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_NEG_ADJMT_INB_TRACKING, $value);
     }
+
     public function getLotNegAdjmtOutbTracking(): ?bool
     {
         return $this->getData(self::LOT_NEG_ADJMT_OUTB_TRACKING);
@@ -410,6 +447,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_NEG_ADJMT_OUTB_TRACKING, $value);
     }
+
     public function getLotTransferTracking(): ?bool
     {
         return $this->getData(self::LOT_TRANSFER_TRACKING);
@@ -419,6 +457,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_TRANSFER_TRACKING, $value);
     }
+
     public function getLotManufInboundTracking(): ?bool
     {
         return $this->getData(self::LOT_MANUF_INBOUND_TRACKING);
@@ -428,6 +467,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_MANUF_INBOUND_TRACKING, $value);
     }
+
     public function getLotManufOutboundTracking(): ?bool
     {
         return $this->getData(self::LOT_MANUF_OUTBOUND_TRACKING);
@@ -437,6 +477,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_MANUF_OUTBOUND_TRACKING, $value);
     }
+
     public function getLotAssemblyInboundTracking(): ?bool
     {
         return $this->getData(self::LOT_ASSEMBLY_INBOUND_TRACKING);
@@ -446,6 +487,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_ASSEMBLY_INBOUND_TRACKING, $value);
     }
+
     public function getLotAssemblyOutboundTracking(): ?bool
     {
         return $this->getData(self::LOT_ASSEMBLY_OUTBOUND_TRACKING);
@@ -455,6 +497,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::LOT_ASSEMBLY_OUTBOUND_TRACKING, $value);
     }
+
     public function getCreateLotNoInfoOnPosting(): ?bool
     {
         return $this->getData(self::CREATE_LOT_NO_INFO_ON_POSTING);
@@ -464,6 +507,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::CREATE_LOT_NO_INFO_ON_POSTING, $value);
     }
+
     public function getPackageSpecificTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_SPECIFIC_TRACKING);
@@ -473,6 +517,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_SPECIFIC_TRACKING, $value);
     }
+
     public function getPackageWarehouseTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_WAREHOUSE_TRACKING);
@@ -482,6 +527,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_WAREHOUSE_TRACKING, $value);
     }
+
     public function getPackageInfoInbMustExist(): ?bool
     {
         return $this->getData(self::PACKAGE_INFO_INB_MUST_EXIST);
@@ -491,6 +537,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_INFO_INB_MUST_EXIST, $value);
     }
+
     public function getPackageInfoOutbMustExist(): ?bool
     {
         return $this->getData(self::PACKAGE_INFO_OUTB_MUST_EXIST);
@@ -500,6 +547,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_INFO_OUTB_MUST_EXIST, $value);
     }
+
     public function getPackagePurchaseInbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_PURCHASE_INB_TRACKING);
@@ -509,6 +557,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_PURCHASE_INB_TRACKING, $value);
     }
+
     public function getPackagePurchOutbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_PURCH_OUTB_TRACKING);
@@ -518,6 +567,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_PURCH_OUTB_TRACKING, $value);
     }
+
     public function getPackageSalesInboundTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_SALES_INBOUND_TRACKING);
@@ -527,6 +577,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_SALES_INBOUND_TRACKING, $value);
     }
+
     public function getPackageSalesOutbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_SALES_OUTB_TRACKING);
@@ -536,6 +587,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_SALES_OUTB_TRACKING, $value);
     }
+
     public function getPackagePosInbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_POS_INB_TRACKING);
@@ -545,6 +597,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_POS_INB_TRACKING, $value);
     }
+
     public function getPackagePosOutbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_POS_OUTB_TRACKING);
@@ -554,6 +607,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_POS_OUTB_TRACKING, $value);
     }
+
     public function getPackageNegInbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_NEG_INB_TRACKING);
@@ -563,6 +617,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_NEG_INB_TRACKING, $value);
     }
+
     public function getPackageNegOutbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_NEG_OUTB_TRACKING);
@@ -572,6 +627,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_NEG_OUTB_TRACKING, $value);
     }
+
     public function getPackageTransferTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_TRANSFER_TRACKING);
@@ -581,6 +637,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_TRANSFER_TRACKING, $value);
     }
+
     public function getPackageManufInbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_MANUF_INB_TRACKING);
@@ -590,6 +647,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_MANUF_INB_TRACKING, $value);
     }
+
     public function getPackageManufOutbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_MANUF_OUTB_TRACKING);
@@ -599,6 +657,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_MANUF_OUTB_TRACKING, $value);
     }
+
     public function getPackageAssemblyInbTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_ASSEMBLY_INB_TRACKING);
@@ -608,6 +667,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_ASSEMBLY_INB_TRACKING, $value);
     }
+
     public function getPackageAssemblyOutTracking(): ?bool
     {
         return $this->getData(self::PACKAGE_ASSEMBLY_OUT_TRACKING);
@@ -617,6 +677,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::PACKAGE_ASSEMBLY_OUT_TRACKING, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -626,6 +687,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -635,6 +697,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -644,6 +707,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -653,6 +717,7 @@ class ItemTrackingCode extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

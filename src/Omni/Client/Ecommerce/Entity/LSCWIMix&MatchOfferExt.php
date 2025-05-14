@@ -34,6 +34,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -43,6 +44,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -52,6 +54,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -61,6 +64,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::CUSTOMER_DISC_GROUP);
@@ -70,6 +74,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
+
     public function getLoyaltySchemeCode(): ?string
     {
         return $this->getData(self::LOYALTY_SCHEME_CODE);
@@ -79,6 +84,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
+
     public function getFromDate(): ?string
     {
         return $this->getData(self::FROM_DATE);
@@ -88,6 +94,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::FROM_DATE, $value);
     }
+
     public function getToDate(): ?string
     {
         return $this->getData(self::TO_DATE);
@@ -97,6 +104,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::TO_DATE, $value);
     }
+
     public function getOfferNo(): ?string
     {
         return $this->getData(self::OFFER_NO);
@@ -106,6 +114,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::OFFER_NO, $value);
     }
+
     public function getLastModifyDate(): ?string
     {
         return $this->getData(self::LAST_MODIFY_DATE);
@@ -115,6 +124,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -124,6 +134,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -133,6 +144,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getPriority(): ?int
     {
         return $this->getData(self::PRIORITY);
@@ -142,6 +154,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::PRIORITY, $value);
     }
+
     public function getPopUpLine1(): ?string
     {
         return $this->getData(self::POPUP_LINE_1);
@@ -151,6 +164,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
+
     public function getPopUpLine2(): ?string
     {
         return $this->getData(self::POPUP_LINE_2);
@@ -160,6 +174,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
+
     public function getPopUpLine3(): ?string
     {
         return $this->getData(self::POPUP_LINE_3);
@@ -169,6 +184,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
+
     public function getValidationPeriodID(): ?string
     {
         return $this->getData(self::VALIDATION_PERIOD_I_D);
@@ -178,6 +194,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::VALIDATION_PERIOD_I_D, $value);
     }
+
     public function getExclude(): ?bool
     {
         return $this->getData(self::EXCLUDE);
@@ -187,6 +204,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::EXCLUDE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -196,6 +214,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -205,6 +224,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -214,6 +234,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -223,6 +244,7 @@ class LSCWIMix&MatchOfferExt extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

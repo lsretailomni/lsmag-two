@@ -24,18 +24,15 @@ class LSCAttribute
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetAttribute();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetAttribute $request = null): \Ls\Omni\Client\Ecommerce\Entity\LSCAttributeResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCAttributeResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetAttribute::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\LSCAttribute::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class LSCAttribute
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetAttribute
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetAttribute($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetAttribute $request): self
     {

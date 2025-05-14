@@ -5,7 +5,6 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetTenderType;
 use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
@@ -68,7 +67,12 @@ class LoadTenderType extends Action
                 ['company' => $companyName],
                 $scopeId
             )) {
-                $tenderTypeRequest = new ODataRequest_GetTenderType(
+                $tenderTypeOperation = new LSCTenderType(
+                    $baseUrl,
+                    $connectionParams,
+                    $companyName,
+                );
+                $tenderTypeOperation->setOperationInput(
                     [
                         'storeNo' => $storeId,
                         'batchSize' => 100,
@@ -77,15 +81,8 @@ class LoadTenderType extends Action
                         'lastEntryNo' => 0
                     ]
                 );
-                $tenderTypeOperation = new LSCTenderType(
-                    $baseUrl,
-                    $connectionParams,
-                    $companyName,
-                );
 
-                $tenderTypes = $tenderTypeOperation->execute(
-                    $tenderTypeRequest
-                )->getRecords();
+                $tenderTypes = $tenderTypeOperation->execute()->getRecords();
             }
 
             if (!empty($tenderTypes)) {

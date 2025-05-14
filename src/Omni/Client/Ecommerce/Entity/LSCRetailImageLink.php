@@ -24,6 +24,7 @@ class LSCRetailImageLink extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getRecordId(): ?string
     {
         return $this->getData(self::RECORD_ID);
@@ -33,6 +34,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::RECORD_ID, $value);
     }
+
     public function getImageId(): ?string
     {
         return $this->getData(self::IMAGE_ID);
@@ -42,6 +44,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::IMAGE_ID, $value);
     }
+
     public function getDisplayOrder(): ?int
     {
         return $this->getData(self::DISPLAY_ORDER);
@@ -51,6 +54,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::DISPLAY_ORDER, $value);
     }
+
     public function getTableName(): ?string
     {
         return $this->getData(self::TABLE_NAME);
@@ -60,6 +64,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::TABLE_NAME, $value);
     }
+
     public function getKeyValue(): ?string
     {
         return $this->getData(self::KEY_VALUE);
@@ -69,6 +74,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::KEY_VALUE, $value);
     }
+
     public function getLinkType(): ?string
     {
         return $this->getData(self::LINK_TYPE);
@@ -78,6 +84,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::LINK_TYPE, $value);
     }
+
     public function getImageDescription(): ?string
     {
         return $this->getData(self::IMAGE_DESCRIPTION);
@@ -87,6 +94,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::IMAGE_DESCRIPTION, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -96,6 +104,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -105,6 +114,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -114,6 +124,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -123,6 +134,7 @@ class LSCRetailImageLink extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

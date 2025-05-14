@@ -7,14 +7,9 @@ use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
 use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
-use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
-use \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetHierarchy;
-use \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetTenderType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
-use \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection;
 use \Ls\Omni\Client\Ecommerce\Operation;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
-use \Ls\Omni\Client\Ecommerce\Operation\LSCStore;
 use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
 use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
@@ -181,15 +176,15 @@ class Data extends AbstractHelper
      * @param RequestInterface $request
      */
     public function __construct(
-        Context $context,
-        ReplStoreRepositoryInterface $storeRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SessionManagerInterface $session,
-        CheckoutSession $checkoutSession,
-        ManagerInterface $messageManager,
+        Context                                $context,
+        ReplStoreRepositoryInterface           $storeRepository,
+        SearchCriteriaBuilder                  $searchCriteriaBuilder,
+        SessionManagerInterface                $session,
+        CheckoutSession                        $checkoutSession,
+        ManagerInterface                       $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        LoyaltyHelper $loyaltyHelper,
-        CartRepositoryInterface $cartRepository,
+        LoyaltyHelper                          $loyaltyHelper,
+        CartRepositoryInterface                $cartRepository,
         CacheHelper                            $cacheHelper,
         LSR                                    $lsr,
         DateTime                               $date,
@@ -201,9 +196,9 @@ class Data extends AbstractHelper
         ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository,
         File                                   $fileSystemDriver,
         GuzzleClient                           $guzzleClient,
-        StoreManagerInterface $storeManager,
-        TokenRequestService $tokenRequestService,
-        RequestInterface $request,
+        StoreManagerInterface                  $storeManager,
+        TokenRequestService                    $tokenRequestService,
+        RequestInterface                       $request,
     ) {
         $this->storeRepository               = $storeRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
@@ -225,8 +220,8 @@ class Data extends AbstractHelper
         $this->fileSystemDriver              = $fileSystemDriver;
         $this->guzzleClient                  = $guzzleClient;
         $this->storeManager                  = $storeManager;
-        $this->tokenRequestService            = $tokenRequestService;
-        $this->request = $request;
+        $this->tokenRequestService           = $tokenRequestService;
+        $this->request                       = $request;
         parent::__construct($context);
     }
 
@@ -262,7 +257,7 @@ class Data extends AbstractHelper
             } else {
                 // @codingStandardsIgnoreLine
                 $request = new StoreGetById();
-                $request->getOperationInput()->setStoreId($storeId);
+                $request->setOperationInput()->setStoreId($storeId);
                 $response     = $request->execute();
                 $storeResults = [];
 
@@ -626,14 +621,13 @@ class Data extends AbstractHelper
      */
     public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
-        $testConnection = new TestConnectionOData_TestConnection();
         $testConnectionOperation = new TestConnectionResponse(
             $baseUrl,
             $connectionParams,
             $companyName['company'] ?? ''
         );
 
-        return current($testConnectionOperation->execute($testConnection)->getRecords());
+        return current($testConnectionOperation->execute()->getRecords());
     }
 
     /**
@@ -643,12 +637,12 @@ class Data extends AbstractHelper
      */
     public function fetchWebStores()
     {
-        $webStoreRequest = new GetStores_GetStores(
+        $webStoreOperation = new Operation\GetStores_GetStores();
+        $webStoreOperation->setOperationInput(
             ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
-        $webStoreOperation = new LSCStore();
 
-        return $webStoreOperation->execute($webStoreRequest)->getRecords();
+        return $webStoreOperation->execute()->getRecords();
     }
 
     /**
@@ -663,7 +657,8 @@ class Data extends AbstractHelper
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         );
-        $tenderTypeRequest = new ODataRequest_GetHierarchy(
+        $hierarchyOperation = new HierarchyView();
+        $hierarchyOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
                 'batchSize' => 100,
@@ -673,9 +668,7 @@ class Data extends AbstractHelper
             ]
         );
 
-        $hierarchyOperation = new HierarchyView();
-
-        return $hierarchyOperation->execute($tenderTypeRequest)->getRecords() ?? [];
+        return $hierarchyOperation->execute()->getRecords() ?? [];
     }
 
     /**
@@ -690,7 +683,8 @@ class Data extends AbstractHelper
             LSR::SC_SERVICE_STORE,
             $this->getScopeId()
         );
-        $tenderTypeRequest = new ODataRequest_GetTenderType(
+        $tenderTypeOperation = new LSCTenderType();
+        $tenderTypeOperation->setOperationInput(
             [
                 'storeNo' => $storeCode,
                 'batchSize' => 100,
@@ -699,9 +693,8 @@ class Data extends AbstractHelper
                 'lastEntryNo' => 0
             ]
         );
-        $tenderTypeOperation = new LSCTenderType();
 
-        return $tenderTypeOperation->execute($tenderTypeRequest)->getRecords() ?? [];
+        return $tenderTypeOperation->execute()->getRecords() ?? [];
     }
 
     /**
@@ -1035,7 +1028,7 @@ class Data extends AbstractHelper
         $request->setClient($client);
         $request->setToken($lsKey);
         $client->setClassmap($request->getClassMap());
-        $request->getOperationInput()->setReplRequest(
+        $request->setOperationInput()->setReplRequest(
             (new Entity\ReplRequest())
                 ->setBatchSize(1000)
                 ->setFullReplication(1)

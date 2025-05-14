@@ -24,18 +24,15 @@ class LSCStaff
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetStaff();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetStaff $request = null): \Ls\Omni\Client\Ecommerce\Entity\LSCStaffResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCStaffResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetStaff::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\LSCStaff::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class LSCStaff
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetStaff
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetStaff($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetStaff $request): self
     {

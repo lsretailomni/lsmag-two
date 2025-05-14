@@ -21,6 +21,7 @@ class LSCWIInvLocationBuffer extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -30,6 +31,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -39,6 +41,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getLocationCode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
@@ -48,6 +51,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
+
     public function getLocationName(): ?string
     {
         return $this->getData(self::LOCATION_NAME);
@@ -57,6 +61,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::LOCATION_NAME, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -66,6 +71,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -75,6 +81,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -84,6 +91,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -93,6 +101,7 @@ class LSCWIInvLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

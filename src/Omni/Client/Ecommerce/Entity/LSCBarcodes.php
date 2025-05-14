@@ -25,6 +25,7 @@ class LSCBarcodes extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -34,6 +35,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getBarcodeNo(): ?string
     {
         return $this->getData(self::BARCODE_NO);
@@ -43,6 +45,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::BARCODE_NO, $value);
     }
+
     public function getShowForItem(): ?bool
     {
         return $this->getData(self::SHOW_FOR_ITEM);
@@ -52,6 +55,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::SHOW_FOR_ITEM, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -61,6 +65,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getLastDateModified(): ?string
     {
         return $this->getData(self::LAST_DATE_MODIFIED);
@@ -70,6 +75,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -79,6 +85,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
@@ -88,6 +95,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
+
     public function getDiscount(): ?string
     {
         return $this->getData(self::DISCOUNT);
@@ -97,6 +105,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::DISCOUNT, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -106,6 +115,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -115,6 +125,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -124,6 +135,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -133,6 +145,7 @@ class LSCBarcodes extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

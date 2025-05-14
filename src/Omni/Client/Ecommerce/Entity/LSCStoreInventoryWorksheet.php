@@ -50,6 +50,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getWorksheetSeqNo(): ?int
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
@@ -59,6 +60,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::WORKSHEET_SEQ_NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -68,6 +70,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -77,6 +80,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getReasonCode(): ?string
     {
         return $this->getData(self::REASON_CODE);
@@ -86,6 +90,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::REASON_CODE, $value);
     }
+
     public function getDefaultUoM(): ?string
     {
         return $this->getData(self::DEFAULT_UO_M);
@@ -95,6 +100,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::DEFAULT_UO_M, $value);
     }
+
     public function getLocationCode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
@@ -104,6 +110,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
+
     public function getUseArea(): ?bool
     {
         return $this->getData(self::USE_AREA);
@@ -113,6 +120,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::USE_AREA, $value);
     }
+
     public function getTypeOfEntering(): ?string
     {
         return $this->getData(self::TYPE_OF_ENTERING);
@@ -122,6 +130,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::TYPE_OF_ENTERING, $value);
     }
+
     public function getCountingPeriod(): ?string
     {
         return $this->getData(self::COUNTING_PERIOD);
@@ -131,6 +140,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::COUNTING_PERIOD, $value);
     }
+
     public function getNextCount(): ?string
     {
         return $this->getData(self::NEXT_COUNT);
@@ -140,6 +150,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::NEXT_COUNT, $value);
     }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
@@ -149,6 +160,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::NO_SERIES, $value);
     }
+
     public function getUseBarcodeUoMInMobile(): ?bool
     {
         return $this->getData(self::USE_BARCODE_UO_M_IN_MOBILE);
@@ -158,6 +170,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::USE_BARCODE_UO_M_IN_MOBILE, $value);
     }
+
     public function getWorksheetType(): ?string
     {
         return $this->getData(self::WORKSHEET_TYPE);
@@ -167,6 +180,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
+
     public function getLabelType(): ?string
     {
         return $this->getData(self::LABEL_TYPE);
@@ -176,6 +190,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::LABEL_TYPE, $value);
     }
+
     public function getLabelFunctionCode(): ?string
     {
         return $this->getData(self::LABEL_FUNCTION_CODE);
@@ -185,6 +200,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::LABEL_FUNCTION_CODE, $value);
     }
+
     public function getNewLocationCode(): ?string
     {
         return $this->getData(self::NEW_LOCATION_CODE);
@@ -194,6 +210,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::NEW_LOCATION_CODE, $value);
     }
+
     public function getNewStoreCode(): ?string
     {
         return $this->getData(self::NEW_STORE_CODE);
@@ -203,6 +220,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::NEW_STORE_CODE, $value);
     }
+
     public function getVendorNo(): ?string
     {
         return $this->getData(self::VENDOR_NO);
@@ -212,6 +230,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
+
     public function getChangeVendorAllowed(): ?bool
     {
         return $this->getData(self::CHANGE_VENDOR_ALLOWED);
@@ -221,6 +240,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::CHANGE_VENDOR_ALLOWED, $value);
     }
+
     public function getChangeUoMAllowed(): ?bool
     {
         return $this->getData(self::CHANGE_UO_M_ALLOWED);
@@ -230,6 +250,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::CHANGE_UO_M_ALLOWED, $value);
     }
+
     public function getRetailProductFilter(): ?string
     {
         return $this->getData(self::RETAIL_PRODUCT_FILTER);
@@ -239,6 +260,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::RETAIL_PRODUCT_FILTER, $value);
     }
+
     public function getQuantityMethod(): ?string
     {
         return $this->getData(self::QUANTITY_METHOD);
@@ -248,6 +270,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::QUANTITY_METHOD, $value);
     }
+
     public function getQuickDefaultQuantity(): ?string
     {
         return $this->getData(self::QUICKDEFAULT_QUANTITY);
@@ -257,6 +280,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::QUICKDEFAULT_QUANTITY, $value);
     }
+
     public function getInvAdjustGroupCode(): ?string
     {
         return $this->getData(self::INV_ADJUST_GROUP_CODE);
@@ -266,6 +290,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::INV_ADJUST_GROUP_CODE, $value);
     }
+
     public function getCycleCount(): ?bool
     {
         return $this->getData(self::CYCLE_COUNT);
@@ -275,6 +300,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::CYCLE_COUNT, $value);
     }
+
     public function getUseBatchPosting(): ?bool
     {
         return $this->getData(self::USE_BATCH_POSTING);
@@ -284,6 +310,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::USE_BATCH_POSTING, $value);
     }
+
     public function getTryPostBeforePutOnQueue(): ?bool
     {
         return $this->getData(self::TRY_POST_BEFORE_PUT_ON_QUEUE);
@@ -293,6 +320,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::TRY_POST_BEFORE_PUT_ON_QUEUE, $value);
     }
+
     public function getShowItemDetails(): ?bool
     {
         return $this->getData(self::SHOW_ITEM_DETAILS);
@@ -302,6 +330,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::SHOW_ITEM_DETAILS, $value);
     }
+
     public function getStoreInvTransactionMaxLines(): ?int
     {
         return $this->getData(self::STORE_INV_TRANSACTION_MAX_LINES);
@@ -311,6 +340,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::STORE_INV_TRANSACTION_MAX_LINES, $value);
     }
+
     public function getStoreInvCompetitorCode(): ?string
     {
         return $this->getData(self::STORE_INV_COMPETITOR_CODE);
@@ -320,6 +350,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::STORE_INV_COMPETITOR_CODE, $value);
     }
+
     public function getAdditionalText(): ?string
     {
         return $this->getData(self::ADDITIONAL_TEXT);
@@ -329,6 +360,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::ADDITIONAL_TEXT, $value);
     }
+
     public function getValidateTrackingCode(): ?bool
     {
         return $this->getData(self::VALIDATE_TRACKING_CODE);
@@ -338,6 +370,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::VALIDATE_TRACKING_CODE, $value);
     }
+
     public function getAllowUnknownItem(): ?bool
     {
         return $this->getData(self::ALLOW_UNKNOWN_ITEM);
@@ -347,6 +380,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::ALLOW_UNKNOWN_ITEM, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -356,6 +390,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -365,6 +400,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -374,6 +410,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -383,6 +420,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

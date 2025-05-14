@@ -30,6 +30,7 @@ class TenderView extends DataObject
     public const DRAWER_OPENS = 'Drawer Opens';
     public const DATE_ENTRY_CODES = 'DateEntryCodes';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -39,6 +40,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -48,6 +50,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -57,6 +60,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getFunction(): ?int
     {
         return $this->getData(self::FUNCTION);
@@ -66,6 +70,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::FUNCTION, $value);
     }
+
     public function getValidOnMobilePOS(): ?bool
     {
         return $this->getData(self::VALID_ON_MOBILE_P_O_S);
@@ -75,6 +80,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::VALID_ON_MOBILE_P_O_S, $value);
     }
+
     public function getChangeTendCode(): ?string
     {
         return $this->getData(self::CHANGE_TEND_CODE);
@@ -84,6 +90,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::CHANGE_TEND_CODE, $value);
     }
+
     public function getAboveMinChangeTenderType(): ?string
     {
         return $this->getData(self::ABOVE_MIN_CHANGE_TENDER_TYPE);
@@ -93,6 +100,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
+
     public function getMinChange(): ?string
     {
         return $this->getData(self::MIN_CHANGE);
@@ -102,6 +110,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
+
     public function getRounding(): ?int
     {
         return $this->getData(self::ROUNDING);
@@ -111,6 +120,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::ROUNDING, $value);
     }
+
     public function getRoundingTo(): ?string
     {
         return $this->getData(self::ROUNDING_TO);
@@ -120,6 +130,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
+
     public function getReturnMinusAllowed(): ?bool
     {
         return $this->getData(self::RETURN_MINUS_ALLOWED);
@@ -129,6 +140,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::RETURN_MINUS_ALLOWED, $value);
     }
+
     public function getForeignCurrency(): ?bool
     {
         return $this->getData(self::FOREIGN_CURRENCY);
@@ -138,6 +150,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::FOREIGN_CURRENCY, $value);
     }
+
     public function getUndertenderAllowed(): ?bool
     {
         return $this->getData(self::UNDERTENDER_ALLOWED);
@@ -147,6 +160,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::UNDERTENDER_ALLOWED, $value);
     }
+
     public function getOvertenderAllowed(): ?bool
     {
         return $this->getData(self::OVERTENDER_ALLOWED);
@@ -156,6 +170,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
+
     public function getOvertenderMaxAmt(): ?string
     {
         return $this->getData(self::OVERTENDER_MAX_AMT);
@@ -165,6 +180,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }
+
     public function getCountingRequired(): ?bool
     {
         return $this->getData(self::COUNTING_REQUIRED);
@@ -174,6 +190,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::COUNTING_REQUIRED, $value);
     }
+
     public function getDrawerOpens(): ?bool
     {
         return $this->getData(self::DRAWER_OPENS);
@@ -183,6 +200,7 @@ class TenderView extends DataObject
     {
         return $this->setData(self::DRAWER_OPENS, $value);
     }
+
     public function getDateEntryCodes(): ?string
     {
         return $this->getData(self::DATE_ENTRY_CODES);

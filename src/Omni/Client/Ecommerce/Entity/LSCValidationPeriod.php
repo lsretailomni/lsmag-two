@@ -56,6 +56,7 @@ class LSCValidationPeriod extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getID(): ?string
     {
         return $this->getData(self::I_D);
@@ -65,6 +66,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::I_D, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -74,6 +76,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getStartingDate(): ?string
     {
         return $this->getData(self::STARTING_DATE);
@@ -83,6 +86,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
+
     public function getEndingDate(): ?string
     {
         return $this->getData(self::ENDING_DATE);
@@ -92,6 +96,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::ENDING_DATE, $value);
     }
+
     public function getStartingTime(): ?string
     {
         return $this->getData(self::STARTING_TIME);
@@ -101,6 +106,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::STARTING_TIME, $value);
     }
+
     public function getEndingTime(): ?string
     {
         return $this->getData(self::ENDING_TIME);
@@ -110,6 +116,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::ENDING_TIME, $value);
     }
+
     public function getTimeWithinBounds(): ?bool
     {
         return $this->getData(self::TIME_WITHIN_BOUNDS);
@@ -119,6 +126,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getMondayStartingTime(): ?string
     {
         return $this->getData(self::MONDAY_STARTING_TIME);
@@ -128,6 +136,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::MONDAY_STARTING_TIME, $value);
     }
+
     public function getMondayEndingTime(): ?string
     {
         return $this->getData(self::MONDAY_ENDING_TIME);
@@ -137,6 +146,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::MONDAY_ENDING_TIME, $value);
     }
+
     public function getMonTimeWithinBounds(): ?bool
     {
         return $this->getData(self::MON_TIME_WITHIN_BOUNDS);
@@ -146,6 +156,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::MON_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getTuesdayStartingTime(): ?string
     {
         return $this->getData(self::TUESDAY_STARTING_TIME);
@@ -155,6 +166,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::TUESDAY_STARTING_TIME, $value);
     }
+
     public function getTuesdayEndingTime(): ?string
     {
         return $this->getData(self::TUESDAY_ENDING_TIME);
@@ -164,6 +176,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::TUESDAY_ENDING_TIME, $value);
     }
+
     public function getTueTimeWithinBounds(): ?bool
     {
         return $this->getData(self::TUE_TIME_WITHIN_BOUNDS);
@@ -173,6 +186,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::TUE_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getWednesdayStartingTime(): ?string
     {
         return $this->getData(self::WEDNESDAY_STARTING_TIME);
@@ -182,6 +196,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::WEDNESDAY_STARTING_TIME, $value);
     }
+
     public function getWednesdayEndingTime(): ?string
     {
         return $this->getData(self::WEDNESDAY_ENDING_TIME);
@@ -191,6 +206,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::WEDNESDAY_ENDING_TIME, $value);
     }
+
     public function getWedTimeWithinBounds(): ?bool
     {
         return $this->getData(self::WED_TIME_WITHIN_BOUNDS);
@@ -200,6 +216,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::WED_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getThursdayStartingTime(): ?string
     {
         return $this->getData(self::THURSDAY_STARTING_TIME);
@@ -209,6 +226,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::THURSDAY_STARTING_TIME, $value);
     }
+
     public function getThursdayEndingTime(): ?string
     {
         return $this->getData(self::THURSDAY_ENDING_TIME);
@@ -218,6 +236,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::THURSDAY_ENDING_TIME, $value);
     }
+
     public function getThuTimeWithinBounds(): ?bool
     {
         return $this->getData(self::THU_TIME_WITHIN_BOUNDS);
@@ -227,6 +246,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::THU_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getFridayStartingTime(): ?string
     {
         return $this->getData(self::FRIDAY_STARTING_TIME);
@@ -236,6 +256,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::FRIDAY_STARTING_TIME, $value);
     }
+
     public function getFridayEndingTime(): ?string
     {
         return $this->getData(self::FRIDAY_ENDING_TIME);
@@ -245,6 +266,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::FRIDAY_ENDING_TIME, $value);
     }
+
     public function getFriTimeWithinBounds(): ?bool
     {
         return $this->getData(self::FRI_TIME_WITHIN_BOUNDS);
@@ -254,6 +276,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::FRI_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getSaturdayStartingTime(): ?string
     {
         return $this->getData(self::SATURDAY_STARTING_TIME);
@@ -263,6 +286,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SATURDAY_STARTING_TIME, $value);
     }
+
     public function getSaturdayEndingTime(): ?string
     {
         return $this->getData(self::SATURDAY_ENDING_TIME);
@@ -272,6 +296,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SATURDAY_ENDING_TIME, $value);
     }
+
     public function getSatTimeWithinBounds(): ?bool
     {
         return $this->getData(self::SAT_TIME_WITHIN_BOUNDS);
@@ -281,6 +306,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SAT_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getSundayStartingTime(): ?string
     {
         return $this->getData(self::SUNDAY_STARTING_TIME);
@@ -290,6 +316,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SUNDAY_STARTING_TIME, $value);
     }
+
     public function getSundayEndingTime(): ?string
     {
         return $this->getData(self::SUNDAY_ENDING_TIME);
@@ -299,6 +326,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SUNDAY_ENDING_TIME, $value);
     }
+
     public function getSunTimeWithinBounds(): ?bool
     {
         return $this->getData(self::SUN_TIME_WITHIN_BOUNDS);
@@ -308,6 +336,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SUN_TIME_WITHIN_BOUNDS, $value);
     }
+
     public function getEndingTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::ENDING_TIME_AFTER_MIDNIGHT);
@@ -317,6 +346,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::ENDING_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getMonEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::MON_END_TIME_AFTER_MIDNIGHT);
@@ -326,6 +356,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::MON_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getTueEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::TUE_END_TIME_AFTER_MIDNIGHT);
@@ -335,6 +366,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::TUE_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getWedEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::WED_END_TIME_AFTER_MIDNIGHT);
@@ -344,6 +376,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::WED_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getThuEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::THU_END_TIME_AFTER_MIDNIGHT);
@@ -353,6 +386,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::THU_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getFriEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::FRI_END_TIME_AFTER_MIDNIGHT);
@@ -362,6 +396,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::FRI_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getSatEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::SAT_END_TIME_AFTER_MIDNIGHT);
@@ -371,6 +406,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SAT_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getSunEndTimeAfterMidnight(): ?bool
     {
         return $this->getData(self::SUN_END_TIME_AFTER_MIDNIGHT);
@@ -380,6 +416,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SUN_END_TIME_AFTER_MIDNIGHT, $value);
     }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
@@ -389,6 +426,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::NO_SERIES, $value);
     }
+
     public function getOfferStartingTime(): ?string
     {
         return $this->getData(self::OFFER_STARTING_TIME);
@@ -398,6 +436,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::OFFER_STARTING_TIME, $value);
     }
+
     public function getOfferEndingTime(): ?string
     {
         return $this->getData(self::OFFER_ENDING_TIME);
@@ -407,6 +446,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::OFFER_ENDING_TIME, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -416,6 +456,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -425,6 +466,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -434,6 +476,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -443,6 +486,7 @@ class LSCValidationPeriod extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

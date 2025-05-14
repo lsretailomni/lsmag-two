@@ -24,18 +24,15 @@ class LSCRetailProductGroup
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetProductGroup();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetProductGroup $request = null): \Ls\Omni\Client\Ecommerce\Entity\LSCRetailProductGroupResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCRetailProductGroupResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetProductGroup::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\LSCRetailProductGroup::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class LSCRetailProductGroup
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetProductGroup
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetProductGroup($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetProductGroup $request): self
     {

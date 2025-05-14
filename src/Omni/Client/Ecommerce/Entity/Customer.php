@@ -138,6 +138,7 @@ class Customer extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
@@ -147,6 +148,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::NO, $value);
     }
+
     public function getName(): ?string
     {
         return $this->getData(self::NAME);
@@ -156,6 +158,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::NAME, $value);
     }
+
     public function getSearchName(): ?string
     {
         return $this->getData(self::SEARCH_NAME);
@@ -165,6 +168,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
+
     public function getName2(): ?string
     {
         return $this->getData(self::NAME_2);
@@ -174,6 +178,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::NAME_2, $value);
     }
+
     public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
@@ -183,6 +188,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::ADDRESS, $value);
     }
+
     public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS_2);
@@ -192,6 +198,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
+
     public function getCity(): ?string
     {
         return $this->getData(self::CITY);
@@ -201,6 +208,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CITY, $value);
     }
+
     public function getContact(): ?string
     {
         return $this->getData(self::CONTACT);
@@ -210,6 +218,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CONTACT, $value);
     }
+
     public function getPhoneNo(): ?string
     {
         return $this->getData(self::PHONE_NO);
@@ -219,6 +228,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PHONE_NO, $value);
     }
+
     public function getTelexNo(): ?string
     {
         return $this->getData(self::TELEX_NO);
@@ -228,6 +238,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::TELEX_NO, $value);
     }
+
     public function getDocumentSendingProfile(): ?string
     {
         return $this->getData(self::DOCUMENT_SENDING_PROFILE);
@@ -237,6 +248,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::DOCUMENT_SENDING_PROFILE, $value);
     }
+
     public function getShipToCode(): ?string
     {
         return $this->getData(self::SHIPTO_CODE);
@@ -246,6 +258,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPTO_CODE, $value);
     }
+
     public function getOurAccountNo(): ?string
     {
         return $this->getData(self::OUR_ACCOUNT_NO);
@@ -255,6 +268,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::OUR_ACCOUNT_NO, $value);
     }
+
     public function getTerritoryCode(): ?string
     {
         return $this->getData(self::TERRITORY_CODE);
@@ -264,6 +278,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
+
     public function getGlobalDimension1Code(): ?string
     {
         return $this->getData(self::GLOBAL_DIMENSION_1_CODE);
@@ -273,6 +288,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::GLOBAL_DIMENSION_1_CODE, $value);
     }
+
     public function getGlobalDimension2Code(): ?string
     {
         return $this->getData(self::GLOBAL_DIMENSION_2_CODE);
@@ -282,6 +298,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::GLOBAL_DIMENSION_2_CODE, $value);
     }
+
     public function getChainName(): ?string
     {
         return $this->getData(self::CHAIN_NAME);
@@ -291,6 +308,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CHAIN_NAME, $value);
     }
+
     public function getBudgetedAmount(): ?string
     {
         return $this->getData(self::BUDGETED_AMOUNT);
@@ -300,6 +318,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
+
     public function getCreditLimitLCY(): ?string
     {
         return $this->getData(self::CREDIT_LIMIT_L_C_Y);
@@ -309,6 +328,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CREDIT_LIMIT_L_C_Y, $value);
     }
+
     public function getCustomerPostingGroup(): ?string
     {
         return $this->getData(self::CUSTOMER_POSTING_GROUP);
@@ -318,6 +338,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CUSTOMER_POSTING_GROUP, $value);
     }
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -327,6 +348,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getCustomerPriceGroup(): ?string
     {
         return $this->getData(self::CUSTOMER_PRICE_GROUP);
@@ -336,6 +358,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CUSTOMER_PRICE_GROUP, $value);
     }
+
     public function getLanguageCode(): ?string
     {
         return $this->getData(self::LANGUAGE_CODE);
@@ -345,6 +368,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
+
     public function getRegistrationNumber(): ?string
     {
         return $this->getData(self::REGISTRATION_NUMBER);
@@ -354,6 +378,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::REGISTRATION_NUMBER, $value);
     }
+
     public function getStatisticsGroup(): ?int
     {
         return $this->getData(self::STATISTICS_GROUP);
@@ -363,6 +388,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::STATISTICS_GROUP, $value);
     }
+
     public function getPaymentTermsCode(): ?string
     {
         return $this->getData(self::PAYMENT_TERMS_CODE);
@@ -372,6 +398,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PAYMENT_TERMS_CODE, $value);
     }
+
     public function getFinChargeTermsCode(): ?string
     {
         return $this->getData(self::FIN_CHARGE_TERMS_CODE);
@@ -381,6 +408,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::FIN_CHARGE_TERMS_CODE, $value);
     }
+
     public function getSalespersonCode(): ?string
     {
         return $this->getData(self::SALESPERSON_CODE);
@@ -390,6 +418,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SALESPERSON_CODE, $value);
     }
+
     public function getShipmentMethodCode(): ?string
     {
         return $this->getData(self::SHIPMENT_METHOD_CODE);
@@ -399,6 +428,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPMENT_METHOD_CODE, $value);
     }
+
     public function getShippingAgentCode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
@@ -408,6 +438,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPPING_AGENT_CODE, $value);
     }
+
     public function getPlaceOfExport(): ?string
     {
         return $this->getData(self::PLACE_OF_EXPORT);
@@ -417,6 +448,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PLACE_OF_EXPORT, $value);
     }
+
     public function getInvoiceDiscCode(): ?string
     {
         return $this->getData(self::INVOICE_DISC_CODE);
@@ -426,6 +458,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::INVOICE_DISC_CODE, $value);
     }
+
     public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::CUSTOMER_DISC_GROUP);
@@ -435,6 +468,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
+
     public function getCountryRegionCode(): ?string
     {
         return $this->getData(self::COUNTRY_REGION_CODE);
@@ -444,6 +478,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::COUNTRY_REGION_CODE, $value);
     }
+
     public function getCollectionMethod(): ?string
     {
         return $this->getData(self::COLLECTION_METHOD);
@@ -453,6 +488,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::COLLECTION_METHOD, $value);
     }
+
     public function getAmount(): ?string
     {
         return $this->getData(self::AMOUNT);
@@ -462,6 +498,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::AMOUNT, $value);
     }
+
     public function getBlocked(): ?string
     {
         return $this->getData(self::BLOCKED);
@@ -471,6 +508,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::BLOCKED, $value);
     }
+
     public function getInvoiceCopies(): ?int
     {
         return $this->getData(self::INVOICE_COPIES);
@@ -480,6 +518,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::INVOICE_COPIES, $value);
     }
+
     public function getLastStatementNo(): ?int
     {
         return $this->getData(self::LAST_STATEMENT_NO);
@@ -489,6 +528,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::LAST_STATEMENT_NO, $value);
     }
+
     public function getPrintStatements(): ?bool
     {
         return $this->getData(self::PRINT_STATEMENTS);
@@ -498,6 +538,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PRINT_STATEMENTS, $value);
     }
+
     public function getBillToCustomerNo(): ?string
     {
         return $this->getData(self::BILLTO_CUSTOMER_NO);
@@ -507,6 +548,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::BILLTO_CUSTOMER_NO, $value);
     }
+
     public function getPriority(): ?int
     {
         return $this->getData(self::PRIORITY);
@@ -516,6 +558,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PRIORITY, $value);
     }
+
     public function getPaymentMethodCode(): ?string
     {
         return $this->getData(self::PAYMENT_METHOD_CODE);
@@ -525,6 +568,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PAYMENT_METHOD_CODE, $value);
     }
+
     public function getFormatRegion(): ?string
     {
         return $this->getData(self::FORMAT_REGION);
@@ -534,6 +578,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::FORMAT_REGION, $value);
     }
+
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -543,6 +588,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
+
     public function getLastDateModified(): ?string
     {
         return $this->getData(self::LAST_DATE_MODIFIED);
@@ -552,6 +598,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
+
     public function getApplicationMethod(): ?string
     {
         return $this->getData(self::APPLICATION_METHOD);
@@ -561,6 +608,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::APPLICATION_METHOD, $value);
     }
+
     public function getPricesIncludingVAT(): ?bool
     {
         return $this->getData(self::PRICES_INCLUDING_V_A_T);
@@ -570,6 +618,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PRICES_INCLUDING_V_A_T, $value);
     }
+
     public function getLocationCode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
@@ -579,6 +628,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
+
     public function getFaxNo(): ?string
     {
         return $this->getData(self::FAX_NO);
@@ -588,6 +638,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::FAX_NO, $value);
     }
+
     public function getTelexAnswerBack(): ?string
     {
         return $this->getData(self::TELEX_ANSWER_BACK);
@@ -597,6 +648,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::TELEX_ANSWER_BACK, $value);
     }
+
     public function getVATRegistrationNo(): ?string
     {
         return $this->getData(self::V_A_T_REGISTRATION_NO);
@@ -606,6 +658,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::V_A_T_REGISTRATION_NO, $value);
     }
+
     public function getCombineShipments(): ?bool
     {
         return $this->getData(self::COMBINE_SHIPMENTS);
@@ -615,6 +668,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::COMBINE_SHIPMENTS, $value);
     }
+
     public function getGenBusPostingGroup(): ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
@@ -624,6 +678,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::GEN_BUS_POSTING_GROUP, $value);
     }
+
     public function getGLN(): ?string
     {
         return $this->getData(self::G_L_N);
@@ -633,6 +688,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::G_L_N, $value);
     }
+
     public function getPostCode(): ?string
     {
         return $this->getData(self::POST_CODE);
@@ -642,6 +698,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::POST_CODE, $value);
     }
+
     public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
@@ -651,6 +708,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::COUNTY, $value);
     }
+
     public function getEORINumber(): ?string
     {
         return $this->getData(self::E_O_R_I_NUMBER);
@@ -660,6 +718,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::E_O_R_I_NUMBER, $value);
     }
+
     public function getUseGLNInElectronicDocument(): ?bool
     {
         return $this->getData(self::USE_G_L_N_IN_ELECTRONIC_DOCUMENT);
@@ -669,6 +728,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::USE_G_L_N_IN_ELECTRONIC_DOCUMENT, $value);
     }
+
     public function getEMail(): ?string
     {
         return $this->getData(self::E_MAIL);
@@ -678,6 +738,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::E_MAIL, $value);
     }
+
     public function getHomePage(): ?string
     {
         return $this->getData(self::HOME_PAGE);
@@ -687,6 +748,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
+
     public function getReminderTermsCode(): ?string
     {
         return $this->getData(self::REMINDER_TERMS_CODE);
@@ -696,6 +758,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::REMINDER_TERMS_CODE, $value);
     }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
@@ -705,6 +768,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::NO_SERIES, $value);
     }
+
     public function getTaxAreaCode(): ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
@@ -714,6 +778,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::TAX_AREA_CODE, $value);
     }
+
     public function getTaxLiable(): ?bool
     {
         return $this->getData(self::TAX_LIABLE);
@@ -723,6 +788,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::TAX_LIABLE, $value);
     }
+
     public function getVATBusPostingGroup(): ?string
     {
         return $this->getData(self::V_A_T_BUS_POSTING_GROUP);
@@ -732,6 +798,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::V_A_T_BUS_POSTING_GROUP, $value);
     }
+
     public function getReserve(): ?string
     {
         return $this->getData(self::RESERVE);
@@ -741,6 +808,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::RESERVE, $value);
     }
+
     public function getBlockPaymentTolerance(): ?bool
     {
         return $this->getData(self::BLOCK_PAYMENT_TOLERANCE);
@@ -750,6 +818,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::BLOCK_PAYMENT_TOLERANCE, $value);
     }
+
     public function getICPartnerCode(): ?string
     {
         return $this->getData(self::I_C_PARTNER_CODE);
@@ -759,6 +828,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::I_C_PARTNER_CODE, $value);
     }
+
     public function getPrepayment(): ?string
     {
         return $this->getData(self::PREPAYMENT);
@@ -768,6 +838,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PREPAYMENT, $value);
     }
+
     public function getPartnerType(): ?string
     {
         return $this->getData(self::PARTNER_TYPE);
@@ -777,6 +848,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PARTNER_TYPE, $value);
     }
+
     public function getIntrastatPartnerType(): ?string
     {
         return $this->getData(self::INTRASTAT_PARTNER_TYPE);
@@ -786,6 +858,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
     }
+
     public function getExcludeFromPmtPractices(): ?bool
     {
         return $this->getData(self::EXCLUDE_FROM_PMT_PRACTICES);
@@ -795,6 +868,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::EXCLUDE_FROM_PMT_PRACTICES, $value);
     }
+
     public function getImage(): ?string
     {
         return $this->getData(self::IMAGE);
@@ -804,6 +878,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::IMAGE, $value);
     }
+
     public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::PRIVACY_BLOCKED);
@@ -813,6 +888,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
+
     public function getDisableSearchByName(): ?bool
     {
         return $this->getData(self::DISABLE_SEARCH_BY_NAME);
@@ -822,6 +898,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::DISABLE_SEARCH_BY_NAME, $value);
     }
+
     public function getAllowMultiplePostingGroups(): ?bool
     {
         return $this->getData(self::ALLOW_MULTIPLE_POSTING_GROUPS);
@@ -831,6 +908,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::ALLOW_MULTIPLE_POSTING_GROUPS, $value);
     }
+
     public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
@@ -840,6 +918,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PREFERRED_BANK_ACCOUNT_CODE, $value);
     }
+
     public function getCashFlowPaymentTermsCode(): ?string
     {
         return $this->getData(self::CASH_FLOW_PAYMENT_TERMS_CODE);
@@ -849,6 +928,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
     }
+
     public function getDefaultTransType(): ?string
     {
         return $this->getData(self::DEFAULT_TRANS_TYPE);
@@ -858,6 +938,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
     }
+
     public function getDefaultTransTypeReturn(): ?string
     {
         return $this->getData(self::DEFAULT_TRANS_TYPE__RETURN);
@@ -867,6 +948,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE__RETURN, $value);
     }
+
     public function getDefTransportMethod(): ?string
     {
         return $this->getData(self::DEF_TRANSPORT_METHOD);
@@ -876,6 +958,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
     }
+
     public function getPrimaryContactNo(): ?string
     {
         return $this->getData(self::PRIMARY_CONTACT_NO);
@@ -885,6 +968,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PRIMARY_CONTACT_NO, $value);
     }
+
     public function getContactType(): ?string
     {
         return $this->getData(self::CONTACT_TYPE);
@@ -894,6 +978,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CONTACT_TYPE, $value);
     }
+
     public function getMobilePhoneNo(): ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
@@ -903,6 +988,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
+
     public function getResponsibilityCenter(): ?string
     {
         return $this->getData(self::RESPONSIBILITY_CENTER);
@@ -912,6 +998,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::RESPONSIBILITY_CENTER, $value);
     }
+
     public function getShippingAdvice(): ?string
     {
         return $this->getData(self::SHIPPING_ADVICE);
@@ -921,6 +1008,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPPING_ADVICE, $value);
     }
+
     public function getShippingTime(): ?string
     {
         return $this->getData(self::SHIPPING_TIME);
@@ -930,6 +1018,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPPING_TIME, $value);
     }
+
     public function getShippingAgentServiceCode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
@@ -939,6 +1028,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $value);
     }
+
     public function getServiceZoneCode(): ?string
     {
         return $this->getData(self::SERVICE_ZONE_CODE);
@@ -948,6 +1038,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SERVICE_ZONE_CODE, $value);
     }
+
     public function getCombineServiceShipments(): ?bool
     {
         return $this->getData(self::COMBINE_SERVICE_SHIPMENTS);
@@ -957,6 +1048,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::COMBINE_SERVICE_SHIPMENTS, $value);
     }
+
     public function getPriceCalculationMethod(): ?string
     {
         return $this->getData(self::PRICE_CALCULATION_METHOD);
@@ -966,6 +1058,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
     }
+
     public function getAllowLineDisc(): ?bool
     {
         return $this->getData(self::ALLOW_LINE_DISC);
@@ -975,6 +1068,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::ALLOW_LINE_DISC, $value);
     }
+
     public function getBaseCalendarCode(): ?string
     {
         return $this->getData(self::BASE_CALENDAR_CODE);
@@ -984,6 +1078,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::BASE_CALENDAR_CODE, $value);
     }
+
     public function getCopySellToAddrToQteFrom(): ?string
     {
         return $this->getData(self::COPY_SELLTO_ADDR_TO_QTE_FROM);
@@ -993,6 +1088,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::COPY_SELLTO_ADDR_TO_QTE_FROM, $value);
     }
+
     public function getValidateEUVatRegNo(): ?bool
     {
         return $this->getData(self::VALIDATE_E_U_VAT_REG_NO);
@@ -1002,6 +1098,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::VALIDATE_E_U_VAT_REG_NO, $value);
     }
+
     public function getCurrencyId(): ?string
     {
         return $this->getData(self::CURRENCY_ID);
@@ -1011,6 +1108,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CURRENCY_ID, $value);
     }
+
     public function getPaymentTermsId(): ?string
     {
         return $this->getData(self::PAYMENT_TERMS_ID);
@@ -1020,6 +1118,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PAYMENT_TERMS_ID, $value);
     }
+
     public function getShipmentMethodId(): ?string
     {
         return $this->getData(self::SHIPMENT_METHOD_ID);
@@ -1029,6 +1128,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SHIPMENT_METHOD_ID, $value);
     }
+
     public function getPaymentMethodId(): ?string
     {
         return $this->getData(self::PAYMENT_METHOD_ID);
@@ -1038,6 +1138,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::PAYMENT_METHOD_ID, $value);
     }
+
     public function getTaxAreaID(): ?string
     {
         return $this->getData(self::TAX_AREA_I_D);
@@ -1047,6 +1148,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::TAX_AREA_I_D, $value);
     }
+
     public function getContactID(): ?string
     {
         return $this->getData(self::CONTACT_I_D);
@@ -1056,6 +1158,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CONTACT_I_D, $value);
     }
+
     public function getContactGraphId(): ?string
     {
         return $this->getData(self::CONTACT_GRAPH_ID);
@@ -1065,6 +1168,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::CONTACT_GRAPH_ID, $value);
     }
+
     public function getLSCDateCreated(): ?string
     {
         return $this->getData(self::L_S_C_DATE_CREATED);
@@ -1074,6 +1178,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_DATE_CREATED, $value);
     }
+
     public function getLSCCreatedByUser(): ?string
     {
         return $this->getData(self::L_S_C_CREATED_BY_USER);
@@ -1083,6 +1188,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_CREATED_BY_USER, $value);
     }
+
     public function getLSCExternalID(): ?string
     {
         return $this->getData(self::L_S_C_EXTERNAL_I_D);
@@ -1092,6 +1198,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_EXTERNAL_I_D, $value);
     }
+
     public function getLSCCustomerID(): ?string
     {
         return $this->getData(self::L_S_C_CUSTOMER_I_D);
@@ -1101,6 +1208,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_CUSTOMER_I_D, $value);
     }
+
     public function getLSCReasonCode(): ?string
     {
         return $this->getData(self::L_S_C_REASON_CODE);
@@ -1110,6 +1218,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_REASON_CODE, $value);
     }
+
     public function getLSCRestrictionFunctionality(): ?string
     {
         return $this->getData(self::L_S_C_RESTRICTION_FUNCTIONALITY);
@@ -1119,6 +1228,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_RESTRICTION_FUNCTIONALITY, $value);
     }
+
     public function getLSCPrintDocumentInvoice(): ?bool
     {
         return $this->getData(self::L_S_C_PRINT_DOCUMENT_INVOICE);
@@ -1128,6 +1238,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_PRINT_DOCUMENT_INVOICE, $value);
     }
+
     public function getLSCTransactionLimit(): ?string
     {
         return $this->getData(self::L_S_C_TRANSACTION_LIMIT);
@@ -1137,6 +1248,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_TRANSACTION_LIMIT, $value);
     }
+
     public function getLSCDaytimePhoneNo(): ?string
     {
         return $this->getData(self::L_S_C_DAYTIME_PHONE_NO);
@@ -1146,6 +1258,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_DAYTIME_PHONE_NO, $value);
     }
+
     public function getLSCHouseApartmentNo(): ?string
     {
         return $this->getData(self::L_S_C_HOUSE_APARTMENT_NO);
@@ -1155,6 +1268,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_HOUSE_APARTMENT_NO, $value);
     }
+
     public function getLSCRetailCustomerGroup(): ?string
     {
         return $this->getData(self::L_S_C_RETAIL_CUSTOMER_GROUP);
@@ -1164,6 +1278,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_RETAIL_CUSTOMER_GROUP, $value);
     }
+
     public function getLSCDefaultWeight(): ?string
     {
         return $this->getData(self::L_S_C_DEFAULT_WEIGHT);
@@ -1173,6 +1288,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_DEFAULT_WEIGHT, $value);
     }
+
     public function getLSCOtherTenderInFinalizing(): ?bool
     {
         return $this->getData(self::L_S_C_OTHER_TENDER_IN_FINALIZING);
@@ -1182,6 +1298,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_OTHER_TENDER_IN_FINALIZING, $value);
     }
+
     public function getLSCPostAsShipment(): ?bool
     {
         return $this->getData(self::L_S_C_POST_AS_SHIPMENT);
@@ -1191,6 +1308,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_POST_AS_SHIPMENT, $value);
     }
+
     public function getLSCInclIncExpOnSalesDoc(): ?bool
     {
         return $this->getData(self::L_S_C_INCL_INC_EXP_ON_SALES_DOC);
@@ -1200,6 +1318,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_INCL_INC_EXP_ON_SALES_DOC, $value);
     }
+
     public function getLSCAmtChargedOnPOSInt(): ?string
     {
         return $this->getData(self::L_S_C_AMT_CHARGED_ON_P_O_S_INT);
@@ -1209,6 +1328,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_AMT_CHARGED_ON_P_O_S_INT, $value);
     }
+
     public function getLSCAmtChargedPostedInt(): ?string
     {
         return $this->getData(self::L_S_C_AMT_CHARGED_POSTED_INT);
@@ -1218,6 +1338,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_AMT_CHARGED_POSTED_INT, $value);
     }
+
     public function getLSCBalanceLCYInt(): ?string
     {
         return $this->getData(self::L_S_C_BALANCE_L_C_Y_INT);
@@ -1227,6 +1348,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::L_S_C_BALANCE_L_C_Y_INT, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -1236,6 +1358,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -1245,6 +1368,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -1254,6 +1378,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -1263,6 +1388,7 @@ class Customer extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

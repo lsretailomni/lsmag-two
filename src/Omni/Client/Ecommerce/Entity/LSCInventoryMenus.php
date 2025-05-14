@@ -24,6 +24,7 @@ class LSCInventoryMenus extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getDeviceType(): ?string
     {
         return $this->getData(self::DEVICE_TYPE);
@@ -33,6 +34,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -42,6 +44,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -51,6 +54,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -60,6 +64,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getText(): ?string
     {
         return $this->getData(self::TEXT);
@@ -69,6 +74,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::TEXT, $value);
     }
+
     public function getBitmap(): ?string
     {
         return $this->getData(self::BITMAP);
@@ -78,6 +84,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::BITMAP, $value);
     }
+
     public function getMainMenu(): ?bool
     {
         return $this->getData(self::MAIN_MENU);
@@ -87,6 +94,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::MAIN_MENU, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -96,6 +104,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -105,6 +114,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -114,6 +124,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -123,6 +134,7 @@ class LSCInventoryMenus extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

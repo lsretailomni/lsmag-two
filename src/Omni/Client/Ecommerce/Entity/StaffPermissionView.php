@@ -29,6 +29,7 @@ class StaffPermissionView extends DataObject
     public const MAX_DISCOUNT_TO_GIVE = 'Max. Discount to Give %';
     public const MAX_TOTAL_DISCOUNT = 'Max. Total Discount %';
 
+
     public function getStaff(): ?string
     {
         return $this->getData(self::STAFF);
@@ -38,6 +39,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::STAFF, $value);
     }
+
     public function getManagerPrivileges(): ?string
     {
         return $this->getData(self::MANAGER_PRIVILEGES);
@@ -47,6 +49,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
+
     public function getVoidTransaction(): ?string
     {
         return $this->getData(self::VOID_TRANSACTION);
@@ -56,6 +59,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
+
     public function getXZYReportPrinting(): ?string
     {
         return $this->getData(self::X_Z_Y_REPORT_PRINTING);
@@ -65,6 +69,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::X_Z_Y_REPORT_PRINTING, $value);
     }
+
     public function getTenderDeclaration(): ?string
     {
         return $this->getData(self::TENDER_DECLARATION);
@@ -74,6 +79,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
+
     public function getFloatingDeclaration(): ?string
     {
         return $this->getData(self::FLOATING_DECLARATION);
@@ -83,6 +89,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
+
     public function getPriceOverride(): ?string
     {
         return $this->getData(self::PRICE_OVERRIDE);
@@ -92,6 +99,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
+
     public function getSuspendTransaction(): ?string
     {
         return $this->getData(self::SUSPEND_TRANSACTION);
@@ -101,6 +109,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
+
     public function getReturnInTransaction(): ?string
     {
         return $this->getData(self::RETURN_IN_TRANSACTION);
@@ -110,6 +119,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
+
     public function getVoidLine(): ?string
     {
         return $this->getData(self::VOID_LINE);
@@ -119,6 +129,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::VOID_LINE, $value);
     }
+
     public function getAddPayment(): ?string
     {
         return $this->getData(self::ADD_PAYMENT);
@@ -128,6 +139,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
+
     public function getCreateCustomers(): ?string
     {
         return $this->getData(self::CREATE_CUSTOMERS);
@@ -137,6 +149,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
+
     public function getViewSalesHistory(): ?string
     {
         return $this->getData(self::VIEW_SALES_HISTORY);
@@ -146,6 +159,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
+
     public function getCustomerComments(): ?string
     {
         return $this->getData(self::CUSTOMER_COMMENTS);
@@ -155,6 +169,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
+
     public function getUpdateCustomers(): ?string
     {
         return $this->getData(self::UPDATE_CUSTOMERS);
@@ -164,6 +179,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
+
     public function getMaxDiscountToGive(): ?string
     {
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
@@ -173,6 +189,7 @@ class StaffPermissionView extends DataObject
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
+
     public function getMaxTotalDiscount(): ?string
     {
         return $this->getData(self::MAX_TOTAL_DISCOUNT);

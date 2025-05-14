@@ -24,18 +24,15 @@ class PriceListLine
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine $request = null): \Ls\Omni\Client\Ecommerce\Entity\PriceListLineResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\PriceListLineResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\PriceListLine::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class PriceListLine
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine $request): self
     {

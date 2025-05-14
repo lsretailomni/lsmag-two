@@ -24,18 +24,15 @@ class CountryView
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetCountryCode();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetCountryCode $request = null): \Ls\Omni\Client\Ecommerce\Entity\CountryViewResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\CountryViewResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetCountryCode::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\CountryView::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class CountryView
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetCountryCode
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetCountryCode($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetCountryCode $request): self
     {

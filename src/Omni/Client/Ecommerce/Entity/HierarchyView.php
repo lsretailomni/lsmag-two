@@ -19,6 +19,7 @@ class HierarchyView extends DataObject
     public const SALES_TYPE_FILTER = 'Sales Type Filter';
     public const VALIDATION_SCHEDULE_I_D = 'Validation Schedule ID';
 
+
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
@@ -28,6 +29,7 @@ class HierarchyView extends DataObject
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -37,6 +39,7 @@ class HierarchyView extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -46,6 +49,7 @@ class HierarchyView extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getStartDate(): ?\DateTime
     {
         return $this->getData(self::START_DATE);
@@ -55,6 +59,7 @@ class HierarchyView extends DataObject
     {
         return $this->setData(self::START_DATE, $value);
     }
+
     public function getPriority(): ?int
     {
         return $this->getData(self::PRIORITY);
@@ -64,6 +69,7 @@ class HierarchyView extends DataObject
     {
         return $this->setData(self::PRIORITY, $value);
     }
+
     public function getSalesTypeFilter(): ?string
     {
         return $this->getData(self::SALES_TYPE_FILTER);
@@ -73,6 +79,7 @@ class HierarchyView extends DataObject
     {
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
+
     public function getValidationScheduleID(): ?string
     {
         return $this->getData(self::VALIDATION_SCHEDULE_I_D);

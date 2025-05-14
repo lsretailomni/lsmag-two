@@ -29,6 +29,7 @@ class LSCWIPrice extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -38,6 +39,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -47,6 +49,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -56,6 +59,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::CUSTOMER_DISC_GROUP);
@@ -65,6 +69,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
+
     public function getLoyaltySchemeCode(): ?string
     {
         return $this->getData(self::LOYALTY_SCHEME_CODE);
@@ -74,6 +79,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -83,6 +89,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getNetUnitPrice(): ?string
     {
         return $this->getData(self::NET_UNIT_PRICE);
@@ -92,6 +99,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::NET_UNIT_PRICE, $value);
     }
+
     public function getUnitPrice(): ?string
     {
         return $this->getData(self::UNIT_PRICE);
@@ -101,6 +109,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
+
     public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
@@ -110,6 +119,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
+
     public function getOfferNo(): ?string
     {
         return $this->getData(self::OFFER_NO);
@@ -119,6 +129,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::OFFER_NO, $value);
     }
+
     public function getLastModifyDate(): ?string
     {
         return $this->getData(self::LAST_MODIFY_DATE);
@@ -128,6 +139,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
+
     public function getQtyPerUnitOfMeasure(): ?string
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
@@ -137,6 +149,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -146,6 +159,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -155,6 +169,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -164,6 +179,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -173,6 +189,7 @@ class LSCWIPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

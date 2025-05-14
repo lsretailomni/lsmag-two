@@ -28,6 +28,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -37,6 +38,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -46,6 +48,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -55,6 +58,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getTenderTypeCode(): ?string
     {
         return $this->getData(self::TENDER_TYPE_CODE);
@@ -64,6 +68,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::TENDER_TYPE_CODE, $value);
     }
+
     public function getAccountType(): ?string
     {
         return $this->getData(self::ACCOUNT_TYPE);
@@ -73,6 +78,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }
+
     public function getAccountNo(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
@@ -82,6 +88,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
+
     public function getAccountName(): ?string
     {
         return $this->getData(self::ACCOUNT_NAME);
@@ -91,6 +98,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::ACCOUNT_NAME, $value);
     }
+
     public function getDifferenceGLAcc(): ?string
     {
         return $this->getData(self::DIFFERENCE_G_L_ACC);
@@ -100,6 +108,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::DIFFERENCE_G_L_ACC, $value);
     }
+
     public function getPrimaryKey(): ?string
     {
         return $this->getData(self::PRIMARY_KEY);
@@ -109,6 +118,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
+
     public function getPOSPickupWarningAmount(): ?string
     {
         return $this->getData(self::P_O_S_PICKUP_WARNING_AMOUNT);
@@ -118,6 +128,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::P_O_S_PICKUP_WARNING_AMOUNT, $value);
     }
+
     public function getPOSPickupWarningText(): ?string
     {
         return $this->getData(self::P_O_S_PICKUP_WARNING_TEXT);
@@ -127,6 +138,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::P_O_S_PICKUP_WARNING_TEXT, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -136,6 +148,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -145,6 +158,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -154,6 +168,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -163,6 +178,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

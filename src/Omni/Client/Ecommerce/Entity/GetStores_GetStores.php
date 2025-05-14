@@ -7,17 +7,53 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class GetStores_GetStores
-{
-    public const ACTION_NAME = 'GetStores_GetStores';
-    public string $storeGetType;
-    public string $searchText;
-    public bool $includeDetail;
+use Magento\Framework\DataObject;
 
-    public function __construct(array $data = [])
+class GetStores_GetStores extends DataObject
+{
+    public const L_S_C_STORE = 'LSCStore';
+    public const L_S_C_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
+    public const L_S_C_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
+    public const L_S_C_SALES_TYPE = 'LSCSalesType';
+
+
+    public function getLSCStore(): ?array
     {
-        $this->storeGetType = $data['storeGetType'] ?? null;
-        $this->searchText = $data['searchText'] ?? null;
-        $this->includeDetail = $data['includeDetail'] ?? null;
+        return $this->getData(self::L_S_C_STORE);
+    }
+
+    public function setLSCStore(array $value): self
+    {
+        return $this->setData(self::L_S_C_STORE, $value);
+    }
+
+    public function getLSCStoreGroupSetup(): ?array
+    {
+        return $this->getData(self::L_S_C_STORE_GROUP_SETUP);
+    }
+
+    public function setLSCStoreGroupSetup(array $value): self
+    {
+        return $this->setData(self::L_S_C_STORE_GROUP_SETUP, $value);
+    }
+
+    public function getLSCStorePriceGroup(): ?array
+    {
+        return $this->getData(self::L_S_C_STORE_PRICE_GROUP);
+    }
+
+    public function setLSCStorePriceGroup(array $value): self
+    {
+        return $this->setData(self::L_S_C_STORE_PRICE_GROUP, $value);
+    }
+
+    public function getLSCSalesType(): ?array
+    {
+        return $this->getData(self::L_S_C_SALES_TYPE);
+    }
+
+    public function setLSCSalesType(array $value): self
+    {
+        return $this->setData(self::L_S_C_SALES_TYPE, $value);
     }
 }

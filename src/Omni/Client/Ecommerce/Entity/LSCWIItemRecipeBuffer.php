@@ -28,6 +28,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getParentItemNo(): ?string
     {
         return $this->getData(self::PARENT_ITEM_NO);
@@ -37,6 +38,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::PARENT_ITEM_NO, $value);
     }
+
     public function getLineNo(): ?int
     {
         return $this->getData(self::LINE_NO);
@@ -46,6 +48,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::LINE_NO, $value);
     }
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -55,6 +58,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
@@ -64,6 +68,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -73,6 +78,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
@@ -82,6 +88,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
+
     public function getQuantityPer(): ?string
     {
         return $this->getData(self::QUANTITY_PER);
@@ -91,6 +98,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::QUANTITY_PER, $value);
     }
+
     public function getLSCItemNo(): ?string
     {
         return $this->getData(self::L_S_C_ITEM_NO);
@@ -100,6 +108,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::L_S_C_ITEM_NO, $value);
     }
+
     public function getLSCExclusion(): ?string
     {
         return $this->getData(self::L_S_C_EXCLUSION);
@@ -109,6 +118,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::L_S_C_EXCLUSION, $value);
     }
+
     public function getLSCPriceOnExclusion(): ?string
     {
         return $this->getData(self::L_S_C_PRICE_ON_EXCLUSION);
@@ -118,6 +128,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::L_S_C_PRICE_ON_EXCLUSION, $value);
     }
+
     public function getRetailImageId(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
@@ -127,6 +138,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -136,6 +148,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -145,6 +158,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -154,6 +168,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -163,6 +178,7 @@ class LSCWIItemRecipeBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

@@ -35,6 +35,7 @@ class SalesPrice extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -44,6 +45,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getSalesCode(): ?string
     {
         return $this->getData(self::SALES_CODE);
@@ -53,6 +55,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::SALES_CODE, $value);
     }
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -62,6 +65,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getStartingDate(): ?string
     {
         return $this->getData(self::STARTING_DATE);
@@ -71,6 +75,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
+
     public function getUnitPrice(): ?string
     {
         return $this->getData(self::UNIT_PRICE);
@@ -80,6 +85,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
+
     public function getPriceIncludesVAT(): ?bool
     {
         return $this->getData(self::PRICE_INCLUDES_V_A_T);
@@ -89,6 +95,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::PRICE_INCLUDES_V_A_T, $value);
     }
+
     public function getAllowInvoiceDisc(): ?bool
     {
         return $this->getData(self::ALLOW_INVOICE_DISC);
@@ -98,6 +105,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::ALLOW_INVOICE_DISC, $value);
     }
+
     public function getVATBusPostingGrPrice(): ?string
     {
         return $this->getData(self::V_A_T_BUS_POSTING_GR_PRICE);
@@ -107,6 +115,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::V_A_T_BUS_POSTING_GR_PRICE, $value);
     }
+
     public function getSalesType(): ?string
     {
         return $this->getData(self::SALES_TYPE);
@@ -116,6 +125,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::SALES_TYPE, $value);
     }
+
     public function getMinimumQuantity(): ?string
     {
         return $this->getData(self::MINIMUM_QUANTITY);
@@ -125,6 +135,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
+
     public function getEndingDate(): ?string
     {
         return $this->getData(self::ENDING_DATE);
@@ -134,6 +145,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::ENDING_DATE, $value);
     }
+
     public function getUnitOfMeasureCode(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
@@ -143,6 +155,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -152,6 +165,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getAllowLineDisc(): ?bool
     {
         return $this->getData(self::ALLOW_LINE_DISC);
@@ -161,6 +175,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::ALLOW_LINE_DISC, $value);
     }
+
     public function getLSCMarkup(): ?string
     {
         return $this->getData(self::L_S_C_MARKUP);
@@ -170,6 +185,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::L_S_C_MARKUP, $value);
     }
+
     public function getLSCProfit(): ?string
     {
         return $this->getData(self::L_S_C_PROFIT);
@@ -179,6 +195,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::L_S_C_PROFIT, $value);
     }
+
     public function getLSCProfitLCY(): ?string
     {
         return $this->getData(self::L_S_C_PROFIT_L_C_Y);
@@ -188,6 +205,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::L_S_C_PROFIT_L_C_Y, $value);
     }
+
     public function getLSCUnitPriceIncludingVAT(): ?string
     {
         return $this->getData(self::L_S_C_UNIT_PRICE_INCLUDING_V_A_T);
@@ -197,6 +215,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::L_S_C_UNIT_PRICE_INCLUDING_V_A_T, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -206,6 +225,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -215,6 +235,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -224,6 +245,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -233,6 +255,7 @@ class SalesPrice extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

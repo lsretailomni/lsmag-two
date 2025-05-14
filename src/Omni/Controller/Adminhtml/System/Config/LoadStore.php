@@ -5,9 +5,7 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores;
-use \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection;
-use \Ls\Omni\Client\Ecommerce\Operation\LSCStore;
+use \Ls\Omni\Client\Ecommerce\Operation\GetStores_GetStores;
 use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
@@ -74,13 +72,12 @@ class LoadStore extends Action
                 ['companyName' => $companyName]
             );
 
-            $testConnection = new TestConnectionOData_TestConnection();
             $testConnectionOperation = new TestConnectionResponse(
                 $baseUrl,
                 $connectionParams,
                 $companyName,
             );
-            $pong = current($testConnectionOperation->execute($testConnection)->getRecords());
+            $pong = current($testConnectionOperation->execute()->getRecords());
 
             if (!empty($pong)) {
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
@@ -92,21 +89,21 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $webStoreRequest = new GetStores_GetStores(
-                        ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
-                    );
-                    $webStoreOperation = new LSCStore(
+                    $webStoreOperation = new GetStores_GetStores(
                         $baseUrl,
                         $connectionParams,
                         $companyName,
                     );
-                    $stores = $webStoreOperation->execute($webStoreRequest)->getRecords();
+                    $webStoreOperation->setOperationInput(
+                        ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
+                    );
+                    $stores = current($webStoreOperation->execute()->getRecords());
                 }
 
                 if (!empty($stores)) {
                     $optionList = null;
                     $optionList = [['value' => '', 'label' => __('Please select your web store')]];
-                    foreach ($stores as $store) {
+                    foreach ($stores->getLSCStore() ?? [] as $store) {
                         $optionList[] = ['value' => $store->getNo(), 'label' => $store->getName()];
                     }
                 }

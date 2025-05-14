@@ -35,6 +35,7 @@ class LSCWIItemModifier extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getParentItemNo(): ?string
     {
         return $this->getData(self::PARENT_ITEM_NO);
@@ -44,6 +45,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::PARENT_ITEM_NO, $value);
     }
+
     public function getInfocodeCode(): ?string
     {
         return $this->getData(self::INFOCODE_CODE);
@@ -53,6 +55,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::INFOCODE_CODE, $value);
     }
+
     public function getSubcode(): ?string
     {
         return $this->getData(self::SUBCODE);
@@ -62,6 +65,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::SUBCODE, $value);
     }
+
     public function getExplanatoryHeaderText(): ?string
     {
         return $this->getData(self::EXPLANATORY_HEADER_TEXT);
@@ -71,6 +75,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::EXPLANATORY_HEADER_TEXT, $value);
     }
+
     public function getPrompt(): ?string
     {
         return $this->getData(self::PROMPT);
@@ -80,6 +85,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::PROMPT, $value);
     }
+
     public function getGroupMinSelection(): ?int
     {
         return $this->getData(self::GROUP_MIN_SELECTION);
@@ -89,6 +95,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::GROUP_MIN_SELECTION, $value);
     }
+
     public function getGroupMaxSelection(): ?int
     {
         return $this->getData(self::GROUP_MAX_SELECTION);
@@ -98,6 +105,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::GROUP_MAX_SELECTION, $value);
     }
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -107,6 +115,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -116,6 +125,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -125,6 +135,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getMinSelection(): ?int
     {
         return $this->getData(self::MIN_SELECTION);
@@ -134,6 +145,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::MIN_SELECTION, $value);
     }
+
     public function getMaxSelection(): ?int
     {
         return $this->getData(self::MAX_SELECTION);
@@ -143,6 +155,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::MAX_SELECTION, $value);
     }
+
     public function getPriceHandling(): ?string
     {
         return $this->getData(self::PRICE_HANDLING);
@@ -152,6 +165,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::PRICE_HANDLING, $value);
     }
+
     public function getPriceType(): ?string
     {
         return $this->getData(self::PRICE_TYPE);
@@ -161,6 +175,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
+
     public function getAmountPercent(): ?string
     {
         return $this->getData(self::AMOUNT_PERCENT);
@@ -170,6 +185,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::AMOUNT_PERCENT, $value);
     }
+
     public function getUnitOfMeasure(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
@@ -179,6 +195,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
+
     public function getQtyPerUnitOfMeasure(): ?string
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
@@ -188,6 +205,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
+
     public function getTimeModifierMinutes(): ?string
     {
         return $this->getData(self::TIME_MODIFIER_MINUTES);
@@ -197,6 +215,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::TIME_MODIFIER_MINUTES, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -206,6 +225,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -215,6 +235,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -224,6 +245,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -233,6 +255,7 @@ class LSCWIItemModifier extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

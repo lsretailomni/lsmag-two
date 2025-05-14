@@ -15,7 +15,7 @@ class BaseODataResponse
     public int $lastEntryNo;
     public bool $endOfTable;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->status = (string)($data['status'] ?? '');
         $this->errorText = (string)($data['errorText'] ?? '');

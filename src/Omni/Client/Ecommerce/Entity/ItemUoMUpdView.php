@@ -34,6 +34,7 @@ class ItemUoMUpdView extends DataObject
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
     public const DESCRIPTION = 'Description';
 
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -43,6 +44,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -52,6 +54,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getQtyPerUnitOfMeasure(): ?string
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
@@ -61,6 +64,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
+
     public function getQtyRoundingPrecision(): ?string
     {
         return $this->getData(self::QTY_ROUNDING_PRECISION);
@@ -70,6 +74,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::QTY_ROUNDING_PRECISION, $value);
     }
+
     public function getLength(): ?string
     {
         return $this->getData(self::LENGTH);
@@ -79,6 +84,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::LENGTH, $value);
     }
+
     public function getWidth(): ?string
     {
         return $this->getData(self::WIDTH);
@@ -88,6 +94,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::WIDTH, $value);
     }
+
     public function getHeight(): ?string
     {
         return $this->getData(self::HEIGHT);
@@ -97,6 +104,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::HEIGHT, $value);
     }
+
     public function getCubage(): ?string
     {
         return $this->getData(self::CUBAGE);
@@ -106,6 +114,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::CUBAGE, $value);
     }
+
     public function getWeight(): ?string
     {
         return $this->getData(self::WEIGHT);
@@ -115,6 +124,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::WEIGHT, $value);
     }
+
     public function getLSCNoInBarcode(): ?string
     {
         return $this->getData(self::L_S_C_NO_IN_BARCODE);
@@ -124,6 +134,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_NO_IN_BARCODE, $value);
     }
+
     public function getLSCPrintShelfLabel(): ?bool
     {
         return $this->getData(self::L_S_C_PRINT_SHELF_LABEL);
@@ -133,6 +144,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_PRINT_SHELF_LABEL, $value);
     }
+
     public function getLSCTextOnShelfLabel(): ?string
     {
         return $this->getData(self::L_S_C_TEXT_ON_SHELF_LABEL);
@@ -142,6 +154,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_TEXT_ON_SHELF_LABEL, $value);
     }
+
     public function getLSCCountAs1OnReceipt(): ?bool
     {
         return $this->getData(self::L_S_C_COUNT_AS_1_ON_RECEIPT);
@@ -151,6 +164,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_COUNT_AS_1_ON_RECEIPT, $value);
     }
+
     public function getLSCPOSSelection(): ?string
     {
         return $this->getData(self::L_S_C_P_O_S_SELECTION);
@@ -160,6 +174,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_SELECTION, $value);
     }
+
     public function getLSCOrder(): ?int
     {
         return $this->getData(self::L_S_C_ORDER);
@@ -169,6 +184,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_ORDER, $value);
     }
+
     public function getLSCEcomSelection(): ?string
     {
         return $this->getData(self::L_S_C_ECOM_SELECTION);
@@ -178,6 +194,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::L_S_C_ECOM_SELECTION, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -187,6 +204,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -196,6 +214,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -205,6 +224,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -214,6 +234,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);
@@ -223,6 +244,7 @@ class ItemUoMUpdView extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);

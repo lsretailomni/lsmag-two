@@ -28,6 +28,7 @@ class LSCSTAFFStoreLink extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getStaffID(): ?string
     {
         return $this->getData(self::STAFF_I_D);
@@ -37,6 +38,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::STAFF_I_D, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -46,6 +48,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getPermissionGrp(): ?string
     {
         return $this->getData(self::PERMISSION_GRP);
@@ -55,6 +58,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::PERMISSION_GRP, $value);
     }
+
     public function getPermissionGroup(): ?string
     {
         return $this->getData(self::PERMISSION_GROUP);
@@ -64,6 +68,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::PERMISSION_GROUP, $value);
     }
+
     public function getPOSInterfaceProfile(): ?string
     {
         return $this->getData(self::P_O_S_INTERFACE_PROFILE);
@@ -73,6 +78,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::P_O_S_INTERFACE_PROFILE, $value);
     }
+
     public function getPOSStyleProfile(): ?string
     {
         return $this->getData(self::P_O_S_STYLE_PROFILE);
@@ -82,6 +88,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::P_O_S_STYLE_PROFILE, $value);
     }
+
     public function getPOSMenuProfile(): ?string
     {
         return $this->getData(self::P_O_S_MENU_PROFILE);
@@ -91,6 +98,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::P_O_S_MENU_PROFILE, $value);
     }
+
     public function getDeliveryDriver(): ?bool
     {
         return $this->getData(self::DELIVERY_DRIVER);
@@ -100,6 +108,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::DELIVERY_DRIVER, $value);
     }
+
     public function getFloat(): ?string
     {
         return $this->getData(self::FLOAT);
@@ -109,6 +118,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::FLOAT, $value);
     }
+
     public function getOnCall(): ?bool
     {
         return $this->getData(self::ON_CALL);
@@ -118,6 +128,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::ON_CALL, $value);
     }
+
     public function getDefaultSalesType(): ?string
     {
         return $this->getData(self::DEFAULT_SALES_TYPE);
@@ -127,6 +138,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::DEFAULT_SALES_TYPE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -136,6 +148,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -145,6 +158,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -154,6 +168,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -163,6 +178,7 @@ class LSCSTAFFStoreLink extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

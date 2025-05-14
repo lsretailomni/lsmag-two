@@ -65,6 +65,7 @@ class LSCMemberContact extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getAccountNo(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
@@ -74,6 +75,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
+
     public function getClubCode(): ?string
     {
         return $this->getData(self::CLUB_CODE);
@@ -83,6 +85,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
+
     public function getSchemeCode(): ?string
     {
         return $this->getData(self::SCHEME_CODE);
@@ -92,6 +95,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SCHEME_CODE, $value);
     }
+
     public function getContactNo(): ?string
     {
         return $this->getData(self::CONTACT_NO);
@@ -101,6 +105,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CONTACT_NO, $value);
     }
+
     public function getMainContact(): ?bool
     {
         return $this->getData(self::MAIN_CONTACT);
@@ -110,6 +115,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::MAIN_CONTACT, $value);
     }
+
     public function getName(): ?string
     {
         return $this->getData(self::NAME);
@@ -119,6 +125,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::NAME, $value);
     }
+
     public function getSearchName(): ?string
     {
         return $this->getData(self::SEARCH_NAME);
@@ -128,6 +135,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
+
     public function getName2(): ?string
     {
         return $this->getData(self::NAME_2);
@@ -137,6 +145,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::NAME_2, $value);
     }
+
     public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
@@ -146,6 +155,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::ADDRESS, $value);
     }
+
     public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS_2);
@@ -155,6 +165,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
+
     public function getCity(): ?string
     {
         return $this->getData(self::CITY);
@@ -164,6 +175,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CITY, $value);
     }
+
     public function getHouseApartmentNo(): ?string
     {
         return $this->getData(self::HOUSE_APARTMENT_NO);
@@ -173,6 +185,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::HOUSE_APARTMENT_NO, $value);
     }
+
     public function getPostCode(): ?string
     {
         return $this->getData(self::POST_CODE);
@@ -182,6 +195,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::POST_CODE, $value);
     }
+
     public function getEMail(): ?string
     {
         return $this->getData(self::E_MAIL);
@@ -191,6 +205,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::E_MAIL, $value);
     }
+
     public function getHomePage(): ?string
     {
         return $this->getData(self::HOME_PAGE);
@@ -200,6 +215,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
+
     public function getPhoneNo(): ?string
     {
         return $this->getData(self::PHONE_NO);
@@ -209,6 +225,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::PHONE_NO, $value);
     }
+
     public function getMobilePhoneNo(): ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
@@ -218,6 +235,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
+
     public function getTerritoryCode(): ?string
     {
         return $this->getData(self::TERRITORY_CODE);
@@ -227,6 +245,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
+
     public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
@@ -236,6 +255,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::COUNTY, $value);
     }
+
     public function getCountryRegionCode(): ?string
     {
         return $this->getData(self::COUNTRY_REGION_CODE);
@@ -245,6 +265,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::COUNTRY_REGION_CODE, $value);
     }
+
     public function getLanguageCode(): ?string
     {
         return $this->getData(self::LANGUAGE_CODE);
@@ -254,6 +275,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
+
     public function getGender(): ?string
     {
         return $this->getData(self::GENDER);
@@ -263,6 +285,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::GENDER, $value);
     }
+
     public function getDateOfBirth(): ?string
     {
         return $this->getData(self::DATE_OF_BIRTH);
@@ -272,6 +295,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::DATE_OF_BIRTH, $value);
     }
+
     public function getBirthday(): ?string
     {
         return $this->getData(self::BIRTHDAY);
@@ -281,6 +305,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::BIRTHDAY, $value);
     }
+
     public function getContactGender(): ?string
     {
         return $this->getData(self::CONTACT_GENDER);
@@ -290,6 +315,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CONTACT_GENDER, $value);
     }
+
     public function getMaritalStatus(): ?string
     {
         return $this->getData(self::MARITAL_STATUS);
@@ -299,6 +325,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::MARITAL_STATUS, $value);
     }
+
     public function getGuestType(): ?string
     {
         return $this->getData(self::GUEST_TYPE);
@@ -308,6 +335,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::GUEST_TYPE, $value);
     }
+
     public function getExpirationPeriodType(): ?string
     {
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
@@ -317,6 +345,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
     }
+
     public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
@@ -326,6 +355,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::BLOCKED, $value);
     }
+
     public function getReasonBlocked(): ?string
     {
         return $this->getData(self::REASON_BLOCKED);
@@ -335,6 +365,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::REASON_BLOCKED, $value);
     }
+
     public function getDateBlocked(): ?string
     {
         return $this->getData(self::DATE_BLOCKED);
@@ -344,6 +375,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::DATE_BLOCKED, $value);
     }
+
     public function getBlockedBy(): ?string
     {
         return $this->getData(self::BLOCKED_BY);
@@ -353,6 +385,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::BLOCKED_BY, $value);
     }
+
     public function getCreatedDate(): ?string
     {
         return $this->getData(self::CREATED_DATE);
@@ -362,6 +395,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CREATED_DATE, $value);
     }
+
     public function getCreatedBy(): ?string
     {
         return $this->getData(self::CREATED_BY);
@@ -371,6 +405,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CREATED_BY, $value);
     }
+
     public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::PRIVACY_BLOCKED);
@@ -380,6 +415,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
@@ -389,6 +425,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::NO_SERIES, $value);
     }
+
     public function getExternalID(): ?string
     {
         return $this->getData(self::EXTERNAL_I_D);
@@ -398,6 +435,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::EXTERNAL_I_D, $value);
     }
+
     public function getExternalSystem(): ?string
     {
         return $this->getData(self::EXTERNAL_SYSTEM);
@@ -407,6 +445,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::EXTERNAL_SYSTEM, $value);
     }
+
     public function getMemberCardTemporary(): ?string
     {
         return $this->getData(self::MEMBER_CARD_TEMPORARY);
@@ -416,6 +455,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::MEMBER_CARD_TEMPORARY, $value);
     }
+
     public function getFirstName(): ?string
     {
         return $this->getData(self::FIRST_NAME);
@@ -425,6 +465,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::FIRST_NAME, $value);
     }
+
     public function getMiddleName(): ?string
     {
         return $this->getData(self::MIDDLE_NAME);
@@ -434,6 +475,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::MIDDLE_NAME, $value);
     }
+
     public function getSurname(): ?string
     {
         return $this->getData(self::SURNAME);
@@ -443,6 +485,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SURNAME, $value);
     }
+
     public function getSalutationCode(): ?string
     {
         return $this->getData(self::SALUTATION_CODE);
@@ -452,6 +495,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SALUTATION_CODE, $value);
     }
+
     public function getSearchEMail(): ?string
     {
         return $this->getData(self::SEARCH_E_MAIL);
@@ -461,6 +505,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SEARCH_E_MAIL, $value);
     }
+
     public function getSendReceiptByEMail(): ?string
     {
         return $this->getData(self::SEND_RECEIPT_BY_EMAIL);
@@ -470,6 +515,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SEND_RECEIPT_BY_EMAIL, $value);
     }
+
     public function getCitySearchInternal(): ?string
     {
         return $this->getData(self::CITY_SEARCH_INTERNAL);
@@ -479,6 +525,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::CITY_SEARCH_INTERNAL, $value);
     }
+
     public function getPostCodeSearchInternal(): ?string
     {
         return $this->getData(self::POST_CODE_SEARCH_INTERNAL);
@@ -488,6 +535,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::POST_CODE_SEARCH_INTERNAL, $value);
     }
+
     public function getDefaultToken(): ?int
     {
         return $this->getData(self::DEFAULT_TOKEN);
@@ -497,6 +545,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::DEFAULT_TOKEN, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -506,6 +555,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -515,6 +565,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -524,6 +575,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -533,6 +585,7 @@ class LSCMemberContact extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

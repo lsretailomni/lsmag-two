@@ -18,6 +18,7 @@ class TestConnectionResponse extends DataObject
     public const L_S_RETAIL_LICENSE_KEY_ACTIVE = 'LSRetailLicenseKeyActive';
     public const L_S_RETAIL_LICENSE_UNIT_ECOM = 'LSRetailLicenseUnitEcom';
 
+
     public function getApplicationVersion(): ?string
     {
         return $this->getData(self::APPLICATION_VERSION);
@@ -27,6 +28,7 @@ class TestConnectionResponse extends DataObject
     {
         return $this->setData(self::APPLICATION_VERSION, $value);
     }
+
     public function getApplicationBuild(): ?string
     {
         return $this->getData(self::APPLICATION_BUILD);
@@ -36,6 +38,7 @@ class TestConnectionResponse extends DataObject
     {
         return $this->setData(self::APPLICATION_BUILD, $value);
     }
+
     public function getLSRetailVersion(): ?string
     {
         return $this->getData(self::L_S_RETAIL_VERSION);
@@ -45,6 +48,7 @@ class TestConnectionResponse extends DataObject
     {
         return $this->setData(self::L_S_RETAIL_VERSION, $value);
     }
+
     public function getLSRetailCopyright(): ?string
     {
         return $this->getData(self::L_S_RETAIL_COPYRIGHT);
@@ -54,6 +58,7 @@ class TestConnectionResponse extends DataObject
     {
         return $this->setData(self::L_S_RETAIL_COPYRIGHT, $value);
     }
+
     public function getLSRetailLicenseKeyActive(): ?bool
     {
         return $this->getData(self::L_S_RETAIL_LICENSE_KEY_ACTIVE);
@@ -63,6 +68,7 @@ class TestConnectionResponse extends DataObject
     {
         return $this->setData(self::L_S_RETAIL_LICENSE_KEY_ACTIVE, $value);
     }
+
     public function getLSRetailLicenseUnitEcom(): ?bool
     {
         return $this->getData(self::L_S_RETAIL_LICENSE_UNIT_ECOM);

@@ -24,18 +24,15 @@ class LSCGS1DataBarBarcodeSetup
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetBarcodeGS1Setup();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetBarcodeGS1Setup $request = null): \Ls\Omni\Client\Ecommerce\Entity\LSCGS1DataBarBarcodeSetupResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCGS1DataBarBarcodeSetupResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetBarcodeGS1Setup::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\LSCGS1DataBarBarcodeSetup::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class LSCGS1DataBarBarcodeSetup
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetBarcodeGS1Setup
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetBarcodeGS1Setup($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetBarcodeGS1Setup $request): self
     {

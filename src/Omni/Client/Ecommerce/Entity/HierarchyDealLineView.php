@@ -26,6 +26,7 @@ class HierarchyDealLineView extends DataObject
     public const ADDED_AMOUNT = 'Added Amount';
     public const RETAIL_IMAGE_I_D = 'Retail Image ID';
 
+
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
@@ -35,6 +36,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
+
     public function getNodeID(): ?string
     {
         return $this->getData(self::NODE_I_D);
@@ -44,6 +46,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::NODE_I_D, $value);
     }
+
     public function getOfferNo(): ?string
     {
         return $this->getData(self::OFFER_NO);
@@ -53,6 +56,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::OFFER_NO, $value);
     }
+
     public function getOfferLineNo(): ?int
     {
         return $this->getData(self::OFFER_LINE_NO);
@@ -62,6 +66,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::OFFER_LINE_NO, $value);
     }
+
     public function getDealModifierLineNo(): ?int
     {
         return $this->getData(self::DEAL_MODIFIER_LINE_NO);
@@ -71,6 +76,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::DEAL_MODIFIER_LINE_NO, $value);
     }
+
     public function getDealModifierCode(): ?string
     {
         return $this->getData(self::DEAL_MODIFIER_CODE);
@@ -80,6 +86,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::DEAL_MODIFIER_CODE, $value);
     }
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -89,6 +96,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -98,6 +106,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getVariantCode(): ?string
     {
         return $this->getData(self::VARIANT_CODE);
@@ -107,6 +116,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
+
     public function getUnitOfMeasure(): ?string
     {
         return $this->getData(self::UNIT_OF_MEASURE);
@@ -116,6 +126,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
+
     public function getMinSelection(): ?int
     {
         return $this->getData(self::MIN_SELECTION);
@@ -125,6 +136,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::MIN_SELECTION, $value);
     }
+
     public function getMaxItemSelection(): ?int
     {
         return $this->getData(self::MAX_ITEM_SELECTION);
@@ -134,6 +146,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::MAX_ITEM_SELECTION, $value);
     }
+
     public function getAddedAmount(): ?string
     {
         return $this->getData(self::ADDED_AMOUNT);
@@ -143,6 +156,7 @@ class HierarchyDealLineView extends DataObject
     {
         return $this->setData(self::ADDED_AMOUNT, $value);
     }
+
     public function getRetailImageID(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_I_D);

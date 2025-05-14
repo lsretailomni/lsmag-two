@@ -23,6 +23,7 @@ class LSCWIImageBuffer extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -32,6 +33,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -41,6 +43,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getImageID(): ?string
     {
         return $this->getData(self::IMAGE_I_D);
@@ -50,6 +53,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::IMAGE_I_D, $value);
     }
+
     public function getImageBlob(): ?string
     {
         return $this->getData(self::IMAGE_BLOB);
@@ -59,6 +63,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::IMAGE_BLOB, $value);
     }
+
     public function getHeight(): ?int
     {
         return $this->getData(self::HEIGHT);
@@ -68,6 +73,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::HEIGHT, $value);
     }
+
     public function getWidth(): ?int
     {
         return $this->getData(self::WIDTH);
@@ -77,6 +83,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::WIDTH, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -86,6 +93,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -95,6 +103,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -104,6 +113,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -113,6 +123,7 @@ class LSCWIImageBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

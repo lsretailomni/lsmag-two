@@ -14,7 +14,7 @@ class TestConnectionResponse
     public string $baseUrl;
     public array $connectionParams;
     public string $companyName;
-    public \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection $request;
+    public \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest $request;
     public \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse $response;
     public \Ls\Omni\Helper\Data $dataHelper;
 
@@ -24,16 +24,13 @@ class TestConnectionResponse
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection $request = null): \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse
     {
-        if ($request !== null) {
-            $this->setRequest($request);
-        }
-
         $raw = $this->dataHelper->makeRequest(
-            \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection::ACTION_NAME,
+            \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest::ACTION_NAME,
             self::class,
             $this->request,
             $this->baseUrl,
@@ -49,46 +46,52 @@ class TestConnectionResponse
 
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse
     {
-        $fields = [];
-        $rows = [];
+        $requiredDataSetName = explode(',', 'TestConnectionResponse');
+        $finalEntry = new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponse();
+        if (is_array($requiredDataSetName)) {
+            foreach ($requiredDataSetName as $dataSet) {
+                $entityClassName = str_replace(' ', '', $dataSet);
+                // Try flat response structure
+                if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
+                    $entity = new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponse($data['TestConnectionResponse']);
 
-        $recRef = $this->findNestedDataSet($data, 'TestConnectionResponse');
-        if ($recRef && isset($recRef['DataSetFields'], $recRef['DataSetRows'])) {
-            if (isset($recRef['DataSetFields'])) {
-                foreach ($recRef['DataSetFields'] as $field) {
-                    $fields[$field['FieldIndex']] = $field['FieldName'];
+                    return new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse([
+                        'records' => [$entity],
+                        'ResponseCode' => $data['ResponseCode'] ?? '',
+                        'ErrorText' => $data['ErrorText'] ?? '',
+                    ]);
+                }
+                $fields = $rows = [];
+                $recRef = $this->findNestedDataSet($data, $entityClassName);
+                if ($recRef && isset($recRef['DataSetFields'], $recRef['DataSetRows'])) {
+                    if (isset($recRef['DataSetFields'])) {
+                        foreach ($recRef['DataSetFields'] as $field) {
+                            $fields[$field['FieldIndex']] = $field['FieldName'];
+                        }
+                    }
+
+                    if (isset($recRef['DataSetRows'])) {
+                        $rows = $recRef['DataSetRows'];
+                    }
+                    $className = '\Ls\Omni\Client\Ecommerce\Entity'.'\\'.$entityClassName;
+                    $count = count($rows);
+                    $entries = [];
+                    foreach ($rows as $index => $row) {
+                        $entry = new $className();
+                        foreach ($row['Fields'] ?? [] as $field) {
+                            $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
+                        }
+                        $entries[$index] = $entry;
+                    }
+                    if (!empty($entries)) {
+                        $finalEntry->setData($entityClassName, $count > 1 ? $entries : current($entries));
+                    }
                 }
             }
-
-            if (isset($recRef['DataSetRows'])) {
-                $rows = $recRef['DataSetRows'];
-            }
-
-            $entities = [];
-            foreach ($rows as $row) {
-                $entry = new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponse();
-                foreach ($row['Fields'] ?? [] as $field) {
-                    $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
-                }
-                $entities[] = $entry;
-            }
-
             return new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse([
-                'records' => $entities,
+                'records' => [$finalEntry],
                 'ResponseCode' => $data['ResponseCode'] ?? '',
                 'ErrorText' => $data['ErrorText'] ?? ''
-            ]);
-        }
-
-
-            // Try flat response structure
-        if (isset($data['TestConnectionResponse']) && is_array($data['TestConnectionResponse'])) {
-            $entity = new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponse($data['TestConnectionResponse']);
-
-            return new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionResponseResponse([
-                'records' => [$entity],
-                'ResponseCode' => $data['ResponseCode'] ?? '',
-                'ErrorText' => $data['ErrorText'] ?? '',
             ]);
         }
 
@@ -114,7 +117,7 @@ class TestConnectionResponse
                 if (
                     is_array($data)
                     && isset($data['DataSetName'])
-                    && $data['DataSetName'] === $target
+                    && str_replace(' ', '',$data['DataSetName']) === $target
                 ) {
                     return $data;
                 }
@@ -124,7 +127,15 @@ class TestConnectionResponse
         return null;
     }
 
-    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection $request): self
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
+    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest $request): self
     {
         $this->request = $request;
         return $this;
@@ -136,7 +147,7 @@ class TestConnectionResponse
         return $this;
     }
 
-    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnection
+    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\TestConnectionOData_TestConnectionRequest
     {
         return $this->request;
     }

@@ -24,18 +24,15 @@ class LSCWIMix&MatchOfferExt
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch $request = null): \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExt::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class LSCWIMix&MatchOfferExt
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch $request): self
     {

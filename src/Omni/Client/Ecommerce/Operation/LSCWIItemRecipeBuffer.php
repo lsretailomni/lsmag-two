@@ -24,18 +24,15 @@ class LSCWIItemRecipeBuffer
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
         $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIItemRecipeBuffer();
     }
 
-    public function execute(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIItemRecipeBuffer $request = null): \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemRecipeBufferResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemRecipeBufferResponse
     {
-        if ( !is_null( $request ) ) {
-            $this->setRequest( $request );
-        }
-
         $response = $this->dataHelper->makeRequest(
             \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIItemRecipeBuffer::ACTION_NAME,
             \Ls\Omni\Client\Ecommerce\Entity\LSCWIItemRecipeBuffer::class,
-            $request,
+            $this->request,
             $this->baseUrl,
             $this->connectionParams,
             ['company' => $this->companyName]
@@ -99,6 +96,15 @@ class LSCWIItemRecipeBuffer
             'endOfTable' => $data['EndOfTable'] ?? false
         ]);
     }
+
+    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIItemRecipeBuffer
+    {
+        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIItemRecipeBuffer($params));
+        $request = $this->getRequest();
+
+        return $request;
+    }
+
 
     public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIItemRecipeBuffer $request): self
     {

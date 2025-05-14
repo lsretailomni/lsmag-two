@@ -3,9 +3,9 @@
 namespace Ls\Omni\Service\Soap;
 
 use DOMDocument;
-use Ls\Core\Model\LSR;
+use \Ls\Core\Model\LSR;
 use \Ls\Omni\Helper\CacheHelper;
-use Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\Metadata;
 use \Ls\Omni\Service\ServiceType;
 use Laminas\Soap\Client as LaminasSoapClient;

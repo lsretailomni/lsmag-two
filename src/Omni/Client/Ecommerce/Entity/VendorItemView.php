@@ -15,6 +15,7 @@ class VendorItemView extends DataObject
     public const VENDOR_NO = 'VendorNo';
     public const VENDOR_ITEM_NO = 'VendorItemNo';
 
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -24,6 +25,7 @@ class VendorItemView extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getVendorNo(): ?string
     {
         return $this->getData(self::VENDOR_NO);
@@ -33,6 +35,7 @@ class VendorItemView extends DataObject
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
+
     public function getVendorItemNo(): ?string
     {
         return $this->getData(self::VENDOR_ITEM_NO);

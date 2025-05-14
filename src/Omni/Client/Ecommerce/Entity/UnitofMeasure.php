@@ -24,6 +24,7 @@ class UnitofMeasure extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -33,6 +34,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -42,6 +44,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getInternationalStandardCode(): ?string
     {
         return $this->getData(self::INTERNATIONAL_STANDARD_CODE);
@@ -51,6 +54,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::INTERNATIONAL_STANDARD_CODE, $value);
     }
+
     public function getSymbol(): ?string
     {
         return $this->getData(self::SYMBOL);
@@ -60,6 +64,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::SYMBOL, $value);
     }
+
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -69,6 +74,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
+
     public function getLSCWeightUnitOfMeasure(): ?bool
     {
         return $this->getData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE);
@@ -78,6 +84,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE, $value);
     }
+
     public function getLSCPOSMinDenominator(): ?string
     {
         return $this->getData(self::L_S_C_P_O_S_MIN_DENOMINATOR);
@@ -87,6 +94,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_MIN_DENOMINATOR, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -96,6 +104,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -105,6 +114,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -114,6 +124,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -123,6 +134,7 @@ class UnitofMeasure extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

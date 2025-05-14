@@ -98,6 +98,7 @@ class LSCStaff extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getID(): ?string
     {
         return $this->getData(self::I_D);
@@ -107,6 +108,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::I_D, $value);
     }
+
     public function getPassword(): ?string
     {
         return $this->getData(self::PASSWORD);
@@ -116,6 +118,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::PASSWORD, $value);
     }
+
     public function getChangePassword(): ?bool
     {
         return $this->getData(self::CHANGE_PASSWORD);
@@ -125,6 +128,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CHANGE_PASSWORD, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -134,6 +138,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getVoidTransaction(): ?string
     {
         return $this->getData(self::VOID_TRANSACTION);
@@ -143,6 +148,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
+
     public function getManagerPrivileges(): ?string
     {
         return $this->getData(self::MANAGER_PRIVILEGES);
@@ -152,6 +158,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
+
     public function getXZYReportPrinting(): ?string
     {
         return $this->getData(self::X_Z_Y_REPORT_PRINTING);
@@ -161,6 +168,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::X_Z_Y_REPORT_PRINTING, $value);
     }
+
     public function getTenderDeclaration(): ?string
     {
         return $this->getData(self::TENDER_DECLARATION);
@@ -170,6 +178,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
+
     public function getFloatingDeclaration(): ?string
     {
         return $this->getData(self::FLOATING_DECLARATION);
@@ -179,6 +188,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
+
     public function getPriceOverride(): ?string
     {
         return $this->getData(self::PRICE_OVERRIDE);
@@ -188,6 +198,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
+
     public function getMaxDiscountToGive(): ?string
     {
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
@@ -197,6 +208,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
+
     public function getSuspendTransaction(): ?string
     {
         return $this->getData(self::SUSPEND_TRANSACTION);
@@ -206,6 +218,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
+
     public function getMaxTotalDiscount(): ?string
     {
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
@@ -215,6 +228,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }
+
     public function getOpenDrawWithoutSale(): ?string
     {
         return $this->getData(self::OPEN_DRAW_WITHOUT_SALE);
@@ -224,6 +238,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::OPEN_DRAW_WITHOUT_SALE, $value);
     }
+
     public function getDiscountFromPermGroup(): ?string
     {
         return $this->getData(self::DISCOUNT_FROM_PERM_GROUP);
@@ -233,6 +248,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::DISCOUNT_FROM_PERM_GROUP, $value);
     }
+
     public function getFirstName(): ?string
     {
         return $this->getData(self::FIRST_NAME);
@@ -242,6 +258,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::FIRST_NAME, $value);
     }
+
     public function getLastName(): ?string
     {
         return $this->getData(self::LAST_NAME);
@@ -251,6 +268,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::LAST_NAME, $value);
     }
+
     public function getEmploymentType(): ?string
     {
         return $this->getData(self::EMPLOYMENT_TYPE);
@@ -260,6 +278,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::EMPLOYMENT_TYPE, $value);
     }
+
     public function getFraudSortField(): ?string
     {
         return $this->getData(self::FRAUD_SORT_FIELD);
@@ -269,6 +288,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::FRAUD_SORT_FIELD, $value);
     }
+
     public function getLastDateModified(): ?string
     {
         return $this->getData(self::LAST_DATE_MODIFIED);
@@ -278,6 +298,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
+
     public function getNameOnReceipt(): ?string
     {
         return $this->getData(self::NAME_ON_RECEIPT);
@@ -287,6 +308,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::NAME_ON_RECEIPT, $value);
     }
+
     public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
@@ -296,6 +318,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ADDRESS, $value);
     }
+
     public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS_2);
@@ -305,6 +328,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
+
     public function getCity(): ?string
     {
         return $this->getData(self::CITY);
@@ -314,6 +338,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CITY, $value);
     }
+
     public function getPostCode(): ?string
     {
         return $this->getData(self::POST_CODE);
@@ -323,6 +348,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::POST_CODE, $value);
     }
+
     public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
@@ -332,6 +358,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::COUNTY, $value);
     }
+
     public function getHomePhoneNo(): ?string
     {
         return $this->getData(self::HOME_PHONE_NO);
@@ -341,6 +368,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::HOME_PHONE_NO, $value);
     }
+
     public function getWorkPhoneNo(): ?string
     {
         return $this->getData(self::WORK_PHONE_NO);
@@ -350,6 +378,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::WORK_PHONE_NO, $value);
     }
+
     public function getHourlyRate(): ?string
     {
         return $this->getData(self::HOURLY_RATE);
@@ -359,6 +388,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::HOURLY_RATE, $value);
     }
+
     public function getPayrollNo(): ?string
     {
         return $this->getData(self::PAYROLL_NO);
@@ -368,6 +398,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::PAYROLL_NO, $value);
     }
+
     public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
@@ -377,6 +408,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::BLOCKED, $value);
     }
+
     public function getDateToBeBlocked(): ?string
     {
         return $this->getData(self::DATE_TO_BE_BLOCKED);
@@ -386,6 +418,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::DATE_TO_BE_BLOCKED, $value);
     }
+
     public function getLeftHanded(): ?bool
     {
         return $this->getData(self::LEFT_HANDED);
@@ -395,6 +428,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::LEFT_HANDED, $value);
     }
+
     public function getSalesPerson(): ?string
     {
         return $this->getData(self::SALES_PERSON);
@@ -404,6 +438,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SALES_PERSON, $value);
     }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
@@ -413,6 +448,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::NO_SERIES, $value);
     }
+
     public function getPermissionGroup(): ?string
     {
         return $this->getData(self::PERMISSION_GROUP);
@@ -422,6 +458,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::PERMISSION_GROUP, $value);
     }
+
     public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::PRIVACY_BLOCKED);
@@ -431,6 +468,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
+
     public function getReturnInTransaction(): ?string
     {
         return $this->getData(self::RETURN_IN_TRANSACTION);
@@ -440,6 +478,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
+
     public function getVoidPrepayment(): ?string
     {
         return $this->getData(self::VOID_PREPAYMENT);
@@ -449,6 +488,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::VOID_PREPAYMENT, $value);
     }
+
     public function getVoidPrepaymentLine(): ?string
     {
         return $this->getData(self::VOID_PREPAYMENT_LINE);
@@ -458,6 +498,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::VOID_PREPAYMENT_LINE, $value);
     }
+
     public function getChangePrepaymentAmt(): ?string
     {
         return $this->getData(self::CHANGE_PREPAYMENT_AMT);
@@ -467,6 +508,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CHANGE_PREPAYMENT_AMT, $value);
     }
+
     public function getAddPrepaymentAmt(): ?string
     {
         return $this->getData(self::ADD_PREPAYMENT_AMT);
@@ -476,6 +518,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ADD_PREPAYMENT_AMT, $value);
     }
+
     public function getVoidLine(): ?string
     {
         return $this->getData(self::VOID_LINE);
@@ -485,6 +528,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::VOID_LINE, $value);
     }
+
     public function getAddPayment(): ?string
     {
         return $this->getData(self::ADD_PAYMENT);
@@ -494,6 +538,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
+
     public function getTransferOrders(): ?string
     {
         return $this->getData(self::TRANSFER_ORDERS);
@@ -503,6 +548,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::TRANSFER_ORDERS, $value);
     }
+
     public function getSplitBills(): ?string
     {
         return $this->getData(self::SPLIT_BILLS);
@@ -512,6 +558,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SPLIT_BILLS, $value);
     }
+
     public function getSwitchDiningTableLayout(): ?string
     {
         return $this->getData(self::SWITCH_DINING_TABLE_LAYOUT);
@@ -521,6 +568,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SWITCH_DINING_TABLE_LAYOUT, $value);
     }
+
     public function getAdjustDiningTables(): ?string
     {
         return $this->getData(self::ADJUST_DINING_TABLES);
@@ -530,6 +578,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ADJUST_DINING_TABLES, $value);
     }
+
     public function getDesignDiningTableLayout(): ?string
     {
         return $this->getData(self::DESIGN_DINING_TABLE_LAYOUT);
@@ -539,6 +588,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::DESIGN_DINING_TABLE_LAYOUT, $value);
     }
+
     public function getSeatGuests(): ?string
     {
         return $this->getData(self::SEAT_GUESTS);
@@ -548,6 +598,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SEAT_GUESTS, $value);
     }
+
     public function getViewKitchenStatus(): ?string
     {
         return $this->getData(self::VIEW_KITCHEN_STATUS);
@@ -557,6 +608,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::VIEW_KITCHEN_STATUS, $value);
     }
+
     public function getChangeStaff(): ?string
     {
         return $this->getData(self::CHANGE_STAFF);
@@ -566,6 +618,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CHANGE_STAFF, $value);
     }
+
     public function getAddStartFloat(): ?string
     {
         return $this->getData(self::ADD_START_FLOAT);
@@ -575,6 +628,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ADD_START_FLOAT, $value);
     }
+
     public function getOpenSalesPOSDirectly(): ?string
     {
         return $this->getData(self::OPEN_SALES_P_O_S_DIRECTLY);
@@ -584,6 +638,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::OPEN_SALES_P_O_S_DIRECTLY, $value);
     }
+
     public function getOpenSalesPOS(): ?string
     {
         return $this->getData(self::OPEN_SALES_P_O_S);
@@ -593,6 +648,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::OPEN_SALES_P_O_S, $value);
     }
+
     public function getChangeDiningTblStatus(): ?string
     {
         return $this->getData(self::CHANGE_DINING_TBL_STATUS);
@@ -602,6 +658,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CHANGE_DINING_TBL_STATUS, $value);
     }
+
     public function getResetDiningTblStatus(): ?string
     {
         return $this->getData(self::RESET_DINING_TBL_STATUS);
@@ -611,6 +668,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::RESET_DINING_TBL_STATUS, $value);
     }
+
     public function getRushOrderInKitchen(): ?string
     {
         return $this->getData(self::RUSH_ORDER_IN_KITCHEN);
@@ -620,6 +678,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::RUSH_ORDER_IN_KITCHEN, $value);
     }
+
     public function getOpenDinTblLockedByStaff(): ?string
     {
         return $this->getData(self::OPEN_DIN_TBL_LOCKED_BY_STAFF);
@@ -629,6 +688,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::OPEN_DIN_TBL_LOCKED_BY_STAFF, $value);
     }
+
     public function getEditAvailableQty(): ?string
     {
         return $this->getData(self::EDIT_AVAILABLE_QTY);
@@ -638,6 +698,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::EDIT_AVAILABLE_QTY, $value);
     }
+
     public function getContinueOnTSErrors(): ?bool
     {
         return $this->getData(self::CONTINUE_ON_T_S_ERRORS);
@@ -647,6 +708,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CONTINUE_ON_T_S_ERRORS, $value);
     }
+
     public function getLastZReport(): ?string
     {
         return $this->getData(self::LAST_Z_REPORT);
@@ -656,6 +718,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::LAST_Z_REPORT, $value);
     }
+
     public function getPOSInterfaceProfile(): ?string
     {
         return $this->getData(self::P_O_S_INTERFACE_PROFILE);
@@ -665,6 +728,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::P_O_S_INTERFACE_PROFILE, $value);
     }
+
     public function getLanguage(): ?string
     {
         return $this->getData(self::LANGUAGE);
@@ -674,6 +738,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::LANGUAGE, $value);
     }
+
     public function getCreateCustomers(): ?string
     {
         return $this->getData(self::CREATE_CUSTOMERS);
@@ -683,6 +748,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
+
     public function getViewSalesHistory(): ?string
     {
         return $this->getData(self::VIEW_SALES_HISTORY);
@@ -692,6 +758,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
+
     public function getCustomerComments(): ?string
     {
         return $this->getData(self::CUSTOMER_COMMENTS);
@@ -701,6 +768,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
+
     public function getMaxTenderDeclDifference(): ?string
     {
         return $this->getData(self::MAX_TENDER_DECL_DIFFERENCE);
@@ -710,6 +778,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::MAX_TENDER_DECL_DIFFERENCE, $value);
     }
+
     public function getMaxWarningCount(): ?int
     {
         return $this->getData(self::MAX_WARNING_COUNT);
@@ -719,6 +788,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::MAX_WARNING_COUNT, $value);
     }
+
     public function getShowDifferenceInWarning(): ?string
     {
         return $this->getData(self::SHOW_DIFFERENCE_IN_WARNING);
@@ -728,6 +798,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SHOW_DIFFERENCE_IN_WARNING, $value);
     }
+
     public function getActionAfterDiffWarning(): ?string
     {
         return $this->getData(self::ACTION_AFTER_DIFF_WARNING);
@@ -737,6 +808,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::ACTION_AFTER_DIFF_WARNING, $value);
     }
+
     public function getCIDReportPrinting(): ?string
     {
         return $this->getData(self::C_I_D_REPORT_PRINTING);
@@ -746,6 +818,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::C_I_D_REPORT_PRINTING, $value);
     }
+
     public function getShowTransAmount(): ?string
     {
         return $this->getData(self::SHOW_TRANS_AMOUNT);
@@ -755,6 +828,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SHOW_TRANS_AMOUNT, $value);
     }
+
     public function getUpdateCustomers(): ?string
     {
         return $this->getData(self::UPDATE_CUSTOMERS);
@@ -764,6 +838,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
+
     public function getTIPSHandling(): ?string
     {
         return $this->getData(self::T_I_P_S_HANDLING);
@@ -773,6 +848,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::T_I_P_S_HANDLING, $value);
     }
+
     public function getLastYReport(): ?string
     {
         return $this->getData(self::LAST_Y_REPORT);
@@ -782,6 +858,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::LAST_Y_REPORT, $value);
     }
+
     public function getMaxDiffWarnFromPermGr(): ?string
     {
         return $this->getData(self::MAX_DIFF_WARN_FROM_PERM_GR);
@@ -791,6 +868,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::MAX_DIFF_WARN_FROM_PERM_GR, $value);
     }
+
     public function getInventoryActive(): ?bool
     {
         return $this->getData(self::INVENTORY_ACTIVE);
@@ -800,6 +878,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::INVENTORY_ACTIVE, $value);
     }
+
     public function getInventoryMainMenu(): ?string
     {
         return $this->getData(self::INVENTORY_MAIN_MENU);
@@ -809,6 +888,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::INVENTORY_MAIN_MENU, $value);
     }
+
     public function getPOSStyleProfile(): ?string
     {
         return $this->getData(self::P_O_S_STYLE_PROFILE);
@@ -818,6 +898,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::P_O_S_STYLE_PROFILE, $value);
     }
+
     public function getPOSMenuProfile(): ?string
     {
         return $this->getData(self::P_O_S_MENU_PROFILE);
@@ -827,6 +908,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::P_O_S_MENU_PROFILE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -836,6 +918,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -845,6 +928,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -854,6 +938,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -863,6 +948,7 @@ class LSCStaff extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

@@ -53,6 +53,7 @@ class Currency extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -62,6 +63,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getLastDateModified(): ?string
     {
         return $this->getData(self::LAST_DATE_MODIFIED);
@@ -71,6 +73,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
+
     public function getLastDateAdjusted(): ?string
     {
         return $this->getData(self::LAST_DATE_ADJUSTED);
@@ -80,6 +83,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::LAST_DATE_ADJUSTED, $value);
     }
+
     public function getISOCode(): ?string
     {
         return $this->getData(self::I_S_O_CODE);
@@ -89,6 +93,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::I_S_O_CODE, $value);
     }
+
     public function getISONumericCode(): ?string
     {
         return $this->getData(self::I_S_O_NUMERIC_CODE);
@@ -98,6 +103,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::I_S_O_NUMERIC_CODE, $value);
     }
+
     public function getUnrealizedGainsAcc(): ?string
     {
         return $this->getData(self::UNREALIZED_GAINS_ACC);
@@ -107,6 +113,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::UNREALIZED_GAINS_ACC, $value);
     }
+
     public function getRealizedGainsAcc(): ?string
     {
         return $this->getData(self::REALIZED_GAINS_ACC);
@@ -116,6 +123,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::REALIZED_GAINS_ACC, $value);
     }
+
     public function getUnrealizedLossesAcc(): ?string
     {
         return $this->getData(self::UNREALIZED_LOSSES_ACC);
@@ -125,6 +133,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::UNREALIZED_LOSSES_ACC, $value);
     }
+
     public function getRealizedLossesAcc(): ?string
     {
         return $this->getData(self::REALIZED_LOSSES_ACC);
@@ -134,6 +143,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::REALIZED_LOSSES_ACC, $value);
     }
+
     public function getInvoiceRoundingPrecision(): ?string
     {
         return $this->getData(self::INVOICE_ROUNDING_PRECISION);
@@ -143,6 +153,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::INVOICE_ROUNDING_PRECISION, $value);
     }
+
     public function getInvoiceRoundingType(): ?string
     {
         return $this->getData(self::INVOICE_ROUNDING_TYPE);
@@ -152,6 +163,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::INVOICE_ROUNDING_TYPE, $value);
     }
+
     public function getAmountRoundingPrecision(): ?string
     {
         return $this->getData(self::AMOUNT_ROUNDING_PRECISION);
@@ -161,6 +173,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::AMOUNT_ROUNDING_PRECISION, $value);
     }
+
     public function getUnitAmountRoundingPrecision(): ?string
     {
         return $this->getData(self::UNIT_AMOUNT_ROUNDING_PRECISION);
@@ -170,6 +183,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::UNIT_AMOUNT_ROUNDING_PRECISION, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -179,6 +193,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getAmountDecimalPlaces(): ?string
     {
         return $this->getData(self::AMOUNT_DECIMAL_PLACES);
@@ -188,6 +203,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::AMOUNT_DECIMAL_PLACES, $value);
     }
+
     public function getUnitAmountDecimalPlaces(): ?string
     {
         return $this->getData(self::UNIT_AMOUNT_DECIMAL_PLACES);
@@ -197,6 +213,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::UNIT_AMOUNT_DECIMAL_PLACES, $value);
     }
+
     public function getRealizedGLGainsAccount(): ?string
     {
         return $this->getData(self::REALIZED_G_L_GAINS_ACCOUNT);
@@ -206,6 +223,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::REALIZED_G_L_GAINS_ACCOUNT, $value);
     }
+
     public function getRealizedGLLossesAccount(): ?string
     {
         return $this->getData(self::REALIZED_G_L_LOSSES_ACCOUNT);
@@ -215,6 +233,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::REALIZED_G_L_LOSSES_ACCOUNT, $value);
     }
+
     public function getApplnRoundingPrecision(): ?string
     {
         return $this->getData(self::APPLN_ROUNDING_PRECISION);
@@ -224,6 +243,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::APPLN_ROUNDING_PRECISION, $value);
     }
+
     public function getEMUCurrency(): ?bool
     {
         return $this->getData(self::E_M_U_CURRENCY);
@@ -233,6 +253,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::E_M_U_CURRENCY, $value);
     }
+
     public function getCurrencyFactor(): ?string
     {
         return $this->getData(self::CURRENCY_FACTOR);
@@ -242,6 +263,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::CURRENCY_FACTOR, $value);
     }
+
     public function getResidualGainsAccount(): ?string
     {
         return $this->getData(self::RESIDUAL_GAINS_ACCOUNT);
@@ -251,6 +273,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::RESIDUAL_GAINS_ACCOUNT, $value);
     }
+
     public function getResidualLossesAccount(): ?string
     {
         return $this->getData(self::RESIDUAL_LOSSES_ACCOUNT);
@@ -260,6 +283,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::RESIDUAL_LOSSES_ACCOUNT, $value);
     }
+
     public function getConvLCYRndgDebitAcc(): ?string
     {
         return $this->getData(self::CONV_L_C_Y_RNDG_DEBIT_ACC);
@@ -269,6 +293,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::CONV_L_C_Y_RNDG_DEBIT_ACC, $value);
     }
+
     public function getConvLCYRndgCreditAcc(): ?string
     {
         return $this->getData(self::CONV_L_C_Y_RNDG_CREDIT_ACC);
@@ -278,6 +303,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::CONV_L_C_Y_RNDG_CREDIT_ACC, $value);
     }
+
     public function getMaxVATDifferenceAllowed(): ?string
     {
         return $this->getData(self::MAX_V_A_T_DIFFERENCE_ALLOWED);
@@ -287,6 +313,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::MAX_V_A_T_DIFFERENCE_ALLOWED, $value);
     }
+
     public function getVATRoundingType(): ?string
     {
         return $this->getData(self::V_A_T_ROUNDING_TYPE);
@@ -296,6 +323,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::V_A_T_ROUNDING_TYPE, $value);
     }
+
     public function getPaymentTolerance(): ?string
     {
         return $this->getData(self::PAYMENT_TOLERANCE);
@@ -305,6 +333,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::PAYMENT_TOLERANCE, $value);
     }
+
     public function getMaxPaymentToleranceAmount(): ?string
     {
         return $this->getData(self::MAX_PAYMENT_TOLERANCE_AMOUNT);
@@ -314,6 +343,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::MAX_PAYMENT_TOLERANCE_AMOUNT, $value);
     }
+
     public function getSymbol(): ?string
     {
         return $this->getData(self::SYMBOL);
@@ -323,6 +353,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::SYMBOL, $value);
     }
+
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -332,6 +363,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
+
     public function getLSCLowestAcceptDenomAmt(): ?string
     {
         return $this->getData(self::L_S_C_LOWEST_ACCEPT_DENOM_AMT);
@@ -341,6 +373,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::L_S_C_LOWEST_ACCEPT_DENOM_AMT, $value);
     }
+
     public function getLSCDenominationRoundingType(): ?string
     {
         return $this->getData(self::L_S_C_DENOMINATION_ROUNDING_TYPE);
@@ -350,6 +383,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::L_S_C_DENOMINATION_ROUNDING_TYPE, $value);
     }
+
     public function getLSCPOSCurrencySymbol(): ?string
     {
         return $this->getData(self::L_S_C_P_O_S_CURRENCY_SYMBOL);
@@ -359,6 +393,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_CURRENCY_SYMBOL, $value);
     }
+
     public function getLSCPlacementOfCurrSymbol(): ?string
     {
         return $this->getData(self::L_S_C_PLACEMENT_OF_CURR_SYMBOL);
@@ -368,6 +403,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::L_S_C_PLACEMENT_OF_CURR_SYMBOL, $value);
     }
+
     public function getLSCFiscalPrinterID(): ?int
     {
         return $this->getData(self::L_S_C_FISCAL_PRINTER_I_D);
@@ -377,6 +413,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::L_S_C_FISCAL_PRINTER_I_D, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -386,6 +423,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -395,6 +433,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -404,6 +443,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -413,6 +453,7 @@ class Currency extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

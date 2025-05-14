@@ -35,6 +35,7 @@ class LSCAttribute extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -44,6 +45,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -53,6 +55,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getDescriptionCustomer(): ?string
     {
         return $this->getData(self::DESCRIPTION_CUSTOMER);
@@ -62,6 +65,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::DESCRIPTION_CUSTOMER, $value);
     }
+
     public function getValueType(): ?string
     {
         return $this->getData(self::VALUE_TYPE);
@@ -71,6 +75,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
+
     public function getDefaultValue(): ?string
     {
         return $this->getData(self::DEFAULT_VALUE);
@@ -80,6 +85,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::DEFAULT_VALUE, $value);
     }
+
     public function getMinValue(): ?int
     {
         return $this->getData(self::MIN_VALUE);
@@ -89,6 +95,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::MIN_VALUE, $value);
     }
+
     public function getMaxValue(): ?int
     {
         return $this->getData(self::MAX_VALUE);
@@ -98,6 +105,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::MAX_VALUE, $value);
     }
+
     public function getInstances(): ?int
     {
         return $this->getData(self::INSTANCES);
@@ -107,6 +115,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::INSTANCES, $value);
     }
+
     public function getLinking(): ?string
     {
         return $this->getData(self::LINKING);
@@ -116,6 +125,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::LINKING, $value);
     }
+
     public function getValueRequired(): ?string
     {
         return $this->getData(self::VALUE_REQUIRED);
@@ -125,6 +135,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::VALUE_REQUIRED, $value);
     }
+
     public function getOptionValueTableLink(): ?int
     {
         return $this->getData(self::OPTION_VALUE_TABLE_LINK);
@@ -134,6 +145,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::OPTION_VALUE_TABLE_LINK, $value);
     }
+
     public function getOptionValueFieldLink(): ?int
     {
         return $this->getData(self::OPTION_VALUE_FIELD_LINK);
@@ -143,6 +155,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::OPTION_VALUE_FIELD_LINK, $value);
     }
+
     public function getValueForRecipe(): ?string
     {
         return $this->getData(self::VALUE_FOR_RECIPE);
@@ -152,6 +165,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::VALUE_FOR_RECIPE, $value);
     }
+
     public function getDisplayOnPOS(): ?string
     {
         return $this->getData(self::DISPLAY_ON_P_O_S);
@@ -161,6 +175,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::DISPLAY_ON_P_O_S, $value);
     }
+
     public function getAttributeTypeID(): ?string
     {
         return $this->getData(self::ATTRIBUTE_TYPE_I_D);
@@ -170,6 +185,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::ATTRIBUTE_TYPE_I_D, $value);
     }
+
     public function getOptionValueFilter(): ?string
     {
         return $this->getData(self::OPTION_VALUE_FILTER);
@@ -179,6 +195,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::OPTION_VALUE_FILTER, $value);
     }
+
     public function getAttributeIsDinAreaSection(): ?bool
     {
         return $this->getData(self::ATTRIBUTE_IS_DIN_AREA_SECTION);
@@ -188,6 +205,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::ATTRIBUTE_IS_DIN_AREA_SECTION, $value);
     }
+
     public function getDinReservSpecialRequest(): ?bool
     {
         return $this->getData(self::DIN_RESERV_SPECIAL_REQUEST);
@@ -197,6 +215,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::DIN_RESERV_SPECIAL_REQUEST, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -206,6 +225,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -215,6 +235,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -224,6 +245,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -233,6 +255,7 @@ class LSCAttribute extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

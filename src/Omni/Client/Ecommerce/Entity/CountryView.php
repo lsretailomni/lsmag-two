@@ -30,6 +30,7 @@ class CountryView extends DataObject
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
     public const TAX_POST_GROUP = 'TaxPostGroup';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -39,6 +40,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getName(): ?string
     {
         return $this->getData(self::NAME);
@@ -48,6 +50,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::NAME, $value);
     }
+
     public function getISOCode(): ?string
     {
         return $this->getData(self::I_S_O_CODE);
@@ -57,6 +60,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::I_S_O_CODE, $value);
     }
+
     public function getISONumericCode(): ?string
     {
         return $this->getData(self::I_S_O_NUMERIC_CODE);
@@ -66,6 +70,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::I_S_O_NUMERIC_CODE, $value);
     }
+
     public function getEUCountryRegionCode(): ?string
     {
         return $this->getData(self::E_U_COUNTRY_REGION_CODE);
@@ -75,6 +80,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::E_U_COUNTRY_REGION_CODE, $value);
     }
+
     public function getIntrastatCode(): ?string
     {
         return $this->getData(self::INTRASTAT_CODE);
@@ -84,6 +90,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::INTRASTAT_CODE, $value);
     }
+
     public function getAddressFormat(): ?string
     {
         return $this->getData(self::ADDRESS_FORMAT);
@@ -93,6 +100,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::ADDRESS_FORMAT, $value);
     }
+
     public function getContactAddressFormat(): ?string
     {
         return $this->getData(self::CONTACT_ADDRESS_FORMAT);
@@ -102,6 +110,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::CONTACT_ADDRESS_FORMAT, $value);
     }
+
     public function getVATScheme(): ?string
     {
         return $this->getData(self::V_A_T_SCHEME);
@@ -111,6 +120,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::V_A_T_SCHEME, $value);
     }
+
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -120,6 +130,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
+
     public function getCountyName(): ?string
     {
         return $this->getData(self::COUNTY_NAME);
@@ -129,6 +140,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::COUNTY_NAME, $value);
     }
+
     public function getLSCWebStoreCustomerNo(): ?string
     {
         return $this->getData(self::L_S_C_WEB_STORE_CUSTOMER_NO);
@@ -138,6 +150,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::L_S_C_WEB_STORE_CUSTOMER_NO, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -147,6 +160,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -156,6 +170,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -165,6 +180,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -174,6 +190,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);
@@ -183,6 +200,7 @@ class CountryView extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
     }
+
     public function getTaxPostGroup(): ?string
     {
         return $this->getData(self::TAX_POST_GROUP);

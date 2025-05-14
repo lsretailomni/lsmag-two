@@ -24,6 +24,7 @@ class LSCMobilePlu extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getStoreId(): ?string
     {
         return $this->getData(self::STORE_ID);
@@ -33,6 +34,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::STORE_ID, $value);
     }
+
     public function getPageId(): ?int
     {
         return $this->getData(self::PAGE_ID);
@@ -42,6 +44,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::PAGE_ID, $value);
     }
+
     public function getPageIndex(): ?int
     {
         return $this->getData(self::PAGE_INDEX);
@@ -51,6 +54,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::PAGE_INDEX, $value);
     }
+
     public function getItemId(): ?string
     {
         return $this->getData(self::ITEM_ID);
@@ -60,6 +64,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::ITEM_ID, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -69,6 +74,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getRetailImageId(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
@@ -78,6 +84,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
+
     public function getImageBlob(): ?string
     {
         return $this->getData(self::IMAGE_BLOB);
@@ -87,6 +94,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::IMAGE_BLOB, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -96,6 +104,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -105,6 +114,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -114,6 +124,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -123,6 +134,7 @@ class LSCMobilePlu extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

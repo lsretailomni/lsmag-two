@@ -21,6 +21,7 @@ class LSCOfferHTMLML extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getOfferNo(): ?string
     {
         return $this->getData(self::OFFER_NO);
@@ -30,6 +31,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::OFFER_NO, $value);
     }
+
     public function getURL(): ?string
     {
         return $this->getData(self::U_R_L);
@@ -39,6 +41,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::U_R_L, $value);
     }
+
     public function getHtml(): ?string
     {
         return $this->getData(self::HTML);
@@ -48,6 +51,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::HTML, $value);
     }
+
     public function getLanguage(): ?string
     {
         return $this->getData(self::LANGUAGE);
@@ -57,6 +61,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::LANGUAGE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -66,6 +71,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -75,6 +81,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -84,6 +91,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -93,6 +101,7 @@ class LSCOfferHTMLML extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

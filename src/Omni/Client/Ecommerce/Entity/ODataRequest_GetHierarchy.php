@@ -12,7 +12,7 @@ class ODataRequest_GetHierarchy extends BaseODataRequest
     public const ACTION_NAME = 'ODataRequest_GetHierarchy';
     public string $storeNo;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->storeNo = (string)($data['storeNo'] ?? '');
         parent::__construct($data);

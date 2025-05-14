@@ -24,6 +24,7 @@ class LSCBarcodeMask extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getEntryNo(): ?int
     {
         return $this->getData(self::ENTRY_NO);
@@ -33,6 +34,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::ENTRY_NO, $value);
     }
+
     public function getMask(): ?string
     {
         return $this->getData(self::MASK);
@@ -42,6 +44,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::MASK, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -51,6 +54,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -60,6 +64,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getPrefix(): ?string
     {
         return $this->getData(self::PREFIX);
@@ -69,6 +74,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::PREFIX, $value);
     }
+
     public function getSymbology(): ?string
     {
         return $this->getData(self::SYMBOLOGY);
@@ -78,6 +84,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::SYMBOLOGY, $value);
     }
+
     public function getNumberSeries(): ?string
     {
         return $this->getData(self::NUMBER_SERIES);
@@ -87,6 +94,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::NUMBER_SERIES, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -96,6 +104,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -105,6 +114,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -114,6 +124,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -123,6 +134,7 @@ class LSCBarcodeMask extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

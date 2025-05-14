@@ -12,7 +12,7 @@ class ODataRequest_GetTenderTypeCurrency extends BaseODataRequest
     public const ACTION_NAME = 'ODataRequest_GetTenderTypeCurrency';
     public string $storeNo;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->storeNo = (string)($data['storeNo'] ?? '');
         parent::__construct($data);

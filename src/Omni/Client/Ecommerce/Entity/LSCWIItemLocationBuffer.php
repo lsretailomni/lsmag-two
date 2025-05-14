@@ -23,6 +23,7 @@ class LSCWIItemLocationBuffer extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -32,6 +33,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -41,6 +43,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getSectionCode(): ?string
     {
         return $this->getData(self::SECTION_CODE);
@@ -50,6 +53,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SECTION_CODE, $value);
     }
+
     public function getSectionDescription(): ?string
     {
         return $this->getData(self::SECTION_DESCRIPTION);
@@ -59,6 +63,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SECTION_DESCRIPTION, $value);
     }
+
     public function getShelfCode(): ?string
     {
         return $this->getData(self::SHELF_CODE);
@@ -68,6 +73,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SHELF_CODE, $value);
     }
+
     public function getShelfDescription(): ?string
     {
         return $this->getData(self::SHELF_DESCRIPTION);
@@ -77,6 +83,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SHELF_DESCRIPTION, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -86,6 +93,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -95,6 +103,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -104,6 +113,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -113,6 +123,7 @@ class LSCWIItemLocationBuffer extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

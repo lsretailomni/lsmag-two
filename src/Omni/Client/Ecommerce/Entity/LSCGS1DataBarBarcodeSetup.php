@@ -30,6 +30,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -39,6 +40,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getIdentifier(): ?string
     {
         return $this->getData(self::IDENTIFIER);
@@ -48,6 +50,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::IDENTIFIER, $value);
     }
+
     public function getSectionType(): ?string
     {
         return $this->getData(self::SECTION_TYPE);
@@ -57,6 +60,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SECTION_TYPE, $value);
     }
+
     public function getSectionSize(): ?int
     {
         return $this->getData(self::SECTION_SIZE);
@@ -66,6 +70,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SECTION_SIZE, $value);
     }
+
     public function getIdentifierSize(): ?int
     {
         return $this->getData(self::IDENTIFIER_SIZE);
@@ -75,6 +80,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::IDENTIFIER_SIZE, $value);
     }
+
     public function getSectionMapping(): ?string
     {
         return $this->getData(self::SECTION_MAPPING);
@@ -84,6 +90,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SECTION_MAPPING, $value);
     }
+
     public function getMappingStartingChar(): ?int
     {
         return $this->getData(self::MAPPING_STARTING_CHAR);
@@ -93,6 +100,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::MAPPING_STARTING_CHAR, $value);
     }
+
     public function getPreferredSequence(): ?int
     {
         return $this->getData(self::PREFERRED_SEQUENCE);
@@ -102,6 +110,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::PREFERRED_SEQUENCE, $value);
     }
+
     public function getDecimals(): ?string
     {
         return $this->getData(self::DECIMALS);
@@ -111,6 +120,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::DECIMALS, $value);
     }
+
     public function getValueType(): ?string
     {
         return $this->getData(self::VALUE_TYPE);
@@ -120,6 +130,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
+
     public function getBarcodeValue(): ?string
     {
         return $this->getData(self::BARCODE_VALUE);
@@ -129,6 +140,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::BARCODE_VALUE, $value);
     }
+
     public function getValueDec(): ?string
     {
         return $this->getData(self::VALUE_DEC);
@@ -138,6 +150,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::VALUE_DEC, $value);
     }
+
     public function getValueDate(): ?string
     {
         return $this->getData(self::VALUE_DATE);
@@ -147,6 +160,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::VALUE_DATE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -156,6 +170,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -165,6 +180,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -174,6 +190,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -183,6 +200,7 @@ class LSCGS1DataBarBarcodeSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

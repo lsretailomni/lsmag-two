@@ -22,13 +22,74 @@ class OdataGenerator
               'includeDetail' => false
           ],
           'response' => [
-              'DataSetName' => 'LSC Store'
+              'DataSetName' => ''
           ]
         ],
         'TestConnectionOData_TestConnection' => [
             'request' => [],
             'response' => [
                 'indexName' => 'TestConnectionResponse'
+            ]
+        ],
+        'GetMemberContactInfo_GetMemberContactInfo' => [
+            'request' => [
+                'contactSearchType'=> '3',
+                'searchText'=> 'tom@pzwqk.kgh',
+                'searchMethod'=> '0',
+                'maxResultContacts'=> 0
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
+        ],
+        'GetMemContSalesHist_GetMemContSalesHist' => [
+            'request' => [
+                'memberCardNo'=> '10044',
+                'storeNo'=> '',
+                'dateFilter'=> "1990-01-01",
+                'dateGreaterThan'=> true,
+                'maxResultContacts'=> 0
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
+        ],
+        'GetDiscount_GetDiscount' => [
+            'request' => [
+                'storeNo'=> 'S0013',
+                'schemeCode'=> 'CR1-BRONZE',
+                'items' => '40000'
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
+        ],
+        'GetItem_GetItem' => [
+            'request' => [
+                'storeNo'=> 'S0013',
+                'itemNo' => '40180',
+                'barcode' => '',
+                'includeDetail' => true
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
+        ],
+        'GetSelectedSalesDoc_GetSelectedSalesDoc' => [
+            'request' => [
+                'documentSourceType'=> '1',
+                'documentID' => 'CO000001'
+            ],
+            'response' => [
+                'DataSetName' => ''
+            ]
+        ],
+        'GetSalesInfoByOrderId_GetSalesInfoByOrderId' => [
+            'request' => [
+                'customerOrderId'=> 'CO000001',
+            ],
+            'response' => [
+                'DataSetName' => ''
             ]
         ]
     ];
@@ -43,6 +104,8 @@ class OdataGenerator
      * @return void
      * @throws GuzzleException
      * @throws NoSuchEntityException
+     *
+     * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function generate(
         string $entityDir,
@@ -148,28 +211,61 @@ class OdataGenerator
                 }
             } else {
                 if (isset($this->allowedNonReplActions[$requestClassName])) {
-                    $this->generateCustomRequest($entityDir, $baseNamespace, $output, $requestClassName, $params);
+                    $action = $requestClassName;
+                    $requestClassName .= 'Request';
+                    $this->generateCustomRequest(
+                        $entityDir,
+                        $baseNamespace,
+                        $output,
+                        $requestClassName,
+                        $action,
+                        $params
+                    );
 
                     $data = $omniDataHelper->fetchGivenOdata(
-                        $requestClassName,
+                        $action,
                         '',
                         [],
                         [],
-                        $this->allowedNonReplActions[$requestClassName]['request'],
+                        $this->allowedNonReplActions[$action]['request'],
                     );
-                    $dataSetName = $this->allowedNonReplActions[$requestClassName]['response']['DataSetName'] ??
-                        $this->allowedNonReplActions[$requestClassName]['response']['indexName'];
-                    $recordFields = $this->findDataSetFieldsRecursive($data, $dataSetName);
+                    $dataSetName = $this->allowedNonReplActions[$action]['response']['DataSetName'] ??
+                        $this->allowedNonReplActions[$action]['response']['indexName'];
 
-                    if (!empty($recordFields)) {
-                        $entityClassName = str_replace(' ', '', $dataSetName);
+                    $recordFields = $this->findDataSetFieldsRecursive($data, $dataSetName);
+                    if ($dataSetName == "") {
+                        $dataSetNames = $dataSetName = [];
+                        foreach ($recordFields as $recordField) {
+                            if (isset($recordField['DataSetName'])) {
+                                $entityClassName = $this->formatGivenValue(str_replace(
+                                    ' ',
+                                    '',
+                                    $recordField['DataSetName']
+                                ));
+                                $dataSetNames[] = [
+                                    'FieldName' => $entityClassName,
+                                    'FieldDataType' => $recordField['isAnArray'] ? 'array' : $entityClassName
+                                ];
+                                $dataSetName[] = $entityClassName;
+                                $this->generateEntityContent(
+                                    $entityDir,
+                                    $baseNamespace,
+                                    $output,
+                                    $entityClassName,
+                                    $recordField['DataSetFields']
+                                );
+                            }
+                        }
+                        $entityClassName = $action;
                         $this->generateEntityContent(
                             $entityDir,
                             $baseNamespace,
                             $output,
                             $entityClassName,
-                            $recordFields
+                            $dataSetNames,
+                            true
                         );
+
                         $responseClassName = $entityClassName . 'Response';
                         $this->generateCustomResponse(
                             $entityDir,
@@ -186,8 +282,37 @@ class OdataGenerator
                             $requestClassName,
                             $responseClassName,
                             $operationNamespace,
-                            $dataSetName
+                            implode(',', $dataSetName)
                         );
+                    } else {
+                        if (!empty($recordFields)) {
+                            $entityClassName = str_replace(' ', '', $dataSetName);
+                            $this->generateEntityContent(
+                                $entityDir,
+                                $baseNamespace,
+                                $output,
+                                $entityClassName,
+                                $recordFields
+                            );
+                            $responseClassName = $entityClassName . 'Response';
+                            $this->generateCustomResponse(
+                                $entityDir,
+                                $baseNamespace,
+                                $output,
+                                $entityClassName,
+                                $responseClassName,
+                            );
+                            $this->generateCustomOperation(
+                                $operationDir,
+                                $baseNamespace,
+                                $output,
+                                $entityClassName,
+                                $requestClassName,
+                                $responseClassName,
+                                $operationNamespace,
+                                implode(',', [$dataSetName])
+                            );
+                        }
                     }
                 }
             }
@@ -221,7 +346,7 @@ class BaseODataRequest
     public string \$lastKey;
     public int \$lastEntryNo;
 
-    public function __construct(array \$data)
+    public function __construct(array \$data = [])
     {
         \$this->batchSize = (int)(\$data['batchSize'] ?? 0);
         \$this->fullRepl = (bool)(\$data['fullRepl'] ?? false);
@@ -262,7 +387,7 @@ class BaseODataResponse
     public int \$lastEntryNo;
     public bool \$endOfTable;
 
-    public function __construct(array \$data)
+    public function __construct(array \$data = [])
     {
         \$this->status = (string)(\$data['status'] ?? '');
         \$this->errorText = (string)(\$data['errorText'] ?? '');
@@ -312,7 +437,7 @@ PHP;
             $requestClassCode .= <<<PHP
     public string \$storeNo;
 
-    public function __construct(array \$data)
+    public function __construct(array \$data = [])
     {
         \$this->storeNo = (string)(\$data['storeNo'] ?? '');
         parent::__construct(\$data);
@@ -336,6 +461,7 @@ PHP;
      * @param OutputInterface $output
      * @param string $entityClassName
      * @param array $recordFields
+     * @param bool $recursive
      * @return void
      */
     public function generateEntityContent(
@@ -343,7 +469,8 @@ PHP;
         string $baseNamespace,
         OutputInterface $output,
         string $entityClassName,
-        array $recordFields
+        array $recordFields,
+        bool $recursive = false,
     ) {
         $entityClassCode = <<<PHP
 <?php
@@ -382,14 +509,20 @@ PHP;
             $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
             $fieldName = $this->formatGivenValue($field['FieldName']);
             $constName = str_replace(' ', '_', strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldName)));
-            $phpType = match (strtolower($field['FieldDataType'])) {
-                'integer' => 'int',
-                'datetime' => '\DateTime',
-                'boolean' => 'bool',
-                default => 'string'
-            };
+
+            if ($recursive) {
+                $phpType = $field['FieldDataType'];
+            } else {
+                $phpType = match (strtolower($field['FieldDataType'])) {
+                    'integer' => 'int',
+                    'datetime' => '\DateTime',
+                    'boolean' => 'bool',
+                    default => 'string'
+                };
+            }
 
             $entityClassCode .= <<<PHP
+
 
     public function get$fieldNameCapitalized(): ?$phpType
     {
@@ -510,18 +643,15 @@ class $entityClassName
         \$this->connectionParams = \$connectionParams;
         \$this->companyName = \$companyName;
         \$this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
+        \$this->request = new {$reqName}();
     }
 
-    public function execute({$reqName} \$request = null): {$resName}
+    public function execute(): {$resName}
     {
-        if ( !is_null( \$request ) ) {
-            \$this->setRequest( \$request );
-        }
-
         \$response = \$this->dataHelper->makeRequest(
             {$reqName}::ACTION_NAME,
             {$entityName}::class,
-            \$request,
+            \$this->request,
             \$this->baseUrl,
             \$this->connectionParams,
             ['company' => \$this->companyName]
@@ -586,6 +716,15 @@ class $entityClassName
         ]);
     }
 
+    public function & setOperationInput(array \$params = []) : {$reqName}
+    {
+        \$this->setRequest(new {$reqName}(\$params));
+        \$request = \$this->getRequest();
+
+        return \$request;
+    }
+
+
     public function setRequest({$reqName} \$request): self
     {
         \$this->request = \$request;
@@ -620,6 +759,7 @@ PHP;
      * @param string $baseNamespace
      * @param OutputInterface $output
      * @param string $requestClassName
+     * @param string $action
      * @param mixed $params
      * @return void
      */
@@ -628,6 +768,7 @@ PHP;
         string          $baseNamespace,
         OutputInterface $output,
         string          $requestClassName,
+        string $action,
         $params
     ) {
         $props                  = '';
@@ -649,9 +790,18 @@ PHP;
 
     public $phpType \$$name;
 PHP;
+            $defaultValue = '\'\'';
+
+            if ($phpType == 'bool') {
+                $defaultValue = 'true';
+            } elseif ($phpType == 'int') {
+                $defaultValue = 0;
+            } elseif ($phpType == 'float') {
+                $defaultValue = 0.0;
+            }
 
             $constructorAssignments .= <<<PHP
-        \$this->$name = \$data['$name'] ?? null;
+        \$this->$name = \$data['$name'] ?? $defaultValue;
 
 PHP;
         }
@@ -668,7 +818,7 @@ namespace $baseNamespace;
 
 class $requestClassName
 {
-    public const ACTION_NAME = '$requestClassName';
+    public const ACTION_NAME = '$action';
 PHP;
         if (!empty($props)) {
             $requestClassCode .= <<<PHP
@@ -761,7 +911,7 @@ PHP;
      * @param string $requestClassName
      * @param string $responseClassName
      * @param string $operationNamespace
-     * @param string $targetDataSetName
+     * @param mixed $targetDataSetName
      * @return void
      */
     public function generateCustomOperation(
@@ -772,12 +922,11 @@ PHP;
         string $requestClassName,
         string $responseClassName,
         string $operationNamespace,
-        string $targetDataSetName
+        $targetDataSetName
     ) {
         $reqFqcn = '\\' . $baseNamespace . '\\' . $requestClassName;
         $resFqcn = '\\' . $baseNamespace . '\\' . $responseClassName;
         $entityFqcn = '\\' . $baseNamespace . '\\' . $entityClassName;
-
         $operationClassCode = <<<PHP
 <?php
 /**
@@ -805,14 +954,11 @@ class $entityClassName
         \$this->connectionParams = \$connectionParams;
         \$this->companyName = \$companyName;
         \$this->dataHelper = ObjectManager::getInstance()->get(\\Ls\\Omni\\Helper\\Data::class);
+        \$this->request = new $reqFqcn();
     }
 
-    public function execute($reqFqcn \$request = null): $resFqcn
+    public function execute(): $resFqcn
     {
-        if (\$request !== null) {
-            \$this->setRequest(\$request);
-        }
-
         \$raw = \$this->dataHelper->makeRequest(
             $reqFqcn::ACTION_NAME,
             self::class,
@@ -830,46 +976,52 @@ class $entityClassName
 
     public function formatResponse(\$data): $resFqcn
     {
-        \$fields = [];
-        \$rows = [];
+        \$requiredDataSetName = explode(',', '$targetDataSetName');
+        \$finalEntry = new $entityFqcn();
+        if (is_array(\$requiredDataSetName)) {
+            foreach (\$requiredDataSetName as \$dataSet) {
+                \$entityClassName = str_replace(' ', '', \$dataSet);
+                // Try flat response structure
+                if (isset(\$data[\$dataSet]) && is_array(\$data[\$dataSet])) {
+                    \$entity = new $entityFqcn(\$data['$targetDataSetName']);
 
-        \$recRef = \$this->findNestedDataSet(\$data, '$targetDataSetName');
-        if (\$recRef && isset(\$recRef['DataSetFields'], \$recRef['DataSetRows'])) {
-            if (isset(\$recRef['DataSetFields'])) {
-                foreach (\$recRef['DataSetFields'] as \$field) {
-                    \$fields[\$field['FieldIndex']] = \$field['FieldName'];
+                    return new $resFqcn([
+                        'records' => [\$entity],
+                        'ResponseCode' => \$data['ResponseCode'] ?? '',
+                        'ErrorText' => \$data['ErrorText'] ?? '',
+                    ]);
+                }
+                \$fields = \$rows = [];
+                \$recRef = \$this->findNestedDataSet(\$data, \$entityClassName);
+                if (\$recRef && isset(\$recRef['DataSetFields'], \$recRef['DataSetRows'])) {
+                    if (isset(\$recRef['DataSetFields'])) {
+                        foreach (\$recRef['DataSetFields'] as \$field) {
+                            \$fields[\$field['FieldIndex']] = \$field['FieldName'];
+                        }
+                    }
+
+                    if (isset(\$recRef['DataSetRows'])) {
+                        \$rows = \$recRef['DataSetRows'];
+                    }
+                    \$className = '\\$baseNamespace'.'\\\'.\$entityClassName;
+                    \$count = count(\$rows);
+                    \$entries = [];
+                    foreach (\$rows as \$index => \$row) {
+                        \$entry = new \$className();
+                        foreach (\$row['Fields'] ?? [] as \$field) {
+                            \$entry->setData(\$fields[\$field['FieldIndex']], \$field['FieldValue']);
+                        }
+                        \$entries[\$index] = \$entry;
+                    }
+                    if (!empty(\$entries)) {
+                        \$finalEntry->setData(\$entityClassName, \$count > 1 ? \$entries : current(\$entries));
+                    }
                 }
             }
-
-            if (isset(\$recRef['DataSetRows'])) {
-                \$rows = \$recRef['DataSetRows'];
-            }
-
-            \$entities = [];
-            foreach (\$rows as \$row) {
-                \$entry = new $entityFqcn();
-                foreach (\$row['Fields'] ?? [] as \$field) {
-                    \$entry->setData(\$fields[\$field['FieldIndex']], \$field['FieldValue']);
-                }
-                \$entities[] = \$entry;
-            }
-
             return new $resFqcn([
-                'records' => \$entities,
+                'records' => [\$finalEntry],
                 'ResponseCode' => \$data['ResponseCode'] ?? '',
                 'ErrorText' => \$data['ErrorText'] ?? ''
-            ]);
-        }
-
-
-            // Try flat response structure
-        if (isset(\$data['$targetDataSetName']) && is_array(\$data['$targetDataSetName'])) {
-            \$entity = new $entityFqcn(\$data['$targetDataSetName']);
-
-            return new $resFqcn([
-                'records' => [\$entity],
-                'ResponseCode' => \$data['ResponseCode'] ?? '',
-                'ErrorText' => \$data['ErrorText'] ?? '',
             ]);
         }
 
@@ -895,7 +1047,7 @@ class $entityClassName
                 if (
                     is_array(\$data)
                     && isset(\$data['DataSetName'])
-                    && \$data['DataSetName'] === \$target
+                    && str_replace(' ', '',\$data['DataSetName']) === \$target
                 ) {
                     return \$data;
                 }
@@ -903,6 +1055,14 @@ class $entityClassName
         }
 
         return null;
+    }
+
+    public function & setOperationInput(array \$params = []): $reqFqcn
+    {
+        \$this->setRequest(new {$reqFqcn}(\$params));
+        \$request = \$this->getRequest();
+
+        return \$request;
     }
 
     public function setRequest($reqFqcn \$request): self
@@ -972,9 +1132,13 @@ PHP;
      */
     public function findDataSetFieldsRecursive($data, string $targetName): ?array
     {
+        $result = [];
+
+        // Check if the data is an array
         if (is_array($data)) {
             foreach ($data as $key => $value) {
-                if ($key === $targetName && is_array($value)) {
+                // If specific targetName is provided and matches a key, return its value
+                if ($targetName !== '' && $key === $targetName && is_array($value)) {
                     return array_map(
                         fn($fieldName) => [
                             'FieldName' => $fieldName,
@@ -983,24 +1147,49 @@ PHP;
                         array_keys($value)
                     );
                 }
+                // If targetName is empty, collect all DataSetName and their fields
+                if ($targetName === '') {
+                    // Check if the current data is a dataset with 'DataSetName' and 'DataSetFields'
+                    if (isset($value['DataSetName']) && isset($value['DataSetFields'])) {
+                        // Collect only FieldName and FieldDataType for each field
+                        $fields = array_map(function ($field) {
+                            return [
+                                'FieldName' => $field['FieldName'],
+                                'FieldDataType' => $field['FieldDataType']
+                            ];
+                        }, $value['DataSetFields']);
 
-                if (isset($data['DataSetName']) &&
-                    $data['DataSetName'] === $targetName &&
-                    isset($data['DataSetFields'])
+                        // Add the dataset to the result array
+                        $result[] = [
+                            'DataSetName' => $value['DataSetName'],
+                            'DataSetFields' => $fields,
+                            'isAnArray' => count($value['DataSetRows']) > 1
+                        ];
+                    }
+                } elseif (isset($value['DataSetName']) &&
+                    $value['DataSetName'] === $targetName &&
+                    isset($value['DataSetFields'])
                 ) {
-                    return $data['DataSetFields'];
+                    // Collect only FieldName and FieldDataType for each field
+                    return array_map(function ($field) {
+                        return [
+                            'FieldName' => $field['FieldName'],
+                            'FieldDataType' => $field['FieldDataType']
+                        ];
+                    }, $value['DataSetFields']);
                 }
 
-                // Recurse into nested structures
+                // Recurse into nested structures to find DataSetName or matching key
                 if (is_array($value) || is_object($value)) {
                     $found = $this->findDataSetFieldsRecursive((array) $value, $targetName);
                     if (!empty($found)) {
-                        return $found;
+                        // Merge the result of recursive call with the current result
+                        $result = array_merge($result, $found);
                     }
                 }
             }
         }
 
-        return null;
+        return $result;
     }
 }

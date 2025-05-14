@@ -35,6 +35,7 @@ class StoreView extends DataObject
     public const STORE_GROUP_CODES = 'Store Group Codes';
     public const PRICE_GROUP_CODES = 'Price Group Codes';
 
+
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
@@ -44,6 +45,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::NO, $value);
     }
+
     public function getName(): ?string
     {
         return $this->getData(self::NAME);
@@ -53,6 +55,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::NAME, $value);
     }
+
     public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
@@ -62,6 +65,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::ADDRESS, $value);
     }
+
     public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS2);
@@ -71,6 +75,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::ADDRESS2, $value);
     }
+
     public function getPostCode(): ?string
     {
         return $this->getData(self::POST_CODE);
@@ -80,6 +85,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::POST_CODE, $value);
     }
+
     public function getCity(): ?string
     {
         return $this->getData(self::CITY);
@@ -89,6 +95,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::CITY, $value);
     }
+
     public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
@@ -98,6 +105,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::COUNTY, $value);
     }
+
     public function getCountryCode(): ?string
     {
         return $this->getData(self::COUNTRY_CODE);
@@ -107,6 +115,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::COUNTRY_CODE, $value);
     }
+
     public function getLatitude(): ?string
     {
         return $this->getData(self::LATITUDE);
@@ -116,6 +125,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::LATITUDE, $value);
     }
+
     public function getLongitude(): ?string
     {
         return $this->getData(self::LONGITUDE);
@@ -125,6 +135,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::LONGITUDE, $value);
     }
+
     public function getPhoneNo(): ?string
     {
         return $this->getData(self::PHONE_NO);
@@ -134,6 +145,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::PHONE_NO, $value);
     }
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -143,6 +155,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getFunctionalityProfile(): ?string
     {
         return $this->getData(self::FUNCTIONALITY_PROFILE);
@@ -152,6 +165,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::FUNCTIONALITY_PROFILE, $value);
     }
+
     public function getStoreVATBusPostGr(): ?string
     {
         return $this->getData(self::STORE_V_A_T_BUS_POST_GR);
@@ -161,6 +175,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::STORE_V_A_T_BUS_POST_GR, $value);
     }
+
     public function getClickAndCollect(): ?bool
     {
         return $this->getData(self::CLICK_AND_COLLECT);
@@ -170,6 +185,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::CLICK_AND_COLLECT, $value);
     }
+
     public function getLoyalty(): ?bool
     {
         return $this->getData(self::LOYALTY);
@@ -179,6 +195,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::LOYALTY, $value);
     }
+
     public function getWebStore(): ?bool
     {
         return $this->getData(self::WEB_STORE);
@@ -188,6 +205,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::WEB_STORE, $value);
     }
+
     public function getWebStorePOSTerminal(): ?string
     {
         return $this->getData(self::WEB_STORE_P_O_S_TERMINAL);
@@ -197,6 +215,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::WEB_STORE_P_O_S_TERMINAL, $value);
     }
+
     public function getWebStoreStaffID(): ?string
     {
         return $this->getData(self::WEB_STORE_STAFF_I_D);
@@ -206,6 +225,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::WEB_STORE_STAFF_I_D, $value);
     }
+
     public function getCalcInvForSourcingLocation(): ?bool
     {
         return $this->getData(self::CALC_INV_FOR_SOURCING_LOCATION);
@@ -215,6 +235,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::CALC_INV_FOR_SOURCING_LOCATION, $value);
     }
+
     public function getLCYCode(): ?string
     {
         return $this->getData(self::L_C_Y_CODE);
@@ -224,6 +245,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::L_C_Y_CODE, $value);
     }
+
     public function getStoreGroupCodes(): ?string
     {
         return $this->getData(self::STORE_GROUP_CODES);
@@ -233,6 +255,7 @@ class StoreView extends DataObject
     {
         return $this->setData(self::STORE_GROUP_CODES, $value);
     }
+
     public function getPriceGroupCodes(): ?string
     {
         return $this->getData(self::PRICE_GROUP_CODES);

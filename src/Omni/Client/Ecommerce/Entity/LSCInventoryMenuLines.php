@@ -37,6 +37,7 @@ class LSCInventoryMenuLines extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getDeviceType(): ?string
     {
         return $this->getData(self::DEVICE_TYPE);
@@ -46,6 +47,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
+
     public function getMenuCode(): ?string
     {
         return $this->getData(self::MENU_CODE);
@@ -55,6 +57,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::MENU_CODE, $value);
     }
+
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
@@ -64,6 +67,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::STORE_NO, $value);
     }
+
     public function getLineNo(): ?int
     {
         return $this->getData(self::LINE_NO);
@@ -73,6 +77,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::LINE_NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -82,6 +87,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getText(): ?string
     {
         return $this->getData(self::TEXT);
@@ -91,6 +97,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::TEXT, $value);
     }
+
     public function getLineType(): ?string
     {
         return $this->getData(self::LINE_TYPE);
@@ -100,6 +107,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::LINE_TYPE, $value);
     }
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -109,6 +117,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getBitmap(): ?string
     {
         return $this->getData(self::BITMAP);
@@ -118,6 +127,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::BITMAP, $value);
     }
+
     public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
@@ -127,6 +137,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::STATUS, $value);
     }
+
     public function getCodeType(): ?string
     {
         return $this->getData(self::CODE_TYPE);
@@ -136,6 +147,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::CODE_TYPE, $value);
     }
+
     public function getLocationCode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
@@ -145,6 +157,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
+
     public function getVendorNo(): ?string
     {
         return $this->getData(self::VENDOR_NO);
@@ -154,6 +167,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
+
     public function getCustomerNo(): ?string
     {
         return $this->getData(self::CUSTOMER_NO);
@@ -163,6 +177,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::CUSTOMER_NO, $value);
     }
+
     public function getCardViewCode(): ?string
     {
         return $this->getData(self::CARD_VIEW_CODE);
@@ -172,6 +187,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::CARD_VIEW_CODE, $value);
     }
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -181,6 +197,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getWorksheetSeqNo(): ?int
     {
         return $this->getData(self::WORKSHEET_SEQ_NO);
@@ -190,6 +207,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::WORKSHEET_SEQ_NO, $value);
     }
+
     public function getWorksheetType(): ?string
     {
         return $this->getData(self::WORKSHEET_TYPE);
@@ -199,6 +217,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
+
     public function getWorksheetDescription(): ?string
     {
         return $this->getData(self::WORKSHEET_DESCRIPTION);
@@ -208,6 +227,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::WORKSHEET_DESCRIPTION, $value);
     }
+
     public function getWebClientUrl(): ?string
     {
         return $this->getData(self::WEB_CLIENT_URL);
@@ -217,6 +237,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::WEB_CLIENT_URL, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -226,6 +247,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -235,6 +257,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -244,6 +267,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -253,6 +277,7 @@ class LSCInventoryMenuLines extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

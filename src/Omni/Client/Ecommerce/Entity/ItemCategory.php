@@ -50,6 +50,7 @@ class ItemCategory extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -59,6 +60,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getParentCategory(): ?string
     {
         return $this->getData(self::PARENT_CATEGORY);
@@ -68,6 +70,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::PARENT_CATEGORY, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -77,6 +80,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getIndentation(): ?int
     {
         return $this->getData(self::INDENTATION);
@@ -86,6 +90,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::INDENTATION, $value);
     }
+
     public function getPresentationOrder(): ?int
     {
         return $this->getData(self::PRESENTATION_ORDER);
@@ -95,6 +100,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::PRESENTATION_ORDER, $value);
     }
+
     public function getHasChildren(): ?bool
     {
         return $this->getData(self::HAS_CHILDREN);
@@ -104,6 +110,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::HAS_CHILDREN, $value);
     }
+
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -113,6 +120,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
+
     public function getDefaultSustAccount(): ?string
     {
         return $this->getData(self::DEFAULT_SUST_ACCOUNT);
@@ -122,6 +130,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::DEFAULT_SUST_ACCOUNT, $value);
     }
+
     public function getLSCItemNoMiscellaneous(): ?string
     {
         return $this->getData(self::L_S_C_ITEM_NO_MISCELLANEOUS);
@@ -131,6 +140,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_ITEM_NO_MISCELLANEOUS, $value);
     }
+
     public function getLSCNegative(): ?bool
     {
         return $this->getData(self::L_S_C_NEGATIVE);
@@ -140,6 +150,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_NEGATIVE, $value);
     }
+
     public function getLSCNotDiscountable(): ?bool
     {
         return $this->getData(self::L_S_C_NOT_DISCOUNTABLE);
@@ -149,6 +160,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_NOT_DISCOUNTABLE, $value);
     }
+
     public function getLSCItemTemplateCode(): ?string
     {
         return $this->getData(self::L_S_C_ITEM_TEMPLATE_CODE);
@@ -158,6 +170,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_ITEM_TEMPLATE_CODE, $value);
     }
+
     public function getLSCDifferenceLCY(): ?string
     {
         return $this->getData(self::L_S_C_DIFFERENCE_L_C_Y);
@@ -167,6 +180,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DIFFERENCE_L_C_Y, $value);
     }
+
     public function getLSCItemHierarchyValue(): ?string
     {
         return $this->getData(self::L_S_C_ITEM_HIERARCHY_VALUE);
@@ -176,6 +190,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_ITEM_HIERARCHY_VALUE, $value);
     }
+
     public function getLSCPOSInventoryLookup(): ?bool
     {
         return $this->getData(self::L_S_C_P_O_S_INVENTORY_LOOKUP);
@@ -185,6 +200,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_INVENTORY_LOOKUP, $value);
     }
+
     public function getLSCDefaultProfit(): ?string
     {
         return $this->getData(self::L_S_C_DEFAULT_PROFIT);
@@ -194,6 +210,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DEFAULT_PROFIT, $value);
     }
+
     public function getLSCDispensePrinterGroup(): ?string
     {
         return $this->getData(self::L_S_C_DISPENSE_PRINTER_GROUP);
@@ -203,6 +220,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DISPENSE_PRINTER_GROUP, $value);
     }
+
     public function getLSCDispensePrintSeqNo(): ?int
     {
         return $this->getData(self::L_S_C_DISPENSE_PRINT_SEQ_NO);
@@ -212,6 +230,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DISPENSE_PRINT_SEQ_NO, $value);
     }
+
     public function getLSCDivisionCode(): ?string
     {
         return $this->getData(self::L_S_C_DIVISION_CODE);
@@ -221,6 +240,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DIVISION_CODE, $value);
     }
+
     public function getLSCItemErrorCheckCode(): ?string
     {
         return $this->getData(self::L_S_C_ITEM_ERROR_CHECK_CODE);
@@ -230,6 +250,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_ITEM_ERROR_CHECK_CODE, $value);
     }
+
     public function getLSCSuggestedQtyOnPOS(): ?string
     {
         return $this->getData(self::L_S_C_SUGGESTED_QTY_ON_P_O_S);
@@ -239,6 +260,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_SUGGESTED_QTY_ON_P_O_S, $value);
     }
+
     public function getLSCProfitGoal(): ?string
     {
         return $this->getData(self::L_S_C_PROFIT_GOAL);
@@ -248,6 +270,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_PROFIT_GOAL, $value);
     }
+
     public function getLSCBuyerGroupCode(): ?string
     {
         return $this->getData(self::L_S_C_BUYER_GROUP_CODE);
@@ -257,6 +280,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_BUYER_GROUP_CODE, $value);
     }
+
     public function getLSCReplenDataProfile(): ?string
     {
         return $this->getData(self::L_S_C_REPLEN_DATA_PROFILE);
@@ -266,6 +290,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_REPLEN_DATA_PROFILE, $value);
     }
+
     public function getLSCBuyerID(): ?string
     {
         return $this->getData(self::L_S_C_BUYER_I_D);
@@ -275,6 +300,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_BUYER_I_D, $value);
     }
+
     public function getLSCReplenTransferRuleCode(): ?string
     {
         return $this->getData(self::L_S_C_REPLEN_TRANSFER_RULE_CODE);
@@ -284,6 +310,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_REPLEN_TRANSFER_RULE_CODE, $value);
     }
+
     public function getLSCDefItemDistrType(): ?string
     {
         return $this->getData(self::L_S_C_DEF_ITEM_DISTR_TYPE);
@@ -293,6 +320,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DEF_ITEM_DISTR_TYPE, $value);
     }
+
     public function getLSCDefItemDistrCode(): ?string
     {
         return $this->getData(self::L_S_C_DEF_ITEM_DISTR_CODE);
@@ -302,6 +330,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_DEF_ITEM_DISTR_CODE, $value);
     }
+
     public function getLSCExcludeFromReplenishment(): ?bool
     {
         return $this->getData(self::L_S_C_EXCLUDE_FROM_REPLENISHMENT);
@@ -311,6 +340,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_EXCLUDE_FROM_REPLENISHMENT, $value);
     }
+
     public function getLSCExcludeFromOOSCalc(): ?bool
     {
         return $this->getData(self::L_S_C_EXCLUDE_FROM_O_O_S_CALC);
@@ -320,6 +350,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_EXCLUDE_FROM_O_O_S_CALC, $value);
     }
+
     public function getLSCPhysInvtCountPerCode(): ?string
     {
         return $this->getData(self::L_S_C_PHYS_INVT_COUNT_PER_CODE);
@@ -329,6 +360,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_PHYS_INVT_COUNT_PER_CODE, $value);
     }
+
     public function getLSCAllocationRuleCode(): ?string
     {
         return $this->getData(self::L_S_C_ALLOCATION_RULE_CODE);
@@ -338,6 +370,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_ALLOCATION_RULE_CODE, $value);
     }
+
     public function getLSCPLBCategory(): ?bool
     {
         return $this->getData(self::L_S_C_P_L_B_CATEGORY);
@@ -347,6 +380,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::L_S_C_P_L_B_CATEGORY, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -356,6 +390,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -365,6 +400,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -374,6 +410,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -383,6 +420,7 @@ class ItemCategory extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

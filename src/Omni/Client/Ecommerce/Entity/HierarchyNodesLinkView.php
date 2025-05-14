@@ -25,6 +25,7 @@ class HierarchyNodesLinkView extends DataObject
     public const VALIDATION_PERIOD_I_D = 'Validation Period ID';
     public const STATUS = 'Status';
 
+
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
@@ -34,6 +35,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
+
     public function getNodeID(): ?string
     {
         return $this->getData(self::NODE_I_D);
@@ -43,6 +45,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::NODE_I_D, $value);
     }
+
     public function getType(): ?string
     {
         return $this->getData(self::TYPE);
@@ -52,6 +55,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::TYPE, $value);
     }
+
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
@@ -61,6 +65,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -70,6 +75,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getItemUnitOfMeasure(): ?string
     {
         return $this->getData(self::ITEM_UNIT_OF_MEASURE);
@@ -79,6 +85,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
     }
+
     public function getSortOrder(): ?int
     {
         return $this->getData(self::SORT_ORDER);
@@ -88,6 +95,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::SORT_ORDER, $value);
     }
+
     public function getRetailImageID(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_I_D);
@@ -97,6 +105,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::RETAIL_IMAGE_I_D, $value);
     }
+
     public function getMemberType(): ?string
     {
         return $this->getData(self::MEMBER_TYPE);
@@ -106,6 +115,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::MEMBER_TYPE, $value);
     }
+
     public function getMemberValue(): ?string
     {
         return $this->getData(self::MEMBER_VALUE);
@@ -115,6 +125,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::MEMBER_VALUE, $value);
     }
+
     public function getDealPrice(): ?string
     {
         return $this->getData(self::DEAL_PRICE);
@@ -124,6 +135,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::DEAL_PRICE, $value);
     }
+
     public function getValidationPeriodID(): ?string
     {
         return $this->getData(self::VALIDATION_PERIOD_I_D);
@@ -133,6 +145,7 @@ class HierarchyNodesLinkView extends DataObject
     {
         return $this->setData(self::VALIDATION_PERIOD_I_D, $value);
     }
+
     public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);

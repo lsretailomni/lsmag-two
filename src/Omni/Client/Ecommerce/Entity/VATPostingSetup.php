@@ -46,6 +46,7 @@ class VATPostingSetup extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getVATBusPostingGroup(): ?string
     {
         return $this->getData(self::V_A_T_BUS_POSTING_GROUP);
@@ -55,6 +56,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::V_A_T_BUS_POSTING_GROUP, $value);
     }
+
     public function getVATProdPostingGroup(): ?string
     {
         return $this->getData(self::V_A_T_PROD_POSTING_GROUP);
@@ -64,6 +66,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::V_A_T_PROD_POSTING_GROUP, $value);
     }
+
     public function getVATCalculationType(): ?string
     {
         return $this->getData(self::V_A_T_CALCULATION_TYPE);
@@ -73,6 +76,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::V_A_T_CALCULATION_TYPE, $value);
     }
+
     public function getVAT(): ?string
     {
         return $this->getData(self::V_A_T);
@@ -82,6 +86,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::V_A_T, $value);
     }
+
     public function getUnrealizedVATType(): ?string
     {
         return $this->getData(self::UNREALIZED_V_A_T_TYPE);
@@ -91,6 +96,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::UNREALIZED_V_A_T_TYPE, $value);
     }
+
     public function getAdjustForPaymentDiscount(): ?bool
     {
         return $this->getData(self::ADJUST_FOR_PAYMENT_DISCOUNT);
@@ -100,6 +106,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::ADJUST_FOR_PAYMENT_DISCOUNT, $value);
     }
+
     public function getSalesVATAccount(): ?string
     {
         return $this->getData(self::SALES_V_A_T_ACCOUNT);
@@ -109,6 +116,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SALES_V_A_T_ACCOUNT, $value);
     }
+
     public function getSalesVATUnrealAccount(): ?string
     {
         return $this->getData(self::SALES_V_A_T_UNREAL_ACCOUNT);
@@ -118,6 +126,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SALES_V_A_T_UNREAL_ACCOUNT, $value);
     }
+
     public function getPurchaseVATAccount(): ?string
     {
         return $this->getData(self::PURCHASE_V_A_T_ACCOUNT);
@@ -127,6 +136,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::PURCHASE_V_A_T_ACCOUNT, $value);
     }
+
     public function getPurchVATUnrealAccount(): ?string
     {
         return $this->getData(self::PURCH_V_A_T_UNREAL_ACCOUNT);
@@ -136,6 +146,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::PURCH_V_A_T_UNREAL_ACCOUNT, $value);
     }
+
     public function getReverseChrgVATAcc(): ?string
     {
         return $this->getData(self::REVERSE_CHRG_V_A_T_ACC);
@@ -145,6 +156,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::REVERSE_CHRG_V_A_T_ACC, $value);
     }
+
     public function getReverseChrgVATUnrealAcc(): ?string
     {
         return $this->getData(self::REVERSE_CHRG_V_A_T_UNREAL_ACC);
@@ -154,6 +166,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::REVERSE_CHRG_V_A_T_UNREAL_ACC, $value);
     }
+
     public function getVATIdentifier(): ?string
     {
         return $this->getData(self::V_A_T_IDENTIFIER);
@@ -163,6 +176,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::V_A_T_IDENTIFIER, $value);
     }
+
     public function getEUService(): ?bool
     {
         return $this->getData(self::E_U_SERVICE);
@@ -172,6 +186,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::E_U_SERVICE, $value);
     }
+
     public function getVATClauseCode(): ?string
     {
         return $this->getData(self::V_A_T_CLAUSE_CODE);
@@ -181,6 +196,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::V_A_T_CLAUSE_CODE, $value);
     }
+
     public function getCertificateOfSupplyRequired(): ?bool
     {
         return $this->getData(self::CERTIFICATE_OF_SUPPLY_REQUIRED);
@@ -190,6 +206,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::CERTIFICATE_OF_SUPPLY_REQUIRED, $value);
     }
+
     public function getTaxCategory(): ?string
     {
         return $this->getData(self::TAX_CATEGORY);
@@ -199,6 +216,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::TAX_CATEGORY, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -208,6 +226,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
@@ -217,6 +236,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::BLOCKED, $value);
     }
+
     public function getSaleVATReportingCode(): ?string
     {
         return $this->getData(self::SALE_V_A_T_REPORTING_CODE);
@@ -226,6 +246,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SALE_V_A_T_REPORTING_CODE, $value);
     }
+
     public function getPurchVATReportingCode(): ?string
     {
         return $this->getData(self::PURCH_V_A_T_REPORTING_CODE);
@@ -235,6 +256,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::PURCH_V_A_T_REPORTING_CODE, $value);
     }
+
     public function getSalesTaxCodeSAFT(): ?string
     {
         return $this->getData(self::SALES_TAX_CODE_S_A_F_T);
@@ -244,6 +266,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SALES_TAX_CODE_S_A_F_T, $value);
     }
+
     public function getPurchaseTaxCodeSAFT(): ?string
     {
         return $this->getData(self::PURCHASE_TAX_CODE_S_A_F_T);
@@ -253,6 +276,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::PURCHASE_TAX_CODE_S_A_F_T, $value);
     }
+
     public function getStartingDate(): ?string
     {
         return $this->getData(self::STARTING_DATE);
@@ -262,6 +286,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
+
     public function getNonDeductibleVAT(): ?string
     {
         return $this->getData(self::NON_DEDUCTIBLE_V_A_T);
@@ -271,6 +296,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::NON_DEDUCTIBLE_V_A_T, $value);
     }
+
     public function getNonDedPurchaseVATAccount(): ?string
     {
         return $this->getData(self::NON_DED_PURCHASE_V_A_T_ACCOUNT);
@@ -280,6 +306,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::NON_DED_PURCHASE_V_A_T_ACCOUNT, $value);
     }
+
     public function getAllowNonDeductibleVAT(): ?string
     {
         return $this->getData(self::ALLOW_NON_DEDUCTIBLE_V_A_T);
@@ -289,6 +316,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::ALLOW_NON_DEDUCTIBLE_V_A_T, $value);
     }
+
     public function getLSCVATGroupCode(): ?string
     {
         return $this->getData(self::L_S_C_V_A_T_GROUP_CODE);
@@ -298,6 +326,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::L_S_C_V_A_T_GROUP_CODE, $value);
     }
+
     public function getLSCPOSTerminalVATCode(): ?string
     {
         return $this->getData(self::L_S_C_P_O_S_TERMINAL_V_A_T_CODE);
@@ -307,6 +336,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_TERMINAL_V_A_T_CODE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -316,6 +346,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -325,6 +356,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -334,6 +366,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -343,6 +376,7 @@ class VATPostingSetup extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

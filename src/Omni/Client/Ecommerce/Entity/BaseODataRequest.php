@@ -14,7 +14,7 @@ class BaseODataRequest
     public string $lastKey;
     public int $lastEntryNo;
 
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->batchSize = (int)($data['batchSize'] ?? 0);
         $this->fullRepl = (bool)($data['fullRepl'] ?? false);

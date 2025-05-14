@@ -28,6 +28,7 @@ class ItemVariant extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
@@ -37,6 +38,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::CODE, $value);
     }
+
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
@@ -46,6 +48,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::ITEM_NO, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -55,6 +58,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getDescription2(): ?string
     {
         return $this->getData(self::DESCRIPTION_2);
@@ -64,6 +68,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::DESCRIPTION_2, $value);
     }
+
     public function getItemId(): ?string
     {
         return $this->getData(self::ITEM_ID);
@@ -73,6 +78,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::ITEM_ID, $value);
     }
+
     public function getBlocked(): ?bool
     {
         return $this->getData(self::BLOCKED);
@@ -82,6 +88,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::BLOCKED, $value);
     }
+
     public function getSalesBlocked(): ?bool
     {
         return $this->getData(self::SALES_BLOCKED);
@@ -91,6 +98,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::SALES_BLOCKED, $value);
     }
+
     public function getPurchasingBlocked(): ?bool
     {
         return $this->getData(self::PURCHASING_BLOCKED);
@@ -100,6 +108,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::PURCHASING_BLOCKED, $value);
     }
+
     public function getServiceBlocked(): ?bool
     {
         return $this->getData(self::SERVICE_BLOCKED);
@@ -109,6 +118,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::SERVICE_BLOCKED, $value);
     }
+
     public function getProductionBlocked(): ?string
     {
         return $this->getData(self::PRODUCTION_BLOCKED);
@@ -118,6 +128,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::PRODUCTION_BLOCKED, $value);
     }
+
     public function getLSCCommonItemNo(): ?string
     {
         return $this->getData(self::L_S_C_COMMON_ITEM_NO);
@@ -127,6 +138,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::L_S_C_COMMON_ITEM_NO, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -136,6 +148,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -145,6 +158,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -154,6 +168,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -163,6 +178,7 @@ class ItemVariant extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

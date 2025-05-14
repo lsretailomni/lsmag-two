@@ -108,6 +108,7 @@ class Vendor extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
@@ -117,6 +118,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::NO, $value);
     }
+
     public function getName(): ?string
     {
         return $this->getData(self::NAME);
@@ -126,6 +128,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::NAME, $value);
     }
+
     public function getSearchName(): ?string
     {
         return $this->getData(self::SEARCH_NAME);
@@ -135,6 +138,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
+
     public function getName2(): ?string
     {
         return $this->getData(self::NAME_2);
@@ -144,6 +148,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::NAME_2, $value);
     }
+
     public function getAddress(): ?string
     {
         return $this->getData(self::ADDRESS);
@@ -153,6 +158,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::ADDRESS, $value);
     }
+
     public function getAddress2(): ?string
     {
         return $this->getData(self::ADDRESS_2);
@@ -162,6 +168,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
+
     public function getCity(): ?string
     {
         return $this->getData(self::CITY);
@@ -171,6 +178,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::CITY, $value);
     }
+
     public function getContact(): ?string
     {
         return $this->getData(self::CONTACT);
@@ -180,6 +188,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::CONTACT, $value);
     }
+
     public function getPhoneNo(): ?string
     {
         return $this->getData(self::PHONE_NO);
@@ -189,6 +198,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PHONE_NO, $value);
     }
+
     public function getTelexNo(): ?string
     {
         return $this->getData(self::TELEX_NO);
@@ -198,6 +208,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::TELEX_NO, $value);
     }
+
     public function getOurAccountNo(): ?string
     {
         return $this->getData(self::OUR_ACCOUNT_NO);
@@ -207,6 +218,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::OUR_ACCOUNT_NO, $value);
     }
+
     public function getTerritoryCode(): ?string
     {
         return $this->getData(self::TERRITORY_CODE);
@@ -216,6 +228,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
+
     public function getGlobalDimension1Code(): ?string
     {
         return $this->getData(self::GLOBAL_DIMENSION_1_CODE);
@@ -225,6 +238,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::GLOBAL_DIMENSION_1_CODE, $value);
     }
+
     public function getGlobalDimension2Code(): ?string
     {
         return $this->getData(self::GLOBAL_DIMENSION_2_CODE);
@@ -234,6 +248,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::GLOBAL_DIMENSION_2_CODE, $value);
     }
+
     public function getBudgetedAmount(): ?string
     {
         return $this->getData(self::BUDGETED_AMOUNT);
@@ -243,6 +258,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
+
     public function getVendorPostingGroup(): ?string
     {
         return $this->getData(self::VENDOR_POSTING_GROUP);
@@ -252,6 +268,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::VENDOR_POSTING_GROUP, $value);
     }
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -261,6 +278,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getLanguageCode(): ?string
     {
         return $this->getData(self::LANGUAGE_CODE);
@@ -270,6 +288,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
+
     public function getRegistrationNumber(): ?string
     {
         return $this->getData(self::REGISTRATION_NUMBER);
@@ -279,6 +298,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::REGISTRATION_NUMBER, $value);
     }
+
     public function getStatisticsGroup(): ?int
     {
         return $this->getData(self::STATISTICS_GROUP);
@@ -288,6 +308,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::STATISTICS_GROUP, $value);
     }
+
     public function getPaymentTermsCode(): ?string
     {
         return $this->getData(self::PAYMENT_TERMS_CODE);
@@ -297,6 +318,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PAYMENT_TERMS_CODE, $value);
     }
+
     public function getFinChargeTermsCode(): ?string
     {
         return $this->getData(self::FIN_CHARGE_TERMS_CODE);
@@ -306,6 +328,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::FIN_CHARGE_TERMS_CODE, $value);
     }
+
     public function getPurchaserCode(): ?string
     {
         return $this->getData(self::PURCHASER_CODE);
@@ -315,6 +338,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PURCHASER_CODE, $value);
     }
+
     public function getShipmentMethodCode(): ?string
     {
         return $this->getData(self::SHIPMENT_METHOD_CODE);
@@ -324,6 +348,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SHIPMENT_METHOD_CODE, $value);
     }
+
     public function getShippingAgentCode(): ?string
     {
         return $this->getData(self::SHIPPING_AGENT_CODE);
@@ -333,6 +358,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SHIPPING_AGENT_CODE, $value);
     }
+
     public function getInvoiceDiscCode(): ?string
     {
         return $this->getData(self::INVOICE_DISC_CODE);
@@ -342,6 +368,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::INVOICE_DISC_CODE, $value);
     }
+
     public function getCountryRegionCode(): ?string
     {
         return $this->getData(self::COUNTRY_REGION_CODE);
@@ -351,6 +378,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::COUNTRY_REGION_CODE, $value);
     }
+
     public function getBlocked(): ?string
     {
         return $this->getData(self::BLOCKED);
@@ -360,6 +388,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::BLOCKED, $value);
     }
+
     public function getPayToVendorNo(): ?string
     {
         return $this->getData(self::PAYTO_VENDOR_NO);
@@ -369,6 +398,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PAYTO_VENDOR_NO, $value);
     }
+
     public function getPriority(): ?int
     {
         return $this->getData(self::PRIORITY);
@@ -378,6 +408,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PRIORITY, $value);
     }
+
     public function getPaymentMethodCode(): ?string
     {
         return $this->getData(self::PAYMENT_METHOD_CODE);
@@ -387,6 +418,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PAYMENT_METHOD_CODE, $value);
     }
+
     public function getFormatRegion(): ?string
     {
         return $this->getData(self::FORMAT_REGION);
@@ -396,6 +428,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::FORMAT_REGION, $value);
     }
+
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -405,6 +438,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
+
     public function getLastDateModified(): ?string
     {
         return $this->getData(self::LAST_DATE_MODIFIED);
@@ -414,6 +448,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
+
     public function getApplicationMethod(): ?string
     {
         return $this->getData(self::APPLICATION_METHOD);
@@ -423,6 +458,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::APPLICATION_METHOD, $value);
     }
+
     public function getPricesIncludingVAT(): ?bool
     {
         return $this->getData(self::PRICES_INCLUDING_V_A_T);
@@ -432,6 +468,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PRICES_INCLUDING_V_A_T, $value);
     }
+
     public function getFaxNo(): ?string
     {
         return $this->getData(self::FAX_NO);
@@ -441,6 +478,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::FAX_NO, $value);
     }
+
     public function getTelexAnswerBack(): ?string
     {
         return $this->getData(self::TELEX_ANSWER_BACK);
@@ -450,6 +488,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::TELEX_ANSWER_BACK, $value);
     }
+
     public function getVATRegistrationNo(): ?string
     {
         return $this->getData(self::V_A_T_REGISTRATION_NO);
@@ -459,6 +498,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::V_A_T_REGISTRATION_NO, $value);
     }
+
     public function getGenBusPostingGroup(): ?string
     {
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
@@ -468,6 +508,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::GEN_BUS_POSTING_GROUP, $value);
     }
+
     public function getGLN(): ?string
     {
         return $this->getData(self::G_L_N);
@@ -477,6 +518,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::G_L_N, $value);
     }
+
     public function getPostCode(): ?string
     {
         return $this->getData(self::POST_CODE);
@@ -486,6 +528,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::POST_CODE, $value);
     }
+
     public function getCounty(): ?string
     {
         return $this->getData(self::COUNTY);
@@ -495,6 +538,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::COUNTY, $value);
     }
+
     public function getEORINumber(): ?string
     {
         return $this->getData(self::E_O_R_I_NUMBER);
@@ -504,6 +548,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::E_O_R_I_NUMBER, $value);
     }
+
     public function getEMail(): ?string
     {
         return $this->getData(self::E_MAIL);
@@ -513,6 +558,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::E_MAIL, $value);
     }
+
     public function getHomePage(): ?string
     {
         return $this->getData(self::HOME_PAGE);
@@ -522,6 +568,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
+
     public function getNoSeries(): ?string
     {
         return $this->getData(self::NO_SERIES);
@@ -531,6 +578,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::NO_SERIES, $value);
     }
+
     public function getTaxAreaCode(): ?string
     {
         return $this->getData(self::TAX_AREA_CODE);
@@ -540,6 +588,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::TAX_AREA_CODE, $value);
     }
+
     public function getTaxLiable(): ?bool
     {
         return $this->getData(self::TAX_LIABLE);
@@ -549,6 +598,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::TAX_LIABLE, $value);
     }
+
     public function getVATBusPostingGroup(): ?string
     {
         return $this->getData(self::V_A_T_BUS_POSTING_GROUP);
@@ -558,6 +608,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::V_A_T_BUS_POSTING_GROUP, $value);
     }
+
     public function getBlockPaymentTolerance(): ?bool
     {
         return $this->getData(self::BLOCK_PAYMENT_TOLERANCE);
@@ -567,6 +618,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::BLOCK_PAYMENT_TOLERANCE, $value);
     }
+
     public function getICPartnerCode(): ?string
     {
         return $this->getData(self::I_C_PARTNER_CODE);
@@ -576,6 +628,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::I_C_PARTNER_CODE, $value);
     }
+
     public function getPrepayment(): ?string
     {
         return $this->getData(self::PREPAYMENT);
@@ -585,6 +638,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PREPAYMENT, $value);
     }
+
     public function getPartnerType(): ?string
     {
         return $this->getData(self::PARTNER_TYPE);
@@ -594,6 +648,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PARTNER_TYPE, $value);
     }
+
     public function getIntrastatPartnerType(): ?string
     {
         return $this->getData(self::INTRASTAT_PARTNER_TYPE);
@@ -603,6 +658,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
     }
+
     public function getExcludeFromPmtPractices(): ?bool
     {
         return $this->getData(self::EXCLUDE_FROM_PMT_PRACTICES);
@@ -612,6 +668,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::EXCLUDE_FROM_PMT_PRACTICES, $value);
     }
+
     public function getCompanySizeCode(): ?string
     {
         return $this->getData(self::COMPANY_SIZE_CODE);
@@ -621,6 +678,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::COMPANY_SIZE_CODE, $value);
     }
+
     public function getImage(): ?string
     {
         return $this->getData(self::IMAGE);
@@ -630,6 +688,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::IMAGE, $value);
     }
+
     public function getPrivacyBlocked(): ?bool
     {
         return $this->getData(self::PRIVACY_BLOCKED);
@@ -639,6 +698,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
+
     public function getDisableSearchByName(): ?bool
     {
         return $this->getData(self::DISABLE_SEARCH_BY_NAME);
@@ -648,6 +708,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::DISABLE_SEARCH_BY_NAME, $value);
     }
+
     public function getCreditorNo(): ?string
     {
         return $this->getData(self::CREDITOR_NO);
@@ -657,6 +718,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::CREDITOR_NO, $value);
     }
+
     public function getAllowMultiplePostingGroups(): ?bool
     {
         return $this->getData(self::ALLOW_MULTIPLE_POSTING_GROUPS);
@@ -666,6 +728,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::ALLOW_MULTIPLE_POSTING_GROUPS, $value);
     }
+
     public function getPreferredBankAccountCode(): ?string
     {
         return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
@@ -675,6 +738,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PREFERRED_BANK_ACCOUNT_CODE, $value);
     }
+
     public function getCashFlowPaymentTermsCode(): ?string
     {
         return $this->getData(self::CASH_FLOW_PAYMENT_TERMS_CODE);
@@ -684,6 +748,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
     }
+
     public function getDefaultTransType(): ?string
     {
         return $this->getData(self::DEFAULT_TRANS_TYPE);
@@ -693,6 +758,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
     }
+
     public function getDefaultTransTypeReturn(): ?string
     {
         return $this->getData(self::DEFAULT_TRANS_TYPE__RETURN);
@@ -702,6 +768,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE__RETURN, $value);
     }
+
     public function getDefTransportMethod(): ?string
     {
         return $this->getData(self::DEF_TRANSPORT_METHOD);
@@ -711,6 +778,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
     }
+
     public function getPrimaryContactNo(): ?string
     {
         return $this->getData(self::PRIMARY_CONTACT_NO);
@@ -720,6 +788,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PRIMARY_CONTACT_NO, $value);
     }
+
     public function getMobilePhoneNo(): ?string
     {
         return $this->getData(self::MOBILE_PHONE_NO);
@@ -729,6 +798,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
+
     public function getResponsibilityCenter(): ?string
     {
         return $this->getData(self::RESPONSIBILITY_CENTER);
@@ -738,6 +808,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::RESPONSIBILITY_CENTER, $value);
     }
+
     public function getLocationCode(): ?string
     {
         return $this->getData(self::LOCATION_CODE);
@@ -747,6 +818,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
+
     public function getLeadTimeCalculation(): ?string
     {
         return $this->getData(self::LEAD_TIME_CALCULATION);
@@ -756,6 +828,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::LEAD_TIME_CALCULATION, $value);
     }
+
     public function getReceiveEDocumentTo(): ?string
     {
         return $this->getData(self::RECEIVE_E_DOCUMENT_TO);
@@ -765,6 +838,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::RECEIVE_E_DOCUMENT_TO, $value);
     }
+
     public function getSustCertNo(): ?string
     {
         return $this->getData(self::SUST_CERT_NO);
@@ -774,6 +848,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SUST_CERT_NO, $value);
     }
+
     public function getSustCertName(): ?string
     {
         return $this->getData(self::SUST_CERT_NAME);
@@ -783,6 +858,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SUST_CERT_NAME, $value);
     }
+
     public function getPriceCalculationMethod(): ?string
     {
         return $this->getData(self::PRICE_CALCULATION_METHOD);
@@ -792,6 +868,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
     }
+
     public function getBaseCalendarCode(): ?string
     {
         return $this->getData(self::BASE_CALENDAR_CODE);
@@ -801,6 +878,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::BASE_CALENDAR_CODE, $value);
     }
+
     public function getDocumentSendingProfile(): ?string
     {
         return $this->getData(self::DOCUMENT_SENDING_PROFILE);
@@ -810,6 +888,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::DOCUMENT_SENDING_PROFILE, $value);
     }
+
     public function getValidateEUVatRegNo(): ?bool
     {
         return $this->getData(self::VALIDATE_E_U_VAT_REG_NO);
@@ -819,6 +898,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::VALIDATE_E_U_VAT_REG_NO, $value);
     }
+
     public function getCurrencyId(): ?string
     {
         return $this->getData(self::CURRENCY_ID);
@@ -828,6 +908,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::CURRENCY_ID, $value);
     }
+
     public function getPaymentTermsId(): ?string
     {
         return $this->getData(self::PAYMENT_TERMS_ID);
@@ -837,6 +918,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PAYMENT_TERMS_ID, $value);
     }
+
     public function getPaymentMethodId(): ?string
     {
         return $this->getData(self::PAYMENT_METHOD_ID);
@@ -846,6 +928,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::PAYMENT_METHOD_ID, $value);
     }
+
     public function getOverReceiptCode(): ?string
     {
         return $this->getData(self::OVER_RECEIPT_CODE);
@@ -855,6 +938,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::OVER_RECEIPT_CODE, $value);
     }
+
     public function getLSCRTCFilterField(): ?string
     {
         return $this->getData(self::L_S_C_R_T_C_FILTER_FIELD);
@@ -864,6 +948,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_R_T_C_FILTER_FIELD, $value);
     }
+
     public function getLSCEnableForRelCalendar(): ?bool
     {
         return $this->getData(self::L_S_C_ENABLE_FOR_REL_CALENDAR);
@@ -873,6 +958,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_ENABLE_FOR_REL_CALENDAR, $value);
     }
+
     public function getLSCReleaseCalendarGroup(): ?string
     {
         return $this->getData(self::L_S_C_RELEASE_CALENDAR_GROUP);
@@ -882,6 +968,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_RELEASE_CALENDAR_GROUP, $value);
     }
+
     public function getLSCBuyerGroupCode(): ?string
     {
         return $this->getData(self::L_S_C_BUYER_GROUP_CODE);
@@ -891,6 +978,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_BUYER_GROUP_CODE, $value);
     }
+
     public function getLSCBuyerID(): ?string
     {
         return $this->getData(self::L_S_C_BUYER_I_D);
@@ -900,6 +988,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_BUYER_I_D, $value);
     }
+
     public function getLSCASNTrustProfile(): ?string
     {
         return $this->getData(self::L_S_C_A_S_N_TRUST_PROFILE);
@@ -909,6 +998,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_A_S_N_TRUST_PROFILE, $value);
     }
+
     public function getLSCTrustLevel(): ?string
     {
         return $this->getData(self::L_S_C_TRUST_LEVEL);
@@ -918,6 +1008,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_TRUST_LEVEL, $value);
     }
+
     public function getLSCValidateTrackingCode(): ?bool
     {
         return $this->getData(self::L_S_C_VALIDATE_TRACKING_CODE);
@@ -927,6 +1018,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::L_S_C_VALIDATE_TRACKING_CODE, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -936,6 +1028,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -945,6 +1038,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -954,6 +1048,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -963,6 +1058,7 @@ class Vendor extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

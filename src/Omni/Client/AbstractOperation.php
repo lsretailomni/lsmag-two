@@ -13,6 +13,7 @@ use \Ls\Omni\Service\ServiceType;
 use \Ls\Replication\Logger\FlatReplicationLogger;
 use \Ls\Replication\Logger\OmniLogger;
 use Magento\Framework\App\ObjectManager;
+use Magento\Framework\DataObject;
 use Magento\Framework\Session\SessionManagerInterface;
 use Psr\Log\LoggerInterface;
 use SoapFault;
@@ -120,7 +121,7 @@ abstract class AbstractOperation implements OperationInterface
         //@codingStandardsIgnoreEnd
         $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
         try {
-            $isDataObject = $request_input instanceof \Magento\Framework\DataObject;
+            $isDataObject = $request_input instanceof DataObject;
             $response = $client->{$operation_name}(
                 $isDataObject ?
                     $request_input->getData() :
@@ -165,7 +166,13 @@ abstract class AbstractOperation implements OperationInterface
     }
     // @codingStandardsIgnoreEnd
 
-    private function convertSoapResponseToDataObject($response): \Magento\Framework\DataObject
+    /**
+     * Convert soap object to data object
+     *
+     * @param $response
+     * @return DataObject
+     */
+    private function convertSoapResponseToDataObject($response): DataObject
     {
         $data = [];
 
@@ -179,10 +186,18 @@ abstract class AbstractOperation implements OperationInterface
                 $data[$key] = $value;
             }
         }
+        $className = get_class($response);
+        $obj = new $className();
 
-        return new \Magento\Framework\DataObject($data);
+        return $obj->addData($data);
     }
 
+    /**
+     * Convert soap response array
+     *
+     * @param array $array
+     * @return array
+     */
     private function convertSoapResponseArray(array $array): array
     {
         $result = [];

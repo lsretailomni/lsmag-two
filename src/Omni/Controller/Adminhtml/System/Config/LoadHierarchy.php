@@ -5,7 +5,6 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetHierarchy;
 use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
@@ -66,7 +65,12 @@ class LoadHierarchy extends Action
                 ['companyName' => $companyName],
                 $scopeId
             )) {
-                $hierarchyRequest = new ODataRequest_GetHierarchy(
+                $hierarchyOperation = new HierarchyView(
+                    $baseUrl,
+                    $connectionParams,
+                    $companyName,
+                );
+                $hierarchyOperation->setOperationInput(
                     [
                         'storeNo' => $storeId,
                         'batchSize' => 100,
@@ -75,12 +79,7 @@ class LoadHierarchy extends Action
                         'lastEntryNo' => 0
                     ]
                 );
-                $hierarchyOperation = new HierarchyView(
-                    $baseUrl,
-                    $connectionParams,
-                    $companyName,
-                );
-                $hierarchies = $hierarchyOperation->execute($hierarchyRequest)->getRecords();
+                $hierarchies = $hierarchyOperation->execute()->getRecords();
             }
 
             if (!empty($hierarchies)) {

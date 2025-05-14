@@ -21,6 +21,7 @@ class LSCDataTranslation extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getTranslationID(): ?string
     {
         return $this->getData(self::TRANSLATION_I_D);
@@ -30,6 +31,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::TRANSLATION_I_D, $value);
     }
+
     public function getKey(): ?string
     {
         return $this->getData(self::KEY);
@@ -39,6 +41,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::KEY, $value);
     }
+
     public function getLanguageCode(): ?string
     {
         return $this->getData(self::LANGUAGE_CODE);
@@ -48,6 +51,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
+
     public function getTranslation(): ?string
     {
         return $this->getData(self::TRANSLATION);
@@ -57,6 +61,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::TRANSLATION, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -66,6 +71,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -75,6 +81,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -84,6 +91,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -93,6 +101,7 @@ class LSCDataTranslation extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);

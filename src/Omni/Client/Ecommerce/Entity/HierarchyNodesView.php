@@ -20,6 +20,7 @@ class HierarchyNodesView extends DataObject
     public const PRESENTATION_ORDER = 'Presentation Order';
     public const RETAIL_IMAGE_I_D = 'Retail Image ID';
 
+
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
@@ -29,6 +30,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
+
     public function getNodeID(): ?string
     {
         return $this->getData(self::NODE_I_D);
@@ -38,6 +40,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::NODE_I_D, $value);
     }
+
     public function getParentNodeID(): ?string
     {
         return $this->getData(self::PARENT_NODE_I_D);
@@ -47,6 +50,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::PARENT_NODE_I_D, $value);
     }
+
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
@@ -56,6 +60,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
+
     public function getChildrenOrder(): ?int
     {
         return $this->getData(self::CHILDREN_ORDER);
@@ -65,6 +70,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::CHILDREN_ORDER, $value);
     }
+
     public function getIndentation(): ?int
     {
         return $this->getData(self::INDENTATION);
@@ -74,6 +80,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::INDENTATION, $value);
     }
+
     public function getPresentationOrder(): ?int
     {
         return $this->getData(self::PRESENTATION_ORDER);
@@ -83,6 +90,7 @@ class HierarchyNodesView extends DataObject
     {
         return $this->setData(self::PRESENTATION_ORDER, $value);
     }
+
     public function getRetailImageID(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_I_D);

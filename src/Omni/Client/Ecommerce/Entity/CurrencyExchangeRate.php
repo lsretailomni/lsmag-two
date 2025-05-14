@@ -27,6 +27,7 @@ class CurrencyExchangeRate extends DataObject
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
 
+
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
@@ -36,6 +37,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
+
     public function getStartingDate(): ?string
     {
         return $this->getData(self::STARTING_DATE);
@@ -45,6 +47,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
+
     public function getExchangeRateAmount(): ?string
     {
         return $this->getData(self::EXCHANGE_RATE_AMOUNT);
@@ -54,6 +57,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::EXCHANGE_RATE_AMOUNT, $value);
     }
+
     public function getAdjustmentExchRateAmount(): ?string
     {
         return $this->getData(self::ADJUSTMENT_EXCH_RATE_AMOUNT);
@@ -63,6 +67,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::ADJUSTMENT_EXCH_RATE_AMOUNT, $value);
     }
+
     public function getRelationalCurrencyCode(): ?string
     {
         return $this->getData(self::RELATIONAL_CURRENCY_CODE);
@@ -72,6 +77,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::RELATIONAL_CURRENCY_CODE, $value);
     }
+
     public function getRelationalExchRateAmount(): ?string
     {
         return $this->getData(self::RELATIONAL_EXCH_RATE_AMOUNT);
@@ -81,6 +87,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::RELATIONAL_EXCH_RATE_AMOUNT, $value);
     }
+
     public function getFixExchangeRateAmount(): ?string
     {
         return $this->getData(self::FIX_EXCHANGE_RATE_AMOUNT);
@@ -90,6 +97,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::FIX_EXCHANGE_RATE_AMOUNT, $value);
     }
+
     public function getRelationalAdjmtExchRateAmt(): ?string
     {
         return $this->getData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT);
@@ -99,6 +107,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT, $value);
     }
+
     public function getLSCPOSExchangeRateAmount(): ?string
     {
         return $this->getData(self::L_S_C_P_O_S_EXCHANGE_RATE_AMOUNT);
@@ -108,6 +117,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_EXCHANGE_RATE_AMOUNT, $value);
     }
+
     public function getLSCPOSRelExchRateAmount(): ?string
     {
         return $this->getData(self::L_S_C_P_O_S_REL_EXCH_RATE_AMOUNT);
@@ -117,6 +127,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::L_S_C_P_O_S_REL_EXCH_RATE_AMOUNT, $value);
     }
+
     public function getSystemId(): ?string
     {
         return $this->getData(self::SYSTEM_ID);
@@ -126,6 +137,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::SYSTEM_ID, $value);
     }
+
     public function getSystemCreatedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_CREATED_AT);
@@ -135,6 +147,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_AT, $value);
     }
+
     public function getSystemCreatedBy(): ?string
     {
         return $this->getData(self::SYSTEM_CREATED_BY);
@@ -144,6 +157,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::SYSTEM_CREATED_BY, $value);
     }
+
     public function getSystemModifiedAt(): ?\DateTime
     {
         return $this->getData(self::SYSTEM_MODIFIED_AT);
@@ -153,6 +167,7 @@ class CurrencyExchangeRate extends DataObject
     {
         return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
     }
+
     public function getSystemModifiedBy(): ?string
     {
         return $this->getData(self::SYSTEM_MODIFIED_BY);
