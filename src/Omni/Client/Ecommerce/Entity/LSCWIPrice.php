@@ -11,53 +11,33 @@ use Magento\Framework\DataObject;
 
 class LSCWIPrice extends DataObject
 {
-    public const STORE_NO = 'Store No.';
-    public const ITEM_NO = 'Item No.';
-    public const VARIANT_CODE = 'Variant Code';
-    public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
-    public const LOYALTY_SCHEME_CODE = 'Loyalty Scheme Code';
     public const CURRENCY_CODE = 'Currency Code';
-    public const NET_UNIT_PRICE = 'Net Unit Price';
-    public const UNIT_PRICE = 'Unit Price';
-    public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
-    public const OFFER_NO = 'Offer No.';
+    public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
+    public const ITEM_NO = 'Item No.';
     public const LAST_MODIFY_DATE = 'Last Modify Date';
+    public const LOYALTY_SCHEME_CODE = 'Loyalty Scheme Code';
+    public const NET_UNIT_PRICE = 'Net Unit Price';
+    public const OFFER_NO = 'Offer No.';
     public const QTY_PER_UNIT_OF_MEASURE = 'Qty. per Unit of Measure';
-    public const SYSTEM_ID = '$systemId';
+    public const STORE_NO = 'Store No.';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
+    public const UNIT_PRICE = 'Unit Price';
+    public const VARIANT_CODE = 'Variant Code';
+    public const SYSTEM_ID = '$systemId';
 
 
-    public function getStoreNo(): ?string
+    public function getCurrencyCode(): ?string
     {
-        return $this->getData(self::STORE_NO);
+        return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setStoreNo(string $value): self
+    public function setCurrencyCode(string $value): self
     {
-        return $this->setData(self::STORE_NO, $value);
-    }
-
-    public function getItemNo(): ?string
-    {
-        return $this->getData(self::ITEM_NO);
-    }
-
-    public function setItemNo(string $value): self
-    {
-        return $this->setData(self::ITEM_NO, $value);
-    }
-
-    public function getVariantCode(): ?string
-    {
-        return $this->getData(self::VARIANT_CODE);
-    }
-
-    public function setVariantCode(string $value): self
-    {
-        return $this->setData(self::VARIANT_CODE, $value);
+        return $this->setData(self::CURRENCY_CODE, $value);
     }
 
     public function getCustomerDiscGroup(): ?string
@@ -70,64 +50,14 @@ class LSCWIPrice extends DataObject
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
 
-    public function getLoyaltySchemeCode(): ?string
+    public function getItemNo(): ?string
     {
-        return $this->getData(self::LOYALTY_SCHEME_CODE);
+        return $this->getData(self::ITEM_NO);
     }
 
-    public function setLoyaltySchemeCode(string $value): self
+    public function setItemNo(string $value): self
     {
-        return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
-    }
-
-    public function getCurrencyCode(): ?string
-    {
-        return $this->getData(self::CURRENCY_CODE);
-    }
-
-    public function setCurrencyCode(string $value): self
-    {
-        return $this->setData(self::CURRENCY_CODE, $value);
-    }
-
-    public function getNetUnitPrice(): ?string
-    {
-        return $this->getData(self::NET_UNIT_PRICE);
-    }
-
-    public function setNetUnitPrice(string $value): self
-    {
-        return $this->setData(self::NET_UNIT_PRICE, $value);
-    }
-
-    public function getUnitPrice(): ?string
-    {
-        return $this->getData(self::UNIT_PRICE);
-    }
-
-    public function setUnitPrice(string $value): self
-    {
-        return $this->setData(self::UNIT_PRICE, $value);
-    }
-
-    public function getUnitOfMeasureCode(): ?string
-    {
-        return $this->getData(self::UNIT_OF_MEASURE_CODE);
-    }
-
-    public function setUnitOfMeasureCode(string $value): self
-    {
-        return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
-    }
-
-    public function getOfferNo(): ?string
-    {
-        return $this->getData(self::OFFER_NO);
-    }
-
-    public function setOfferNo(string $value): self
-    {
-        return $this->setData(self::OFFER_NO, $value);
+        return $this->setData(self::ITEM_NO, $value);
     }
 
     public function getLastModifyDate(): ?string
@@ -140,6 +70,36 @@ class LSCWIPrice extends DataObject
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
 
+    public function getLoyaltySchemeCode(): ?string
+    {
+        return $this->getData(self::LOYALTY_SCHEME_CODE);
+    }
+
+    public function setLoyaltySchemeCode(string $value): self
+    {
+        return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
+    }
+
+    public function getNetUnitPrice(): ?string
+    {
+        return $this->getData(self::NET_UNIT_PRICE);
+    }
+
+    public function setNetUnitPrice(string $value): self
+    {
+        return $this->setData(self::NET_UNIT_PRICE, $value);
+    }
+
+    public function getOfferNo(): ?string
+    {
+        return $this->getData(self::OFFER_NO);
+    }
+
+    public function setOfferNo(string $value): self
+    {
+        return $this->setData(self::OFFER_NO, $value);
+    }
+
     public function getQtyPerUnitOfMeasure(): ?string
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
@@ -150,14 +110,14 @@ class LSCWIPrice extends DataObject
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getStoreNo(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::STORE_NO);
     }
 
-    public function setSystemId(string $value): self
+    public function setStoreNo(string $value): self
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::STORE_NO, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -198,5 +158,45 @@ class LSCWIPrice extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getUnitOfMeasureCode(): ?string
+    {
+        return $this->getData(self::UNIT_OF_MEASURE_CODE);
+    }
+
+    public function setUnitOfMeasureCode(string $value): self
+    {
+        return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
+    }
+
+    public function getUnitPrice(): ?string
+    {
+        return $this->getData(self::UNIT_PRICE);
+    }
+
+    public function setUnitPrice(string $value): self
+    {
+        return $this->setData(self::UNIT_PRICE, $value);
+    }
+
+    public function getVariantCode(): ?string
+    {
+        return $this->getData(self::VARIANT_CODE);
+    }
+
+    public function setVariantCode(string $value): self
+    {
+        return $this->setData(self::VARIANT_CODE, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }

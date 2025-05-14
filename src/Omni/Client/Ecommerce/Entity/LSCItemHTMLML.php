@@ -11,36 +11,16 @@ use Magento\Framework\DataObject;
 
 class LSCItemHTMLML extends DataObject
 {
-    public const ITEM_NO = 'Item No.';
-    public const U_R_L = 'URL';
     public const HTML = 'Html';
+    public const ITEM_NO = 'Item No.';
     public const LANGUAGE = 'Language';
-    public const SYSTEM_ID = '$systemId';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const U_R_L = 'URL';
+    public const SYSTEM_ID = '$systemId';
 
-
-    public function getItemNo(): ?string
-    {
-        return $this->getData(self::ITEM_NO);
-    }
-
-    public function setItemNo(string $value): self
-    {
-        return $this->setData(self::ITEM_NO, $value);
-    }
-
-    public function getURL(): ?string
-    {
-        return $this->getData(self::U_R_L);
-    }
-
-    public function setURL(string $value): self
-    {
-        return $this->setData(self::U_R_L, $value);
-    }
 
     public function getHtml(): ?string
     {
@@ -52,6 +32,16 @@ class LSCItemHTMLML extends DataObject
         return $this->setData(self::HTML, $value);
     }
 
+    public function getItemNo(): ?string
+    {
+        return $this->getData(self::ITEM_NO);
+    }
+
+    public function setItemNo(string $value): self
+    {
+        return $this->setData(self::ITEM_NO, $value);
+    }
+
     public function getLanguage(): ?string
     {
         return $this->getData(self::LANGUAGE);
@@ -60,16 +50,6 @@ class LSCItemHTMLML extends DataObject
     public function setLanguage(string $value): self
     {
         return $this->setData(self::LANGUAGE, $value);
-    }
-
-    public function getSystemId(): ?string
-    {
-        return $this->getData(self::SYSTEM_ID);
-    }
-
-    public function setSystemId(string $value): self
-    {
-        return $this->setData(self::SYSTEM_ID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -110,5 +90,25 @@ class LSCItemHTMLML extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getURL(): ?string
+    {
+        return $this->getData(self::U_R_L);
+    }
+
+    public function setURL(string $value): self
+    {
+        return $this->setData(self::U_R_L, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }

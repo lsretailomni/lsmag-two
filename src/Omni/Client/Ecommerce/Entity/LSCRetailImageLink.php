@@ -11,39 +11,19 @@ use Magento\Framework\DataObject;
 
 class LSCRetailImageLink extends DataObject
 {
-    public const RECORD_ID = 'Record Id';
-    public const IMAGE_ID = 'Image Id';
     public const DISPLAY_ORDER = 'Display Order';
-    public const TABLE_NAME = 'TableName';
+    public const IMAGE_DESCRIPTION = 'Image Description';
+    public const IMAGE_ID = 'Image Id';
     public const KEY_VALUE = 'KeyValue';
     public const LINK_TYPE = 'Link Type';
-    public const IMAGE_DESCRIPTION = 'Image Description';
-    public const SYSTEM_ID = '$systemId';
+    public const RECORD_ID = 'Record Id';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const TABLE_NAME = 'TableName';
+    public const SYSTEM_ID = '$systemId';
 
-
-    public function getRecordId(): ?string
-    {
-        return $this->getData(self::RECORD_ID);
-    }
-
-    public function setRecordId(string $value): self
-    {
-        return $this->setData(self::RECORD_ID, $value);
-    }
-
-    public function getImageId(): ?string
-    {
-        return $this->getData(self::IMAGE_ID);
-    }
-
-    public function setImageId(string $value): self
-    {
-        return $this->setData(self::IMAGE_ID, $value);
-    }
 
     public function getDisplayOrder(): ?int
     {
@@ -55,14 +35,24 @@ class LSCRetailImageLink extends DataObject
         return $this->setData(self::DISPLAY_ORDER, $value);
     }
 
-    public function getTableName(): ?string
+    public function getImageDescription(): ?string
     {
-        return $this->getData(self::TABLE_NAME);
+        return $this->getData(self::IMAGE_DESCRIPTION);
     }
 
-    public function setTableName(string $value): self
+    public function setImageDescription(string $value): self
     {
-        return $this->setData(self::TABLE_NAME, $value);
+        return $this->setData(self::IMAGE_DESCRIPTION, $value);
+    }
+
+    public function getImageId(): ?string
+    {
+        return $this->getData(self::IMAGE_ID);
+    }
+
+    public function setImageId(string $value): self
+    {
+        return $this->setData(self::IMAGE_ID, $value);
     }
 
     public function getKeyValue(): ?string
@@ -85,24 +75,14 @@ class LSCRetailImageLink extends DataObject
         return $this->setData(self::LINK_TYPE, $value);
     }
 
-    public function getImageDescription(): ?string
+    public function getRecordId(): ?string
     {
-        return $this->getData(self::IMAGE_DESCRIPTION);
+        return $this->getData(self::RECORD_ID);
     }
 
-    public function setImageDescription(string $value): self
+    public function setRecordId(string $value): self
     {
-        return $this->setData(self::IMAGE_DESCRIPTION, $value);
-    }
-
-    public function getSystemId(): ?string
-    {
-        return $this->getData(self::SYSTEM_ID);
-    }
-
-    public function setSystemId(string $value): self
-    {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::RECORD_ID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -143,5 +123,25 @@ class LSCRetailImageLink extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getTableName(): ?string
+    {
+        return $this->getData(self::TABLE_NAME);
+    }
+
+    public function setTableName(string $value): self
+    {
+        return $this->setData(self::TABLE_NAME, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }

@@ -3,8 +3,8 @@
 namespace Ls\Omni\Code;
 
 use GuzzleHttp\Exception\GuzzleException;
-use Ls\Core\Code\AbstractGenerator;
-use Ls\Omni\Helper\Data;
+use \Ls\Core\Code\AbstractGenerator;
+use \Ls\Omni\Helper\Data;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -12,9 +12,24 @@ use Symfony\Component\Filesystem\Filesystem;
 class OdataGenerator
 {
     /**
+     * @var array
+     */
+    public array $replication = [];
+
+    /**
+     * @var array
+     */
+    public array $nonReplication = [];
+
+    /**
+     * @var array
+     */
+    public array $entities = [];
+
+    /**
      * @var array[]
      */
-    public $allowedNonReplActions = [
+    public array $allowedNonReplActions = [
         'GetStores_GetStores' => [
           'request' => [
               'storeGetType' => '1',
@@ -104,8 +119,6 @@ class OdataGenerator
      * @return void
      * @throws GuzzleException
      * @throws NoSuchEntityException
-     *
-     * phpcs:disable Generic.Metrics.NestingLevel.TooHigh
      */
     public function generate(
         string $entityDir,
@@ -116,100 +129,43 @@ class OdataGenerator
         $storeCode          = $omniDataHelper->lsr->getActiveWebStore();
         $baseNamespace      = AbstractGenerator::fqn('Ls', 'Omni', 'Client', 'Ecommerce', 'Entity');
         $operationNamespace = AbstractGenerator::fqn('Ls', 'Omni', 'Client', 'Ecommerce', 'Operation');
-        $odataMetaData      = $omniDataHelper->fetchOdataV4Xml();
         $this->generateBaseRequestContent($entityDir, $baseNamespace, $output);
         $this->generateBaseResponseContent($entityDir, $baseNamespace, $output);
-        $actions = $odataMetaData->query('//edm:Action');
+        $this->segregateWebservices($omniDataHelper);
+        $nonReplicationServices = $this->getNonReplicationServices();
+        $replicationServices = $this->getReplicationServices();
 
-        foreach ($actions as $action) {
-            $requestClassName = $action->getAttribute('Name');
-            $params           = $odataMetaData->query('edm:Parameter', $action);
+        foreach ($replicationServices as $replication) {
+            $hasStoreNo = $replication['hasStoreNo'] ?? null;
+            $requestClassName = $replication['requestClassName'] ?? null;
 
-            $hasFullRepl = $hasStoreNo = false;
-            foreach ($params as $param) {
-                $paramName = $param->getAttribute('Name');
-
-                if ($paramName === 'fullRepl') {
-                    $hasFullRepl = true;
-                }
-
-                if ($paramName === 'storeNo') {
-                    $hasStoreNo = true;
-                }
-            }
-
-            if ($hasFullRepl) {
+            if ($hasStoreNo !== null && $requestClassName) {
                 $this->generateRequestContent($entityDir, $baseNamespace, $output, $requestClassName, $hasStoreNo);
-
-                $payload = [
-                    'batchSize' => 1,
-                    'fullRepl' => true,
-                    'lastKey' => '',
-                    'lastEntryNo' => 0
-                ];
-
-                if ($hasStoreNo) {
-                    $payload['storeNo'] = $storeCode;
-                }
-                $data = $omniDataHelper->fetchGivenOdata(
+                list($recRef, $recordFields) = $this->fetchGivenReplicationWebserviceFieldsAndRecords(
+                    $omniDataHelper,
                     $requestClassName,
-                    '',
-                    [],
-                    [],
-                    $payload
+                    $hasStoreNo,
+                    $storeCode
                 );
 
-                // Extract fields from the first TableDataUpd section
-                if (isset($data['TableData']['TableDataUpd']['RecRefJson'])) {
-                    $recRef = $data['TableData']['TableDataUpd']['RecRefJson'];
-                } elseif (isset($data['DataSet']['DataSetUpd']['DynDataSet'])) {
-                    $recRef = $data['DataSet']['DataSetUpd']['DynDataSet'];
-                } else {
-                    $recRef = [];
-                }
+                $this->generateGivenReplicationWebserviceEntityOperationResponseCode(
+                    $baseNamespace,
+                    $operationNamespace,
+                    $entityDir,
+                    $operationDir,
+                    $requestClassName,
+                    $output,
+                    $recRef,
+                    $recordFields
+                );
+            }
+        }
 
-                if (isset($recRef['RecordFields'])) {
-                    $recordFields = $recRef['RecordFields'];
-                } elseif (isset($recRef['DataSetFields'])) {
-                    $recordFields = $recRef['DataSetFields'];
-                } else {
-                    $recordFields = [];
-                }
+        foreach ($nonReplicationServices as $nonReplication) {
+            $requestClassName = $nonReplication['requestClassName'] ?? null;
+            $params = $nonReplication['params'] ?? null;
 
-                if (!empty($recRef) && !empty($recordFields)) {
-                    if (isset($recRef['TableName'])) {
-                        $name = $recRef['TableName'];
-                    } elseif (isset($recRef['DataSetName'])) {
-                        $name = $recRef['DataSetName'];
-                    }
-                    $entityClassName = str_replace(' ', '', $name);
-                    $this->generateEntityContent(
-                        $entityDir,
-                        $baseNamespace,
-                        $output,
-                        $entityClassName,
-                        $recordFields
-                    );
-                    $responseClassName = $entityClassName . 'Response';
-                    $this->generateResponseContent(
-                        $entityDir,
-                        $baseNamespace,
-                        $output,
-                        $entityClassName,
-                        $responseClassName
-                    );
-
-                    $this->generateOperationContent(
-                        $operationDir,
-                        $baseNamespace,
-                        $output,
-                        $entityClassName,
-                        $requestClassName,
-                        $responseClassName,
-                        $operationNamespace
-                    );
-                }
-            } else {
+            if ($requestClassName && $params !== null) {
                 if (isset($this->allowedNonReplActions[$requestClassName])) {
                     $action = $requestClassName;
                     $requestClassName .= 'Request';
@@ -233,89 +189,219 @@ class OdataGenerator
                         $this->allowedNonReplActions[$action]['response']['indexName'];
 
                     $recordFields = $this->findDataSetFieldsRecursive($data, $dataSetName);
-                    if ($dataSetName == "") {
-                        $dataSetNames = $dataSetName = [];
-                        foreach ($recordFields as $recordField) {
-                            if (isset($recordField['DataSetName'])) {
-                                $entityClassName = $this->formatGivenValue(str_replace(
-                                    ' ',
-                                    '',
-                                    $recordField['DataSetName']
-                                ));
-                                $dataSetNames[] = [
-                                    'FieldName' => $entityClassName,
-                                    'FieldDataType' => $recordField['isAnArray'] ? 'array' : $entityClassName
-                                ];
-                                $dataSetName[] = $entityClassName;
-                                $this->generateEntityContent(
-                                    $entityDir,
-                                    $baseNamespace,
-                                    $output,
-                                    $entityClassName,
-                                    $recordField['DataSetFields']
-                                );
-                            }
-                        }
-                        $entityClassName = $action;
-                        $this->generateEntityContent(
-                            $entityDir,
+                    if ($dataSetName == "" && !empty($recordFields)) {
+                        $this->generateGivenNonReplicationWebserviceEntityOperationResponseCode(
                             $baseNamespace,
-                            $output,
-                            $entityClassName,
-                            $dataSetNames,
-                            true
-                        );
-
-                        $responseClassName = $entityClassName . 'Response';
-                        $this->generateCustomResponse(
-                            $entityDir,
-                            $baseNamespace,
-                            $output,
-                            $entityClassName,
-                            $responseClassName,
-                        );
-                        $this->generateCustomOperation(
-                            $operationDir,
-                            $baseNamespace,
-                            $output,
-                            $entityClassName,
-                            $requestClassName,
-                            $responseClassName,
                             $operationNamespace,
-                            implode(',', $dataSetName)
+                            $entityDir,
+                            $operationDir,
+                            $requestClassName,
+                            $output,
+                            $recordFields,
+                            $action
                         );
                     } else {
                         if (!empty($recordFields)) {
-                            $entityClassName = str_replace(' ', '', $dataSetName);
-                            $this->generateEntityContent(
-                                $entityDir,
+                            $this->generateGivenNonReplicationWebserviceEntityOperationResponseCodeGivenDataSetName(
                                 $baseNamespace,
-                                $output,
-                                $entityClassName,
-                                $recordFields
-                            );
-                            $responseClassName = $entityClassName . 'Response';
-                            $this->generateCustomResponse(
-                                $entityDir,
-                                $baseNamespace,
-                                $output,
-                                $entityClassName,
-                                $responseClassName,
-                            );
-                            $this->generateCustomOperation(
-                                $operationDir,
-                                $baseNamespace,
-                                $output,
-                                $entityClassName,
-                                $requestClassName,
-                                $responseClassName,
                                 $operationNamespace,
-                                implode(',', [$dataSetName])
+                                $entityDir,
+                                $operationDir,
+                                $requestClassName,
+                                $output,
+                                $recordFields,
+                                $dataSetName
                             );
                         }
                     }
                 }
             }
+        }
+
+        foreach ($this->entities as $entityClassName => $entity) {
+            $this->generateEntityContent(
+                $entityDir,
+                $baseNamespace,
+                $output,
+                $entityClassName,
+                $entity['RecordFields'],
+                $entity['recursive']
+            );
+        }
+    }
+
+    /**
+     * Generate code for given non-replication webservice entity, operation and response code
+     *
+     * When dataset name is not defined
+     *
+     * @param string $baseNamespace
+     * @param string $operationNamespace
+     * @param string $entityDir
+     * @param string $operationDir
+     * @param string $requestClassName
+     * @param OutputInterface $output
+     * @param array $recordFields
+     * @param string $action
+     * @return void
+     */
+    public function generateGivenNonReplicationWebserviceEntityOperationResponseCode(
+        string $baseNamespace,
+        string $operationNamespace,
+        string $entityDir,
+        string $operationDir,
+        string $requestClassName,
+        OutputInterface $output,
+        array $recordFields,
+        string $action
+    ) {
+        $dataSetNames = $dataSetName = [];
+        foreach ($recordFields as $recordField) {
+            if (isset($recordField['DataSetName'])) {
+                $entityClassName = $this->formatGivenValue(str_replace(
+                    ' ',
+                    '',
+                    $recordField['DataSetName']
+                ));
+                $dataSetNames[] = [
+                    'FieldName' => $entityClassName,
+                    'FieldDataType' => $recordField['isAnArray'] ? 'array' : $entityClassName
+                ];
+                $dataSetName[] = $entityClassName;
+                $this->registerEntity(
+                    $entityClassName,
+                    $recordField['DataSetFields']
+                );
+            }
+        }
+        $entityClassName = $action;
+        $this->registerEntity(
+            $entityClassName,
+            $dataSetNames,
+            true
+        );
+        $responseClassName = $entityClassName . 'Response';
+        $this->generateCustomResponse(
+            $entityDir,
+            $baseNamespace,
+            $output,
+            $entityClassName,
+            $responseClassName,
+        );
+        $this->generateCustomOperation(
+            $operationDir,
+            $baseNamespace,
+            $output,
+            $entityClassName,
+            $requestClassName,
+            $responseClassName,
+            $operationNamespace,
+            implode(',', $dataSetName)
+        );
+    }
+
+    /**
+     * Generate code for given non-replication webservice entity, operation and response code
+     *
+     * When dataset name is defined
+     *
+     * @param string $baseNamespace
+     * @param string $operationNamespace
+     * @param string $entityDir
+     * @param string $operationDir
+     * @param string $requestClassName
+     * @param OutputInterface $output
+     * @param array $recordFields
+     * @param string $dataSetName
+     * @return void
+     */
+    public function generateGivenNonReplicationWebserviceEntityOperationResponseCodeGivenDataSetName(
+        string $baseNamespace,
+        string $operationNamespace,
+        string $entityDir,
+        string $operationDir,
+        string $requestClassName,
+        OutputInterface $output,
+        array $recordFields,
+        string $dataSetName
+    ) {
+        $entityClassName = str_replace(' ', '', $dataSetName);
+        $this->registerEntity(
+            $entityClassName,
+            $recordFields
+        );
+        $responseClassName = $entityClassName . 'Response';
+        $this->generateCustomResponse(
+            $entityDir,
+            $baseNamespace,
+            $output,
+            $entityClassName,
+            $responseClassName,
+        );
+        $this->generateCustomOperation(
+            $operationDir,
+            $baseNamespace,
+            $output,
+            $entityClassName,
+            $requestClassName,
+            $responseClassName,
+            $operationNamespace,
+            implode(',', [$dataSetName])
+        );
+    }
+
+    /**
+     * Generate given replication webservice entity, operation and response classes code
+     *
+     * @param string $baseNamespace
+     * @param string $operationNamespace
+     * @param string $entityDir
+     * @param string $operationDir
+     * @param string $requestClassName
+     * @param OutputInterface $output
+     * @param array $recRef
+     * @param array $recordFields
+     * @return void
+     */
+    public function generateGivenReplicationWebserviceEntityOperationResponseCode(
+        string $baseNamespace,
+        string $operationNamespace,
+        string $entityDir,
+        string $operationDir,
+        string $requestClassName,
+        OutputInterface $output,
+        array $recRef,
+        array $recordFields
+    ) {
+        if (!empty($recRef) && !empty($recordFields)) {
+            if (isset($recRef['TableName'])) {
+                $name = $recRef['TableName'];
+            } elseif (isset($recRef['DataSetName'])) {
+                $name = $recRef['DataSetName'];
+            }
+            $entityClassName = str_replace(' ', '', $name);
+            $this->registerEntity(
+                $entityClassName,
+                $recordFields,
+            );
+            $responseClassName = $entityClassName . 'Response';
+            $this->generateResponseContent(
+                $entityDir,
+                $baseNamespace,
+                $output,
+                $entityClassName,
+                $responseClassName
+            );
+
+            $this->generateOperationContent(
+                $operationDir,
+                $baseNamespace,
+                $output,
+                $entityClassName,
+                $requestClassName,
+                $responseClassName,
+                $operationNamespace
+            );
         }
     }
 
@@ -764,10 +850,10 @@ PHP;
      * @return void
      */
     public function generateCustomRequest(
-        string          $entityDir,
-        string          $baseNamespace,
+        string $entityDir,
+        string $baseNamespace,
         OutputInterface $output,
-        string          $requestClassName,
+        string $requestClassName,
         string $action,
         $params
     ) {
@@ -1094,6 +1180,105 @@ PHP;
     }
 
     /**
+     * Fetch fields and records
+     *
+     * @param Data $omniDataHelper
+     * @param string $requestClassName
+     * @param bool $hasStoreNo
+     * @param string $storeCode
+     * @return array
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
+     */
+    public function fetchGivenReplicationWebserviceFieldsAndRecords(
+        Data $omniDataHelper,
+        string $requestClassName,
+        bool $hasStoreNo,
+        string $storeCode
+    ) {
+        $payload = [
+            'batchSize' => 1,
+            'fullRepl' => true,
+            'lastKey' => '',
+            'lastEntryNo' => 0
+        ];
+
+        if ($hasStoreNo) {
+            $payload['storeNo'] = $storeCode;
+        }
+        $data = $omniDataHelper->fetchGivenOdata(
+            $requestClassName,
+            '',
+            [],
+            [],
+            $payload
+        );
+
+        // Extract fields from the first TableDataUpd section
+        if (isset($data['TableData']['TableDataUpd']['RecRefJson'])) {
+            $recRef = $data['TableData']['TableDataUpd']['RecRefJson'];
+        } elseif (isset($data['DataSet']['DataSetUpd']['DynDataSet'])) {
+            $recRef = $data['DataSet']['DataSetUpd']['DynDataSet'];
+        } else {
+            $recRef = [];
+        }
+
+        if (isset($recRef['RecordFields'])) {
+            $recordFields = $recRef['RecordFields'];
+        } elseif (isset($recRef['DataSetFields'])) {
+            $recordFields = $recRef['DataSetFields'];
+        } else {
+            $recordFields = [];
+        }
+
+        return [$recRef, $recordFields];
+    }
+
+    /**
+     * Segregate webservices
+     *
+     * @param Data $omniDataHelper
+     * @return void
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
+     */
+    public function segregateWebservices(Data $omniDataHelper)
+    {
+        $odataMetaData = $omniDataHelper->fetchOdataV4Xml();
+        $actions = $odataMetaData->query('//edm:Action');
+
+        foreach ($actions as $action) {
+            $requestClassName = $action->getAttribute('Name');
+            $params           = $odataMetaData->query('edm:Parameter', $action);
+
+            $hasFullRepl = $hasStoreNo = false;
+            foreach ($params as $param) {
+                $paramName = $param->getAttribute('Name');
+
+                if ($paramName === 'fullRepl') {
+                    $hasFullRepl = true;
+                }
+
+                if ($paramName === 'storeNo') {
+                    $hasStoreNo = true;
+                }
+            }
+
+            $request = [
+                'hasStoreNo' => $hasStoreNo,
+                'requestClassName' => $requestClassName,
+                'params' => $params,
+            ];
+
+            if ($hasFullRepl) {
+                $this->replication[] = $request;
+            } else {
+                $this->nonReplication[] = $request;
+            }
+        }
+    }
+
+    /**
      * Get formatted value
      *
      * @param string $value
@@ -1191,5 +1376,84 @@ PHP;
         }
 
         return $result;
+    }
+
+    /**
+     * Register entities collection
+     *
+     * @param string $entityClassName
+     * @param array $recordFields
+     * @param bool $recursive
+     * @return void
+     */
+    public function registerEntity(
+        string $entityClassName,
+        array $recordFields,
+        bool $recursive = false
+    ) {
+        // Normalize fields by FieldName
+        $mergedFields = [];
+        foreach ($recordFields as $field) {
+            if (!isset($field['FieldName']) || !isset($field['FieldDataType'])) {
+                continue; // Skip if required keys are missing
+            }
+            $mergedFields[$field['FieldName']] = [
+                'FieldName' => $field['FieldName'],
+                'FieldDataType' => $field['FieldDataType']
+            ];
+        }
+
+        if (!isset($this->entities[$entityClassName])) {
+            $this->entities[$entityClassName] = [
+                'RecordFields' => array_values($mergedFields),
+                'recursive' => $recursive
+            ];
+        } else {
+            // Merge with existing fields
+            $existingFields = $this->entities[$entityClassName]['RecordFields'] ?? [];
+            foreach ($existingFields as $field) {
+                if (!isset($mergedFields[$field['FieldName']])) {
+                    $mergedFields[$field['FieldName']] = $field;
+                }
+            }
+            // Custom sort: alphabetic names first, non-alphabetic ones after
+            uksort($mergedFields, function ($a, $b) {
+                $aAlpha = ctype_alpha($a[0]);
+                $bAlpha = ctype_alpha($b[0]);
+
+                if ($aAlpha && !$bAlpha) {
+                    return -1;
+                } elseif (!$aAlpha && $bAlpha) {
+                    return 1;
+                } else {
+                    return strcasecmp($a, $b);
+                }
+            });
+
+            $this->entities[$entityClassName] = [
+                'RecordFields' => array_values($mergedFields),
+                'recursive' => $recursive
+            ];
+        }
+    }
+
+    /**
+     * Get replication services
+     *
+     * @return array
+     */
+    public function getReplicationServices()
+    {
+        return $this->replication;
+    }
+
+    /**
+     * Get non-replication webservices
+     *
+     * @return array
+     */
+    public function getNonReplicationServices()
+    {
+        return $this->nonReplication;
     }
 }

@@ -12,58 +12,58 @@ use Magento\Framework\DataObject;
 class LSCMemberContact extends DataObject
 {
     public const ACCOUNT_NO = 'Account No.';
-    public const CLUB_CODE = 'Club Code';
-    public const SCHEME_CODE = 'Scheme Code';
-    public const CONTACT_NO = 'Contact No.';
-    public const MAIN_CONTACT = 'Main Contact';
-    public const NAME = 'Name';
-    public const SEARCH_NAME = 'Search Name';
-    public const NAME_2 = 'Name 2';
     public const ADDRESS = 'Address';
     public const ADDRESS_2 = 'Address 2';
-    public const CITY = 'City';
-    public const HOUSE_APARTMENT_NO = 'House/Apartment No.';
-    public const POST_CODE = 'Post Code';
-    public const E_MAIL = 'E-Mail';
-    public const HOME_PAGE = 'Home Page';
-    public const PHONE_NO = 'Phone No.';
-    public const MOBILE_PHONE_NO = 'Mobile Phone No.';
-    public const TERRITORY_CODE = 'Territory Code';
-    public const COUNTY = 'County';
-    public const COUNTRY_REGION_CODE = 'Country/Region Code';
-    public const LANGUAGE_CODE = 'Language Code';
-    public const GENDER = 'Gender';
-    public const DATE_OF_BIRTH = 'Date of Birth';
     public const BIRTHDAY = 'Birthday';
-    public const CONTACT_GENDER = 'Contact Gender';
-    public const MARITAL_STATUS = 'Marital Status';
-    public const GUEST_TYPE = 'Guest Type';
-    public const EXPIRATION_PERIOD_TYPE = 'Expiration Period Type';
     public const BLOCKED = 'Blocked';
-    public const REASON_BLOCKED = 'Reason Blocked';
-    public const DATE_BLOCKED = 'Date Blocked';
     public const BLOCKED_BY = 'Blocked by';
-    public const CREATED_DATE = 'Created Date';
+    public const CITY = 'City';
+    public const CITY_SEARCH_INTERNAL = 'City Search Internal';
+    public const CLUB_CODE = 'Club Code';
+    public const CONTACT_GENDER = 'Contact Gender';
+    public const CONTACT_NO = 'Contact No.';
+    public const COUNTRY_REGION_CODE = 'Country/Region Code';
+    public const COUNTY = 'County';
     public const CREATED_BY = 'Created by';
-    public const PRIVACY_BLOCKED = 'Privacy Blocked';
-    public const NO_SERIES = 'No. Series';
+    public const CREATED_DATE = 'Created Date';
+    public const DATE_BLOCKED = 'Date Blocked';
+    public const DATE_OF_BIRTH = 'Date of Birth';
+    public const DEFAULT_TOKEN = 'Default Token';
+    public const E_MAIL = 'E-Mail';
+    public const EXPIRATION_PERIOD_TYPE = 'Expiration Period Type';
     public const EXTERNAL_I_D = 'External ID';
     public const EXTERNAL_SYSTEM = 'External System';
-    public const MEMBER_CARD_TEMPORARY = 'Member Card Temporary';
     public const FIRST_NAME = 'First Name';
+    public const GENDER = 'Gender';
+    public const GUEST_TYPE = 'Guest Type';
+    public const HOME_PAGE = 'Home Page';
+    public const HOUSE_APARTMENT_NO = 'House/Apartment No.';
+    public const LANGUAGE_CODE = 'Language Code';
+    public const MAIN_CONTACT = 'Main Contact';
+    public const MARITAL_STATUS = 'Marital Status';
+    public const MEMBER_CARD_TEMPORARY = 'Member Card Temporary';
     public const MIDDLE_NAME = 'Middle Name';
-    public const SURNAME = 'Surname';
-    public const SALUTATION_CODE = 'Salutation Code';
-    public const SEARCH_E_MAIL = 'Search E-Mail';
-    public const SEND_RECEIPT_BY_EMAIL = 'Send Receipt by E-mail';
-    public const CITY_SEARCH_INTERNAL = 'City Search Internal';
+    public const MOBILE_PHONE_NO = 'Mobile Phone No.';
+    public const NAME = 'Name';
+    public const NAME_2 = 'Name 2';
+    public const NO_SERIES = 'No. Series';
+    public const PHONE_NO = 'Phone No.';
+    public const POST_CODE = 'Post Code';
     public const POST_CODE_SEARCH_INTERNAL = 'Post Code Search Internal';
-    public const DEFAULT_TOKEN = 'Default Token';
-    public const SYSTEM_ID = '$systemId';
+    public const PRIVACY_BLOCKED = 'Privacy Blocked';
+    public const REASON_BLOCKED = 'Reason Blocked';
+    public const SALUTATION_CODE = 'Salutation Code';
+    public const SCHEME_CODE = 'Scheme Code';
+    public const SEARCH_E_MAIL = 'Search E-Mail';
+    public const SEARCH_NAME = 'Search Name';
+    public const SEND_RECEIPT_BY_EMAIL = 'Send Receipt by E-mail';
+    public const SURNAME = 'Surname';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const TERRITORY_CODE = 'Territory Code';
+    public const SYSTEM_ID = '$systemId';
 
 
     public function getAccountNo(): ?string
@@ -74,76 +74,6 @@ class LSCMemberContact extends DataObject
     public function setAccountNo(string $value): self
     {
         return $this->setData(self::ACCOUNT_NO, $value);
-    }
-
-    public function getClubCode(): ?string
-    {
-        return $this->getData(self::CLUB_CODE);
-    }
-
-    public function setClubCode(string $value): self
-    {
-        return $this->setData(self::CLUB_CODE, $value);
-    }
-
-    public function getSchemeCode(): ?string
-    {
-        return $this->getData(self::SCHEME_CODE);
-    }
-
-    public function setSchemeCode(string $value): self
-    {
-        return $this->setData(self::SCHEME_CODE, $value);
-    }
-
-    public function getContactNo(): ?string
-    {
-        return $this->getData(self::CONTACT_NO);
-    }
-
-    public function setContactNo(string $value): self
-    {
-        return $this->setData(self::CONTACT_NO, $value);
-    }
-
-    public function getMainContact(): ?bool
-    {
-        return $this->getData(self::MAIN_CONTACT);
-    }
-
-    public function setMainContact(bool $value): self
-    {
-        return $this->setData(self::MAIN_CONTACT, $value);
-    }
-
-    public function getName(): ?string
-    {
-        return $this->getData(self::NAME);
-    }
-
-    public function setName(string $value): self
-    {
-        return $this->setData(self::NAME, $value);
-    }
-
-    public function getSearchName(): ?string
-    {
-        return $this->getData(self::SEARCH_NAME);
-    }
-
-    public function setSearchName(string $value): self
-    {
-        return $this->setData(self::SEARCH_NAME, $value);
-    }
-
-    public function getName2(): ?string
-    {
-        return $this->getData(self::NAME_2);
-    }
-
-    public function setName2(string $value): self
-    {
-        return $this->setData(self::NAME_2, $value);
     }
 
     public function getAddress(): ?string
@@ -166,136 +96,6 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::ADDRESS_2, $value);
     }
 
-    public function getCity(): ?string
-    {
-        return $this->getData(self::CITY);
-    }
-
-    public function setCity(string $value): self
-    {
-        return $this->setData(self::CITY, $value);
-    }
-
-    public function getHouseApartmentNo(): ?string
-    {
-        return $this->getData(self::HOUSE_APARTMENT_NO);
-    }
-
-    public function setHouseApartmentNo(string $value): self
-    {
-        return $this->setData(self::HOUSE_APARTMENT_NO, $value);
-    }
-
-    public function getPostCode(): ?string
-    {
-        return $this->getData(self::POST_CODE);
-    }
-
-    public function setPostCode(string $value): self
-    {
-        return $this->setData(self::POST_CODE, $value);
-    }
-
-    public function getEMail(): ?string
-    {
-        return $this->getData(self::E_MAIL);
-    }
-
-    public function setEMail(string $value): self
-    {
-        return $this->setData(self::E_MAIL, $value);
-    }
-
-    public function getHomePage(): ?string
-    {
-        return $this->getData(self::HOME_PAGE);
-    }
-
-    public function setHomePage(string $value): self
-    {
-        return $this->setData(self::HOME_PAGE, $value);
-    }
-
-    public function getPhoneNo(): ?string
-    {
-        return $this->getData(self::PHONE_NO);
-    }
-
-    public function setPhoneNo(string $value): self
-    {
-        return $this->setData(self::PHONE_NO, $value);
-    }
-
-    public function getMobilePhoneNo(): ?string
-    {
-        return $this->getData(self::MOBILE_PHONE_NO);
-    }
-
-    public function setMobilePhoneNo(string $value): self
-    {
-        return $this->setData(self::MOBILE_PHONE_NO, $value);
-    }
-
-    public function getTerritoryCode(): ?string
-    {
-        return $this->getData(self::TERRITORY_CODE);
-    }
-
-    public function setTerritoryCode(string $value): self
-    {
-        return $this->setData(self::TERRITORY_CODE, $value);
-    }
-
-    public function getCounty(): ?string
-    {
-        return $this->getData(self::COUNTY);
-    }
-
-    public function setCounty(string $value): self
-    {
-        return $this->setData(self::COUNTY, $value);
-    }
-
-    public function getCountryRegionCode(): ?string
-    {
-        return $this->getData(self::COUNTRY_REGION_CODE);
-    }
-
-    public function setCountryRegionCode(string $value): self
-    {
-        return $this->setData(self::COUNTRY_REGION_CODE, $value);
-    }
-
-    public function getLanguageCode(): ?string
-    {
-        return $this->getData(self::LANGUAGE_CODE);
-    }
-
-    public function setLanguageCode(string $value): self
-    {
-        return $this->setData(self::LANGUAGE_CODE, $value);
-    }
-
-    public function getGender(): ?string
-    {
-        return $this->getData(self::GENDER);
-    }
-
-    public function setGender(string $value): self
-    {
-        return $this->setData(self::GENDER, $value);
-    }
-
-    public function getDateOfBirth(): ?string
-    {
-        return $this->getData(self::DATE_OF_BIRTH);
-    }
-
-    public function setDateOfBirth(string $value): self
-    {
-        return $this->setData(self::DATE_OF_BIRTH, $value);
-    }
-
     public function getBirthday(): ?string
     {
         return $this->getData(self::BIRTHDAY);
@@ -304,46 +104,6 @@ class LSCMemberContact extends DataObject
     public function setBirthday(string $value): self
     {
         return $this->setData(self::BIRTHDAY, $value);
-    }
-
-    public function getContactGender(): ?string
-    {
-        return $this->getData(self::CONTACT_GENDER);
-    }
-
-    public function setContactGender(string $value): self
-    {
-        return $this->setData(self::CONTACT_GENDER, $value);
-    }
-
-    public function getMaritalStatus(): ?string
-    {
-        return $this->getData(self::MARITAL_STATUS);
-    }
-
-    public function setMaritalStatus(string $value): self
-    {
-        return $this->setData(self::MARITAL_STATUS, $value);
-    }
-
-    public function getGuestType(): ?string
-    {
-        return $this->getData(self::GUEST_TYPE);
-    }
-
-    public function setGuestType(string $value): self
-    {
-        return $this->setData(self::GUEST_TYPE, $value);
-    }
-
-    public function getExpirationPeriodType(): ?string
-    {
-        return $this->getData(self::EXPIRATION_PERIOD_TYPE);
-    }
-
-    public function setExpirationPeriodType(string $value): self
-    {
-        return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
     }
 
     public function getBlocked(): ?bool
@@ -356,26 +116,6 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::BLOCKED, $value);
     }
 
-    public function getReasonBlocked(): ?string
-    {
-        return $this->getData(self::REASON_BLOCKED);
-    }
-
-    public function setReasonBlocked(string $value): self
-    {
-        return $this->setData(self::REASON_BLOCKED, $value);
-    }
-
-    public function getDateBlocked(): ?string
-    {
-        return $this->getData(self::DATE_BLOCKED);
-    }
-
-    public function setDateBlocked(string $value): self
-    {
-        return $this->setData(self::DATE_BLOCKED, $value);
-    }
-
     public function getBlockedBy(): ?string
     {
         return $this->getData(self::BLOCKED_BY);
@@ -386,14 +126,74 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::BLOCKED_BY, $value);
     }
 
-    public function getCreatedDate(): ?string
+    public function getCity(): ?string
     {
-        return $this->getData(self::CREATED_DATE);
+        return $this->getData(self::CITY);
     }
 
-    public function setCreatedDate(string $value): self
+    public function setCity(string $value): self
     {
-        return $this->setData(self::CREATED_DATE, $value);
+        return $this->setData(self::CITY, $value);
+    }
+
+    public function getCitySearchInternal(): ?string
+    {
+        return $this->getData(self::CITY_SEARCH_INTERNAL);
+    }
+
+    public function setCitySearchInternal(string $value): self
+    {
+        return $this->setData(self::CITY_SEARCH_INTERNAL, $value);
+    }
+
+    public function getClubCode(): ?string
+    {
+        return $this->getData(self::CLUB_CODE);
+    }
+
+    public function setClubCode(string $value): self
+    {
+        return $this->setData(self::CLUB_CODE, $value);
+    }
+
+    public function getContactGender(): ?string
+    {
+        return $this->getData(self::CONTACT_GENDER);
+    }
+
+    public function setContactGender(string $value): self
+    {
+        return $this->setData(self::CONTACT_GENDER, $value);
+    }
+
+    public function getContactNo(): ?string
+    {
+        return $this->getData(self::CONTACT_NO);
+    }
+
+    public function setContactNo(string $value): self
+    {
+        return $this->setData(self::CONTACT_NO, $value);
+    }
+
+    public function getCountryRegionCode(): ?string
+    {
+        return $this->getData(self::COUNTRY_REGION_CODE);
+    }
+
+    public function setCountryRegionCode(string $value): self
+    {
+        return $this->setData(self::COUNTRY_REGION_CODE, $value);
+    }
+
+    public function getCounty(): ?string
+    {
+        return $this->getData(self::COUNTY);
+    }
+
+    public function setCounty(string $value): self
+    {
+        return $this->setData(self::COUNTY, $value);
     }
 
     public function getCreatedBy(): ?string
@@ -406,24 +206,64 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::CREATED_BY, $value);
     }
 
-    public function getPrivacyBlocked(): ?bool
+    public function getCreatedDate(): ?string
     {
-        return $this->getData(self::PRIVACY_BLOCKED);
+        return $this->getData(self::CREATED_DATE);
     }
 
-    public function setPrivacyBlocked(bool $value): self
+    public function setCreatedDate(string $value): self
     {
-        return $this->setData(self::PRIVACY_BLOCKED, $value);
+        return $this->setData(self::CREATED_DATE, $value);
     }
 
-    public function getNoSeries(): ?string
+    public function getDateBlocked(): ?string
     {
-        return $this->getData(self::NO_SERIES);
+        return $this->getData(self::DATE_BLOCKED);
     }
 
-    public function setNoSeries(string $value): self
+    public function setDateBlocked(string $value): self
     {
-        return $this->setData(self::NO_SERIES, $value);
+        return $this->setData(self::DATE_BLOCKED, $value);
+    }
+
+    public function getDateOfBirth(): ?string
+    {
+        return $this->getData(self::DATE_OF_BIRTH);
+    }
+
+    public function setDateOfBirth(string $value): self
+    {
+        return $this->setData(self::DATE_OF_BIRTH, $value);
+    }
+
+    public function getDefaultToken(): ?int
+    {
+        return $this->getData(self::DEFAULT_TOKEN);
+    }
+
+    public function setDefaultToken(int $value): self
+    {
+        return $this->setData(self::DEFAULT_TOKEN, $value);
+    }
+
+    public function getEMail(): ?string
+    {
+        return $this->getData(self::E_MAIL);
+    }
+
+    public function setEMail(string $value): self
+    {
+        return $this->setData(self::E_MAIL, $value);
+    }
+
+    public function getExpirationPeriodType(): ?string
+    {
+        return $this->getData(self::EXPIRATION_PERIOD_TYPE);
+    }
+
+    public function setExpirationPeriodType(string $value): self
+    {
+        return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
     }
 
     public function getExternalID(): ?string
@@ -446,16 +286,6 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::EXTERNAL_SYSTEM, $value);
     }
 
-    public function getMemberCardTemporary(): ?string
-    {
-        return $this->getData(self::MEMBER_CARD_TEMPORARY);
-    }
-
-    public function setMemberCardTemporary(string $value): self
-    {
-        return $this->setData(self::MEMBER_CARD_TEMPORARY, $value);
-    }
-
     public function getFirstName(): ?string
     {
         return $this->getData(self::FIRST_NAME);
@@ -464,6 +294,86 @@ class LSCMemberContact extends DataObject
     public function setFirstName(string $value): self
     {
         return $this->setData(self::FIRST_NAME, $value);
+    }
+
+    public function getGender(): ?string
+    {
+        return $this->getData(self::GENDER);
+    }
+
+    public function setGender(string $value): self
+    {
+        return $this->setData(self::GENDER, $value);
+    }
+
+    public function getGuestType(): ?string
+    {
+        return $this->getData(self::GUEST_TYPE);
+    }
+
+    public function setGuestType(string $value): self
+    {
+        return $this->setData(self::GUEST_TYPE, $value);
+    }
+
+    public function getHomePage(): ?string
+    {
+        return $this->getData(self::HOME_PAGE);
+    }
+
+    public function setHomePage(string $value): self
+    {
+        return $this->setData(self::HOME_PAGE, $value);
+    }
+
+    public function getHouseApartmentNo(): ?string
+    {
+        return $this->getData(self::HOUSE_APARTMENT_NO);
+    }
+
+    public function setHouseApartmentNo(string $value): self
+    {
+        return $this->setData(self::HOUSE_APARTMENT_NO, $value);
+    }
+
+    public function getLanguageCode(): ?string
+    {
+        return $this->getData(self::LANGUAGE_CODE);
+    }
+
+    public function setLanguageCode(string $value): self
+    {
+        return $this->setData(self::LANGUAGE_CODE, $value);
+    }
+
+    public function getMainContact(): ?bool
+    {
+        return $this->getData(self::MAIN_CONTACT);
+    }
+
+    public function setMainContact(bool $value): self
+    {
+        return $this->setData(self::MAIN_CONTACT, $value);
+    }
+
+    public function getMaritalStatus(): ?string
+    {
+        return $this->getData(self::MARITAL_STATUS);
+    }
+
+    public function setMaritalStatus(string $value): self
+    {
+        return $this->setData(self::MARITAL_STATUS, $value);
+    }
+
+    public function getMemberCardTemporary(): ?string
+    {
+        return $this->getData(self::MEMBER_CARD_TEMPORARY);
+    }
+
+    public function setMemberCardTemporary(string $value): self
+    {
+        return $this->setData(self::MEMBER_CARD_TEMPORARY, $value);
     }
 
     public function getMiddleName(): ?string
@@ -476,54 +386,64 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::MIDDLE_NAME, $value);
     }
 
-    public function getSurname(): ?string
+    public function getMobilePhoneNo(): ?string
     {
-        return $this->getData(self::SURNAME);
+        return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setSurname(string $value): self
+    public function setMobilePhoneNo(string $value): self
     {
-        return $this->setData(self::SURNAME, $value);
+        return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
 
-    public function getSalutationCode(): ?string
+    public function getName(): ?string
     {
-        return $this->getData(self::SALUTATION_CODE);
+        return $this->getData(self::NAME);
     }
 
-    public function setSalutationCode(string $value): self
+    public function setName(string $value): self
     {
-        return $this->setData(self::SALUTATION_CODE, $value);
+        return $this->setData(self::NAME, $value);
     }
 
-    public function getSearchEMail(): ?string
+    public function getName2(): ?string
     {
-        return $this->getData(self::SEARCH_E_MAIL);
+        return $this->getData(self::NAME_2);
     }
 
-    public function setSearchEMail(string $value): self
+    public function setName2(string $value): self
     {
-        return $this->setData(self::SEARCH_E_MAIL, $value);
+        return $this->setData(self::NAME_2, $value);
     }
 
-    public function getSendReceiptByEMail(): ?string
+    public function getNoSeries(): ?string
     {
-        return $this->getData(self::SEND_RECEIPT_BY_EMAIL);
+        return $this->getData(self::NO_SERIES);
     }
 
-    public function setSendReceiptByEMail(string $value): self
+    public function setNoSeries(string $value): self
     {
-        return $this->setData(self::SEND_RECEIPT_BY_EMAIL, $value);
+        return $this->setData(self::NO_SERIES, $value);
     }
 
-    public function getCitySearchInternal(): ?string
+    public function getPhoneNo(): ?string
     {
-        return $this->getData(self::CITY_SEARCH_INTERNAL);
+        return $this->getData(self::PHONE_NO);
     }
 
-    public function setCitySearchInternal(string $value): self
+    public function setPhoneNo(string $value): self
     {
-        return $this->setData(self::CITY_SEARCH_INTERNAL, $value);
+        return $this->setData(self::PHONE_NO, $value);
+    }
+
+    public function getPostCode(): ?string
+    {
+        return $this->getData(self::POST_CODE);
+    }
+
+    public function setPostCode(string $value): self
+    {
+        return $this->setData(self::POST_CODE, $value);
     }
 
     public function getPostCodeSearchInternal(): ?string
@@ -536,24 +456,84 @@ class LSCMemberContact extends DataObject
         return $this->setData(self::POST_CODE_SEARCH_INTERNAL, $value);
     }
 
-    public function getDefaultToken(): ?int
+    public function getPrivacyBlocked(): ?bool
     {
-        return $this->getData(self::DEFAULT_TOKEN);
+        return $this->getData(self::PRIVACY_BLOCKED);
     }
 
-    public function setDefaultToken(int $value): self
+    public function setPrivacyBlocked(bool $value): self
     {
-        return $this->setData(self::DEFAULT_TOKEN, $value);
+        return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getReasonBlocked(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::REASON_BLOCKED);
     }
 
-    public function setSystemId(string $value): self
+    public function setReasonBlocked(string $value): self
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::REASON_BLOCKED, $value);
+    }
+
+    public function getSalutationCode(): ?string
+    {
+        return $this->getData(self::SALUTATION_CODE);
+    }
+
+    public function setSalutationCode(string $value): self
+    {
+        return $this->setData(self::SALUTATION_CODE, $value);
+    }
+
+    public function getSchemeCode(): ?string
+    {
+        return $this->getData(self::SCHEME_CODE);
+    }
+
+    public function setSchemeCode(string $value): self
+    {
+        return $this->setData(self::SCHEME_CODE, $value);
+    }
+
+    public function getSearchEMail(): ?string
+    {
+        return $this->getData(self::SEARCH_E_MAIL);
+    }
+
+    public function setSearchEMail(string $value): self
+    {
+        return $this->setData(self::SEARCH_E_MAIL, $value);
+    }
+
+    public function getSearchName(): ?string
+    {
+        return $this->getData(self::SEARCH_NAME);
+    }
+
+    public function setSearchName(string $value): self
+    {
+        return $this->setData(self::SEARCH_NAME, $value);
+    }
+
+    public function getSendReceiptByEMail(): ?string
+    {
+        return $this->getData(self::SEND_RECEIPT_BY_EMAIL);
+    }
+
+    public function setSendReceiptByEMail(string $value): self
+    {
+        return $this->setData(self::SEND_RECEIPT_BY_EMAIL, $value);
+    }
+
+    public function getSurname(): ?string
+    {
+        return $this->getData(self::SURNAME);
+    }
+
+    public function setSurname(string $value): self
+    {
+        return $this->setData(self::SURNAME, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -594,5 +574,25 @@ class LSCMemberContact extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getTerritoryCode(): ?string
+    {
+        return $this->getData(self::TERRITORY_CODE);
+    }
+
+    public function setTerritoryCode(string $value): self
+    {
+        return $this->setData(self::TERRITORY_CODE, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }

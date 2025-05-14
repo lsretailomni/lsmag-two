@@ -11,14 +11,34 @@ use Magento\Framework\DataObject;
 
 class LSCMemberSalesDocDiscLine extends DataObject
 {
+    public const DESCRIPTION = 'Description';
+    public const DISCOUNT_AMOUNT = 'Discount Amount';
     public const DOCUMENT_I_D = 'Document ID';
     public const DOCUMENT_LINE_NO = 'Document Line No.';
     public const LINE_NO = 'Line No.';
-    public const OFFER_TYPE = 'Offer Type';
     public const OFFER_NO = 'Offer No.';
-    public const DESCRIPTION = 'Description';
-    public const DISCOUNT_AMOUNT = 'Discount Amount';
+    public const OFFER_TYPE = 'Offer Type';
 
+
+    public function getDescription(): ?string
+    {
+        return $this->getData(self::DESCRIPTION);
+    }
+
+    public function setDescription(string $value): self
+    {
+        return $this->setData(self::DESCRIPTION, $value);
+    }
+
+    public function getDiscountAmount(): ?string
+    {
+        return $this->getData(self::DISCOUNT_AMOUNT);
+    }
+
+    public function setDiscountAmount(string $value): self
+    {
+        return $this->setData(self::DISCOUNT_AMOUNT, $value);
+    }
 
     public function getDocumentID(): ?string
     {
@@ -50,16 +70,6 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getOfferType(): ?string
-    {
-        return $this->getData(self::OFFER_TYPE);
-    }
-
-    public function setOfferType(string $value): self
-    {
-        return $this->setData(self::OFFER_TYPE, $value);
-    }
-
     public function getOfferNo(): ?string
     {
         return $this->getData(self::OFFER_NO);
@@ -70,23 +80,13 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->setData(self::OFFER_NO, $value);
     }
 
-    public function getDescription(): ?string
+    public function getOfferType(): ?string
     {
-        return $this->getData(self::DESCRIPTION);
+        return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setDescription(string $value): self
+    public function setOfferType(string $value): self
     {
-        return $this->setData(self::DESCRIPTION, $value);
-    }
-
-    public function getDiscountAmount(): ?string
-    {
-        return $this->getData(self::DISCOUNT_AMOUNT);
-    }
-
-    public function setDiscountAmount(string $value): self
-    {
-        return $this->setData(self::DISCOUNT_AMOUNT, $value);
+        return $this->setData(self::OFFER_TYPE, $value);
     }
 }

@@ -11,30 +11,50 @@ use Magento\Framework\DataObject;
 
 class LSCAttribute extends DataObject
 {
+    public const ATTRIBUTE_IS_DIN_AREA_SECTION = 'Attribute Is Din. Area Section';
+    public const ATTRIBUTE_TYPE_I_D = 'Attribute Type ID';
     public const CODE = 'Code';
+    public const DEFAULT_VALUE = 'Default Value';
     public const DESCRIPTION = 'Description';
     public const DESCRIPTION_CUSTOMER = 'Description (Customer)';
-    public const VALUE_TYPE = 'Value Type';
-    public const DEFAULT_VALUE = 'Default Value';
-    public const MIN_VALUE = 'Min. Value';
-    public const MAX_VALUE = 'Max. Value';
+    public const DIN_RESERV_SPECIAL_REQUEST = 'Din. Reserv. Special Request';
+    public const DISPLAY_ON_P_O_S = 'Display on POS';
     public const INSTANCES = 'Instances';
     public const LINKING = 'Linking';
-    public const VALUE_REQUIRED = 'Value Required';
-    public const OPTION_VALUE_TABLE_LINK = 'Option Value Table Link';
+    public const MAX_VALUE = 'Max. Value';
+    public const MIN_VALUE = 'Min. Value';
     public const OPTION_VALUE_FIELD_LINK = 'Option Value Field Link';
-    public const VALUE_FOR_RECIPE = 'Value for Recipe';
-    public const DISPLAY_ON_P_O_S = 'Display on POS';
-    public const ATTRIBUTE_TYPE_I_D = 'Attribute Type ID';
     public const OPTION_VALUE_FILTER = 'Option Value Filter';
-    public const ATTRIBUTE_IS_DIN_AREA_SECTION = 'Attribute Is Din. Area Section';
-    public const DIN_RESERV_SPECIAL_REQUEST = 'Din. Reserv. Special Request';
-    public const SYSTEM_ID = '$systemId';
+    public const OPTION_VALUE_TABLE_LINK = 'Option Value Table Link';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const VALUE_FOR_RECIPE = 'Value for Recipe';
+    public const VALUE_REQUIRED = 'Value Required';
+    public const VALUE_TYPE = 'Value Type';
+    public const SYSTEM_ID = '$systemId';
 
+
+    public function getAttributeIsDinAreaSection(): ?bool
+    {
+        return $this->getData(self::ATTRIBUTE_IS_DIN_AREA_SECTION);
+    }
+
+    public function setAttributeIsDinAreaSection(bool $value): self
+    {
+        return $this->setData(self::ATTRIBUTE_IS_DIN_AREA_SECTION, $value);
+    }
+
+    public function getAttributeTypeID(): ?string
+    {
+        return $this->getData(self::ATTRIBUTE_TYPE_I_D);
+    }
+
+    public function setAttributeTypeID(string $value): self
+    {
+        return $this->setData(self::ATTRIBUTE_TYPE_I_D, $value);
+    }
 
     public function getCode(): ?string
     {
@@ -44,6 +64,16 @@ class LSCAttribute extends DataObject
     public function setCode(string $value): self
     {
         return $this->setData(self::CODE, $value);
+    }
+
+    public function getDefaultValue(): ?string
+    {
+        return $this->getData(self::DEFAULT_VALUE);
+    }
+
+    public function setDefaultValue(string $value): self
+    {
+        return $this->setData(self::DEFAULT_VALUE, $value);
     }
 
     public function getDescription(): ?string
@@ -66,44 +96,24 @@ class LSCAttribute extends DataObject
         return $this->setData(self::DESCRIPTION_CUSTOMER, $value);
     }
 
-    public function getValueType(): ?string
+    public function getDinReservSpecialRequest(): ?bool
     {
-        return $this->getData(self::VALUE_TYPE);
+        return $this->getData(self::DIN_RESERV_SPECIAL_REQUEST);
     }
 
-    public function setValueType(string $value): self
+    public function setDinReservSpecialRequest(bool $value): self
     {
-        return $this->setData(self::VALUE_TYPE, $value);
+        return $this->setData(self::DIN_RESERV_SPECIAL_REQUEST, $value);
     }
 
-    public function getDefaultValue(): ?string
+    public function getDisplayOnPOS(): ?string
     {
-        return $this->getData(self::DEFAULT_VALUE);
+        return $this->getData(self::DISPLAY_ON_P_O_S);
     }
 
-    public function setDefaultValue(string $value): self
+    public function setDisplayOnPOS(string $value): self
     {
-        return $this->setData(self::DEFAULT_VALUE, $value);
-    }
-
-    public function getMinValue(): ?int
-    {
-        return $this->getData(self::MIN_VALUE);
-    }
-
-    public function setMinValue(int $value): self
-    {
-        return $this->setData(self::MIN_VALUE, $value);
-    }
-
-    public function getMaxValue(): ?int
-    {
-        return $this->getData(self::MAX_VALUE);
-    }
-
-    public function setMaxValue(int $value): self
-    {
-        return $this->setData(self::MAX_VALUE, $value);
+        return $this->setData(self::DISPLAY_ON_P_O_S, $value);
     }
 
     public function getInstances(): ?int
@@ -126,24 +136,24 @@ class LSCAttribute extends DataObject
         return $this->setData(self::LINKING, $value);
     }
 
-    public function getValueRequired(): ?string
+    public function getMaxValue(): ?int
     {
-        return $this->getData(self::VALUE_REQUIRED);
+        return $this->getData(self::MAX_VALUE);
     }
 
-    public function setValueRequired(string $value): self
+    public function setMaxValue(int $value): self
     {
-        return $this->setData(self::VALUE_REQUIRED, $value);
+        return $this->setData(self::MAX_VALUE, $value);
     }
 
-    public function getOptionValueTableLink(): ?int
+    public function getMinValue(): ?int
     {
-        return $this->getData(self::OPTION_VALUE_TABLE_LINK);
+        return $this->getData(self::MIN_VALUE);
     }
 
-    public function setOptionValueTableLink(int $value): self
+    public function setMinValue(int $value): self
     {
-        return $this->setData(self::OPTION_VALUE_TABLE_LINK, $value);
+        return $this->setData(self::MIN_VALUE, $value);
     }
 
     public function getOptionValueFieldLink(): ?int
@@ -156,36 +166,6 @@ class LSCAttribute extends DataObject
         return $this->setData(self::OPTION_VALUE_FIELD_LINK, $value);
     }
 
-    public function getValueForRecipe(): ?string
-    {
-        return $this->getData(self::VALUE_FOR_RECIPE);
-    }
-
-    public function setValueForRecipe(string $value): self
-    {
-        return $this->setData(self::VALUE_FOR_RECIPE, $value);
-    }
-
-    public function getDisplayOnPOS(): ?string
-    {
-        return $this->getData(self::DISPLAY_ON_P_O_S);
-    }
-
-    public function setDisplayOnPOS(string $value): self
-    {
-        return $this->setData(self::DISPLAY_ON_P_O_S, $value);
-    }
-
-    public function getAttributeTypeID(): ?string
-    {
-        return $this->getData(self::ATTRIBUTE_TYPE_I_D);
-    }
-
-    public function setAttributeTypeID(string $value): self
-    {
-        return $this->setData(self::ATTRIBUTE_TYPE_I_D, $value);
-    }
-
     public function getOptionValueFilter(): ?string
     {
         return $this->getData(self::OPTION_VALUE_FILTER);
@@ -196,34 +176,14 @@ class LSCAttribute extends DataObject
         return $this->setData(self::OPTION_VALUE_FILTER, $value);
     }
 
-    public function getAttributeIsDinAreaSection(): ?bool
+    public function getOptionValueTableLink(): ?int
     {
-        return $this->getData(self::ATTRIBUTE_IS_DIN_AREA_SECTION);
+        return $this->getData(self::OPTION_VALUE_TABLE_LINK);
     }
 
-    public function setAttributeIsDinAreaSection(bool $value): self
+    public function setOptionValueTableLink(int $value): self
     {
-        return $this->setData(self::ATTRIBUTE_IS_DIN_AREA_SECTION, $value);
-    }
-
-    public function getDinReservSpecialRequest(): ?bool
-    {
-        return $this->getData(self::DIN_RESERV_SPECIAL_REQUEST);
-    }
-
-    public function setDinReservSpecialRequest(bool $value): self
-    {
-        return $this->setData(self::DIN_RESERV_SPECIAL_REQUEST, $value);
-    }
-
-    public function getSystemId(): ?string
-    {
-        return $this->getData(self::SYSTEM_ID);
-    }
-
-    public function setSystemId(string $value): self
-    {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::OPTION_VALUE_TABLE_LINK, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -264,5 +224,45 @@ class LSCAttribute extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getValueForRecipe(): ?string
+    {
+        return $this->getData(self::VALUE_FOR_RECIPE);
+    }
+
+    public function setValueForRecipe(string $value): self
+    {
+        return $this->setData(self::VALUE_FOR_RECIPE, $value);
+    }
+
+    public function getValueRequired(): ?string
+    {
+        return $this->getData(self::VALUE_REQUIRED);
+    }
+
+    public function setValueRequired(string $value): self
+    {
+        return $this->setData(self::VALUE_REQUIRED, $value);
+    }
+
+    public function getValueType(): ?string
+    {
+        return $this->getData(self::VALUE_TYPE);
+    }
+
+    public function setValueType(string $value): self
+    {
+        return $this->setData(self::VALUE_TYPE, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }

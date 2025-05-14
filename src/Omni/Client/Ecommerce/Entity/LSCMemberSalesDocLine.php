@@ -11,85 +11,85 @@ use Magento\Framework\DataObject;
 
 class LSCMemberSalesDocLine extends DataObject
 {
-    public const DOCUMENT_I_D = 'Document ID';
-    public const LINE_NO = 'Line No.';
-    public const ENTRY_TYPE = 'Entry Type';
-    public const NUMBER = 'Number';
-    public const DESCRIPTION = 'Description';
-    public const CURRENCY_CODE = 'Currency Code';
-    public const CURRENCY_FACTOR = 'Currency Factor';
-    public const VARIANT_CODE = 'Variant Code';
-    public const VARIANT_DESCRIPTION = 'Variant Description';
-    public const UNIT_OF_MEASURE = 'Unit of Measure';
-    public const NET_PRICE = 'Net Price';
-    public const PRICE = 'Price';
-    public const QUANTITY = 'Quantity';
-    public const DISCOUNT = 'Discount %';
-    public const DISCOUNT_AMOUNT = 'Discount Amount';
-    public const NET_AMOUNT = 'Net Amount';
-    public const V_A_T_AMOUNT = 'VAT Amount';
     public const AMOUNT = 'Amount';
     public const AMOUNT_IN_CURRENCY = 'Amount in Currency';
-    public const PARENT_LINE = 'Parent Line';
-    public const CARD_TYPE = 'Card Type';
     public const CARD_OR_ACCOUNT = 'Card or Account';
-    public const STORE_NO = 'Store No.';
-    public const STORE_NAME = 'Store Name';
-    public const P_O_S_TERMINAL_NO = 'POS Terminal No.';
-    public const TRANSACTION_NO = 'Transaction No.';
-    public const EXTERNAL_I_D = 'External ID';
+    public const CARD_TYPE = 'Card Type';
     public const CLICK_AND_COLLECT_LINE = 'Click and Collect Line';
+    public const CURRENCY_CODE = 'Currency Code';
+    public const CURRENCY_FACTOR = 'Currency Factor';
+    public const DESCRIPTION = 'Description';
+    public const DISCOUNT = 'Discount %';
+    public const DISCOUNT_AMOUNT = 'Discount Amount';
+    public const DOCUMENT_I_D = 'Document ID';
+    public const ENTRY_TYPE = 'Entry Type';
+    public const EXTERNAL_I_D = 'External ID';
     public const IMAGE_ID = 'Image Id';
+    public const LINE_NO = 'Line No.';
+    public const NET_AMOUNT = 'Net Amount';
+    public const NET_PRICE = 'Net Price';
+    public const NUMBER = 'Number';
+    public const PARENT_LINE = 'Parent Line';
+    public const P_O_S_TERMINAL_NO = 'POS Terminal No.';
+    public const PRICE = 'Price';
+    public const QUANTITY = 'Quantity';
+    public const STORE_NAME = 'Store Name';
+    public const STORE_NO = 'Store No.';
+    public const TRANSACTION_NO = 'Transaction No.';
+    public const UNIT_OF_MEASURE = 'Unit of Measure';
+    public const VARIANT_CODE = 'Variant Code';
+    public const VARIANT_DESCRIPTION = 'Variant Description';
+    public const V_A_T_AMOUNT = 'VAT Amount';
 
 
-    public function getDocumentID(): ?string
+    public function getAmount(): ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::AMOUNT);
     }
 
-    public function setDocumentID(string $value): self
+    public function setAmount(string $value): self
     {
-        return $this->setData(self::DOCUMENT_I_D, $value);
+        return $this->setData(self::AMOUNT, $value);
     }
 
-    public function getLineNo(): ?int
+    public function getAmountInCurrency(): ?string
     {
-        return $this->getData(self::LINE_NO);
+        return $this->getData(self::AMOUNT_IN_CURRENCY);
     }
 
-    public function setLineNo(int $value): self
+    public function setAmountInCurrency(string $value): self
     {
-        return $this->setData(self::LINE_NO, $value);
+        return $this->setData(self::AMOUNT_IN_CURRENCY, $value);
     }
 
-    public function getEntryType(): ?string
+    public function getCardOrAccount(): ?string
     {
-        return $this->getData(self::ENTRY_TYPE);
+        return $this->getData(self::CARD_OR_ACCOUNT);
     }
 
-    public function setEntryType(string $value): self
+    public function setCardOrAccount(string $value): self
     {
-        return $this->setData(self::ENTRY_TYPE, $value);
+        return $this->setData(self::CARD_OR_ACCOUNT, $value);
     }
 
-    public function getNumber(): ?string
+    public function getCardType(): ?string
     {
-        return $this->getData(self::NUMBER);
+        return $this->getData(self::CARD_TYPE);
     }
 
-    public function setNumber(string $value): self
+    public function setCardType(string $value): self
     {
-        return $this->setData(self::NUMBER, $value);
+        return $this->setData(self::CARD_TYPE, $value);
     }
 
-    public function getDescription(): ?string
+    public function getClickAndCollectLine(): ?bool
     {
-        return $this->getData(self::DESCRIPTION);
+        return $this->getData(self::CLICK_AND_COLLECT_LINE);
     }
 
-    public function setDescription(string $value): self
+    public function setClickAndCollectLine(bool $value): self
     {
-        return $this->setData(self::DESCRIPTION, $value);
+        return $this->setData(self::CLICK_AND_COLLECT_LINE, $value);
     }
 
     public function getCurrencyCode(): ?string
@@ -112,64 +112,14 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->setData(self::CURRENCY_FACTOR, $value);
     }
 
-    public function getVariantCode(): ?string
+    public function getDescription(): ?string
     {
-        return $this->getData(self::VARIANT_CODE);
+        return $this->getData(self::DESCRIPTION);
     }
 
-    public function setVariantCode(string $value): self
+    public function setDescription(string $value): self
     {
-        return $this->setData(self::VARIANT_CODE, $value);
-    }
-
-    public function getVariantDescription(): ?string
-    {
-        return $this->getData(self::VARIANT_DESCRIPTION);
-    }
-
-    public function setVariantDescription(string $value): self
-    {
-        return $this->setData(self::VARIANT_DESCRIPTION, $value);
-    }
-
-    public function getUnitOfMeasure(): ?string
-    {
-        return $this->getData(self::UNIT_OF_MEASURE);
-    }
-
-    public function setUnitOfMeasure(string $value): self
-    {
-        return $this->setData(self::UNIT_OF_MEASURE, $value);
-    }
-
-    public function getNetPrice(): ?string
-    {
-        return $this->getData(self::NET_PRICE);
-    }
-
-    public function setNetPrice(string $value): self
-    {
-        return $this->setData(self::NET_PRICE, $value);
-    }
-
-    public function getPrice(): ?string
-    {
-        return $this->getData(self::PRICE);
-    }
-
-    public function setPrice(string $value): self
-    {
-        return $this->setData(self::PRICE, $value);
-    }
-
-    public function getQuantity(): ?string
-    {
-        return $this->getData(self::QUANTITY);
-    }
-
-    public function setQuantity(string $value): self
-    {
-        return $this->setData(self::QUANTITY, $value);
+        return $this->setData(self::DESCRIPTION, $value);
     }
 
     public function getDiscount(): ?string
@@ -192,114 +142,24 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
-    public function getNetAmount(): ?string
+    public function getDocumentID(): ?string
     {
-        return $this->getData(self::NET_AMOUNT);
+        return $this->getData(self::DOCUMENT_I_D);
     }
 
-    public function setNetAmount(string $value): self
+    public function setDocumentID(string $value): self
     {
-        return $this->setData(self::NET_AMOUNT, $value);
+        return $this->setData(self::DOCUMENT_I_D, $value);
     }
 
-    public function getVATAmount(): ?string
+    public function getEntryType(): ?string
     {
-        return $this->getData(self::V_A_T_AMOUNT);
+        return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setVATAmount(string $value): self
+    public function setEntryType(string $value): self
     {
-        return $this->setData(self::V_A_T_AMOUNT, $value);
-    }
-
-    public function getAmount(): ?string
-    {
-        return $this->getData(self::AMOUNT);
-    }
-
-    public function setAmount(string $value): self
-    {
-        return $this->setData(self::AMOUNT, $value);
-    }
-
-    public function getAmountInCurrency(): ?string
-    {
-        return $this->getData(self::AMOUNT_IN_CURRENCY);
-    }
-
-    public function setAmountInCurrency(string $value): self
-    {
-        return $this->setData(self::AMOUNT_IN_CURRENCY, $value);
-    }
-
-    public function getParentLine(): ?int
-    {
-        return $this->getData(self::PARENT_LINE);
-    }
-
-    public function setParentLine(int $value): self
-    {
-        return $this->setData(self::PARENT_LINE, $value);
-    }
-
-    public function getCardType(): ?string
-    {
-        return $this->getData(self::CARD_TYPE);
-    }
-
-    public function setCardType(string $value): self
-    {
-        return $this->setData(self::CARD_TYPE, $value);
-    }
-
-    public function getCardOrAccount(): ?string
-    {
-        return $this->getData(self::CARD_OR_ACCOUNT);
-    }
-
-    public function setCardOrAccount(string $value): self
-    {
-        return $this->setData(self::CARD_OR_ACCOUNT, $value);
-    }
-
-    public function getStoreNo(): ?string
-    {
-        return $this->getData(self::STORE_NO);
-    }
-
-    public function setStoreNo(string $value): self
-    {
-        return $this->setData(self::STORE_NO, $value);
-    }
-
-    public function getStoreName(): ?string
-    {
-        return $this->getData(self::STORE_NAME);
-    }
-
-    public function setStoreName(string $value): self
-    {
-        return $this->setData(self::STORE_NAME, $value);
-    }
-
-    public function getPOSTerminalNo(): ?string
-    {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
-    }
-
-    public function setPOSTerminalNo(string $value): self
-    {
-        return $this->setData(self::P_O_S_TERMINAL_NO, $value);
-    }
-
-    public function getTransactionNo(): ?int
-    {
-        return $this->getData(self::TRANSACTION_NO);
-    }
-
-    public function setTransactionNo(int $value): self
-    {
-        return $this->setData(self::TRANSACTION_NO, $value);
+        return $this->setData(self::ENTRY_TYPE, $value);
     }
 
     public function getExternalID(): ?string
@@ -312,16 +172,6 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->setData(self::EXTERNAL_I_D, $value);
     }
 
-    public function getClickAndCollectLine(): ?bool
-    {
-        return $this->getData(self::CLICK_AND_COLLECT_LINE);
-    }
-
-    public function setClickAndCollectLine(bool $value): self
-    {
-        return $this->setData(self::CLICK_AND_COLLECT_LINE, $value);
-    }
-
     public function getImageId(): ?string
     {
         return $this->getData(self::IMAGE_ID);
@@ -330,5 +180,155 @@ class LSCMemberSalesDocLine extends DataObject
     public function setImageId(string $value): self
     {
         return $this->setData(self::IMAGE_ID, $value);
+    }
+
+    public function getLineNo(): ?int
+    {
+        return $this->getData(self::LINE_NO);
+    }
+
+    public function setLineNo(int $value): self
+    {
+        return $this->setData(self::LINE_NO, $value);
+    }
+
+    public function getNetAmount(): ?string
+    {
+        return $this->getData(self::NET_AMOUNT);
+    }
+
+    public function setNetAmount(string $value): self
+    {
+        return $this->setData(self::NET_AMOUNT, $value);
+    }
+
+    public function getNetPrice(): ?string
+    {
+        return $this->getData(self::NET_PRICE);
+    }
+
+    public function setNetPrice(string $value): self
+    {
+        return $this->setData(self::NET_PRICE, $value);
+    }
+
+    public function getNumber(): ?string
+    {
+        return $this->getData(self::NUMBER);
+    }
+
+    public function setNumber(string $value): self
+    {
+        return $this->setData(self::NUMBER, $value);
+    }
+
+    public function getParentLine(): ?int
+    {
+        return $this->getData(self::PARENT_LINE);
+    }
+
+    public function setParentLine(int $value): self
+    {
+        return $this->setData(self::PARENT_LINE, $value);
+    }
+
+    public function getPOSTerminalNo(): ?string
+    {
+        return $this->getData(self::P_O_S_TERMINAL_NO);
+    }
+
+    public function setPOSTerminalNo(string $value): self
+    {
+        return $this->setData(self::P_O_S_TERMINAL_NO, $value);
+    }
+
+    public function getPrice(): ?string
+    {
+        return $this->getData(self::PRICE);
+    }
+
+    public function setPrice(string $value): self
+    {
+        return $this->setData(self::PRICE, $value);
+    }
+
+    public function getQuantity(): ?string
+    {
+        return $this->getData(self::QUANTITY);
+    }
+
+    public function setQuantity(string $value): self
+    {
+        return $this->setData(self::QUANTITY, $value);
+    }
+
+    public function getStoreName(): ?string
+    {
+        return $this->getData(self::STORE_NAME);
+    }
+
+    public function setStoreName(string $value): self
+    {
+        return $this->setData(self::STORE_NAME, $value);
+    }
+
+    public function getStoreNo(): ?string
+    {
+        return $this->getData(self::STORE_NO);
+    }
+
+    public function setStoreNo(string $value): self
+    {
+        return $this->setData(self::STORE_NO, $value);
+    }
+
+    public function getTransactionNo(): ?int
+    {
+        return $this->getData(self::TRANSACTION_NO);
+    }
+
+    public function setTransactionNo(int $value): self
+    {
+        return $this->setData(self::TRANSACTION_NO, $value);
+    }
+
+    public function getUnitOfMeasure(): ?string
+    {
+        return $this->getData(self::UNIT_OF_MEASURE);
+    }
+
+    public function setUnitOfMeasure(string $value): self
+    {
+        return $this->setData(self::UNIT_OF_MEASURE, $value);
+    }
+
+    public function getVariantCode(): ?string
+    {
+        return $this->getData(self::VARIANT_CODE);
+    }
+
+    public function setVariantCode(string $value): self
+    {
+        return $this->setData(self::VARIANT_CODE, $value);
+    }
+
+    public function getVariantDescription(): ?string
+    {
+        return $this->getData(self::VARIANT_DESCRIPTION);
+    }
+
+    public function setVariantDescription(string $value): self
+    {
+        return $this->setData(self::VARIANT_DESCRIPTION, $value);
+    }
+
+    public function getVATAmount(): ?string
+    {
+        return $this->getData(self::V_A_T_AMOUNT);
+    }
+
+    public function setVATAmount(string $value): self
+    {
+        return $this->setData(self::V_A_T_AMOUNT, $value);
     }
 }

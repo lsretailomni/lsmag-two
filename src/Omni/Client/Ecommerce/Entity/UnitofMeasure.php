@@ -14,15 +14,15 @@ class UnitofMeasure extends DataObject
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
     public const INTERNATIONAL_STANDARD_CODE = 'International Standard Code';
-    public const SYMBOL = 'Symbol';
     public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
-    public const L_S_C_WEIGHT_UNIT_OF_MEASURE = 'LSC Weight Unit Of Measure';
     public const L_S_C_P_O_S_MIN_DENOMINATOR = 'LSC POS Min. Denominator';
-    public const SYSTEM_ID = '$systemId';
+    public const L_S_C_WEIGHT_UNIT_OF_MEASURE = 'LSC Weight Unit Of Measure';
+    public const SYMBOL = 'Symbol';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEM_ID = '$systemId';
 
 
     public function getCode(): ?string
@@ -55,16 +55,6 @@ class UnitofMeasure extends DataObject
         return $this->setData(self::INTERNATIONAL_STANDARD_CODE, $value);
     }
 
-    public function getSymbol(): ?string
-    {
-        return $this->getData(self::SYMBOL);
-    }
-
-    public function setSymbol(string $value): self
-    {
-        return $this->setData(self::SYMBOL, $value);
-    }
-
     public function getLastModifiedDateTime(): ?\DateTime
     {
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
@@ -73,16 +63,6 @@ class UnitofMeasure extends DataObject
     public function setLastModifiedDateTime(\DateTime $value): self
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
-    }
-
-    public function getLSCWeightUnitOfMeasure(): ?bool
-    {
-        return $this->getData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE);
-    }
-
-    public function setLSCWeightUnitOfMeasure(bool $value): self
-    {
-        return $this->setData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE, $value);
     }
 
     public function getLSCPOSMinDenominator(): ?string
@@ -95,14 +75,24 @@ class UnitofMeasure extends DataObject
         return $this->setData(self::L_S_C_P_O_S_MIN_DENOMINATOR, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getLSCWeightUnitOfMeasure(): ?bool
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE);
     }
 
-    public function setSystemId(string $value): self
+    public function setLSCWeightUnitOfMeasure(bool $value): self
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE, $value);
+    }
+
+    public function getSymbol(): ?string
+    {
+        return $this->getData(self::SYMBOL);
+    }
+
+    public function setSymbol(string $value): self
+    {
+        return $this->setData(self::SYMBOL, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -143,5 +133,15 @@ class UnitofMeasure extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }

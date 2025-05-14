@@ -11,47 +11,17 @@ use Magento\Framework\DataObject;
 
 class LSCMemberSalesDataEntry extends DataObject
 {
-    public const ENTRY_TYPE = 'Entry Type';
-    public const ENTRY_CODE = 'Entry Code';
-    public const CREATED_BY_LINE_NO = 'Created by Line No.';
     public const AMOUNT = 'Amount';
     public const APPLIED_AMOUNT = 'Applied Amount';
-    public const DATE_CREATED = 'Date Created';
-    public const EXPIRING_DATE = 'Expiring Date';
-    public const DATA_ENTRY_BALANCE = 'Data Entry Balance';
+    public const CREATED_BY_LINE_NO = 'Created by Line No.';
     public const CURRENCY_CODE = 'Currency Code';
+    public const DATA_ENTRY_BALANCE = 'Data Entry Balance';
+    public const DATE_CREATED = 'Date Created';
+    public const ENTRY_CODE = 'Entry Code';
+    public const ENTRY_TYPE = 'Entry Type';
+    public const EXPIRING_DATE = 'Expiring Date';
     public const P_I_N = 'PIN';
 
-
-    public function getEntryType(): ?string
-    {
-        return $this->getData(self::ENTRY_TYPE);
-    }
-
-    public function setEntryType(string $value): self
-    {
-        return $this->setData(self::ENTRY_TYPE, $value);
-    }
-
-    public function getEntryCode(): ?string
-    {
-        return $this->getData(self::ENTRY_CODE);
-    }
-
-    public function setEntryCode(string $value): self
-    {
-        return $this->setData(self::ENTRY_CODE, $value);
-    }
-
-    public function getCreatedByLineNo(): ?int
-    {
-        return $this->getData(self::CREATED_BY_LINE_NO);
-    }
-
-    public function setCreatedByLineNo(int $value): self
-    {
-        return $this->setData(self::CREATED_BY_LINE_NO, $value);
-    }
 
     public function getAmount(): ?string
     {
@@ -73,24 +43,24 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->setData(self::APPLIED_AMOUNT, $value);
     }
 
-    public function getDateCreated(): ?string
+    public function getCreatedByLineNo(): ?int
     {
-        return $this->getData(self::DATE_CREATED);
+        return $this->getData(self::CREATED_BY_LINE_NO);
     }
 
-    public function setDateCreated(string $value): self
+    public function setCreatedByLineNo(int $value): self
     {
-        return $this->setData(self::DATE_CREATED, $value);
+        return $this->setData(self::CREATED_BY_LINE_NO, $value);
     }
 
-    public function getExpiringDate(): ?string
+    public function getCurrencyCode(): ?string
     {
-        return $this->getData(self::EXPIRING_DATE);
+        return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setExpiringDate(string $value): self
+    public function setCurrencyCode(string $value): self
     {
-        return $this->setData(self::EXPIRING_DATE, $value);
+        return $this->setData(self::CURRENCY_CODE, $value);
     }
 
     public function getDataEntryBalance(): ?string
@@ -103,14 +73,44 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->setData(self::DATA_ENTRY_BALANCE, $value);
     }
 
-    public function getCurrencyCode(): ?string
+    public function getDateCreated(): ?string
     {
-        return $this->getData(self::CURRENCY_CODE);
+        return $this->getData(self::DATE_CREATED);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setDateCreated(string $value): self
     {
-        return $this->setData(self::CURRENCY_CODE, $value);
+        return $this->setData(self::DATE_CREATED, $value);
+    }
+
+    public function getEntryCode(): ?string
+    {
+        return $this->getData(self::ENTRY_CODE);
+    }
+
+    public function setEntryCode(string $value): self
+    {
+        return $this->setData(self::ENTRY_CODE, $value);
+    }
+
+    public function getEntryType(): ?string
+    {
+        return $this->getData(self::ENTRY_TYPE);
+    }
+
+    public function setEntryType(string $value): self
+    {
+        return $this->setData(self::ENTRY_TYPE, $value);
+    }
+
+    public function getExpiringDate(): ?string
+    {
+        return $this->getData(self::EXPIRING_DATE);
+    }
+
+    public function setExpiringDate(string $value): self
+    {
+        return $this->setData(self::EXPIRING_DATE, $value);
     }
 
     public function getPIN(): ?int

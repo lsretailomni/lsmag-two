@@ -47,10 +47,7 @@ class PeriodicDiscView extends DataObject
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
-    public const NO = 'No.';
-    public const DESCRIPTION = 'Description';
     public const STATUS = 'Status';
-    public const TYPE = 'Type';
     public const HEAD_PRICE_GROUP = 'Head Price Group';
     public const PRIORITY = 'Priority';
     public const VALIDATION_PERIOD_I_D = 'Validation Period ID';
@@ -74,7 +71,6 @@ class PeriodicDiscView extends DataObject
     public const PROMPT_FOR_ACTION = 'Prompt for Action';
     public const TENDER_OFFER = 'Tender Offer %';
     public const TENDER_OFFER_AMOUNT = 'Tender Offer Amount';
-    public const MEMBER_POINTS = 'Member Points';
     public const STORE_GROUP_CODES = 'Store Group Codes';
 
 
@@ -438,26 +434,6 @@ class PeriodicDiscView extends DataObject
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
     }
 
-    public function getNo(): ?string
-    {
-        return $this->getData(self::NO);
-    }
-
-    public function setNo(string $value): self
-    {
-        return $this->setData(self::NO, $value);
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->getData(self::DESCRIPTION);
-    }
-
-    public function setDescription(string $value): self
-    {
-        return $this->setData(self::DESCRIPTION, $value);
-    }
-
     public function getStatus(): ?string
     {
         return $this->getData(self::STATUS);
@@ -466,16 +442,6 @@ class PeriodicDiscView extends DataObject
     public function setStatus(string $value): self
     {
         return $this->setData(self::STATUS, $value);
-    }
-
-    public function getType(): ?string
-    {
-        return $this->getData(self::TYPE);
-    }
-
-    public function setType(string $value): self
-    {
-        return $this->setData(self::TYPE, $value);
     }
 
     public function getHeadPriceGroup(): ?string
@@ -706,16 +672,6 @@ class PeriodicDiscView extends DataObject
     public function setTenderOfferAmount(string $value): self
     {
         return $this->setData(self::TENDER_OFFER_AMOUNT, $value);
-    }
-
-    public function getMemberPoints(): ?string
-    {
-        return $this->getData(self::MEMBER_POINTS);
-    }
-
-    public function setMemberPoints(string $value): self
-    {
-        return $this->setData(self::MEMBER_POINTS, $value);
     }
 
     public function getStoreGroupCodes(): ?string

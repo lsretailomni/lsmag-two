@@ -11,120 +11,30 @@ use Magento\Framework\DataObject;
 
 class LSCItemVariantRegistration extends DataObject
 {
-    public const ITEM_NO = 'Item No.';
-    public const FRAMEWORK_CODE = 'Framework Code';
-    public const VARIANT_DIMENSION_1 = 'Variant Dimension 1';
-    public const VARIANT_DIMENSION_2 = 'Variant Dimension 2';
-    public const VARIANT_DIMENSION_3 = 'Variant Dimension 3';
-    public const VARIANT_DIMENSION_4 = 'Variant Dimension 4';
-    public const VARIANT_DIMENSION_5 = 'Variant Dimension 5';
-    public const VARIANT_DIMENSION_6 = 'Variant Dimension 6';
-    public const VARIANT = 'Variant';
     public const BARCODE = 'Barcode';
-    public const LOGICAL_ORDER = 'Logical Order';
     public const DIMENSION_1_WEIGHT = 'Dimension 1 Weight';
     public const DIMENSION_2_WEIGHT = 'Dimension 2 Weight';
     public const DIMENSION_3_WEIGHT = 'Dimension 3 Weight';
     public const DIMENSION_4_WEIGHT = 'Dimension 4 Weight';
     public const DIMENSION_5_WEIGHT = 'Dimension 5 Weight';
     public const DIMENSION_6_WEIGHT = 'Dimension 6 Weight';
-    public const VARIANT_WEIGHT = 'Variant Weight';
-    public const SYSTEM_ID = '$systemId';
+    public const FRAMEWORK_CODE = 'Framework Code';
+    public const ITEM_NO = 'Item No.';
+    public const LOGICAL_ORDER = 'Logical Order';
     public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
     public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
     public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
     public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const VARIANT = 'Variant';
+    public const VARIANT_DIMENSION_1 = 'Variant Dimension 1';
+    public const VARIANT_DIMENSION_2 = 'Variant Dimension 2';
+    public const VARIANT_DIMENSION_3 = 'Variant Dimension 3';
+    public const VARIANT_DIMENSION_4 = 'Variant Dimension 4';
+    public const VARIANT_DIMENSION_5 = 'Variant Dimension 5';
+    public const VARIANT_DIMENSION_6 = 'Variant Dimension 6';
+    public const VARIANT_WEIGHT = 'Variant Weight';
+    public const SYSTEM_ID = '$systemId';
 
-
-    public function getItemNo(): ?string
-    {
-        return $this->getData(self::ITEM_NO);
-    }
-
-    public function setItemNo(string $value): self
-    {
-        return $this->setData(self::ITEM_NO, $value);
-    }
-
-    public function getFrameworkCode(): ?string
-    {
-        return $this->getData(self::FRAMEWORK_CODE);
-    }
-
-    public function setFrameworkCode(string $value): self
-    {
-        return $this->setData(self::FRAMEWORK_CODE, $value);
-    }
-
-    public function getVariantDimension1(): ?string
-    {
-        return $this->getData(self::VARIANT_DIMENSION_1);
-    }
-
-    public function setVariantDimension1(string $value): self
-    {
-        return $this->setData(self::VARIANT_DIMENSION_1, $value);
-    }
-
-    public function getVariantDimension2(): ?string
-    {
-        return $this->getData(self::VARIANT_DIMENSION_2);
-    }
-
-    public function setVariantDimension2(string $value): self
-    {
-        return $this->setData(self::VARIANT_DIMENSION_2, $value);
-    }
-
-    public function getVariantDimension3(): ?string
-    {
-        return $this->getData(self::VARIANT_DIMENSION_3);
-    }
-
-    public function setVariantDimension3(string $value): self
-    {
-        return $this->setData(self::VARIANT_DIMENSION_3, $value);
-    }
-
-    public function getVariantDimension4(): ?string
-    {
-        return $this->getData(self::VARIANT_DIMENSION_4);
-    }
-
-    public function setVariantDimension4(string $value): self
-    {
-        return $this->setData(self::VARIANT_DIMENSION_4, $value);
-    }
-
-    public function getVariantDimension5(): ?string
-    {
-        return $this->getData(self::VARIANT_DIMENSION_5);
-    }
-
-    public function setVariantDimension5(string $value): self
-    {
-        return $this->setData(self::VARIANT_DIMENSION_5, $value);
-    }
-
-    public function getVariantDimension6(): ?string
-    {
-        return $this->getData(self::VARIANT_DIMENSION_6);
-    }
-
-    public function setVariantDimension6(string $value): self
-    {
-        return $this->setData(self::VARIANT_DIMENSION_6, $value);
-    }
-
-    public function getVariant(): ?string
-    {
-        return $this->getData(self::VARIANT);
-    }
-
-    public function setVariant(string $value): self
-    {
-        return $this->setData(self::VARIANT, $value);
-    }
 
     public function getBarcode(): ?string
     {
@@ -134,16 +44,6 @@ class LSCItemVariantRegistration extends DataObject
     public function setBarcode(string $value): self
     {
         return $this->setData(self::BARCODE, $value);
-    }
-
-    public function getLogicalOrder(): ?string
-    {
-        return $this->getData(self::LOGICAL_ORDER);
-    }
-
-    public function setLogicalOrder(string $value): self
-    {
-        return $this->setData(self::LOGICAL_ORDER, $value);
     }
 
     public function getDimension1Weight(): ?string
@@ -206,24 +106,34 @@ class LSCItemVariantRegistration extends DataObject
         return $this->setData(self::DIMENSION_6_WEIGHT, $value);
     }
 
-    public function getVariantWeight(): ?string
+    public function getFrameworkCode(): ?string
     {
-        return $this->getData(self::VARIANT_WEIGHT);
+        return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setVariantWeight(string $value): self
+    public function setFrameworkCode(string $value): self
     {
-        return $this->setData(self::VARIANT_WEIGHT, $value);
+        return $this->setData(self::FRAMEWORK_CODE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getItemNo(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::ITEM_NO);
     }
 
-    public function setSystemId(string $value): self
+    public function setItemNo(string $value): self
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::ITEM_NO, $value);
+    }
+
+    public function getLogicalOrder(): ?string
+    {
+        return $this->getData(self::LOGICAL_ORDER);
+    }
+
+    public function setLogicalOrder(string $value): self
+    {
+        return $this->setData(self::LOGICAL_ORDER, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
@@ -264,5 +174,95 @@ class LSCItemVariantRegistration extends DataObject
     public function setSystemModifiedBy(string $value): self
     {
         return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+    }
+
+    public function getVariant(): ?string
+    {
+        return $this->getData(self::VARIANT);
+    }
+
+    public function setVariant(string $value): self
+    {
+        return $this->setData(self::VARIANT, $value);
+    }
+
+    public function getVariantDimension1(): ?string
+    {
+        return $this->getData(self::VARIANT_DIMENSION_1);
+    }
+
+    public function setVariantDimension1(string $value): self
+    {
+        return $this->setData(self::VARIANT_DIMENSION_1, $value);
+    }
+
+    public function getVariantDimension2(): ?string
+    {
+        return $this->getData(self::VARIANT_DIMENSION_2);
+    }
+
+    public function setVariantDimension2(string $value): self
+    {
+        return $this->setData(self::VARIANT_DIMENSION_2, $value);
+    }
+
+    public function getVariantDimension3(): ?string
+    {
+        return $this->getData(self::VARIANT_DIMENSION_3);
+    }
+
+    public function setVariantDimension3(string $value): self
+    {
+        return $this->setData(self::VARIANT_DIMENSION_3, $value);
+    }
+
+    public function getVariantDimension4(): ?string
+    {
+        return $this->getData(self::VARIANT_DIMENSION_4);
+    }
+
+    public function setVariantDimension4(string $value): self
+    {
+        return $this->setData(self::VARIANT_DIMENSION_4, $value);
+    }
+
+    public function getVariantDimension5(): ?string
+    {
+        return $this->getData(self::VARIANT_DIMENSION_5);
+    }
+
+    public function setVariantDimension5(string $value): self
+    {
+        return $this->setData(self::VARIANT_DIMENSION_5, $value);
+    }
+
+    public function getVariantDimension6(): ?string
+    {
+        return $this->getData(self::VARIANT_DIMENSION_6);
+    }
+
+    public function setVariantDimension6(string $value): self
+    {
+        return $this->setData(self::VARIANT_DIMENSION_6, $value);
+    }
+
+    public function getVariantWeight(): ?string
+    {
+        return $this->getData(self::VARIANT_WEIGHT);
+    }
+
+    public function setVariantWeight(string $value): self
+    {
+        return $this->setData(self::VARIANT_WEIGHT, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEM_ID);
+    }
+
+    public function setSystemId(string $value): self
+    {
+        return $this->setData(self::SYSTEM_ID, $value);
     }
 }
