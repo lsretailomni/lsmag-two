@@ -3,7 +3,7 @@
 namespace Ls\Omni\Console;
 
 use \Ls\Omni\Exception\InvalidServiceTypeException;
-use Ls\Omni\Helper\Data;
+use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\ObjectManager;
