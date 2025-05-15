@@ -14,6 +14,7 @@ use \Ls\Omni\Exception\InvalidEnumException;
 use \Ls\Omni\Helper\LoyaltyHelper;
 use \Ls\OmniGraphQl\Helper\DataHelper as Helper;
 use \Ls\Omni\Helper\OrderHelper;
+use \Ls\Omni\Helper\ItemHelper;
 use \Ls\Omni\Helper\Data;
 use Magento\Directory\Model\Currency;
 use Magento\Framework\Exception\LocalizedException;
@@ -55,12 +56,18 @@ class DataHelper
     public $currencyHelper;
 
     /**
+     * @var ItemHelper
+     */
+    public $itemHelper;
+
+    /**
      * @param LoyaltyHelper $loyaltyHelper
      * @param OrderHelper $orderHelper
      * @param Helper $helper
      * @param Data $data
      * @param Currency $currencyHelper
      * @param LSR $lsr
+     * @param ItemHelper $itemHelper
      */
     public function __construct(
         LoyaltyHelper $loyaltyHelper,
@@ -68,7 +75,8 @@ class DataHelper
         Helper $helper,
         Data $data,
         Currency $currencyHelper,
-        LSR $lsr
+        LSR $lsr,
+        ItemHelper $itemHelper
     ) {
         $this->loyaltyHelper  = $loyaltyHelper;
         $this->orderHelper    = $orderHelper;
@@ -76,6 +84,7 @@ class DataHelper
         $this->data           = $data;
         $this->currencyHelper = $currencyHelper;
         $this->lsr            = $lsr;
+        $this->itemHelper     = $itemHelper;
     }
 
     /**
@@ -116,14 +125,14 @@ class DataHelper
                             if ($totalExpiryPoints) {
                                 $schemeArray['points_expiry'] = $totalExpiryPoints;
 
-                                $expiryInterval = $this->lsr->getStoreConfig(
+                                $expiryInterval                        = $this->lsr->getStoreConfig(
                                     LSR::SC_LOYALTY_POINTS_EXPIRY_NOTIFICATION_INTERVAL,
                                     $this->lsr->getCurrentStoreId()
                                 );
                                 $schemeArray['points_expiry_interval'] = $expiryInterval;
                             }
                         }
-                        $nextSchemeLevel              = $scheme->getNextScheme();
+                        $nextSchemeLevel = $scheme->getNextScheme();
                         if (!empty($nextSchemeLevel)) {
                             $schemeArray['next_level']['club_name']     = $nextSchemeLevel->getClub()->getName();
                             $schemeArray['next_level']['loyalty_level'] = $nextSchemeLevel->getDescription();
