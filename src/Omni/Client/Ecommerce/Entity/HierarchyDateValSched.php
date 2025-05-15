@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HierarchyDateValSched extends \Magento\Framework\DataObject
+class HierarchyDateValSched extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HierarchyDateVal.Sched';
 

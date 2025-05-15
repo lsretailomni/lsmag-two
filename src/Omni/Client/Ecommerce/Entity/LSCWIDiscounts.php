@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIDiscounts extends DataObject
+class LSCWIDiscounts extends AbstractModel
 {
     public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
     public const DESCRIPTION = 'Description';
@@ -28,16 +28,16 @@ class LSCWIDiscounts extends DataObject
     public const POPUP_LINE_3 = 'Pop-up Line 3';
     public const PRIORITY_NO = 'Priority No.';
     public const STORE_NO = 'Store No.';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const TO_DATE = 'To Date';
     public const TYPE = 'Type';
     public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
-    public const VALIDATION_PERIOD_I_D = 'Validation Period ID';
+    public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const VARIANT_CODE = 'Variant Code';
-    public const SYSTEM_ID = '$systemId';
+    public const SYSTEMID = '$systemId';
 
 
     public function getCustomerDiscGroup(): ?string
@@ -45,7 +45,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value): self
+    public function setCustomerDiscGroup(string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
@@ -55,7 +55,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -65,7 +65,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::DISCOUNT);
     }
 
-    public function setDiscount(string $value): self
+    public function setDiscount(string $value)
     {
         return $this->setData(self::DISCOUNT, $value);
     }
@@ -75,7 +75,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(string $value): self
+    public function setDiscountAmountValue(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }
@@ -85,7 +85,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(string $value): self
+    public function setDiscountType(string $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
@@ -95,7 +95,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::EXCLUDE);
     }
 
-    public function setExclude(bool $value): self
+    public function setExclude(bool $value)
     {
         return $this->setData(self::EXCLUDE, $value);
     }
@@ -105,7 +105,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::FROM_DATE);
     }
 
-    public function setFromDate(string $value): self
+    public function setFromDate(string $value)
     {
         return $this->setData(self::FROM_DATE, $value);
     }
@@ -115,7 +115,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -125,7 +125,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::LAST_MODIFY_DATE);
     }
 
-    public function setLastModifyDate(string $value): self
+    public function setLastModifyDate(string $value)
     {
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
@@ -135,7 +135,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::LOYALTY_SCHEME_CODE);
     }
 
-    public function setLoyaltySchemeCode(string $value): self
+    public function setLoyaltySchemeCode(string $value)
     {
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
@@ -145,7 +145,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(string $value): self
+    public function setMinimumQuantity(string $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
@@ -155,7 +155,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value): self
+    public function setOfferNo(string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -165,7 +165,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::POPUP_LINE_1);
     }
 
-    public function setPopUpLine1(string $value): self
+    public function setPopUpLine1(string $value)
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
@@ -175,7 +175,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::POPUP_LINE_2);
     }
 
-    public function setPopUpLine2(string $value): self
+    public function setPopUpLine2(string $value)
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
@@ -185,7 +185,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::POPUP_LINE_3);
     }
 
-    public function setPopUpLine3(string $value): self
+    public function setPopUpLine3(string $value)
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
@@ -195,7 +195,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::PRIORITY_NO);
     }
 
-    public function setPriorityNo(int $value): self
+    public function setPriorityNo(int $value)
     {
         return $this->setData(self::PRIORITY_NO, $value);
     }
@@ -205,49 +205,49 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getToDate(): ?string
@@ -255,7 +255,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::TO_DATE);
     }
 
-    public function setToDate(string $value): self
+    public function setToDate(string $value)
     {
         return $this->setData(self::TO_DATE, $value);
     }
@@ -265,7 +265,7 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -275,19 +275,19 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value): self
+    public function setUnitOfMeasureCode(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
     public function getValidationPeriodID(): ?string
     {
-        return $this->getData(self::VALIDATION_PERIOD_I_D);
+        return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value): self
+    public function setValidationPeriodID(string $value)
     {
-        return $this->setData(self::VALIDATION_PERIOD_I_D, $value);
+        return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
     public function getVariantCode(): ?string
@@ -295,18 +295,18 @@ class LSCWIDiscounts extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 }

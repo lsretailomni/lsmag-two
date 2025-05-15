@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOGetPutBackItems extends \Magento\Framework\DataObject
+class RootCOGetPutBackItems extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOGetPutBackItems';
 

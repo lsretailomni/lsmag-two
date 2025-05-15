@@ -7,22 +7,22 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCStoreInventoryWorksheet extends DataObject
+class LSCStoreInventoryWorksheet extends AbstractModel
 {
-    public const WORKSHEET_SEQ_NO = 'WorksheetSeqNo';
+    public const WORKSHEETSEQNO = 'WorksheetSeqNo';
     public const DESCRIPTION = 'Description';
     public const STORE_NO = 'Store No.';
     public const REASON_CODE = 'Reason Code';
-    public const DEFAULT_UO_M = 'Default UoM';
+    public const DEFAULT_UOM = 'Default UoM';
     public const LOCATION_CODE = 'Location Code';
     public const USE_AREA = 'Use Area';
     public const TYPE_OF_ENTERING = 'Type of Entering';
     public const COUNTING_PERIOD = 'Counting Period';
     public const NEXT_COUNT = 'Next count';
     public const NO_SERIES = 'No. Series';
-    public const USE_BARCODE_UO_M_IN_MOBILE = 'Use Barcode UoM in Mobile';
+    public const USE_BARCODE_UOM_IN_MOBILE = 'Use Barcode UoM in Mobile';
     public const WORKSHEET_TYPE = 'Worksheet Type';
     public const LABEL_TYPE = 'Label Type';
     public const LABEL_FUNCTION_CODE = 'Label Function Code';
@@ -30,7 +30,7 @@ class LSCStoreInventoryWorksheet extends DataObject
     public const NEW_STORE_CODE = 'New Store Code';
     public const VENDOR_NO = 'Vendor No.';
     public const CHANGE_VENDOR_ALLOWED = 'Change Vendor Allowed';
-    public const CHANGE_UO_M_ALLOWED = 'Change UoM Allowed';
+    public const CHANGE_UOM_ALLOWED = 'Change UoM Allowed';
     public const RETAIL_PRODUCT_FILTER = 'Retail Product Filter';
     public const QUANTITY_METHOD = 'Quantity Method';
     public const QUICKDEFAULT_QUANTITY = 'Quick-default Quantity';
@@ -39,26 +39,26 @@ class LSCStoreInventoryWorksheet extends DataObject
     public const USE_BATCH_POSTING = 'Use Batch Posting';
     public const TRY_POST_BEFORE_PUT_ON_QUEUE = 'Try Post before put on Queue';
     public const SHOW_ITEM_DETAILS = 'Show Item Details';
-    public const STORE_INV_TRANSACTION_MAX_LINES = 'StoreInvTransaction Max Lines';
+    public const STOREINVTRANSACTION_MAX_LINES = 'StoreInvTransaction Max Lines';
     public const STORE_INV_COMPETITOR_CODE = 'Store Inv. Competitor Code';
     public const ADDITIONAL_TEXT = 'Additional Text';
     public const VALIDATE_TRACKING_CODE = 'Validate Tracking Code';
     public const ALLOW_UNKNOWN_ITEM = 'Allow Unknown Item';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getWorksheetSeqNo(): ?int
     {
-        return $this->getData(self::WORKSHEET_SEQ_NO);
+        return $this->getData(self::WORKSHEETSEQNO);
     }
 
-    public function setWorksheetSeqNo(int $value): self
+    public function setWorksheetSeqNo(int $value)
     {
-        return $this->setData(self::WORKSHEET_SEQ_NO, $value);
+        return $this->setData(self::WORKSHEETSEQNO, $value);
     }
 
     public function getDescription(): ?string
@@ -66,7 +66,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -76,7 +76,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -86,19 +86,19 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::REASON_CODE);
     }
 
-    public function setReasonCode(string $value): self
+    public function setReasonCode(string $value)
     {
         return $this->setData(self::REASON_CODE, $value);
     }
 
     public function getDefaultUoM(): ?string
     {
-        return $this->getData(self::DEFAULT_UO_M);
+        return $this->getData(self::DEFAULT_UOM);
     }
 
-    public function setDefaultUoM(string $value): self
+    public function setDefaultUoM(string $value)
     {
-        return $this->setData(self::DEFAULT_UO_M, $value);
+        return $this->setData(self::DEFAULT_UOM, $value);
     }
 
     public function getLocationCode(): ?string
@@ -106,7 +106,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value): self
+    public function setLocationCode(string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -116,7 +116,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::USE_AREA);
     }
 
-    public function setUseArea(bool $value): self
+    public function setUseArea(bool $value)
     {
         return $this->setData(self::USE_AREA, $value);
     }
@@ -126,7 +126,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::TYPE_OF_ENTERING);
     }
 
-    public function setTypeOfEntering(string $value): self
+    public function setTypeOfEntering(string $value)
     {
         return $this->setData(self::TYPE_OF_ENTERING, $value);
     }
@@ -136,7 +136,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::COUNTING_PERIOD);
     }
 
-    public function setCountingPeriod(string $value): self
+    public function setCountingPeriod(string $value)
     {
         return $this->setData(self::COUNTING_PERIOD, $value);
     }
@@ -146,7 +146,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::NEXT_COUNT);
     }
 
-    public function setNextCount(string $value): self
+    public function setNextCount(string $value)
     {
         return $this->setData(self::NEXT_COUNT, $value);
     }
@@ -156,19 +156,19 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value): self
+    public function setNoSeries(string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
 
     public function getUseBarcodeUoMInMobile(): ?bool
     {
-        return $this->getData(self::USE_BARCODE_UO_M_IN_MOBILE);
+        return $this->getData(self::USE_BARCODE_UOM_IN_MOBILE);
     }
 
-    public function setUseBarcodeUoMInMobile(bool $value): self
+    public function setUseBarcodeUoMInMobile(bool $value)
     {
-        return $this->setData(self::USE_BARCODE_UO_M_IN_MOBILE, $value);
+        return $this->setData(self::USE_BARCODE_UOM_IN_MOBILE, $value);
     }
 
     public function getWorksheetType(): ?string
@@ -176,7 +176,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::WORKSHEET_TYPE);
     }
 
-    public function setWorksheetType(string $value): self
+    public function setWorksheetType(string $value)
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
@@ -186,7 +186,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::LABEL_TYPE);
     }
 
-    public function setLabelType(string $value): self
+    public function setLabelType(string $value)
     {
         return $this->setData(self::LABEL_TYPE, $value);
     }
@@ -196,7 +196,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::LABEL_FUNCTION_CODE);
     }
 
-    public function setLabelFunctionCode(string $value): self
+    public function setLabelFunctionCode(string $value)
     {
         return $this->setData(self::LABEL_FUNCTION_CODE, $value);
     }
@@ -206,7 +206,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::NEW_LOCATION_CODE);
     }
 
-    public function setNewLocationCode(string $value): self
+    public function setNewLocationCode(string $value)
     {
         return $this->setData(self::NEW_LOCATION_CODE, $value);
     }
@@ -216,7 +216,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::NEW_STORE_CODE);
     }
 
-    public function setNewStoreCode(string $value): self
+    public function setNewStoreCode(string $value)
     {
         return $this->setData(self::NEW_STORE_CODE, $value);
     }
@@ -226,7 +226,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value): self
+    public function setVendorNo(string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -236,19 +236,19 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::CHANGE_VENDOR_ALLOWED);
     }
 
-    public function setChangeVendorAllowed(bool $value): self
+    public function setChangeVendorAllowed(bool $value)
     {
         return $this->setData(self::CHANGE_VENDOR_ALLOWED, $value);
     }
 
     public function getChangeUoMAllowed(): ?bool
     {
-        return $this->getData(self::CHANGE_UO_M_ALLOWED);
+        return $this->getData(self::CHANGE_UOM_ALLOWED);
     }
 
-    public function setChangeUoMAllowed(bool $value): self
+    public function setChangeUoMAllowed(bool $value)
     {
-        return $this->setData(self::CHANGE_UO_M_ALLOWED, $value);
+        return $this->setData(self::CHANGE_UOM_ALLOWED, $value);
     }
 
     public function getRetailProductFilter(): ?string
@@ -256,7 +256,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::RETAIL_PRODUCT_FILTER);
     }
 
-    public function setRetailProductFilter(string $value): self
+    public function setRetailProductFilter(string $value)
     {
         return $this->setData(self::RETAIL_PRODUCT_FILTER, $value);
     }
@@ -266,7 +266,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::QUANTITY_METHOD);
     }
 
-    public function setQuantityMethod(string $value): self
+    public function setQuantityMethod(string $value)
     {
         return $this->setData(self::QUANTITY_METHOD, $value);
     }
@@ -276,7 +276,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::QUICKDEFAULT_QUANTITY);
     }
 
-    public function setQuickDefaultQuantity(string $value): self
+    public function setQuickDefaultQuantity(string $value)
     {
         return $this->setData(self::QUICKDEFAULT_QUANTITY, $value);
     }
@@ -286,7 +286,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::INV_ADJUST_GROUP_CODE);
     }
 
-    public function setInvAdjustGroupCode(string $value): self
+    public function setInvAdjustGroupCode(string $value)
     {
         return $this->setData(self::INV_ADJUST_GROUP_CODE, $value);
     }
@@ -296,7 +296,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::CYCLE_COUNT);
     }
 
-    public function setCycleCount(bool $value): self
+    public function setCycleCount(bool $value)
     {
         return $this->setData(self::CYCLE_COUNT, $value);
     }
@@ -306,7 +306,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::USE_BATCH_POSTING);
     }
 
-    public function setUseBatchPosting(bool $value): self
+    public function setUseBatchPosting(bool $value)
     {
         return $this->setData(self::USE_BATCH_POSTING, $value);
     }
@@ -316,7 +316,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::TRY_POST_BEFORE_PUT_ON_QUEUE);
     }
 
-    public function setTryPostBeforePutOnQueue(bool $value): self
+    public function setTryPostBeforePutOnQueue(bool $value)
     {
         return $this->setData(self::TRY_POST_BEFORE_PUT_ON_QUEUE, $value);
     }
@@ -326,19 +326,19 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::SHOW_ITEM_DETAILS);
     }
 
-    public function setShowItemDetails(bool $value): self
+    public function setShowItemDetails(bool $value)
     {
         return $this->setData(self::SHOW_ITEM_DETAILS, $value);
     }
 
     public function getStoreInvTransactionMaxLines(): ?int
     {
-        return $this->getData(self::STORE_INV_TRANSACTION_MAX_LINES);
+        return $this->getData(self::STOREINVTRANSACTION_MAX_LINES);
     }
 
-    public function setStoreInvTransactionMaxLines(int $value): self
+    public function setStoreInvTransactionMaxLines(int $value)
     {
-        return $this->setData(self::STORE_INV_TRANSACTION_MAX_LINES, $value);
+        return $this->setData(self::STOREINVTRANSACTION_MAX_LINES, $value);
     }
 
     public function getStoreInvCompetitorCode(): ?string
@@ -346,7 +346,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::STORE_INV_COMPETITOR_CODE);
     }
 
-    public function setStoreInvCompetitorCode(string $value): self
+    public function setStoreInvCompetitorCode(string $value)
     {
         return $this->setData(self::STORE_INV_COMPETITOR_CODE, $value);
     }
@@ -356,7 +356,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::ADDITIONAL_TEXT);
     }
 
-    public function setAdditionalText(string $value): self
+    public function setAdditionalText(string $value)
     {
         return $this->setData(self::ADDITIONAL_TEXT, $value);
     }
@@ -366,7 +366,7 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::VALIDATE_TRACKING_CODE);
     }
 
-    public function setValidateTrackingCode(bool $value): self
+    public function setValidateTrackingCode(bool $value)
     {
         return $this->setData(self::VALIDATE_TRACKING_CODE, $value);
     }
@@ -376,58 +376,58 @@ class LSCStoreInventoryWorksheet extends DataObject
         return $this->getData(self::ALLOW_UNKNOWN_ITEM);
     }
 
-    public function setAllowUnknownItem(bool $value): self
+    public function setAllowUnknownItem(bool $value)
     {
         return $this->setData(self::ALLOW_UNKNOWN_ITEM, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

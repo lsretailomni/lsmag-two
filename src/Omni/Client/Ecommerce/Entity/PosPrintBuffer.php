@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class PosPrintBuffer extends \Magento\Framework\DataObject
+class PosPrintBuffer extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'PosPrintBuffer';
 

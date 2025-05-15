@@ -7,21 +7,21 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIImageBuffer extends DataObject
+class LSCWIImageBuffer extends AbstractModel
 {
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
-    public const IMAGE_I_D = 'Image ID';
+    public const IMAGE_ID = 'Image ID';
     public const IMAGE_BLOB = 'Image Blob';
     public const HEIGHT = 'Height';
     public const WIDTH = 'Width';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getCode(): ?string
@@ -29,7 +29,7 @@ class LSCWIImageBuffer extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -39,19 +39,19 @@ class LSCWIImageBuffer extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
     public function getImageID(): ?string
     {
-        return $this->getData(self::IMAGE_I_D);
+        return $this->getData(self::IMAGE_ID);
     }
 
-    public function setImageID(string $value): self
+    public function setImageID(string $value)
     {
-        return $this->setData(self::IMAGE_I_D, $value);
+        return $this->setData(self::IMAGE_ID, $value);
     }
 
     public function getImageBlob(): ?string
@@ -59,7 +59,7 @@ class LSCWIImageBuffer extends DataObject
         return $this->getData(self::IMAGE_BLOB);
     }
 
-    public function setImageBlob(string $value): self
+    public function setImageBlob(string $value)
     {
         return $this->setData(self::IMAGE_BLOB, $value);
     }
@@ -69,7 +69,7 @@ class LSCWIImageBuffer extends DataObject
         return $this->getData(self::HEIGHT);
     }
 
-    public function setHeight(int $value): self
+    public function setHeight(int $value)
     {
         return $this->setData(self::HEIGHT, $value);
     }
@@ -79,58 +79,58 @@ class LSCWIImageBuffer extends DataObject
         return $this->getData(self::WIDTH);
     }
 
-    public function setWidth(int $value): self
+    public function setWidth(int $value)
     {
         return $this->setData(self::WIDTH, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

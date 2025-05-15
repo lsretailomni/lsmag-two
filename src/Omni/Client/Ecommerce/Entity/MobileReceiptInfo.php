@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MobileReceiptInfo extends \Magento\Framework\DataObject
+class MobileReceiptInfo extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MobileReceiptInfo';
 

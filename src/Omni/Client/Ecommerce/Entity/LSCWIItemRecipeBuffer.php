@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIItemRecipeBuffer extends DataObject
+class LSCWIItemRecipeBuffer extends AbstractModel
 {
     public const PARENT_ITEM_NO = 'Parent Item No.';
     public const LINE_NO = 'Line No.';
@@ -18,15 +18,15 @@ class LSCWIItemRecipeBuffer extends DataObject
     public const DESCRIPTION = 'Description';
     public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
     public const QUANTITY_PER = 'Quantity per';
-    public const L_S_C_ITEM_NO = 'LSC Item No.';
-    public const L_S_C_EXCLUSION = 'LSC Exclusion';
-    public const L_S_C_PRICE_ON_EXCLUSION = 'LSC Price on Exclusion';
+    public const LSC_ITEM_NO = 'LSC Item No.';
+    public const LSC_EXCLUSION = 'LSC Exclusion';
+    public const LSC_PRICE_ON_EXCLUSION = 'LSC Price on Exclusion';
     public const RETAIL_IMAGE_ID = 'Retail Image Id';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getParentItemNo(): ?string
@@ -34,7 +34,7 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::PARENT_ITEM_NO);
     }
 
-    public function setParentItemNo(string $value): self
+    public function setParentItemNo(string $value)
     {
         return $this->setData(self::PARENT_ITEM_NO, $value);
     }
@@ -44,7 +44,7 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -54,7 +54,7 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -64,7 +64,7 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -74,7 +74,7 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -84,7 +84,7 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value): self
+    public function setUnitOfMeasureCode(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
@@ -94,39 +94,39 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::QUANTITY_PER);
     }
 
-    public function setQuantityPer(string $value): self
+    public function setQuantityPer(string $value)
     {
         return $this->setData(self::QUANTITY_PER, $value);
     }
 
     public function getLSCItemNo(): ?string
     {
-        return $this->getData(self::L_S_C_ITEM_NO);
+        return $this->getData(self::LSC_ITEM_NO);
     }
 
-    public function setLSCItemNo(string $value): self
+    public function setLSCItemNo(string $value)
     {
-        return $this->setData(self::L_S_C_ITEM_NO, $value);
+        return $this->setData(self::LSC_ITEM_NO, $value);
     }
 
     public function getLSCExclusion(): ?string
     {
-        return $this->getData(self::L_S_C_EXCLUSION);
+        return $this->getData(self::LSC_EXCLUSION);
     }
 
-    public function setLSCExclusion(string $value): self
+    public function setLSCExclusion(string $value)
     {
-        return $this->setData(self::L_S_C_EXCLUSION, $value);
+        return $this->setData(self::LSC_EXCLUSION, $value);
     }
 
     public function getLSCPriceOnExclusion(): ?string
     {
-        return $this->getData(self::L_S_C_PRICE_ON_EXCLUSION);
+        return $this->getData(self::LSC_PRICE_ON_EXCLUSION);
     }
 
-    public function setLSCPriceOnExclusion(string $value): self
+    public function setLSCPriceOnExclusion(string $value)
     {
-        return $this->setData(self::L_S_C_PRICE_ON_EXCLUSION, $value);
+        return $this->setData(self::LSC_PRICE_ON_EXCLUSION, $value);
     }
 
     public function getRetailImageId(): ?string
@@ -134,58 +134,58 @@ class LSCWIItemRecipeBuffer extends DataObject
         return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
-    public function setRetailImageId(string $value): self
+    public function setRetailImageId(string $value)
     {
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

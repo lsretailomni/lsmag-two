@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class SPGProfileFeatureFlags extends \Magento\Framework\DataObject
+class SPGProfileFeatureFlags extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'SPGProfileFeatureFlags';
 

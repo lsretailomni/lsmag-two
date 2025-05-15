@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ShippingAgent extends \Magento\Framework\DataObject
+class ShippingAgent extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'ShippingAgent';
 

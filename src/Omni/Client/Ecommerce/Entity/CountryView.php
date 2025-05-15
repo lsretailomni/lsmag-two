@@ -7,28 +7,28 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class CountryView extends DataObject
+class CountryView extends AbstractModel
 {
     public const CODE = 'Code';
     public const NAME = 'Name';
-    public const I_S_O_CODE = 'ISO Code';
-    public const I_S_O_NUMERIC_CODE = 'ISO Numeric Code';
-    public const E_U_COUNTRY_REGION_CODE = 'EU Country/Region Code';
+    public const ISO_CODE = 'ISO Code';
+    public const ISO_NUMERIC_CODE = 'ISO Numeric Code';
+    public const EU_COUNTRYREGION_CODE = 'EU Country/Region Code';
     public const INTRASTAT_CODE = 'Intrastat Code';
     public const ADDRESS_FORMAT = 'Address Format';
     public const CONTACT_ADDRESS_FORMAT = 'Contact Address Format';
-    public const V_A_T_SCHEME = 'VAT Scheme';
+    public const VAT_SCHEME = 'VAT Scheme';
     public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
     public const COUNTY_NAME = 'County Name';
-    public const L_S_C_WEB_STORE_CUSTOMER_NO = 'LSC Web Store Customer No.';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
-    public const TAX_POST_GROUP = 'TaxPostGroup';
+    public const LSC_WEB_STORE_CUSTOMER_NO = 'LSC Web Store Customer No.';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
+    public const TAXPOSTGROUP = 'TaxPostGroup';
 
 
     public function getCode(): ?string
@@ -36,7 +36,7 @@ class CountryView extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -46,39 +46,39 @@ class CountryView extends DataObject
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value): self
+    public function setName(string $value)
     {
         return $this->setData(self::NAME, $value);
     }
 
     public function getISOCode(): ?string
     {
-        return $this->getData(self::I_S_O_CODE);
+        return $this->getData(self::ISO_CODE);
     }
 
-    public function setISOCode(string $value): self
+    public function setISOCode(string $value)
     {
-        return $this->setData(self::I_S_O_CODE, $value);
+        return $this->setData(self::ISO_CODE, $value);
     }
 
     public function getISONumericCode(): ?string
     {
-        return $this->getData(self::I_S_O_NUMERIC_CODE);
+        return $this->getData(self::ISO_NUMERIC_CODE);
     }
 
-    public function setISONumericCode(string $value): self
+    public function setISONumericCode(string $value)
     {
-        return $this->setData(self::I_S_O_NUMERIC_CODE, $value);
+        return $this->setData(self::ISO_NUMERIC_CODE, $value);
     }
 
     public function getEUCountryRegionCode(): ?string
     {
-        return $this->getData(self::E_U_COUNTRY_REGION_CODE);
+        return $this->getData(self::EU_COUNTRYREGION_CODE);
     }
 
-    public function setEUCountryRegionCode(string $value): self
+    public function setEUCountryRegionCode(string $value)
     {
-        return $this->setData(self::E_U_COUNTRY_REGION_CODE, $value);
+        return $this->setData(self::EU_COUNTRYREGION_CODE, $value);
     }
 
     public function getIntrastatCode(): ?string
@@ -86,7 +86,7 @@ class CountryView extends DataObject
         return $this->getData(self::INTRASTAT_CODE);
     }
 
-    public function setIntrastatCode(string $value): self
+    public function setIntrastatCode(string $value)
     {
         return $this->setData(self::INTRASTAT_CODE, $value);
     }
@@ -96,7 +96,7 @@ class CountryView extends DataObject
         return $this->getData(self::ADDRESS_FORMAT);
     }
 
-    public function setAddressFormat(string $value): self
+    public function setAddressFormat(string $value)
     {
         return $this->setData(self::ADDRESS_FORMAT, $value);
     }
@@ -106,19 +106,19 @@ class CountryView extends DataObject
         return $this->getData(self::CONTACT_ADDRESS_FORMAT);
     }
 
-    public function setContactAddressFormat(string $value): self
+    public function setContactAddressFormat(string $value)
     {
         return $this->setData(self::CONTACT_ADDRESS_FORMAT, $value);
     }
 
     public function getVATScheme(): ?string
     {
-        return $this->getData(self::V_A_T_SCHEME);
+        return $this->getData(self::VAT_SCHEME);
     }
 
-    public function setVATScheme(string $value): self
+    public function setVATScheme(string $value)
     {
-        return $this->setData(self::V_A_T_SCHEME, $value);
+        return $this->setData(self::VAT_SCHEME, $value);
     }
 
     public function getLastModifiedDateTime(): ?\DateTime
@@ -126,7 +126,7 @@ class CountryView extends DataObject
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value): self
+    public function setLastModifiedDateTime(\DateTime $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -136,78 +136,78 @@ class CountryView extends DataObject
         return $this->getData(self::COUNTY_NAME);
     }
 
-    public function setCountyName(string $value): self
+    public function setCountyName(string $value)
     {
         return $this->setData(self::COUNTY_NAME, $value);
     }
 
     public function getLSCWebStoreCustomerNo(): ?string
     {
-        return $this->getData(self::L_S_C_WEB_STORE_CUSTOMER_NO);
+        return $this->getData(self::LSC_WEB_STORE_CUSTOMER_NO);
     }
 
-    public function setLSCWebStoreCustomerNo(string $value): self
+    public function setLSCWebStoreCustomerNo(string $value)
     {
-        return $this->setData(self::L_S_C_WEB_STORE_CUSTOMER_NO, $value);
+        return $this->setData(self::LSC_WEB_STORE_CUSTOMER_NO, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getTaxPostGroup(): ?string
     {
-        return $this->getData(self::TAX_POST_GROUP);
+        return $this->getData(self::TAXPOSTGROUP);
     }
 
-    public function setTaxPostGroup(string $value): self
+    public function setTaxPostGroup(string $value)
     {
-        return $this->setData(self::TAX_POST_GROUP, $value);
+        return $this->setData(self::TAXPOSTGROUP, $value);
     }
 }

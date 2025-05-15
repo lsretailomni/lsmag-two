@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransactionHeader extends \Magento\Framework\DataObject
+class TransactionHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransactionHeader';
 

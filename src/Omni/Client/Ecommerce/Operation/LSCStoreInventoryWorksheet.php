@@ -23,8 +23,8 @@ class LSCStoreInventoryWorksheet
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInvWorksheetBuffer();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInvWorksheetBuffer::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCStoreInventoryWorksheetResponse
@@ -79,7 +79,9 @@ class LSCStoreInventoryWorksheet
         if (!empty($fields)) {
             foreach ($rows as $row) {
                 $values = $row['Fields'] ?? [];
-                $entry = new \Ls\Omni\Client\Ecommerce\Entity\LSCStoreInventoryWorksheet();
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCStoreInventoryWorksheet::class
+                );
                 foreach ($values as $value) {
                     $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
                 }
@@ -87,19 +89,34 @@ class LSCStoreInventoryWorksheet
             }
         }
 
-        return new \Ls\Omni\Client\Ecommerce\Entity\LSCStoreInventoryWorksheetResponse([
-            'records' => $results,
-            'status' => $data['Status'] ?? '',
-            'errorText' => $data['ErrorText'] ?? '',
-            'lastKey' => $data['LastKey'] ?? '',
-            'lastEntryNo' => $data['LastEntryNo'] ?? 0,
-            'endOfTable' => $data['EndOfTable'] ?? false
-        ]);
+        return $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCStoreInventoryWorksheetResponse::class,
+                     [
+                        'data' => [
+                        'records' => $results,
+                        'status' => $data['Status'] ?? '',
+                        'errorText' => $data['ErrorText'] ?? '',
+                        'lastKey' => $data['LastKey'] ?? '',
+                        'lastEntryNo' => $data['LastEntryNo'] ?? 0,
+                        'endOfTable' => $data['EndOfTable'] ?? false
+                        ]
+                     ]
+                );
     }
 
-    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInvWorksheetBuffer
+    public function createInstance(string $entityClassName, array $data = [])
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInvWorksheetBuffer($params));
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInvWorksheetBuffer
+    {
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInvWorksheetBuffer::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

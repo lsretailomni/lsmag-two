@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCInventoryLookupTable extends DataObject
+class LSCInventoryLookupTable extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const VARIANT_CODE = 'Variant Code';
@@ -18,11 +18,11 @@ class LSCInventoryLookupTable extends DataObject
     public const PHYS_INVENTORY = 'Phys. Inventory';
     public const PURCHASE_ORDER = 'Purchase Order';
     public const TOTAL_SALES = 'Total Sales';
-    public const C_O_RES_ENTRIES = 'CO Res. Entries';
+    public const CO_RES_ENTRIES = 'CO Res. Entries';
     public const VAR_PHYS_INVENTORY = 'Var. Phys. Inventory';
     public const VAR_PURCHASE_ORDER = 'Var. Purchase Order';
     public const VAR_TOTAL_SALES = 'Var. Total Sales';
-    public const VAR_C_O_RES_ENTRIES = 'Var. CO Res. Entries';
+    public const VAR_CO_RES_ENTRIES = 'Var. CO Res. Entries';
     public const POSTED_SALES = 'Posted Sales';
     public const VAR_POSTED_SALES = 'Var. Posted Sales';
     public const SERIAL_NO = 'Serial No.';
@@ -36,11 +36,11 @@ class LSCInventoryLookupTable extends DataObject
     public const LOCATION_PROFILE = 'Location Profile';
     public const REPLICATION_COUNTER = 'Replication Counter';
     public const SOURCING_LOCATION_INVENTORY = 'Sourcing Location Inventory';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getItemNo(): ?string
@@ -48,7 +48,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -58,7 +58,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -68,7 +68,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::LOCATION);
     }
 
-    public function setLocation(string $value): self
+    public function setLocation(string $value)
     {
         return $this->setData(self::LOCATION, $value);
     }
@@ -78,7 +78,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -88,7 +88,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::PHYS_INVENTORY);
     }
 
-    public function setPhysInventory(string $value): self
+    public function setPhysInventory(string $value)
     {
         return $this->setData(self::PHYS_INVENTORY, $value);
     }
@@ -98,7 +98,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::PURCHASE_ORDER);
     }
 
-    public function setPurchaseOrder(string $value): self
+    public function setPurchaseOrder(string $value)
     {
         return $this->setData(self::PURCHASE_ORDER, $value);
     }
@@ -108,19 +108,19 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::TOTAL_SALES);
     }
 
-    public function setTotalSales(string $value): self
+    public function setTotalSales(string $value)
     {
         return $this->setData(self::TOTAL_SALES, $value);
     }
 
     public function getCOResEntries(): ?string
     {
-        return $this->getData(self::C_O_RES_ENTRIES);
+        return $this->getData(self::CO_RES_ENTRIES);
     }
 
-    public function setCOResEntries(string $value): self
+    public function setCOResEntries(string $value)
     {
-        return $this->setData(self::C_O_RES_ENTRIES, $value);
+        return $this->setData(self::CO_RES_ENTRIES, $value);
     }
 
     public function getVarPhysInventory(): ?string
@@ -128,7 +128,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VAR_PHYS_INVENTORY);
     }
 
-    public function setVarPhysInventory(string $value): self
+    public function setVarPhysInventory(string $value)
     {
         return $this->setData(self::VAR_PHYS_INVENTORY, $value);
     }
@@ -138,7 +138,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VAR_PURCHASE_ORDER);
     }
 
-    public function setVarPurchaseOrder(string $value): self
+    public function setVarPurchaseOrder(string $value)
     {
         return $this->setData(self::VAR_PURCHASE_ORDER, $value);
     }
@@ -148,19 +148,19 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VAR_TOTAL_SALES);
     }
 
-    public function setVarTotalSales(string $value): self
+    public function setVarTotalSales(string $value)
     {
         return $this->setData(self::VAR_TOTAL_SALES, $value);
     }
 
     public function getVarCOResEntries(): ?string
     {
-        return $this->getData(self::VAR_C_O_RES_ENTRIES);
+        return $this->getData(self::VAR_CO_RES_ENTRIES);
     }
 
-    public function setVarCOResEntries(string $value): self
+    public function setVarCOResEntries(string $value)
     {
-        return $this->setData(self::VAR_C_O_RES_ENTRIES, $value);
+        return $this->setData(self::VAR_CO_RES_ENTRIES, $value);
     }
 
     public function getPostedSales(): ?string
@@ -168,7 +168,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::POSTED_SALES);
     }
 
-    public function setPostedSales(string $value): self
+    public function setPostedSales(string $value)
     {
         return $this->setData(self::POSTED_SALES, $value);
     }
@@ -178,7 +178,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VAR_POSTED_SALES);
     }
 
-    public function setVarPostedSales(string $value): self
+    public function setVarPostedSales(string $value)
     {
         return $this->setData(self::VAR_POSTED_SALES, $value);
     }
@@ -188,7 +188,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::SERIAL_NO);
     }
 
-    public function setSerialNo(string $value): self
+    public function setSerialNo(string $value)
     {
         return $this->setData(self::SERIAL_NO, $value);
     }
@@ -198,7 +198,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::LOT_NO);
     }
 
-    public function setLotNo(string $value): self
+    public function setLotNo(string $value)
     {
         return $this->setData(self::LOT_NO, $value);
     }
@@ -208,7 +208,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::EXPIRATION_DATE);
     }
 
-    public function setExpirationDate(string $value): self
+    public function setExpirationDate(string $value)
     {
         return $this->setData(self::EXPIRATION_DATE, $value);
     }
@@ -218,7 +218,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::TOTAL_INV_ADJMT);
     }
 
-    public function setTotalInvAdjmt(string $value): self
+    public function setTotalInvAdjmt(string $value)
     {
         return $this->setData(self::TOTAL_INV_ADJMT, $value);
     }
@@ -228,7 +228,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VAR_TOTAL_INV_ADJMT);
     }
 
-    public function setVarTotalInvAdjmt(string $value): self
+    public function setVarTotalInvAdjmt(string $value)
     {
         return $this->setData(self::VAR_TOTAL_INV_ADJMT, $value);
     }
@@ -238,7 +238,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::POSTED_INV_ADJMT);
     }
 
-    public function setPostedInvAdjmt(string $value): self
+    public function setPostedInvAdjmt(string $value)
     {
         return $this->setData(self::POSTED_INV_ADJMT, $value);
     }
@@ -248,7 +248,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::VAR_POSTED_INV_ADJMT);
     }
 
-    public function setVarPostedInvAdjmt(string $value): self
+    public function setVarPostedInvAdjmt(string $value)
     {
         return $this->setData(self::VAR_POSTED_INV_ADJMT, $value);
     }
@@ -258,7 +258,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::NET_INVENTORY);
     }
 
-    public function setNetInventory(string $value): self
+    public function setNetInventory(string $value)
     {
         return $this->setData(self::NET_INVENTORY, $value);
     }
@@ -268,7 +268,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::LOCATION_PROFILE);
     }
 
-    public function setLocationProfile(string $value): self
+    public function setLocationProfile(string $value)
     {
         return $this->setData(self::LOCATION_PROFILE, $value);
     }
@@ -278,7 +278,7 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::REPLICATION_COUNTER);
     }
 
-    public function setReplicationCounter(int $value): self
+    public function setReplicationCounter(int $value)
     {
         return $this->setData(self::REPLICATION_COUNTER, $value);
     }
@@ -288,58 +288,58 @@ class LSCInventoryLookupTable extends DataObject
         return $this->getData(self::SOURCING_LOCATION_INVENTORY);
     }
 
-    public function setSourcingLocationInventory(string $value): self
+    public function setSourcingLocationInventory(string $value)
     {
         return $this->setData(self::SOURCING_LOCATION_INVENTORY, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

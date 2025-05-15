@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberContactAttrList extends DataObject
+class LSCMemberContactAttrList extends AbstractModel
 {
     public const ACCOUNT_NO = 'Account No.';
     public const CONTACT_NO = 'Contact No.';
@@ -24,7 +24,7 @@ class LSCMemberContactAttrList extends DataObject
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value): self
+    public function setAccountNo(string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -34,7 +34,7 @@ class LSCMemberContactAttrList extends DataObject
         return $this->getData(self::CONTACT_NO);
     }
 
-    public function setContactNo(string $value): self
+    public function setContactNo(string $value)
     {
         return $this->setData(self::CONTACT_NO, $value);
     }
@@ -44,7 +44,7 @@ class LSCMemberContactAttrList extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -54,7 +54,7 @@ class LSCMemberContactAttrList extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -64,7 +64,7 @@ class LSCMemberContactAttrList extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -74,7 +74,7 @@ class LSCMemberContactAttrList extends DataObject
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value): self
+    public function setValue(string $value)
     {
         return $this->setData(self::VALUE, $value);
     }

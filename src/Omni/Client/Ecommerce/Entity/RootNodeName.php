@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootNodeName extends \Magento\Framework\DataObject
+class RootNodeName extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootNodeName';
 

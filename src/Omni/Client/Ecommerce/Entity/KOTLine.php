@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class KOTLine extends \Magento\Framework\DataObject
+class KOTLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'KOT_Line';
 

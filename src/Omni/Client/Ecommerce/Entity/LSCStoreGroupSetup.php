@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCStoreGroupSetup extends DataObject
+class LSCStoreGroupSetup extends AbstractModel
 {
     public const STORE_CODE = 'Store Code';
     public const STORE_GROUP = 'Store Group';
@@ -20,7 +20,7 @@ class LSCStoreGroupSetup extends DataObject
         return $this->getData(self::STORE_CODE);
     }
 
-    public function setStoreCode(string $value): self
+    public function setStoreCode(string $value)
     {
         return $this->setData(self::STORE_CODE, $value);
     }
@@ -30,7 +30,7 @@ class LSCStoreGroupSetup extends DataObject
         return $this->getData(self::STORE_GROUP);
     }
 
-    public function setStoreGroup(string $value): self
+    public function setStoreGroup(string $value)
     {
         return $this->setData(self::STORE_GROUP, $value);
     }

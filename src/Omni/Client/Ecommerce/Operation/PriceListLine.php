@@ -23,8 +23,8 @@ class PriceListLine
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\PriceListLineResponse
@@ -79,7 +79,9 @@ class PriceListLine
         if (!empty($fields)) {
             foreach ($rows as $row) {
                 $values = $row['Fields'] ?? [];
-                $entry = new \Ls\Omni\Client\Ecommerce\Entity\PriceListLine();
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\PriceListLine::class
+                );
                 foreach ($values as $value) {
                     $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
                 }
@@ -87,19 +89,34 @@ class PriceListLine
             }
         }
 
-        return new \Ls\Omni\Client\Ecommerce\Entity\PriceListLineResponse([
-            'records' => $results,
-            'status' => $data['Status'] ?? '',
-            'errorText' => $data['ErrorText'] ?? '',
-            'lastKey' => $data['LastKey'] ?? '',
-            'lastEntryNo' => $data['LastEntryNo'] ?? 0,
-            'endOfTable' => $data['EndOfTable'] ?? false
-        ]);
+        return $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\PriceListLineResponse::class,
+                     [
+                        'data' => [
+                        'records' => $results,
+                        'status' => $data['Status'] ?? '',
+                        'errorText' => $data['ErrorText'] ?? '',
+                        'lastKey' => $data['LastKey'] ?? '',
+                        'lastEntryNo' => $data['LastEntryNo'] ?? 0,
+                        'endOfTable' => $data['EndOfTable'] ?? false
+                        ]
+                     ]
+                );
     }
 
-    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine
+    public function createInstance(string $entityClassName, array $data = [])
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine($params));
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine
+    {
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetPriceListLine::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

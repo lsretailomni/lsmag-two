@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransSafeEntry extends \Magento\Framework\DataObject
+class TransSafeEntry extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransSafeEntry';
 

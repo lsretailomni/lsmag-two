@@ -7,52 +7,52 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCRetailProductGroup extends DataObject
+class LSCRetailProductGroup extends AbstractModel
 {
     public const ITEM_CATEGORY_CODE = 'Item Category Code';
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
     public const SHELF_LABEL_DESCRIPTION = 'Shelf Label Description';
     public const ITEM_TEMPLATE_CODE = 'Item Template Code';
-    public const P_O_S_MENU_LINK = 'POS Menu Link';
+    public const POS_MENU_LINK = 'POS Menu Link';
     public const MIN_LOC_PROF_INVENTORY = 'Min Loc. Prof. Inventory';
     public const BARCODE_MASK = 'Barcode Mask';
-    public const USE_E_A_N_STANDARD_BARC = 'Use EAN Standard Barc.';
+    public const USE_EAN_STANDARD_BARC = 'Use EAN Standard Barc.';
     public const DEFAULT_PROFIT = 'Default Profit %';
     public const DISPENSE_PRINTER_GROUP = 'Dispense Printer Group';
     public const DISABLE_DISPENSE_PRINTING = 'Disable Dispense Printing';
-    public const P_O_S_INVENTORY_LOOKUP = 'POS Inventory Lookup';
+    public const POS_INVENTORY_LOOKUP = 'POS Inventory Lookup';
     public const LAST_DATE_MODIFIED = 'Last Date Modified';
     public const INVENTORY_FREE_ENTRY_TRACKING = 'Inventory Free Entry Tracking';
     public const VARIANT_FRAMEWORK_CODE = 'Variant Framework Code';
     public const PRIMARY_KEY = 'Primary Key';
     public const DIVISION_CODE = 'Division Code';
     public const ITEM_ERROR_CHECK_CODE = 'Item Error Check Code';
-    public const SUGGESTED_QTY_ON_P_O_S = 'Suggested Qty. on POS';
-    public const DEFAULT_BASE_U_O_M = 'Default Base UOM';
+    public const SUGGESTED_QTY_ON_POS = 'Suggested Qty. on POS';
+    public const DEFAULT_BASE_UOM = 'Default Base UOM';
     public const QTY_NOT_IN_DECIMAL = 'Qty not in Decimal';
     public const PROFIT_GOAL = 'Profit Goal %';
     public const BUYER_GROUP_CODE = 'Buyer Group Code';
     public const REPLEN_DATA_PROFILE = 'Replen. Data Profile';
-    public const BUYER_I_D = 'Buyer ID';
+    public const BUYER_ID = 'Buyer ID';
     public const REPLEN_TRANSFER_RULE_CODE = 'Replen. Transfer Rule Code';
     public const DEF_ITEM_DISTR_TYPE = 'Def. Item Distr. Type';
     public const DEF_ITEM_DISTR_CODE = 'Def. Item Distr. Code';
     public const EXCLUDE_FROM_REPLENISHMENT = 'Exclude from Replenishment';
-    public const EXCLUDE_FROM_O_O_S_CALC = 'Exclude from OOS Calc.';
+    public const EXCLUDE_FROM_OOS_CALC = 'Exclude from OOS Calc.';
     public const NOT_DISCOUNTABLE = 'Not Discountable';
     public const PHYS_INVT_COUNTING_PERIOD_CODE = 'Phys Invt Counting Period Code';
     public const ALLOCATION_RULE_CODE = 'Allocation Rule Code';
     public const OUTBOUND_CODE = 'Outbound Code';
     public const SORT_ORDER = 'Sort Order';
-    public const P_L_B_GROUP = 'PLB Group';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const PLB_GROUP = 'PLB Group';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getItemCategoryCode(): ?string
@@ -60,7 +60,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
-    public function setItemCategoryCode(string $value): self
+    public function setItemCategoryCode(string $value)
     {
         return $this->setData(self::ITEM_CATEGORY_CODE, $value);
     }
@@ -70,7 +70,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -80,7 +80,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -90,7 +90,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::SHELF_LABEL_DESCRIPTION);
     }
 
-    public function setShelfLabelDescription(string $value): self
+    public function setShelfLabelDescription(string $value)
     {
         return $this->setData(self::SHELF_LABEL_DESCRIPTION, $value);
     }
@@ -100,19 +100,19 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::ITEM_TEMPLATE_CODE);
     }
 
-    public function setItemTemplateCode(string $value): self
+    public function setItemTemplateCode(string $value)
     {
         return $this->setData(self::ITEM_TEMPLATE_CODE, $value);
     }
 
     public function getPOSMenuLink(): ?string
     {
-        return $this->getData(self::P_O_S_MENU_LINK);
+        return $this->getData(self::POS_MENU_LINK);
     }
 
-    public function setPOSMenuLink(string $value): self
+    public function setPOSMenuLink(string $value)
     {
-        return $this->setData(self::P_O_S_MENU_LINK, $value);
+        return $this->setData(self::POS_MENU_LINK, $value);
     }
 
     public function getMinLocProfInventory(): ?int
@@ -120,7 +120,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::MIN_LOC_PROF_INVENTORY);
     }
 
-    public function setMinLocProfInventory(int $value): self
+    public function setMinLocProfInventory(int $value)
     {
         return $this->setData(self::MIN_LOC_PROF_INVENTORY, $value);
     }
@@ -130,19 +130,19 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::BARCODE_MASK);
     }
 
-    public function setBarcodeMask(string $value): self
+    public function setBarcodeMask(string $value)
     {
         return $this->setData(self::BARCODE_MASK, $value);
     }
 
     public function getUseEANStandardBarc(): ?bool
     {
-        return $this->getData(self::USE_E_A_N_STANDARD_BARC);
+        return $this->getData(self::USE_EAN_STANDARD_BARC);
     }
 
-    public function setUseEANStandardBarc(bool $value): self
+    public function setUseEANStandardBarc(bool $value)
     {
-        return $this->setData(self::USE_E_A_N_STANDARD_BARC, $value);
+        return $this->setData(self::USE_EAN_STANDARD_BARC, $value);
     }
 
     public function getDefaultProfit(): ?string
@@ -150,7 +150,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DEFAULT_PROFIT);
     }
 
-    public function setDefaultProfit(string $value): self
+    public function setDefaultProfit(string $value)
     {
         return $this->setData(self::DEFAULT_PROFIT, $value);
     }
@@ -160,7 +160,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DISPENSE_PRINTER_GROUP);
     }
 
-    public function setDispensePrinterGroup(string $value): self
+    public function setDispensePrinterGroup(string $value)
     {
         return $this->setData(self::DISPENSE_PRINTER_GROUP, $value);
     }
@@ -170,19 +170,19 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DISABLE_DISPENSE_PRINTING);
     }
 
-    public function setDisableDispensePrinting(bool $value): self
+    public function setDisableDispensePrinting(bool $value)
     {
         return $this->setData(self::DISABLE_DISPENSE_PRINTING, $value);
     }
 
     public function getPOSInventoryLookup(): ?bool
     {
-        return $this->getData(self::P_O_S_INVENTORY_LOOKUP);
+        return $this->getData(self::POS_INVENTORY_LOOKUP);
     }
 
-    public function setPOSInventoryLookup(bool $value): self
+    public function setPOSInventoryLookup(bool $value)
     {
-        return $this->setData(self::P_O_S_INVENTORY_LOOKUP, $value);
+        return $this->setData(self::POS_INVENTORY_LOOKUP, $value);
     }
 
     public function getLastDateModified(): ?string
@@ -190,7 +190,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value): self
+    public function setLastDateModified(string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -200,7 +200,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::INVENTORY_FREE_ENTRY_TRACKING);
     }
 
-    public function setInventoryFreeEntryTracking(bool $value): self
+    public function setInventoryFreeEntryTracking(bool $value)
     {
         return $this->setData(self::INVENTORY_FREE_ENTRY_TRACKING, $value);
     }
@@ -210,7 +210,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::VARIANT_FRAMEWORK_CODE);
     }
 
-    public function setVariantFrameworkCode(string $value): self
+    public function setVariantFrameworkCode(string $value)
     {
         return $this->setData(self::VARIANT_FRAMEWORK_CODE, $value);
     }
@@ -220,7 +220,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::PRIMARY_KEY);
     }
 
-    public function setPrimaryKey(string $value): self
+    public function setPrimaryKey(string $value)
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
@@ -230,7 +230,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DIVISION_CODE);
     }
 
-    public function setDivisionCode(string $value): self
+    public function setDivisionCode(string $value)
     {
         return $this->setData(self::DIVISION_CODE, $value);
     }
@@ -240,29 +240,29 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::ITEM_ERROR_CHECK_CODE);
     }
 
-    public function setItemErrorCheckCode(string $value): self
+    public function setItemErrorCheckCode(string $value)
     {
         return $this->setData(self::ITEM_ERROR_CHECK_CODE, $value);
     }
 
     public function getSuggestedQtyOnPOS(): ?string
     {
-        return $this->getData(self::SUGGESTED_QTY_ON_P_O_S);
+        return $this->getData(self::SUGGESTED_QTY_ON_POS);
     }
 
-    public function setSuggestedQtyOnPOS(string $value): self
+    public function setSuggestedQtyOnPOS(string $value)
     {
-        return $this->setData(self::SUGGESTED_QTY_ON_P_O_S, $value);
+        return $this->setData(self::SUGGESTED_QTY_ON_POS, $value);
     }
 
     public function getDefaultBaseUOM(): ?string
     {
-        return $this->getData(self::DEFAULT_BASE_U_O_M);
+        return $this->getData(self::DEFAULT_BASE_UOM);
     }
 
-    public function setDefaultBaseUOM(string $value): self
+    public function setDefaultBaseUOM(string $value)
     {
-        return $this->setData(self::DEFAULT_BASE_U_O_M, $value);
+        return $this->setData(self::DEFAULT_BASE_UOM, $value);
     }
 
     public function getQtyNotInDecimal(): ?bool
@@ -270,7 +270,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::QTY_NOT_IN_DECIMAL);
     }
 
-    public function setQtyNotInDecimal(bool $value): self
+    public function setQtyNotInDecimal(bool $value)
     {
         return $this->setData(self::QTY_NOT_IN_DECIMAL, $value);
     }
@@ -280,7 +280,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::PROFIT_GOAL);
     }
 
-    public function setProfitGoal(string $value): self
+    public function setProfitGoal(string $value)
     {
         return $this->setData(self::PROFIT_GOAL, $value);
     }
@@ -290,7 +290,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::BUYER_GROUP_CODE);
     }
 
-    public function setBuyerGroupCode(string $value): self
+    public function setBuyerGroupCode(string $value)
     {
         return $this->setData(self::BUYER_GROUP_CODE, $value);
     }
@@ -300,19 +300,19 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::REPLEN_DATA_PROFILE);
     }
 
-    public function setReplenDataProfile(string $value): self
+    public function setReplenDataProfile(string $value)
     {
         return $this->setData(self::REPLEN_DATA_PROFILE, $value);
     }
 
     public function getBuyerID(): ?string
     {
-        return $this->getData(self::BUYER_I_D);
+        return $this->getData(self::BUYER_ID);
     }
 
-    public function setBuyerID(string $value): self
+    public function setBuyerID(string $value)
     {
-        return $this->setData(self::BUYER_I_D, $value);
+        return $this->setData(self::BUYER_ID, $value);
     }
 
     public function getReplenTransferRuleCode(): ?string
@@ -320,7 +320,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::REPLEN_TRANSFER_RULE_CODE);
     }
 
-    public function setReplenTransferRuleCode(string $value): self
+    public function setReplenTransferRuleCode(string $value)
     {
         return $this->setData(self::REPLEN_TRANSFER_RULE_CODE, $value);
     }
@@ -330,7 +330,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DEF_ITEM_DISTR_TYPE);
     }
 
-    public function setDefItemDistrType(string $value): self
+    public function setDefItemDistrType(string $value)
     {
         return $this->setData(self::DEF_ITEM_DISTR_TYPE, $value);
     }
@@ -340,7 +340,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::DEF_ITEM_DISTR_CODE);
     }
 
-    public function setDefItemDistrCode(string $value): self
+    public function setDefItemDistrCode(string $value)
     {
         return $this->setData(self::DEF_ITEM_DISTR_CODE, $value);
     }
@@ -350,19 +350,19 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::EXCLUDE_FROM_REPLENISHMENT);
     }
 
-    public function setExcludeFromReplenishment(bool $value): self
+    public function setExcludeFromReplenishment(bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_REPLENISHMENT, $value);
     }
 
     public function getExcludeFromOOSCalc(): ?bool
     {
-        return $this->getData(self::EXCLUDE_FROM_O_O_S_CALC);
+        return $this->getData(self::EXCLUDE_FROM_OOS_CALC);
     }
 
-    public function setExcludeFromOOSCalc(bool $value): self
+    public function setExcludeFromOOSCalc(bool $value)
     {
-        return $this->setData(self::EXCLUDE_FROM_O_O_S_CALC, $value);
+        return $this->setData(self::EXCLUDE_FROM_OOS_CALC, $value);
     }
 
     public function getNotDiscountable(): ?bool
@@ -370,7 +370,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::NOT_DISCOUNTABLE);
     }
 
-    public function setNotDiscountable(bool $value): self
+    public function setNotDiscountable(bool $value)
     {
         return $this->setData(self::NOT_DISCOUNTABLE, $value);
     }
@@ -380,7 +380,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::PHYS_INVT_COUNTING_PERIOD_CODE);
     }
 
-    public function setPhysInvtCountingPeriodCode(string $value): self
+    public function setPhysInvtCountingPeriodCode(string $value)
     {
         return $this->setData(self::PHYS_INVT_COUNTING_PERIOD_CODE, $value);
     }
@@ -390,7 +390,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::ALLOCATION_RULE_CODE);
     }
 
-    public function setAllocationRuleCode(string $value): self
+    public function setAllocationRuleCode(string $value)
     {
         return $this->setData(self::ALLOCATION_RULE_CODE, $value);
     }
@@ -400,7 +400,7 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::OUTBOUND_CODE);
     }
 
-    public function setOutboundCode(string $value): self
+    public function setOutboundCode(string $value)
     {
         return $this->setData(self::OUTBOUND_CODE, $value);
     }
@@ -410,68 +410,68 @@ class LSCRetailProductGroup extends DataObject
         return $this->getData(self::SORT_ORDER);
     }
 
-    public function setSortOrder(int $value): self
+    public function setSortOrder(int $value)
     {
         return $this->setData(self::SORT_ORDER, $value);
     }
 
     public function getPLBGroup(): ?bool
     {
-        return $this->getData(self::P_L_B_GROUP);
+        return $this->getData(self::PLB_GROUP);
     }
 
-    public function setPLBGroup(bool $value): self
+    public function setPLBGroup(bool $value)
     {
-        return $this->setData(self::P_L_B_GROUP, $value);
+        return $this->setData(self::PLB_GROUP, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

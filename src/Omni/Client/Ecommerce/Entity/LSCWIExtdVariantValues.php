@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIExtd.VariantValues extends DataObject
+class LSCWIExtdVariantValues extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const FRAMEWORK_CODE = 'Framework Code';
@@ -31,11 +31,11 @@ class LSCWIExtd.VariantValues extends DataObject
     public const ATTRIBUTE_3_VALUE = 'Attribute 3 Value';
     public const DIMENSION_ORDER = 'Dimension Order';
     public const CODE_DESCRIPTION = 'Code Description';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getItemNo(): ?string
@@ -43,7 +43,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -53,7 +53,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value): self
+    public function setFrameworkCode(string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -63,7 +63,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::VALUE_TYPE);
     }
 
-    public function setValueType(string $value): self
+    public function setValueType(string $value)
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
@@ -73,7 +73,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -83,7 +83,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::DIMENSION);
     }
 
-    public function setDimension(int $value): self
+    public function setDimension(int $value)
     {
         return $this->setData(self::DIMENSION, $value);
     }
@@ -93,7 +93,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value): self
+    public function setValue(string $value)
     {
         return $this->setData(self::VALUE, $value);
     }
@@ -103,7 +103,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::DIMENSION_LINK);
     }
 
-    public function setDimensionLink(string $value): self
+    public function setDimensionLink(string $value)
     {
         return $this->setData(self::DIMENSION_LINK, $value);
     }
@@ -113,7 +113,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::EXTENSION);
     }
 
-    public function setExtension(string $value): self
+    public function setExtension(string $value)
     {
         return $this->setData(self::EXTENSION, $value);
     }
@@ -123,7 +123,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::COMPARISON_VALUE);
     }
 
-    public function setComparisonValue(string $value): self
+    public function setComparisonValue(string $value)
     {
         return $this->setData(self::COMPARISON_VALUE, $value);
     }
@@ -133,7 +133,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::SELECTION);
     }
 
-    public function setSelection(bool $value): self
+    public function setSelection(bool $value)
     {
         return $this->setData(self::SELECTION, $value);
     }
@@ -143,7 +143,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(int $value): self
+    public function setLogicalOrder(int $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }
@@ -153,7 +153,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::VIEWING_COLOR);
     }
 
-    public function setViewingColor(int $value): self
+    public function setViewingColor(int $value)
     {
         return $this->setData(self::VIEWING_COLOR, $value);
     }
@@ -163,7 +163,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::DEFAULT_VARIANT_WEIGHT);
     }
 
-    public function setDefaultVariantWeight(string $value): self
+    public function setDefaultVariantWeight(string $value)
     {
         return $this->setData(self::DEFAULT_VARIANT_WEIGHT, $value);
     }
@@ -173,7 +173,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value): self
+    public function setStatus(string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -183,7 +183,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::VALUE_DESCRIPTION);
     }
 
-    public function setValueDescription(string $value): self
+    public function setValueDescription(string $value)
     {
         return $this->setData(self::VALUE_DESCRIPTION, $value);
     }
@@ -193,7 +193,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::ATTRIBUTE_1_VALUE);
     }
 
-    public function setAttribute1Value(string $value): self
+    public function setAttribute1Value(string $value)
     {
         return $this->setData(self::ATTRIBUTE_1_VALUE, $value);
     }
@@ -203,7 +203,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::ATTRIBUTE_2_VALUE);
     }
 
-    public function setAttribute2Value(string $value): self
+    public function setAttribute2Value(string $value)
     {
         return $this->setData(self::ATTRIBUTE_2_VALUE, $value);
     }
@@ -213,7 +213,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::ATTRIBUTE_3_VALUE);
     }
 
-    public function setAttribute3Value(string $value): self
+    public function setAttribute3Value(string $value)
     {
         return $this->setData(self::ATTRIBUTE_3_VALUE, $value);
     }
@@ -223,7 +223,7 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::DIMENSION_ORDER);
     }
 
-    public function setDimensionOrder(int $value): self
+    public function setDimensionOrder(int $value)
     {
         return $this->setData(self::DIMENSION_ORDER, $value);
     }
@@ -233,58 +233,58 @@ class LSCWIExtd.VariantValues extends DataObject
         return $this->getData(self::CODE_DESCRIPTION);
     }
 
-    public function setCodeDescription(string $value): self
+    public function setCodeDescription(string $value)
     {
         return $this->setData(self::CODE_DESCRIPTION, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

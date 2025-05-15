@@ -7,56 +7,56 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends DataObject
+class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
 {
-    public const L_S_C_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
-    public const L_S_C_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
-    public const L_S_C_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
-    public const L_S_C_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
+    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
+    public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
     public const SALES_SHIPMENT_HEADER = 'SalesShipmentHeader';
     public const SALES_SHIPMENT_LINE = 'SalesShipmentLine';
 
 
     public function getLSCMemberSalesBuffer(): ?LSCMemberSalesBuffer
     {
-        return $this->getData(self::L_S_C_MEMBER_SALES_BUFFER);
+        return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLSCMemberSalesBuffer(LSCMemberSalesBuffer $value): self
+    public function setLSCMemberSalesBuffer(LSCMemberSalesBuffer $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_SALES_BUFFER, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
     public function getLSCMemberSalesDocLine(): ?array
     {
-        return $this->getData(self::L_S_C_MEMBER_SALES_DOC_LINE);
+        return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLSCMemberSalesDocLine(array $value): self
+    public function setLSCMemberSalesDocLine(array $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_SALES_DOC_LINE, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
     public function getLSCMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
     {
-        return $this->getData(self::L_S_C_MEMBER_SALES_DOC_DISC_LINE);
+        return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
 
-    public function setLSCMemberSalesDocDiscLine(LSCMemberSalesDocDiscLine $value): self
+    public function setLSCMemberSalesDocDiscLine(LSCMemberSalesDocDiscLine $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_SALES_DOC_DISC_LINE, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
     public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
     {
-        return $this->getData(self::L_S_C_MEMBER_SALES_DATA_ENTRY);
+        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
 
-    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value): self
+    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_SALES_DATA_ENTRY, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
     public function getSalesShipmentHeader(): ?SalesShipmentHeader
@@ -64,7 +64,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends DataObject
         return $this->getData(self::SALES_SHIPMENT_HEADER);
     }
 
-    public function setSalesShipmentHeader(SalesShipmentHeader $value): self
+    public function setSalesShipmentHeader(SalesShipmentHeader $value)
     {
         return $this->setData(self::SALES_SHIPMENT_HEADER, $value);
     }
@@ -74,7 +74,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends DataObject
         return $this->getData(self::SALES_SHIPMENT_LINE);
     }
 
-    public function setSalesShipmentLine(SalesShipmentLine $value): self
+    public function setSalesShipmentLine(SalesShipmentLine $value)
     {
         return $this->setData(self::SALES_SHIPMENT_LINE, $value);
     }

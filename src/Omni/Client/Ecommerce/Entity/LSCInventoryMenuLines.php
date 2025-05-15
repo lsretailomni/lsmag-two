@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCInventoryMenuLines extends DataObject
+class LSCInventoryMenuLines extends AbstractModel
 {
     public const DEVICE_TYPE = 'Device Type';
     public const MENU_CODE = 'Menu Code';
@@ -27,15 +27,15 @@ class LSCInventoryMenuLines extends DataObject
     public const CUSTOMER_NO = 'Customer No.';
     public const CARD_VIEW_CODE = 'Card View Code';
     public const ITEM_NO = 'Item No.';
-    public const WORKSHEET_SEQ_NO = 'WorksheetSeqNo';
+    public const WORKSHEETSEQNO = 'WorksheetSeqNo';
     public const WORKSHEET_TYPE = 'Worksheet Type';
     public const WORKSHEET_DESCRIPTION = 'Worksheet Description';
     public const WEB_CLIENT_URL = 'Web client Url';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getDeviceType(): ?string
@@ -43,7 +43,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::DEVICE_TYPE);
     }
 
-    public function setDeviceType(string $value): self
+    public function setDeviceType(string $value)
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
@@ -53,7 +53,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::MENU_CODE);
     }
 
-    public function setMenuCode(string $value): self
+    public function setMenuCode(string $value)
     {
         return $this->setData(self::MENU_CODE, $value);
     }
@@ -63,7 +63,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -73,7 +73,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -83,7 +83,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -93,7 +93,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::TEXT);
     }
 
-    public function setText(string $value): self
+    public function setText(string $value)
     {
         return $this->setData(self::TEXT, $value);
     }
@@ -103,7 +103,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::LINE_TYPE);
     }
 
-    public function setLineType(string $value): self
+    public function setLineType(string $value)
     {
         return $this->setData(self::LINE_TYPE, $value);
     }
@@ -113,7 +113,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -123,7 +123,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::BITMAP);
     }
 
-    public function setBitmap(string $value): self
+    public function setBitmap(string $value)
     {
         return $this->setData(self::BITMAP, $value);
     }
@@ -133,7 +133,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value): self
+    public function setStatus(string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -143,7 +143,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::CODE_TYPE);
     }
 
-    public function setCodeType(string $value): self
+    public function setCodeType(string $value)
     {
         return $this->setData(self::CODE_TYPE, $value);
     }
@@ -153,7 +153,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value): self
+    public function setLocationCode(string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -163,7 +163,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value): self
+    public function setVendorNo(string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -173,7 +173,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::CUSTOMER_NO);
     }
 
-    public function setCustomerNo(string $value): self
+    public function setCustomerNo(string $value)
     {
         return $this->setData(self::CUSTOMER_NO, $value);
     }
@@ -183,7 +183,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::CARD_VIEW_CODE);
     }
 
-    public function setCardViewCode(string $value): self
+    public function setCardViewCode(string $value)
     {
         return $this->setData(self::CARD_VIEW_CODE, $value);
     }
@@ -193,19 +193,19 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
 
     public function getWorksheetSeqNo(): ?int
     {
-        return $this->getData(self::WORKSHEET_SEQ_NO);
+        return $this->getData(self::WORKSHEETSEQNO);
     }
 
-    public function setWorksheetSeqNo(int $value): self
+    public function setWorksheetSeqNo(int $value)
     {
-        return $this->setData(self::WORKSHEET_SEQ_NO, $value);
+        return $this->setData(self::WORKSHEETSEQNO, $value);
     }
 
     public function getWorksheetType(): ?string
@@ -213,7 +213,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::WORKSHEET_TYPE);
     }
 
-    public function setWorksheetType(string $value): self
+    public function setWorksheetType(string $value)
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
@@ -223,7 +223,7 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::WORKSHEET_DESCRIPTION);
     }
 
-    public function setWorksheetDescription(string $value): self
+    public function setWorksheetDescription(string $value)
     {
         return $this->setData(self::WORKSHEET_DESCRIPTION, $value);
     }
@@ -233,58 +233,58 @@ class LSCInventoryMenuLines extends DataObject
         return $this->getData(self::WEB_CLIENT_URL);
     }
 
-    public function setWebClientUrl(string $value): self
+    public function setWebClientUrl(string $value)
     {
         return $this->setData(self::WEB_CLIENT_URL, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

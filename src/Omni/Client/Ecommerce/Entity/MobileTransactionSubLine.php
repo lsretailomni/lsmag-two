@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MobileTransactionSubLine extends \Magento\Framework\DataObject
+class MobileTransactionSubLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MobileTransactionSubLine';
 

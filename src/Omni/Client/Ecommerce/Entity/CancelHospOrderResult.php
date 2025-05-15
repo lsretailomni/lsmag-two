@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class CancelHospOrderResult extends \Magento\Framework\DataObject implements ResponseInterface
+class CancelHospOrderResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'CancelHospOrder_Result';
 

@@ -7,17 +7,17 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCStaff extends DataObject
+class LSCStaff extends AbstractModel
 {
-    public const I_D = 'ID';
+    public const ID = 'ID';
     public const PASSWORD = 'Password';
     public const CHANGE_PASSWORD = 'Change Password';
     public const STORE_NO = 'Store No.';
     public const VOID_TRANSACTION = 'Void Transaction';
     public const MANAGER_PRIVILEGES = 'Manager Privileges';
-    public const X_Z_Y_REPORT_PRINTING = 'XZY-Report Printing';
+    public const XZYREPORT_PRINTING = 'XZY-Report Printing';
     public const TENDER_DECLARATION = 'Tender Declaration';
     public const FLOATING_DECLARATION = 'Floating Declaration';
     public const PRICE_OVERRIDE = 'Price Override';
@@ -64,16 +64,16 @@ class LSCStaff extends DataObject
     public const VIEW_KITCHEN_STATUS = 'View Kitchen Status';
     public const CHANGE_STAFF = 'Change Staff';
     public const ADD_START_FLOAT = 'Add Start Float';
-    public const OPEN_SALES_P_O_S_DIRECTLY = 'Open Sales POS Directly';
-    public const OPEN_SALES_P_O_S = 'Open Sales POS';
+    public const OPEN_SALES_POS_DIRECTLY = 'Open Sales POS Directly';
+    public const OPEN_SALES_POS = 'Open Sales POS';
     public const CHANGE_DINING_TBL_STATUS = 'Change Dining Tbl. Status';
     public const RESET_DINING_TBL_STATUS = 'Reset Dining Tbl. Status';
     public const RUSH_ORDER_IN_KITCHEN = 'Rush Order in Kitchen';
     public const OPEN_DIN_TBL_LOCKED_BY_STAFF = 'Open Din. Tbl. Locked by Staff';
     public const EDIT_AVAILABLE_QTY = 'Edit Available Qty.';
-    public const CONTINUE_ON_T_S_ERRORS = 'Continue on TS errors';
-    public const LAST_Z_REPORT = 'Last Z-Report';
-    public const P_O_S_INTERFACE_PROFILE = 'POS Interface Profile';
+    public const CONTINUE_ON_TS_ERRORS = 'Continue on TS errors';
+    public const LAST_ZREPORT = 'Last Z-Report';
+    public const POS_INTERFACE_PROFILE = 'POS Interface Profile';
     public const LANGUAGE = 'Language';
     public const CREATE_CUSTOMERS = 'Create Customers';
     public const VIEW_SALES_HISTORY = 'View Sales History';
@@ -82,39 +82,29 @@ class LSCStaff extends DataObject
     public const MAX_WARNING_COUNT = 'Max. Warning Count';
     public const SHOW_DIFFERENCE_IN_WARNING = 'Show Difference in Warning';
     public const ACTION_AFTER_DIFF_WARNING = 'Action After Diff. Warning';
-    public const C_I_D_REPORT_PRINTING = 'CID-Report Printing';
+    public const CIDREPORT_PRINTING = 'CID-Report Printing';
     public const SHOW_TRANS_AMOUNT = 'Show Trans. Amount';
     public const UPDATE_CUSTOMERS = 'Update Customers';
-    public const T_I_P_S_HANDLING = 'TIPS Handling';
-    public const LAST_Y_REPORT = 'Last Y-Report';
-    public const MAX_DIFF_WARN_FROM_PERM_GR = 'Max. Diff./Warn. from Perm. Gr';
+    public const TIPS_HANDLING = 'TIPS Handling';
+    public const LAST_YREPORT = 'Last Y-Report';
+    public const MAX_DIFFWARN_FROM_PERM_GR = 'Max. Diff./Warn. from Perm. Gr';
     public const INVENTORY_ACTIVE = 'Inventory Active';
     public const INVENTORY_MAIN_MENU = 'Inventory Main Menu';
-    public const P_O_S_STYLE_PROFILE = 'POS Style Profile';
-    public const P_O_S_MENU_PROFILE = 'POS Menu Profile';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const POS_STYLE_PROFILE = 'POS Style Profile';
+    public const POS_MENU_PROFILE = 'POS Menu Profile';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-
-    public function getID(): ?string
-    {
-        return $this->getData(self::I_D);
-    }
-
-    public function setID(string $value): self
-    {
-        return $this->setData(self::I_D, $value);
-    }
 
     public function getPassword(): ?string
     {
         return $this->getData(self::PASSWORD);
     }
 
-    public function setPassword(string $value): self
+    public function setPassword(string $value)
     {
         return $this->setData(self::PASSWORD, $value);
     }
@@ -124,7 +114,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CHANGE_PASSWORD);
     }
 
-    public function setChangePassword(bool $value): self
+    public function setChangePassword(bool $value)
     {
         return $this->setData(self::CHANGE_PASSWORD, $value);
     }
@@ -134,7 +124,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -144,7 +134,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::VOID_TRANSACTION);
     }
 
-    public function setVoidTransaction(string $value): self
+    public function setVoidTransaction(string $value)
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
@@ -154,19 +144,19 @@ class LSCStaff extends DataObject
         return $this->getData(self::MANAGER_PRIVILEGES);
     }
 
-    public function setManagerPrivileges(string $value): self
+    public function setManagerPrivileges(string $value)
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
 
     public function getXZYReportPrinting(): ?string
     {
-        return $this->getData(self::X_Z_Y_REPORT_PRINTING);
+        return $this->getData(self::XZYREPORT_PRINTING);
     }
 
-    public function setXZYReportPrinting(string $value): self
+    public function setXZYReportPrinting(string $value)
     {
-        return $this->setData(self::X_Z_Y_REPORT_PRINTING, $value);
+        return $this->setData(self::XZYREPORT_PRINTING, $value);
     }
 
     public function getTenderDeclaration(): ?string
@@ -174,7 +164,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::TENDER_DECLARATION);
     }
 
-    public function setTenderDeclaration(string $value): self
+    public function setTenderDeclaration(string $value)
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
@@ -184,7 +174,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::FLOATING_DECLARATION);
     }
 
-    public function setFloatingDeclaration(string $value): self
+    public function setFloatingDeclaration(string $value)
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
@@ -194,7 +184,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::PRICE_OVERRIDE);
     }
 
-    public function setPriceOverride(string $value): self
+    public function setPriceOverride(string $value)
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
@@ -204,7 +194,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
 
-    public function setMaxDiscountToGive(string $value): self
+    public function setMaxDiscountToGive(string $value)
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
@@ -214,7 +204,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SUSPEND_TRANSACTION);
     }
 
-    public function setSuspendTransaction(string $value): self
+    public function setSuspendTransaction(string $value)
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
@@ -224,7 +214,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
     }
 
-    public function setMaxTotalDiscount(string $value): self
+    public function setMaxTotalDiscount(string $value)
     {
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }
@@ -234,7 +224,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::OPEN_DRAW_WITHOUT_SALE);
     }
 
-    public function setOpenDrawWithoutSale(string $value): self
+    public function setOpenDrawWithoutSale(string $value)
     {
         return $this->setData(self::OPEN_DRAW_WITHOUT_SALE, $value);
     }
@@ -244,7 +234,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::DISCOUNT_FROM_PERM_GROUP);
     }
 
-    public function setDiscountFromPermGroup(string $value): self
+    public function setDiscountFromPermGroup(string $value)
     {
         return $this->setData(self::DISCOUNT_FROM_PERM_GROUP, $value);
     }
@@ -254,7 +244,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::FIRST_NAME);
     }
 
-    public function setFirstName(string $value): self
+    public function setFirstName(string $value)
     {
         return $this->setData(self::FIRST_NAME, $value);
     }
@@ -264,7 +254,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::LAST_NAME);
     }
 
-    public function setLastName(string $value): self
+    public function setLastName(string $value)
     {
         return $this->setData(self::LAST_NAME, $value);
     }
@@ -274,7 +264,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::EMPLOYMENT_TYPE);
     }
 
-    public function setEmploymentType(string $value): self
+    public function setEmploymentType(string $value)
     {
         return $this->setData(self::EMPLOYMENT_TYPE, $value);
     }
@@ -284,7 +274,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::FRAUD_SORT_FIELD);
     }
 
-    public function setFraudSortField(string $value): self
+    public function setFraudSortField(string $value)
     {
         return $this->setData(self::FRAUD_SORT_FIELD, $value);
     }
@@ -294,7 +284,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value): self
+    public function setLastDateModified(string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -304,7 +294,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::NAME_ON_RECEIPT);
     }
 
-    public function setNameOnReceipt(string $value): self
+    public function setNameOnReceipt(string $value)
     {
         return $this->setData(self::NAME_ON_RECEIPT, $value);
     }
@@ -314,7 +304,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value): self
+    public function setAddress(string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -324,7 +314,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value): self
+    public function setAddress2(string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -334,7 +324,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value): self
+    public function setCity(string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -344,7 +334,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value): self
+    public function setPostCode(string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -354,7 +344,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value): self
+    public function setCounty(string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
@@ -364,7 +354,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::HOME_PHONE_NO);
     }
 
-    public function setHomePhoneNo(string $value): self
+    public function setHomePhoneNo(string $value)
     {
         return $this->setData(self::HOME_PHONE_NO, $value);
     }
@@ -374,7 +364,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::WORK_PHONE_NO);
     }
 
-    public function setWorkPhoneNo(string $value): self
+    public function setWorkPhoneNo(string $value)
     {
         return $this->setData(self::WORK_PHONE_NO, $value);
     }
@@ -384,7 +374,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::HOURLY_RATE);
     }
 
-    public function setHourlyRate(string $value): self
+    public function setHourlyRate(string $value)
     {
         return $this->setData(self::HOURLY_RATE, $value);
     }
@@ -394,7 +384,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::PAYROLL_NO);
     }
 
-    public function setPayrollNo(string $value): self
+    public function setPayrollNo(string $value)
     {
         return $this->setData(self::PAYROLL_NO, $value);
     }
@@ -404,7 +394,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -414,7 +404,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::DATE_TO_BE_BLOCKED);
     }
 
-    public function setDateToBeBlocked(string $value): self
+    public function setDateToBeBlocked(string $value)
     {
         return $this->setData(self::DATE_TO_BE_BLOCKED, $value);
     }
@@ -424,7 +414,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::LEFT_HANDED);
     }
 
-    public function setLeftHanded(bool $value): self
+    public function setLeftHanded(bool $value)
     {
         return $this->setData(self::LEFT_HANDED, $value);
     }
@@ -434,7 +424,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SALES_PERSON);
     }
 
-    public function setSalesPerson(string $value): self
+    public function setSalesPerson(string $value)
     {
         return $this->setData(self::SALES_PERSON, $value);
     }
@@ -444,7 +434,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value): self
+    public function setNoSeries(string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
@@ -454,7 +444,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::PERMISSION_GROUP);
     }
 
-    public function setPermissionGroup(string $value): self
+    public function setPermissionGroup(string $value)
     {
         return $this->setData(self::PERMISSION_GROUP, $value);
     }
@@ -464,7 +454,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::PRIVACY_BLOCKED);
     }
 
-    public function setPrivacyBlocked(bool $value): self
+    public function setPrivacyBlocked(bool $value)
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
@@ -474,7 +464,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
-    public function setReturnInTransaction(string $value): self
+    public function setReturnInTransaction(string $value)
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
@@ -484,7 +474,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::VOID_PREPAYMENT);
     }
 
-    public function setVoidPrepayment(string $value): self
+    public function setVoidPrepayment(string $value)
     {
         return $this->setData(self::VOID_PREPAYMENT, $value);
     }
@@ -494,7 +484,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::VOID_PREPAYMENT_LINE);
     }
 
-    public function setVoidPrepaymentLine(string $value): self
+    public function setVoidPrepaymentLine(string $value)
     {
         return $this->setData(self::VOID_PREPAYMENT_LINE, $value);
     }
@@ -504,7 +494,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CHANGE_PREPAYMENT_AMT);
     }
 
-    public function setChangePrepaymentAmt(string $value): self
+    public function setChangePrepaymentAmt(string $value)
     {
         return $this->setData(self::CHANGE_PREPAYMENT_AMT, $value);
     }
@@ -514,7 +504,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::ADD_PREPAYMENT_AMT);
     }
 
-    public function setAddPrepaymentAmt(string $value): self
+    public function setAddPrepaymentAmt(string $value)
     {
         return $this->setData(self::ADD_PREPAYMENT_AMT, $value);
     }
@@ -524,7 +514,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::VOID_LINE);
     }
 
-    public function setVoidLine(string $value): self
+    public function setVoidLine(string $value)
     {
         return $this->setData(self::VOID_LINE, $value);
     }
@@ -534,7 +524,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::ADD_PAYMENT);
     }
 
-    public function setAddPayment(string $value): self
+    public function setAddPayment(string $value)
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
@@ -544,7 +534,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::TRANSFER_ORDERS);
     }
 
-    public function setTransferOrders(string $value): self
+    public function setTransferOrders(string $value)
     {
         return $this->setData(self::TRANSFER_ORDERS, $value);
     }
@@ -554,7 +544,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SPLIT_BILLS);
     }
 
-    public function setSplitBills(string $value): self
+    public function setSplitBills(string $value)
     {
         return $this->setData(self::SPLIT_BILLS, $value);
     }
@@ -564,7 +554,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SWITCH_DINING_TABLE_LAYOUT);
     }
 
-    public function setSwitchDiningTableLayout(string $value): self
+    public function setSwitchDiningTableLayout(string $value)
     {
         return $this->setData(self::SWITCH_DINING_TABLE_LAYOUT, $value);
     }
@@ -574,7 +564,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::ADJUST_DINING_TABLES);
     }
 
-    public function setAdjustDiningTables(string $value): self
+    public function setAdjustDiningTables(string $value)
     {
         return $this->setData(self::ADJUST_DINING_TABLES, $value);
     }
@@ -584,7 +574,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::DESIGN_DINING_TABLE_LAYOUT);
     }
 
-    public function setDesignDiningTableLayout(string $value): self
+    public function setDesignDiningTableLayout(string $value)
     {
         return $this->setData(self::DESIGN_DINING_TABLE_LAYOUT, $value);
     }
@@ -594,7 +584,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SEAT_GUESTS);
     }
 
-    public function setSeatGuests(string $value): self
+    public function setSeatGuests(string $value)
     {
         return $this->setData(self::SEAT_GUESTS, $value);
     }
@@ -604,7 +594,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::VIEW_KITCHEN_STATUS);
     }
 
-    public function setViewKitchenStatus(string $value): self
+    public function setViewKitchenStatus(string $value)
     {
         return $this->setData(self::VIEW_KITCHEN_STATUS, $value);
     }
@@ -614,7 +604,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CHANGE_STAFF);
     }
 
-    public function setChangeStaff(string $value): self
+    public function setChangeStaff(string $value)
     {
         return $this->setData(self::CHANGE_STAFF, $value);
     }
@@ -624,29 +614,29 @@ class LSCStaff extends DataObject
         return $this->getData(self::ADD_START_FLOAT);
     }
 
-    public function setAddStartFloat(string $value): self
+    public function setAddStartFloat(string $value)
     {
         return $this->setData(self::ADD_START_FLOAT, $value);
     }
 
     public function getOpenSalesPOSDirectly(): ?string
     {
-        return $this->getData(self::OPEN_SALES_P_O_S_DIRECTLY);
+        return $this->getData(self::OPEN_SALES_POS_DIRECTLY);
     }
 
-    public function setOpenSalesPOSDirectly(string $value): self
+    public function setOpenSalesPOSDirectly(string $value)
     {
-        return $this->setData(self::OPEN_SALES_P_O_S_DIRECTLY, $value);
+        return $this->setData(self::OPEN_SALES_POS_DIRECTLY, $value);
     }
 
     public function getOpenSalesPOS(): ?string
     {
-        return $this->getData(self::OPEN_SALES_P_O_S);
+        return $this->getData(self::OPEN_SALES_POS);
     }
 
-    public function setOpenSalesPOS(string $value): self
+    public function setOpenSalesPOS(string $value)
     {
-        return $this->setData(self::OPEN_SALES_P_O_S, $value);
+        return $this->setData(self::OPEN_SALES_POS, $value);
     }
 
     public function getChangeDiningTblStatus(): ?string
@@ -654,7 +644,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CHANGE_DINING_TBL_STATUS);
     }
 
-    public function setChangeDiningTblStatus(string $value): self
+    public function setChangeDiningTblStatus(string $value)
     {
         return $this->setData(self::CHANGE_DINING_TBL_STATUS, $value);
     }
@@ -664,7 +654,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::RESET_DINING_TBL_STATUS);
     }
 
-    public function setResetDiningTblStatus(string $value): self
+    public function setResetDiningTblStatus(string $value)
     {
         return $this->setData(self::RESET_DINING_TBL_STATUS, $value);
     }
@@ -674,7 +664,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::RUSH_ORDER_IN_KITCHEN);
     }
 
-    public function setRushOrderInKitchen(string $value): self
+    public function setRushOrderInKitchen(string $value)
     {
         return $this->setData(self::RUSH_ORDER_IN_KITCHEN, $value);
     }
@@ -684,7 +674,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::OPEN_DIN_TBL_LOCKED_BY_STAFF);
     }
 
-    public function setOpenDinTblLockedByStaff(string $value): self
+    public function setOpenDinTblLockedByStaff(string $value)
     {
         return $this->setData(self::OPEN_DIN_TBL_LOCKED_BY_STAFF, $value);
     }
@@ -694,39 +684,39 @@ class LSCStaff extends DataObject
         return $this->getData(self::EDIT_AVAILABLE_QTY);
     }
 
-    public function setEditAvailableQty(string $value): self
+    public function setEditAvailableQty(string $value)
     {
         return $this->setData(self::EDIT_AVAILABLE_QTY, $value);
     }
 
     public function getContinueOnTSErrors(): ?bool
     {
-        return $this->getData(self::CONTINUE_ON_T_S_ERRORS);
+        return $this->getData(self::CONTINUE_ON_TS_ERRORS);
     }
 
-    public function setContinueOnTSErrors(bool $value): self
+    public function setContinueOnTSErrors(bool $value)
     {
-        return $this->setData(self::CONTINUE_ON_T_S_ERRORS, $value);
+        return $this->setData(self::CONTINUE_ON_TS_ERRORS, $value);
     }
 
     public function getLastZReport(): ?string
     {
-        return $this->getData(self::LAST_Z_REPORT);
+        return $this->getData(self::LAST_ZREPORT);
     }
 
-    public function setLastZReport(string $value): self
+    public function setLastZReport(string $value)
     {
-        return $this->setData(self::LAST_Z_REPORT, $value);
+        return $this->setData(self::LAST_ZREPORT, $value);
     }
 
     public function getPOSInterfaceProfile(): ?string
     {
-        return $this->getData(self::P_O_S_INTERFACE_PROFILE);
+        return $this->getData(self::POS_INTERFACE_PROFILE);
     }
 
-    public function setPOSInterfaceProfile(string $value): self
+    public function setPOSInterfaceProfile(string $value)
     {
-        return $this->setData(self::P_O_S_INTERFACE_PROFILE, $value);
+        return $this->setData(self::POS_INTERFACE_PROFILE, $value);
     }
 
     public function getLanguage(): ?string
@@ -734,7 +724,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::LANGUAGE);
     }
 
-    public function setLanguage(string $value): self
+    public function setLanguage(string $value)
     {
         return $this->setData(self::LANGUAGE, $value);
     }
@@ -744,7 +734,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CREATE_CUSTOMERS);
     }
 
-    public function setCreateCustomers(string $value): self
+    public function setCreateCustomers(string $value)
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
@@ -754,7 +744,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::VIEW_SALES_HISTORY);
     }
 
-    public function setViewSalesHistory(string $value): self
+    public function setViewSalesHistory(string $value)
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
@@ -764,7 +754,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::CUSTOMER_COMMENTS);
     }
 
-    public function setCustomerComments(string $value): self
+    public function setCustomerComments(string $value)
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
@@ -774,7 +764,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::MAX_TENDER_DECL_DIFFERENCE);
     }
 
-    public function setMaxTenderDeclDifference(string $value): self
+    public function setMaxTenderDeclDifference(string $value)
     {
         return $this->setData(self::MAX_TENDER_DECL_DIFFERENCE, $value);
     }
@@ -784,7 +774,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::MAX_WARNING_COUNT);
     }
 
-    public function setMaxWarningCount(int $value): self
+    public function setMaxWarningCount(int $value)
     {
         return $this->setData(self::MAX_WARNING_COUNT, $value);
     }
@@ -794,7 +784,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SHOW_DIFFERENCE_IN_WARNING);
     }
 
-    public function setShowDifferenceInWarning(string $value): self
+    public function setShowDifferenceInWarning(string $value)
     {
         return $this->setData(self::SHOW_DIFFERENCE_IN_WARNING, $value);
     }
@@ -804,19 +794,19 @@ class LSCStaff extends DataObject
         return $this->getData(self::ACTION_AFTER_DIFF_WARNING);
     }
 
-    public function setActionAfterDiffWarning(string $value): self
+    public function setActionAfterDiffWarning(string $value)
     {
         return $this->setData(self::ACTION_AFTER_DIFF_WARNING, $value);
     }
 
     public function getCIDReportPrinting(): ?string
     {
-        return $this->getData(self::C_I_D_REPORT_PRINTING);
+        return $this->getData(self::CIDREPORT_PRINTING);
     }
 
-    public function setCIDReportPrinting(string $value): self
+    public function setCIDReportPrinting(string $value)
     {
-        return $this->setData(self::C_I_D_REPORT_PRINTING, $value);
+        return $this->setData(self::CIDREPORT_PRINTING, $value);
     }
 
     public function getShowTransAmount(): ?string
@@ -824,7 +814,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::SHOW_TRANS_AMOUNT);
     }
 
-    public function setShowTransAmount(string $value): self
+    public function setShowTransAmount(string $value)
     {
         return $this->setData(self::SHOW_TRANS_AMOUNT, $value);
     }
@@ -834,39 +824,39 @@ class LSCStaff extends DataObject
         return $this->getData(self::UPDATE_CUSTOMERS);
     }
 
-    public function setUpdateCustomers(string $value): self
+    public function setUpdateCustomers(string $value)
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
 
     public function getTIPSHandling(): ?string
     {
-        return $this->getData(self::T_I_P_S_HANDLING);
+        return $this->getData(self::TIPS_HANDLING);
     }
 
-    public function setTIPSHandling(string $value): self
+    public function setTIPSHandling(string $value)
     {
-        return $this->setData(self::T_I_P_S_HANDLING, $value);
+        return $this->setData(self::TIPS_HANDLING, $value);
     }
 
     public function getLastYReport(): ?string
     {
-        return $this->getData(self::LAST_Y_REPORT);
+        return $this->getData(self::LAST_YREPORT);
     }
 
-    public function setLastYReport(string $value): self
+    public function setLastYReport(string $value)
     {
-        return $this->setData(self::LAST_Y_REPORT, $value);
+        return $this->setData(self::LAST_YREPORT, $value);
     }
 
     public function getMaxDiffWarnFromPermGr(): ?string
     {
-        return $this->getData(self::MAX_DIFF_WARN_FROM_PERM_GR);
+        return $this->getData(self::MAX_DIFFWARN_FROM_PERM_GR);
     }
 
-    public function setMaxDiffWarnFromPermGr(string $value): self
+    public function setMaxDiffWarnFromPermGr(string $value)
     {
-        return $this->setData(self::MAX_DIFF_WARN_FROM_PERM_GR, $value);
+        return $this->setData(self::MAX_DIFFWARN_FROM_PERM_GR, $value);
     }
 
     public function getInventoryActive(): ?bool
@@ -874,7 +864,7 @@ class LSCStaff extends DataObject
         return $this->getData(self::INVENTORY_ACTIVE);
     }
 
-    public function setInventoryActive(bool $value): self
+    public function setInventoryActive(bool $value)
     {
         return $this->setData(self::INVENTORY_ACTIVE, $value);
     }
@@ -884,78 +874,78 @@ class LSCStaff extends DataObject
         return $this->getData(self::INVENTORY_MAIN_MENU);
     }
 
-    public function setInventoryMainMenu(string $value): self
+    public function setInventoryMainMenu(string $value)
     {
         return $this->setData(self::INVENTORY_MAIN_MENU, $value);
     }
 
     public function getPOSStyleProfile(): ?string
     {
-        return $this->getData(self::P_O_S_STYLE_PROFILE);
+        return $this->getData(self::POS_STYLE_PROFILE);
     }
 
-    public function setPOSStyleProfile(string $value): self
+    public function setPOSStyleProfile(string $value)
     {
-        return $this->setData(self::P_O_S_STYLE_PROFILE, $value);
+        return $this->setData(self::POS_STYLE_PROFILE, $value);
     }
 
     public function getPOSMenuProfile(): ?string
     {
-        return $this->getData(self::P_O_S_MENU_PROFILE);
+        return $this->getData(self::POS_MENU_PROFILE);
     }
 
-    public function setPOSMenuProfile(string $value): self
+    public function setPOSMenuProfile(string $value)
     {
-        return $this->setData(self::P_O_S_MENU_PROFILE, $value);
+        return $this->setData(self::POS_MENU_PROFILE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class GetMemberInfoForPosResult extends \Magento\Framework\DataObject implements ResponseInterface
+class GetMemberInfoForPosResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'GetMemberInfoForPos_Result';
 

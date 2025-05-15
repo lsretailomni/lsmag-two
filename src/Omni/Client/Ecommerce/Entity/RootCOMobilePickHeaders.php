@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOMobilePickHeaders extends \Magento\Framework\DataObject
+class RootCOMobilePickHeaders extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickHeaders';
 

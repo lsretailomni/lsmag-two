@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootMobilePosZReport extends \Magento\Framework\DataObject
+class RootMobilePosZReport extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootMobilePosZReport';
 

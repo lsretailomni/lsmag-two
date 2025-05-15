@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class CrossSellingItems extends \Magento\Framework\DataObject
+class CrossSellingItems extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CrossSellingItems';
 

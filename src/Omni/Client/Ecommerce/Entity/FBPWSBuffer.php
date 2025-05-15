@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class FBPWSBuffer extends \Magento\Framework\DataObject
+class FBPWSBuffer extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'FBPWSBuffer';
 

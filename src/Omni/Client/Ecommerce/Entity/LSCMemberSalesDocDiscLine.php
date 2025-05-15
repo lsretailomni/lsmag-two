@@ -7,13 +7,13 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberSalesDocDiscLine extends DataObject
+class LSCMemberSalesDocDiscLine extends AbstractModel
 {
     public const DESCRIPTION = 'Description';
     public const DISCOUNT_AMOUNT = 'Discount Amount';
-    public const DOCUMENT_I_D = 'Document ID';
+    public const DOCUMENT_ID = 'Document ID';
     public const DOCUMENT_LINE_NO = 'Document Line No.';
     public const LINE_NO = 'Line No.';
     public const OFFER_NO = 'Offer No.';
@@ -25,7 +25,7 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -35,19 +35,19 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value): self
+    public function setDiscountAmount(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
     public function getDocumentID(): ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
-    public function setDocumentID(string $value): self
+    public function setDocumentID(string $value)
     {
-        return $this->setData(self::DOCUMENT_I_D, $value);
+        return $this->setData(self::DOCUMENT_ID, $value);
     }
 
     public function getDocumentLineNo(): ?int
@@ -55,7 +55,7 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->getData(self::DOCUMENT_LINE_NO);
     }
 
-    public function setDocumentLineNo(int $value): self
+    public function setDocumentLineNo(int $value)
     {
         return $this->setData(self::DOCUMENT_LINE_NO, $value);
     }
@@ -65,7 +65,7 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -75,7 +75,7 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value): self
+    public function setOfferNo(string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -85,7 +85,7 @@ class LSCMemberSalesDocDiscLine extends DataObject
         return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setOfferType(string $value): self
+    public function setOfferType(string $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
     }

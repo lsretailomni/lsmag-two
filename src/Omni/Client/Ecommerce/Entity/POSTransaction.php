@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class POSTransaction extends \Magento\Framework\DataObject
+class POSTransaction extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'POSTransaction';
 

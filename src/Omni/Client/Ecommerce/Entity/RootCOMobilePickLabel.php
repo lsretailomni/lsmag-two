@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOMobilePickLabel extends \Magento\Framework\DataObject
+class RootCOMobilePickLabel extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickLabel';
 

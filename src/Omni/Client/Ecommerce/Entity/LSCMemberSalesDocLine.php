@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberSalesDocLine extends DataObject
+class LSCMemberSalesDocLine extends AbstractModel
 {
     public const AMOUNT = 'Amount';
     public const AMOUNT_IN_CURRENCY = 'Amount in Currency';
@@ -21,16 +21,16 @@ class LSCMemberSalesDocLine extends DataObject
     public const DESCRIPTION = 'Description';
     public const DISCOUNT = 'Discount %';
     public const DISCOUNT_AMOUNT = 'Discount Amount';
-    public const DOCUMENT_I_D = 'Document ID';
+    public const DOCUMENT_ID = 'Document ID';
     public const ENTRY_TYPE = 'Entry Type';
-    public const EXTERNAL_I_D = 'External ID';
+    public const EXTERNAL_ID = 'External ID';
     public const IMAGE_ID = 'Image Id';
     public const LINE_NO = 'Line No.';
     public const NET_AMOUNT = 'Net Amount';
     public const NET_PRICE = 'Net Price';
     public const NUMBER = 'Number';
     public const PARENT_LINE = 'Parent Line';
-    public const P_O_S_TERMINAL_NO = 'POS Terminal No.';
+    public const POS_TERMINAL_NO = 'POS Terminal No.';
     public const PRICE = 'Price';
     public const QUANTITY = 'Quantity';
     public const STORE_NAME = 'Store Name';
@@ -39,7 +39,7 @@ class LSCMemberSalesDocLine extends DataObject
     public const UNIT_OF_MEASURE = 'Unit of Measure';
     public const VARIANT_CODE = 'Variant Code';
     public const VARIANT_DESCRIPTION = 'Variant Description';
-    public const V_A_T_AMOUNT = 'VAT Amount';
+    public const VAT_AMOUNT = 'VAT Amount';
 
 
     public function getAmount(): ?string
@@ -47,7 +47,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(string $value): self
+    public function setAmount(string $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
@@ -57,7 +57,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::AMOUNT_IN_CURRENCY);
     }
 
-    public function setAmountInCurrency(string $value): self
+    public function setAmountInCurrency(string $value)
     {
         return $this->setData(self::AMOUNT_IN_CURRENCY, $value);
     }
@@ -67,7 +67,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::CARD_OR_ACCOUNT);
     }
 
-    public function setCardOrAccount(string $value): self
+    public function setCardOrAccount(string $value)
     {
         return $this->setData(self::CARD_OR_ACCOUNT, $value);
     }
@@ -77,7 +77,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::CARD_TYPE);
     }
 
-    public function setCardType(string $value): self
+    public function setCardType(string $value)
     {
         return $this->setData(self::CARD_TYPE, $value);
     }
@@ -87,7 +87,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::CLICK_AND_COLLECT_LINE);
     }
 
-    public function setClickAndCollectLine(bool $value): self
+    public function setClickAndCollectLine(bool $value)
     {
         return $this->setData(self::CLICK_AND_COLLECT_LINE, $value);
     }
@@ -97,7 +97,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -107,7 +107,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
-    public function setCurrencyFactor(string $value): self
+    public function setCurrencyFactor(string $value)
     {
         return $this->setData(self::CURRENCY_FACTOR, $value);
     }
@@ -117,7 +117,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -127,7 +127,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::DISCOUNT);
     }
 
-    public function setDiscount(string $value): self
+    public function setDiscount(string $value)
     {
         return $this->setData(self::DISCOUNT, $value);
     }
@@ -137,19 +137,19 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value): self
+    public function setDiscountAmount(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
     public function getDocumentID(): ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
-    public function setDocumentID(string $value): self
+    public function setDocumentID(string $value)
     {
-        return $this->setData(self::DOCUMENT_I_D, $value);
+        return $this->setData(self::DOCUMENT_ID, $value);
     }
 
     public function getEntryType(): ?string
@@ -157,19 +157,19 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setEntryType(string $value): self
+    public function setEntryType(string $value)
     {
         return $this->setData(self::ENTRY_TYPE, $value);
     }
 
     public function getExternalID(): ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
-    public function setExternalID(string $value): self
+    public function setExternalID(string $value)
     {
-        return $this->setData(self::EXTERNAL_I_D, $value);
+        return $this->setData(self::EXTERNAL_ID, $value);
     }
 
     public function getImageId(): ?string
@@ -177,7 +177,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::IMAGE_ID);
     }
 
-    public function setImageId(string $value): self
+    public function setImageId(string $value)
     {
         return $this->setData(self::IMAGE_ID, $value);
     }
@@ -187,7 +187,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -197,7 +197,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::NET_AMOUNT);
     }
 
-    public function setNetAmount(string $value): self
+    public function setNetAmount(string $value)
     {
         return $this->setData(self::NET_AMOUNT, $value);
     }
@@ -207,7 +207,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::NET_PRICE);
     }
 
-    public function setNetPrice(string $value): self
+    public function setNetPrice(string $value)
     {
         return $this->setData(self::NET_PRICE, $value);
     }
@@ -217,7 +217,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::NUMBER);
     }
 
-    public function setNumber(string $value): self
+    public function setNumber(string $value)
     {
         return $this->setData(self::NUMBER, $value);
     }
@@ -227,19 +227,19 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::PARENT_LINE);
     }
 
-    public function setParentLine(int $value): self
+    public function setParentLine(int $value)
     {
         return $this->setData(self::PARENT_LINE, $value);
     }
 
     public function getPOSTerminalNo(): ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POS_TERMINAL_NO);
     }
 
-    public function setPOSTerminalNo(string $value): self
+    public function setPOSTerminalNo(string $value)
     {
-        return $this->setData(self::P_O_S_TERMINAL_NO, $value);
+        return $this->setData(self::POS_TERMINAL_NO, $value);
     }
 
     public function getPrice(): ?string
@@ -247,7 +247,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::PRICE);
     }
 
-    public function setPrice(string $value): self
+    public function setPrice(string $value)
     {
         return $this->setData(self::PRICE, $value);
     }
@@ -257,7 +257,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(string $value): self
+    public function setQuantity(string $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }
@@ -267,7 +267,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::STORE_NAME);
     }
 
-    public function setStoreName(string $value): self
+    public function setStoreName(string $value)
     {
         return $this->setData(self::STORE_NAME, $value);
     }
@@ -277,7 +277,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -287,7 +287,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::TRANSACTION_NO);
     }
 
-    public function setTransactionNo(int $value): self
+    public function setTransactionNo(int $value)
     {
         return $this->setData(self::TRANSACTION_NO, $value);
     }
@@ -297,7 +297,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value): self
+    public function setUnitOfMeasure(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -307,7 +307,7 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -317,18 +317,18 @@ class LSCMemberSalesDocLine extends DataObject
         return $this->getData(self::VARIANT_DESCRIPTION);
     }
 
-    public function setVariantDescription(string $value): self
+    public function setVariantDescription(string $value)
     {
         return $this->setData(self::VARIANT_DESCRIPTION, $value);
     }
 
     public function getVATAmount(): ?string
     {
-        return $this->getData(self::V_A_T_AMOUNT);
+        return $this->getData(self::VAT_AMOUNT);
     }
 
-    public function setVATAmount(string $value): self
+    public function setVATAmount(string $value)
     {
-        return $this->setData(self::V_A_T_AMOUNT, $value);
+        return $this->setData(self::VAT_AMOUNT, $value);
     }
 }

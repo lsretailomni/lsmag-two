@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class CustomerOrderStatusLineLog extends \Magento\Framework\DataObject
+class CustomerOrderStatusLineLog extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderStatusLineLog';
 

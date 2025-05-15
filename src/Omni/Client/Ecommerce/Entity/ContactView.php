@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class ContactView extends DataObject
+class ContactView extends AbstractModel
 {
     public const ACCOUNT_NO = 'Account No.';
     public const CLUB_CODE = 'Club Code';
@@ -22,15 +22,15 @@ class ContactView extends DataObject
     public const ADDRESS = 'Address';
     public const ADDRESS_2 = 'Address 2';
     public const CITY = 'City';
-    public const HOUSE_APARTMENT_NO = 'House/Apartment No.';
+    public const HOUSEAPARTMENT_NO = 'House/Apartment No.';
     public const POST_CODE = 'Post Code';
-    public const E_MAIL = 'E-Mail';
+    public const EMAIL = 'E-Mail';
     public const HOME_PAGE = 'Home Page';
     public const PHONE_NO = 'Phone No.';
     public const MOBILE_PHONE_NO = 'Mobile Phone No.';
     public const TERRITORY_CODE = 'Territory Code';
     public const COUNTY = 'County';
-    public const COUNTRY_REGION_CODE = 'Country/Region Code';
+    public const COUNTRYREGION_CODE = 'Country/Region Code';
     public const LANGUAGE_CODE = 'Language Code';
     public const GENDER = 'Gender';
     public const DATE_OF_BIRTH = 'Date of Birth';
@@ -47,26 +47,26 @@ class ContactView extends DataObject
     public const CREATED_BY = 'Created by';
     public const PRIVACY_BLOCKED = 'Privacy Blocked';
     public const NO_SERIES = 'No. Series';
-    public const EXTERNAL_I_D = 'External ID';
+    public const EXTERNAL_ID = 'External ID';
     public const EXTERNAL_SYSTEM = 'External System';
     public const MEMBER_CARD_TEMPORARY = 'Member Card Temporary';
     public const FIRST_NAME = 'First Name';
     public const MIDDLE_NAME = 'Middle Name';
     public const SURNAME = 'Surname';
     public const SALUTATION_CODE = 'Salutation Code';
-    public const SEARCH_E_MAIL = 'Search E-Mail';
+    public const SEARCH_EMAIL = 'Search E-Mail';
     public const SEND_RECEIPT_BY_EMAIL = 'Send Receipt by E-mail';
     public const CITY_SEARCH_INTERNAL = 'City Search Internal';
     public const POST_CODE_SEARCH_INTERNAL = 'Post Code Search Internal';
     public const DEFAULT_TOKEN = 'Default Token';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
-    public const CARD_NO = 'CardNo';
-    public const LOGIN_ID = 'LoginId';
-    public const CUSTOMER_ID = 'CustomerId';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
+    public const CARDNO = 'CardNo';
+    public const LOGINID = 'LoginId';
+    public const CUSTOMERID = 'CustomerId';
 
 
     public function getAccountNo(): ?string
@@ -74,7 +74,7 @@ class ContactView extends DataObject
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value): self
+    public function setAccountNo(string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -84,7 +84,7 @@ class ContactView extends DataObject
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value): self
+    public function setClubCode(string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
@@ -94,7 +94,7 @@ class ContactView extends DataObject
         return $this->getData(self::SCHEME_CODE);
     }
 
-    public function setSchemeCode(string $value): self
+    public function setSchemeCode(string $value)
     {
         return $this->setData(self::SCHEME_CODE, $value);
     }
@@ -104,7 +104,7 @@ class ContactView extends DataObject
         return $this->getData(self::CONTACT_NO);
     }
 
-    public function setContactNo(string $value): self
+    public function setContactNo(string $value)
     {
         return $this->setData(self::CONTACT_NO, $value);
     }
@@ -114,7 +114,7 @@ class ContactView extends DataObject
         return $this->getData(self::MAIN_CONTACT);
     }
 
-    public function setMainContact(bool $value): self
+    public function setMainContact(bool $value)
     {
         return $this->setData(self::MAIN_CONTACT, $value);
     }
@@ -124,7 +124,7 @@ class ContactView extends DataObject
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value): self
+    public function setName(string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -134,7 +134,7 @@ class ContactView extends DataObject
         return $this->getData(self::SEARCH_NAME);
     }
 
-    public function setSearchName(string $value): self
+    public function setSearchName(string $value)
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
@@ -144,7 +144,7 @@ class ContactView extends DataObject
         return $this->getData(self::NAME_2);
     }
 
-    public function setName2(string $value): self
+    public function setName2(string $value)
     {
         return $this->setData(self::NAME_2, $value);
     }
@@ -154,7 +154,7 @@ class ContactView extends DataObject
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value): self
+    public function setAddress(string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -164,7 +164,7 @@ class ContactView extends DataObject
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value): self
+    public function setAddress2(string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -174,19 +174,19 @@ class ContactView extends DataObject
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value): self
+    public function setCity(string $value)
     {
         return $this->setData(self::CITY, $value);
     }
 
     public function getHouseApartmentNo(): ?string
     {
-        return $this->getData(self::HOUSE_APARTMENT_NO);
+        return $this->getData(self::HOUSEAPARTMENT_NO);
     }
 
-    public function setHouseApartmentNo(string $value): self
+    public function setHouseApartmentNo(string $value)
     {
-        return $this->setData(self::HOUSE_APARTMENT_NO, $value);
+        return $this->setData(self::HOUSEAPARTMENT_NO, $value);
     }
 
     public function getPostCode(): ?string
@@ -194,19 +194,19 @@ class ContactView extends DataObject
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value): self
+    public function setPostCode(string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
 
     public function getEMail(): ?string
     {
-        return $this->getData(self::E_MAIL);
+        return $this->getData(self::EMAIL);
     }
 
-    public function setEMail(string $value): self
+    public function setEMail(string $value)
     {
-        return $this->setData(self::E_MAIL, $value);
+        return $this->setData(self::EMAIL, $value);
     }
 
     public function getHomePage(): ?string
@@ -214,7 +214,7 @@ class ContactView extends DataObject
         return $this->getData(self::HOME_PAGE);
     }
 
-    public function setHomePage(string $value): self
+    public function setHomePage(string $value)
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
@@ -224,7 +224,7 @@ class ContactView extends DataObject
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value): self
+    public function setPhoneNo(string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -234,7 +234,7 @@ class ContactView extends DataObject
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setMobilePhoneNo(string $value): self
+    public function setMobilePhoneNo(string $value)
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
@@ -244,7 +244,7 @@ class ContactView extends DataObject
         return $this->getData(self::TERRITORY_CODE);
     }
 
-    public function setTerritoryCode(string $value): self
+    public function setTerritoryCode(string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
@@ -254,19 +254,19 @@ class ContactView extends DataObject
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value): self
+    public function setCounty(string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
 
     public function getCountryRegionCode(): ?string
     {
-        return $this->getData(self::COUNTRY_REGION_CODE);
+        return $this->getData(self::COUNTRYREGION_CODE);
     }
 
-    public function setCountryRegionCode(string $value): self
+    public function setCountryRegionCode(string $value)
     {
-        return $this->setData(self::COUNTRY_REGION_CODE, $value);
+        return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
 
     public function getLanguageCode(): ?string
@@ -274,7 +274,7 @@ class ContactView extends DataObject
         return $this->getData(self::LANGUAGE_CODE);
     }
 
-    public function setLanguageCode(string $value): self
+    public function setLanguageCode(string $value)
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
@@ -284,7 +284,7 @@ class ContactView extends DataObject
         return $this->getData(self::GENDER);
     }
 
-    public function setGender(string $value): self
+    public function setGender(string $value)
     {
         return $this->setData(self::GENDER, $value);
     }
@@ -294,7 +294,7 @@ class ContactView extends DataObject
         return $this->getData(self::DATE_OF_BIRTH);
     }
 
-    public function setDateOfBirth(string $value): self
+    public function setDateOfBirth(string $value)
     {
         return $this->setData(self::DATE_OF_BIRTH, $value);
     }
@@ -304,7 +304,7 @@ class ContactView extends DataObject
         return $this->getData(self::BIRTHDAY);
     }
 
-    public function setBirthday(string $value): self
+    public function setBirthday(string $value)
     {
         return $this->setData(self::BIRTHDAY, $value);
     }
@@ -314,7 +314,7 @@ class ContactView extends DataObject
         return $this->getData(self::CONTACT_GENDER);
     }
 
-    public function setContactGender(string $value): self
+    public function setContactGender(string $value)
     {
         return $this->setData(self::CONTACT_GENDER, $value);
     }
@@ -324,7 +324,7 @@ class ContactView extends DataObject
         return $this->getData(self::MARITAL_STATUS);
     }
 
-    public function setMaritalStatus(string $value): self
+    public function setMaritalStatus(string $value)
     {
         return $this->setData(self::MARITAL_STATUS, $value);
     }
@@ -334,7 +334,7 @@ class ContactView extends DataObject
         return $this->getData(self::GUEST_TYPE);
     }
 
-    public function setGuestType(string $value): self
+    public function setGuestType(string $value)
     {
         return $this->setData(self::GUEST_TYPE, $value);
     }
@@ -344,7 +344,7 @@ class ContactView extends DataObject
         return $this->getData(self::EXPIRATION_PERIOD_TYPE);
     }
 
-    public function setExpirationPeriodType(string $value): self
+    public function setExpirationPeriodType(string $value)
     {
         return $this->setData(self::EXPIRATION_PERIOD_TYPE, $value);
     }
@@ -354,7 +354,7 @@ class ContactView extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -364,7 +364,7 @@ class ContactView extends DataObject
         return $this->getData(self::REASON_BLOCKED);
     }
 
-    public function setReasonBlocked(string $value): self
+    public function setReasonBlocked(string $value)
     {
         return $this->setData(self::REASON_BLOCKED, $value);
     }
@@ -374,7 +374,7 @@ class ContactView extends DataObject
         return $this->getData(self::DATE_BLOCKED);
     }
 
-    public function setDateBlocked(string $value): self
+    public function setDateBlocked(string $value)
     {
         return $this->setData(self::DATE_BLOCKED, $value);
     }
@@ -384,7 +384,7 @@ class ContactView extends DataObject
         return $this->getData(self::BLOCKED_BY);
     }
 
-    public function setBlockedBy(string $value): self
+    public function setBlockedBy(string $value)
     {
         return $this->setData(self::BLOCKED_BY, $value);
     }
@@ -394,7 +394,7 @@ class ContactView extends DataObject
         return $this->getData(self::CREATED_DATE);
     }
 
-    public function setCreatedDate(string $value): self
+    public function setCreatedDate(string $value)
     {
         return $this->setData(self::CREATED_DATE, $value);
     }
@@ -404,7 +404,7 @@ class ContactView extends DataObject
         return $this->getData(self::CREATED_BY);
     }
 
-    public function setCreatedBy(string $value): self
+    public function setCreatedBy(string $value)
     {
         return $this->setData(self::CREATED_BY, $value);
     }
@@ -414,7 +414,7 @@ class ContactView extends DataObject
         return $this->getData(self::PRIVACY_BLOCKED);
     }
 
-    public function setPrivacyBlocked(bool $value): self
+    public function setPrivacyBlocked(bool $value)
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
@@ -424,19 +424,19 @@ class ContactView extends DataObject
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value): self
+    public function setNoSeries(string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
 
     public function getExternalID(): ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
-    public function setExternalID(string $value): self
+    public function setExternalID(string $value)
     {
-        return $this->setData(self::EXTERNAL_I_D, $value);
+        return $this->setData(self::EXTERNAL_ID, $value);
     }
 
     public function getExternalSystem(): ?string
@@ -444,7 +444,7 @@ class ContactView extends DataObject
         return $this->getData(self::EXTERNAL_SYSTEM);
     }
 
-    public function setExternalSystem(string $value): self
+    public function setExternalSystem(string $value)
     {
         return $this->setData(self::EXTERNAL_SYSTEM, $value);
     }
@@ -454,7 +454,7 @@ class ContactView extends DataObject
         return $this->getData(self::MEMBER_CARD_TEMPORARY);
     }
 
-    public function setMemberCardTemporary(string $value): self
+    public function setMemberCardTemporary(string $value)
     {
         return $this->setData(self::MEMBER_CARD_TEMPORARY, $value);
     }
@@ -464,7 +464,7 @@ class ContactView extends DataObject
         return $this->getData(self::FIRST_NAME);
     }
 
-    public function setFirstName(string $value): self
+    public function setFirstName(string $value)
     {
         return $this->setData(self::FIRST_NAME, $value);
     }
@@ -474,7 +474,7 @@ class ContactView extends DataObject
         return $this->getData(self::MIDDLE_NAME);
     }
 
-    public function setMiddleName(string $value): self
+    public function setMiddleName(string $value)
     {
         return $this->setData(self::MIDDLE_NAME, $value);
     }
@@ -484,7 +484,7 @@ class ContactView extends DataObject
         return $this->getData(self::SURNAME);
     }
 
-    public function setSurname(string $value): self
+    public function setSurname(string $value)
     {
         return $this->setData(self::SURNAME, $value);
     }
@@ -494,19 +494,19 @@ class ContactView extends DataObject
         return $this->getData(self::SALUTATION_CODE);
     }
 
-    public function setSalutationCode(string $value): self
+    public function setSalutationCode(string $value)
     {
         return $this->setData(self::SALUTATION_CODE, $value);
     }
 
     public function getSearchEMail(): ?string
     {
-        return $this->getData(self::SEARCH_E_MAIL);
+        return $this->getData(self::SEARCH_EMAIL);
     }
 
-    public function setSearchEMail(string $value): self
+    public function setSearchEMail(string $value)
     {
-        return $this->setData(self::SEARCH_E_MAIL, $value);
+        return $this->setData(self::SEARCH_EMAIL, $value);
     }
 
     public function getSendReceiptByEMail(): ?string
@@ -514,7 +514,7 @@ class ContactView extends DataObject
         return $this->getData(self::SEND_RECEIPT_BY_EMAIL);
     }
 
-    public function setSendReceiptByEMail(string $value): self
+    public function setSendReceiptByEMail(string $value)
     {
         return $this->setData(self::SEND_RECEIPT_BY_EMAIL, $value);
     }
@@ -524,7 +524,7 @@ class ContactView extends DataObject
         return $this->getData(self::CITY_SEARCH_INTERNAL);
     }
 
-    public function setCitySearchInternal(string $value): self
+    public function setCitySearchInternal(string $value)
     {
         return $this->setData(self::CITY_SEARCH_INTERNAL, $value);
     }
@@ -534,7 +534,7 @@ class ContactView extends DataObject
         return $this->getData(self::POST_CODE_SEARCH_INTERNAL);
     }
 
-    public function setPostCodeSearchInternal(string $value): self
+    public function setPostCodeSearchInternal(string $value)
     {
         return $this->setData(self::POST_CODE_SEARCH_INTERNAL, $value);
     }
@@ -544,88 +544,88 @@ class ContactView extends DataObject
         return $this->getData(self::DEFAULT_TOKEN);
     }
 
-    public function setDefaultToken(int $value): self
+    public function setDefaultToken(int $value)
     {
         return $this->setData(self::DEFAULT_TOKEN, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getCardNo(): ?string
     {
-        return $this->getData(self::CARD_NO);
+        return $this->getData(self::CARDNO);
     }
 
-    public function setCardNo(string $value): self
+    public function setCardNo(string $value)
     {
-        return $this->setData(self::CARD_NO, $value);
+        return $this->setData(self::CARDNO, $value);
     }
 
     public function getLoginId(): ?string
     {
-        return $this->getData(self::LOGIN_ID);
+        return $this->getData(self::LOGINID);
     }
 
-    public function setLoginId(string $value): self
+    public function setLoginId(string $value)
     {
-        return $this->setData(self::LOGIN_ID, $value);
+        return $this->setData(self::LOGINID, $value);
     }
 
     public function getCustomerId(): ?string
     {
-        return $this->getData(self::CUSTOMER_ID);
+        return $this->getData(self::CUSTOMERID);
     }
 
-    public function setCustomerId(string $value): self
+    public function setCustomerId(string $value)
     {
-        return $this->setData(self::CUSTOMER_ID, $value);
+        return $this->setData(self::CUSTOMERID, $value);
     }
 }

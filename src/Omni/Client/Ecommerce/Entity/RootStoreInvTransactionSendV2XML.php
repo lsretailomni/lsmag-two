@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootStoreInvTransactionSendV2XML extends \Magento\Framework\DataObject
+class RootStoreInvTransactionSendV2XML extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootStoreInvTransactionSendV2XML';
 

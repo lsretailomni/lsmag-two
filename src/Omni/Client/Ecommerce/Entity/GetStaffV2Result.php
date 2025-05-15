@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class GetStaffV2Result extends \Magento\Framework\DataObject implements ResponseInterface
+class GetStaffV2Result extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'GetStaffV2_Result';
 

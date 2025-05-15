@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCFlowFieldBuffer extends DataObject
+class LSCFlowFieldBuffer extends AbstractModel
 {
     public const TABLE_NO = 'Table No.';
     public const KEY = 'Key';
@@ -23,7 +23,7 @@ class LSCFlowFieldBuffer extends DataObject
         return $this->getData(self::TABLE_NO);
     }
 
-    public function setTableNo(int $value): self
+    public function setTableNo(int $value)
     {
         return $this->setData(self::TABLE_NO, $value);
     }
@@ -33,7 +33,7 @@ class LSCFlowFieldBuffer extends DataObject
         return $this->getData(self::KEY);
     }
 
-    public function setKey(string $value): self
+    public function setKey(string $value)
     {
         return $this->setData(self::KEY, $value);
     }
@@ -43,7 +43,7 @@ class LSCFlowFieldBuffer extends DataObject
         return $this->getData(self::FIELD_NO);
     }
 
-    public function setFieldNo(int $value): self
+    public function setFieldNo(int $value)
     {
         return $this->setData(self::FIELD_NO, $value);
     }
@@ -53,7 +53,7 @@ class LSCFlowFieldBuffer extends DataObject
         return $this->getData(self::FIELD_NAME);
     }
 
-    public function setFieldName(string $value): self
+    public function setFieldName(string $value)
     {
         return $this->setData(self::FIELD_NAME, $value);
     }
@@ -63,7 +63,7 @@ class LSCFlowFieldBuffer extends DataObject
         return $this->getData(self::DECIMAL_VALUE);
     }
 
-    public function setDecimalValue(string $value): self
+    public function setDecimalValue(string $value)
     {
         return $this->setData(self::DECIMAL_VALUE, $value);
     }

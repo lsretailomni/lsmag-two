@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetActionsFromRemoteDBXML extends \Magento\Framework\DataObject
+class RootGetActionsFromRemoteDBXML extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetActionsFromRemoteDBXML';
 

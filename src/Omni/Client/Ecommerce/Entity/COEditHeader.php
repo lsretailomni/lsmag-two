@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class COEditHeader extends \Magento\Framework\DataObject
+class COEditHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'COEditHeader';
 

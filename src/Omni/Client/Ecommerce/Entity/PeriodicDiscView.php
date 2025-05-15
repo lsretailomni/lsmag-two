@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class PeriodicDiscView extends DataObject
+class PeriodicDiscView extends AbstractModel
 {
     public const OFFER_NO = 'Offer No.';
     public const LINE_NO = 'Line No.';
@@ -17,10 +17,10 @@ class PeriodicDiscView extends DataObject
     public const NO = 'No.';
     public const VARIANT_CODE = 'Variant Code';
     public const DESCRIPTION = 'Description';
-    public const STANDARD_PRICE_INCLUDING_V_A_T = 'Standard Price Including VAT';
+    public const STANDARD_PRICE_INCLUDING_VAT = 'Standard Price Including VAT';
     public const STANDARD_PRICE = 'Standard Price';
-    public const SPLIT_DEAL_PRICE_DISC = 'Split Deal Price/Disc. %';
-    public const DEAL_PRICE_DISC = 'Deal Price/Disc. %';
+    public const SPLIT_DEAL_PRICEDISC = 'Split Deal Price/Disc. %';
+    public const DEAL_PRICEDISC = 'Deal Price/Disc. %';
     public const PRICE_GROUP = 'Price Group';
     public const CURRENCY_CODE = 'Currency Code';
     public const UNIT_OF_MEASURE = 'Unit of Measure';
@@ -32,9 +32,9 @@ class PeriodicDiscView extends DataObject
     public const DISC_TYPE = 'Disc. Type';
     public const DISCOUNT_AMOUNT = 'Discount Amount';
     public const OFFER_PRICE = 'Offer Price';
-    public const OFFER_PRICE_INCLUDING_V_A_T = 'Offer Price Including VAT';
-    public const DISCOUNT_AMOUNT_INCLUDING_V_A_T = 'Discount Amount Including VAT';
-    public const TRIGGER_POPUP_ON_P_O_S = 'Trigger Pop-up on POS';
+    public const OFFER_PRICE_INCLUDING_VAT = 'Offer Price Including VAT';
+    public const DISCOUNT_AMOUNT_INCLUDING_VAT = 'Discount Amount Including VAT';
+    public const TRIGGER_POPUP_ON_POS = 'Trigger Pop-up on POS';
     public const VARIANT_TYPE = 'Variant Type';
     public const EXCLUDE = 'Exclude';
     public const MEMBER_POINTS = 'Member Points';
@@ -42,15 +42,15 @@ class PeriodicDiscView extends DataObject
     public const HEADER_TYPE = 'Header Type';
     public const PLANNED_DEMAND_TYPE = 'Planned Demand Type';
     public const PLANNED_DEMAND = 'Planned Demand';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const STATUS = 'Status';
     public const HEAD_PRICE_GROUP = 'Head Price Group';
     public const PRIORITY = 'Priority';
-    public const VALIDATION_PERIOD_I_D = 'Validation Period ID';
+    public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const DISCOUNT_TYPE = 'Discount Type';
     public const DEAL_PRICE_VALUE = 'Deal Price Value';
     public const DISCOUNT__VALUE = 'Discount % Value';
@@ -79,7 +79,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value): self
+    public function setOfferNo(string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -89,7 +89,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -99,7 +99,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -109,7 +109,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -119,7 +119,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -129,19 +129,19 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
     public function getStandardPriceIncludingVAT(): ?string
     {
-        return $this->getData(self::STANDARD_PRICE_INCLUDING_V_A_T);
+        return $this->getData(self::STANDARD_PRICE_INCLUDING_VAT);
     }
 
-    public function setStandardPriceIncludingVAT(string $value): self
+    public function setStandardPriceIncludingVAT(string $value)
     {
-        return $this->setData(self::STANDARD_PRICE_INCLUDING_V_A_T, $value);
+        return $this->setData(self::STANDARD_PRICE_INCLUDING_VAT, $value);
     }
 
     public function getStandardPrice(): ?string
@@ -149,29 +149,29 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::STANDARD_PRICE);
     }
 
-    public function setStandardPrice(string $value): self
+    public function setStandardPrice(string $value)
     {
         return $this->setData(self::STANDARD_PRICE, $value);
     }
 
     public function getSplitDealPriceDisc(): ?string
     {
-        return $this->getData(self::SPLIT_DEAL_PRICE_DISC);
+        return $this->getData(self::SPLIT_DEAL_PRICEDISC);
     }
 
-    public function setSplitDealPriceDisc(string $value): self
+    public function setSplitDealPriceDisc(string $value)
     {
-        return $this->setData(self::SPLIT_DEAL_PRICE_DISC, $value);
+        return $this->setData(self::SPLIT_DEAL_PRICEDISC, $value);
     }
 
     public function getDealPriceDisc(): ?string
     {
-        return $this->getData(self::DEAL_PRICE_DISC);
+        return $this->getData(self::DEAL_PRICEDISC);
     }
 
-    public function setDealPriceDisc(string $value): self
+    public function setDealPriceDisc(string $value)
     {
-        return $this->setData(self::DEAL_PRICE_DISC, $value);
+        return $this->setData(self::DEAL_PRICEDISC, $value);
     }
 
     public function getPriceGroup(): ?string
@@ -179,7 +179,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PRICE_GROUP);
     }
 
-    public function setPriceGroup(string $value): self
+    public function setPriceGroup(string $value)
     {
         return $this->setData(self::PRICE_GROUP, $value);
     }
@@ -189,7 +189,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -199,7 +199,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value): self
+    public function setUnitOfMeasure(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -209,7 +209,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PROD_GROUP_CATEGORY);
     }
 
-    public function setProdGroupCategory(string $value): self
+    public function setProdGroupCategory(string $value)
     {
         return $this->setData(self::PROD_GROUP_CATEGORY, $value);
     }
@@ -219,7 +219,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::VALID_FROM_BEFORE_EXP_DATE);
     }
 
-    public function setValidFromBeforeExpDate(string $value): self
+    public function setValidFromBeforeExpDate(string $value)
     {
         return $this->setData(self::VALID_FROM_BEFORE_EXP_DATE, $value);
     }
@@ -229,7 +229,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::VALID_TO_BEFORE_EXP_DATE);
     }
 
-    public function setValidToBeforeExpDate(string $value): self
+    public function setValidToBeforeExpDate(string $value)
     {
         return $this->setData(self::VALID_TO_BEFORE_EXP_DATE, $value);
     }
@@ -239,7 +239,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::LINE_GROUP);
     }
 
-    public function setLineGroup(string $value): self
+    public function setLineGroup(string $value)
     {
         return $this->setData(self::LINE_GROUP, $value);
     }
@@ -249,7 +249,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::NO_OF_ITEMS_NEEDED);
     }
 
-    public function setNoOfItemsNeeded(int $value): self
+    public function setNoOfItemsNeeded(int $value)
     {
         return $this->setData(self::NO_OF_ITEMS_NEEDED, $value);
     }
@@ -259,7 +259,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DISC_TYPE);
     }
 
-    public function setDiscType(string $value): self
+    public function setDiscType(string $value)
     {
         return $this->setData(self::DISC_TYPE, $value);
     }
@@ -269,7 +269,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value): self
+    public function setDiscountAmount(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
@@ -279,39 +279,39 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::OFFER_PRICE);
     }
 
-    public function setOfferPrice(string $value): self
+    public function setOfferPrice(string $value)
     {
         return $this->setData(self::OFFER_PRICE, $value);
     }
 
     public function getOfferPriceIncludingVAT(): ?string
     {
-        return $this->getData(self::OFFER_PRICE_INCLUDING_V_A_T);
+        return $this->getData(self::OFFER_PRICE_INCLUDING_VAT);
     }
 
-    public function setOfferPriceIncludingVAT(string $value): self
+    public function setOfferPriceIncludingVAT(string $value)
     {
-        return $this->setData(self::OFFER_PRICE_INCLUDING_V_A_T, $value);
+        return $this->setData(self::OFFER_PRICE_INCLUDING_VAT, $value);
     }
 
     public function getDiscountAmountIncludingVAT(): ?string
     {
-        return $this->getData(self::DISCOUNT_AMOUNT_INCLUDING_V_A_T);
+        return $this->getData(self::DISCOUNT_AMOUNT_INCLUDING_VAT);
     }
 
-    public function setDiscountAmountIncludingVAT(string $value): self
+    public function setDiscountAmountIncludingVAT(string $value)
     {
-        return $this->setData(self::DISCOUNT_AMOUNT_INCLUDING_V_A_T, $value);
+        return $this->setData(self::DISCOUNT_AMOUNT_INCLUDING_VAT, $value);
     }
 
     public function getTriggerPopUpOnPOS(): ?bool
     {
-        return $this->getData(self::TRIGGER_POPUP_ON_P_O_S);
+        return $this->getData(self::TRIGGER_POPUP_ON_POS);
     }
 
-    public function setTriggerPopUpOnPOS(bool $value): self
+    public function setTriggerPopUpOnPOS(bool $value)
     {
-        return $this->setData(self::TRIGGER_POPUP_ON_P_O_S, $value);
+        return $this->setData(self::TRIGGER_POPUP_ON_POS, $value);
     }
 
     public function getVariantType(): ?string
@@ -319,7 +319,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::VARIANT_TYPE);
     }
 
-    public function setVariantType(string $value): self
+    public function setVariantType(string $value)
     {
         return $this->setData(self::VARIANT_TYPE, $value);
     }
@@ -329,7 +329,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::EXCLUDE);
     }
 
-    public function setExclude(bool $value): self
+    public function setExclude(bool $value)
     {
         return $this->setData(self::EXCLUDE, $value);
     }
@@ -339,7 +339,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::MEMBER_POINTS);
     }
 
-    public function setMemberPoints(string $value): self
+    public function setMemberPoints(string $value)
     {
         return $this->setData(self::MEMBER_POINTS, $value);
     }
@@ -349,7 +349,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PROMPT_AT_SCAN);
     }
 
-    public function setPromptAtScan(bool $value): self
+    public function setPromptAtScan(bool $value)
     {
         return $this->setData(self::PROMPT_AT_SCAN, $value);
     }
@@ -359,7 +359,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::HEADER_TYPE);
     }
 
-    public function setHeaderType(string $value): self
+    public function setHeaderType(string $value)
     {
         return $this->setData(self::HEADER_TYPE, $value);
     }
@@ -369,7 +369,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PLANNED_DEMAND_TYPE);
     }
 
-    public function setPlannedDemandType(string $value): self
+    public function setPlannedDemandType(string $value)
     {
         return $this->setData(self::PLANNED_DEMAND_TYPE, $value);
     }
@@ -379,59 +379,59 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PLANNED_DEMAND);
     }
 
-    public function setPlannedDemand(string $value): self
+    public function setPlannedDemand(string $value)
     {
         return $this->setData(self::PLANNED_DEMAND, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getStatus(): ?string
@@ -439,7 +439,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value): self
+    public function setStatus(string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -449,7 +449,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::HEAD_PRICE_GROUP);
     }
 
-    public function setHeadPriceGroup(string $value): self
+    public function setHeadPriceGroup(string $value)
     {
         return $this->setData(self::HEAD_PRICE_GROUP, $value);
     }
@@ -459,19 +459,19 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value): self
+    public function setPriority(int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
 
     public function getValidationPeriodID(): ?string
     {
-        return $this->getData(self::VALIDATION_PERIOD_I_D);
+        return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value): self
+    public function setValidationPeriodID(string $value)
     {
-        return $this->setData(self::VALIDATION_PERIOD_I_D, $value);
+        return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
     public function getDiscountType(): ?string
@@ -479,7 +479,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(string $value): self
+    public function setDiscountType(string $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
@@ -489,7 +489,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DEAL_PRICE_VALUE);
     }
 
-    public function setDealPriceValue(string $value): self
+    public function setDealPriceValue(string $value)
     {
         return $this->setData(self::DEAL_PRICE_VALUE, $value);
     }
@@ -499,7 +499,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DISCOUNT__VALUE);
     }
 
-    public function setDiscountValue(string $value): self
+    public function setDiscountValue(string $value)
     {
         return $this->setData(self::DISCOUNT__VALUE, $value);
     }
@@ -509,7 +509,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(string $value): self
+    public function setDiscountAmountValue(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }
@@ -519,7 +519,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value): self
+    public function setCustomerDiscGroup(string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
@@ -529,7 +529,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::AMOUNT_TO_TRIGGER);
     }
 
-    public function setAmountToTrigger(string $value): self
+    public function setAmountToTrigger(string $value)
     {
         return $this->setData(self::AMOUNT_TO_TRIGGER, $value);
     }
@@ -539,7 +539,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::MEMBER_VALUE);
     }
 
-    public function setMemberValue(string $value): self
+    public function setMemberValue(string $value)
     {
         return $this->setData(self::MEMBER_VALUE, $value);
     }
@@ -549,7 +549,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::POPUP_LINE_1);
     }
 
-    public function setPopUpLine1(string $value): self
+    public function setPopUpLine1(string $value)
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
@@ -559,7 +559,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::POPUP_LINE_2);
     }
 
-    public function setPopUpLine2(string $value): self
+    public function setPopUpLine2(string $value)
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
@@ -569,7 +569,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::POPUP_LINE_3);
     }
 
-    public function setPopUpLine3(string $value): self
+    public function setPopUpLine3(string $value)
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
@@ -579,7 +579,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::COUPON_CODE);
     }
 
-    public function setCouponCode(string $value): self
+    public function setCouponCode(string $value)
     {
         return $this->setData(self::COUPON_CODE, $value);
     }
@@ -589,7 +589,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::COUPON_QTY_NEEDED);
     }
 
-    public function setCouponQtyNeeded(string $value): self
+    public function setCouponQtyNeeded(string $value)
     {
         return $this->setData(self::COUPON_QTY_NEEDED, $value);
     }
@@ -599,7 +599,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::MEMBER_TYPE);
     }
 
-    public function setMemberType(string $value): self
+    public function setMemberType(string $value)
     {
         return $this->setData(self::MEMBER_TYPE, $value);
     }
@@ -609,7 +609,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
 
-    public function setMemberAttribute(string $value): self
+    public function setMemberAttribute(string $value)
     {
         return $this->setData(self::MEMBER_ATTRIBUTE, $value);
     }
@@ -619,7 +619,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::MAXIMUM_DISCOUNT_AMOUNT);
     }
 
-    public function setMaximumDiscountAmount(string $value): self
+    public function setMaximumDiscountAmount(string $value)
     {
         return $this->setData(self::MAXIMUM_DISCOUNT_AMOUNT, $value);
     }
@@ -629,7 +629,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::TENDER_TYPE_CODE);
     }
 
-    public function setTenderTypeCode(string $value): self
+    public function setTenderTypeCode(string $value)
     {
         return $this->setData(self::TENDER_TYPE_CODE, $value);
     }
@@ -639,7 +639,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::TENDER_TYPE_VALUE);
     }
 
-    public function setTenderTypeValue(string $value): self
+    public function setTenderTypeValue(string $value)
     {
         return $this->setData(self::TENDER_TYPE_VALUE, $value);
     }
@@ -649,7 +649,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::PROMPT_FOR_ACTION);
     }
 
-    public function setPromptForAction(string $value): self
+    public function setPromptForAction(string $value)
     {
         return $this->setData(self::PROMPT_FOR_ACTION, $value);
     }
@@ -659,7 +659,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::TENDER_OFFER);
     }
 
-    public function setTenderOffer(string $value): self
+    public function setTenderOffer(string $value)
     {
         return $this->setData(self::TENDER_OFFER, $value);
     }
@@ -669,7 +669,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::TENDER_OFFER_AMOUNT);
     }
 
-    public function setTenderOfferAmount(string $value): self
+    public function setTenderOfferAmount(string $value)
     {
         return $this->setData(self::TENDER_OFFER_AMOUNT, $value);
     }
@@ -679,7 +679,7 @@ class PeriodicDiscView extends DataObject
         return $this->getData(self::STORE_GROUP_CODES);
     }
 
-    public function setStoreGroupCodes(string $value): self
+    public function setStoreGroupCodes(string $value)
     {
         return $this->setData(self::STORE_GROUP_CODES, $value);
     }

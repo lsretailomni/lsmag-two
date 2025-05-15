@@ -7,22 +7,22 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberLoginCard extends DataObject
+class LSCMemberLoginCard extends AbstractModel
 {
-    public const LOGIN_I_D = 'Login ID';
+    public const LOGIN_ID = 'Login ID';
     public const CARD_NO = 'Card No.';
 
 
     public function getLoginID(): ?string
     {
-        return $this->getData(self::LOGIN_I_D);
+        return $this->getData(self::LOGIN_ID);
     }
 
-    public function setLoginID(string $value): self
+    public function setLoginID(string $value)
     {
-        return $this->setData(self::LOGIN_I_D, $value);
+        return $this->setData(self::LOGIN_ID, $value);
     }
 
     public function getCardNo(): ?string
@@ -30,7 +30,7 @@ class LSCMemberLoginCard extends DataObject
         return $this->getData(self::CARD_NO);
     }
 
-    public function setCardNo(string $value): self
+    public function setCardNo(string $value)
     {
         return $this->setData(self::CARD_NO, $value);
     }

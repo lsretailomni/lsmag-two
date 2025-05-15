@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class MobilePosCalculateResult extends \Magento\Framework\DataObject implements ResponseInterface
+class MobilePosCalculateResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'MobilePosCalculate_Result';
 

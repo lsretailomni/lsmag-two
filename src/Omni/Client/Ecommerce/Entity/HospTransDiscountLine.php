@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HospTransDiscountLine extends \Magento\Framework\DataObject
+class HospTransDiscountLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HospTransDiscountLine';
 

@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class TestConnectionResult extends \Magento\Framework\DataObject implements ResponseInterface
+class TestConnectionResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'TestConnection_Result';
 

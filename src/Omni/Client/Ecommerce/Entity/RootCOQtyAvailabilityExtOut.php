@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOQtyAvailabilityExtOut extends \Magento\Framework\DataObject
+class RootCOQtyAvailabilityExtOut extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOQtyAvailabilityExtOut';
 

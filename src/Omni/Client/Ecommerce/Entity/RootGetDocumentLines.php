@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetDocumentLines extends \Magento\Framework\DataObject
+class RootGetDocumentLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDocumentLines';
 

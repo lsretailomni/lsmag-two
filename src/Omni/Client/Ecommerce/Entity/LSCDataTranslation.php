@@ -7,29 +7,29 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCDataTranslation extends DataObject
+class LSCDataTranslation extends AbstractModel
 {
-    public const TRANSLATION_I_D = 'Translation ID';
+    public const TRANSLATION_ID = 'Translation ID';
     public const KEY = 'Key';
     public const LANGUAGE_CODE = 'Language Code';
     public const TRANSLATION = 'Translation';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getTranslationID(): ?string
     {
-        return $this->getData(self::TRANSLATION_I_D);
+        return $this->getData(self::TRANSLATION_ID);
     }
 
-    public function setTranslationID(string $value): self
+    public function setTranslationID(string $value)
     {
-        return $this->setData(self::TRANSLATION_I_D, $value);
+        return $this->setData(self::TRANSLATION_ID, $value);
     }
 
     public function getKey(): ?string
@@ -37,7 +37,7 @@ class LSCDataTranslation extends DataObject
         return $this->getData(self::KEY);
     }
 
-    public function setKey(string $value): self
+    public function setKey(string $value)
     {
         return $this->setData(self::KEY, $value);
     }
@@ -47,7 +47,7 @@ class LSCDataTranslation extends DataObject
         return $this->getData(self::LANGUAGE_CODE);
     }
 
-    public function setLanguageCode(string $value): self
+    public function setLanguageCode(string $value)
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
@@ -57,58 +57,58 @@ class LSCDataTranslation extends DataObject
         return $this->getData(self::TRANSLATION);
     }
 
-    public function setTranslation(string $value): self
+    public function setTranslation(string $value)
     {
         return $this->setData(self::TRANSLATION, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class POSTransInvLines extends \Magento\Framework\DataObject
+class POSTransInvLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'POSTrans.Inv.Lines';
 

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MemberAttribute extends \Magento\Framework\DataObject
+class MemberAttribute extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MemberAttribute';
 

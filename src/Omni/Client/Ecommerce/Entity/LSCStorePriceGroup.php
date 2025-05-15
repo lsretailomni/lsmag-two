@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCStorePriceGroup extends DataObject
+class LSCStorePriceGroup extends AbstractModel
 {
     public const STORE = 'Store';
     public const PRICE_GROUP_CODE = 'Price Group Code';
@@ -20,7 +20,7 @@ class LSCStorePriceGroup extends DataObject
         return $this->getData(self::STORE);
     }
 
-    public function setStore(string $value): self
+    public function setStore(string $value)
     {
         return $this->setData(self::STORE, $value);
     }
@@ -30,7 +30,7 @@ class LSCStorePriceGroup extends DataObject
         return $this->getData(self::PRICE_GROUP_CODE);
     }
 
-    public function setPriceGroupCode(string $value): self
+    public function setPriceGroupCode(string $value)
     {
         return $this->setData(self::PRICE_GROUP_CODE, $value);
     }

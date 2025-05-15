@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCItemStatusLink extends DataObject
+class LSCItemStatusLink extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const STATUS_CODE = 'Status Code';
@@ -18,14 +18,14 @@ class LSCItemStatusLink extends DataObject
     public const STORE_GROUP_CODE = 'Store Group Code';
     public const LOCATION_CODE = 'Location Code';
     public const STARTING_DATE = 'Starting Date';
-    public const BLOCK_SALE_ON_P_O_S = 'Block Sale on POS';
+    public const BLOCK_SALE_ON_POS = 'Block Sale on POS';
     public const BLOCK_DISCOUNT = 'Block Discount';
     public const BLOCK_MANUAL_PRICE_CHANGE = 'Block Manual Price Change';
     public const BLOCK_NEGATIVE_ADJUSTMENT = 'Block Negative Adjustment';
     public const BLOCK_POSITIVE_ADJUSTMENT = 'Block Positive Adjustment';
     public const BLOCK_PERIODIC_DISCOUNT = 'Block Periodic Discount';
     public const BLOCK_PURCHASE_RETURN = 'Block Purchase Return';
-    public const BLOCKED_ON_E_COMMERCE = 'Blocked on eCommerce';
+    public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
     public const BLOCK_SALES_RETURN = 'Block Sales Return';
 
 
@@ -34,7 +34,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -44,7 +44,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::STATUS_CODE);
     }
 
-    public function setStatusCode(string $value): self
+    public function setStatusCode(string $value)
     {
         return $this->setData(self::STATUS_CODE, $value);
     }
@@ -54,7 +54,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_1_CODE);
     }
 
-    public function setVariantDimension1Code(string $value): self
+    public function setVariantDimension1Code(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_1_CODE, $value);
     }
@@ -64,7 +64,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -74,7 +74,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::STORE_GROUP_CODE);
     }
 
-    public function setStoreGroupCode(string $value): self
+    public function setStoreGroupCode(string $value)
     {
         return $this->setData(self::STORE_GROUP_CODE, $value);
     }
@@ -84,7 +84,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value): self
+    public function setLocationCode(string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -94,19 +94,19 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value): self
+    public function setStartingDate(string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
 
     public function getBlockSaleOnPOS(): ?bool
     {
-        return $this->getData(self::BLOCK_SALE_ON_P_O_S);
+        return $this->getData(self::BLOCK_SALE_ON_POS);
     }
 
-    public function setBlockSaleOnPOS(bool $value): self
+    public function setBlockSaleOnPOS(bool $value)
     {
-        return $this->setData(self::BLOCK_SALE_ON_P_O_S, $value);
+        return $this->setData(self::BLOCK_SALE_ON_POS, $value);
     }
 
     public function getBlockDiscount(): ?bool
@@ -114,7 +114,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_DISCOUNT);
     }
 
-    public function setBlockDiscount(bool $value): self
+    public function setBlockDiscount(bool $value)
     {
         return $this->setData(self::BLOCK_DISCOUNT, $value);
     }
@@ -124,7 +124,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_MANUAL_PRICE_CHANGE);
     }
 
-    public function setBlockManualPriceChange(bool $value): self
+    public function setBlockManualPriceChange(bool $value)
     {
         return $this->setData(self::BLOCK_MANUAL_PRICE_CHANGE, $value);
     }
@@ -134,7 +134,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_NEGATIVE_ADJUSTMENT);
     }
 
-    public function setBlockNegativeAdjustment(bool $value): self
+    public function setBlockNegativeAdjustment(bool $value)
     {
         return $this->setData(self::BLOCK_NEGATIVE_ADJUSTMENT, $value);
     }
@@ -144,7 +144,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_POSITIVE_ADJUSTMENT);
     }
 
-    public function setBlockPositiveAdjustment(bool $value): self
+    public function setBlockPositiveAdjustment(bool $value)
     {
         return $this->setData(self::BLOCK_POSITIVE_ADJUSTMENT, $value);
     }
@@ -154,7 +154,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_PERIODIC_DISCOUNT);
     }
 
-    public function setBlockPeriodicDiscount(bool $value): self
+    public function setBlockPeriodicDiscount(bool $value)
     {
         return $this->setData(self::BLOCK_PERIODIC_DISCOUNT, $value);
     }
@@ -164,19 +164,19 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_PURCHASE_RETURN);
     }
 
-    public function setBlockPurchaseReturn(bool $value): self
+    public function setBlockPurchaseReturn(bool $value)
     {
         return $this->setData(self::BLOCK_PURCHASE_RETURN, $value);
     }
 
     public function getBlockedOnECommerce(): ?bool
     {
-        return $this->getData(self::BLOCKED_ON_E_COMMERCE);
+        return $this->getData(self::BLOCKED_ON_ECOMMERCE);
     }
 
-    public function setBlockedOnECommerce(bool $value): self
+    public function setBlockedOnECommerce(bool $value)
     {
-        return $this->setData(self::BLOCKED_ON_E_COMMERCE, $value);
+        return $this->setData(self::BLOCKED_ON_ECOMMERCE, $value);
     }
 
     public function getBlockSalesReturn(): ?bool
@@ -184,7 +184,7 @@ class LSCItemStatusLink extends DataObject
         return $this->getData(self::BLOCK_SALES_RETURN);
     }
 
-    public function setBlockSalesReturn(bool $value): self
+    public function setBlockSalesReturn(bool $value)
     {
         return $this->setData(self::BLOCK_SALES_RETURN, $value);
     }

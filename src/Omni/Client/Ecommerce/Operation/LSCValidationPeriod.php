@@ -23,8 +23,8 @@ class LSCValidationPeriod
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetValidationPeriod();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetValidationPeriod::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCValidationPeriodResponse
@@ -79,7 +79,9 @@ class LSCValidationPeriod
         if (!empty($fields)) {
             foreach ($rows as $row) {
                 $values = $row['Fields'] ?? [];
-                $entry = new \Ls\Omni\Client\Ecommerce\Entity\LSCValidationPeriod();
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCValidationPeriod::class
+                );
                 foreach ($values as $value) {
                     $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
                 }
@@ -87,19 +89,34 @@ class LSCValidationPeriod
             }
         }
 
-        return new \Ls\Omni\Client\Ecommerce\Entity\LSCValidationPeriodResponse([
-            'records' => $results,
-            'status' => $data['Status'] ?? '',
-            'errorText' => $data['ErrorText'] ?? '',
-            'lastKey' => $data['LastKey'] ?? '',
-            'lastEntryNo' => $data['LastEntryNo'] ?? 0,
-            'endOfTable' => $data['EndOfTable'] ?? false
-        ]);
+        return $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCValidationPeriodResponse::class,
+                     [
+                        'data' => [
+                        'records' => $results,
+                        'status' => $data['Status'] ?? '',
+                        'errorText' => $data['ErrorText'] ?? '',
+                        'lastKey' => $data['LastKey'] ?? '',
+                        'lastEntryNo' => $data['LastEntryNo'] ?? 0,
+                        'endOfTable' => $data['EndOfTable'] ?? false
+                        ]
+                     ]
+                );
     }
 
-    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetValidationPeriod
+    public function createInstance(string $entityClassName, array $data = [])
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetValidationPeriod($params));
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetValidationPeriod
+    {
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetValidationPeriod::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

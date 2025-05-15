@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIPrice extends DataObject
+class LSCWIPrice extends AbstractModel
 {
     public const CURRENCY_CODE = 'Currency Code';
     public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
@@ -20,14 +20,14 @@ class LSCWIPrice extends DataObject
     public const OFFER_NO = 'Offer No.';
     public const QTY_PER_UNIT_OF_MEASURE = 'Qty. per Unit of Measure';
     public const STORE_NO = 'Store No.';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
     public const UNIT_PRICE = 'Unit Price';
     public const VARIANT_CODE = 'Variant Code';
-    public const SYSTEM_ID = '$systemId';
+    public const SYSTEMID = '$systemId';
 
 
     public function getCurrencyCode(): ?string
@@ -35,7 +35,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -45,7 +45,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value): self
+    public function setCustomerDiscGroup(string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
@@ -55,7 +55,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -65,7 +65,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::LAST_MODIFY_DATE);
     }
 
-    public function setLastModifyDate(string $value): self
+    public function setLastModifyDate(string $value)
     {
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
@@ -75,7 +75,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::LOYALTY_SCHEME_CODE);
     }
 
-    public function setLoyaltySchemeCode(string $value): self
+    public function setLoyaltySchemeCode(string $value)
     {
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
@@ -85,7 +85,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::NET_UNIT_PRICE);
     }
 
-    public function setNetUnitPrice(string $value): self
+    public function setNetUnitPrice(string $value)
     {
         return $this->setData(self::NET_UNIT_PRICE, $value);
     }
@@ -95,7 +95,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value): self
+    public function setOfferNo(string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -105,7 +105,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(string $value): self
+    public function setQtyPerUnitOfMeasure(string $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
@@ -115,49 +115,49 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getUnitOfMeasureCode(): ?string
@@ -165,7 +165,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value): self
+    public function setUnitOfMeasureCode(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
@@ -175,7 +175,7 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value): self
+    public function setUnitPrice(string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -185,18 +185,18 @@ class LSCWIPrice extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 }

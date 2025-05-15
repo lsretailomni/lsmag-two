@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HierarchyAttributeFilter extends \Magento\Framework\DataObject
+class HierarchyAttributeFilter extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HierarchyAttributeFilter';
 

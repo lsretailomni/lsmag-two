@@ -7,25 +7,25 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCTableSpecificInfocode extends DataObject
+class LSCTableSpecificInfocode extends AbstractModel
 {
-    public const TABLE_I_D = 'Table ID';
+    public const TABLE_ID = 'Table ID';
     public const VALUE = 'Value';
     public const INFOCODE_CODE = 'Infocode Code';
     public const USAGE_CATEGORY = 'Usage Category';
-    public const USAGE_SUB_CATEGORY = 'Usage Sub-Category';
+    public const USAGE_SUBCATEGORY = 'Usage Sub-Category';
 
 
     public function getTableID(): ?int
     {
-        return $this->getData(self::TABLE_I_D);
+        return $this->getData(self::TABLE_ID);
     }
 
-    public function setTableID(int $value): self
+    public function setTableID(int $value)
     {
-        return $this->setData(self::TABLE_I_D, $value);
+        return $this->setData(self::TABLE_ID, $value);
     }
 
     public function getValue(): ?string
@@ -33,7 +33,7 @@ class LSCTableSpecificInfocode extends DataObject
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value): self
+    public function setValue(string $value)
     {
         return $this->setData(self::VALUE, $value);
     }
@@ -43,7 +43,7 @@ class LSCTableSpecificInfocode extends DataObject
         return $this->getData(self::INFOCODE_CODE);
     }
 
-    public function setInfocodeCode(string $value): self
+    public function setInfocodeCode(string $value)
     {
         return $this->setData(self::INFOCODE_CODE, $value);
     }
@@ -53,18 +53,18 @@ class LSCTableSpecificInfocode extends DataObject
         return $this->getData(self::USAGE_CATEGORY);
     }
 
-    public function setUsageCategory(string $value): self
+    public function setUsageCategory(string $value)
     {
         return $this->setData(self::USAGE_CATEGORY, $value);
     }
 
     public function getUsageSubCategory(): ?string
     {
-        return $this->getData(self::USAGE_SUB_CATEGORY);
+        return $this->getData(self::USAGE_SUBCATEGORY);
     }
 
-    public function setUsageSubCategory(string $value): self
+    public function setUsageSubCategory(string $value)
     {
-        return $this->setData(self::USAGE_SUB_CATEGORY, $value);
+        return $this->setData(self::USAGE_SUBCATEGORY, $value);
     }
 }

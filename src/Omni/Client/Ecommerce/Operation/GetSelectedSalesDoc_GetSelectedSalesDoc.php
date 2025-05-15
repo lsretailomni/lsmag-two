@@ -23,8 +23,8 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocRequest();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocRequest::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse
@@ -47,19 +47,28 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse
     {
         $requiredDataSetName = explode(',', 'LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry');
-        $finalEntry = new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc();
+        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
                 $entityClassName = str_replace(' ', '', $dataSet);
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
-                    $entity = new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc($data['LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry']);
+                    $entity = $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDoc::class,
+                         ['data' => $data['LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry']]
+                     );
 
-                    return new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse([
-                        'records' => [$entity],
-                        'ResponseCode' => $data['ResponseCode'] ?? '',
-                        'ErrorText' => $data['ErrorText'] ?? '',
-                    ]);
+                    return $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse::class,
+                       [
+                       'data' =>
+                           [
+                                'records' => [$entity],
+                                'ResponseCode' => $data['ResponseCode'] ?? '',
+                                'ErrorText' => $data['ErrorText'] ?? '',
+                           ]
+                       ]
+                    );
                 }
                 $fields = $rows = [];
                 $recRef = $this->findNestedDataSet($data, $entityClassName);
@@ -77,7 +86,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc
                     $count = count($rows);
                     $entries = [];
                     foreach ($rows as $index => $row) {
-                        $entry = new $className();
+                        $entry = $this->createInstance($className);
                         foreach ($row['Fields'] ?? [] as $field) {
                             $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
                         }
@@ -88,19 +97,29 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc
                     }
                 }
             }
-            return new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse([
-                'records' => [$finalEntry],
-                'ResponseCode' => $data['ResponseCode'] ?? '',
-                'ErrorText' => $data['ErrorText'] ?? ''
-            ]);
+            return $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse::class,
+                [
+                'data' =>
+                    [
+                        'records' => [$finalEntry],
+                        'ResponseCode' => $data['ResponseCode'] ?? '',
+                        'ErrorText' => $data['ErrorText'] ?? '',
+                    ]
+                ]
+            );
         }
-
-        // Fallback
-        return new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse([
-            'records' => [],
-            'ResponseCode' => $data['ResponseCode'] ?? '',
-            'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
-        ]);
+        return $this->createInstance(
+            \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocResponse::class,
+             [
+             'data' =>
+                 [
+                    'records' => [],
+                    'ResponseCode' => $data['ResponseCode'] ?? '',
+                    'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
+                 ]
+            ]
+        );
     }
 
     public function findNestedDataSet($data, string $target): ?array
@@ -127,9 +146,19 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc
         return null;
     }
 
+    public function createInstance(string $entityClassName, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocRequest
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocRequest($params));
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetSelectedSalesDoc_GetSelectedSalesDocRequest::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

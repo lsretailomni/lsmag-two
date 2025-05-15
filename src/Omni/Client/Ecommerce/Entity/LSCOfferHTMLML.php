@@ -7,19 +7,19 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCOfferHTMLML extends DataObject
+class LSCOfferHTMLML extends AbstractModel
 {
     public const OFFER_NO = 'Offer No.';
-    public const U_R_L = 'URL';
+    public const URL = 'URL';
     public const HTML = 'Html';
     public const LANGUAGE = 'Language';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getOfferNo(): ?string
@@ -27,19 +27,19 @@ class LSCOfferHTMLML extends DataObject
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value): self
+    public function setOfferNo(string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
 
     public function getURL(): ?string
     {
-        return $this->getData(self::U_R_L);
+        return $this->getData(self::URL);
     }
 
-    public function setURL(string $value): self
+    public function setURL(string $value)
     {
-        return $this->setData(self::U_R_L, $value);
+        return $this->setData(self::URL, $value);
     }
 
     public function getHtml(): ?string
@@ -47,7 +47,7 @@ class LSCOfferHTMLML extends DataObject
         return $this->getData(self::HTML);
     }
 
-    public function setHtml(string $value): self
+    public function setHtml(string $value)
     {
         return $this->setData(self::HTML, $value);
     }
@@ -57,58 +57,58 @@ class LSCOfferHTMLML extends DataObject
         return $this->getData(self::LANGUAGE);
     }
 
-    public function setLanguage(string $value): self
+    public function setLanguage(string $value)
     {
         return $this->setData(self::LANGUAGE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

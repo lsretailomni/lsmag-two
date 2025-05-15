@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HierarchyV2 extends \Magento\Framework\DataObject
+class HierarchyV2 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HierarchyV2';
 

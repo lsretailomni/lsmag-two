@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class LSCWIExtd.VariantValuesResponse extends BaseODataResponse
+class LSCWIExtdVariantValuesResponse extends BaseODataResponse
 {
-    /** @var LSCWIExtd.VariantValues[] */
+    /** @var LSCWIExtdVariantValues[] */
     public array $records = [];
 
     public function __construct(array $data)

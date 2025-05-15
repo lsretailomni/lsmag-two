@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ASNDeliveryDocument extends \Magento\Framework\DataObject
+class ASNDeliveryDocument extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'ASNDeliveryDocument';
 

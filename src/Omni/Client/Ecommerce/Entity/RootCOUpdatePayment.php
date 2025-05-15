@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOUpdatePayment extends \Magento\Framework\DataObject
+class RootCOUpdatePayment extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOUpdatePayment';
 

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransactionSignature extends \Magento\Framework\DataObject
+class TransactionSignature extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransactionSignature';
 

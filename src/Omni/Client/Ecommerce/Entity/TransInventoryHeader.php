@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransInventoryHeader extends \Magento\Framework\DataObject
+class TransInventoryHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'Trans._Inventory_Header';
 

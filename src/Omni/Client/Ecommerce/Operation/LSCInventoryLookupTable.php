@@ -23,8 +23,8 @@ class LSCInventoryLookupTable
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInventoryStatus();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInventoryStatus::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCInventoryLookupTableResponse
@@ -79,7 +79,9 @@ class LSCInventoryLookupTable
         if (!empty($fields)) {
             foreach ($rows as $row) {
                 $values = $row['Fields'] ?? [];
-                $entry = new \Ls\Omni\Client\Ecommerce\Entity\LSCInventoryLookupTable();
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCInventoryLookupTable::class
+                );
                 foreach ($values as $value) {
                     $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
                 }
@@ -87,19 +89,34 @@ class LSCInventoryLookupTable
             }
         }
 
-        return new \Ls\Omni\Client\Ecommerce\Entity\LSCInventoryLookupTableResponse([
-            'records' => $results,
-            'status' => $data['Status'] ?? '',
-            'errorText' => $data['ErrorText'] ?? '',
-            'lastKey' => $data['LastKey'] ?? '',
-            'lastEntryNo' => $data['LastEntryNo'] ?? 0,
-            'endOfTable' => $data['EndOfTable'] ?? false
-        ]);
+        return $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCInventoryLookupTableResponse::class,
+                     [
+                        'data' => [
+                        'records' => $results,
+                        'status' => $data['Status'] ?? '',
+                        'errorText' => $data['ErrorText'] ?? '',
+                        'lastKey' => $data['LastKey'] ?? '',
+                        'lastEntryNo' => $data['LastEntryNo'] ?? 0,
+                        'endOfTable' => $data['EndOfTable'] ?? false
+                        ]
+                     ]
+                );
     }
 
-    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInventoryStatus
+    public function createInstance(string $entityClassName, array $data = [])
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInventoryStatus($params));
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInventoryStatus
+    {
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetInventoryStatus::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

@@ -7,75 +7,75 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class TestConnectionResponse extends DataObject
+class TestConnectionResponse extends AbstractModel
 {
-    public const APPLICATION_VERSION = 'ApplicationVersion';
-    public const APPLICATION_BUILD = 'ApplicationBuild';
-    public const L_S_RETAIL_VERSION = 'LSRetailVersion';
-    public const L_S_RETAIL_COPYRIGHT = 'LSRetailCopyright';
-    public const L_S_RETAIL_LICENSE_KEY_ACTIVE = 'LSRetailLicenseKeyActive';
-    public const L_S_RETAIL_LICENSE_UNIT_ECOM = 'LSRetailLicenseUnitEcom';
+    public const APPLICATIONVERSION = 'ApplicationVersion';
+    public const APPLICATIONBUILD = 'ApplicationBuild';
+    public const LSRETAILVERSION = 'LSRetailVersion';
+    public const LSRETAILCOPYRIGHT = 'LSRetailCopyright';
+    public const LSRETAILLICENSEKEYACTIVE = 'LSRetailLicenseKeyActive';
+    public const LSRETAILLICENSEUNITECOM = 'LSRetailLicenseUnitEcom';
 
 
     public function getApplicationVersion(): ?string
     {
-        return $this->getData(self::APPLICATION_VERSION);
+        return $this->getData(self::APPLICATIONVERSION);
     }
 
-    public function setApplicationVersion(string $value): self
+    public function setApplicationVersion(string $value)
     {
-        return $this->setData(self::APPLICATION_VERSION, $value);
+        return $this->setData(self::APPLICATIONVERSION, $value);
     }
 
     public function getApplicationBuild(): ?string
     {
-        return $this->getData(self::APPLICATION_BUILD);
+        return $this->getData(self::APPLICATIONBUILD);
     }
 
-    public function setApplicationBuild(string $value): self
+    public function setApplicationBuild(string $value)
     {
-        return $this->setData(self::APPLICATION_BUILD, $value);
+        return $this->setData(self::APPLICATIONBUILD, $value);
     }
 
     public function getLSRetailVersion(): ?string
     {
-        return $this->getData(self::L_S_RETAIL_VERSION);
+        return $this->getData(self::LSRETAILVERSION);
     }
 
-    public function setLSRetailVersion(string $value): self
+    public function setLSRetailVersion(string $value)
     {
-        return $this->setData(self::L_S_RETAIL_VERSION, $value);
+        return $this->setData(self::LSRETAILVERSION, $value);
     }
 
     public function getLSRetailCopyright(): ?string
     {
-        return $this->getData(self::L_S_RETAIL_COPYRIGHT);
+        return $this->getData(self::LSRETAILCOPYRIGHT);
     }
 
-    public function setLSRetailCopyright(string $value): self
+    public function setLSRetailCopyright(string $value)
     {
-        return $this->setData(self::L_S_RETAIL_COPYRIGHT, $value);
+        return $this->setData(self::LSRETAILCOPYRIGHT, $value);
     }
 
     public function getLSRetailLicenseKeyActive(): ?bool
     {
-        return $this->getData(self::L_S_RETAIL_LICENSE_KEY_ACTIVE);
+        return $this->getData(self::LSRETAILLICENSEKEYACTIVE);
     }
 
-    public function setLSRetailLicenseKeyActive(bool $value): self
+    public function setLSRetailLicenseKeyActive(bool $value)
     {
-        return $this->setData(self::L_S_RETAIL_LICENSE_KEY_ACTIVE, $value);
+        return $this->setData(self::LSRETAILLICENSEKEYACTIVE, $value);
     }
 
     public function getLSRetailLicenseUnitEcom(): ?bool
     {
-        return $this->getData(self::L_S_RETAIL_LICENSE_UNIT_ECOM);
+        return $this->getData(self::LSRETAILLICENSEUNITECOM);
     }
 
-    public function setLSRetailLicenseUnitEcom(bool $value): self
+    public function setLSRetailLicenseUnitEcom(bool $value)
     {
-        return $this->setData(self::L_S_RETAIL_LICENSE_UNIT_ECOM, $value);
+        return $this->setData(self::LSRETAILLICENSEUNITECOM, $value);
     }
 }

@@ -7,14 +7,14 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class StaffPermissionView extends DataObject
+class StaffPermissionView extends AbstractModel
 {
     public const STAFF = 'Staff';
     public const MANAGER_PRIVILEGES = 'Manager Privileges';
     public const VOID_TRANSACTION = 'Void Transaction';
-    public const X_Z_Y_REPORT_PRINTING = 'XZY-Report Printing';
+    public const XZYREPORT_PRINTING = 'XZY-Report Printing';
     public const TENDER_DECLARATION = 'Tender Declaration';
     public const FLOATING_DECLARATION = 'Floating Declaration';
     public const PRICE_OVERRIDE = 'Price Override';
@@ -35,7 +35,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::STAFF);
     }
 
-    public function setStaff(string $value): self
+    public function setStaff(string $value)
     {
         return $this->setData(self::STAFF, $value);
     }
@@ -45,7 +45,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::MANAGER_PRIVILEGES);
     }
 
-    public function setManagerPrivileges(string $value): self
+    public function setManagerPrivileges(string $value)
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
@@ -55,19 +55,19 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::VOID_TRANSACTION);
     }
 
-    public function setVoidTransaction(string $value): self
+    public function setVoidTransaction(string $value)
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
 
     public function getXZYReportPrinting(): ?string
     {
-        return $this->getData(self::X_Z_Y_REPORT_PRINTING);
+        return $this->getData(self::XZYREPORT_PRINTING);
     }
 
-    public function setXZYReportPrinting(string $value): self
+    public function setXZYReportPrinting(string $value)
     {
-        return $this->setData(self::X_Z_Y_REPORT_PRINTING, $value);
+        return $this->setData(self::XZYREPORT_PRINTING, $value);
     }
 
     public function getTenderDeclaration(): ?string
@@ -75,7 +75,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::TENDER_DECLARATION);
     }
 
-    public function setTenderDeclaration(string $value): self
+    public function setTenderDeclaration(string $value)
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
@@ -85,7 +85,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::FLOATING_DECLARATION);
     }
 
-    public function setFloatingDeclaration(string $value): self
+    public function setFloatingDeclaration(string $value)
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
@@ -95,7 +95,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::PRICE_OVERRIDE);
     }
 
-    public function setPriceOverride(string $value): self
+    public function setPriceOverride(string $value)
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
@@ -105,7 +105,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::SUSPEND_TRANSACTION);
     }
 
-    public function setSuspendTransaction(string $value): self
+    public function setSuspendTransaction(string $value)
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
@@ -115,7 +115,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
-    public function setReturnInTransaction(string $value): self
+    public function setReturnInTransaction(string $value)
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
@@ -125,7 +125,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::VOID_LINE);
     }
 
-    public function setVoidLine(string $value): self
+    public function setVoidLine(string $value)
     {
         return $this->setData(self::VOID_LINE, $value);
     }
@@ -135,7 +135,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::ADD_PAYMENT);
     }
 
-    public function setAddPayment(string $value): self
+    public function setAddPayment(string $value)
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
@@ -145,7 +145,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::CREATE_CUSTOMERS);
     }
 
-    public function setCreateCustomers(string $value): self
+    public function setCreateCustomers(string $value)
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
@@ -155,7 +155,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::VIEW_SALES_HISTORY);
     }
 
-    public function setViewSalesHistory(string $value): self
+    public function setViewSalesHistory(string $value)
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
@@ -165,7 +165,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::CUSTOMER_COMMENTS);
     }
 
-    public function setCustomerComments(string $value): self
+    public function setCustomerComments(string $value)
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
@@ -175,7 +175,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::UPDATE_CUSTOMERS);
     }
 
-    public function setUpdateCustomers(string $value): self
+    public function setUpdateCustomers(string $value)
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
@@ -185,7 +185,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
 
-    public function setMaxDiscountToGive(string $value): self
+    public function setMaxDiscountToGive(string $value)
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
@@ -195,7 +195,7 @@ class StaffPermissionView extends DataObject
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
     }
 
-    public function setMaxTotalDiscount(string $value): self
+    public function setMaxTotalDiscount(string $value)
     {
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }

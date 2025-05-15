@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransMixMatchEntry extends \Magento\Framework\DataObject
+class TransMixMatchEntry extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransMixMatchEntry';
 

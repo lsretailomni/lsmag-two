@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class CreateHospOrder extends \Magento\Framework\DataObject implements RequestInterface
+class CreateHospOrder extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
 {
     public const CLASS_NAME = 'CreateHospOrder';
 

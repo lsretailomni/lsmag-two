@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class EcomCalculateBasketResult extends \Magento\Framework\DataObject implements ResponseInterface
+class EcomCalculateBasketResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'EcomCalculateBasket_Result';
 

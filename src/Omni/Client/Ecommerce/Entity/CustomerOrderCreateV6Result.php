@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class CustomerOrderCreateV6Result extends \Magento\Framework\DataObject implements ResponseInterface
+class CustomerOrderCreateV6Result extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'CustomerOrderCreateV6_Result';
 

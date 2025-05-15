@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class FieldFilter extends \Magento\Framework\DataObject
+class FieldFilter extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'FieldFilter';
 

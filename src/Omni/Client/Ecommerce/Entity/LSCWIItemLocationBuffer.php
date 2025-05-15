@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIItemLocationBuffer extends DataObject
+class LSCWIItemLocationBuffer extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const STORE_NO = 'Store No.';
@@ -17,11 +17,11 @@ class LSCWIItemLocationBuffer extends DataObject
     public const SECTION_DESCRIPTION = 'Section Description';
     public const SHELF_CODE = 'Shelf Code';
     public const SHELF_DESCRIPTION = 'Shelf Description';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getItemNo(): ?string
@@ -29,7 +29,7 @@ class LSCWIItemLocationBuffer extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -39,7 +39,7 @@ class LSCWIItemLocationBuffer extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -49,7 +49,7 @@ class LSCWIItemLocationBuffer extends DataObject
         return $this->getData(self::SECTION_CODE);
     }
 
-    public function setSectionCode(string $value): self
+    public function setSectionCode(string $value)
     {
         return $this->setData(self::SECTION_CODE, $value);
     }
@@ -59,7 +59,7 @@ class LSCWIItemLocationBuffer extends DataObject
         return $this->getData(self::SECTION_DESCRIPTION);
     }
 
-    public function setSectionDescription(string $value): self
+    public function setSectionDescription(string $value)
     {
         return $this->setData(self::SECTION_DESCRIPTION, $value);
     }
@@ -69,7 +69,7 @@ class LSCWIItemLocationBuffer extends DataObject
         return $this->getData(self::SHELF_CODE);
     }
 
-    public function setShelfCode(string $value): self
+    public function setShelfCode(string $value)
     {
         return $this->setData(self::SHELF_CODE, $value);
     }
@@ -79,58 +79,58 @@ class LSCWIItemLocationBuffer extends DataObject
         return $this->getData(self::SHELF_DESCRIPTION);
     }
 
-    public function setShelfDescription(string $value): self
+    public function setShelfDescription(string $value)
     {
         return $this->setData(self::SHELF_DESCRIPTION, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

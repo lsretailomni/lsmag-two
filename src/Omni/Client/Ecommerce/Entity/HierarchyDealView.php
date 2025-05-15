@@ -7,12 +7,12 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class HierarchyDealView extends DataObject
+class HierarchyDealView extends AbstractModel
 {
     public const HIERARCHY_CODE = 'Hierarchy Code';
-    public const NODE_I_D = 'Node ID';
+    public const NODE_ID = 'Node ID';
     public const OFFER_NO = 'Offer No.';
     public const LINE_NO = 'Line No.';
     public const TYPE = 'Type';
@@ -24,7 +24,7 @@ class HierarchyDealView extends DataObject
     public const MAX_SELECTION = 'Max. Selection';
     public const MODIFIER_ADDED_AMOUNT = 'Modifier Added Amount';
     public const DEAL_MOD_SIZE_GR_INDEX = 'Deal Mod. Size Gr. Index';
-    public const RETAIL_IMAGE_I_D = 'Retail Image ID';
+    public const RETAIL_IMAGE_ID = 'Retail Image ID';
 
 
     public function getHierarchyCode(): ?string
@@ -32,19 +32,19 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value): self
+    public function setHierarchyCode(string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
 
     public function getNodeID(): ?string
     {
-        return $this->getData(self::NODE_I_D);
+        return $this->getData(self::NODE_ID);
     }
 
-    public function setNodeID(string $value): self
+    public function setNodeID(string $value)
     {
-        return $this->setData(self::NODE_I_D, $value);
+        return $this->setData(self::NODE_ID, $value);
     }
 
     public function getOfferNo(): ?string
@@ -52,7 +52,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value): self
+    public function setOfferNo(string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -62,7 +62,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -72,7 +72,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -82,7 +82,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -92,7 +92,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -102,7 +102,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -112,7 +112,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value): self
+    public function setUnitOfMeasure(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -122,7 +122,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::MIN_SELECTION);
     }
 
-    public function setMinSelection(int $value): self
+    public function setMinSelection(int $value)
     {
         return $this->setData(self::MIN_SELECTION, $value);
     }
@@ -132,7 +132,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::MAX_SELECTION);
     }
 
-    public function setMaxSelection(int $value): self
+    public function setMaxSelection(int $value)
     {
         return $this->setData(self::MAX_SELECTION, $value);
     }
@@ -142,7 +142,7 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::MODIFIER_ADDED_AMOUNT);
     }
 
-    public function setModifierAddedAmount(string $value): self
+    public function setModifierAddedAmount(string $value)
     {
         return $this->setData(self::MODIFIER_ADDED_AMOUNT, $value);
     }
@@ -152,18 +152,18 @@ class HierarchyDealView extends DataObject
         return $this->getData(self::DEAL_MOD_SIZE_GR_INDEX);
     }
 
-    public function setDealModSizeGrIndex(int $value): self
+    public function setDealModSizeGrIndex(int $value)
     {
         return $this->setData(self::DEAL_MOD_SIZE_GR_INDEX, $value);
     }
 
     public function getRetailImageID(): ?string
     {
-        return $this->getData(self::RETAIL_IMAGE_I_D);
+        return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
-    public function setRetailImageID(string $value): self
+    public function setRetailImageID(string $value)
     {
-        return $this->setData(self::RETAIL_IMAGE_I_D, $value);
+        return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
 }

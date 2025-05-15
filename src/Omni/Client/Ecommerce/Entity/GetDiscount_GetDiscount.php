@@ -7,64 +7,64 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class GetDiscount_GetDiscount extends DataObject
+class GetDiscount_GetDiscount extends AbstractModel
 {
-    public const L_S_C_W_I_DISCOUNTS = 'LSCWIDiscounts';
-    public const L_S_C_W_I_MIX_MATCH_OFFER_EXT = 'LSCWIMixMatchOfferExt';
-    public const L_S_C_W_I_PRICE = 'LSCWIPrice';
-    public const L_S_C_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
-    public const L_S_C_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
+    public const LSC_WI_DISCOUNTS = 'LSCWIDiscounts';
+    public const LSC_WI_MIX__MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
+    public const LSC_WI_PRICE = 'LSCWIPrice';
+    public const LSC_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
+    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
 
 
     public function getLSCWIDiscounts(): ?LSCWIDiscounts
     {
-        return $this->getData(self::L_S_C_W_I_DISCOUNTS);
+        return $this->getData(self::LSC_WI_DISCOUNTS);
     }
 
-    public function setLSCWIDiscounts(LSCWIDiscounts $value): self
+    public function setLSCWIDiscounts(LSCWIDiscounts $value)
     {
-        return $this->setData(self::L_S_C_W_I_DISCOUNTS, $value);
+        return $this->setData(self::LSC_WI_DISCOUNTS, $value);
     }
 
     public function getLSCWIMixMatchOfferExt(): ?array
     {
-        return $this->getData(self::L_S_C_W_I_MIX_MATCH_OFFER_EXT);
+        return $this->getData(self::LSC_WI_MIX__MATCH_OFFER_EXT);
     }
 
-    public function setLSCWIMixMatchOfferExt(array $value): self
+    public function setLSCWIMixMatchOfferExt(array $value)
     {
-        return $this->setData(self::L_S_C_W_I_MIX_MATCH_OFFER_EXT, $value);
+        return $this->setData(self::LSC_WI_MIX__MATCH_OFFER_EXT, $value);
     }
 
     public function getLSCWIPrice(): ?LSCWIPrice
     {
-        return $this->getData(self::L_S_C_W_I_PRICE);
+        return $this->getData(self::LSC_WI_PRICE);
     }
 
-    public function setLSCWIPrice(LSCWIPrice $value): self
+    public function setLSCWIPrice(LSCWIPrice $value)
     {
-        return $this->setData(self::L_S_C_W_I_PRICE, $value);
+        return $this->setData(self::LSC_WI_PRICE, $value);
     }
 
     public function getLSCPeriodicDiscount(): ?array
     {
-        return $this->getData(self::L_S_C_PERIODIC_DISCOUNT);
+        return $this->getData(self::LSC_PERIODIC_DISCOUNT);
     }
 
-    public function setLSCPeriodicDiscount(array $value): self
+    public function setLSCPeriodicDiscount(array $value)
     {
-        return $this->setData(self::L_S_C_PERIODIC_DISCOUNT, $value);
+        return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
     }
 
     public function getLSCPeriodicDiscountBenefits(): ?LSCPeriodicDiscountBenefits
     {
-        return $this->getData(self::L_S_C_PERIODIC_DISCOUNT_BENEFITS);
+        return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
     }
 
-    public function setLSCPeriodicDiscountBenefits(LSCPeriodicDiscountBenefits $value): self
+    public function setLSCPeriodicDiscountBenefits(LSCPeriodicDiscountBenefits $value)
     {
-        return $this->setData(self::L_S_C_PERIODIC_DISCOUNT_BENEFITS, $value);
+        return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
     }
 }

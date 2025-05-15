@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class IMDocumentPostResult extends \Magento\Framework\DataObject implements ResponseInterface
+class IMDocumentPostResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'IMDocumentPost_Result';
 

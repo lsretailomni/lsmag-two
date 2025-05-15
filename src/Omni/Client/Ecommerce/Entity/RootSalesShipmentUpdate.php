@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootSalesShipmentUpdate extends \Magento\Framework\DataObject
+class RootSalesShipmentUpdate extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSalesShipmentUpdate';
 

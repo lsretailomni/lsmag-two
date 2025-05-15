@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetPosTransSuspList extends \Magento\Framework\DataObject
+class RootGetPosTransSuspList extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetPosTransSuspList';
 

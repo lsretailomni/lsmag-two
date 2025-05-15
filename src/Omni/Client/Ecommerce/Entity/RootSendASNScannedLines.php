@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootSendASNScannedLines extends \Magento\Framework\DataObject
+class RootSendASNScannedLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSendASNScannedLines';
 

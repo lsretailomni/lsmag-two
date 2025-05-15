@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class HierarchyView extends DataObject
+class HierarchyView extends AbstractModel
 {
     public const HIERARCHY_CODE = 'Hierarchy Code';
     public const DESCRIPTION = 'Description';
@@ -17,7 +17,7 @@ class HierarchyView extends DataObject
     public const START_DATE = 'Start Date';
     public const PRIORITY = 'Priority';
     public const SALES_TYPE_FILTER = 'Sales Type Filter';
-    public const VALIDATION_SCHEDULE_I_D = 'Validation Schedule ID';
+    public const VALIDATION_SCHEDULE_ID = 'Validation Schedule ID';
 
 
     public function getHierarchyCode(): ?string
@@ -25,7 +25,7 @@ class HierarchyView extends DataObject
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value): self
+    public function setHierarchyCode(string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
@@ -35,7 +35,7 @@ class HierarchyView extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -45,7 +45,7 @@ class HierarchyView extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -55,7 +55,7 @@ class HierarchyView extends DataObject
         return $this->getData(self::START_DATE);
     }
 
-    public function setStartDate(\DateTime $value): self
+    public function setStartDate(\DateTime $value)
     {
         return $this->setData(self::START_DATE, $value);
     }
@@ -65,7 +65,7 @@ class HierarchyView extends DataObject
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value): self
+    public function setPriority(int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
@@ -75,18 +75,18 @@ class HierarchyView extends DataObject
         return $this->getData(self::SALES_TYPE_FILTER);
     }
 
-    public function setSalesTypeFilter(string $value): self
+    public function setSalesTypeFilter(string $value)
     {
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
 
     public function getValidationScheduleID(): ?string
     {
-        return $this->getData(self::VALIDATION_SCHEDULE_I_D);
+        return $this->getData(self::VALIDATION_SCHEDULE_ID);
     }
 
-    public function setValidationScheduleID(string $value): self
+    public function setValidationScheduleID(string $value)
     {
-        return $this->setData(self::VALIDATION_SCHEDULE_I_D, $value);
+        return $this->setData(self::VALIDATION_SCHEDULE_ID, $value);
     }
 }

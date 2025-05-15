@@ -7,24 +7,24 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCAttributeOptionValue extends DataObject
+class LSCAttributeOptionValue extends AbstractModel
 {
     public const ATTRIBUTE_CODE = 'Attribute Code';
     public const SEQUENCE = 'Sequence';
     public const OPTION_VALUE = 'Option Value';
     public const WEIGHT = 'Weight';
-    public const HIDE_VALUE_ON_P_O_S = 'Hide Value on POS';
+    public const HIDE_VALUE_ON_POS = 'Hide Value on POS';
     public const HIDE_VALUE_FOR_CUSTOMER = 'Hide Value for Customer';
     public const OPTION_VALUE_CUST = 'Option Value (Cust.)';
     public const LINKED_ATTRIBUTE_CODE = 'Linked Attribute Code';
     public const LINK_ATTRIBUTE_OPTION_SEQ = 'Link. Attribute Option Seq.';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getAttributeCode(): ?string
@@ -32,7 +32,7 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::ATTRIBUTE_CODE);
     }
 
-    public function setAttributeCode(string $value): self
+    public function setAttributeCode(string $value)
     {
         return $this->setData(self::ATTRIBUTE_CODE, $value);
     }
@@ -42,7 +42,7 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::SEQUENCE);
     }
 
-    public function setSequence(int $value): self
+    public function setSequence(int $value)
     {
         return $this->setData(self::SEQUENCE, $value);
     }
@@ -52,7 +52,7 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::OPTION_VALUE);
     }
 
-    public function setOptionValue(string $value): self
+    public function setOptionValue(string $value)
     {
         return $this->setData(self::OPTION_VALUE, $value);
     }
@@ -62,19 +62,19 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::WEIGHT);
     }
 
-    public function setWeight(int $value): self
+    public function setWeight(int $value)
     {
         return $this->setData(self::WEIGHT, $value);
     }
 
     public function getHideValueOnPOS(): ?bool
     {
-        return $this->getData(self::HIDE_VALUE_ON_P_O_S);
+        return $this->getData(self::HIDE_VALUE_ON_POS);
     }
 
-    public function setHideValueOnPOS(bool $value): self
+    public function setHideValueOnPOS(bool $value)
     {
-        return $this->setData(self::HIDE_VALUE_ON_P_O_S, $value);
+        return $this->setData(self::HIDE_VALUE_ON_POS, $value);
     }
 
     public function getHideValueForCustomer(): ?bool
@@ -82,7 +82,7 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::HIDE_VALUE_FOR_CUSTOMER);
     }
 
-    public function setHideValueForCustomer(bool $value): self
+    public function setHideValueForCustomer(bool $value)
     {
         return $this->setData(self::HIDE_VALUE_FOR_CUSTOMER, $value);
     }
@@ -92,7 +92,7 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::OPTION_VALUE_CUST);
     }
 
-    public function setOptionValueCust(string $value): self
+    public function setOptionValueCust(string $value)
     {
         return $this->setData(self::OPTION_VALUE_CUST, $value);
     }
@@ -102,7 +102,7 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::LINKED_ATTRIBUTE_CODE);
     }
 
-    public function setLinkedAttributeCode(string $value): self
+    public function setLinkedAttributeCode(string $value)
     {
         return $this->setData(self::LINKED_ATTRIBUTE_CODE, $value);
     }
@@ -112,58 +112,58 @@ class LSCAttributeOptionValue extends DataObject
         return $this->getData(self::LINK_ATTRIBUTE_OPTION_SEQ);
     }
 
-    public function setLinkAttributeOptionSeq(int $value): self
+    public function setLinkAttributeOptionSeq(int $value)
     {
         return $this->setData(self::LINK_ATTRIBUTE_OPTION_SEQ, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

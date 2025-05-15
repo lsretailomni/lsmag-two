@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class MemberContactUpdate extends \Magento\Framework\DataObject implements RequestInterface
+class MemberContactUpdate extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
 {
     public const CLASS_NAME = 'MemberContactUpdate';
 

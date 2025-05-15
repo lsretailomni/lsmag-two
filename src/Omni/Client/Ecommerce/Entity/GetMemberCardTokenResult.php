@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class GetMemberCardTokenResult extends \Magento\Framework\DataObject implements ResponseInterface
+class GetMemberCardTokenResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'GetMemberCardToken_Result';
 

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ReturnPolicy extends \Magento\Framework\DataObject
+class ReturnPolicy extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'ReturnPolicy';
 

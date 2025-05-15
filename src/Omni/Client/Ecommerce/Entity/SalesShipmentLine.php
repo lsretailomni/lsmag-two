@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class SalesShipmentLine extends DataObject
+class SalesShipmentLine extends AbstractModel
 {
     public const DOCUMENT_NO = 'Document No.';
     public const LINE_NO = 'Line No.';
@@ -26,7 +26,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::DOCUMENT_NO);
     }
 
-    public function setDocumentNo(string $value): self
+    public function setDocumentNo(string $value)
     {
         return $this->setData(self::DOCUMENT_NO, $value);
     }
@@ -36,7 +36,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -46,7 +46,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -56,7 +56,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -66,7 +66,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -76,7 +76,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -86,7 +86,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value): self
+    public function setUnitOfMeasureCode(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
@@ -96,7 +96,7 @@ class SalesShipmentLine extends DataObject
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(string $value): self
+    public function setQuantity(string $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }

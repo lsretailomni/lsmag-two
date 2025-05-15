@@ -7,30 +7,30 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberSalesBuffer extends DataObject
+class LSCMemberSalesBuffer extends AbstractModel
 {
     public const ADDRESS = 'Address';
     public const ADDRESS_2 = 'Address 2';
     public const CITY = 'City';
-    public const COUNTRY_REGION_CODE = 'Country/Region Code';
+    public const COUNTRYREGION_CODE = 'Country/Region Code';
     public const COUNTY = 'County';
-    public const CREATE_DATE_TIME = 'Create DateTime';
+    public const CREATE_DATETIME = 'Create DateTime';
     public const CREATED_AT_STORE = 'Created at Store';
-    public const CUSTOMER_DOCUMENT_I_D = 'Customer Document ID';
+    public const CUSTOMER_DOCUMENT_ID = 'Customer Document ID';
     public const CUSTOMER_NO = 'Customer No.';
     public const DATE_TIME = 'Date Time';
     public const DAYTIME_PHONE_NO = 'Daytime Phone No.';
     public const DISCOUNT_AMOUNT = 'Discount Amount';
-    public const DOCUMENT_I_D = 'Document ID';
+    public const DOCUMENT_ID = 'Document ID';
     public const DOCUMENT_SOURCE_TYPE = 'Document Source Type';
     public const DOCUMENT_STATUS = 'Document Status';
     public const EMAIL = 'Email';
     public const ENTRY_NO = 'Entry No.';
-    public const EXTERNAL_I_D = 'External ID';
+    public const EXTERNAL_ID = 'External ID';
     public const GROSS_AMOUNT = 'Gross Amount';
-    public const HOUSE_APARTMENT_NO = 'House/Apartment No.';
+    public const HOUSEAPARTMENT_NO = 'House/Apartment No.';
     public const MEMBER_CARD_NO = 'Member Card No.';
     public const MOBILE_PHONE_NO = 'Mobile Phone No.';
     public const NAME = 'Name';
@@ -40,7 +40,7 @@ class LSCMemberSalesBuffer extends DataObject
     public const PHONE_NO = 'Phone No.';
     public const POINTS_REWARDED = 'Points Rewarded';
     public const POINTS_USED_IN_ORDER = 'Points Used In Order';
-    public const P_O_S_TERMINAL_NO = 'POS Terminal No.';
+    public const POS_TERMINAL_NO = 'POS Terminal No.';
     public const POST_CODE = 'Post Code';
     public const POSTED = 'Posted';
     public const QUANTITY = 'Quantity';
@@ -49,10 +49,10 @@ class LSCMemberSalesBuffer extends DataObject
     public const SHIPTO_ADDRESS = 'Ship-to Address';
     public const SHIPTO_ADDRESS_2 = 'Ship-to Address 2';
     public const SHIPTO_CITY = 'Ship-to City';
-    public const SHIPTO_COUNTRY_REGION_CODE = 'Ship-to Country/Region Code';
+    public const SHIPTO_COUNTRYREGION_CODE = 'Ship-to Country/Region Code';
     public const SHIPTO_COUNTY = 'Ship-to County';
     public const SHIPTO_EMAIL = 'Ship-to Email';
-    public const SHIPTO_HOUSE_APARTMENT_NO = 'Ship-to House/Apartment No.';
+    public const SHIPTO_HOUSEAPARTMENT_NO = 'Ship-to House/Apartment No.';
     public const SHIPTO_NAME = 'Ship-to Name';
     public const SHIPTO_PHONE_NO = 'Ship-to Phone No.';
     public const SHIPTO_POST_CODE = 'Ship-to Post Code';
@@ -69,7 +69,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value): self
+    public function setAddress(string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -79,7 +79,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value): self
+    public function setAddress2(string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -89,19 +89,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value): self
+    public function setCity(string $value)
     {
         return $this->setData(self::CITY, $value);
     }
 
     public function getCountryRegionCode(): ?string
     {
-        return $this->getData(self::COUNTRY_REGION_CODE);
+        return $this->getData(self::COUNTRYREGION_CODE);
     }
 
-    public function setCountryRegionCode(string $value): self
+    public function setCountryRegionCode(string $value)
     {
-        return $this->setData(self::COUNTRY_REGION_CODE, $value);
+        return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
 
     public function getCounty(): ?string
@@ -109,19 +109,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value): self
+    public function setCounty(string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
 
     public function getCreateDateTime(): ?\DateTime
     {
-        return $this->getData(self::CREATE_DATE_TIME);
+        return $this->getData(self::CREATE_DATETIME);
     }
 
-    public function setCreateDateTime(\DateTime $value): self
+    public function setCreateDateTime(\DateTime $value)
     {
-        return $this->setData(self::CREATE_DATE_TIME, $value);
+        return $this->setData(self::CREATE_DATETIME, $value);
     }
 
     public function getCreatedAtStore(): ?string
@@ -129,19 +129,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::CREATED_AT_STORE);
     }
 
-    public function setCreatedAtStore(string $value): self
+    public function setCreatedAtStore(string $value)
     {
         return $this->setData(self::CREATED_AT_STORE, $value);
     }
 
     public function getCustomerDocumentID(): ?string
     {
-        return $this->getData(self::CUSTOMER_DOCUMENT_I_D);
+        return $this->getData(self::CUSTOMER_DOCUMENT_ID);
     }
 
-    public function setCustomerDocumentID(string $value): self
+    public function setCustomerDocumentID(string $value)
     {
-        return $this->setData(self::CUSTOMER_DOCUMENT_I_D, $value);
+        return $this->setData(self::CUSTOMER_DOCUMENT_ID, $value);
     }
 
     public function getCustomerNo(): ?string
@@ -149,7 +149,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::CUSTOMER_NO);
     }
 
-    public function setCustomerNo(string $value): self
+    public function setCustomerNo(string $value)
     {
         return $this->setData(self::CUSTOMER_NO, $value);
     }
@@ -159,7 +159,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::DATE_TIME);
     }
 
-    public function setDateTime(\DateTime $value): self
+    public function setDateTime(\DateTime $value)
     {
         return $this->setData(self::DATE_TIME, $value);
     }
@@ -169,7 +169,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::DAYTIME_PHONE_NO);
     }
 
-    public function setDaytimePhoneNo(string $value): self
+    public function setDaytimePhoneNo(string $value)
     {
         return $this->setData(self::DAYTIME_PHONE_NO, $value);
     }
@@ -179,19 +179,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value): self
+    public function setDiscountAmount(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
     public function getDocumentID(): ?string
     {
-        return $this->getData(self::DOCUMENT_I_D);
+        return $this->getData(self::DOCUMENT_ID);
     }
 
-    public function setDocumentID(string $value): self
+    public function setDocumentID(string $value)
     {
-        return $this->setData(self::DOCUMENT_I_D, $value);
+        return $this->setData(self::DOCUMENT_ID, $value);
     }
 
     public function getDocumentSourceType(): ?string
@@ -199,7 +199,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::DOCUMENT_SOURCE_TYPE);
     }
 
-    public function setDocumentSourceType(string $value): self
+    public function setDocumentSourceType(string $value)
     {
         return $this->setData(self::DOCUMENT_SOURCE_TYPE, $value);
     }
@@ -209,7 +209,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::DOCUMENT_STATUS);
     }
 
-    public function setDocumentStatus(string $value): self
+    public function setDocumentStatus(string $value)
     {
         return $this->setData(self::DOCUMENT_STATUS, $value);
     }
@@ -219,7 +219,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::EMAIL);
     }
 
-    public function setEmail(string $value): self
+    public function setEmail(string $value)
     {
         return $this->setData(self::EMAIL, $value);
     }
@@ -229,19 +229,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::ENTRY_NO);
     }
 
-    public function setEntryNo(int $value): self
+    public function setEntryNo(int $value)
     {
         return $this->setData(self::ENTRY_NO, $value);
     }
 
     public function getExternalID(): ?string
     {
-        return $this->getData(self::EXTERNAL_I_D);
+        return $this->getData(self::EXTERNAL_ID);
     }
 
-    public function setExternalID(string $value): self
+    public function setExternalID(string $value)
     {
-        return $this->setData(self::EXTERNAL_I_D, $value);
+        return $this->setData(self::EXTERNAL_ID, $value);
     }
 
     public function getGrossAmount(): ?string
@@ -249,19 +249,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::GROSS_AMOUNT);
     }
 
-    public function setGrossAmount(string $value): self
+    public function setGrossAmount(string $value)
     {
         return $this->setData(self::GROSS_AMOUNT, $value);
     }
 
     public function getHouseApartmentNo(): ?string
     {
-        return $this->getData(self::HOUSE_APARTMENT_NO);
+        return $this->getData(self::HOUSEAPARTMENT_NO);
     }
 
-    public function setHouseApartmentNo(string $value): self
+    public function setHouseApartmentNo(string $value)
     {
-        return $this->setData(self::HOUSE_APARTMENT_NO, $value);
+        return $this->setData(self::HOUSEAPARTMENT_NO, $value);
     }
 
     public function getMemberCardNo(): ?string
@@ -269,7 +269,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::MEMBER_CARD_NO);
     }
 
-    public function setMemberCardNo(string $value): self
+    public function setMemberCardNo(string $value)
     {
         return $this->setData(self::MEMBER_CARD_NO, $value);
     }
@@ -279,7 +279,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setMobilePhoneNo(string $value): self
+    public function setMobilePhoneNo(string $value)
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
@@ -289,7 +289,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value): self
+    public function setName(string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -299,7 +299,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::NET_AMOUNT);
     }
 
-    public function setNetAmount(string $value): self
+    public function setNetAmount(string $value)
     {
         return $this->setData(self::NET_AMOUNT, $value);
     }
@@ -309,7 +309,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::NUMBER_OF_ITEMS);
     }
 
-    public function setNumberOfItems(int $value): self
+    public function setNumberOfItems(int $value)
     {
         return $this->setData(self::NUMBER_OF_ITEMS, $value);
     }
@@ -319,7 +319,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::NUMBER_OF_LINES);
     }
 
-    public function setNumberOfLines(int $value): self
+    public function setNumberOfLines(int $value)
     {
         return $this->setData(self::NUMBER_OF_LINES, $value);
     }
@@ -329,7 +329,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value): self
+    public function setPhoneNo(string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -339,7 +339,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::POINTS_REWARDED);
     }
 
-    public function setPointsRewarded(string $value): self
+    public function setPointsRewarded(string $value)
     {
         return $this->setData(self::POINTS_REWARDED, $value);
     }
@@ -349,19 +349,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::POINTS_USED_IN_ORDER);
     }
 
-    public function setPointsUsedInOrder(string $value): self
+    public function setPointsUsedInOrder(string $value)
     {
         return $this->setData(self::POINTS_USED_IN_ORDER, $value);
     }
 
     public function getPOSTerminalNo(): ?string
     {
-        return $this->getData(self::P_O_S_TERMINAL_NO);
+        return $this->getData(self::POS_TERMINAL_NO);
     }
 
-    public function setPOSTerminalNo(string $value): self
+    public function setPOSTerminalNo(string $value)
     {
-        return $this->setData(self::P_O_S_TERMINAL_NO, $value);
+        return $this->setData(self::POS_TERMINAL_NO, $value);
     }
 
     public function getPostCode(): ?string
@@ -369,7 +369,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value): self
+    public function setPostCode(string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -379,7 +379,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::POSTED);
     }
 
-    public function setPosted(bool $value): self
+    public function setPosted(bool $value)
     {
         return $this->setData(self::POSTED, $value);
     }
@@ -389,7 +389,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(string $value): self
+    public function setQuantity(string $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }
@@ -399,7 +399,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::REFUND_RECEIPT_NO);
     }
 
-    public function setRefundReceiptNo(string $value): self
+    public function setRefundReceiptNo(string $value)
     {
         return $this->setData(self::REFUND_RECEIPT_NO, $value);
     }
@@ -409,7 +409,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SALE_IS_RETURN_SALE);
     }
 
-    public function setSaleIsReturnSale(bool $value): self
+    public function setSaleIsReturnSale(bool $value)
     {
         return $this->setData(self::SALE_IS_RETURN_SALE, $value);
     }
@@ -419,7 +419,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_ADDRESS);
     }
 
-    public function setShipToAddress(string $value): self
+    public function setShipToAddress(string $value)
     {
         return $this->setData(self::SHIPTO_ADDRESS, $value);
     }
@@ -429,7 +429,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_ADDRESS_2);
     }
 
-    public function setShipToAddress2(string $value): self
+    public function setShipToAddress2(string $value)
     {
         return $this->setData(self::SHIPTO_ADDRESS_2, $value);
     }
@@ -439,19 +439,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_CITY);
     }
 
-    public function setShipToCity(string $value): self
+    public function setShipToCity(string $value)
     {
         return $this->setData(self::SHIPTO_CITY, $value);
     }
 
     public function getShipToCountryRegionCode(): ?string
     {
-        return $this->getData(self::SHIPTO_COUNTRY_REGION_CODE);
+        return $this->getData(self::SHIPTO_COUNTRYREGION_CODE);
     }
 
-    public function setShipToCountryRegionCode(string $value): self
+    public function setShipToCountryRegionCode(string $value)
     {
-        return $this->setData(self::SHIPTO_COUNTRY_REGION_CODE, $value);
+        return $this->setData(self::SHIPTO_COUNTRYREGION_CODE, $value);
     }
 
     public function getShipToCounty(): ?string
@@ -459,7 +459,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_COUNTY);
     }
 
-    public function setShipToCounty(string $value): self
+    public function setShipToCounty(string $value)
     {
         return $this->setData(self::SHIPTO_COUNTY, $value);
     }
@@ -469,19 +469,19 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_EMAIL);
     }
 
-    public function setShipToEmail(string $value): self
+    public function setShipToEmail(string $value)
     {
         return $this->setData(self::SHIPTO_EMAIL, $value);
     }
 
     public function getShipToHouseApartmentNo(): ?string
     {
-        return $this->getData(self::SHIPTO_HOUSE_APARTMENT_NO);
+        return $this->getData(self::SHIPTO_HOUSEAPARTMENT_NO);
     }
 
-    public function setShipToHouseApartmentNo(string $value): self
+    public function setShipToHouseApartmentNo(string $value)
     {
-        return $this->setData(self::SHIPTO_HOUSE_APARTMENT_NO, $value);
+        return $this->setData(self::SHIPTO_HOUSEAPARTMENT_NO, $value);
     }
 
     public function getShipToName(): ?string
@@ -489,7 +489,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_NAME);
     }
 
-    public function setShipToName(string $value): self
+    public function setShipToName(string $value)
     {
         return $this->setData(self::SHIPTO_NAME, $value);
     }
@@ -499,7 +499,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_PHONE_NO);
     }
 
-    public function setShipToPhoneNo(string $value): self
+    public function setShipToPhoneNo(string $value)
     {
         return $this->setData(self::SHIPTO_PHONE_NO, $value);
     }
@@ -509,7 +509,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPTO_POST_CODE);
     }
 
-    public function setShipToPostCode(string $value): self
+    public function setShipToPostCode(string $value)
     {
         return $this->setData(self::SHIPTO_POST_CODE, $value);
     }
@@ -519,7 +519,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
-    public function setShippingAgentCode(string $value): self
+    public function setShippingAgentCode(string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_CODE, $value);
     }
@@ -529,7 +529,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
 
-    public function setShippingAgentServiceCode(string $value): self
+    public function setShippingAgentServiceCode(string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $value);
     }
@@ -539,7 +539,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::STORE_CURRENCY_CODE);
     }
 
-    public function setStoreCurrencyCode(string $value): self
+    public function setStoreCurrencyCode(string $value)
     {
         return $this->setData(self::STORE_CURRENCY_CODE, $value);
     }
@@ -549,7 +549,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::STORE_NAME);
     }
 
-    public function setStoreName(string $value): self
+    public function setStoreName(string $value)
     {
         return $this->setData(self::STORE_NAME, $value);
     }
@@ -559,7 +559,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -569,7 +569,7 @@ class LSCMemberSalesBuffer extends DataObject
         return $this->getData(self::TERRITORY_CODE);
     }
 
-    public function setTerritoryCode(string $value): self
+    public function setTerritoryCode(string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }

@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class GetHierarchyV2ValidationScheduleResult extends \Magento\Framework\DataObject implements ResponseInterface
+class GetHierarchyV2ValidationScheduleResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'GetHierarchyV2ValidationSchedule_Result';
 

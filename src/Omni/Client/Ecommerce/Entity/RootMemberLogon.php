@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootMemberLogon extends \Magento\Framework\DataObject
+class RootMemberLogon extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootMemberLogon';
 

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class ItemTrackingCode extends DataObject
+class ItemTrackingCode extends AbstractModel
 {
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
@@ -18,24 +18,24 @@ class ItemTrackingCode extends DataObject
     public const MAN_EXPIR_DATE_ENTRY_REQD = 'Man. Expir. Date Entry Reqd.';
     public const STRICT_EXPIRATION_POSTING = 'Strict Expiration Posting';
     public const USE_EXPIRATION_DATES = 'Use Expiration Dates';
-    public const S_N_SPECIFIC_TRACKING = 'SN Specific Tracking';
-    public const S_N_INFO_INBOUND_MUST_EXIST = 'SN Info. Inbound Must Exist';
-    public const S_N_INFO_OUTBOUND_MUST_EXIST = 'SN Info. Outbound Must Exist';
-    public const S_N_WAREHOUSE_TRACKING = 'SN Warehouse Tracking';
-    public const S_N_PURCHASE_INBOUND_TRACKING = 'SN Purchase Inbound Tracking';
-    public const S_N_PURCHASE_OUTBOUND_TRACKING = 'SN Purchase Outbound Tracking';
-    public const S_N_SALES_INBOUND_TRACKING = 'SN Sales Inbound Tracking';
-    public const S_N_SALES_OUTBOUND_TRACKING = 'SN Sales Outbound Tracking';
-    public const S_N_POS_ADJMT_INB_TRACKING = 'SN Pos. Adjmt. Inb. Tracking';
-    public const S_N_POS_ADJMT_OUTB_TRACKING = 'SN Pos. Adjmt. Outb. Tracking';
-    public const S_N_NEG_ADJMT_INB_TRACKING = 'SN Neg. Adjmt. Inb. Tracking';
-    public const S_N_NEG_ADJMT_OUTB_TRACKING = 'SN Neg. Adjmt. Outb. Tracking';
-    public const S_N_TRANSFER_TRACKING = 'SN Transfer Tracking';
-    public const S_N_MANUF_INBOUND_TRACKING = 'SN Manuf. Inbound Tracking';
-    public const S_N_MANUF_OUTBOUND_TRACKING = 'SN Manuf. Outbound Tracking';
-    public const S_N_ASSEMBLY_INBOUND_TRACKING = 'SN Assembly Inbound Tracking';
-    public const S_N_ASSEMBLY_OUTBOUND_TRACKING = 'SN Assembly Outbound Tracking';
-    public const CREATE_S_N_INFO_ON_POSTING = 'Create SN Info on Posting';
+    public const SN_SPECIFIC_TRACKING = 'SN Specific Tracking';
+    public const SN_INFO_INBOUND_MUST_EXIST = 'SN Info. Inbound Must Exist';
+    public const SN_INFO_OUTBOUND_MUST_EXIST = 'SN Info. Outbound Must Exist';
+    public const SN_WAREHOUSE_TRACKING = 'SN Warehouse Tracking';
+    public const SN_PURCHASE_INBOUND_TRACKING = 'SN Purchase Inbound Tracking';
+    public const SN_PURCHASE_OUTBOUND_TRACKING = 'SN Purchase Outbound Tracking';
+    public const SN_SALES_INBOUND_TRACKING = 'SN Sales Inbound Tracking';
+    public const SN_SALES_OUTBOUND_TRACKING = 'SN Sales Outbound Tracking';
+    public const SN_POS_ADJMT_INB_TRACKING = 'SN Pos. Adjmt. Inb. Tracking';
+    public const SN_POS_ADJMT_OUTB_TRACKING = 'SN Pos. Adjmt. Outb. Tracking';
+    public const SN_NEG_ADJMT_INB_TRACKING = 'SN Neg. Adjmt. Inb. Tracking';
+    public const SN_NEG_ADJMT_OUTB_TRACKING = 'SN Neg. Adjmt. Outb. Tracking';
+    public const SN_TRANSFER_TRACKING = 'SN Transfer Tracking';
+    public const SN_MANUF_INBOUND_TRACKING = 'SN Manuf. Inbound Tracking';
+    public const SN_MANUF_OUTBOUND_TRACKING = 'SN Manuf. Outbound Tracking';
+    public const SN_ASSEMBLY_INBOUND_TRACKING = 'SN Assembly Inbound Tracking';
+    public const SN_ASSEMBLY_OUTBOUND_TRACKING = 'SN Assembly Outbound Tracking';
+    public const CREATE_SN_INFO_ON_POSTING = 'Create SN Info on Posting';
     public const LOT_SPECIFIC_TRACKING = 'Lot Specific Tracking';
     public const LOT_INFO_INBOUND_MUST_EXIST = 'Lot Info. Inbound Must Exist';
     public const LOT_INFO_OUTBOUND_MUST_EXIST = 'Lot Info. Outbound Must Exist';
@@ -71,11 +71,11 @@ class ItemTrackingCode extends DataObject
     public const PACKAGE_MANUF_OUTB_TRACKING = 'Package Manuf. Outb. Tracking';
     public const PACKAGE_ASSEMBLY_INB_TRACKING = 'Package Assembly Inb. Tracking';
     public const PACKAGE_ASSEMBLY_OUT_TRACKING = 'Package Assembly Out. Tracking';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getCode(): ?string
@@ -83,7 +83,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -93,7 +93,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -103,7 +103,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::WARRANTY_DATE_FORMULA);
     }
 
-    public function setWarrantyDateFormula(string $value): self
+    public function setWarrantyDateFormula(string $value)
     {
         return $this->setData(self::WARRANTY_DATE_FORMULA, $value);
     }
@@ -113,7 +113,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::MAN_WARRANTY_DATE_ENTRY_REQD);
     }
 
-    public function setManWarrantyDateEntryReqd(bool $value): self
+    public function setManWarrantyDateEntryReqd(bool $value)
     {
         return $this->setData(self::MAN_WARRANTY_DATE_ENTRY_REQD, $value);
     }
@@ -123,7 +123,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::MAN_EXPIR_DATE_ENTRY_REQD);
     }
 
-    public function setManExpirDateEntryReqd(bool $value): self
+    public function setManExpirDateEntryReqd(bool $value)
     {
         return $this->setData(self::MAN_EXPIR_DATE_ENTRY_REQD, $value);
     }
@@ -133,7 +133,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::STRICT_EXPIRATION_POSTING);
     }
 
-    public function setStrictExpirationPosting(bool $value): self
+    public function setStrictExpirationPosting(bool $value)
     {
         return $this->setData(self::STRICT_EXPIRATION_POSTING, $value);
     }
@@ -143,189 +143,189 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::USE_EXPIRATION_DATES);
     }
 
-    public function setUseExpirationDates(bool $value): self
+    public function setUseExpirationDates(bool $value)
     {
         return $this->setData(self::USE_EXPIRATION_DATES, $value);
     }
 
     public function getSNSpecificTracking(): ?bool
     {
-        return $this->getData(self::S_N_SPECIFIC_TRACKING);
+        return $this->getData(self::SN_SPECIFIC_TRACKING);
     }
 
-    public function setSNSpecificTracking(bool $value): self
+    public function setSNSpecificTracking(bool $value)
     {
-        return $this->setData(self::S_N_SPECIFIC_TRACKING, $value);
+        return $this->setData(self::SN_SPECIFIC_TRACKING, $value);
     }
 
     public function getSNInfoInboundMustExist(): ?bool
     {
-        return $this->getData(self::S_N_INFO_INBOUND_MUST_EXIST);
+        return $this->getData(self::SN_INFO_INBOUND_MUST_EXIST);
     }
 
-    public function setSNInfoInboundMustExist(bool $value): self
+    public function setSNInfoInboundMustExist(bool $value)
     {
-        return $this->setData(self::S_N_INFO_INBOUND_MUST_EXIST, $value);
+        return $this->setData(self::SN_INFO_INBOUND_MUST_EXIST, $value);
     }
 
     public function getSNInfoOutboundMustExist(): ?bool
     {
-        return $this->getData(self::S_N_INFO_OUTBOUND_MUST_EXIST);
+        return $this->getData(self::SN_INFO_OUTBOUND_MUST_EXIST);
     }
 
-    public function setSNInfoOutboundMustExist(bool $value): self
+    public function setSNInfoOutboundMustExist(bool $value)
     {
-        return $this->setData(self::S_N_INFO_OUTBOUND_MUST_EXIST, $value);
+        return $this->setData(self::SN_INFO_OUTBOUND_MUST_EXIST, $value);
     }
 
     public function getSNWarehouseTracking(): ?bool
     {
-        return $this->getData(self::S_N_WAREHOUSE_TRACKING);
+        return $this->getData(self::SN_WAREHOUSE_TRACKING);
     }
 
-    public function setSNWarehouseTracking(bool $value): self
+    public function setSNWarehouseTracking(bool $value)
     {
-        return $this->setData(self::S_N_WAREHOUSE_TRACKING, $value);
+        return $this->setData(self::SN_WAREHOUSE_TRACKING, $value);
     }
 
     public function getSNPurchaseInboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_PURCHASE_INBOUND_TRACKING);
+        return $this->getData(self::SN_PURCHASE_INBOUND_TRACKING);
     }
 
-    public function setSNPurchaseInboundTracking(bool $value): self
+    public function setSNPurchaseInboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_PURCHASE_INBOUND_TRACKING, $value);
+        return $this->setData(self::SN_PURCHASE_INBOUND_TRACKING, $value);
     }
 
     public function getSNPurchaseOutboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_PURCHASE_OUTBOUND_TRACKING);
+        return $this->getData(self::SN_PURCHASE_OUTBOUND_TRACKING);
     }
 
-    public function setSNPurchaseOutboundTracking(bool $value): self
+    public function setSNPurchaseOutboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_PURCHASE_OUTBOUND_TRACKING, $value);
+        return $this->setData(self::SN_PURCHASE_OUTBOUND_TRACKING, $value);
     }
 
     public function getSNSalesInboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_SALES_INBOUND_TRACKING);
+        return $this->getData(self::SN_SALES_INBOUND_TRACKING);
     }
 
-    public function setSNSalesInboundTracking(bool $value): self
+    public function setSNSalesInboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_SALES_INBOUND_TRACKING, $value);
+        return $this->setData(self::SN_SALES_INBOUND_TRACKING, $value);
     }
 
     public function getSNSalesOutboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_SALES_OUTBOUND_TRACKING);
+        return $this->getData(self::SN_SALES_OUTBOUND_TRACKING);
     }
 
-    public function setSNSalesOutboundTracking(bool $value): self
+    public function setSNSalesOutboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_SALES_OUTBOUND_TRACKING, $value);
+        return $this->setData(self::SN_SALES_OUTBOUND_TRACKING, $value);
     }
 
     public function getSNPosAdjmtInbTracking(): ?bool
     {
-        return $this->getData(self::S_N_POS_ADJMT_INB_TRACKING);
+        return $this->getData(self::SN_POS_ADJMT_INB_TRACKING);
     }
 
-    public function setSNPosAdjmtInbTracking(bool $value): self
+    public function setSNPosAdjmtInbTracking(bool $value)
     {
-        return $this->setData(self::S_N_POS_ADJMT_INB_TRACKING, $value);
+        return $this->setData(self::SN_POS_ADJMT_INB_TRACKING, $value);
     }
 
     public function getSNPosAdjmtOutbTracking(): ?bool
     {
-        return $this->getData(self::S_N_POS_ADJMT_OUTB_TRACKING);
+        return $this->getData(self::SN_POS_ADJMT_OUTB_TRACKING);
     }
 
-    public function setSNPosAdjmtOutbTracking(bool $value): self
+    public function setSNPosAdjmtOutbTracking(bool $value)
     {
-        return $this->setData(self::S_N_POS_ADJMT_OUTB_TRACKING, $value);
+        return $this->setData(self::SN_POS_ADJMT_OUTB_TRACKING, $value);
     }
 
     public function getSNNegAdjmtInbTracking(): ?bool
     {
-        return $this->getData(self::S_N_NEG_ADJMT_INB_TRACKING);
+        return $this->getData(self::SN_NEG_ADJMT_INB_TRACKING);
     }
 
-    public function setSNNegAdjmtInbTracking(bool $value): self
+    public function setSNNegAdjmtInbTracking(bool $value)
     {
-        return $this->setData(self::S_N_NEG_ADJMT_INB_TRACKING, $value);
+        return $this->setData(self::SN_NEG_ADJMT_INB_TRACKING, $value);
     }
 
     public function getSNNegAdjmtOutbTracking(): ?bool
     {
-        return $this->getData(self::S_N_NEG_ADJMT_OUTB_TRACKING);
+        return $this->getData(self::SN_NEG_ADJMT_OUTB_TRACKING);
     }
 
-    public function setSNNegAdjmtOutbTracking(bool $value): self
+    public function setSNNegAdjmtOutbTracking(bool $value)
     {
-        return $this->setData(self::S_N_NEG_ADJMT_OUTB_TRACKING, $value);
+        return $this->setData(self::SN_NEG_ADJMT_OUTB_TRACKING, $value);
     }
 
     public function getSNTransferTracking(): ?bool
     {
-        return $this->getData(self::S_N_TRANSFER_TRACKING);
+        return $this->getData(self::SN_TRANSFER_TRACKING);
     }
 
-    public function setSNTransferTracking(bool $value): self
+    public function setSNTransferTracking(bool $value)
     {
-        return $this->setData(self::S_N_TRANSFER_TRACKING, $value);
+        return $this->setData(self::SN_TRANSFER_TRACKING, $value);
     }
 
     public function getSNManufInboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_MANUF_INBOUND_TRACKING);
+        return $this->getData(self::SN_MANUF_INBOUND_TRACKING);
     }
 
-    public function setSNManufInboundTracking(bool $value): self
+    public function setSNManufInboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_MANUF_INBOUND_TRACKING, $value);
+        return $this->setData(self::SN_MANUF_INBOUND_TRACKING, $value);
     }
 
     public function getSNManufOutboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_MANUF_OUTBOUND_TRACKING);
+        return $this->getData(self::SN_MANUF_OUTBOUND_TRACKING);
     }
 
-    public function setSNManufOutboundTracking(bool $value): self
+    public function setSNManufOutboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_MANUF_OUTBOUND_TRACKING, $value);
+        return $this->setData(self::SN_MANUF_OUTBOUND_TRACKING, $value);
     }
 
     public function getSNAssemblyInboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_ASSEMBLY_INBOUND_TRACKING);
+        return $this->getData(self::SN_ASSEMBLY_INBOUND_TRACKING);
     }
 
-    public function setSNAssemblyInboundTracking(bool $value): self
+    public function setSNAssemblyInboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_ASSEMBLY_INBOUND_TRACKING, $value);
+        return $this->setData(self::SN_ASSEMBLY_INBOUND_TRACKING, $value);
     }
 
     public function getSNAssemblyOutboundTracking(): ?bool
     {
-        return $this->getData(self::S_N_ASSEMBLY_OUTBOUND_TRACKING);
+        return $this->getData(self::SN_ASSEMBLY_OUTBOUND_TRACKING);
     }
 
-    public function setSNAssemblyOutboundTracking(bool $value): self
+    public function setSNAssemblyOutboundTracking(bool $value)
     {
-        return $this->setData(self::S_N_ASSEMBLY_OUTBOUND_TRACKING, $value);
+        return $this->setData(self::SN_ASSEMBLY_OUTBOUND_TRACKING, $value);
     }
 
     public function getCreateSNInfoOnPosting(): ?bool
     {
-        return $this->getData(self::CREATE_S_N_INFO_ON_POSTING);
+        return $this->getData(self::CREATE_SN_INFO_ON_POSTING);
     }
 
-    public function setCreateSNInfoOnPosting(bool $value): self
+    public function setCreateSNInfoOnPosting(bool $value)
     {
-        return $this->setData(self::CREATE_S_N_INFO_ON_POSTING, $value);
+        return $this->setData(self::CREATE_SN_INFO_ON_POSTING, $value);
     }
 
     public function getLotSpecificTracking(): ?bool
@@ -333,7 +333,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_SPECIFIC_TRACKING);
     }
 
-    public function setLotSpecificTracking(bool $value): self
+    public function setLotSpecificTracking(bool $value)
     {
         return $this->setData(self::LOT_SPECIFIC_TRACKING, $value);
     }
@@ -343,7 +343,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_INFO_INBOUND_MUST_EXIST);
     }
 
-    public function setLotInfoInboundMustExist(bool $value): self
+    public function setLotInfoInboundMustExist(bool $value)
     {
         return $this->setData(self::LOT_INFO_INBOUND_MUST_EXIST, $value);
     }
@@ -353,7 +353,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_INFO_OUTBOUND_MUST_EXIST);
     }
 
-    public function setLotInfoOutboundMustExist(bool $value): self
+    public function setLotInfoOutboundMustExist(bool $value)
     {
         return $this->setData(self::LOT_INFO_OUTBOUND_MUST_EXIST, $value);
     }
@@ -363,7 +363,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_WAREHOUSE_TRACKING);
     }
 
-    public function setLotWarehouseTracking(bool $value): self
+    public function setLotWarehouseTracking(bool $value)
     {
         return $this->setData(self::LOT_WAREHOUSE_TRACKING, $value);
     }
@@ -373,7 +373,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_PURCHASE_INBOUND_TRACKING);
     }
 
-    public function setLotPurchaseInboundTracking(bool $value): self
+    public function setLotPurchaseInboundTracking(bool $value)
     {
         return $this->setData(self::LOT_PURCHASE_INBOUND_TRACKING, $value);
     }
@@ -383,7 +383,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_PURCHASE_OUTBOUND_TRACKING);
     }
 
-    public function setLotPurchaseOutboundTracking(bool $value): self
+    public function setLotPurchaseOutboundTracking(bool $value)
     {
         return $this->setData(self::LOT_PURCHASE_OUTBOUND_TRACKING, $value);
     }
@@ -393,7 +393,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_SALES_INBOUND_TRACKING);
     }
 
-    public function setLotSalesInboundTracking(bool $value): self
+    public function setLotSalesInboundTracking(bool $value)
     {
         return $this->setData(self::LOT_SALES_INBOUND_TRACKING, $value);
     }
@@ -403,7 +403,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_SALES_OUTBOUND_TRACKING);
     }
 
-    public function setLotSalesOutboundTracking(bool $value): self
+    public function setLotSalesOutboundTracking(bool $value)
     {
         return $this->setData(self::LOT_SALES_OUTBOUND_TRACKING, $value);
     }
@@ -413,7 +413,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_POS_ADJMT_INB_TRACKING);
     }
 
-    public function setLotPosAdjmtInbTracking(bool $value): self
+    public function setLotPosAdjmtInbTracking(bool $value)
     {
         return $this->setData(self::LOT_POS_ADJMT_INB_TRACKING, $value);
     }
@@ -423,7 +423,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_POS_ADJMT_OUTB_TRACKING);
     }
 
-    public function setLotPosAdjmtOutbTracking(bool $value): self
+    public function setLotPosAdjmtOutbTracking(bool $value)
     {
         return $this->setData(self::LOT_POS_ADJMT_OUTB_TRACKING, $value);
     }
@@ -433,7 +433,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_NEG_ADJMT_INB_TRACKING);
     }
 
-    public function setLotNegAdjmtInbTracking(bool $value): self
+    public function setLotNegAdjmtInbTracking(bool $value)
     {
         return $this->setData(self::LOT_NEG_ADJMT_INB_TRACKING, $value);
     }
@@ -443,7 +443,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_NEG_ADJMT_OUTB_TRACKING);
     }
 
-    public function setLotNegAdjmtOutbTracking(bool $value): self
+    public function setLotNegAdjmtOutbTracking(bool $value)
     {
         return $this->setData(self::LOT_NEG_ADJMT_OUTB_TRACKING, $value);
     }
@@ -453,7 +453,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_TRANSFER_TRACKING);
     }
 
-    public function setLotTransferTracking(bool $value): self
+    public function setLotTransferTracking(bool $value)
     {
         return $this->setData(self::LOT_TRANSFER_TRACKING, $value);
     }
@@ -463,7 +463,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_MANUF_INBOUND_TRACKING);
     }
 
-    public function setLotManufInboundTracking(bool $value): self
+    public function setLotManufInboundTracking(bool $value)
     {
         return $this->setData(self::LOT_MANUF_INBOUND_TRACKING, $value);
     }
@@ -473,7 +473,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_MANUF_OUTBOUND_TRACKING);
     }
 
-    public function setLotManufOutboundTracking(bool $value): self
+    public function setLotManufOutboundTracking(bool $value)
     {
         return $this->setData(self::LOT_MANUF_OUTBOUND_TRACKING, $value);
     }
@@ -483,7 +483,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_ASSEMBLY_INBOUND_TRACKING);
     }
 
-    public function setLotAssemblyInboundTracking(bool $value): self
+    public function setLotAssemblyInboundTracking(bool $value)
     {
         return $this->setData(self::LOT_ASSEMBLY_INBOUND_TRACKING, $value);
     }
@@ -493,7 +493,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::LOT_ASSEMBLY_OUTBOUND_TRACKING);
     }
 
-    public function setLotAssemblyOutboundTracking(bool $value): self
+    public function setLotAssemblyOutboundTracking(bool $value)
     {
         return $this->setData(self::LOT_ASSEMBLY_OUTBOUND_TRACKING, $value);
     }
@@ -503,7 +503,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::CREATE_LOT_NO_INFO_ON_POSTING);
     }
 
-    public function setCreateLotNoInfoOnPosting(bool $value): self
+    public function setCreateLotNoInfoOnPosting(bool $value)
     {
         return $this->setData(self::CREATE_LOT_NO_INFO_ON_POSTING, $value);
     }
@@ -513,7 +513,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_SPECIFIC_TRACKING);
     }
 
-    public function setPackageSpecificTracking(bool $value): self
+    public function setPackageSpecificTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_SPECIFIC_TRACKING, $value);
     }
@@ -523,7 +523,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_WAREHOUSE_TRACKING);
     }
 
-    public function setPackageWarehouseTracking(bool $value): self
+    public function setPackageWarehouseTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_WAREHOUSE_TRACKING, $value);
     }
@@ -533,7 +533,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_INFO_INB_MUST_EXIST);
     }
 
-    public function setPackageInfoInbMustExist(bool $value): self
+    public function setPackageInfoInbMustExist(bool $value)
     {
         return $this->setData(self::PACKAGE_INFO_INB_MUST_EXIST, $value);
     }
@@ -543,7 +543,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_INFO_OUTB_MUST_EXIST);
     }
 
-    public function setPackageInfoOutbMustExist(bool $value): self
+    public function setPackageInfoOutbMustExist(bool $value)
     {
         return $this->setData(self::PACKAGE_INFO_OUTB_MUST_EXIST, $value);
     }
@@ -553,7 +553,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_PURCHASE_INB_TRACKING);
     }
 
-    public function setPackagePurchaseInbTracking(bool $value): self
+    public function setPackagePurchaseInbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_PURCHASE_INB_TRACKING, $value);
     }
@@ -563,7 +563,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_PURCH_OUTB_TRACKING);
     }
 
-    public function setPackagePurchOutbTracking(bool $value): self
+    public function setPackagePurchOutbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_PURCH_OUTB_TRACKING, $value);
     }
@@ -573,7 +573,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_SALES_INBOUND_TRACKING);
     }
 
-    public function setPackageSalesInboundTracking(bool $value): self
+    public function setPackageSalesInboundTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_SALES_INBOUND_TRACKING, $value);
     }
@@ -583,7 +583,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_SALES_OUTB_TRACKING);
     }
 
-    public function setPackageSalesOutbTracking(bool $value): self
+    public function setPackageSalesOutbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_SALES_OUTB_TRACKING, $value);
     }
@@ -593,7 +593,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_POS_INB_TRACKING);
     }
 
-    public function setPackagePosInbTracking(bool $value): self
+    public function setPackagePosInbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_POS_INB_TRACKING, $value);
     }
@@ -603,7 +603,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_POS_OUTB_TRACKING);
     }
 
-    public function setPackagePosOutbTracking(bool $value): self
+    public function setPackagePosOutbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_POS_OUTB_TRACKING, $value);
     }
@@ -613,7 +613,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_NEG_INB_TRACKING);
     }
 
-    public function setPackageNegInbTracking(bool $value): self
+    public function setPackageNegInbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_NEG_INB_TRACKING, $value);
     }
@@ -623,7 +623,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_NEG_OUTB_TRACKING);
     }
 
-    public function setPackageNegOutbTracking(bool $value): self
+    public function setPackageNegOutbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_NEG_OUTB_TRACKING, $value);
     }
@@ -633,7 +633,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_TRANSFER_TRACKING);
     }
 
-    public function setPackageTransferTracking(bool $value): self
+    public function setPackageTransferTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_TRANSFER_TRACKING, $value);
     }
@@ -643,7 +643,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_MANUF_INB_TRACKING);
     }
 
-    public function setPackageManufInbTracking(bool $value): self
+    public function setPackageManufInbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_MANUF_INB_TRACKING, $value);
     }
@@ -653,7 +653,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_MANUF_OUTB_TRACKING);
     }
 
-    public function setPackageManufOutbTracking(bool $value): self
+    public function setPackageManufOutbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_MANUF_OUTB_TRACKING, $value);
     }
@@ -663,7 +663,7 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_ASSEMBLY_INB_TRACKING);
     }
 
-    public function setPackageAssemblyInbTracking(bool $value): self
+    public function setPackageAssemblyInbTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_ASSEMBLY_INB_TRACKING, $value);
     }
@@ -673,58 +673,58 @@ class ItemTrackingCode extends DataObject
         return $this->getData(self::PACKAGE_ASSEMBLY_OUT_TRACKING);
     }
 
-    public function setPackageAssemblyOutTracking(bool $value): self
+    public function setPackageAssemblyOutTracking(bool $value)
     {
         return $this->setData(self::PACKAGE_ASSEMBLY_OUT_TRACKING, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

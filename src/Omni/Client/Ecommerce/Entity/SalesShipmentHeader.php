@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class SalesShipmentHeader extends \Magento\Framework\DataObject
+class SalesShipmentHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'SalesShipmentHeader';
 

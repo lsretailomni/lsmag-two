@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class WSInventoryBuffer extends \Magento\Framework\DataObject
+class WSInventoryBuffer extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'WSInventoryBuffer';
 

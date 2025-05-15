@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCStore extends DataObject
+class LSCStore extends AbstractModel
 {
     public const NO = 'No.';
     public const NAME = 'Name';
@@ -24,12 +24,12 @@ class LSCStore extends DataObject
     public const PHONE_NO = 'Phone No.';
     public const CURRENCY_CODE = 'Currency Code';
     public const FUNCTIONALITY_PROFILE = 'Functionality Profile';
-    public const STORE_V_A_T_BUS_POST_GR = 'Store VAT Bus. Post. Gr.';
+    public const STORE_VAT_BUS_POST_GR = 'Store VAT Bus. Post. Gr.';
     public const CLICK_AND_COLLECT = 'Click and Collect';
     public const LOYALTY = 'Loyalty';
     public const WEB_STORE = 'Web Store';
-    public const WEB_STORE_P_O_S_TERMINAL = 'Web Store POS Terminal';
-    public const WEB_STORE_STAFF_I_D = 'Web Store Staff ID';
+    public const WEB_STORE_POS_TERMINAL = 'Web Store POS Terminal';
+    public const WEB_STORE_STAFF_ID = 'Web Store Staff ID';
     public const CALC_INV_FOR_SOURCING_LOCATION = 'Calc Inv for Sourcing Location';
     public const STORE_SALES_TYPE_FILTER = 'Store Sales Type Filter';
 
@@ -39,7 +39,7 @@ class LSCStore extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -49,7 +49,7 @@ class LSCStore extends DataObject
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value): self
+    public function setName(string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -59,7 +59,7 @@ class LSCStore extends DataObject
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value): self
+    public function setAddress(string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -69,7 +69,7 @@ class LSCStore extends DataObject
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value): self
+    public function setAddress2(string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -79,7 +79,7 @@ class LSCStore extends DataObject
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value): self
+    public function setPostCode(string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -89,7 +89,7 @@ class LSCStore extends DataObject
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value): self
+    public function setCity(string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -99,7 +99,7 @@ class LSCStore extends DataObject
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value): self
+    public function setCounty(string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
@@ -109,7 +109,7 @@ class LSCStore extends DataObject
         return $this->getData(self::COUNTRY_CODE);
     }
 
-    public function setCountryCode(string $value): self
+    public function setCountryCode(string $value)
     {
         return $this->setData(self::COUNTRY_CODE, $value);
     }
@@ -119,7 +119,7 @@ class LSCStore extends DataObject
         return $this->getData(self::LATITUDE);
     }
 
-    public function setLatitude(string $value): self
+    public function setLatitude(string $value)
     {
         return $this->setData(self::LATITUDE, $value);
     }
@@ -129,7 +129,7 @@ class LSCStore extends DataObject
         return $this->getData(self::LONGITUDE);
     }
 
-    public function setLongitude(string $value): self
+    public function setLongitude(string $value)
     {
         return $this->setData(self::LONGITUDE, $value);
     }
@@ -139,7 +139,7 @@ class LSCStore extends DataObject
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value): self
+    public function setPhoneNo(string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -149,7 +149,7 @@ class LSCStore extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -159,19 +159,19 @@ class LSCStore extends DataObject
         return $this->getData(self::FUNCTIONALITY_PROFILE);
     }
 
-    public function setFunctionalityProfile(string $value): self
+    public function setFunctionalityProfile(string $value)
     {
         return $this->setData(self::FUNCTIONALITY_PROFILE, $value);
     }
 
     public function getStoreVATBusPostGr(): ?string
     {
-        return $this->getData(self::STORE_V_A_T_BUS_POST_GR);
+        return $this->getData(self::STORE_VAT_BUS_POST_GR);
     }
 
-    public function setStoreVATBusPostGr(string $value): self
+    public function setStoreVATBusPostGr(string $value)
     {
-        return $this->setData(self::STORE_V_A_T_BUS_POST_GR, $value);
+        return $this->setData(self::STORE_VAT_BUS_POST_GR, $value);
     }
 
     public function getClickAndCollect(): ?bool
@@ -179,7 +179,7 @@ class LSCStore extends DataObject
         return $this->getData(self::CLICK_AND_COLLECT);
     }
 
-    public function setClickAndCollect(bool $value): self
+    public function setClickAndCollect(bool $value)
     {
         return $this->setData(self::CLICK_AND_COLLECT, $value);
     }
@@ -189,7 +189,7 @@ class LSCStore extends DataObject
         return $this->getData(self::LOYALTY);
     }
 
-    public function setLoyalty(bool $value): self
+    public function setLoyalty(bool $value)
     {
         return $this->setData(self::LOYALTY, $value);
     }
@@ -199,29 +199,29 @@ class LSCStore extends DataObject
         return $this->getData(self::WEB_STORE);
     }
 
-    public function setWebStore(bool $value): self
+    public function setWebStore(bool $value)
     {
         return $this->setData(self::WEB_STORE, $value);
     }
 
     public function getWebStorePOSTerminal(): ?string
     {
-        return $this->getData(self::WEB_STORE_P_O_S_TERMINAL);
+        return $this->getData(self::WEB_STORE_POS_TERMINAL);
     }
 
-    public function setWebStorePOSTerminal(string $value): self
+    public function setWebStorePOSTerminal(string $value)
     {
-        return $this->setData(self::WEB_STORE_P_O_S_TERMINAL, $value);
+        return $this->setData(self::WEB_STORE_POS_TERMINAL, $value);
     }
 
     public function getWebStoreStaffID(): ?string
     {
-        return $this->getData(self::WEB_STORE_STAFF_I_D);
+        return $this->getData(self::WEB_STORE_STAFF_ID);
     }
 
-    public function setWebStoreStaffID(string $value): self
+    public function setWebStoreStaffID(string $value)
     {
-        return $this->setData(self::WEB_STORE_STAFF_I_D, $value);
+        return $this->setData(self::WEB_STORE_STAFF_ID, $value);
     }
 
     public function getCalcInvForSourcingLocation(): ?bool
@@ -229,7 +229,7 @@ class LSCStore extends DataObject
         return $this->getData(self::CALC_INV_FOR_SOURCING_LOCATION);
     }
 
-    public function setCalcInvForSourcingLocation(bool $value): self
+    public function setCalcInvForSourcingLocation(bool $value)
     {
         return $this->setData(self::CALC_INV_FOR_SOURCING_LOCATION, $value);
     }
@@ -239,7 +239,7 @@ class LSCStore extends DataObject
         return $this->getData(self::STORE_SALES_TYPE_FILTER);
     }
 
-    public function setStoreSalesTypeFilter(string $value): self
+    public function setStoreSalesTypeFilter(string $value)
     {
         return $this->setData(self::STORE_SALES_TYPE_FILTER, $value);
     }

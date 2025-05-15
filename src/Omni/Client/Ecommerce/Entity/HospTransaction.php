@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HospTransaction extends \Magento\Framework\DataObject
+class HospTransaction extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HospTransaction';
 

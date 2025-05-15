@@ -7,14 +7,19 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class DynamicResponseResponse extends BaseODataResponse
+class LSCWIMixMatchOfferExtResponse extends BaseODataResponse
 {
-    /** @var DynamicResponse[] */
+    /** @var LSCWIMixMatchOfferExt[] */
     public array $records = [];
 
     public function __construct(array $data)
     {
         $this->records = $data['records'];
         parent::__construct($data);
+    }
+
+    public function getRecords(): array
+    {
+        return $this->records;
     }
 }

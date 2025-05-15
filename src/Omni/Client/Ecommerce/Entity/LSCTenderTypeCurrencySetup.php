@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCTenderTypeCurrencySetup extends DataObject
+class LSCTenderTypeCurrencySetup extends AbstractModel
 {
     public const CURRENCY_CODE = 'Currency Code';
     public const DESCRIPTION = 'Description';
@@ -18,15 +18,15 @@ class LSCTenderTypeCurrencySetup extends DataObject
     public const ACCOUNT_TYPE = 'Account Type';
     public const ACCOUNT_NO = 'Account No.';
     public const ACCOUNT_NAME = 'Account Name';
-    public const DIFFERENCE_G_L_ACC = 'Difference G/L Acc.';
+    public const DIFFERENCE_GL_ACC = 'Difference G/L Acc.';
     public const PRIMARY_KEY = 'Primary Key';
-    public const P_O_S_PICKUP_WARNING_AMOUNT = 'POS Pickup Warning Amount';
-    public const P_O_S_PICKUP_WARNING_TEXT = 'POS Pickup Warning Text';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const POS_PICKUP_WARNING_AMOUNT = 'POS Pickup Warning Amount';
+    public const POS_PICKUP_WARNING_TEXT = 'POS Pickup Warning Text';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getCurrencyCode(): ?string
@@ -34,7 +34,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -44,7 +44,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -54,7 +54,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -64,7 +64,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::TENDER_TYPE_CODE);
     }
 
-    public function setTenderTypeCode(string $value): self
+    public function setTenderTypeCode(string $value)
     {
         return $this->setData(self::TENDER_TYPE_CODE, $value);
     }
@@ -74,7 +74,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(string $value): self
+    public function setAccountType(string $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }
@@ -84,7 +84,7 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value): self
+    public function setAccountNo(string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -94,19 +94,19 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::ACCOUNT_NAME);
     }
 
-    public function setAccountName(string $value): self
+    public function setAccountName(string $value)
     {
         return $this->setData(self::ACCOUNT_NAME, $value);
     }
 
     public function getDifferenceGLAcc(): ?string
     {
-        return $this->getData(self::DIFFERENCE_G_L_ACC);
+        return $this->getData(self::DIFFERENCE_GL_ACC);
     }
 
-    public function setDifferenceGLAcc(string $value): self
+    public function setDifferenceGLAcc(string $value)
     {
-        return $this->setData(self::DIFFERENCE_G_L_ACC, $value);
+        return $this->setData(self::DIFFERENCE_GL_ACC, $value);
     }
 
     public function getPrimaryKey(): ?string
@@ -114,78 +114,78 @@ class LSCTenderTypeCurrencySetup extends DataObject
         return $this->getData(self::PRIMARY_KEY);
     }
 
-    public function setPrimaryKey(string $value): self
+    public function setPrimaryKey(string $value)
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
 
     public function getPOSPickupWarningAmount(): ?string
     {
-        return $this->getData(self::P_O_S_PICKUP_WARNING_AMOUNT);
+        return $this->getData(self::POS_PICKUP_WARNING_AMOUNT);
     }
 
-    public function setPOSPickupWarningAmount(string $value): self
+    public function setPOSPickupWarningAmount(string $value)
     {
-        return $this->setData(self::P_O_S_PICKUP_WARNING_AMOUNT, $value);
+        return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }
 
     public function getPOSPickupWarningText(): ?string
     {
-        return $this->getData(self::P_O_S_PICKUP_WARNING_TEXT);
+        return $this->getData(self::POS_PICKUP_WARNING_TEXT);
     }
 
-    public function setPOSPickupWarningText(string $value): self
+    public function setPOSPickupWarningText(string $value)
     {
-        return $this->setData(self::P_O_S_PICKUP_WARNING_TEXT, $value);
+        return $this->setData(self::POS_PICKUP_WARNING_TEXT, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

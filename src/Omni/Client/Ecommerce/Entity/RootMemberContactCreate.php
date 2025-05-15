@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootMemberContactCreate extends \Magento\Framework\DataObject
+class RootMemberContactCreate extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootMemberContactCreate';
 

@@ -24,36 +24,6 @@ class MIValidateItemTracking extends AbstractOperation
 
     public const SERVICE_TYPE = 'ecommerce';
 
-    /**
-     * @property OmniClient $client
-     */
-    protected $client = null;
-
-    /**
-     * @property MIValidateItemTrackingRequest $request
-     */
-    protected $request = null;
-
-    /**
-     * @property MIValidateItemTrackingResponse $response
-     */
-    protected $response = null;
-
-    /**
-     * @property string $request_xml
-     */
-    protected $request_xml = null;
-
-    /**
-     * @property string $response_xml
-     */
-    protected $response_xml = null;
-
-    /**
-     * @property \Exception $error
-     */
-    protected $error = null;
-
     public function __construct($baseUrl = '')
     {
         $serviceType = new ServiceType( self::SERVICE_TYPE );
@@ -100,111 +70,62 @@ class MIValidateItemTracking extends AbstractOperation
         return FALSE;
     }
 
-    /**
-     * @param OmniClient $client
-     * @return $this
-     */
-    public function setClient($client)
+    public function setClient(\OmniClient $client)
     {
-        $this->client = $client;
         return $this;
     }
 
-    /**
-     * @return OmniClient
-     */
-    public function getClient()
+    public function getClient() : \OmniClient
     {
         return $this->client;
     }
 
-/** @noinspection PhpDocSignatureInspection */
-    /**
-     * @param MIValidateItemTrackingRequest $request
-     * @return $this
-     */
-    public function setRequest($request)
+    public function setRequest(\MIValidateItemTrackingRequest $request)
     {
-        $this->request = $request;
         return $this;
     }
 
-    /**
-     * @return MIValidateItemTrackingRequest
-     */
-    public function getRequest()
+    public function getRequest() : \MIValidateItemTrackingRequest
     {
         return $this->request;
     }
 
-    /**
-     * @param MIValidateItemTrackingResponse $response
-     * @return $this
-     */
-    public function setResponse($response)
+    public function setResponse(\MIValidateItemTrackingResponse $response)
     {
-        $this->response = $response;
         return $this;
     }
 
-    /**
-     * @return MIValidateItemTrackingResponse
-     */
-    public function getResponse()
+    public function getResponse() : \MIValidateItemTrackingResponse
     {
         return $this->response;
     }
 
-    /**
-     * @param string $request_xml
-     * @return $this
-     */
-    public function setRequestXml($request_xml)
+    public function setRequestXml(string $requestXml)
     {
-        $this->request_xml = $request_xml;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestXml()
+    public function getRequestXml() : string
     {
-        return $this->request_xml;
+        return $this->requestXml;
     }
 
-    /**
-     * @param string $response_xml
-     * @return $this
-     */
-    public function setResponseXml($response_xml)
+    public function setResponseXml(string $responseXml)
     {
-        $this->response_xml = $response_xml;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getResponseXml()
+    public function getResponseXml() : string
     {
-        return $this->response_xml;
+        return $this->responseXml;
     }
 
-    /**
-     * @param \Exception $error
-     * @return $this
-     */
-    public function setError($error)
+    public function setError(\Exception $error)
     {
-        $this->error = $error;
         return $this;
     }
 
-    /**
-     * @return \Exception
-     */
-    public function getError()
+    public function getError() : \Exception
     {
         return $this->error;
     }

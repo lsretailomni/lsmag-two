@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class COEditPayment extends \Magento\Framework\DataObject
+class COEditPayment extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'COEditPayment';
 

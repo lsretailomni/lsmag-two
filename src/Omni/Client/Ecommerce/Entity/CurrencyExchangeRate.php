@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class CurrencyExchangeRate extends DataObject
+class CurrencyExchangeRate extends AbstractModel
 {
     public const CURRENCY_CODE = 'Currency Code';
     public const STARTING_DATE = 'Starting Date';
@@ -19,13 +19,13 @@ class CurrencyExchangeRate extends DataObject
     public const RELATIONAL_EXCH_RATE_AMOUNT = 'Relational Exch. Rate Amount';
     public const FIX_EXCHANGE_RATE_AMOUNT = 'Fix Exchange Rate Amount';
     public const RELATIONAL_ADJMT_EXCH_RATE_AMT = 'Relational Adjmt Exch Rate Amt';
-    public const L_S_C_P_O_S_EXCHANGE_RATE_AMOUNT = 'LSC POS Exchange Rate Amount';
-    public const L_S_C_P_O_S_REL_EXCH_RATE_AMOUNT = 'LSC POS Rel. Exch. Rate Amount';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const LSC_POS_EXCHANGE_RATE_AMOUNT = 'LSC POS Exchange Rate Amount';
+    public const LSC_POS_REL_EXCH_RATE_AMOUNT = 'LSC POS Rel. Exch. Rate Amount';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getCurrencyCode(): ?string
@@ -33,7 +33,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -43,7 +43,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value): self
+    public function setStartingDate(string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
@@ -53,7 +53,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setExchangeRateAmount(string $value): self
+    public function setExchangeRateAmount(string $value)
     {
         return $this->setData(self::EXCHANGE_RATE_AMOUNT, $value);
     }
@@ -63,7 +63,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::ADJUSTMENT_EXCH_RATE_AMOUNT);
     }
 
-    public function setAdjustmentExchRateAmount(string $value): self
+    public function setAdjustmentExchRateAmount(string $value)
     {
         return $this->setData(self::ADJUSTMENT_EXCH_RATE_AMOUNT, $value);
     }
@@ -73,7 +73,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::RELATIONAL_CURRENCY_CODE);
     }
 
-    public function setRelationalCurrencyCode(string $value): self
+    public function setRelationalCurrencyCode(string $value)
     {
         return $this->setData(self::RELATIONAL_CURRENCY_CODE, $value);
     }
@@ -83,7 +83,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::RELATIONAL_EXCH_RATE_AMOUNT);
     }
 
-    public function setRelationalExchRateAmount(string $value): self
+    public function setRelationalExchRateAmount(string $value)
     {
         return $this->setData(self::RELATIONAL_EXCH_RATE_AMOUNT, $value);
     }
@@ -93,7 +93,7 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::FIX_EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setFixExchangeRateAmount(string $value): self
+    public function setFixExchangeRateAmount(string $value)
     {
         return $this->setData(self::FIX_EXCHANGE_RATE_AMOUNT, $value);
     }
@@ -103,78 +103,78 @@ class CurrencyExchangeRate extends DataObject
         return $this->getData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT);
     }
 
-    public function setRelationalAdjmtExchRateAmt(string $value): self
+    public function setRelationalAdjmtExchRateAmt(string $value)
     {
         return $this->setData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT, $value);
     }
 
     public function getLSCPOSExchangeRateAmount(): ?string
     {
-        return $this->getData(self::L_S_C_P_O_S_EXCHANGE_RATE_AMOUNT);
+        return $this->getData(self::LSC_POS_EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setLSCPOSExchangeRateAmount(string $value): self
+    public function setLSCPOSExchangeRateAmount(string $value)
     {
-        return $this->setData(self::L_S_C_P_O_S_EXCHANGE_RATE_AMOUNT, $value);
+        return $this->setData(self::LSC_POS_EXCHANGE_RATE_AMOUNT, $value);
     }
 
     public function getLSCPOSRelExchRateAmount(): ?string
     {
-        return $this->getData(self::L_S_C_P_O_S_REL_EXCH_RATE_AMOUNT);
+        return $this->getData(self::LSC_POS_REL_EXCH_RATE_AMOUNT);
     }
 
-    public function setLSCPOSRelExchRateAmount(string $value): self
+    public function setLSCPOSRelExchRateAmount(string $value)
     {
-        return $this->setData(self::L_S_C_P_O_S_REL_EXCH_RATE_AMOUNT, $value);
+        return $this->setData(self::LSC_POS_REL_EXCH_RATE_AMOUNT, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

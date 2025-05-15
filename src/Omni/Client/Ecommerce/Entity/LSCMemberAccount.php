@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberAccount extends DataObject
+class LSCMemberAccount extends AbstractModel
 {
     public const NO = 'No.';
     public const BLOCKED = 'Blocked';
@@ -28,7 +28,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -38,7 +38,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -48,7 +48,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::REASON_BLOCKED);
     }
 
-    public function setReasonBlocked(string $value): self
+    public function setReasonBlocked(string $value)
     {
         return $this->setData(self::REASON_BLOCKED, $value);
     }
@@ -58,7 +58,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::DATE_BLOCKED);
     }
 
-    public function setDateBlocked(string $value): self
+    public function setDateBlocked(string $value)
     {
         return $this->setData(self::DATE_BLOCKED, $value);
     }
@@ -68,7 +68,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::BLOCKED_BY);
     }
 
-    public function setBlockedBy(string $value): self
+    public function setBlockedBy(string $value)
     {
         return $this->setData(self::BLOCKED_BY, $value);
     }
@@ -78,7 +78,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::LINKED_TO_CUSTOMER_NO);
     }
 
-    public function setLinkedToCustomerNo(string $value): self
+    public function setLinkedToCustomerNo(string $value)
     {
         return $this->setData(self::LINKED_TO_CUSTOMER_NO, $value);
     }
@@ -88,7 +88,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value): self
+    public function setClubCode(string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
@@ -98,7 +98,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::SCHEME_CODE);
     }
 
-    public function setSchemeCode(string $value): self
+    public function setSchemeCode(string $value)
     {
         return $this->setData(self::SCHEME_CODE, $value);
     }
@@ -108,7 +108,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value): self
+    public function setStatus(string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -118,7 +118,7 @@ class LSCMemberAccount extends DataObject
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(string $value): self
+    public function setAccountType(string $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }

@@ -7,18 +7,18 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCAttribute extends DataObject
+class LSCAttribute extends AbstractModel
 {
     public const ATTRIBUTE_IS_DIN_AREA_SECTION = 'Attribute Is Din. Area Section';
-    public const ATTRIBUTE_TYPE_I_D = 'Attribute Type ID';
+    public const ATTRIBUTE_TYPE_ID = 'Attribute Type ID';
     public const CODE = 'Code';
     public const DEFAULT_VALUE = 'Default Value';
     public const DESCRIPTION = 'Description';
     public const DESCRIPTION_CUSTOMER = 'Description (Customer)';
     public const DIN_RESERV_SPECIAL_REQUEST = 'Din. Reserv. Special Request';
-    public const DISPLAY_ON_P_O_S = 'Display on POS';
+    public const DISPLAY_ON_POS = 'Display on POS';
     public const INSTANCES = 'Instances';
     public const LINKING = 'Linking';
     public const MAX_VALUE = 'Max. Value';
@@ -26,14 +26,14 @@ class LSCAttribute extends DataObject
     public const OPTION_VALUE_FIELD_LINK = 'Option Value Field Link';
     public const OPTION_VALUE_FILTER = 'Option Value Filter';
     public const OPTION_VALUE_TABLE_LINK = 'Option Value Table Link';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const VALUE_FOR_RECIPE = 'Value for Recipe';
     public const VALUE_REQUIRED = 'Value Required';
     public const VALUE_TYPE = 'Value Type';
-    public const SYSTEM_ID = '$systemId';
+    public const SYSTEMID = '$systemId';
 
 
     public function getAttributeIsDinAreaSection(): ?bool
@@ -41,19 +41,19 @@ class LSCAttribute extends DataObject
         return $this->getData(self::ATTRIBUTE_IS_DIN_AREA_SECTION);
     }
 
-    public function setAttributeIsDinAreaSection(bool $value): self
+    public function setAttributeIsDinAreaSection(bool $value)
     {
         return $this->setData(self::ATTRIBUTE_IS_DIN_AREA_SECTION, $value);
     }
 
     public function getAttributeTypeID(): ?string
     {
-        return $this->getData(self::ATTRIBUTE_TYPE_I_D);
+        return $this->getData(self::ATTRIBUTE_TYPE_ID);
     }
 
-    public function setAttributeTypeID(string $value): self
+    public function setAttributeTypeID(string $value)
     {
-        return $this->setData(self::ATTRIBUTE_TYPE_I_D, $value);
+        return $this->setData(self::ATTRIBUTE_TYPE_ID, $value);
     }
 
     public function getCode(): ?string
@@ -61,7 +61,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -71,7 +71,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::DEFAULT_VALUE);
     }
 
-    public function setDefaultValue(string $value): self
+    public function setDefaultValue(string $value)
     {
         return $this->setData(self::DEFAULT_VALUE, $value);
     }
@@ -81,7 +81,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -91,7 +91,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::DESCRIPTION_CUSTOMER);
     }
 
-    public function setDescriptionCustomer(string $value): self
+    public function setDescriptionCustomer(string $value)
     {
         return $this->setData(self::DESCRIPTION_CUSTOMER, $value);
     }
@@ -101,19 +101,19 @@ class LSCAttribute extends DataObject
         return $this->getData(self::DIN_RESERV_SPECIAL_REQUEST);
     }
 
-    public function setDinReservSpecialRequest(bool $value): self
+    public function setDinReservSpecialRequest(bool $value)
     {
         return $this->setData(self::DIN_RESERV_SPECIAL_REQUEST, $value);
     }
 
     public function getDisplayOnPOS(): ?string
     {
-        return $this->getData(self::DISPLAY_ON_P_O_S);
+        return $this->getData(self::DISPLAY_ON_POS);
     }
 
-    public function setDisplayOnPOS(string $value): self
+    public function setDisplayOnPOS(string $value)
     {
-        return $this->setData(self::DISPLAY_ON_P_O_S, $value);
+        return $this->setData(self::DISPLAY_ON_POS, $value);
     }
 
     public function getInstances(): ?int
@@ -121,7 +121,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::INSTANCES);
     }
 
-    public function setInstances(int $value): self
+    public function setInstances(int $value)
     {
         return $this->setData(self::INSTANCES, $value);
     }
@@ -131,7 +131,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::LINKING);
     }
 
-    public function setLinking(string $value): self
+    public function setLinking(string $value)
     {
         return $this->setData(self::LINKING, $value);
     }
@@ -141,7 +141,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::MAX_VALUE);
     }
 
-    public function setMaxValue(int $value): self
+    public function setMaxValue(int $value)
     {
         return $this->setData(self::MAX_VALUE, $value);
     }
@@ -151,7 +151,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::MIN_VALUE);
     }
 
-    public function setMinValue(int $value): self
+    public function setMinValue(int $value)
     {
         return $this->setData(self::MIN_VALUE, $value);
     }
@@ -161,7 +161,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::OPTION_VALUE_FIELD_LINK);
     }
 
-    public function setOptionValueFieldLink(int $value): self
+    public function setOptionValueFieldLink(int $value)
     {
         return $this->setData(self::OPTION_VALUE_FIELD_LINK, $value);
     }
@@ -171,7 +171,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::OPTION_VALUE_FILTER);
     }
 
-    public function setOptionValueFilter(string $value): self
+    public function setOptionValueFilter(string $value)
     {
         return $this->setData(self::OPTION_VALUE_FILTER, $value);
     }
@@ -181,49 +181,49 @@ class LSCAttribute extends DataObject
         return $this->getData(self::OPTION_VALUE_TABLE_LINK);
     }
 
-    public function setOptionValueTableLink(int $value): self
+    public function setOptionValueTableLink(int $value)
     {
         return $this->setData(self::OPTION_VALUE_TABLE_LINK, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getValueForRecipe(): ?string
@@ -231,7 +231,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::VALUE_FOR_RECIPE);
     }
 
-    public function setValueForRecipe(string $value): self
+    public function setValueForRecipe(string $value)
     {
         return $this->setData(self::VALUE_FOR_RECIPE, $value);
     }
@@ -241,7 +241,7 @@ class LSCAttribute extends DataObject
         return $this->getData(self::VALUE_REQUIRED);
     }
 
-    public function setValueRequired(string $value): self
+    public function setValueRequired(string $value)
     {
         return $this->setData(self::VALUE_REQUIRED, $value);
     }
@@ -251,18 +251,18 @@ class LSCAttribute extends DataObject
         return $this->getData(self::VALUE_TYPE);
     }
 
-    public function setValueType(string $value): self
+    public function setValueType(string $value)
     {
         return $this->setData(self::VALUE_TYPE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 }

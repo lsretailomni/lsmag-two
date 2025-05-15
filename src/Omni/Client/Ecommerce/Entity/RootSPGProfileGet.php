@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootSPGProfileGet extends \Magento\Framework\DataObject
+class RootSPGProfileGet extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGProfileGet';
 

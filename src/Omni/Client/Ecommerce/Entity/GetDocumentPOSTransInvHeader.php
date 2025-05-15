@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class GetDocumentPOSTransInvHeader extends \Magento\Framework\DataObject
+class GetDocumentPOSTransInvHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'GetDocumentPOSTransInvHeader';
 

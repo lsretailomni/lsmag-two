@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCPOSTerminal extends DataObject
+class LSCPOSTerminal extends AbstractModel
 {
     public const STORE_NO = 'Store No.';
     public const NO = 'No.';
@@ -20,8 +20,8 @@ class LSCPOSTerminal extends DataObject
     public const TERMINAL_STATEMENT = 'Terminal Statement';
     public const DEFAULT_PRICE_GROUP = 'Default Price Group';
     public const NOT_ACTIVE = 'Not Active';
-    public const TERMINAL_NETWORK_I_D = 'Terminal Network ID';
-    public const TERMINAL_I_P_ADDRESS = 'Terminal IP Address';
+    public const TERMINAL_NETWORK_ID = 'Terminal Network ID';
+    public const TERMINAL_IP_ADDRESS = 'Terminal IP Address';
     public const TERMINAL_CONNECTION = 'Terminal Connection';
     public const SHOW_ITEM_IMAGE = 'Show Item Image';
     public const SHOW_ITEM_HTML = 'Show Item Html';
@@ -30,29 +30,29 @@ class LSCPOSTerminal extends DataObject
     public const DISPLAY_LINKED_ITEM = 'Display Linked Item';
     public const FRAUD_SORT_FIELD = 'Fraud Sort Field';
     public const MANAGER_KEY_ON_RETURN = 'Manager Key on Return';
-    public const KEY_LOCK_STAFF_PERM_GROUP = 'KeyLock Staff Perm. Group';
+    public const KEYLOCK_STAFF_PERM_GROUP = 'KeyLock Staff Perm. Group';
     public const SLIP_IF_RETURN = 'Slip if Return';
-    public const OPEN_DRAWER_AT_L_I_L_O = 'Open Drawer at LI/LO';
+    public const OPEN_DRAWER_AT_LILO = 'Open Drawer at LI/LO';
     public const ONLY_TOTAL_IN_SUSP_TRANS = 'Only Total in Susp. Trans.';
     public const EXIT_AFTER_EACH_TRANS = 'Exit After Each Trans.';
-    public const AUTO_LOGOFF_AFTER_MIN = 'AutoLogoff After (Min.)';
-    public const ALLOW_AUTO_LOGOFF_IN_SALES_MODE = 'Allow AutoLogoff in Sales Mode';
+    public const AUTOLOGOFF_AFTER_MIN = 'AutoLogoff After (Min.)';
+    public const ALLOW_AUTOLOGOFF_IN_SALES_MODE = 'Allow AutoLogoff in Sales Mode';
     public const RETURN_IN_TRANSACTION = 'Return in Transaction';
     public const ITEM_NO_ON_RECEIPT = 'Item No. on Receipt';
     public const PRINT_RECEIPT_FOR_NEG_ADJ = 'Print Receipt for Neg. Adj.';
-    public const E_F_T_EMBEDDED_RECEIPT = 'EFT Embedded Receipt';
+    public const EFT_EMBEDDED_RECEIPT = 'EFT Embedded Receipt';
     public const USE_REFERENCED_REFUNDS = 'Use Referenced Refunds';
     public const LAST_DATE_MODIFIED = 'Last Date Modified';
     public const PRINT_RECEIPT_LOGO = 'Print Receipt Logo';
     public const PRINT_RECEIPT_BITMAP_NO = 'Print Receipt Bitmap No.';
     public const RCPT_TEXT_MAX_LENGTH = 'Rcpt. Text Max. Length';
-    public const NO_OF_TOP_BOTTOM_LINES = 'No. of Top/Bottom Lines';
+    public const NO_OF_TOPBOTTOM_LINES = 'No. of Top/Bottom Lines';
     public const RECEIPT_BARCODE = 'Receipt Barcode';
     public const RECEIPT_SETUP_LOCATION = 'Receipt Setup Location';
     public const DISPLAY_TEXT_MAX_LENGTH = 'Display Text Max. Length';
     public const CUSTOMER_DISPLAY_TEXT_1 = 'Customer Display Text 1';
     public const CUSTOMER_DISPLAY_TEXT_2 = 'Customer Display Text 2';
-    public const PRINT_RECEIPT_B_C_TYPE = 'Print Receipt BC Type';
+    public const PRINT_RECEIPT_BC_TYPE = 'Print Receipt BC Type';
     public const RECEIPT_BARCODE_WIDTH = 'Receipt Barcode Width';
     public const RECEIPT_BARCODE_HEIGHT = 'Receipt Barcode Height';
     public const ONLINE_TRANS_BACKUP = 'Online Trans. Backup';
@@ -64,21 +64,21 @@ class LSCPOSTerminal extends DataObject
     public const OPERATIONAL_MODE = 'Operational Mode';
     public const REC_PRINTING_OFF_BY_DEFAULT = 'Rec. Printing Off by Default';
     public const DEFAULT_SALES_TYPE = 'Default Sales Type';
-    public const F_B_TAKEAWAY_SALES_TYPE = 'F&B Takeaway Sales Type';
+    public const FB_TAKEAWAY_SALES_TYPE = 'F&B Takeaway Sales Type';
     public const DELIVERY_SALES_TYPE = 'Delivery Sales Type';
     public const SAFE_NO = 'Safe No.';
     public const STAFF_LOGIN_VALIDATION = 'Staff Login Validation';
     public const EXCLUDE_FROM_CASH_MGNT = 'Exclude from Cash Mgnt.';
-    public const LAST_Z_REPORT = 'Last Z-Report';
-    public const LAST_Y_REPORT = 'Last Y-Report';
+    public const LAST_ZREPORT = 'Last Z-Report';
+    public const LAST_YREPORT = 'Last Y-Report';
     public const HARDWARE_PROFILE = 'Hardware Profile';
     public const MENU_PROFILE = 'Menu Profile';
     public const INTERFACE_PROFILE = 'Interface Profile';
     public const FUNCTIONALITY_PROFILE = 'Functionality Profile';
     public const STYLE_PROFILE = 'Style Profile';
-    public const S_S_K_PROFILE_I_D = 'SSK Profile ID';
-    public const S_S_K_TERMINAL_ENABLED = 'SSK Terminal Enabled';
-    public const PRINT_V_A_T_REFUND_CHECKS = 'Print VAT Refund Checks';
+    public const SSK_PROFILE_ID = 'SSK Profile ID';
+    public const SSK_TERMINAL_ENABLED = 'SSK Terminal Enabled';
+    public const PRINT_VAT_REFUND_CHECKS = 'Print VAT Refund Checks';
     public const PRINT_SUSPEND_WITH_PREPAYMENT = 'Print Suspend with Prepayment';
     public const PRINT_NUMBER_OF_ITEMS = 'Print Number of Items';
     public const PRINT_TOTAL_SAVINGS = 'Print Total Savings';
@@ -89,18 +89,18 @@ class LSCPOSTerminal extends DataObject
     public const COPY_OF_MENU_PROFILE = 'Copy of Menu Profile';
     public const COPY_OF_INTERFACE_PROFILE = 'Copy of Interface Profile';
     public const IDLE_TIMER_INTERVAL = 'Idle Timer Interval';
-    public const EXTERNAL_PRINTER_I_D = 'External Printer ID';
+    public const EXTERNAL_PRINTER_ID = 'External Printer ID';
     public const HOSP_TYPE_POPUP_ON_LOGON = 'Hosp. Type Pop-up on Logon';
-    public const RECEIPT_BARCODE_I_D = 'Receipt Barcode ID';
-    public const PRINTER_K_O_T_STATUS_AFTER_SENT = 'Printer KOT Status after Sent';
+    public const RECEIPT_BARCODE_ID = 'Receipt Barcode ID';
+    public const PRINTER_KOT_STATUS_AFTER_SENT = 'Printer KOT Status after Sent';
     public const SALES_SLIP = 'Sales Slip';
     public const VOID_SLIP = 'Void Slip';
     public const ONLY_EMAIL_SALES_TRANSACTIONS = 'Only Email Sales Transactions';
-    public const B_C_C_E_MAIL_ADDRESS = 'BCC E-Mail Address';
+    public const BCC_EMAIL_ADDRESS = 'BCC E-Mail Address';
     public const INVENTORY_MAIN_MENU = 'Inventory Main Menu';
     public const INVENTORY_NO_OF_RECORDS = 'Inventory No. of Records';
-    public const ALLOW_POST_I_M_DOCUMENTS = 'Allow Post IM Documents';
-    public const A_S_N_QUANTITY_METHOD = 'ASN Quantity Method';
+    public const ALLOW_POST_IM_DOCUMENTS = 'Allow Post IM Documents';
+    public const ASN_QUANTITY_METHOD = 'ASN Quantity Method';
     public const DUAL_DISP_ENABLED = 'Dual Disp. Enabled';
     public const DUAL_DISP_STYLE_PROFILE = 'Dual Disp. Style Profile';
     public const DUAL_DISP_INTERFACE_PROFILE = 'Dual Disp. Interface Profile';
@@ -114,24 +114,24 @@ class LSCPOSTerminal extends DataObject
     public const DISABLE_VOID_CARD_PROMPT = 'Disable Void Card Prompt';
     public const POST_TRANSACTION_AFTER_VOID = 'Post Transaction after Void';
     public const USE_NUMPAD = 'Use Numpad';
-    public const INCLUDE_E_F_T_Z_REPORT = 'Include EFT ZReport';
-    public const ALLOW_BLOCKED_ITEMS_MOBILE_P_O_S = 'Allow Blocked Items Mobile POS';
+    public const INCLUDE_EFT_ZREPORT = 'Include EFT ZReport';
+    public const ALLOW_BLOCKED_ITEMS_MOBILE_POS = 'Allow Blocked Items Mobile POS';
     public const OPEN_DRAWER_THEN_PRINT = 'Open drawer then print';
-    public const E_F_T_AUTO_RECOVERY_ATTEMPTS = 'EFT Auto Recovery Attempts';
-    public const P_O_S_SEARCH_ENGINE = 'POS Search Engine';
+    public const EFT_AUTO_RECOVERY_ATTEMPTS = 'EFT Auto Recovery Attempts';
+    public const POS_SEARCH_ENGINE = 'POS Search Engine';
     public const SALES_ORDER_NOS = 'Sales Order Nos.';
     public const ITEM_FILTERING_METHOD = 'Item Filtering Method';
     public const SHOW_NUMBERPAD = 'Show Numberpad';
     public const DEVICE_TYPE = 'Device Type';
     public const DEVICE_LICENSE_KEY = 'Device License Key';
     public const COMPUTER_NAME = 'Computer Name';
-    public const POS_TERMINAL_GUID = 'PosTerminalGuid';
-    public const EXCLUDE_FROM_L_S_RECOMMEND = 'Exclude from LS Recommend';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const POSTERMINALGUID = 'PosTerminalGuid';
+    public const EXCLUDE_FROM_LS_RECOMMEND = 'Exclude from LS Recommend';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getStoreNo(): ?string
@@ -139,7 +139,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -149,7 +149,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -159,7 +159,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::TERMINAL_TYPE);
     }
 
-    public function setTerminalType(string $value): self
+    public function setTerminalType(string $value)
     {
         return $this->setData(self::TERMINAL_TYPE, $value);
     }
@@ -169,7 +169,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -179,7 +179,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PLACEMENT);
     }
 
-    public function setPlacement(string $value): self
+    public function setPlacement(string $value)
     {
         return $this->setData(self::PLACEMENT, $value);
     }
@@ -189,7 +189,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::STATEMENT_METHOD);
     }
 
-    public function setStatementMethod(string $value): self
+    public function setStatementMethod(string $value)
     {
         return $this->setData(self::STATEMENT_METHOD, $value);
     }
@@ -199,7 +199,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::TERMINAL_STATEMENT);
     }
 
-    public function setTerminalStatement(bool $value): self
+    public function setTerminalStatement(bool $value)
     {
         return $this->setData(self::TERMINAL_STATEMENT, $value);
     }
@@ -209,7 +209,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DEFAULT_PRICE_GROUP);
     }
 
-    public function setDefaultPriceGroup(string $value): self
+    public function setDefaultPriceGroup(string $value)
     {
         return $this->setData(self::DEFAULT_PRICE_GROUP, $value);
     }
@@ -219,29 +219,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::NOT_ACTIVE);
     }
 
-    public function setNotActive(bool $value): self
+    public function setNotActive(bool $value)
     {
         return $this->setData(self::NOT_ACTIVE, $value);
     }
 
     public function getTerminalNetworkID(): ?string
     {
-        return $this->getData(self::TERMINAL_NETWORK_I_D);
+        return $this->getData(self::TERMINAL_NETWORK_ID);
     }
 
-    public function setTerminalNetworkID(string $value): self
+    public function setTerminalNetworkID(string $value)
     {
-        return $this->setData(self::TERMINAL_NETWORK_I_D, $value);
+        return $this->setData(self::TERMINAL_NETWORK_ID, $value);
     }
 
     public function getTerminalIPAddress(): ?string
     {
-        return $this->getData(self::TERMINAL_I_P_ADDRESS);
+        return $this->getData(self::TERMINAL_IP_ADDRESS);
     }
 
-    public function setTerminalIPAddress(string $value): self
+    public function setTerminalIPAddress(string $value)
     {
-        return $this->setData(self::TERMINAL_I_P_ADDRESS, $value);
+        return $this->setData(self::TERMINAL_IP_ADDRESS, $value);
     }
 
     public function getTerminalConnection(): ?string
@@ -249,7 +249,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::TERMINAL_CONNECTION);
     }
 
-    public function setTerminalConnection(string $value): self
+    public function setTerminalConnection(string $value)
     {
         return $this->setData(self::TERMINAL_CONNECTION, $value);
     }
@@ -259,7 +259,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SHOW_ITEM_IMAGE);
     }
 
-    public function setShowItemImage(bool $value): self
+    public function setShowItemImage(bool $value)
     {
         return $this->setData(self::SHOW_ITEM_IMAGE, $value);
     }
@@ -269,7 +269,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SHOW_ITEM_HTML);
     }
 
-    public function setShowItemHtml(bool $value): self
+    public function setShowItemHtml(bool $value)
     {
         return $this->setData(self::SHOW_ITEM_HTML, $value);
     }
@@ -279,7 +279,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SHOW_OFFER_HTML);
     }
 
-    public function setShowOfferHtml(bool $value): self
+    public function setShowOfferHtml(bool $value)
     {
         return $this->setData(self::SHOW_OFFER_HTML, $value);
     }
@@ -289,7 +289,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DISPLAY_TERMINAL_CLOSED);
     }
 
-    public function setDisplayTerminalClosed(bool $value): self
+    public function setDisplayTerminalClosed(bool $value)
     {
         return $this->setData(self::DISPLAY_TERMINAL_CLOSED, $value);
     }
@@ -299,7 +299,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DISPLAY_LINKED_ITEM);
     }
 
-    public function setDisplayLinkedItem(bool $value): self
+    public function setDisplayLinkedItem(bool $value)
     {
         return $this->setData(self::DISPLAY_LINKED_ITEM, $value);
     }
@@ -309,7 +309,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::FRAUD_SORT_FIELD);
     }
 
-    public function setFraudSortField(string $value): self
+    public function setFraudSortField(string $value)
     {
         return $this->setData(self::FRAUD_SORT_FIELD, $value);
     }
@@ -319,19 +319,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::MANAGER_KEY_ON_RETURN);
     }
 
-    public function setManagerKeyOnReturn(bool $value): self
+    public function setManagerKeyOnReturn(bool $value)
     {
         return $this->setData(self::MANAGER_KEY_ON_RETURN, $value);
     }
 
     public function getKeyLockStaffPermGroup(): ?string
     {
-        return $this->getData(self::KEY_LOCK_STAFF_PERM_GROUP);
+        return $this->getData(self::KEYLOCK_STAFF_PERM_GROUP);
     }
 
-    public function setKeyLockStaffPermGroup(string $value): self
+    public function setKeyLockStaffPermGroup(string $value)
     {
-        return $this->setData(self::KEY_LOCK_STAFF_PERM_GROUP, $value);
+        return $this->setData(self::KEYLOCK_STAFF_PERM_GROUP, $value);
     }
 
     public function getSlipIfReturn(): ?string
@@ -339,19 +339,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SLIP_IF_RETURN);
     }
 
-    public function setSlipIfReturn(string $value): self
+    public function setSlipIfReturn(string $value)
     {
         return $this->setData(self::SLIP_IF_RETURN, $value);
     }
 
     public function getOpenDrawerAtLILO(): ?bool
     {
-        return $this->getData(self::OPEN_DRAWER_AT_L_I_L_O);
+        return $this->getData(self::OPEN_DRAWER_AT_LILO);
     }
 
-    public function setOpenDrawerAtLILO(bool $value): self
+    public function setOpenDrawerAtLILO(bool $value)
     {
-        return $this->setData(self::OPEN_DRAWER_AT_L_I_L_O, $value);
+        return $this->setData(self::OPEN_DRAWER_AT_LILO, $value);
     }
 
     public function getOnlyTotalInSuspTrans(): ?bool
@@ -359,7 +359,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::ONLY_TOTAL_IN_SUSP_TRANS);
     }
 
-    public function setOnlyTotalInSuspTrans(bool $value): self
+    public function setOnlyTotalInSuspTrans(bool $value)
     {
         return $this->setData(self::ONLY_TOTAL_IN_SUSP_TRANS, $value);
     }
@@ -369,29 +369,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::EXIT_AFTER_EACH_TRANS);
     }
 
-    public function setExitAfterEachTrans(bool $value): self
+    public function setExitAfterEachTrans(bool $value)
     {
         return $this->setData(self::EXIT_AFTER_EACH_TRANS, $value);
     }
 
     public function getAutoLogoffAfterMin(): ?int
     {
-        return $this->getData(self::AUTO_LOGOFF_AFTER_MIN);
+        return $this->getData(self::AUTOLOGOFF_AFTER_MIN);
     }
 
-    public function setAutoLogoffAfterMin(int $value): self
+    public function setAutoLogoffAfterMin(int $value)
     {
-        return $this->setData(self::AUTO_LOGOFF_AFTER_MIN, $value);
+        return $this->setData(self::AUTOLOGOFF_AFTER_MIN, $value);
     }
 
     public function getAllowAutoLogoffInSalesMode(): ?bool
     {
-        return $this->getData(self::ALLOW_AUTO_LOGOFF_IN_SALES_MODE);
+        return $this->getData(self::ALLOW_AUTOLOGOFF_IN_SALES_MODE);
     }
 
-    public function setAllowAutoLogoffInSalesMode(bool $value): self
+    public function setAllowAutoLogoffInSalesMode(bool $value)
     {
-        return $this->setData(self::ALLOW_AUTO_LOGOFF_IN_SALES_MODE, $value);
+        return $this->setData(self::ALLOW_AUTOLOGOFF_IN_SALES_MODE, $value);
     }
 
     public function getReturnInTransaction(): ?bool
@@ -399,7 +399,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
-    public function setReturnInTransaction(bool $value): self
+    public function setReturnInTransaction(bool $value)
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
@@ -409,7 +409,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::ITEM_NO_ON_RECEIPT);
     }
 
-    public function setItemNoOnReceipt(string $value): self
+    public function setItemNoOnReceipt(string $value)
     {
         return $this->setData(self::ITEM_NO_ON_RECEIPT, $value);
     }
@@ -419,19 +419,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_RECEIPT_FOR_NEG_ADJ);
     }
 
-    public function setPrintReceiptForNegAdj(bool $value): self
+    public function setPrintReceiptForNegAdj(bool $value)
     {
         return $this->setData(self::PRINT_RECEIPT_FOR_NEG_ADJ, $value);
     }
 
     public function getEFTEmbeddedReceipt(): ?bool
     {
-        return $this->getData(self::E_F_T_EMBEDDED_RECEIPT);
+        return $this->getData(self::EFT_EMBEDDED_RECEIPT);
     }
 
-    public function setEFTEmbeddedReceipt(bool $value): self
+    public function setEFTEmbeddedReceipt(bool $value)
     {
-        return $this->setData(self::E_F_T_EMBEDDED_RECEIPT, $value);
+        return $this->setData(self::EFT_EMBEDDED_RECEIPT, $value);
     }
 
     public function getUseReferencedRefunds(): ?bool
@@ -439,7 +439,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::USE_REFERENCED_REFUNDS);
     }
 
-    public function setUseReferencedRefunds(bool $value): self
+    public function setUseReferencedRefunds(bool $value)
     {
         return $this->setData(self::USE_REFERENCED_REFUNDS, $value);
     }
@@ -449,7 +449,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value): self
+    public function setLastDateModified(string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -459,7 +459,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_RECEIPT_LOGO);
     }
 
-    public function setPrintReceiptLogo(string $value): self
+    public function setPrintReceiptLogo(string $value)
     {
         return $this->setData(self::PRINT_RECEIPT_LOGO, $value);
     }
@@ -469,7 +469,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_RECEIPT_BITMAP_NO);
     }
 
-    public function setPrintReceiptBitmapNo(int $value): self
+    public function setPrintReceiptBitmapNo(int $value)
     {
         return $this->setData(self::PRINT_RECEIPT_BITMAP_NO, $value);
     }
@@ -479,19 +479,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::RCPT_TEXT_MAX_LENGTH);
     }
 
-    public function setRcptTextMaxLength(int $value): self
+    public function setRcptTextMaxLength(int $value)
     {
         return $this->setData(self::RCPT_TEXT_MAX_LENGTH, $value);
     }
 
     public function getNoOfTopBottomLines(): ?int
     {
-        return $this->getData(self::NO_OF_TOP_BOTTOM_LINES);
+        return $this->getData(self::NO_OF_TOPBOTTOM_LINES);
     }
 
-    public function setNoOfTopBottomLines(int $value): self
+    public function setNoOfTopBottomLines(int $value)
     {
-        return $this->setData(self::NO_OF_TOP_BOTTOM_LINES, $value);
+        return $this->setData(self::NO_OF_TOPBOTTOM_LINES, $value);
     }
 
     public function getReceiptBarcode(): ?bool
@@ -499,7 +499,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::RECEIPT_BARCODE);
     }
 
-    public function setReceiptBarcode(bool $value): self
+    public function setReceiptBarcode(bool $value)
     {
         return $this->setData(self::RECEIPT_BARCODE, $value);
     }
@@ -509,7 +509,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::RECEIPT_SETUP_LOCATION);
     }
 
-    public function setReceiptSetupLocation(string $value): self
+    public function setReceiptSetupLocation(string $value)
     {
         return $this->setData(self::RECEIPT_SETUP_LOCATION, $value);
     }
@@ -519,7 +519,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DISPLAY_TEXT_MAX_LENGTH);
     }
 
-    public function setDisplayTextMaxLength(int $value): self
+    public function setDisplayTextMaxLength(int $value)
     {
         return $this->setData(self::DISPLAY_TEXT_MAX_LENGTH, $value);
     }
@@ -529,7 +529,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::CUSTOMER_DISPLAY_TEXT_1);
     }
 
-    public function setCustomerDisplayText1(string $value): self
+    public function setCustomerDisplayText1(string $value)
     {
         return $this->setData(self::CUSTOMER_DISPLAY_TEXT_1, $value);
     }
@@ -539,19 +539,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::CUSTOMER_DISPLAY_TEXT_2);
     }
 
-    public function setCustomerDisplayText2(string $value): self
+    public function setCustomerDisplayText2(string $value)
     {
         return $this->setData(self::CUSTOMER_DISPLAY_TEXT_2, $value);
     }
 
     public function getPrintReceiptBCType(): ?string
     {
-        return $this->getData(self::PRINT_RECEIPT_B_C_TYPE);
+        return $this->getData(self::PRINT_RECEIPT_BC_TYPE);
     }
 
-    public function setPrintReceiptBCType(string $value): self
+    public function setPrintReceiptBCType(string $value)
     {
-        return $this->setData(self::PRINT_RECEIPT_B_C_TYPE, $value);
+        return $this->setData(self::PRINT_RECEIPT_BC_TYPE, $value);
     }
 
     public function getReceiptBarcodeWidth(): ?int
@@ -559,7 +559,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::RECEIPT_BARCODE_WIDTH);
     }
 
-    public function setReceiptBarcodeWidth(int $value): self
+    public function setReceiptBarcodeWidth(int $value)
     {
         return $this->setData(self::RECEIPT_BARCODE_WIDTH, $value);
     }
@@ -569,7 +569,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::RECEIPT_BARCODE_HEIGHT);
     }
 
-    public function setReceiptBarcodeHeight(int $value): self
+    public function setReceiptBarcodeHeight(int $value)
     {
         return $this->setData(self::RECEIPT_BARCODE_HEIGHT, $value);
     }
@@ -579,7 +579,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::ONLINE_TRANS_BACKUP);
     }
 
-    public function setOnlineTransBackup(bool $value): self
+    public function setOnlineTransBackup(bool $value)
     {
         return $this->setData(self::ONLINE_TRANS_BACKUP, $value);
     }
@@ -589,7 +589,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SUM_OF_TRANS_NO);
     }
 
-    public function setSumOfTransNo(string $value): self
+    public function setSumOfTransNo(string $value)
     {
         return $this->setData(self::SUM_OF_TRANS_NO, $value);
     }
@@ -599,7 +599,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::COUNT_OF_TRANS);
     }
 
-    public function setCountOfTrans(int $value): self
+    public function setCountOfTrans(int $value)
     {
         return $this->setData(self::COUNT_OF_TRANS, $value);
     }
@@ -609,7 +609,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value): self
+    public function setNoSeries(string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
@@ -619,7 +619,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::TABLE_GROUP);
     }
 
-    public function setTableGroup(string $value): self
+    public function setTableGroup(string $value)
     {
         return $this->setData(self::TABLE_GROUP, $value);
     }
@@ -629,7 +629,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::TABLE_VIEW_AT_LOGON);
     }
 
-    public function setTableViewAtLogon(bool $value): self
+    public function setTableViewAtLogon(bool $value)
     {
         return $this->setData(self::TABLE_VIEW_AT_LOGON, $value);
     }
@@ -639,7 +639,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::OPERATIONAL_MODE);
     }
 
-    public function setOperationalMode(string $value): self
+    public function setOperationalMode(string $value)
     {
         return $this->setData(self::OPERATIONAL_MODE, $value);
     }
@@ -649,7 +649,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::REC_PRINTING_OFF_BY_DEFAULT);
     }
 
-    public function setRecPrintingOffByDefault(bool $value): self
+    public function setRecPrintingOffByDefault(bool $value)
     {
         return $this->setData(self::REC_PRINTING_OFF_BY_DEFAULT, $value);
     }
@@ -659,19 +659,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DEFAULT_SALES_TYPE);
     }
 
-    public function setDefaultSalesType(string $value): self
+    public function setDefaultSalesType(string $value)
     {
         return $this->setData(self::DEFAULT_SALES_TYPE, $value);
     }
 
     public function getFBTakeawaySalesType(): ?string
     {
-        return $this->getData(self::F_B_TAKEAWAY_SALES_TYPE);
+        return $this->getData(self::FB_TAKEAWAY_SALES_TYPE);
     }
 
-    public function setFBTakeawaySalesType(string $value): self
+    public function setFBTakeawaySalesType(string $value)
     {
-        return $this->setData(self::F_B_TAKEAWAY_SALES_TYPE, $value);
+        return $this->setData(self::FB_TAKEAWAY_SALES_TYPE, $value);
     }
 
     public function getDeliverySalesType(): ?string
@@ -679,7 +679,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DELIVERY_SALES_TYPE);
     }
 
-    public function setDeliverySalesType(string $value): self
+    public function setDeliverySalesType(string $value)
     {
         return $this->setData(self::DELIVERY_SALES_TYPE, $value);
     }
@@ -689,7 +689,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SAFE_NO);
     }
 
-    public function setSafeNo(string $value): self
+    public function setSafeNo(string $value)
     {
         return $this->setData(self::SAFE_NO, $value);
     }
@@ -699,7 +699,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::STAFF_LOGIN_VALIDATION);
     }
 
-    public function setStaffLoginValidation(string $value): self
+    public function setStaffLoginValidation(string $value)
     {
         return $this->setData(self::STAFF_LOGIN_VALIDATION, $value);
     }
@@ -709,29 +709,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::EXCLUDE_FROM_CASH_MGNT);
     }
 
-    public function setExcludeFromCashMgnt(bool $value): self
+    public function setExcludeFromCashMgnt(bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_CASH_MGNT, $value);
     }
 
     public function getLastZReport(): ?string
     {
-        return $this->getData(self::LAST_Z_REPORT);
+        return $this->getData(self::LAST_ZREPORT);
     }
 
-    public function setLastZReport(string $value): self
+    public function setLastZReport(string $value)
     {
-        return $this->setData(self::LAST_Z_REPORT, $value);
+        return $this->setData(self::LAST_ZREPORT, $value);
     }
 
     public function getLastYReport(): ?string
     {
-        return $this->getData(self::LAST_Y_REPORT);
+        return $this->getData(self::LAST_YREPORT);
     }
 
-    public function setLastYReport(string $value): self
+    public function setLastYReport(string $value)
     {
-        return $this->setData(self::LAST_Y_REPORT, $value);
+        return $this->setData(self::LAST_YREPORT, $value);
     }
 
     public function getHardwareProfile(): ?string
@@ -739,7 +739,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::HARDWARE_PROFILE);
     }
 
-    public function setHardwareProfile(string $value): self
+    public function setHardwareProfile(string $value)
     {
         return $this->setData(self::HARDWARE_PROFILE, $value);
     }
@@ -749,7 +749,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::MENU_PROFILE);
     }
 
-    public function setMenuProfile(string $value): self
+    public function setMenuProfile(string $value)
     {
         return $this->setData(self::MENU_PROFILE, $value);
     }
@@ -759,7 +759,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::INTERFACE_PROFILE);
     }
 
-    public function setInterfaceProfile(string $value): self
+    public function setInterfaceProfile(string $value)
     {
         return $this->setData(self::INTERFACE_PROFILE, $value);
     }
@@ -769,7 +769,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::FUNCTIONALITY_PROFILE);
     }
 
-    public function setFunctionalityProfile(string $value): self
+    public function setFunctionalityProfile(string $value)
     {
         return $this->setData(self::FUNCTIONALITY_PROFILE, $value);
     }
@@ -779,39 +779,39 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::STYLE_PROFILE);
     }
 
-    public function setStyleProfile(string $value): self
+    public function setStyleProfile(string $value)
     {
         return $this->setData(self::STYLE_PROFILE, $value);
     }
 
     public function getSSKProfileID(): ?string
     {
-        return $this->getData(self::S_S_K_PROFILE_I_D);
+        return $this->getData(self::SSK_PROFILE_ID);
     }
 
-    public function setSSKProfileID(string $value): self
+    public function setSSKProfileID(string $value)
     {
-        return $this->setData(self::S_S_K_PROFILE_I_D, $value);
+        return $this->setData(self::SSK_PROFILE_ID, $value);
     }
 
     public function getSSKTerminalEnabled(): ?bool
     {
-        return $this->getData(self::S_S_K_TERMINAL_ENABLED);
+        return $this->getData(self::SSK_TERMINAL_ENABLED);
     }
 
-    public function setSSKTerminalEnabled(bool $value): self
+    public function setSSKTerminalEnabled(bool $value)
     {
-        return $this->setData(self::S_S_K_TERMINAL_ENABLED, $value);
+        return $this->setData(self::SSK_TERMINAL_ENABLED, $value);
     }
 
     public function getPrintVATRefundChecks(): ?bool
     {
-        return $this->getData(self::PRINT_V_A_T_REFUND_CHECKS);
+        return $this->getData(self::PRINT_VAT_REFUND_CHECKS);
     }
 
-    public function setPrintVATRefundChecks(bool $value): self
+    public function setPrintVATRefundChecks(bool $value)
     {
-        return $this->setData(self::PRINT_V_A_T_REFUND_CHECKS, $value);
+        return $this->setData(self::PRINT_VAT_REFUND_CHECKS, $value);
     }
 
     public function getPrintSuspendWithPrepayment(): ?bool
@@ -819,7 +819,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_SUSPEND_WITH_PREPAYMENT);
     }
 
-    public function setPrintSuspendWithPrepayment(bool $value): self
+    public function setPrintSuspendWithPrepayment(bool $value)
     {
         return $this->setData(self::PRINT_SUSPEND_WITH_PREPAYMENT, $value);
     }
@@ -829,7 +829,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_NUMBER_OF_ITEMS);
     }
 
-    public function setPrintNumberOfItems(bool $value): self
+    public function setPrintNumberOfItems(bool $value)
     {
         return $this->setData(self::PRINT_NUMBER_OF_ITEMS, $value);
     }
@@ -839,7 +839,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_TOTAL_SAVINGS);
     }
 
-    public function setPrintTotalSavings(bool $value): self
+    public function setPrintTotalSavings(bool $value)
     {
         return $this->setData(self::PRINT_TOTAL_SAVINGS, $value);
     }
@@ -849,7 +849,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_DISCOUNT_DETAIL);
     }
 
-    public function setPrintDiscountDetail(bool $value): self
+    public function setPrintDiscountDetail(bool $value)
     {
         return $this->setData(self::PRINT_DISCOUNT_DETAIL, $value);
     }
@@ -859,7 +859,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SECOND_HARDWARE_PROFILE);
     }
 
-    public function setSecondHardwareProfile(string $value): self
+    public function setSecondHardwareProfile(string $value)
     {
         return $this->setData(self::SECOND_HARDWARE_PROFILE, $value);
     }
@@ -869,7 +869,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::PRINT_SECOND_RECEIPT);
     }
 
-    public function setPrintSecondReceipt(bool $value): self
+    public function setPrintSecondReceipt(bool $value)
     {
         return $this->setData(self::PRINT_SECOND_RECEIPT, $value);
     }
@@ -879,7 +879,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SALES_TYPE_FILTER);
     }
 
-    public function setSalesTypeFilter(string $value): self
+    public function setSalesTypeFilter(string $value)
     {
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
@@ -889,7 +889,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::COPY_OF_MENU_PROFILE);
     }
 
-    public function setCopyOfMenuProfile(string $value): self
+    public function setCopyOfMenuProfile(string $value)
     {
         return $this->setData(self::COPY_OF_MENU_PROFILE, $value);
     }
@@ -899,7 +899,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::COPY_OF_INTERFACE_PROFILE);
     }
 
-    public function setCopyOfInterfaceProfile(string $value): self
+    public function setCopyOfInterfaceProfile(string $value)
     {
         return $this->setData(self::COPY_OF_INTERFACE_PROFILE, $value);
     }
@@ -909,19 +909,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::IDLE_TIMER_INTERVAL);
     }
 
-    public function setIdleTimerInterval(string $value): self
+    public function setIdleTimerInterval(string $value)
     {
         return $this->setData(self::IDLE_TIMER_INTERVAL, $value);
     }
 
     public function getExternalPrinterID(): ?string
     {
-        return $this->getData(self::EXTERNAL_PRINTER_I_D);
+        return $this->getData(self::EXTERNAL_PRINTER_ID);
     }
 
-    public function setExternalPrinterID(string $value): self
+    public function setExternalPrinterID(string $value)
     {
-        return $this->setData(self::EXTERNAL_PRINTER_I_D, $value);
+        return $this->setData(self::EXTERNAL_PRINTER_ID, $value);
     }
 
     public function getHospTypePopUpOnLogon(): ?string
@@ -929,29 +929,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::HOSP_TYPE_POPUP_ON_LOGON);
     }
 
-    public function setHospTypePopUpOnLogon(string $value): self
+    public function setHospTypePopUpOnLogon(string $value)
     {
         return $this->setData(self::HOSP_TYPE_POPUP_ON_LOGON, $value);
     }
 
     public function getReceiptBarcodeID(): ?int
     {
-        return $this->getData(self::RECEIPT_BARCODE_I_D);
+        return $this->getData(self::RECEIPT_BARCODE_ID);
     }
 
-    public function setReceiptBarcodeID(int $value): self
+    public function setReceiptBarcodeID(int $value)
     {
-        return $this->setData(self::RECEIPT_BARCODE_I_D, $value);
+        return $this->setData(self::RECEIPT_BARCODE_ID, $value);
     }
 
     public function getPrinterKOTStatusAfterSent(): ?string
     {
-        return $this->getData(self::PRINTER_K_O_T_STATUS_AFTER_SENT);
+        return $this->getData(self::PRINTER_KOT_STATUS_AFTER_SENT);
     }
 
-    public function setPrinterKOTStatusAfterSent(string $value): self
+    public function setPrinterKOTStatusAfterSent(string $value)
     {
-        return $this->setData(self::PRINTER_K_O_T_STATUS_AFTER_SENT, $value);
+        return $this->setData(self::PRINTER_KOT_STATUS_AFTER_SENT, $value);
     }
 
     public function getSalesSlip(): ?string
@@ -959,7 +959,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SALES_SLIP);
     }
 
-    public function setSalesSlip(string $value): self
+    public function setSalesSlip(string $value)
     {
         return $this->setData(self::SALES_SLIP, $value);
     }
@@ -969,7 +969,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::VOID_SLIP);
     }
 
-    public function setVoidSlip(string $value): self
+    public function setVoidSlip(string $value)
     {
         return $this->setData(self::VOID_SLIP, $value);
     }
@@ -979,19 +979,19 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::ONLY_EMAIL_SALES_TRANSACTIONS);
     }
 
-    public function setOnlyEmailSalesTransactions(bool $value): self
+    public function setOnlyEmailSalesTransactions(bool $value)
     {
         return $this->setData(self::ONLY_EMAIL_SALES_TRANSACTIONS, $value);
     }
 
     public function getBCCEMailAddress(): ?string
     {
-        return $this->getData(self::B_C_C_E_MAIL_ADDRESS);
+        return $this->getData(self::BCC_EMAIL_ADDRESS);
     }
 
-    public function setBCCEMailAddress(string $value): self
+    public function setBCCEMailAddress(string $value)
     {
-        return $this->setData(self::B_C_C_E_MAIL_ADDRESS, $value);
+        return $this->setData(self::BCC_EMAIL_ADDRESS, $value);
     }
 
     public function getInventoryMainMenu(): ?string
@@ -999,7 +999,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::INVENTORY_MAIN_MENU);
     }
 
-    public function setInventoryMainMenu(string $value): self
+    public function setInventoryMainMenu(string $value)
     {
         return $this->setData(self::INVENTORY_MAIN_MENU, $value);
     }
@@ -1009,29 +1009,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::INVENTORY_NO_OF_RECORDS);
     }
 
-    public function setInventoryNoOfRecords(int $value): self
+    public function setInventoryNoOfRecords(int $value)
     {
         return $this->setData(self::INVENTORY_NO_OF_RECORDS, $value);
     }
 
     public function getAllowPostIMDocuments(): ?bool
     {
-        return $this->getData(self::ALLOW_POST_I_M_DOCUMENTS);
+        return $this->getData(self::ALLOW_POST_IM_DOCUMENTS);
     }
 
-    public function setAllowPostIMDocuments(bool $value): self
+    public function setAllowPostIMDocuments(bool $value)
     {
-        return $this->setData(self::ALLOW_POST_I_M_DOCUMENTS, $value);
+        return $this->setData(self::ALLOW_POST_IM_DOCUMENTS, $value);
     }
 
     public function getASNQuantityMethod(): ?string
     {
-        return $this->getData(self::A_S_N_QUANTITY_METHOD);
+        return $this->getData(self::ASN_QUANTITY_METHOD);
     }
 
-    public function setASNQuantityMethod(string $value): self
+    public function setASNQuantityMethod(string $value)
     {
-        return $this->setData(self::A_S_N_QUANTITY_METHOD, $value);
+        return $this->setData(self::ASN_QUANTITY_METHOD, $value);
     }
 
     public function getDualDispEnabled(): ?bool
@@ -1039,7 +1039,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DUAL_DISP_ENABLED);
     }
 
-    public function setDualDispEnabled(bool $value): self
+    public function setDualDispEnabled(bool $value)
     {
         return $this->setData(self::DUAL_DISP_ENABLED, $value);
     }
@@ -1049,7 +1049,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DUAL_DISP_STYLE_PROFILE);
     }
 
-    public function setDualDispStyleProfile(string $value): self
+    public function setDualDispStyleProfile(string $value)
     {
         return $this->setData(self::DUAL_DISP_STYLE_PROFILE, $value);
     }
@@ -1059,7 +1059,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DUAL_DISP_INTERFACE_PROFILE);
     }
 
-    public function setDualDispInterfaceProfile(string $value): self
+    public function setDualDispInterfaceProfile(string $value)
     {
         return $this->setData(self::DUAL_DISP_INTERFACE_PROFILE, $value);
     }
@@ -1069,7 +1069,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DUAL_DISP_MENU_PROFILE);
     }
 
-    public function setDualDispMenuProfile(string $value): self
+    public function setDualDispMenuProfile(string $value)
     {
         return $this->setData(self::DUAL_DISP_MENU_PROFILE, $value);
     }
@@ -1079,7 +1079,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DUAL_DISP_SLIDESHOW);
     }
 
-    public function setDualDispSlideshow(string $value): self
+    public function setDualDispSlideshow(string $value)
     {
         return $this->setData(self::DUAL_DISP_SLIDESHOW, $value);
     }
@@ -1089,7 +1089,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DUAL_DISP_SCREEN);
     }
 
-    public function setDualDispScreen(int $value): self
+    public function setDualDispScreen(int $value)
     {
         return $this->setData(self::DUAL_DISP_SCREEN, $value);
     }
@@ -1099,7 +1099,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SLIP_PRINT_ORDER);
     }
 
-    public function setSlipPrintOrder(string $value): self
+    public function setSlipPrintOrder(string $value)
     {
         return $this->setData(self::SLIP_PRINT_ORDER, $value);
     }
@@ -1109,7 +1109,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::TIPS_HANDLING);
     }
 
-    public function setTipsHandling(string $value): self
+    public function setTipsHandling(string $value)
     {
         return $this->setData(self::TIPS_HANDLING, $value);
     }
@@ -1119,7 +1119,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SKIP_MERCHANT_RECEIPT);
     }
 
-    public function setSkipMerchantReceipt(bool $value): self
+    public function setSkipMerchantReceipt(bool $value)
     {
         return $this->setData(self::SKIP_MERCHANT_RECEIPT, $value);
     }
@@ -1129,7 +1129,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SKIP_CUSTOMER_RECEIPT);
     }
 
-    public function setSkipCustomerReceipt(bool $value): self
+    public function setSkipCustomerReceipt(bool $value)
     {
         return $this->setData(self::SKIP_CUSTOMER_RECEIPT, $value);
     }
@@ -1139,7 +1139,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DISABLE_VOID_CARD_PROMPT);
     }
 
-    public function setDisableVoidCardPrompt(bool $value): self
+    public function setDisableVoidCardPrompt(bool $value)
     {
         return $this->setData(self::DISABLE_VOID_CARD_PROMPT, $value);
     }
@@ -1149,7 +1149,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::POST_TRANSACTION_AFTER_VOID);
     }
 
-    public function setPostTransactionAfterVoid(bool $value): self
+    public function setPostTransactionAfterVoid(bool $value)
     {
         return $this->setData(self::POST_TRANSACTION_AFTER_VOID, $value);
     }
@@ -1159,29 +1159,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::USE_NUMPAD);
     }
 
-    public function setUseNumpad(bool $value): self
+    public function setUseNumpad(bool $value)
     {
         return $this->setData(self::USE_NUMPAD, $value);
     }
 
     public function getIncludeEFTZReport(): ?string
     {
-        return $this->getData(self::INCLUDE_E_F_T_Z_REPORT);
+        return $this->getData(self::INCLUDE_EFT_ZREPORT);
     }
 
-    public function setIncludeEFTZReport(string $value): self
+    public function setIncludeEFTZReport(string $value)
     {
-        return $this->setData(self::INCLUDE_E_F_T_Z_REPORT, $value);
+        return $this->setData(self::INCLUDE_EFT_ZREPORT, $value);
     }
 
     public function getAllowBlockedItemsMobilePOS(): ?bool
     {
-        return $this->getData(self::ALLOW_BLOCKED_ITEMS_MOBILE_P_O_S);
+        return $this->getData(self::ALLOW_BLOCKED_ITEMS_MOBILE_POS);
     }
 
-    public function setAllowBlockedItemsMobilePOS(bool $value): self
+    public function setAllowBlockedItemsMobilePOS(bool $value)
     {
-        return $this->setData(self::ALLOW_BLOCKED_ITEMS_MOBILE_P_O_S, $value);
+        return $this->setData(self::ALLOW_BLOCKED_ITEMS_MOBILE_POS, $value);
     }
 
     public function getOpenDrawerThenPrint(): ?bool
@@ -1189,29 +1189,29 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::OPEN_DRAWER_THEN_PRINT);
     }
 
-    public function setOpenDrawerThenPrint(bool $value): self
+    public function setOpenDrawerThenPrint(bool $value)
     {
         return $this->setData(self::OPEN_DRAWER_THEN_PRINT, $value);
     }
 
     public function getEFTAutoRecoveryAttempts(): ?int
     {
-        return $this->getData(self::E_F_T_AUTO_RECOVERY_ATTEMPTS);
+        return $this->getData(self::EFT_AUTO_RECOVERY_ATTEMPTS);
     }
 
-    public function setEFTAutoRecoveryAttempts(int $value): self
+    public function setEFTAutoRecoveryAttempts(int $value)
     {
-        return $this->setData(self::E_F_T_AUTO_RECOVERY_ATTEMPTS, $value);
+        return $this->setData(self::EFT_AUTO_RECOVERY_ATTEMPTS, $value);
     }
 
     public function getPOSSearchEngine(): ?string
     {
-        return $this->getData(self::P_O_S_SEARCH_ENGINE);
+        return $this->getData(self::POS_SEARCH_ENGINE);
     }
 
-    public function setPOSSearchEngine(string $value): self
+    public function setPOSSearchEngine(string $value)
     {
-        return $this->setData(self::P_O_S_SEARCH_ENGINE, $value);
+        return $this->setData(self::POS_SEARCH_ENGINE, $value);
     }
 
     public function getSalesOrderNos(): ?string
@@ -1219,7 +1219,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SALES_ORDER_NOS);
     }
 
-    public function setSalesOrderNos(string $value): self
+    public function setSalesOrderNos(string $value)
     {
         return $this->setData(self::SALES_ORDER_NOS, $value);
     }
@@ -1229,7 +1229,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::ITEM_FILTERING_METHOD);
     }
 
-    public function setItemFilteringMethod(string $value): self
+    public function setItemFilteringMethod(string $value)
     {
         return $this->setData(self::ITEM_FILTERING_METHOD, $value);
     }
@@ -1239,7 +1239,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::SHOW_NUMBERPAD);
     }
 
-    public function setShowNumberpad(bool $value): self
+    public function setShowNumberpad(bool $value)
     {
         return $this->setData(self::SHOW_NUMBERPAD, $value);
     }
@@ -1249,7 +1249,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DEVICE_TYPE);
     }
 
-    public function setDeviceType(string $value): self
+    public function setDeviceType(string $value)
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
@@ -1259,7 +1259,7 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::DEVICE_LICENSE_KEY);
     }
 
-    public function setDeviceLicenseKey(string $value): self
+    public function setDeviceLicenseKey(string $value)
     {
         return $this->setData(self::DEVICE_LICENSE_KEY, $value);
     }
@@ -1269,78 +1269,78 @@ class LSCPOSTerminal extends DataObject
         return $this->getData(self::COMPUTER_NAME);
     }
 
-    public function setComputerName(string $value): self
+    public function setComputerName(string $value)
     {
         return $this->setData(self::COMPUTER_NAME, $value);
     }
 
     public function getPosTerminalGuid(): ?string
     {
-        return $this->getData(self::POS_TERMINAL_GUID);
+        return $this->getData(self::POSTERMINALGUID);
     }
 
-    public function setPosTerminalGuid(string $value): self
+    public function setPosTerminalGuid(string $value)
     {
-        return $this->setData(self::POS_TERMINAL_GUID, $value);
+        return $this->setData(self::POSTERMINALGUID, $value);
     }
 
     public function getExcludeFromLSRecommend(): ?bool
     {
-        return $this->getData(self::EXCLUDE_FROM_L_S_RECOMMEND);
+        return $this->getData(self::EXCLUDE_FROM_LS_RECOMMEND);
     }
 
-    public function setExcludeFromLSRecommend(bool $value): self
+    public function setExcludeFromLSRecommend(bool $value)
     {
-        return $this->setData(self::EXCLUDE_FROM_L_S_RECOMMEND, $value);
+        return $this->setData(self::EXCLUDE_FROM_LS_RECOMMEND, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

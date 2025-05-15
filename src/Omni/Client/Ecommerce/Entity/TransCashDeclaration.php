@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransCashDeclaration extends \Magento\Framework\DataObject
+class TransCashDeclaration extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransCashDeclaration';
 

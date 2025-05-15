@@ -9,13 +9,13 @@ namespace Ls\Omni\Client\Ecommerce\Operation;
 
 use Magento\Framework\App\ObjectManager;
 
-class LSCWIMix&MatchOfferExt
+class LSCWIExtdVariantValues
 {
     public string $baseUrl;
     public array $connectionParams;
     public string $companyName;
-    public \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch $request;
-    public \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse $response;
+    public \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues $request;
+    public \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValuesResponse $response;
     public \Ls\Omni\Helper\Data $dataHelper;
 
     public function __construct($baseUrl = '', $connectionParams = [], $companyName = '')
@@ -23,15 +23,15 @@ class LSCWIMix&MatchOfferExt
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues::class);
     }
 
-    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse
+    public function execute(): \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValuesResponse
     {
         $response = $this->dataHelper->makeRequest(
-            \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch::ACTION_NAME,
-            \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExt::class,
+            \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues::ACTION_NAME,
+            \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValues::class,
             $this->request,
             $this->baseUrl,
             $this->connectionParams,
@@ -45,7 +45,7 @@ class LSCWIMix&MatchOfferExt
         return $response;
     }
 
-    public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse
+    public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValuesResponse
     {
         if (isset($data['TableData']['TableDataUpd']['RecRefJson'])) {
             $recRef = $data['TableData']['TableDataUpd']['RecRefJson'];
@@ -79,7 +79,9 @@ class LSCWIMix&MatchOfferExt
         if (!empty($fields)) {
             foreach ($rows as $row) {
                 $values = $row['Fields'] ?? [];
-                $entry = new \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExt();
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValues::class
+                );
                 foreach ($values as $value) {
                     $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
                 }
@@ -87,43 +89,58 @@ class LSCWIMix&MatchOfferExt
             }
         }
 
-        return new \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse([
-            'records' => $results,
-            'status' => $data['Status'] ?? '',
-            'errorText' => $data['ErrorText'] ?? '',
-            'lastKey' => $data['LastKey'] ?? '',
-            'lastEntryNo' => $data['LastEntryNo'] ?? 0,
-            'endOfTable' => $data['EndOfTable'] ?? false
-        ]);
+        return $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValuesResponse::class,
+                     [
+                        'data' => [
+                        'records' => $results,
+                        'status' => $data['Status'] ?? '',
+                        'errorText' => $data['ErrorText'] ?? '',
+                        'lastKey' => $data['LastKey'] ?? '',
+                        'lastEntryNo' => $data['LastEntryNo'] ?? 0,
+                        'endOfTable' => $data['EndOfTable'] ?? false
+                        ]
+                     ]
+                );
     }
 
-    public function & setOperationInput(array $params = []) : \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch
+    public function createInstance(string $entityClassName, array $data = [])
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch($params));
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
+    public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues
+    {
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;
     }
 
 
-    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch $request): self
+    public function setRequest(\Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues $request): self
     {
         $this->request = $request;
         return $this;
     }
 
-    public function setResponse(\Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse $response): self
+    public function setResponse(\Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValuesResponse $response): self
     {
         $this->response = $response;
         return $this;
     }
 
-    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetWIMixMatch
+    public function getRequest(): \Ls\Omni\Client\Ecommerce\Entity\ODataRequest_GetExtdVariantValues
     {
         return $this->request;
     }
 
-    public function getResponse(): \Ls\Omni\Client\Ecommerce\Entity\LSCWIMix&MatchOfferExtResponse
+    public function getResponse(): \Ls\Omni\Client\Ecommerce\Entity\LSCWIExtdVariantValuesResponse
     {
         return $this->response;
     }

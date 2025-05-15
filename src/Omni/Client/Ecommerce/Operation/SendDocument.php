@@ -24,36 +24,6 @@ class SendDocument extends AbstractOperation
 
     public const SERVICE_TYPE = 'ecommerce';
 
-    /**
-     * @property OmniClient $client
-     */
-    protected $client = null;
-
-    /**
-     * @property SendDocumentRequest $request
-     */
-    protected $request = null;
-
-    /**
-     * @property SendDocumentResponse $response
-     */
-    protected $response = null;
-
-    /**
-     * @property string $request_xml
-     */
-    protected $request_xml = null;
-
-    /**
-     * @property string $response_xml
-     */
-    protected $response_xml = null;
-
-    /**
-     * @property \Exception $error
-     */
-    protected $error = null;
-
     public function __construct($baseUrl = '')
     {
         $serviceType = new ServiceType( self::SERVICE_TYPE );
@@ -100,111 +70,62 @@ class SendDocument extends AbstractOperation
         return FALSE;
     }
 
-    /**
-     * @param OmniClient $client
-     * @return $this
-     */
-    public function setClient($client)
+    public function setClient(\OmniClient $client)
     {
-        $this->client = $client;
         return $this;
     }
 
-    /**
-     * @return OmniClient
-     */
-    public function getClient()
+    public function getClient() : \OmniClient
     {
         return $this->client;
     }
 
-/** @noinspection PhpDocSignatureInspection */
-    /**
-     * @param SendDocumentRequest $request
-     * @return $this
-     */
-    public function setRequest($request)
+    public function setRequest(\SendDocumentRequest $request)
     {
-        $this->request = $request;
         return $this;
     }
 
-    /**
-     * @return SendDocumentRequest
-     */
-    public function getRequest()
+    public function getRequest() : \SendDocumentRequest
     {
         return $this->request;
     }
 
-    /**
-     * @param SendDocumentResponse $response
-     * @return $this
-     */
-    public function setResponse($response)
+    public function setResponse(\SendDocumentResponse $response)
     {
-        $this->response = $response;
         return $this;
     }
 
-    /**
-     * @return SendDocumentResponse
-     */
-    public function getResponse()
+    public function getResponse() : \SendDocumentResponse
     {
         return $this->response;
     }
 
-    /**
-     * @param string $request_xml
-     * @return $this
-     */
-    public function setRequestXml($request_xml)
+    public function setRequestXml(string $requestXml)
     {
-        $this->request_xml = $request_xml;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getRequestXml()
+    public function getRequestXml() : string
     {
-        return $this->request_xml;
+        return $this->requestXml;
     }
 
-    /**
-     * @param string $response_xml
-     * @return $this
-     */
-    public function setResponseXml($response_xml)
+    public function setResponseXml(string $responseXml)
     {
-        $this->response_xml = $response_xml;
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getResponseXml()
+    public function getResponseXml() : string
     {
-        return $this->response_xml;
+        return $this->responseXml;
     }
 
-    /**
-     * @param \Exception $error
-     * @return $this
-     */
-    public function setError($error)
+    public function setError(\Exception $error)
     {
-        $this->error = $error;
         return $this;
     }
 
-    /**
-     * @return \Exception
-     */
-    public function getError()
+    public function getError() : \Exception
     {
         return $this->error;
     }

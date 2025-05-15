@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootSPGProfileTender extends \Magento\Framework\DataObject
+class RootSPGProfileTender extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGProfileTender';
 

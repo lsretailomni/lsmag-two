@@ -23,8 +23,8 @@ class GetStores_GetStores
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresRequest();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresRequest::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse
@@ -47,19 +47,28 @@ class GetStores_GetStores
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse
     {
         $requiredDataSetName = explode(',', 'LSCStore,LSCStoreGroupSetup,LSCStorePriceGroup,LSCSalesType');
-        $finalEntry = new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores();
+        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
                 $entityClassName = str_replace(' ', '', $dataSet);
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
-                    $entity = new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores($data['LSCStore,LSCStoreGroupSetup,LSCStorePriceGroup,LSCSalesType']);
+                    $entity = $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStores::class,
+                         ['data' => $data['LSCStore,LSCStoreGroupSetup,LSCStorePriceGroup,LSCSalesType']]
+                     );
 
-                    return new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse([
-                        'records' => [$entity],
-                        'ResponseCode' => $data['ResponseCode'] ?? '',
-                        'ErrorText' => $data['ErrorText'] ?? '',
-                    ]);
+                    return $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse::class,
+                       [
+                       'data' =>
+                           [
+                                'records' => [$entity],
+                                'ResponseCode' => $data['ResponseCode'] ?? '',
+                                'ErrorText' => $data['ErrorText'] ?? '',
+                           ]
+                       ]
+                    );
                 }
                 $fields = $rows = [];
                 $recRef = $this->findNestedDataSet($data, $entityClassName);
@@ -77,7 +86,7 @@ class GetStores_GetStores
                     $count = count($rows);
                     $entries = [];
                     foreach ($rows as $index => $row) {
-                        $entry = new $className();
+                        $entry = $this->createInstance($className);
                         foreach ($row['Fields'] ?? [] as $field) {
                             $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
                         }
@@ -88,19 +97,29 @@ class GetStores_GetStores
                     }
                 }
             }
-            return new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse([
-                'records' => [$finalEntry],
-                'ResponseCode' => $data['ResponseCode'] ?? '',
-                'ErrorText' => $data['ErrorText'] ?? ''
-            ]);
+            return $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse::class,
+                [
+                'data' =>
+                    [
+                        'records' => [$finalEntry],
+                        'ResponseCode' => $data['ResponseCode'] ?? '',
+                        'ErrorText' => $data['ErrorText'] ?? '',
+                    ]
+                ]
+            );
         }
-
-        // Fallback
-        return new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse([
-            'records' => [],
-            'ResponseCode' => $data['ResponseCode'] ?? '',
-            'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
-        ]);
+        return $this->createInstance(
+            \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresResponse::class,
+             [
+             'data' =>
+                 [
+                    'records' => [],
+                    'ResponseCode' => $data['ResponseCode'] ?? '',
+                    'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
+                 ]
+            ]
+        );
     }
 
     public function findNestedDataSet($data, string $target): ?array
@@ -127,9 +146,19 @@ class GetStores_GetStores
         return null;
     }
 
+    public function createInstance(string $entityClassName, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresRequest
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresRequest($params));
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetStores_GetStoresRequest::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

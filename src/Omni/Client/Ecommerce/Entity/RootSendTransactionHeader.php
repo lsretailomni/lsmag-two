@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootSendTransactionHeader extends \Magento\Framework\DataObject
+class RootSendTransactionHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSendTransactionHeader';
 

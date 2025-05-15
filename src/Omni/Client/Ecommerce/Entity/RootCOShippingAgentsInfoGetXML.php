@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOShippingAgentsInfoGetXML extends \Magento\Framework\DataObject
+class RootCOShippingAgentsInfoGetXML extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOShippingAgentsInfoGetXML';
 

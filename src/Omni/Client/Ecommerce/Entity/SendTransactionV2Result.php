@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class SendTransactionV2Result extends \Magento\Framework\DataObject implements ResponseInterface
+class SendTransactionV2Result extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'SendTransactionV2_Result';
 

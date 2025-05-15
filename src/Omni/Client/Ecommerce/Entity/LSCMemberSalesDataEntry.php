@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberSalesDataEntry extends DataObject
+class LSCMemberSalesDataEntry extends AbstractModel
 {
     public const AMOUNT = 'Amount';
     public const APPLIED_AMOUNT = 'Applied Amount';
@@ -20,7 +20,7 @@ class LSCMemberSalesDataEntry extends DataObject
     public const ENTRY_CODE = 'Entry Code';
     public const ENTRY_TYPE = 'Entry Type';
     public const EXPIRING_DATE = 'Expiring Date';
-    public const P_I_N = 'PIN';
+    public const PIN = 'PIN';
 
 
     public function getAmount(): ?string
@@ -28,7 +28,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(string $value): self
+    public function setAmount(string $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
@@ -38,7 +38,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::APPLIED_AMOUNT);
     }
 
-    public function setAppliedAmount(string $value): self
+    public function setAppliedAmount(string $value)
     {
         return $this->setData(self::APPLIED_AMOUNT, $value);
     }
@@ -48,7 +48,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::CREATED_BY_LINE_NO);
     }
 
-    public function setCreatedByLineNo(int $value): self
+    public function setCreatedByLineNo(int $value)
     {
         return $this->setData(self::CREATED_BY_LINE_NO, $value);
     }
@@ -58,7 +58,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -68,7 +68,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::DATA_ENTRY_BALANCE);
     }
 
-    public function setDataEntryBalance(string $value): self
+    public function setDataEntryBalance(string $value)
     {
         return $this->setData(self::DATA_ENTRY_BALANCE, $value);
     }
@@ -78,7 +78,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::DATE_CREATED);
     }
 
-    public function setDateCreated(string $value): self
+    public function setDateCreated(string $value)
     {
         return $this->setData(self::DATE_CREATED, $value);
     }
@@ -88,7 +88,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::ENTRY_CODE);
     }
 
-    public function setEntryCode(string $value): self
+    public function setEntryCode(string $value)
     {
         return $this->setData(self::ENTRY_CODE, $value);
     }
@@ -98,7 +98,7 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setEntryType(string $value): self
+    public function setEntryType(string $value)
     {
         return $this->setData(self::ENTRY_TYPE, $value);
     }
@@ -108,18 +108,18 @@ class LSCMemberSalesDataEntry extends DataObject
         return $this->getData(self::EXPIRING_DATE);
     }
 
-    public function setExpiringDate(string $value): self
+    public function setExpiringDate(string $value)
     {
         return $this->setData(self::EXPIRING_DATE, $value);
     }
 
     public function getPIN(): ?int
     {
-        return $this->getData(self::P_I_N);
+        return $this->getData(self::PIN);
     }
 
-    public function setPIN(int $value): self
+    public function setPIN(int $value)
     {
-        return $this->setData(self::P_I_N, $value);
+        return $this->setData(self::PIN, $value);
     }
 }

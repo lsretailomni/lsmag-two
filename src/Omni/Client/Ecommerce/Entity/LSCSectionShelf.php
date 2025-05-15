@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCSectionShelf extends DataObject
+class LSCSectionShelf extends AbstractModel
 {
     public const STORE_NO = 'Store No.';
     public const SECTION_CODE = 'Section Code';
@@ -22,7 +22,7 @@ class LSCSectionShelf extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -32,7 +32,7 @@ class LSCSectionShelf extends DataObject
         return $this->getData(self::SECTION_CODE);
     }
 
-    public function setSectionCode(string $value): self
+    public function setSectionCode(string $value)
     {
         return $this->setData(self::SECTION_CODE, $value);
     }
@@ -42,7 +42,7 @@ class LSCSectionShelf extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -52,7 +52,7 @@ class LSCSectionShelf extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }

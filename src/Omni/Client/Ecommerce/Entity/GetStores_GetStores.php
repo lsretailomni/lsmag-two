@@ -7,53 +7,53 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class GetStores_GetStores extends DataObject
+class GetStores_GetStores extends AbstractModel
 {
-    public const L_S_C_STORE = 'LSCStore';
-    public const L_S_C_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
-    public const L_S_C_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
-    public const L_S_C_SALES_TYPE = 'LSCSalesType';
+    public const LSC_STORE = 'LSCStore';
+    public const LSC_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
+    public const LSC_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
+    public const LSC_SALES_TYPE = 'LSCSalesType';
 
 
     public function getLSCStore(): ?array
     {
-        return $this->getData(self::L_S_C_STORE);
+        return $this->getData(self::LSC_STORE);
     }
 
-    public function setLSCStore(array $value): self
+    public function setLSCStore(array $value)
     {
-        return $this->setData(self::L_S_C_STORE, $value);
+        return $this->setData(self::LSC_STORE, $value);
     }
 
     public function getLSCStoreGroupSetup(): ?array
     {
-        return $this->getData(self::L_S_C_STORE_GROUP_SETUP);
+        return $this->getData(self::LSC_STORE_GROUP_SETUP);
     }
 
-    public function setLSCStoreGroupSetup(array $value): self
+    public function setLSCStoreGroupSetup(array $value)
     {
-        return $this->setData(self::L_S_C_STORE_GROUP_SETUP, $value);
+        return $this->setData(self::LSC_STORE_GROUP_SETUP, $value);
     }
 
     public function getLSCStorePriceGroup(): ?array
     {
-        return $this->getData(self::L_S_C_STORE_PRICE_GROUP);
+        return $this->getData(self::LSC_STORE_PRICE_GROUP);
     }
 
-    public function setLSCStorePriceGroup(array $value): self
+    public function setLSCStorePriceGroup(array $value)
     {
-        return $this->setData(self::L_S_C_STORE_PRICE_GROUP, $value);
+        return $this->setData(self::LSC_STORE_PRICE_GROUP, $value);
     }
 
     public function getLSCSalesType(): ?array
     {
-        return $this->getData(self::L_S_C_SALES_TYPE);
+        return $this->getData(self::LSC_SALES_TYPE);
     }
 
-    public function setLSCSalesType(array $value): self
+    public function setLSCSalesType(array $value)
     {
-        return $this->setData(self::L_S_C_SALES_TYPE, $value);
+        return $this->setData(self::LSC_SALES_TYPE, $value);
     }
 }

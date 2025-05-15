@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class COEditDiscountLine extends \Magento\Framework\DataObject
+class COEditDiscountLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'COEditDiscountLine';
 

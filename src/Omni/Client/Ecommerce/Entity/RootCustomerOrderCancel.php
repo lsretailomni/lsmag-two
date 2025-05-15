@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCustomerOrderCancel extends \Magento\Framework\DataObject
+class RootCustomerOrderCancel extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCustomerOrderCancel';
 

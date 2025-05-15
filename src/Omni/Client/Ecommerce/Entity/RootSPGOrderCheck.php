@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootSPGOrderCheck extends \Magento\Framework\DataObject
+class RootSPGOrderCheck extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootSPGOrderCheck';
 

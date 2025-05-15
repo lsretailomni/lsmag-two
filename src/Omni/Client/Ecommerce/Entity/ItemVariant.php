@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class ItemVariant extends DataObject
+class ItemVariant extends AbstractModel
 {
     public const CODE = 'Code';
     public const ITEM_NO = 'Item No.';
@@ -21,12 +21,12 @@ class ItemVariant extends DataObject
     public const PURCHASING_BLOCKED = 'Purchasing Blocked';
     public const SERVICE_BLOCKED = 'Service Blocked';
     public const PRODUCTION_BLOCKED = 'Production Blocked';
-    public const L_S_C_COMMON_ITEM_NO = 'LSC Common Item No.';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const LSC_COMMON_ITEM_NO = 'LSC Common Item No.';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getCode(): ?string
@@ -34,7 +34,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -44,7 +44,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -54,7 +54,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -64,7 +64,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::DESCRIPTION_2);
     }
 
-    public function setDescription2(string $value): self
+    public function setDescription2(string $value)
     {
         return $this->setData(self::DESCRIPTION_2, $value);
     }
@@ -74,7 +74,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::ITEM_ID);
     }
 
-    public function setItemId(string $value): self
+    public function setItemId(string $value)
     {
         return $this->setData(self::ITEM_ID, $value);
     }
@@ -84,7 +84,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -94,7 +94,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::SALES_BLOCKED);
     }
 
-    public function setSalesBlocked(bool $value): self
+    public function setSalesBlocked(bool $value)
     {
         return $this->setData(self::SALES_BLOCKED, $value);
     }
@@ -104,7 +104,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::PURCHASING_BLOCKED);
     }
 
-    public function setPurchasingBlocked(bool $value): self
+    public function setPurchasingBlocked(bool $value)
     {
         return $this->setData(self::PURCHASING_BLOCKED, $value);
     }
@@ -114,7 +114,7 @@ class ItemVariant extends DataObject
         return $this->getData(self::SERVICE_BLOCKED);
     }
 
-    public function setServiceBlocked(bool $value): self
+    public function setServiceBlocked(bool $value)
     {
         return $this->setData(self::SERVICE_BLOCKED, $value);
     }
@@ -124,68 +124,68 @@ class ItemVariant extends DataObject
         return $this->getData(self::PRODUCTION_BLOCKED);
     }
 
-    public function setProductionBlocked(string $value): self
+    public function setProductionBlocked(string $value)
     {
         return $this->setData(self::PRODUCTION_BLOCKED, $value);
     }
 
     public function getLSCCommonItemNo(): ?string
     {
-        return $this->getData(self::L_S_C_COMMON_ITEM_NO);
+        return $this->getData(self::LSC_COMMON_ITEM_NO);
     }
 
-    public function setLSCCommonItemNo(string $value): self
+    public function setLSCCommonItemNo(string $value)
     {
-        return $this->setData(self::L_S_C_COMMON_ITEM_NO, $value);
+        return $this->setData(self::LSC_COMMON_ITEM_NO, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCPeriodicDiscountBenefits extends DataObject
+class LSCPeriodicDiscountBenefits extends AbstractModel
 {
 
 }

@@ -7,33 +7,33 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class SalesPrice extends DataObject
+class SalesPrice extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const SALES_CODE = 'Sales Code';
     public const CURRENCY_CODE = 'Currency Code';
     public const STARTING_DATE = 'Starting Date';
     public const UNIT_PRICE = 'Unit Price';
-    public const PRICE_INCLUDES_V_A_T = 'Price Includes VAT';
+    public const PRICE_INCLUDES_VAT = 'Price Includes VAT';
     public const ALLOW_INVOICE_DISC = 'Allow Invoice Disc.';
-    public const V_A_T_BUS_POSTING_GR_PRICE = 'VAT Bus. Posting Gr. (Price)';
+    public const VAT_BUS_POSTING_GR_PRICE = 'VAT Bus. Posting Gr. (Price)';
     public const SALES_TYPE = 'Sales Type';
     public const MINIMUM_QUANTITY = 'Minimum Quantity';
     public const ENDING_DATE = 'Ending Date';
     public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
     public const VARIANT_CODE = 'Variant Code';
     public const ALLOW_LINE_DISC = 'Allow Line Disc.';
-    public const L_S_C_MARKUP = 'LSC Markup %';
-    public const L_S_C_PROFIT = 'LSC Profit %';
-    public const L_S_C_PROFIT_L_C_Y = 'LSC Profit (LCY)';
-    public const L_S_C_UNIT_PRICE_INCLUDING_V_A_T = 'LSC Unit Price Including VAT';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const LSC_MARKUP = 'LSC Markup %';
+    public const LSC_PROFIT = 'LSC Profit %';
+    public const LSC_PROFIT_LCY = 'LSC Profit (LCY)';
+    public const LSC_UNIT_PRICE_INCLUDING_VAT = 'LSC Unit Price Including VAT';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getItemNo(): ?string
@@ -41,7 +41,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -51,7 +51,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::SALES_CODE);
     }
 
-    public function setSalesCode(string $value): self
+    public function setSalesCode(string $value)
     {
         return $this->setData(self::SALES_CODE, $value);
     }
@@ -61,7 +61,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -71,7 +71,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value): self
+    public function setStartingDate(string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
@@ -81,19 +81,19 @@ class SalesPrice extends DataObject
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value): self
+    public function setUnitPrice(string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
 
     public function getPriceIncludesVAT(): ?bool
     {
-        return $this->getData(self::PRICE_INCLUDES_V_A_T);
+        return $this->getData(self::PRICE_INCLUDES_VAT);
     }
 
-    public function setPriceIncludesVAT(bool $value): self
+    public function setPriceIncludesVAT(bool $value)
     {
-        return $this->setData(self::PRICE_INCLUDES_V_A_T, $value);
+        return $this->setData(self::PRICE_INCLUDES_VAT, $value);
     }
 
     public function getAllowInvoiceDisc(): ?bool
@@ -101,19 +101,19 @@ class SalesPrice extends DataObject
         return $this->getData(self::ALLOW_INVOICE_DISC);
     }
 
-    public function setAllowInvoiceDisc(bool $value): self
+    public function setAllowInvoiceDisc(bool $value)
     {
         return $this->setData(self::ALLOW_INVOICE_DISC, $value);
     }
 
     public function getVATBusPostingGrPrice(): ?string
     {
-        return $this->getData(self::V_A_T_BUS_POSTING_GR_PRICE);
+        return $this->getData(self::VAT_BUS_POSTING_GR_PRICE);
     }
 
-    public function setVATBusPostingGrPrice(string $value): self
+    public function setVATBusPostingGrPrice(string $value)
     {
-        return $this->setData(self::V_A_T_BUS_POSTING_GR_PRICE, $value);
+        return $this->setData(self::VAT_BUS_POSTING_GR_PRICE, $value);
     }
 
     public function getSalesType(): ?string
@@ -121,7 +121,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::SALES_TYPE);
     }
 
-    public function setSalesType(string $value): self
+    public function setSalesType(string $value)
     {
         return $this->setData(self::SALES_TYPE, $value);
     }
@@ -131,7 +131,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(string $value): self
+    public function setMinimumQuantity(string $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
@@ -141,7 +141,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::ENDING_DATE);
     }
 
-    public function setEndingDate(string $value): self
+    public function setEndingDate(string $value)
     {
         return $this->setData(self::ENDING_DATE, $value);
     }
@@ -151,7 +151,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value): self
+    public function setUnitOfMeasureCode(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
@@ -161,7 +161,7 @@ class SalesPrice extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -171,98 +171,98 @@ class SalesPrice extends DataObject
         return $this->getData(self::ALLOW_LINE_DISC);
     }
 
-    public function setAllowLineDisc(bool $value): self
+    public function setAllowLineDisc(bool $value)
     {
         return $this->setData(self::ALLOW_LINE_DISC, $value);
     }
 
     public function getLSCMarkup(): ?string
     {
-        return $this->getData(self::L_S_C_MARKUP);
+        return $this->getData(self::LSC_MARKUP);
     }
 
-    public function setLSCMarkup(string $value): self
+    public function setLSCMarkup(string $value)
     {
-        return $this->setData(self::L_S_C_MARKUP, $value);
+        return $this->setData(self::LSC_MARKUP, $value);
     }
 
     public function getLSCProfit(): ?string
     {
-        return $this->getData(self::L_S_C_PROFIT);
+        return $this->getData(self::LSC_PROFIT);
     }
 
-    public function setLSCProfit(string $value): self
+    public function setLSCProfit(string $value)
     {
-        return $this->setData(self::L_S_C_PROFIT, $value);
+        return $this->setData(self::LSC_PROFIT, $value);
     }
 
     public function getLSCProfitLCY(): ?string
     {
-        return $this->getData(self::L_S_C_PROFIT_L_C_Y);
+        return $this->getData(self::LSC_PROFIT_LCY);
     }
 
-    public function setLSCProfitLCY(string $value): self
+    public function setLSCProfitLCY(string $value)
     {
-        return $this->setData(self::L_S_C_PROFIT_L_C_Y, $value);
+        return $this->setData(self::LSC_PROFIT_LCY, $value);
     }
 
     public function getLSCUnitPriceIncludingVAT(): ?string
     {
-        return $this->getData(self::L_S_C_UNIT_PRICE_INCLUDING_V_A_T);
+        return $this->getData(self::LSC_UNIT_PRICE_INCLUDING_VAT);
     }
 
-    public function setLSCUnitPriceIncludingVAT(string $value): self
+    public function setLSCUnitPriceIncludingVAT(string $value)
     {
-        return $this->setData(self::L_S_C_UNIT_PRICE_INCLUDING_V_A_T, $value);
+        return $this->setData(self::LSC_UNIT_PRICE_INCLUDING_VAT, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

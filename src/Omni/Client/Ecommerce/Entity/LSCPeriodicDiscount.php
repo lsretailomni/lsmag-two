@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCPeriodicDiscount extends DataObject
+class LSCPeriodicDiscount extends AbstractModel
 {
     public const NO = 'No.';
     public const TYPE = 'Type';
@@ -23,7 +23,7 @@ class LSCPeriodicDiscount extends DataObject
     public const OFFER_TYPE = 'Offer Type';
     public const SALES_TYPE_FILTER = 'Sales Type Filter';
     public const DISCOUNT_TYPE = 'Discount Type';
-    public const VALIDATION_PERIOD_I_D = 'Validation Period ID';
+    public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const DEAL_PRICE_VALUE = 'Deal Price Value';
     public const DISCOUNT__VALUE = 'Discount % Value';
     public const DISCOUNT_AMOUNT_VALUE = 'Discount Amount Value';
@@ -34,7 +34,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -44,7 +44,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -54,7 +54,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value): self
+    public function setPriority(int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
@@ -64,7 +64,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -74,7 +74,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::POPUP_LINE_1);
     }
 
-    public function setPopUpLine1(string $value): self
+    public function setPopUpLine1(string $value)
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
@@ -84,7 +84,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::POPUP_LINE_2);
     }
 
-    public function setPopUpLine2(string $value): self
+    public function setPopUpLine2(string $value)
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
@@ -94,7 +94,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::POPUP_LINE_3);
     }
 
-    public function setPopUpLine3(string $value): self
+    public function setPopUpLine3(string $value)
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
@@ -104,7 +104,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value): self
+    public function setStatus(string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -114,7 +114,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::PRICE_GROUP);
     }
 
-    public function setPriceGroup(string $value): self
+    public function setPriceGroup(string $value)
     {
         return $this->setData(self::PRICE_GROUP, $value);
     }
@@ -124,7 +124,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setOfferType(string $value): self
+    public function setOfferType(string $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
     }
@@ -134,7 +134,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::SALES_TYPE_FILTER);
     }
 
-    public function setSalesTypeFilter(string $value): self
+    public function setSalesTypeFilter(string $value)
     {
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
@@ -144,19 +144,19 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(string $value): self
+    public function setDiscountType(string $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
 
     public function getValidationPeriodID(): ?string
     {
-        return $this->getData(self::VALIDATION_PERIOD_I_D);
+        return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value): self
+    public function setValidationPeriodID(string $value)
     {
-        return $this->setData(self::VALIDATION_PERIOD_I_D, $value);
+        return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
     public function getDealPriceValue(): ?string
@@ -164,7 +164,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::DEAL_PRICE_VALUE);
     }
 
-    public function setDealPriceValue(string $value): self
+    public function setDealPriceValue(string $value)
     {
         return $this->setData(self::DEAL_PRICE_VALUE, $value);
     }
@@ -174,7 +174,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::DISCOUNT__VALUE);
     }
 
-    public function setDiscountValue(string $value): self
+    public function setDiscountValue(string $value)
     {
         return $this->setData(self::DISCOUNT__VALUE, $value);
     }
@@ -184,7 +184,7 @@ class LSCPeriodicDiscount extends DataObject
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(string $value): self
+    public function setDiscountAmountValue(string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }

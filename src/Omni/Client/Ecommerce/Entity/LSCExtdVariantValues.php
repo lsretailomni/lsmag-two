@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCExtdVariantValues extends DataObject
+class LSCExtdVariantValues extends AbstractModel
 {
     public const FRAMEWORK_CODE = 'Framework Code';
     public const ITEM_NO = 'Item No.';
@@ -24,7 +24,7 @@ class LSCExtdVariantValues extends DataObject
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value): self
+    public function setFrameworkCode(string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -34,7 +34,7 @@ class LSCExtdVariantValues extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -44,7 +44,7 @@ class LSCExtdVariantValues extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -54,7 +54,7 @@ class LSCExtdVariantValues extends DataObject
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value): self
+    public function setValue(string $value)
     {
         return $this->setData(self::VALUE, $value);
     }
@@ -64,7 +64,7 @@ class LSCExtdVariantValues extends DataObject
         return $this->getData(self::DIMENSION);
     }
 
-    public function setDimension(int $value): self
+    public function setDimension(int $value)
     {
         return $this->setData(self::DIMENSION, $value);
     }
@@ -74,7 +74,7 @@ class LSCExtdVariantValues extends DataObject
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(int $value): self
+    public function setLogicalOrder(int $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }

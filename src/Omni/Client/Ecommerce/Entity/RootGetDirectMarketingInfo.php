@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetDirectMarketingInfo extends \Magento\Framework\DataObject
+class RootGetDirectMarketingInfo extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDirectMarketingInfo';
 

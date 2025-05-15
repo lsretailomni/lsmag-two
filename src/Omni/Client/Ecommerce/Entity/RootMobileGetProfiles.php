@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootMobileGetProfiles extends \Magento\Framework\DataObject
+class RootMobileGetProfiles extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootMobileGetProfiles';
 

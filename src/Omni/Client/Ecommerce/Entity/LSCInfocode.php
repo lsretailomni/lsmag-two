@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCInfocode extends DataObject
+class LSCInfocode extends AbstractModel
 {
     public const CODE = 'Code';
     public const MIN_SELECTION = 'Min. Selection';
@@ -23,7 +23,7 @@ class LSCInfocode extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -33,7 +33,7 @@ class LSCInfocode extends DataObject
         return $this->getData(self::MIN_SELECTION);
     }
 
-    public function setMinSelection(int $value): self
+    public function setMinSelection(int $value)
     {
         return $this->setData(self::MIN_SELECTION, $value);
     }
@@ -43,7 +43,7 @@ class LSCInfocode extends DataObject
         return $this->getData(self::MAX_SELECTION);
     }
 
-    public function setMaxSelection(int $value): self
+    public function setMaxSelection(int $value)
     {
         return $this->setData(self::MAX_SELECTION, $value);
     }
@@ -53,7 +53,7 @@ class LSCInfocode extends DataObject
         return $this->getData(self::EXPLANATORY_HEADER_TEXT);
     }
 
-    public function setExplanatoryHeaderText(string $value): self
+    public function setExplanatoryHeaderText(string $value)
     {
         return $this->setData(self::EXPLANATORY_HEADER_TEXT, $value);
     }
@@ -63,7 +63,7 @@ class LSCInfocode extends DataObject
         return $this->getData(self::PROMPT);
     }
 
-    public function setPrompt(string $value): self
+    public function setPrompt(string $value)
     {
         return $this->setData(self::PROMPT, $value);
     }

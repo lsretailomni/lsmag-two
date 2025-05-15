@@ -7,42 +7,42 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class VendorItemView extends DataObject
+class VendorItemView extends AbstractModel
 {
-    public const ITEM_NO = 'ItemNo';
-    public const VENDOR_NO = 'VendorNo';
-    public const VENDOR_ITEM_NO = 'VendorItemNo';
+    public const ITEMNO = 'ItemNo';
+    public const VENDORNO = 'VendorNo';
+    public const VENDORITEMNO = 'VendorItemNo';
 
 
     public function getItemNo(): ?string
     {
-        return $this->getData(self::ITEM_NO);
+        return $this->getData(self::ITEMNO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
-        return $this->setData(self::ITEM_NO, $value);
+        return $this->setData(self::ITEMNO, $value);
     }
 
     public function getVendorNo(): ?string
     {
-        return $this->getData(self::VENDOR_NO);
+        return $this->getData(self::VENDORNO);
     }
 
-    public function setVendorNo(string $value): self
+    public function setVendorNo(string $value)
     {
-        return $this->setData(self::VENDOR_NO, $value);
+        return $this->setData(self::VENDORNO, $value);
     }
 
     public function getVendorItemNo(): ?string
     {
-        return $this->getData(self::VENDOR_ITEM_NO);
+        return $this->getData(self::VENDORITEMNO);
     }
 
-    public function setVendorItemNo(string $value): self
+    public function setVendorItemNo(string $value)
     {
-        return $this->setData(self::VENDOR_ITEM_NO, $value);
+        return $this->setData(self::VENDORITEMNO, $value);
     }
 }

@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class MemberPasswordResetResult extends \Magento\Framework\DataObject implements ResponseInterface
+class MemberPasswordResetResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'MemberPasswordReset_Result';
 

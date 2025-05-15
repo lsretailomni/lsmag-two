@@ -7,15 +7,15 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCTenderType extends DataObject
+class LSCTenderType extends AbstractModel
 {
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
     public const FUNCTION = 'Function';
-    public const VALID_ON_MOBILE_P_O_S = 'Valid on Mobile POS';
-    public const SCAN_Q_R_CODE = 'Scan QR Code';
+    public const VALID_ON_MOBILE_POS = 'Valid on Mobile POS';
+    public const SCAN_QR_CODE = 'Scan QR Code';
     public const NO_IN_TRANSACTION = 'No. in Transaction';
     public const CHANGE_TEND_CODE = 'Change Tend. Code';
     public const ABOVE_MIN_CHANGE_TENDER_TYPE = 'Above Min. Change Tender Type';
@@ -32,10 +32,10 @@ class LSCTenderType extends DataObject
     public const OVERTENDER_ALLOWED = 'Overtender Allowed';
     public const OVERTENDER_MAX_AMT = 'Overtender Max. Amt.';
     public const UNDERTENDER_ALLOWED = 'Undertender Allowed';
-    public const RETURN_MINUS_ALLOWED = 'Return/Minus Allowed';
+    public const RETURNMINUS_ALLOWED = 'Return/Minus Allowed';
     public const DRAWER_OPENS = 'Drawer Opens';
     public const ENDORSE_CHECK = 'Endorse Check';
-    public const CARD_ACCOUNT_NO = 'Card/Account No.';
+    public const CARDACCOUNT_NO = 'Card/Account No.';
     public const ASK_FOR_DATE = 'Ask for Date';
     public const SEEK_AUTHORIZATION = 'Seek Authorization';
     public const PRINT_SEPARATE_INVOICE = 'Print Separate Invoice';
@@ -48,11 +48,11 @@ class LSCTenderType extends DataObject
     public const ENDORSEMENT_LINE_2 = 'Endorsement Line 2';
     public const CHECK_PAYEE = 'Check Payee';
     public const SLIP_BACK_IN_PRINTER = 'Slip Back in Printer';
-    public const ASK_FOR_CARD_ACCOUNT = 'Ask for Card/Account';
+    public const ASK_FOR_CARDACCOUNT = 'Ask for Card/Account';
     public const INVOICE_IN_PRINTER = 'Invoice in Printer';
     public const SLIP_FRONT_IN_PRINTER = 'Slip Front in Printer';
     public const CHANGE_LINE_ON_RECEIPT = 'Change Line on Receipt';
-    public const P_O_S_COUNT_ENTRIES = 'POS Count Entries';
+    public const POS_COUNT_ENTRIES = 'POS Count Entries';
     public const TAKEN_TO_BANK = 'Taken to Bank';
     public const COUNTING_REQUIRED = 'Counting Required';
     public const FLOAT_ALLOWED = 'Float Allowed';
@@ -63,22 +63,22 @@ class LSCTenderType extends DataObject
     public const CHARGE = 'Charge %';
     public const CHARGE_TO_ACCOUNT_NO = 'Charge to Account No.';
     public const STORE_NO = 'Store No.';
-    public const DIFFERENCE_G_L_ACC = 'Difference G/L Acc.';
+    public const DIFFERENCE_GL_ACC = 'Difference G/L Acc.';
     public const LAST_DATE_MODIFIED = 'Last Date Modified';
     public const PRIMARY_KEY = 'Primary Key';
-    public const REFUND_G_L_ACCOUNT_NO = 'Refund G/L Account No.';
+    public const REFUND_GL_ACCOUNT_NO = 'Refund G/L Account No.';
     public const REFUND_DIRECTLY = 'Refund Directly';
     public const COMPRESS_PAYM_ENTRIES = 'Compress Paym. Entries';
-    public const PRINT_IN_C_I_D_REPORT = 'Print in CID Report';
-    public const P_O_S_PICKUP_WARNING_AMOUNT = 'POS Pickup Warning Amount';
+    public const PRINT_IN_CID_REPORT = 'Print in CID Report';
+    public const POS_PICKUP_WARNING_AMOUNT = 'POS Pickup Warning Amount';
     public const BANK_ACCOUNT_TYPE = 'Bank Account Type';
     public const BANK_ACCOUNT_NO = 'Bank Account No.';
     public const BANK_ACCOUNT_NAME = 'Bank Account Name';
-    public const BANK_DIFF_G_L_ACC = 'Bank Diff. G/L Acc.';
+    public const BANK_DIFF_GL_ACC = 'Bank Diff. G/L Acc.';
     public const TAKEN_TO_SAFE = 'Taken to Safe';
-    public const P_O_S_PICKUP_WARNING_TEXT = 'POS Pickup Warning Text';
+    public const POS_PICKUP_WARNING_TEXT = 'POS Pickup Warning Text';
     public const COUNT_BY_DENOMINATIONS = 'Count by Denominations';
-    public const REMOVE_FLOAT_TYPE = 'Remove/Float Type';
+    public const REMOVEFLOAT_TYPE = 'Remove/Float Type';
     public const FAST_CLOSING_METHOD = 'Fast Closing Method';
     public const EXCLUDE_COINS_TO_BANK = 'Exclude Coins to Bank';
     public const TO_BANK_BY_DENOM = 'To Bank by Denom.';
@@ -95,15 +95,15 @@ class LSCTenderType extends DataObject
     public const FIXED_FLOAT_BAGS_NO_TYPE = 'Fixed Float Bags No. Type';
     public const FIXED_FLOAT_BAGS_NOS = 'Fixed Float Bags. Nos.';
     public const OUTBOUND_CODE = 'Outbound Code';
-    public const W_I_C_TENDER_TYPE = 'WIC Tender Type';
+    public const WIC_TENDER_TYPE = 'WIC Tender Type';
     public const FOOD_STAMP = 'Food Stamp';
     public const AUTO_ACCOUNT_PAYMENT_TENDER = 'Auto Account Payment Tender';
     public const DO_NOT_POST = 'Do Not Post';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getCode(): ?string
@@ -111,7 +111,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -121,7 +121,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -131,29 +131,29 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FUNCTION);
     }
 
-    public function setFunction(string $value): self
+    public function setFunction(string $value)
     {
         return $this->setData(self::FUNCTION, $value);
     }
 
     public function getValidOnMobilePOS(): ?bool
     {
-        return $this->getData(self::VALID_ON_MOBILE_P_O_S);
+        return $this->getData(self::VALID_ON_MOBILE_POS);
     }
 
-    public function setValidOnMobilePOS(bool $value): self
+    public function setValidOnMobilePOS(bool $value)
     {
-        return $this->setData(self::VALID_ON_MOBILE_P_O_S, $value);
+        return $this->setData(self::VALID_ON_MOBILE_POS, $value);
     }
 
     public function getScanQRCode(): ?bool
     {
-        return $this->getData(self::SCAN_Q_R_CODE);
+        return $this->getData(self::SCAN_QR_CODE);
     }
 
-    public function setScanQRCode(bool $value): self
+    public function setScanQRCode(bool $value)
     {
-        return $this->setData(self::SCAN_Q_R_CODE, $value);
+        return $this->setData(self::SCAN_QR_CODE, $value);
     }
 
     public function getNoInTransaction(): ?string
@@ -161,7 +161,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::NO_IN_TRANSACTION);
     }
 
-    public function setNoInTransaction(string $value): self
+    public function setNoInTransaction(string $value)
     {
         return $this->setData(self::NO_IN_TRANSACTION, $value);
     }
@@ -171,7 +171,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::CHANGE_TEND_CODE);
     }
 
-    public function setChangeTendCode(string $value): self
+    public function setChangeTendCode(string $value)
     {
         return $this->setData(self::CHANGE_TEND_CODE, $value);
     }
@@ -181,7 +181,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ABOVE_MIN_CHANGE_TENDER_TYPE);
     }
 
-    public function setAboveMinChangeTenderType(string $value): self
+    public function setAboveMinChangeTenderType(string $value)
     {
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
@@ -191,7 +191,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MIN_CHANGE);
     }
 
-    public function setMinChange(string $value): self
+    public function setMinChange(string $value)
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
@@ -201,7 +201,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ROUNDING);
     }
 
-    public function setRounding(string $value): self
+    public function setRounding(string $value)
     {
         return $this->setData(self::ROUNDING, $value);
     }
@@ -211,7 +211,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ROUNDING_TO);
     }
 
-    public function setRoundingTo(string $value): self
+    public function setRoundingTo(string $value)
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
@@ -221,7 +221,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MIN_AMOUNT_ENTERED);
     }
 
-    public function setMinAmountEntered(string $value): self
+    public function setMinAmountEntered(string $value)
     {
         return $this->setData(self::MIN_AMOUNT_ENTERED, $value);
     }
@@ -231,7 +231,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MAX_AMOUNT_ENTERED);
     }
 
-    public function setMaxAmountEntered(string $value): self
+    public function setMaxAmountEntered(string $value)
     {
         return $this->setData(self::MAX_AMOUNT_ENTERED, $value);
     }
@@ -241,7 +241,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MIN_AMOUNT_ALLOWED);
     }
 
-    public function setMinAmountAllowed(string $value): self
+    public function setMinAmountAllowed(string $value)
     {
         return $this->setData(self::MIN_AMOUNT_ALLOWED, $value);
     }
@@ -251,7 +251,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MAX_AMOUNT_ALLOWED);
     }
 
-    public function setMaxAmountAllowed(string $value): self
+    public function setMaxAmountAllowed(string $value)
     {
         return $this->setData(self::MAX_AMOUNT_ALLOWED, $value);
     }
@@ -261,7 +261,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MAY_BE_USED);
     }
 
-    public function setMayBeUsed(bool $value): self
+    public function setMayBeUsed(bool $value)
     {
         return $this->setData(self::MAY_BE_USED, $value);
     }
@@ -271,7 +271,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MANAGER_KEY_CONTROL);
     }
 
-    public function setManagerKeyControl(bool $value): self
+    public function setManagerKeyControl(bool $value)
     {
         return $this->setData(self::MANAGER_KEY_CONTROL, $value);
     }
@@ -281,7 +281,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::KEYBOARD_ENTRY_ALLOWED);
     }
 
-    public function setKeyboardEntryAllowed(bool $value): self
+    public function setKeyboardEntryAllowed(bool $value)
     {
         return $this->setData(self::KEYBOARD_ENTRY_ALLOWED, $value);
     }
@@ -291,7 +291,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::OVERTENDER_ALLOWED);
     }
 
-    public function setOvertenderAllowed(bool $value): self
+    public function setOvertenderAllowed(bool $value)
     {
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
@@ -301,7 +301,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::OVERTENDER_MAX_AMT);
     }
 
-    public function setOvertenderMaxAmt(string $value): self
+    public function setOvertenderMaxAmt(string $value)
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }
@@ -311,19 +311,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::UNDERTENDER_ALLOWED);
     }
 
-    public function setUndertenderAllowed(bool $value): self
+    public function setUndertenderAllowed(bool $value)
     {
         return $this->setData(self::UNDERTENDER_ALLOWED, $value);
     }
 
     public function getReturnMinusAllowed(): ?bool
     {
-        return $this->getData(self::RETURN_MINUS_ALLOWED);
+        return $this->getData(self::RETURNMINUS_ALLOWED);
     }
 
-    public function setReturnMinusAllowed(bool $value): self
+    public function setReturnMinusAllowed(bool $value)
     {
-        return $this->setData(self::RETURN_MINUS_ALLOWED, $value);
+        return $this->setData(self::RETURNMINUS_ALLOWED, $value);
     }
 
     public function getDrawerOpens(): ?bool
@@ -331,7 +331,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::DRAWER_OPENS);
     }
 
-    public function setDrawerOpens(bool $value): self
+    public function setDrawerOpens(bool $value)
     {
         return $this->setData(self::DRAWER_OPENS, $value);
     }
@@ -341,19 +341,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ENDORSE_CHECK);
     }
 
-    public function setEndorseCheck(bool $value): self
+    public function setEndorseCheck(bool $value)
     {
         return $this->setData(self::ENDORSE_CHECK, $value);
     }
 
     public function getCardAccountNo(): ?bool
     {
-        return $this->getData(self::CARD_ACCOUNT_NO);
+        return $this->getData(self::CARDACCOUNT_NO);
     }
 
-    public function setCardAccountNo(bool $value): self
+    public function setCardAccountNo(bool $value)
     {
-        return $this->setData(self::CARD_ACCOUNT_NO, $value);
+        return $this->setData(self::CARDACCOUNT_NO, $value);
     }
 
     public function getAskForDate(): ?bool
@@ -361,7 +361,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ASK_FOR_DATE);
     }
 
-    public function setAskForDate(bool $value): self
+    public function setAskForDate(bool $value)
     {
         return $this->setData(self::ASK_FOR_DATE, $value);
     }
@@ -371,7 +371,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::SEEK_AUTHORIZATION);
     }
 
-    public function setSeekAuthorization(string $value): self
+    public function setSeekAuthorization(string $value)
     {
         return $this->setData(self::SEEK_AUTHORIZATION, $value);
     }
@@ -381,7 +381,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::PRINT_SEPARATE_INVOICE);
     }
 
-    public function setPrintSeparateInvoice(bool $value): self
+    public function setPrintSeparateInvoice(bool $value)
     {
         return $this->setData(self::PRINT_SEPARATE_INVOICE, $value);
     }
@@ -391,7 +391,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FRONT_OF_CHECK);
     }
 
-    public function setFrontOfCheck(bool $value): self
+    public function setFrontOfCheck(bool $value)
     {
         return $this->setData(self::FRONT_OF_CHECK, $value);
     }
@@ -401,7 +401,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::KEYBOARD_ENTRY_REQUIRED);
     }
 
-    public function setKeyboardEntryRequired(bool $value): self
+    public function setKeyboardEntryRequired(bool $value)
     {
         return $this->setData(self::KEYBOARD_ENTRY_REQUIRED, $value);
     }
@@ -411,7 +411,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::PAY_ACCOUNT_BILL);
     }
 
-    public function setPayAccountBill(bool $value): self
+    public function setPayAccountBill(bool $value)
     {
         return $this->setData(self::PAY_ACCOUNT_BILL, $value);
     }
@@ -421,7 +421,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MARKING_ONLY);
     }
 
-    public function setMarkingOnly(bool $value): self
+    public function setMarkingOnly(bool $value)
     {
         return $this->setData(self::MARKING_ONLY, $value);
     }
@@ -431,7 +431,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FOREIGN_CURRENCY);
     }
 
-    public function setForeignCurrency(bool $value): self
+    public function setForeignCurrency(bool $value)
     {
         return $this->setData(self::FOREIGN_CURRENCY, $value);
     }
@@ -441,7 +441,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ENDORSEMENT_LINE_1);
     }
 
-    public function setEndorsementLine1(string $value): self
+    public function setEndorsementLine1(string $value)
     {
         return $this->setData(self::ENDORSEMENT_LINE_1, $value);
     }
@@ -451,7 +451,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ENDORSEMENT_LINE_2);
     }
 
-    public function setEndorsementLine2(string $value): self
+    public function setEndorsementLine2(string $value)
     {
         return $this->setData(self::ENDORSEMENT_LINE_2, $value);
     }
@@ -461,7 +461,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::CHECK_PAYEE);
     }
 
-    public function setCheckPayee(string $value): self
+    public function setCheckPayee(string $value)
     {
         return $this->setData(self::CHECK_PAYEE, $value);
     }
@@ -471,19 +471,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::SLIP_BACK_IN_PRINTER);
     }
 
-    public function setSlipBackInPrinter(string $value): self
+    public function setSlipBackInPrinter(string $value)
     {
         return $this->setData(self::SLIP_BACK_IN_PRINTER, $value);
     }
 
     public function getAskForCardAccount(): ?string
     {
-        return $this->getData(self::ASK_FOR_CARD_ACCOUNT);
+        return $this->getData(self::ASK_FOR_CARDACCOUNT);
     }
 
-    public function setAskForCardAccount(string $value): self
+    public function setAskForCardAccount(string $value)
     {
-        return $this->setData(self::ASK_FOR_CARD_ACCOUNT, $value);
+        return $this->setData(self::ASK_FOR_CARDACCOUNT, $value);
     }
 
     public function getInvoiceInPrinter(): ?string
@@ -491,7 +491,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::INVOICE_IN_PRINTER);
     }
 
-    public function setInvoiceInPrinter(string $value): self
+    public function setInvoiceInPrinter(string $value)
     {
         return $this->setData(self::INVOICE_IN_PRINTER, $value);
     }
@@ -501,7 +501,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::SLIP_FRONT_IN_PRINTER);
     }
 
-    public function setSlipFrontInPrinter(string $value): self
+    public function setSlipFrontInPrinter(string $value)
     {
         return $this->setData(self::SLIP_FRONT_IN_PRINTER, $value);
     }
@@ -511,19 +511,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::CHANGE_LINE_ON_RECEIPT);
     }
 
-    public function setChangeLineOnReceipt(string $value): self
+    public function setChangeLineOnReceipt(string $value)
     {
         return $this->setData(self::CHANGE_LINE_ON_RECEIPT, $value);
     }
 
     public function getPOSCountEntries(): ?bool
     {
-        return $this->getData(self::P_O_S_COUNT_ENTRIES);
+        return $this->getData(self::POS_COUNT_ENTRIES);
     }
 
-    public function setPOSCountEntries(bool $value): self
+    public function setPOSCountEntries(bool $value)
     {
-        return $this->setData(self::P_O_S_COUNT_ENTRIES, $value);
+        return $this->setData(self::POS_COUNT_ENTRIES, $value);
     }
 
     public function getTakenToBank(): ?bool
@@ -531,7 +531,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::TAKEN_TO_BANK);
     }
 
-    public function setTakenToBank(bool $value): self
+    public function setTakenToBank(bool $value)
     {
         return $this->setData(self::TAKEN_TO_BANK, $value);
     }
@@ -541,7 +541,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::COUNTING_REQUIRED);
     }
 
-    public function setCountingRequired(bool $value): self
+    public function setCountingRequired(bool $value)
     {
         return $this->setData(self::COUNTING_REQUIRED, $value);
     }
@@ -551,7 +551,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FLOAT_ALLOWED);
     }
 
-    public function setFloatAllowed(bool $value): self
+    public function setFloatAllowed(bool $value)
     {
         return $this->setData(self::FLOAT_ALLOWED, $value);
     }
@@ -561,7 +561,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::MULTIPLY_IN_TENDER_OPERATIONS);
     }
 
-    public function setMultiplyInTenderOperations(bool $value): self
+    public function setMultiplyInTenderOperations(bool $value)
     {
         return $this->setData(self::MULTIPLY_IN_TENDER_OPERATIONS, $value);
     }
@@ -571,7 +571,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(string $value): self
+    public function setAccountType(string $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }
@@ -581,7 +581,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value): self
+    public function setAccountNo(string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -591,7 +591,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::ACCOUNT_NAME);
     }
 
-    public function setAccountName(string $value): self
+    public function setAccountName(string $value)
     {
         return $this->setData(self::ACCOUNT_NAME, $value);
     }
@@ -601,7 +601,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::CHARGE);
     }
 
-    public function setCharge(string $value): self
+    public function setCharge(string $value)
     {
         return $this->setData(self::CHARGE, $value);
     }
@@ -611,7 +611,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::CHARGE_TO_ACCOUNT_NO);
     }
 
-    public function setChargeToAccountNo(string $value): self
+    public function setChargeToAccountNo(string $value)
     {
         return $this->setData(self::CHARGE_TO_ACCOUNT_NO, $value);
     }
@@ -621,19 +621,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
 
     public function getDifferenceGLAcc(): ?string
     {
-        return $this->getData(self::DIFFERENCE_G_L_ACC);
+        return $this->getData(self::DIFFERENCE_GL_ACC);
     }
 
-    public function setDifferenceGLAcc(string $value): self
+    public function setDifferenceGLAcc(string $value)
     {
-        return $this->setData(self::DIFFERENCE_G_L_ACC, $value);
+        return $this->setData(self::DIFFERENCE_GL_ACC, $value);
     }
 
     public function getLastDateModified(): ?string
@@ -641,7 +641,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value): self
+    public function setLastDateModified(string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -651,19 +651,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::PRIMARY_KEY);
     }
 
-    public function setPrimaryKey(string $value): self
+    public function setPrimaryKey(string $value)
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
 
     public function getRefundGLAccountNo(): ?string
     {
-        return $this->getData(self::REFUND_G_L_ACCOUNT_NO);
+        return $this->getData(self::REFUND_GL_ACCOUNT_NO);
     }
 
-    public function setRefundGLAccountNo(string $value): self
+    public function setRefundGLAccountNo(string $value)
     {
-        return $this->setData(self::REFUND_G_L_ACCOUNT_NO, $value);
+        return $this->setData(self::REFUND_GL_ACCOUNT_NO, $value);
     }
 
     public function getRefundDirectly(): ?bool
@@ -671,7 +671,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::REFUND_DIRECTLY);
     }
 
-    public function setRefundDirectly(bool $value): self
+    public function setRefundDirectly(bool $value)
     {
         return $this->setData(self::REFUND_DIRECTLY, $value);
     }
@@ -681,29 +681,29 @@ class LSCTenderType extends DataObject
         return $this->getData(self::COMPRESS_PAYM_ENTRIES);
     }
 
-    public function setCompressPaymEntries(bool $value): self
+    public function setCompressPaymEntries(bool $value)
     {
         return $this->setData(self::COMPRESS_PAYM_ENTRIES, $value);
     }
 
     public function getPrintInCIDReport(): ?bool
     {
-        return $this->getData(self::PRINT_IN_C_I_D_REPORT);
+        return $this->getData(self::PRINT_IN_CID_REPORT);
     }
 
-    public function setPrintInCIDReport(bool $value): self
+    public function setPrintInCIDReport(bool $value)
     {
-        return $this->setData(self::PRINT_IN_C_I_D_REPORT, $value);
+        return $this->setData(self::PRINT_IN_CID_REPORT, $value);
     }
 
     public function getPOSPickupWarningAmount(): ?string
     {
-        return $this->getData(self::P_O_S_PICKUP_WARNING_AMOUNT);
+        return $this->getData(self::POS_PICKUP_WARNING_AMOUNT);
     }
 
-    public function setPOSPickupWarningAmount(string $value): self
+    public function setPOSPickupWarningAmount(string $value)
     {
-        return $this->setData(self::P_O_S_PICKUP_WARNING_AMOUNT, $value);
+        return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }
 
     public function getBankAccountType(): ?string
@@ -711,7 +711,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::BANK_ACCOUNT_TYPE);
     }
 
-    public function setBankAccountType(string $value): self
+    public function setBankAccountType(string $value)
     {
         return $this->setData(self::BANK_ACCOUNT_TYPE, $value);
     }
@@ -721,7 +721,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::BANK_ACCOUNT_NO);
     }
 
-    public function setBankAccountNo(string $value): self
+    public function setBankAccountNo(string $value)
     {
         return $this->setData(self::BANK_ACCOUNT_NO, $value);
     }
@@ -731,19 +731,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::BANK_ACCOUNT_NAME);
     }
 
-    public function setBankAccountName(string $value): self
+    public function setBankAccountName(string $value)
     {
         return $this->setData(self::BANK_ACCOUNT_NAME, $value);
     }
 
     public function getBankDiffGLAcc(): ?string
     {
-        return $this->getData(self::BANK_DIFF_G_L_ACC);
+        return $this->getData(self::BANK_DIFF_GL_ACC);
     }
 
-    public function setBankDiffGLAcc(string $value): self
+    public function setBankDiffGLAcc(string $value)
     {
-        return $this->setData(self::BANK_DIFF_G_L_ACC, $value);
+        return $this->setData(self::BANK_DIFF_GL_ACC, $value);
     }
 
     public function getTakenToSafe(): ?bool
@@ -751,19 +751,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::TAKEN_TO_SAFE);
     }
 
-    public function setTakenToSafe(bool $value): self
+    public function setTakenToSafe(bool $value)
     {
         return $this->setData(self::TAKEN_TO_SAFE, $value);
     }
 
     public function getPOSPickupWarningText(): ?string
     {
-        return $this->getData(self::P_O_S_PICKUP_WARNING_TEXT);
+        return $this->getData(self::POS_PICKUP_WARNING_TEXT);
     }
 
-    public function setPOSPickupWarningText(string $value): self
+    public function setPOSPickupWarningText(string $value)
     {
-        return $this->setData(self::P_O_S_PICKUP_WARNING_TEXT, $value);
+        return $this->setData(self::POS_PICKUP_WARNING_TEXT, $value);
     }
 
     public function getCountByDenominations(): ?bool
@@ -771,19 +771,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::COUNT_BY_DENOMINATIONS);
     }
 
-    public function setCountByDenominations(bool $value): self
+    public function setCountByDenominations(bool $value)
     {
         return $this->setData(self::COUNT_BY_DENOMINATIONS, $value);
     }
 
     public function getRemoveFloatType(): ?string
     {
-        return $this->getData(self::REMOVE_FLOAT_TYPE);
+        return $this->getData(self::REMOVEFLOAT_TYPE);
     }
 
-    public function setRemoveFloatType(string $value): self
+    public function setRemoveFloatType(string $value)
     {
-        return $this->setData(self::REMOVE_FLOAT_TYPE, $value);
+        return $this->setData(self::REMOVEFLOAT_TYPE, $value);
     }
 
     public function getFastClosingMethod(): ?string
@@ -791,7 +791,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FAST_CLOSING_METHOD);
     }
 
-    public function setFastClosingMethod(string $value): self
+    public function setFastClosingMethod(string $value)
     {
         return $this->setData(self::FAST_CLOSING_METHOD, $value);
     }
@@ -801,7 +801,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::EXCLUDE_COINS_TO_BANK);
     }
 
-    public function setExcludeCoinsToBank(bool $value): self
+    public function setExcludeCoinsToBank(bool $value)
     {
         return $this->setData(self::EXCLUDE_COINS_TO_BANK, $value);
     }
@@ -811,7 +811,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::TO_BANK_BY_DENOM);
     }
 
-    public function setToBankByDenom(bool $value): self
+    public function setToBankByDenom(bool $value)
     {
         return $this->setData(self::TO_BANK_BY_DENOM, $value);
     }
@@ -821,7 +821,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::TO_SAFE_BY_DENOM);
     }
 
-    public function setToSafeByDenom(bool $value): self
+    public function setToSafeByDenom(bool $value)
     {
         return $this->setData(self::TO_SAFE_BY_DENOM, $value);
     }
@@ -831,7 +831,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FIXED_FLOAT_BY_DENOM);
     }
 
-    public function setFixedFloatByDenom(bool $value): self
+    public function setFixedFloatByDenom(bool $value)
     {
         return $this->setData(self::FIXED_FLOAT_BY_DENOM, $value);
     }
@@ -841,7 +841,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::USE_BAGS_FOR_BANK);
     }
 
-    public function setUseBagsForBank(bool $value): self
+    public function setUseBagsForBank(bool $value)
     {
         return $this->setData(self::USE_BAGS_FOR_BANK, $value);
     }
@@ -851,7 +851,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::BANK_BAGS_NO_TYPE);
     }
 
-    public function setBankBagsNoType(string $value): self
+    public function setBankBagsNoType(string $value)
     {
         return $this->setData(self::BANK_BAGS_NO_TYPE, $value);
     }
@@ -861,7 +861,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::BANK_BAGS_NOS);
     }
 
-    public function setBankBagsNos(string $value): self
+    public function setBankBagsNos(string $value)
     {
         return $this->setData(self::BANK_BAGS_NOS, $value);
     }
@@ -871,7 +871,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::USE_BAGS_FOR_SAFE);
     }
 
-    public function setUseBagsForSafe(bool $value): self
+    public function setUseBagsForSafe(bool $value)
     {
         return $this->setData(self::USE_BAGS_FOR_SAFE, $value);
     }
@@ -881,7 +881,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::SAFE_BAGS_NO_TYPE);
     }
 
-    public function setSafeBagsNoType(string $value): self
+    public function setSafeBagsNoType(string $value)
     {
         return $this->setData(self::SAFE_BAGS_NO_TYPE, $value);
     }
@@ -891,7 +891,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::SAFE_BAGS_NOS);
     }
 
-    public function setSafeBagsNos(string $value): self
+    public function setSafeBagsNos(string $value)
     {
         return $this->setData(self::SAFE_BAGS_NOS, $value);
     }
@@ -901,7 +901,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FIXED_FLOAT);
     }
 
-    public function setFixedFloat(bool $value): self
+    public function setFixedFloat(bool $value)
     {
         return $this->setData(self::FIXED_FLOAT, $value);
     }
@@ -911,7 +911,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::USE_BAGS_FOR_FIXED_FLOAT);
     }
 
-    public function setUseBagsForFixedFloat(bool $value): self
+    public function setUseBagsForFixedFloat(bool $value)
     {
         return $this->setData(self::USE_BAGS_FOR_FIXED_FLOAT, $value);
     }
@@ -921,7 +921,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FIXED_FLOAT_BAGS_NO_TYPE);
     }
 
-    public function setFixedFloatBagsNoType(string $value): self
+    public function setFixedFloatBagsNoType(string $value)
     {
         return $this->setData(self::FIXED_FLOAT_BAGS_NO_TYPE, $value);
     }
@@ -931,7 +931,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FIXED_FLOAT_BAGS_NOS);
     }
 
-    public function setFixedFloatBagsNos(string $value): self
+    public function setFixedFloatBagsNos(string $value)
     {
         return $this->setData(self::FIXED_FLOAT_BAGS_NOS, $value);
     }
@@ -941,19 +941,19 @@ class LSCTenderType extends DataObject
         return $this->getData(self::OUTBOUND_CODE);
     }
 
-    public function setOutboundCode(string $value): self
+    public function setOutboundCode(string $value)
     {
         return $this->setData(self::OUTBOUND_CODE, $value);
     }
 
     public function getWICTenderType(): ?bool
     {
-        return $this->getData(self::W_I_C_TENDER_TYPE);
+        return $this->getData(self::WIC_TENDER_TYPE);
     }
 
-    public function setWICTenderType(bool $value): self
+    public function setWICTenderType(bool $value)
     {
-        return $this->setData(self::W_I_C_TENDER_TYPE, $value);
+        return $this->setData(self::WIC_TENDER_TYPE, $value);
     }
 
     public function getFoodStamp(): ?bool
@@ -961,7 +961,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::FOOD_STAMP);
     }
 
-    public function setFoodStamp(bool $value): self
+    public function setFoodStamp(bool $value)
     {
         return $this->setData(self::FOOD_STAMP, $value);
     }
@@ -971,7 +971,7 @@ class LSCTenderType extends DataObject
         return $this->getData(self::AUTO_ACCOUNT_PAYMENT_TENDER);
     }
 
-    public function setAutoAccountPaymentTender(bool $value): self
+    public function setAutoAccountPaymentTender(bool $value)
     {
         return $this->setData(self::AUTO_ACCOUNT_PAYMENT_TENDER, $value);
     }
@@ -981,58 +981,58 @@ class LSCTenderType extends DataObject
         return $this->getData(self::DO_NOT_POST);
     }
 
-    public function setDoNotPost(bool $value): self
+    public function setDoNotPost(bool $value)
     {
         return $this->setData(self::DO_NOT_POST, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

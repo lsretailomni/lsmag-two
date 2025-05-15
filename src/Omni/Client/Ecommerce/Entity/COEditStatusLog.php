@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class COEditStatusLog extends \Magento\Framework\DataObject
+class COEditStatusLog extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'COEditStatusLog';
 

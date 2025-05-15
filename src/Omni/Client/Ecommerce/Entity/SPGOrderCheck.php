@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class SPGOrderCheck extends \Magento\Framework\DataObject implements RequestInterface
+class SPGOrderCheck extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
 {
     public const CLASS_NAME = 'SPGOrderCheck';
 

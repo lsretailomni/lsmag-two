@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCItemSpecialGroupLink extends DataObject
+class LSCItemSpecialGroupLink extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const SPECIAL_GROUP_CODE = 'Special Group Code';
@@ -20,7 +20,7 @@ class LSCItemSpecialGroupLink extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -30,7 +30,7 @@ class LSCItemSpecialGroupLink extends DataObject
         return $this->getData(self::SPECIAL_GROUP_CODE);
     }
 
-    public function setSpecialGroupCode(string $value): self
+    public function setSpecialGroupCode(string $value)
     {
         return $this->setData(self::SPECIAL_GROUP_CODE, $value);
     }

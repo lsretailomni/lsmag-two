@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class AttributeOptionValueValSched extends \Magento\Framework\DataObject
+class AttributeOptionValueValSched extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'AttributeOptionValueVal.Sched';
 

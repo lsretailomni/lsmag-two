@@ -7,14 +7,14 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class Item extends DataObject
+class Item extends AbstractModel
 {
     public const NO = 'No.';
     public const DESCRIPTION = 'Description';
     public const DESCRIPTION_2 = 'Description 2';
-    public const V_A_T_PROD_POSTING_GROUP = 'VAT Prod. Posting Group';
+    public const VAT_PROD_POSTING_GROUP = 'VAT Prod. Posting Group';
     public const TYPE = 'Type';
     public const BASE_UNIT_OF_MEASURE = 'Base Unit of Measure';
     public const SALES_UNIT_OF_MEASURE = 'Sales Unit of Measure';
@@ -23,19 +23,19 @@ class Item extends DataObject
     public const VENDOR_ITEM_NO = 'Vendor Item No.';
     public const UNIT_PRICE = 'Unit Price';
     public const GROSS_WEIGHT = 'Gross Weight';
-    public const COUNTRY_REGION_OF_ORIGIN_CODE = 'Country/Region of Origin Code';
+    public const COUNTRYREGION_OF_ORIGIN_CODE = 'Country/Region of Origin Code';
     public const ITEM_TRACKING_CODE = 'Item Tracking Code';
     public const ITEM_CATEGORY_CODE = 'Item Category Code';
     public const UNITS_PER_PARCEL = 'Units per Parcel';
     public const UNIT_VOLUME = 'Unit Volume';
-    public const L_S_C_ZERO_PRICE_VALID = 'LSC Zero Price Valid';
-    public const L_S_C_SCALE_ITEM = 'LSC Scale Item';
-    public const L_S_C_RETAIL_PRODUCT_CODE = 'LSC Retail Product Code';
-    public const L_S_C_KEYING_IN_PRICE = 'LSC Keying in Price';
-    public const L_S_C_KEYING_IN_QUANTITY = 'LSC Keying in Quantity';
-    public const L_S_C_NO_DISCOUNT_ALLOWED = 'LSC No Discount Allowed';
-    public const L_S_C_SEASON_CODE = 'LSC Season Code';
-    public const L_S_C_ITEM_FAMILY_CODE = 'LSC Item Family Code';
+    public const LSC_ZERO_PRICE_VALID = 'LSC Zero Price Valid';
+    public const LSC_SCALE_ITEM = 'LSC Scale Item';
+    public const LSC_RETAIL_PRODUCT_CODE = 'LSC Retail Product Code';
+    public const LSC_KEYING_IN_PRICE = 'LSC Keying in Price';
+    public const LSC_KEYING_IN_QUANTITY = 'LSC Keying in Quantity';
+    public const LSC_NO_DISCOUNT_ALLOWED = 'LSC No Discount Allowed';
+    public const LSC_SEASON_CODE = 'LSC Season Code';
+    public const LSC_ITEM_FAMILY_CODE = 'LSC Item Family Code';
     public const TARIFF_NO = 'Tariff No.';
     public const BLOCKED = 'Blocked';
 
@@ -45,7 +45,7 @@ class Item extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -55,7 +55,7 @@ class Item extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -65,19 +65,19 @@ class Item extends DataObject
         return $this->getData(self::DESCRIPTION_2);
     }
 
-    public function setDescription2(string $value): self
+    public function setDescription2(string $value)
     {
         return $this->setData(self::DESCRIPTION_2, $value);
     }
 
     public function getVATProdPostingGroup(): ?string
     {
-        return $this->getData(self::V_A_T_PROD_POSTING_GROUP);
+        return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value): self
+    public function setVATProdPostingGroup(string $value)
     {
-        return $this->setData(self::V_A_T_PROD_POSTING_GROUP, $value);
+        return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
     public function getType(): ?string
@@ -85,7 +85,7 @@ class Item extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -95,7 +95,7 @@ class Item extends DataObject
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
 
-    public function setBaseUnitOfMeasure(string $value): self
+    public function setBaseUnitOfMeasure(string $value)
     {
         return $this->setData(self::BASE_UNIT_OF_MEASURE, $value);
     }
@@ -105,7 +105,7 @@ class Item extends DataObject
         return $this->getData(self::SALES_UNIT_OF_MEASURE);
     }
 
-    public function setSalesUnitOfMeasure(string $value): self
+    public function setSalesUnitOfMeasure(string $value)
     {
         return $this->setData(self::SALES_UNIT_OF_MEASURE, $value);
     }
@@ -115,7 +115,7 @@ class Item extends DataObject
         return $this->getData(self::PURCH_UNIT_OF_MEASURE);
     }
 
-    public function setPurchUnitOfMeasure(string $value): self
+    public function setPurchUnitOfMeasure(string $value)
     {
         return $this->setData(self::PURCH_UNIT_OF_MEASURE, $value);
     }
@@ -125,7 +125,7 @@ class Item extends DataObject
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value): self
+    public function setVendorNo(string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -135,7 +135,7 @@ class Item extends DataObject
         return $this->getData(self::VENDOR_ITEM_NO);
     }
 
-    public function setVendorItemNo(string $value): self
+    public function setVendorItemNo(string $value)
     {
         return $this->setData(self::VENDOR_ITEM_NO, $value);
     }
@@ -145,7 +145,7 @@ class Item extends DataObject
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value): self
+    public function setUnitPrice(string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -155,19 +155,19 @@ class Item extends DataObject
         return $this->getData(self::GROSS_WEIGHT);
     }
 
-    public function setGrossWeight(string $value): self
+    public function setGrossWeight(string $value)
     {
         return $this->setData(self::GROSS_WEIGHT, $value);
     }
 
     public function getCountryRegionOfOriginCode(): ?string
     {
-        return $this->getData(self::COUNTRY_REGION_OF_ORIGIN_CODE);
+        return $this->getData(self::COUNTRYREGION_OF_ORIGIN_CODE);
     }
 
-    public function setCountryRegionOfOriginCode(string $value): self
+    public function setCountryRegionOfOriginCode(string $value)
     {
-        return $this->setData(self::COUNTRY_REGION_OF_ORIGIN_CODE, $value);
+        return $this->setData(self::COUNTRYREGION_OF_ORIGIN_CODE, $value);
     }
 
     public function getItemTrackingCode(): ?string
@@ -175,7 +175,7 @@ class Item extends DataObject
         return $this->getData(self::ITEM_TRACKING_CODE);
     }
 
-    public function setItemTrackingCode(string $value): self
+    public function setItemTrackingCode(string $value)
     {
         return $this->setData(self::ITEM_TRACKING_CODE, $value);
     }
@@ -185,7 +185,7 @@ class Item extends DataObject
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
-    public function setItemCategoryCode(string $value): self
+    public function setItemCategoryCode(string $value)
     {
         return $this->setData(self::ITEM_CATEGORY_CODE, $value);
     }
@@ -195,7 +195,7 @@ class Item extends DataObject
         return $this->getData(self::UNITS_PER_PARCEL);
     }
 
-    public function setUnitsPerParcel(string $value): self
+    public function setUnitsPerParcel(string $value)
     {
         return $this->setData(self::UNITS_PER_PARCEL, $value);
     }
@@ -205,89 +205,89 @@ class Item extends DataObject
         return $this->getData(self::UNIT_VOLUME);
     }
 
-    public function setUnitVolume(string $value): self
+    public function setUnitVolume(string $value)
     {
         return $this->setData(self::UNIT_VOLUME, $value);
     }
 
     public function getLSCZeroPriceValid(): ?bool
     {
-        return $this->getData(self::L_S_C_ZERO_PRICE_VALID);
+        return $this->getData(self::LSC_ZERO_PRICE_VALID);
     }
 
-    public function setLSCZeroPriceValid(bool $value): self
+    public function setLSCZeroPriceValid(bool $value)
     {
-        return $this->setData(self::L_S_C_ZERO_PRICE_VALID, $value);
+        return $this->setData(self::LSC_ZERO_PRICE_VALID, $value);
     }
 
     public function getLSCScaleItem(): ?bool
     {
-        return $this->getData(self::L_S_C_SCALE_ITEM);
+        return $this->getData(self::LSC_SCALE_ITEM);
     }
 
-    public function setLSCScaleItem(bool $value): self
+    public function setLSCScaleItem(bool $value)
     {
-        return $this->setData(self::L_S_C_SCALE_ITEM, $value);
+        return $this->setData(self::LSC_SCALE_ITEM, $value);
     }
 
     public function getLSCRetailProductCode(): ?string
     {
-        return $this->getData(self::L_S_C_RETAIL_PRODUCT_CODE);
+        return $this->getData(self::LSC_RETAIL_PRODUCT_CODE);
     }
 
-    public function setLSCRetailProductCode(string $value): self
+    public function setLSCRetailProductCode(string $value)
     {
-        return $this->setData(self::L_S_C_RETAIL_PRODUCT_CODE, $value);
+        return $this->setData(self::LSC_RETAIL_PRODUCT_CODE, $value);
     }
 
     public function getLSCKeyingInPrice(): ?string
     {
-        return $this->getData(self::L_S_C_KEYING_IN_PRICE);
+        return $this->getData(self::LSC_KEYING_IN_PRICE);
     }
 
-    public function setLSCKeyingInPrice(string $value): self
+    public function setLSCKeyingInPrice(string $value)
     {
-        return $this->setData(self::L_S_C_KEYING_IN_PRICE, $value);
+        return $this->setData(self::LSC_KEYING_IN_PRICE, $value);
     }
 
     public function getLSCKeyingInQuantity(): ?string
     {
-        return $this->getData(self::L_S_C_KEYING_IN_QUANTITY);
+        return $this->getData(self::LSC_KEYING_IN_QUANTITY);
     }
 
-    public function setLSCKeyingInQuantity(string $value): self
+    public function setLSCKeyingInQuantity(string $value)
     {
-        return $this->setData(self::L_S_C_KEYING_IN_QUANTITY, $value);
+        return $this->setData(self::LSC_KEYING_IN_QUANTITY, $value);
     }
 
     public function getLSCNoDiscountAllowed(): ?bool
     {
-        return $this->getData(self::L_S_C_NO_DISCOUNT_ALLOWED);
+        return $this->getData(self::LSC_NO_DISCOUNT_ALLOWED);
     }
 
-    public function setLSCNoDiscountAllowed(bool $value): self
+    public function setLSCNoDiscountAllowed(bool $value)
     {
-        return $this->setData(self::L_S_C_NO_DISCOUNT_ALLOWED, $value);
+        return $this->setData(self::LSC_NO_DISCOUNT_ALLOWED, $value);
     }
 
     public function getLSCSeasonCode(): ?string
     {
-        return $this->getData(self::L_S_C_SEASON_CODE);
+        return $this->getData(self::LSC_SEASON_CODE);
     }
 
-    public function setLSCSeasonCode(string $value): self
+    public function setLSCSeasonCode(string $value)
     {
-        return $this->setData(self::L_S_C_SEASON_CODE, $value);
+        return $this->setData(self::LSC_SEASON_CODE, $value);
     }
 
     public function getLSCItemFamilyCode(): ?string
     {
-        return $this->getData(self::L_S_C_ITEM_FAMILY_CODE);
+        return $this->getData(self::LSC_ITEM_FAMILY_CODE);
     }
 
-    public function setLSCItemFamilyCode(string $value): self
+    public function setLSCItemFamilyCode(string $value)
     {
-        return $this->setData(self::L_S_C_ITEM_FAMILY_CODE, $value);
+        return $this->setData(self::LSC_ITEM_FAMILY_CODE, $value);
     }
 
     public function getTariffNo(): ?string
@@ -295,7 +295,7 @@ class Item extends DataObject
         return $this->getData(self::TARIFF_NO);
     }
 
-    public function setTariffNo(string $value): self
+    public function setTariffNo(string $value)
     {
         return $this->setData(self::TARIFF_NO, $value);
     }
@@ -305,7 +305,7 @@ class Item extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }

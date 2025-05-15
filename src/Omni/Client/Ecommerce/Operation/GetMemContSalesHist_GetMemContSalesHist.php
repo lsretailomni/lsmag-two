@@ -23,8 +23,8 @@ class GetMemContSalesHist_GetMemContSalesHist
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistRequest();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistRequest::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse
@@ -47,19 +47,28 @@ class GetMemContSalesHist_GetMemContSalesHist
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse
     {
         $requiredDataSetName = explode(',', 'LSCMemberSalesBuffer');
-        $finalEntry = new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHist();
+        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHist::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
                 $entityClassName = str_replace(' ', '', $dataSet);
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
-                    $entity = new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHist($data['LSCMemberSalesBuffer']);
+                    $entity = $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHist::class,
+                         ['data' => $data['LSCMemberSalesBuffer']]
+                     );
 
-                    return new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse([
-                        'records' => [$entity],
-                        'ResponseCode' => $data['ResponseCode'] ?? '',
-                        'ErrorText' => $data['ErrorText'] ?? '',
-                    ]);
+                    return $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse::class,
+                       [
+                       'data' =>
+                           [
+                                'records' => [$entity],
+                                'ResponseCode' => $data['ResponseCode'] ?? '',
+                                'ErrorText' => $data['ErrorText'] ?? '',
+                           ]
+                       ]
+                    );
                 }
                 $fields = $rows = [];
                 $recRef = $this->findNestedDataSet($data, $entityClassName);
@@ -77,7 +86,7 @@ class GetMemContSalesHist_GetMemContSalesHist
                     $count = count($rows);
                     $entries = [];
                     foreach ($rows as $index => $row) {
-                        $entry = new $className();
+                        $entry = $this->createInstance($className);
                         foreach ($row['Fields'] ?? [] as $field) {
                             $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
                         }
@@ -88,19 +97,29 @@ class GetMemContSalesHist_GetMemContSalesHist
                     }
                 }
             }
-            return new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse([
-                'records' => [$finalEntry],
-                'ResponseCode' => $data['ResponseCode'] ?? '',
-                'ErrorText' => $data['ErrorText'] ?? ''
-            ]);
+            return $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse::class,
+                [
+                'data' =>
+                    [
+                        'records' => [$finalEntry],
+                        'ResponseCode' => $data['ResponseCode'] ?? '',
+                        'ErrorText' => $data['ErrorText'] ?? '',
+                    ]
+                ]
+            );
         }
-
-        // Fallback
-        return new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse([
-            'records' => [],
-            'ResponseCode' => $data['ResponseCode'] ?? '',
-            'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
-        ]);
+        return $this->createInstance(
+            \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistResponse::class,
+             [
+             'data' =>
+                 [
+                    'records' => [],
+                    'ResponseCode' => $data['ResponseCode'] ?? '',
+                    'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
+                 ]
+            ]
+        );
     }
 
     public function findNestedDataSet($data, string $target): ?array
@@ -127,9 +146,19 @@ class GetMemContSalesHist_GetMemContSalesHist
         return null;
     }
 
+    public function createInstance(string $entityClassName, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistRequest
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistRequest($params));
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetMemContSalesHist_GetMemContSalesHistRequest::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

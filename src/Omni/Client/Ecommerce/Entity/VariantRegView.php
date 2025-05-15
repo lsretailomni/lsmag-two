@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class VariantRegView extends DataObject
+class VariantRegView extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const FRAMEWORK_CODE = 'Framework Code';
@@ -29,13 +29,13 @@ class VariantRegView extends DataObject
     public const DIMENSION_5_WEIGHT = 'Dimension 5 Weight';
     public const DIMENSION_6_WEIGHT = 'Dimension 6 Weight';
     public const VARIANT_WEIGHT = 'Variant Weight';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
-    public const BLOCK_SALE_ON_P_O_S = 'Block Sale on POS';
-    public const BLOCKED_ON_E_COMMERCE = 'Blocked on eCommerce';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
+    public const BLOCK_SALE_ON_POS = 'Block Sale on POS';
+    public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
 
 
     public function getItemNo(): ?string
@@ -43,7 +43,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -53,7 +53,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value): self
+    public function setFrameworkCode(string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -63,7 +63,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_1);
     }
 
-    public function setVariantDimension1(string $value): self
+    public function setVariantDimension1(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_1, $value);
     }
@@ -73,7 +73,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_2);
     }
 
-    public function setVariantDimension2(string $value): self
+    public function setVariantDimension2(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_2, $value);
     }
@@ -83,7 +83,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_3);
     }
 
-    public function setVariantDimension3(string $value): self
+    public function setVariantDimension3(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_3, $value);
     }
@@ -93,7 +93,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_4);
     }
 
-    public function setVariantDimension4(string $value): self
+    public function setVariantDimension4(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_4, $value);
     }
@@ -103,7 +103,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_5);
     }
 
-    public function setVariantDimension5(string $value): self
+    public function setVariantDimension5(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_5, $value);
     }
@@ -113,7 +113,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_6);
     }
 
-    public function setVariantDimension6(string $value): self
+    public function setVariantDimension6(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_6, $value);
     }
@@ -123,7 +123,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT);
     }
 
-    public function setVariant(string $value): self
+    public function setVariant(string $value)
     {
         return $this->setData(self::VARIANT, $value);
     }
@@ -133,7 +133,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::BARCODE);
     }
 
-    public function setBarcode(string $value): self
+    public function setBarcode(string $value)
     {
         return $this->setData(self::BARCODE, $value);
     }
@@ -143,7 +143,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(string $value): self
+    public function setLogicalOrder(string $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }
@@ -153,7 +153,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::DIMENSION_1_WEIGHT);
     }
 
-    public function setDimension1Weight(string $value): self
+    public function setDimension1Weight(string $value)
     {
         return $this->setData(self::DIMENSION_1_WEIGHT, $value);
     }
@@ -163,7 +163,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::DIMENSION_2_WEIGHT);
     }
 
-    public function setDimension2Weight(string $value): self
+    public function setDimension2Weight(string $value)
     {
         return $this->setData(self::DIMENSION_2_WEIGHT, $value);
     }
@@ -173,7 +173,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::DIMENSION_3_WEIGHT);
     }
 
-    public function setDimension3Weight(string $value): self
+    public function setDimension3Weight(string $value)
     {
         return $this->setData(self::DIMENSION_3_WEIGHT, $value);
     }
@@ -183,7 +183,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::DIMENSION_4_WEIGHT);
     }
 
-    public function setDimension4Weight(string $value): self
+    public function setDimension4Weight(string $value)
     {
         return $this->setData(self::DIMENSION_4_WEIGHT, $value);
     }
@@ -193,7 +193,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::DIMENSION_5_WEIGHT);
     }
 
-    public function setDimension5Weight(string $value): self
+    public function setDimension5Weight(string $value)
     {
         return $this->setData(self::DIMENSION_5_WEIGHT, $value);
     }
@@ -203,7 +203,7 @@ class VariantRegView extends DataObject
         return $this->getData(self::DIMENSION_6_WEIGHT);
     }
 
-    public function setDimension6Weight(string $value): self
+    public function setDimension6Weight(string $value)
     {
         return $this->setData(self::DIMENSION_6_WEIGHT, $value);
     }
@@ -213,78 +213,78 @@ class VariantRegView extends DataObject
         return $this->getData(self::VARIANT_WEIGHT);
     }
 
-    public function setVariantWeight(string $value): self
+    public function setVariantWeight(string $value)
     {
         return $this->setData(self::VARIANT_WEIGHT, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getBlockSaleOnPOS(): ?bool
     {
-        return $this->getData(self::BLOCK_SALE_ON_P_O_S);
+        return $this->getData(self::BLOCK_SALE_ON_POS);
     }
 
-    public function setBlockSaleOnPOS(bool $value): self
+    public function setBlockSaleOnPOS(bool $value)
     {
-        return $this->setData(self::BLOCK_SALE_ON_P_O_S, $value);
+        return $this->setData(self::BLOCK_SALE_ON_POS, $value);
     }
 
     public function getBlockedOnECommerce(): ?bool
     {
-        return $this->getData(self::BLOCKED_ON_E_COMMERCE);
+        return $this->getData(self::BLOCKED_ON_ECOMMERCE);
     }
 
-    public function setBlockedOnECommerce(bool $value): self
+    public function setBlockedOnECommerce(bool $value)
     {
-        return $this->setData(self::BLOCKED_ON_E_COMMERCE, $value);
+        return $this->setData(self::BLOCKED_ON_ECOMMERCE, $value);
     }
 }

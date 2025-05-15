@@ -7,29 +7,29 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class GetItem_GetItem extends DataObject
+class GetItem_GetItem extends AbstractModel
 {
     public const ITEM = 'Item';
-    public const L_S_C_ITEM_STATUS_LINK = 'LSCItemStatusLink';
-    public const L_S_C_ITEM_H_T_M_L_M_L = 'LSCItemHTMLML';
-    public const L_S_C_RETAIL_IMAGE_LINK = 'LSCRetailImageLink';
-    public const L_S_C_ITEM_SPECIAL_GROUP_LINK = 'LSCItemSpecialGroupLink';
-    public const L_S_C_ITEM_SECTION_LOCATION = 'LSCItemSectionLocation';
-    public const L_S_C_SECTION_SHELF = 'LSCSectionShelf';
-    public const L_S_C_STORE_SECTION = 'LSCStoreSection';
-    public const L_S_C_W_I_PRICE = 'LSCWIPrice';
-    public const ITEM_UNITOF_MEASURE = 'ItemUnitofMeasure';
-    public const UNITOF_MEASURE = 'UnitofMeasure';
-    public const L_S_C_ITEM_VARIANT_REGISTRATION = 'LSCItemVariantRegistration';
-    public const L_S_C_EXTD_VARIANT_VALUES = 'LSCExtdVariantValues';
-    public const L_S_C_ATTRIBUTE = 'LSCAttribute';
-    public const L_S_C_ATTRIBUTE_VALUE = 'LSCAttributeValue';
-    public const B_O_M_COMPONENT = 'BOMComponent';
-    public const L_S_C_INFOCODE = 'LSCInfocode';
-    public const L_S_C_INFORMATION_SUBCODE = 'LSCInformationSubcode';
-    public const L_S_C_TABLE_SPECIFIC_INFOCODE = 'LSCTableSpecificInfocode';
+    public const LSC_ITEM_STATUS_LINK = 'LSCItemStatusLink';
+    public const LSC_ITEM_HTML_ML = 'LSCItemHTMLML';
+    public const LSC_RETAIL_IMAGE_LINK = 'LSCRetailImageLink';
+    public const LSC_ITEMSPECIAL_GROUP_LINK = 'LSCItem/SpecialGroupLink';
+    public const LSC_ITEM_SECTION_LOCATION = 'LSCItemSectionLocation';
+    public const LSC_SECTION_SHELF = 'LSCSectionShelf';
+    public const LSC_STORE_SECTION = 'LSCStoreSection';
+    public const LSC_WI_PRICE = 'LSCWIPrice';
+    public const ITEM_UNIT_OF_MEASURE = 'ItemUnitofMeasure';
+    public const UNIT_OF_MEASURE = 'UnitofMeasure';
+    public const LSC_ITEM_VARIANT_REGISTRATION = 'LSCItemVariantRegistration';
+    public const LSC_EXTD_VARIANT_VALUES = 'LSCExtd.VariantValues';
+    public const LSC_ATTRIBUTE = 'LSCAttribute';
+    public const LSC_ATTRIBUTE_VALUE = 'LSCAttributeValue';
+    public const BOM_COMPONENT = 'BOMComponent';
+    public const LSC_INFOCODE = 'LSCInfocode';
+    public const LSC_INFORMATION_SUBCODE = 'LSCInformationSubcode';
+    public const LSC_TABLE_SPECIFIC_INFOCODE = 'LSCTableSpecificInfocode';
 
 
     public function getItem(): ?Item
@@ -37,188 +37,188 @@ class GetItem_GetItem extends DataObject
         return $this->getData(self::ITEM);
     }
 
-    public function setItem(Item $value): self
+    public function setItem(Item $value)
     {
         return $this->setData(self::ITEM, $value);
     }
 
     public function getLSCItemStatusLink(): ?LSCItemStatusLink
     {
-        return $this->getData(self::L_S_C_ITEM_STATUS_LINK);
+        return $this->getData(self::LSC_ITEM_STATUS_LINK);
     }
 
-    public function setLSCItemStatusLink(LSCItemStatusLink $value): self
+    public function setLSCItemStatusLink(LSCItemStatusLink $value)
     {
-        return $this->setData(self::L_S_C_ITEM_STATUS_LINK, $value);
+        return $this->setData(self::LSC_ITEM_STATUS_LINK, $value);
     }
 
     public function getLSCItemHTMLML(): ?LSCItemHTMLML
     {
-        return $this->getData(self::L_S_C_ITEM_H_T_M_L_M_L);
+        return $this->getData(self::LSC_ITEM_HTML_ML);
     }
 
-    public function setLSCItemHTMLML(LSCItemHTMLML $value): self
+    public function setLSCItemHTMLML(LSCItemHTMLML $value)
     {
-        return $this->setData(self::L_S_C_ITEM_H_T_M_L_M_L, $value);
+        return $this->setData(self::LSC_ITEM_HTML_ML, $value);
     }
 
     public function getLSCRetailImageLink(): ?LSCRetailImageLink
     {
-        return $this->getData(self::L_S_C_RETAIL_IMAGE_LINK);
+        return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
     }
 
-    public function setLSCRetailImageLink(LSCRetailImageLink $value): self
+    public function setLSCRetailImageLink(LSCRetailImageLink $value)
     {
-        return $this->setData(self::L_S_C_RETAIL_IMAGE_LINK, $value);
+        return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
     }
 
     public function getLSCItemSpecialGroupLink(): ?array
     {
-        return $this->getData(self::L_S_C_ITEM_SPECIAL_GROUP_LINK);
+        return $this->getData(self::LSC_ITEMSPECIAL_GROUP_LINK);
     }
 
-    public function setLSCItemSpecialGroupLink(array $value): self
+    public function setLSCItemSpecialGroupLink(array $value)
     {
-        return $this->setData(self::L_S_C_ITEM_SPECIAL_GROUP_LINK, $value);
+        return $this->setData(self::LSC_ITEMSPECIAL_GROUP_LINK, $value);
     }
 
     public function getLSCItemSectionLocation(): ?LSCItemSectionLocation
     {
-        return $this->getData(self::L_S_C_ITEM_SECTION_LOCATION);
+        return $this->getData(self::LSC_ITEM_SECTION_LOCATION);
     }
 
-    public function setLSCItemSectionLocation(LSCItemSectionLocation $value): self
+    public function setLSCItemSectionLocation(LSCItemSectionLocation $value)
     {
-        return $this->setData(self::L_S_C_ITEM_SECTION_LOCATION, $value);
+        return $this->setData(self::LSC_ITEM_SECTION_LOCATION, $value);
     }
 
     public function getLSCSectionShelf(): ?LSCSectionShelf
     {
-        return $this->getData(self::L_S_C_SECTION_SHELF);
+        return $this->getData(self::LSC_SECTION_SHELF);
     }
 
-    public function setLSCSectionShelf(LSCSectionShelf $value): self
+    public function setLSCSectionShelf(LSCSectionShelf $value)
     {
-        return $this->setData(self::L_S_C_SECTION_SHELF, $value);
+        return $this->setData(self::LSC_SECTION_SHELF, $value);
     }
 
     public function getLSCStoreSection(): ?LSCStoreSection
     {
-        return $this->getData(self::L_S_C_STORE_SECTION);
+        return $this->getData(self::LSC_STORE_SECTION);
     }
 
-    public function setLSCStoreSection(LSCStoreSection $value): self
+    public function setLSCStoreSection(LSCStoreSection $value)
     {
-        return $this->setData(self::L_S_C_STORE_SECTION, $value);
+        return $this->setData(self::LSC_STORE_SECTION, $value);
     }
 
     public function getLSCWIPrice(): ?LSCWIPrice
     {
-        return $this->getData(self::L_S_C_W_I_PRICE);
+        return $this->getData(self::LSC_WI_PRICE);
     }
 
-    public function setLSCWIPrice(LSCWIPrice $value): self
+    public function setLSCWIPrice(LSCWIPrice $value)
     {
-        return $this->setData(self::L_S_C_W_I_PRICE, $value);
+        return $this->setData(self::LSC_WI_PRICE, $value);
     }
 
-    public function getItemUnitofMeasure(): ?ItemUnitofMeasure
+    public function getItemUnitOfMeasure(): ?ItemUnitofMeasure
     {
-        return $this->getData(self::ITEM_UNITOF_MEASURE);
+        return $this->getData(self::ITEM_UNIT_OF_MEASURE);
     }
 
-    public function setItemUnitofMeasure(ItemUnitofMeasure $value): self
+    public function setItemUnitOfMeasure(ItemUnitofMeasure $value)
     {
-        return $this->setData(self::ITEM_UNITOF_MEASURE, $value);
+        return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
     }
 
-    public function getUnitofMeasure(): ?UnitofMeasure
+    public function getUnitOfMeasure(): ?UnitofMeasure
     {
-        return $this->getData(self::UNITOF_MEASURE);
+        return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitofMeasure(UnitofMeasure $value): self
+    public function setUnitOfMeasure(UnitofMeasure $value)
     {
-        return $this->setData(self::UNITOF_MEASURE, $value);
+        return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
 
     public function getLSCItemVariantRegistration(): ?LSCItemVariantRegistration
     {
-        return $this->getData(self::L_S_C_ITEM_VARIANT_REGISTRATION);
+        return $this->getData(self::LSC_ITEM_VARIANT_REGISTRATION);
     }
 
-    public function setLSCItemVariantRegistration(LSCItemVariantRegistration $value): self
+    public function setLSCItemVariantRegistration(LSCItemVariantRegistration $value)
     {
-        return $this->setData(self::L_S_C_ITEM_VARIANT_REGISTRATION, $value);
+        return $this->setData(self::LSC_ITEM_VARIANT_REGISTRATION, $value);
     }
 
     public function getLSCExtdVariantValues(): ?LSCExtdVariantValues
     {
-        return $this->getData(self::L_S_C_EXTD_VARIANT_VALUES);
+        return $this->getData(self::LSC_EXTD_VARIANT_VALUES);
     }
 
-    public function setLSCExtdVariantValues(LSCExtdVariantValues $value): self
+    public function setLSCExtdVariantValues(LSCExtdVariantValues $value)
     {
-        return $this->setData(self::L_S_C_EXTD_VARIANT_VALUES, $value);
+        return $this->setData(self::LSC_EXTD_VARIANT_VALUES, $value);
     }
 
     public function getLSCAttribute(): ?array
     {
-        return $this->getData(self::L_S_C_ATTRIBUTE);
+        return $this->getData(self::LSC_ATTRIBUTE);
     }
 
-    public function setLSCAttribute(array $value): self
+    public function setLSCAttribute(array $value)
     {
-        return $this->setData(self::L_S_C_ATTRIBUTE, $value);
+        return $this->setData(self::LSC_ATTRIBUTE, $value);
     }
 
     public function getLSCAttributeValue(): ?array
     {
-        return $this->getData(self::L_S_C_ATTRIBUTE_VALUE);
+        return $this->getData(self::LSC_ATTRIBUTE_VALUE);
     }
 
-    public function setLSCAttributeValue(array $value): self
+    public function setLSCAttributeValue(array $value)
     {
-        return $this->setData(self::L_S_C_ATTRIBUTE_VALUE, $value);
+        return $this->setData(self::LSC_ATTRIBUTE_VALUE, $value);
     }
 
     public function getBOMComponent(): ?BOMComponent
     {
-        return $this->getData(self::B_O_M_COMPONENT);
+        return $this->getData(self::BOM_COMPONENT);
     }
 
-    public function setBOMComponent(BOMComponent $value): self
+    public function setBOMComponent(BOMComponent $value)
     {
-        return $this->setData(self::B_O_M_COMPONENT, $value);
+        return $this->setData(self::BOM_COMPONENT, $value);
     }
 
     public function getLSCInfocode(): ?LSCInfocode
     {
-        return $this->getData(self::L_S_C_INFOCODE);
+        return $this->getData(self::LSC_INFOCODE);
     }
 
-    public function setLSCInfocode(LSCInfocode $value): self
+    public function setLSCInfocode(LSCInfocode $value)
     {
-        return $this->setData(self::L_S_C_INFOCODE, $value);
+        return $this->setData(self::LSC_INFOCODE, $value);
     }
 
     public function getLSCInformationSubcode(): ?LSCInformationSubcode
     {
-        return $this->getData(self::L_S_C_INFORMATION_SUBCODE);
+        return $this->getData(self::LSC_INFORMATION_SUBCODE);
     }
 
-    public function setLSCInformationSubcode(LSCInformationSubcode $value): self
+    public function setLSCInformationSubcode(LSCInformationSubcode $value)
     {
-        return $this->setData(self::L_S_C_INFORMATION_SUBCODE, $value);
+        return $this->setData(self::LSC_INFORMATION_SUBCODE, $value);
     }
 
     public function getLSCTableSpecificInfocode(): ?LSCTableSpecificInfocode
     {
-        return $this->getData(self::L_S_C_TABLE_SPECIFIC_INFOCODE);
+        return $this->getData(self::LSC_TABLE_SPECIFIC_INFOCODE);
     }
 
-    public function setLSCTableSpecificInfocode(LSCTableSpecificInfocode $value): self
+    public function setLSCTableSpecificInfocode(LSCTableSpecificInfocode $value)
     {
-        return $this->setData(self::L_S_C_TABLE_SPECIFIC_INFOCODE, $value);
+        return $this->setData(self::LSC_TABLE_SPECIFIC_INFOCODE, $value);
     }
 }

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCustomerOrderCreateV5 extends \Magento\Framework\DataObject
+class RootCustomerOrderCreateV5 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCustomerOrderCreateV5';
 

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCInformationSubcode extends DataObject
+class LSCInformationSubcode extends AbstractModel
 {
     public const CODE = 'Code';
     public const SUBCODE = 'Subcode';
@@ -29,7 +29,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -39,7 +39,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::SUBCODE);
     }
 
-    public function setSubcode(string $value): self
+    public function setSubcode(string $value)
     {
         return $this->setData(self::SUBCODE, $value);
     }
@@ -49,7 +49,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -59,7 +59,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value): self
+    public function setVariantCode(string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -69,7 +69,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value): self
+    public function setUnitOfMeasure(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -79,7 +79,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::TRIGGER_FUNCTION);
     }
 
-    public function setTriggerFunction(string $value): self
+    public function setTriggerFunction(string $value)
     {
         return $this->setData(self::TRIGGER_FUNCTION, $value);
     }
@@ -89,7 +89,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::TRIGGER_CODE);
     }
 
-    public function setTriggerCode(string $value): self
+    public function setTriggerCode(string $value)
     {
         return $this->setData(self::TRIGGER_CODE, $value);
     }
@@ -99,7 +99,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::PRICE_TYPE);
     }
 
-    public function setPriceType(string $value): self
+    public function setPriceType(string $value)
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
@@ -109,7 +109,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::PRICE_HANDLING);
     }
 
-    public function setPriceHandling(string $value): self
+    public function setPriceHandling(string $value)
     {
         return $this->setData(self::PRICE_HANDLING, $value);
     }
@@ -119,7 +119,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::AMOUNT_PERCENT);
     }
 
-    public function setAmountPercent(string $value): self
+    public function setAmountPercent(string $value)
     {
         return $this->setData(self::AMOUNT_PERCENT, $value);
     }
@@ -129,7 +129,7 @@ class LSCInformationSubcode extends DataObject
         return $this->getData(self::TIME_MODIFIER_MINUTES);
     }
 
-    public function setTimeModifierMinutes(string $value): self
+    public function setTimeModifierMinutes(string $value)
     {
         return $this->setData(self::TIME_MODIFIER_MINUTES, $value);
     }

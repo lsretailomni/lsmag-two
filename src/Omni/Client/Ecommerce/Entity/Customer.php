@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class Customer extends DataObject
+class Customer extends AbstractModel
 {
     public const NO = 'No.';
     public const NAME = 'Name';
@@ -29,7 +29,7 @@ class Customer extends DataObject
     public const GLOBAL_DIMENSION_2_CODE = 'Global Dimension 2 Code';
     public const CHAIN_NAME = 'Chain Name';
     public const BUDGETED_AMOUNT = 'Budgeted Amount';
-    public const CREDIT_LIMIT_L_C_Y = 'Credit Limit (LCY)';
+    public const CREDIT_LIMIT_LCY = 'Credit Limit (LCY)';
     public const CUSTOMER_POSTING_GROUP = 'Customer Posting Group';
     public const CURRENCY_CODE = 'Currency Code';
     public const CUSTOMER_PRICE_GROUP = 'Customer Price Group';
@@ -44,7 +44,7 @@ class Customer extends DataObject
     public const PLACE_OF_EXPORT = 'Place of Export';
     public const INVOICE_DISC_CODE = 'Invoice Disc. Code';
     public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
-    public const COUNTRY_REGION_CODE = 'Country/Region Code';
+    public const COUNTRYREGION_CODE = 'Country/Region Code';
     public const COLLECTION_METHOD = 'Collection Method';
     public const AMOUNT = 'Amount';
     public const BLOCKED = 'Blocked';
@@ -58,28 +58,28 @@ class Customer extends DataObject
     public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
     public const LAST_DATE_MODIFIED = 'Last Date Modified';
     public const APPLICATION_METHOD = 'Application Method';
-    public const PRICES_INCLUDING_V_A_T = 'Prices Including VAT';
+    public const PRICES_INCLUDING_VAT = 'Prices Including VAT';
     public const LOCATION_CODE = 'Location Code';
     public const FAX_NO = 'Fax No.';
     public const TELEX_ANSWER_BACK = 'Telex Answer Back';
-    public const V_A_T_REGISTRATION_NO = 'VAT Registration No.';
+    public const VAT_REGISTRATION_NO = 'VAT Registration No.';
     public const COMBINE_SHIPMENTS = 'Combine Shipments';
     public const GEN_BUS_POSTING_GROUP = 'Gen. Bus. Posting Group';
-    public const G_L_N = 'GLN';
+    public const GLN = 'GLN';
     public const POST_CODE = 'Post Code';
     public const COUNTY = 'County';
-    public const E_O_R_I_NUMBER = 'EORI Number';
-    public const USE_G_L_N_IN_ELECTRONIC_DOCUMENT = 'Use GLN in Electronic Document';
-    public const E_MAIL = 'E-Mail';
+    public const EORI_NUMBER = 'EORI Number';
+    public const USE_GLN_IN_ELECTRONIC_DOCUMENT = 'Use GLN in Electronic Document';
+    public const EMAIL = 'E-Mail';
     public const HOME_PAGE = 'Home Page';
     public const REMINDER_TERMS_CODE = 'Reminder Terms Code';
     public const NO_SERIES = 'No. Series';
     public const TAX_AREA_CODE = 'Tax Area Code';
     public const TAX_LIABLE = 'Tax Liable';
-    public const V_A_T_BUS_POSTING_GROUP = 'VAT Bus. Posting Group';
+    public const VAT_BUS_POSTING_GROUP = 'VAT Bus. Posting Group';
     public const RESERVE = 'Reserve';
     public const BLOCK_PAYMENT_TOLERANCE = 'Block Payment Tolerance';
-    public const I_C_PARTNER_CODE = 'IC Partner Code';
+    public const IC_PARTNER_CODE = 'IC Partner Code';
     public const PREPAYMENT = 'Prepayment %';
     public const PARTNER_TYPE = 'Partner Type';
     public const INTRASTAT_PARTNER_TYPE = 'Intrastat Partner Type';
@@ -106,37 +106,37 @@ class Customer extends DataObject
     public const ALLOW_LINE_DISC = 'Allow Line Disc.';
     public const BASE_CALENDAR_CODE = 'Base Calendar Code';
     public const COPY_SELLTO_ADDR_TO_QTE_FROM = 'Copy Sell-to Addr. to Qte From';
-    public const VALIDATE_E_U_VAT_REG_NO = 'Validate EU Vat Reg. No.';
+    public const VALIDATE_EU_VAT_REG_NO = 'Validate EU Vat Reg. No.';
     public const CURRENCY_ID = 'Currency Id';
     public const PAYMENT_TERMS_ID = 'Payment Terms Id';
     public const SHIPMENT_METHOD_ID = 'Shipment Method Id';
     public const PAYMENT_METHOD_ID = 'Payment Method Id';
-    public const TAX_AREA_I_D = 'Tax Area ID';
-    public const CONTACT_I_D = 'Contact ID';
+    public const TAX_AREA_ID = 'Tax Area ID';
+    public const CONTACT_ID = 'Contact ID';
     public const CONTACT_GRAPH_ID = 'Contact Graph Id';
-    public const L_S_C_DATE_CREATED = 'LSC Date Created';
-    public const L_S_C_CREATED_BY_USER = 'LSC Created by User';
-    public const L_S_C_EXTERNAL_I_D = 'LSC External ID';
-    public const L_S_C_CUSTOMER_I_D = 'LSC Customer ID';
-    public const L_S_C_REASON_CODE = 'LSC Reason Code';
-    public const L_S_C_RESTRICTION_FUNCTIONALITY = 'LSC Restriction Functionality';
-    public const L_S_C_PRINT_DOCUMENT_INVOICE = 'LSC Print Document Invoice';
-    public const L_S_C_TRANSACTION_LIMIT = 'LSC Transaction Limit';
-    public const L_S_C_DAYTIME_PHONE_NO = 'LSC Daytime Phone No.';
-    public const L_S_C_HOUSE_APARTMENT_NO = 'LSC House/Apartment No.';
-    public const L_S_C_RETAIL_CUSTOMER_GROUP = 'LSC Retail Customer Group';
-    public const L_S_C_DEFAULT_WEIGHT = 'LSC Default Weight';
-    public const L_S_C_OTHER_TENDER_IN_FINALIZING = 'LSC Other Tender in Finalizing';
-    public const L_S_C_POST_AS_SHIPMENT = 'LSC Post as Shipment';
-    public const L_S_C_INCL_INC_EXP_ON_SALES_DOC = 'LSC Incl. Inc/Exp on Sales Doc';
-    public const L_S_C_AMT_CHARGED_ON_P_O_S_INT = 'LSC AmtChargedOnPOSInt';
-    public const L_S_C_AMT_CHARGED_POSTED_INT = 'LSC AmtChargedPostedInt';
-    public const L_S_C_BALANCE_L_C_Y_INT = 'LSC BalanceLCYInt';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const LSC_DATE_CREATED = 'LSC Date Created';
+    public const LSC_CREATED_BY_USER = 'LSC Created by User';
+    public const LSC_EXTERNAL_ID = 'LSC External ID';
+    public const LSC_CUSTOMER_ID = 'LSC Customer ID';
+    public const LSC_REASON_CODE = 'LSC Reason Code';
+    public const LSC_RESTRICTION_FUNCTIONALITY = 'LSC Restriction Functionality';
+    public const LSC_PRINT_DOCUMENT_INVOICE = 'LSC Print Document Invoice';
+    public const LSC_TRANSACTION_LIMIT = 'LSC Transaction Limit';
+    public const LSC_DAYTIME_PHONE_NO = 'LSC Daytime Phone No.';
+    public const LSC_HOUSEAPARTMENT_NO = 'LSC House/Apartment No.';
+    public const LSC_RETAIL_CUSTOMER_GROUP = 'LSC Retail Customer Group';
+    public const LSC_DEFAULT_WEIGHT = 'LSC Default Weight';
+    public const LSC_OTHER_TENDER_IN_FINALIZING = 'LSC Other Tender in Finalizing';
+    public const LSC_POST_AS_SHIPMENT = 'LSC Post as Shipment';
+    public const LSC_INCL_INCEXP_ON_SALES_DOC = 'LSC Incl. Inc/Exp on Sales Doc';
+    public const LSC_AMTCHARGEDONPOSINT = 'LSC AmtChargedOnPOSInt';
+    public const LSC_AMTCHARGEDPOSTEDINT = 'LSC AmtChargedPostedInt';
+    public const LSC_BALANCELCYINT = 'LSC BalanceLCYInt';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getNo(): ?string
@@ -144,7 +144,7 @@ class Customer extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -154,7 +154,7 @@ class Customer extends DataObject
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value): self
+    public function setName(string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -164,7 +164,7 @@ class Customer extends DataObject
         return $this->getData(self::SEARCH_NAME);
     }
 
-    public function setSearchName(string $value): self
+    public function setSearchName(string $value)
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
@@ -174,7 +174,7 @@ class Customer extends DataObject
         return $this->getData(self::NAME_2);
     }
 
-    public function setName2(string $value): self
+    public function setName2(string $value)
     {
         return $this->setData(self::NAME_2, $value);
     }
@@ -184,7 +184,7 @@ class Customer extends DataObject
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value): self
+    public function setAddress(string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -194,7 +194,7 @@ class Customer extends DataObject
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value): self
+    public function setAddress2(string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -204,7 +204,7 @@ class Customer extends DataObject
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value): self
+    public function setCity(string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -214,7 +214,7 @@ class Customer extends DataObject
         return $this->getData(self::CONTACT);
     }
 
-    public function setContact(string $value): self
+    public function setContact(string $value)
     {
         return $this->setData(self::CONTACT, $value);
     }
@@ -224,7 +224,7 @@ class Customer extends DataObject
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value): self
+    public function setPhoneNo(string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -234,7 +234,7 @@ class Customer extends DataObject
         return $this->getData(self::TELEX_NO);
     }
 
-    public function setTelexNo(string $value): self
+    public function setTelexNo(string $value)
     {
         return $this->setData(self::TELEX_NO, $value);
     }
@@ -244,7 +244,7 @@ class Customer extends DataObject
         return $this->getData(self::DOCUMENT_SENDING_PROFILE);
     }
 
-    public function setDocumentSendingProfile(string $value): self
+    public function setDocumentSendingProfile(string $value)
     {
         return $this->setData(self::DOCUMENT_SENDING_PROFILE, $value);
     }
@@ -254,7 +254,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPTO_CODE);
     }
 
-    public function setShipToCode(string $value): self
+    public function setShipToCode(string $value)
     {
         return $this->setData(self::SHIPTO_CODE, $value);
     }
@@ -264,7 +264,7 @@ class Customer extends DataObject
         return $this->getData(self::OUR_ACCOUNT_NO);
     }
 
-    public function setOurAccountNo(string $value): self
+    public function setOurAccountNo(string $value)
     {
         return $this->setData(self::OUR_ACCOUNT_NO, $value);
     }
@@ -274,7 +274,7 @@ class Customer extends DataObject
         return $this->getData(self::TERRITORY_CODE);
     }
 
-    public function setTerritoryCode(string $value): self
+    public function setTerritoryCode(string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
@@ -284,7 +284,7 @@ class Customer extends DataObject
         return $this->getData(self::GLOBAL_DIMENSION_1_CODE);
     }
 
-    public function setGlobalDimension1Code(string $value): self
+    public function setGlobalDimension1Code(string $value)
     {
         return $this->setData(self::GLOBAL_DIMENSION_1_CODE, $value);
     }
@@ -294,7 +294,7 @@ class Customer extends DataObject
         return $this->getData(self::GLOBAL_DIMENSION_2_CODE);
     }
 
-    public function setGlobalDimension2Code(string $value): self
+    public function setGlobalDimension2Code(string $value)
     {
         return $this->setData(self::GLOBAL_DIMENSION_2_CODE, $value);
     }
@@ -304,7 +304,7 @@ class Customer extends DataObject
         return $this->getData(self::CHAIN_NAME);
     }
 
-    public function setChainName(string $value): self
+    public function setChainName(string $value)
     {
         return $this->setData(self::CHAIN_NAME, $value);
     }
@@ -314,19 +314,19 @@ class Customer extends DataObject
         return $this->getData(self::BUDGETED_AMOUNT);
     }
 
-    public function setBudgetedAmount(string $value): self
+    public function setBudgetedAmount(string $value)
     {
         return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
 
     public function getCreditLimitLCY(): ?string
     {
-        return $this->getData(self::CREDIT_LIMIT_L_C_Y);
+        return $this->getData(self::CREDIT_LIMIT_LCY);
     }
 
-    public function setCreditLimitLCY(string $value): self
+    public function setCreditLimitLCY(string $value)
     {
-        return $this->setData(self::CREDIT_LIMIT_L_C_Y, $value);
+        return $this->setData(self::CREDIT_LIMIT_LCY, $value);
     }
 
     public function getCustomerPostingGroup(): ?string
@@ -334,7 +334,7 @@ class Customer extends DataObject
         return $this->getData(self::CUSTOMER_POSTING_GROUP);
     }
 
-    public function setCustomerPostingGroup(string $value): self
+    public function setCustomerPostingGroup(string $value)
     {
         return $this->setData(self::CUSTOMER_POSTING_GROUP, $value);
     }
@@ -344,7 +344,7 @@ class Customer extends DataObject
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value): self
+    public function setCurrencyCode(string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -354,7 +354,7 @@ class Customer extends DataObject
         return $this->getData(self::CUSTOMER_PRICE_GROUP);
     }
 
-    public function setCustomerPriceGroup(string $value): self
+    public function setCustomerPriceGroup(string $value)
     {
         return $this->setData(self::CUSTOMER_PRICE_GROUP, $value);
     }
@@ -364,7 +364,7 @@ class Customer extends DataObject
         return $this->getData(self::LANGUAGE_CODE);
     }
 
-    public function setLanguageCode(string $value): self
+    public function setLanguageCode(string $value)
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
@@ -374,7 +374,7 @@ class Customer extends DataObject
         return $this->getData(self::REGISTRATION_NUMBER);
     }
 
-    public function setRegistrationNumber(string $value): self
+    public function setRegistrationNumber(string $value)
     {
         return $this->setData(self::REGISTRATION_NUMBER, $value);
     }
@@ -384,7 +384,7 @@ class Customer extends DataObject
         return $this->getData(self::STATISTICS_GROUP);
     }
 
-    public function setStatisticsGroup(int $value): self
+    public function setStatisticsGroup(int $value)
     {
         return $this->setData(self::STATISTICS_GROUP, $value);
     }
@@ -394,7 +394,7 @@ class Customer extends DataObject
         return $this->getData(self::PAYMENT_TERMS_CODE);
     }
 
-    public function setPaymentTermsCode(string $value): self
+    public function setPaymentTermsCode(string $value)
     {
         return $this->setData(self::PAYMENT_TERMS_CODE, $value);
     }
@@ -404,7 +404,7 @@ class Customer extends DataObject
         return $this->getData(self::FIN_CHARGE_TERMS_CODE);
     }
 
-    public function setFinChargeTermsCode(string $value): self
+    public function setFinChargeTermsCode(string $value)
     {
         return $this->setData(self::FIN_CHARGE_TERMS_CODE, $value);
     }
@@ -414,7 +414,7 @@ class Customer extends DataObject
         return $this->getData(self::SALESPERSON_CODE);
     }
 
-    public function setSalespersonCode(string $value): self
+    public function setSalespersonCode(string $value)
     {
         return $this->setData(self::SALESPERSON_CODE, $value);
     }
@@ -424,7 +424,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPMENT_METHOD_CODE);
     }
 
-    public function setShipmentMethodCode(string $value): self
+    public function setShipmentMethodCode(string $value)
     {
         return $this->setData(self::SHIPMENT_METHOD_CODE, $value);
     }
@@ -434,7 +434,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
-    public function setShippingAgentCode(string $value): self
+    public function setShippingAgentCode(string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_CODE, $value);
     }
@@ -444,7 +444,7 @@ class Customer extends DataObject
         return $this->getData(self::PLACE_OF_EXPORT);
     }
 
-    public function setPlaceOfExport(string $value): self
+    public function setPlaceOfExport(string $value)
     {
         return $this->setData(self::PLACE_OF_EXPORT, $value);
     }
@@ -454,7 +454,7 @@ class Customer extends DataObject
         return $this->getData(self::INVOICE_DISC_CODE);
     }
 
-    public function setInvoiceDiscCode(string $value): self
+    public function setInvoiceDiscCode(string $value)
     {
         return $this->setData(self::INVOICE_DISC_CODE, $value);
     }
@@ -464,19 +464,19 @@ class Customer extends DataObject
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value): self
+    public function setCustomerDiscGroup(string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
 
     public function getCountryRegionCode(): ?string
     {
-        return $this->getData(self::COUNTRY_REGION_CODE);
+        return $this->getData(self::COUNTRYREGION_CODE);
     }
 
-    public function setCountryRegionCode(string $value): self
+    public function setCountryRegionCode(string $value)
     {
-        return $this->setData(self::COUNTRY_REGION_CODE, $value);
+        return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
 
     public function getCollectionMethod(): ?string
@@ -484,7 +484,7 @@ class Customer extends DataObject
         return $this->getData(self::COLLECTION_METHOD);
     }
 
-    public function setCollectionMethod(string $value): self
+    public function setCollectionMethod(string $value)
     {
         return $this->setData(self::COLLECTION_METHOD, $value);
     }
@@ -494,7 +494,7 @@ class Customer extends DataObject
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(string $value): self
+    public function setAmount(string $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
@@ -504,7 +504,7 @@ class Customer extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(string $value): self
+    public function setBlocked(string $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -514,7 +514,7 @@ class Customer extends DataObject
         return $this->getData(self::INVOICE_COPIES);
     }
 
-    public function setInvoiceCopies(int $value): self
+    public function setInvoiceCopies(int $value)
     {
         return $this->setData(self::INVOICE_COPIES, $value);
     }
@@ -524,7 +524,7 @@ class Customer extends DataObject
         return $this->getData(self::LAST_STATEMENT_NO);
     }
 
-    public function setLastStatementNo(int $value): self
+    public function setLastStatementNo(int $value)
     {
         return $this->setData(self::LAST_STATEMENT_NO, $value);
     }
@@ -534,7 +534,7 @@ class Customer extends DataObject
         return $this->getData(self::PRINT_STATEMENTS);
     }
 
-    public function setPrintStatements(bool $value): self
+    public function setPrintStatements(bool $value)
     {
         return $this->setData(self::PRINT_STATEMENTS, $value);
     }
@@ -544,7 +544,7 @@ class Customer extends DataObject
         return $this->getData(self::BILLTO_CUSTOMER_NO);
     }
 
-    public function setBillToCustomerNo(string $value): self
+    public function setBillToCustomerNo(string $value)
     {
         return $this->setData(self::BILLTO_CUSTOMER_NO, $value);
     }
@@ -554,7 +554,7 @@ class Customer extends DataObject
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value): self
+    public function setPriority(int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
@@ -564,7 +564,7 @@ class Customer extends DataObject
         return $this->getData(self::PAYMENT_METHOD_CODE);
     }
 
-    public function setPaymentMethodCode(string $value): self
+    public function setPaymentMethodCode(string $value)
     {
         return $this->setData(self::PAYMENT_METHOD_CODE, $value);
     }
@@ -574,7 +574,7 @@ class Customer extends DataObject
         return $this->getData(self::FORMAT_REGION);
     }
 
-    public function setFormatRegion(string $value): self
+    public function setFormatRegion(string $value)
     {
         return $this->setData(self::FORMAT_REGION, $value);
     }
@@ -584,7 +584,7 @@ class Customer extends DataObject
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value): self
+    public function setLastModifiedDateTime(\DateTime $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -594,7 +594,7 @@ class Customer extends DataObject
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value): self
+    public function setLastDateModified(string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -604,19 +604,19 @@ class Customer extends DataObject
         return $this->getData(self::APPLICATION_METHOD);
     }
 
-    public function setApplicationMethod(string $value): self
+    public function setApplicationMethod(string $value)
     {
         return $this->setData(self::APPLICATION_METHOD, $value);
     }
 
     public function getPricesIncludingVAT(): ?bool
     {
-        return $this->getData(self::PRICES_INCLUDING_V_A_T);
+        return $this->getData(self::PRICES_INCLUDING_VAT);
     }
 
-    public function setPricesIncludingVAT(bool $value): self
+    public function setPricesIncludingVAT(bool $value)
     {
-        return $this->setData(self::PRICES_INCLUDING_V_A_T, $value);
+        return $this->setData(self::PRICES_INCLUDING_VAT, $value);
     }
 
     public function getLocationCode(): ?string
@@ -624,7 +624,7 @@ class Customer extends DataObject
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value): self
+    public function setLocationCode(string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -634,7 +634,7 @@ class Customer extends DataObject
         return $this->getData(self::FAX_NO);
     }
 
-    public function setFaxNo(string $value): self
+    public function setFaxNo(string $value)
     {
         return $this->setData(self::FAX_NO, $value);
     }
@@ -644,19 +644,19 @@ class Customer extends DataObject
         return $this->getData(self::TELEX_ANSWER_BACK);
     }
 
-    public function setTelexAnswerBack(string $value): self
+    public function setTelexAnswerBack(string $value)
     {
         return $this->setData(self::TELEX_ANSWER_BACK, $value);
     }
 
     public function getVATRegistrationNo(): ?string
     {
-        return $this->getData(self::V_A_T_REGISTRATION_NO);
+        return $this->getData(self::VAT_REGISTRATION_NO);
     }
 
-    public function setVATRegistrationNo(string $value): self
+    public function setVATRegistrationNo(string $value)
     {
-        return $this->setData(self::V_A_T_REGISTRATION_NO, $value);
+        return $this->setData(self::VAT_REGISTRATION_NO, $value);
     }
 
     public function getCombineShipments(): ?bool
@@ -664,7 +664,7 @@ class Customer extends DataObject
         return $this->getData(self::COMBINE_SHIPMENTS);
     }
 
-    public function setCombineShipments(bool $value): self
+    public function setCombineShipments(bool $value)
     {
         return $this->setData(self::COMBINE_SHIPMENTS, $value);
     }
@@ -674,19 +674,19 @@ class Customer extends DataObject
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
 
-    public function setGenBusPostingGroup(string $value): self
+    public function setGenBusPostingGroup(string $value)
     {
         return $this->setData(self::GEN_BUS_POSTING_GROUP, $value);
     }
 
     public function getGLN(): ?string
     {
-        return $this->getData(self::G_L_N);
+        return $this->getData(self::GLN);
     }
 
-    public function setGLN(string $value): self
+    public function setGLN(string $value)
     {
-        return $this->setData(self::G_L_N, $value);
+        return $this->setData(self::GLN, $value);
     }
 
     public function getPostCode(): ?string
@@ -694,7 +694,7 @@ class Customer extends DataObject
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value): self
+    public function setPostCode(string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -704,39 +704,39 @@ class Customer extends DataObject
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value): self
+    public function setCounty(string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
 
     public function getEORINumber(): ?string
     {
-        return $this->getData(self::E_O_R_I_NUMBER);
+        return $this->getData(self::EORI_NUMBER);
     }
 
-    public function setEORINumber(string $value): self
+    public function setEORINumber(string $value)
     {
-        return $this->setData(self::E_O_R_I_NUMBER, $value);
+        return $this->setData(self::EORI_NUMBER, $value);
     }
 
     public function getUseGLNInElectronicDocument(): ?bool
     {
-        return $this->getData(self::USE_G_L_N_IN_ELECTRONIC_DOCUMENT);
+        return $this->getData(self::USE_GLN_IN_ELECTRONIC_DOCUMENT);
     }
 
-    public function setUseGLNInElectronicDocument(bool $value): self
+    public function setUseGLNInElectronicDocument(bool $value)
     {
-        return $this->setData(self::USE_G_L_N_IN_ELECTRONIC_DOCUMENT, $value);
+        return $this->setData(self::USE_GLN_IN_ELECTRONIC_DOCUMENT, $value);
     }
 
     public function getEMail(): ?string
     {
-        return $this->getData(self::E_MAIL);
+        return $this->getData(self::EMAIL);
     }
 
-    public function setEMail(string $value): self
+    public function setEMail(string $value)
     {
-        return $this->setData(self::E_MAIL, $value);
+        return $this->setData(self::EMAIL, $value);
     }
 
     public function getHomePage(): ?string
@@ -744,7 +744,7 @@ class Customer extends DataObject
         return $this->getData(self::HOME_PAGE);
     }
 
-    public function setHomePage(string $value): self
+    public function setHomePage(string $value)
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
@@ -754,7 +754,7 @@ class Customer extends DataObject
         return $this->getData(self::REMINDER_TERMS_CODE);
     }
 
-    public function setReminderTermsCode(string $value): self
+    public function setReminderTermsCode(string $value)
     {
         return $this->setData(self::REMINDER_TERMS_CODE, $value);
     }
@@ -764,7 +764,7 @@ class Customer extends DataObject
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value): self
+    public function setNoSeries(string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
@@ -774,7 +774,7 @@ class Customer extends DataObject
         return $this->getData(self::TAX_AREA_CODE);
     }
 
-    public function setTaxAreaCode(string $value): self
+    public function setTaxAreaCode(string $value)
     {
         return $this->setData(self::TAX_AREA_CODE, $value);
     }
@@ -784,19 +784,19 @@ class Customer extends DataObject
         return $this->getData(self::TAX_LIABLE);
     }
 
-    public function setTaxLiable(bool $value): self
+    public function setTaxLiable(bool $value)
     {
         return $this->setData(self::TAX_LIABLE, $value);
     }
 
     public function getVATBusPostingGroup(): ?string
     {
-        return $this->getData(self::V_A_T_BUS_POSTING_GROUP);
+        return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
 
-    public function setVATBusPostingGroup(string $value): self
+    public function setVATBusPostingGroup(string $value)
     {
-        return $this->setData(self::V_A_T_BUS_POSTING_GROUP, $value);
+        return $this->setData(self::VAT_BUS_POSTING_GROUP, $value);
     }
 
     public function getReserve(): ?string
@@ -804,7 +804,7 @@ class Customer extends DataObject
         return $this->getData(self::RESERVE);
     }
 
-    public function setReserve(string $value): self
+    public function setReserve(string $value)
     {
         return $this->setData(self::RESERVE, $value);
     }
@@ -814,19 +814,19 @@ class Customer extends DataObject
         return $this->getData(self::BLOCK_PAYMENT_TOLERANCE);
     }
 
-    public function setBlockPaymentTolerance(bool $value): self
+    public function setBlockPaymentTolerance(bool $value)
     {
         return $this->setData(self::BLOCK_PAYMENT_TOLERANCE, $value);
     }
 
     public function getICPartnerCode(): ?string
     {
-        return $this->getData(self::I_C_PARTNER_CODE);
+        return $this->getData(self::IC_PARTNER_CODE);
     }
 
-    public function setICPartnerCode(string $value): self
+    public function setICPartnerCode(string $value)
     {
-        return $this->setData(self::I_C_PARTNER_CODE, $value);
+        return $this->setData(self::IC_PARTNER_CODE, $value);
     }
 
     public function getPrepayment(): ?string
@@ -834,7 +834,7 @@ class Customer extends DataObject
         return $this->getData(self::PREPAYMENT);
     }
 
-    public function setPrepayment(string $value): self
+    public function setPrepayment(string $value)
     {
         return $this->setData(self::PREPAYMENT, $value);
     }
@@ -844,7 +844,7 @@ class Customer extends DataObject
         return $this->getData(self::PARTNER_TYPE);
     }
 
-    public function setPartnerType(string $value): self
+    public function setPartnerType(string $value)
     {
         return $this->setData(self::PARTNER_TYPE, $value);
     }
@@ -854,7 +854,7 @@ class Customer extends DataObject
         return $this->getData(self::INTRASTAT_PARTNER_TYPE);
     }
 
-    public function setIntrastatPartnerType(string $value): self
+    public function setIntrastatPartnerType(string $value)
     {
         return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
     }
@@ -864,7 +864,7 @@ class Customer extends DataObject
         return $this->getData(self::EXCLUDE_FROM_PMT_PRACTICES);
     }
 
-    public function setExcludeFromPmtPractices(bool $value): self
+    public function setExcludeFromPmtPractices(bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_PMT_PRACTICES, $value);
     }
@@ -874,7 +874,7 @@ class Customer extends DataObject
         return $this->getData(self::IMAGE);
     }
 
-    public function setImage(string $value): self
+    public function setImage(string $value)
     {
         return $this->setData(self::IMAGE, $value);
     }
@@ -884,7 +884,7 @@ class Customer extends DataObject
         return $this->getData(self::PRIVACY_BLOCKED);
     }
 
-    public function setPrivacyBlocked(bool $value): self
+    public function setPrivacyBlocked(bool $value)
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
@@ -894,7 +894,7 @@ class Customer extends DataObject
         return $this->getData(self::DISABLE_SEARCH_BY_NAME);
     }
 
-    public function setDisableSearchByName(bool $value): self
+    public function setDisableSearchByName(bool $value)
     {
         return $this->setData(self::DISABLE_SEARCH_BY_NAME, $value);
     }
@@ -904,7 +904,7 @@ class Customer extends DataObject
         return $this->getData(self::ALLOW_MULTIPLE_POSTING_GROUPS);
     }
 
-    public function setAllowMultiplePostingGroups(bool $value): self
+    public function setAllowMultiplePostingGroups(bool $value)
     {
         return $this->setData(self::ALLOW_MULTIPLE_POSTING_GROUPS, $value);
     }
@@ -914,7 +914,7 @@ class Customer extends DataObject
         return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
     }
 
-    public function setPreferredBankAccountCode(string $value): self
+    public function setPreferredBankAccountCode(string $value)
     {
         return $this->setData(self::PREFERRED_BANK_ACCOUNT_CODE, $value);
     }
@@ -924,7 +924,7 @@ class Customer extends DataObject
         return $this->getData(self::CASH_FLOW_PAYMENT_TERMS_CODE);
     }
 
-    public function setCashFlowPaymentTermsCode(string $value): self
+    public function setCashFlowPaymentTermsCode(string $value)
     {
         return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
     }
@@ -934,7 +934,7 @@ class Customer extends DataObject
         return $this->getData(self::DEFAULT_TRANS_TYPE);
     }
 
-    public function setDefaultTransType(string $value): self
+    public function setDefaultTransType(string $value)
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
     }
@@ -944,7 +944,7 @@ class Customer extends DataObject
         return $this->getData(self::DEFAULT_TRANS_TYPE__RETURN);
     }
 
-    public function setDefaultTransTypeReturn(string $value): self
+    public function setDefaultTransTypeReturn(string $value)
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE__RETURN, $value);
     }
@@ -954,7 +954,7 @@ class Customer extends DataObject
         return $this->getData(self::DEF_TRANSPORT_METHOD);
     }
 
-    public function setDefTransportMethod(string $value): self
+    public function setDefTransportMethod(string $value)
     {
         return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
     }
@@ -964,7 +964,7 @@ class Customer extends DataObject
         return $this->getData(self::PRIMARY_CONTACT_NO);
     }
 
-    public function setPrimaryContactNo(string $value): self
+    public function setPrimaryContactNo(string $value)
     {
         return $this->setData(self::PRIMARY_CONTACT_NO, $value);
     }
@@ -974,7 +974,7 @@ class Customer extends DataObject
         return $this->getData(self::CONTACT_TYPE);
     }
 
-    public function setContactType(string $value): self
+    public function setContactType(string $value)
     {
         return $this->setData(self::CONTACT_TYPE, $value);
     }
@@ -984,7 +984,7 @@ class Customer extends DataObject
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setMobilePhoneNo(string $value): self
+    public function setMobilePhoneNo(string $value)
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
@@ -994,7 +994,7 @@ class Customer extends DataObject
         return $this->getData(self::RESPONSIBILITY_CENTER);
     }
 
-    public function setResponsibilityCenter(string $value): self
+    public function setResponsibilityCenter(string $value)
     {
         return $this->setData(self::RESPONSIBILITY_CENTER, $value);
     }
@@ -1004,7 +1004,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPPING_ADVICE);
     }
 
-    public function setShippingAdvice(string $value): self
+    public function setShippingAdvice(string $value)
     {
         return $this->setData(self::SHIPPING_ADVICE, $value);
     }
@@ -1014,7 +1014,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPPING_TIME);
     }
 
-    public function setShippingTime(string $value): self
+    public function setShippingTime(string $value)
     {
         return $this->setData(self::SHIPPING_TIME, $value);
     }
@@ -1024,7 +1024,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
     }
 
-    public function setShippingAgentServiceCode(string $value): self
+    public function setShippingAgentServiceCode(string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $value);
     }
@@ -1034,7 +1034,7 @@ class Customer extends DataObject
         return $this->getData(self::SERVICE_ZONE_CODE);
     }
 
-    public function setServiceZoneCode(string $value): self
+    public function setServiceZoneCode(string $value)
     {
         return $this->setData(self::SERVICE_ZONE_CODE, $value);
     }
@@ -1044,7 +1044,7 @@ class Customer extends DataObject
         return $this->getData(self::COMBINE_SERVICE_SHIPMENTS);
     }
 
-    public function setCombineServiceShipments(bool $value): self
+    public function setCombineServiceShipments(bool $value)
     {
         return $this->setData(self::COMBINE_SERVICE_SHIPMENTS, $value);
     }
@@ -1054,7 +1054,7 @@ class Customer extends DataObject
         return $this->getData(self::PRICE_CALCULATION_METHOD);
     }
 
-    public function setPriceCalculationMethod(string $value): self
+    public function setPriceCalculationMethod(string $value)
     {
         return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
     }
@@ -1064,7 +1064,7 @@ class Customer extends DataObject
         return $this->getData(self::ALLOW_LINE_DISC);
     }
 
-    public function setAllowLineDisc(bool $value): self
+    public function setAllowLineDisc(bool $value)
     {
         return $this->setData(self::ALLOW_LINE_DISC, $value);
     }
@@ -1074,7 +1074,7 @@ class Customer extends DataObject
         return $this->getData(self::BASE_CALENDAR_CODE);
     }
 
-    public function setBaseCalendarCode(string $value): self
+    public function setBaseCalendarCode(string $value)
     {
         return $this->setData(self::BASE_CALENDAR_CODE, $value);
     }
@@ -1084,19 +1084,19 @@ class Customer extends DataObject
         return $this->getData(self::COPY_SELLTO_ADDR_TO_QTE_FROM);
     }
 
-    public function setCopySellToAddrToQteFrom(string $value): self
+    public function setCopySellToAddrToQteFrom(string $value)
     {
         return $this->setData(self::COPY_SELLTO_ADDR_TO_QTE_FROM, $value);
     }
 
     public function getValidateEUVatRegNo(): ?bool
     {
-        return $this->getData(self::VALIDATE_E_U_VAT_REG_NO);
+        return $this->getData(self::VALIDATE_EU_VAT_REG_NO);
     }
 
-    public function setValidateEUVatRegNo(bool $value): self
+    public function setValidateEUVatRegNo(bool $value)
     {
-        return $this->setData(self::VALIDATE_E_U_VAT_REG_NO, $value);
+        return $this->setData(self::VALIDATE_EU_VAT_REG_NO, $value);
     }
 
     public function getCurrencyId(): ?string
@@ -1104,7 +1104,7 @@ class Customer extends DataObject
         return $this->getData(self::CURRENCY_ID);
     }
 
-    public function setCurrencyId(string $value): self
+    public function setCurrencyId(string $value)
     {
         return $this->setData(self::CURRENCY_ID, $value);
     }
@@ -1114,7 +1114,7 @@ class Customer extends DataObject
         return $this->getData(self::PAYMENT_TERMS_ID);
     }
 
-    public function setPaymentTermsId(string $value): self
+    public function setPaymentTermsId(string $value)
     {
         return $this->setData(self::PAYMENT_TERMS_ID, $value);
     }
@@ -1124,7 +1124,7 @@ class Customer extends DataObject
         return $this->getData(self::SHIPMENT_METHOD_ID);
     }
 
-    public function setShipmentMethodId(string $value): self
+    public function setShipmentMethodId(string $value)
     {
         return $this->setData(self::SHIPMENT_METHOD_ID, $value);
     }
@@ -1134,29 +1134,29 @@ class Customer extends DataObject
         return $this->getData(self::PAYMENT_METHOD_ID);
     }
 
-    public function setPaymentMethodId(string $value): self
+    public function setPaymentMethodId(string $value)
     {
         return $this->setData(self::PAYMENT_METHOD_ID, $value);
     }
 
     public function getTaxAreaID(): ?string
     {
-        return $this->getData(self::TAX_AREA_I_D);
+        return $this->getData(self::TAX_AREA_ID);
     }
 
-    public function setTaxAreaID(string $value): self
+    public function setTaxAreaID(string $value)
     {
-        return $this->setData(self::TAX_AREA_I_D, $value);
+        return $this->setData(self::TAX_AREA_ID, $value);
     }
 
     public function getContactID(): ?string
     {
-        return $this->getData(self::CONTACT_I_D);
+        return $this->getData(self::CONTACT_ID);
     }
 
-    public function setContactID(string $value): self
+    public function setContactID(string $value)
     {
-        return $this->setData(self::CONTACT_I_D, $value);
+        return $this->setData(self::CONTACT_ID, $value);
     }
 
     public function getContactGraphId(): ?string
@@ -1164,238 +1164,238 @@ class Customer extends DataObject
         return $this->getData(self::CONTACT_GRAPH_ID);
     }
 
-    public function setContactGraphId(string $value): self
+    public function setContactGraphId(string $value)
     {
         return $this->setData(self::CONTACT_GRAPH_ID, $value);
     }
 
     public function getLSCDateCreated(): ?string
     {
-        return $this->getData(self::L_S_C_DATE_CREATED);
+        return $this->getData(self::LSC_DATE_CREATED);
     }
 
-    public function setLSCDateCreated(string $value): self
+    public function setLSCDateCreated(string $value)
     {
-        return $this->setData(self::L_S_C_DATE_CREATED, $value);
+        return $this->setData(self::LSC_DATE_CREATED, $value);
     }
 
     public function getLSCCreatedByUser(): ?string
     {
-        return $this->getData(self::L_S_C_CREATED_BY_USER);
+        return $this->getData(self::LSC_CREATED_BY_USER);
     }
 
-    public function setLSCCreatedByUser(string $value): self
+    public function setLSCCreatedByUser(string $value)
     {
-        return $this->setData(self::L_S_C_CREATED_BY_USER, $value);
+        return $this->setData(self::LSC_CREATED_BY_USER, $value);
     }
 
     public function getLSCExternalID(): ?string
     {
-        return $this->getData(self::L_S_C_EXTERNAL_I_D);
+        return $this->getData(self::LSC_EXTERNAL_ID);
     }
 
-    public function setLSCExternalID(string $value): self
+    public function setLSCExternalID(string $value)
     {
-        return $this->setData(self::L_S_C_EXTERNAL_I_D, $value);
+        return $this->setData(self::LSC_EXTERNAL_ID, $value);
     }
 
     public function getLSCCustomerID(): ?string
     {
-        return $this->getData(self::L_S_C_CUSTOMER_I_D);
+        return $this->getData(self::LSC_CUSTOMER_ID);
     }
 
-    public function setLSCCustomerID(string $value): self
+    public function setLSCCustomerID(string $value)
     {
-        return $this->setData(self::L_S_C_CUSTOMER_I_D, $value);
+        return $this->setData(self::LSC_CUSTOMER_ID, $value);
     }
 
     public function getLSCReasonCode(): ?string
     {
-        return $this->getData(self::L_S_C_REASON_CODE);
+        return $this->getData(self::LSC_REASON_CODE);
     }
 
-    public function setLSCReasonCode(string $value): self
+    public function setLSCReasonCode(string $value)
     {
-        return $this->setData(self::L_S_C_REASON_CODE, $value);
+        return $this->setData(self::LSC_REASON_CODE, $value);
     }
 
     public function getLSCRestrictionFunctionality(): ?string
     {
-        return $this->getData(self::L_S_C_RESTRICTION_FUNCTIONALITY);
+        return $this->getData(self::LSC_RESTRICTION_FUNCTIONALITY);
     }
 
-    public function setLSCRestrictionFunctionality(string $value): self
+    public function setLSCRestrictionFunctionality(string $value)
     {
-        return $this->setData(self::L_S_C_RESTRICTION_FUNCTIONALITY, $value);
+        return $this->setData(self::LSC_RESTRICTION_FUNCTIONALITY, $value);
     }
 
     public function getLSCPrintDocumentInvoice(): ?bool
     {
-        return $this->getData(self::L_S_C_PRINT_DOCUMENT_INVOICE);
+        return $this->getData(self::LSC_PRINT_DOCUMENT_INVOICE);
     }
 
-    public function setLSCPrintDocumentInvoice(bool $value): self
+    public function setLSCPrintDocumentInvoice(bool $value)
     {
-        return $this->setData(self::L_S_C_PRINT_DOCUMENT_INVOICE, $value);
+        return $this->setData(self::LSC_PRINT_DOCUMENT_INVOICE, $value);
     }
 
     public function getLSCTransactionLimit(): ?string
     {
-        return $this->getData(self::L_S_C_TRANSACTION_LIMIT);
+        return $this->getData(self::LSC_TRANSACTION_LIMIT);
     }
 
-    public function setLSCTransactionLimit(string $value): self
+    public function setLSCTransactionLimit(string $value)
     {
-        return $this->setData(self::L_S_C_TRANSACTION_LIMIT, $value);
+        return $this->setData(self::LSC_TRANSACTION_LIMIT, $value);
     }
 
     public function getLSCDaytimePhoneNo(): ?string
     {
-        return $this->getData(self::L_S_C_DAYTIME_PHONE_NO);
+        return $this->getData(self::LSC_DAYTIME_PHONE_NO);
     }
 
-    public function setLSCDaytimePhoneNo(string $value): self
+    public function setLSCDaytimePhoneNo(string $value)
     {
-        return $this->setData(self::L_S_C_DAYTIME_PHONE_NO, $value);
+        return $this->setData(self::LSC_DAYTIME_PHONE_NO, $value);
     }
 
     public function getLSCHouseApartmentNo(): ?string
     {
-        return $this->getData(self::L_S_C_HOUSE_APARTMENT_NO);
+        return $this->getData(self::LSC_HOUSEAPARTMENT_NO);
     }
 
-    public function setLSCHouseApartmentNo(string $value): self
+    public function setLSCHouseApartmentNo(string $value)
     {
-        return $this->setData(self::L_S_C_HOUSE_APARTMENT_NO, $value);
+        return $this->setData(self::LSC_HOUSEAPARTMENT_NO, $value);
     }
 
     public function getLSCRetailCustomerGroup(): ?string
     {
-        return $this->getData(self::L_S_C_RETAIL_CUSTOMER_GROUP);
+        return $this->getData(self::LSC_RETAIL_CUSTOMER_GROUP);
     }
 
-    public function setLSCRetailCustomerGroup(string $value): self
+    public function setLSCRetailCustomerGroup(string $value)
     {
-        return $this->setData(self::L_S_C_RETAIL_CUSTOMER_GROUP, $value);
+        return $this->setData(self::LSC_RETAIL_CUSTOMER_GROUP, $value);
     }
 
     public function getLSCDefaultWeight(): ?string
     {
-        return $this->getData(self::L_S_C_DEFAULT_WEIGHT);
+        return $this->getData(self::LSC_DEFAULT_WEIGHT);
     }
 
-    public function setLSCDefaultWeight(string $value): self
+    public function setLSCDefaultWeight(string $value)
     {
-        return $this->setData(self::L_S_C_DEFAULT_WEIGHT, $value);
+        return $this->setData(self::LSC_DEFAULT_WEIGHT, $value);
     }
 
     public function getLSCOtherTenderInFinalizing(): ?bool
     {
-        return $this->getData(self::L_S_C_OTHER_TENDER_IN_FINALIZING);
+        return $this->getData(self::LSC_OTHER_TENDER_IN_FINALIZING);
     }
 
-    public function setLSCOtherTenderInFinalizing(bool $value): self
+    public function setLSCOtherTenderInFinalizing(bool $value)
     {
-        return $this->setData(self::L_S_C_OTHER_TENDER_IN_FINALIZING, $value);
+        return $this->setData(self::LSC_OTHER_TENDER_IN_FINALIZING, $value);
     }
 
     public function getLSCPostAsShipment(): ?bool
     {
-        return $this->getData(self::L_S_C_POST_AS_SHIPMENT);
+        return $this->getData(self::LSC_POST_AS_SHIPMENT);
     }
 
-    public function setLSCPostAsShipment(bool $value): self
+    public function setLSCPostAsShipment(bool $value)
     {
-        return $this->setData(self::L_S_C_POST_AS_SHIPMENT, $value);
+        return $this->setData(self::LSC_POST_AS_SHIPMENT, $value);
     }
 
     public function getLSCInclIncExpOnSalesDoc(): ?bool
     {
-        return $this->getData(self::L_S_C_INCL_INC_EXP_ON_SALES_DOC);
+        return $this->getData(self::LSC_INCL_INCEXP_ON_SALES_DOC);
     }
 
-    public function setLSCInclIncExpOnSalesDoc(bool $value): self
+    public function setLSCInclIncExpOnSalesDoc(bool $value)
     {
-        return $this->setData(self::L_S_C_INCL_INC_EXP_ON_SALES_DOC, $value);
+        return $this->setData(self::LSC_INCL_INCEXP_ON_SALES_DOC, $value);
     }
 
     public function getLSCAmtChargedOnPOSInt(): ?string
     {
-        return $this->getData(self::L_S_C_AMT_CHARGED_ON_P_O_S_INT);
+        return $this->getData(self::LSC_AMTCHARGEDONPOSINT);
     }
 
-    public function setLSCAmtChargedOnPOSInt(string $value): self
+    public function setLSCAmtChargedOnPOSInt(string $value)
     {
-        return $this->setData(self::L_S_C_AMT_CHARGED_ON_P_O_S_INT, $value);
+        return $this->setData(self::LSC_AMTCHARGEDONPOSINT, $value);
     }
 
     public function getLSCAmtChargedPostedInt(): ?string
     {
-        return $this->getData(self::L_S_C_AMT_CHARGED_POSTED_INT);
+        return $this->getData(self::LSC_AMTCHARGEDPOSTEDINT);
     }
 
-    public function setLSCAmtChargedPostedInt(string $value): self
+    public function setLSCAmtChargedPostedInt(string $value)
     {
-        return $this->setData(self::L_S_C_AMT_CHARGED_POSTED_INT, $value);
+        return $this->setData(self::LSC_AMTCHARGEDPOSTEDINT, $value);
     }
 
     public function getLSCBalanceLCYInt(): ?string
     {
-        return $this->getData(self::L_S_C_BALANCE_L_C_Y_INT);
+        return $this->getData(self::LSC_BALANCELCYINT);
     }
 
-    public function setLSCBalanceLCYInt(string $value): self
+    public function setLSCBalanceLCYInt(string $value)
     {
-        return $this->setData(self::L_S_C_BALANCE_L_C_Y_INT, $value);
+        return $this->setData(self::LSC_BALANCELCYINT, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

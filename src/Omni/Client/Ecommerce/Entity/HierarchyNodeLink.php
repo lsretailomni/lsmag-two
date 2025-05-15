@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HierarchyNodeLink extends \Magento\Framework\DataObject
+class HierarchyNodeLink extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HierarchyNodeLink';
 

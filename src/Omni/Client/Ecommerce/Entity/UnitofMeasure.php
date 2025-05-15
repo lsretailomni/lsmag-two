@@ -7,22 +7,22 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class UnitofMeasure extends DataObject
+class UnitofMeasure extends AbstractModel
 {
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
     public const INTERNATIONAL_STANDARD_CODE = 'International Standard Code';
     public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
-    public const L_S_C_P_O_S_MIN_DENOMINATOR = 'LSC POS Min. Denominator';
-    public const L_S_C_WEIGHT_UNIT_OF_MEASURE = 'LSC Weight Unit Of Measure';
+    public const LSC_POS_MIN_DENOMINATOR = 'LSC POS Min. Denominator';
+    public const LSC_WEIGHT_UNIT_OF_MEASURE = 'LSC Weight Unit Of Measure';
     public const SYMBOL = 'Symbol';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
-    public const SYSTEM_ID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
 
 
     public function getCode(): ?string
@@ -30,7 +30,7 @@ class UnitofMeasure extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -40,7 +40,7 @@ class UnitofMeasure extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -50,7 +50,7 @@ class UnitofMeasure extends DataObject
         return $this->getData(self::INTERNATIONAL_STANDARD_CODE);
     }
 
-    public function setInternationalStandardCode(string $value): self
+    public function setInternationalStandardCode(string $value)
     {
         return $this->setData(self::INTERNATIONAL_STANDARD_CODE, $value);
     }
@@ -60,29 +60,29 @@ class UnitofMeasure extends DataObject
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value): self
+    public function setLastModifiedDateTime(\DateTime $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
 
     public function getLSCPOSMinDenominator(): ?string
     {
-        return $this->getData(self::L_S_C_P_O_S_MIN_DENOMINATOR);
+        return $this->getData(self::LSC_POS_MIN_DENOMINATOR);
     }
 
-    public function setLSCPOSMinDenominator(string $value): self
+    public function setLSCPOSMinDenominator(string $value)
     {
-        return $this->setData(self::L_S_C_P_O_S_MIN_DENOMINATOR, $value);
+        return $this->setData(self::LSC_POS_MIN_DENOMINATOR, $value);
     }
 
     public function getLSCWeightUnitOfMeasure(): ?bool
     {
-        return $this->getData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE);
+        return $this->getData(self::LSC_WEIGHT_UNIT_OF_MEASURE);
     }
 
-    public function setLSCWeightUnitOfMeasure(bool $value): self
+    public function setLSCWeightUnitOfMeasure(bool $value)
     {
-        return $this->setData(self::L_S_C_WEIGHT_UNIT_OF_MEASURE, $value);
+        return $this->setData(self::LSC_WEIGHT_UNIT_OF_MEASURE, $value);
     }
 
     public function getSymbol(): ?string
@@ -90,58 +90,58 @@ class UnitofMeasure extends DataObject
         return $this->getData(self::SYMBOL);
     }
 
-    public function setSymbol(string $value): self
+    public function setSymbol(string $value)
     {
         return $this->setData(self::SYMBOL, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 }

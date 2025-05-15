@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class CustomerOrderCreateCOStatusLogV6 extends \Magento\Framework\DataObject
+class CustomerOrderCreateCOStatusLogV6 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderCreateCOStatusLogV6';
 

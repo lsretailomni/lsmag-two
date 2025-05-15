@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetDataEntryBalance extends \Magento\Framework\DataObject
+class RootGetDataEntryBalance extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetDataEntryBalance';
 

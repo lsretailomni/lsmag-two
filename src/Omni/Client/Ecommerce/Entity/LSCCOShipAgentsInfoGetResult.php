@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class LSCCOShipAgentsInfoGetResult extends \Magento\Framework\DataObject implements ResponseInterface
+class LSCCOShipAgentsInfoGetResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'LSCCOShipAgentsInfoGet_Result';
 

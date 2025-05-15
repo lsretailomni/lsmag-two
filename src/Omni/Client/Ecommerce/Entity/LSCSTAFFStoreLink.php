@@ -7,36 +7,36 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCSTAFFStoreLink extends DataObject
+class LSCSTAFFStoreLink extends AbstractModel
 {
-    public const STAFF_I_D = 'Staff ID';
+    public const STAFF_ID = 'Staff ID';
     public const STORE_NO = 'Store No.';
     public const PERMISSION_GRP = 'Permission Grp';
     public const PERMISSION_GROUP = 'Permission Group';
-    public const P_O_S_INTERFACE_PROFILE = 'POS Interface Profile';
-    public const P_O_S_STYLE_PROFILE = 'POS Style Profile';
-    public const P_O_S_MENU_PROFILE = 'POS Menu Profile';
+    public const POS_INTERFACE_PROFILE = 'POS Interface Profile';
+    public const POS_STYLE_PROFILE = 'POS Style Profile';
+    public const POS_MENU_PROFILE = 'POS Menu Profile';
     public const DELIVERY_DRIVER = 'Delivery Driver';
     public const FLOAT = 'Float';
     public const ON_CALL = 'On Call';
     public const DEFAULT_SALES_TYPE = 'Default Sales Type';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getStaffID(): ?string
     {
-        return $this->getData(self::STAFF_I_D);
+        return $this->getData(self::STAFF_ID);
     }
 
-    public function setStaffID(string $value): self
+    public function setStaffID(string $value)
     {
-        return $this->setData(self::STAFF_I_D, $value);
+        return $this->setData(self::STAFF_ID, $value);
     }
 
     public function getStoreNo(): ?string
@@ -44,7 +44,7 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -54,7 +54,7 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::PERMISSION_GRP);
     }
 
-    public function setPermissionGrp(string $value): self
+    public function setPermissionGrp(string $value)
     {
         return $this->setData(self::PERMISSION_GRP, $value);
     }
@@ -64,39 +64,39 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::PERMISSION_GROUP);
     }
 
-    public function setPermissionGroup(string $value): self
+    public function setPermissionGroup(string $value)
     {
         return $this->setData(self::PERMISSION_GROUP, $value);
     }
 
     public function getPOSInterfaceProfile(): ?string
     {
-        return $this->getData(self::P_O_S_INTERFACE_PROFILE);
+        return $this->getData(self::POS_INTERFACE_PROFILE);
     }
 
-    public function setPOSInterfaceProfile(string $value): self
+    public function setPOSInterfaceProfile(string $value)
     {
-        return $this->setData(self::P_O_S_INTERFACE_PROFILE, $value);
+        return $this->setData(self::POS_INTERFACE_PROFILE, $value);
     }
 
     public function getPOSStyleProfile(): ?string
     {
-        return $this->getData(self::P_O_S_STYLE_PROFILE);
+        return $this->getData(self::POS_STYLE_PROFILE);
     }
 
-    public function setPOSStyleProfile(string $value): self
+    public function setPOSStyleProfile(string $value)
     {
-        return $this->setData(self::P_O_S_STYLE_PROFILE, $value);
+        return $this->setData(self::POS_STYLE_PROFILE, $value);
     }
 
     public function getPOSMenuProfile(): ?string
     {
-        return $this->getData(self::P_O_S_MENU_PROFILE);
+        return $this->getData(self::POS_MENU_PROFILE);
     }
 
-    public function setPOSMenuProfile(string $value): self
+    public function setPOSMenuProfile(string $value)
     {
-        return $this->setData(self::P_O_S_MENU_PROFILE, $value);
+        return $this->setData(self::POS_MENU_PROFILE, $value);
     }
 
     public function getDeliveryDriver(): ?bool
@@ -104,7 +104,7 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::DELIVERY_DRIVER);
     }
 
-    public function setDeliveryDriver(bool $value): self
+    public function setDeliveryDriver(bool $value)
     {
         return $this->setData(self::DELIVERY_DRIVER, $value);
     }
@@ -114,7 +114,7 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::FLOAT);
     }
 
-    public function setFloat(string $value): self
+    public function setFloat(string $value)
     {
         return $this->setData(self::FLOAT, $value);
     }
@@ -124,7 +124,7 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::ON_CALL);
     }
 
-    public function setOnCall(bool $value): self
+    public function setOnCall(bool $value)
     {
         return $this->setData(self::ON_CALL, $value);
     }
@@ -134,58 +134,58 @@ class LSCSTAFFStoreLink extends DataObject
         return $this->getData(self::DEFAULT_SALES_TYPE);
     }
 
-    public function setDefaultSalesType(string $value): self
+    public function setDefaultSalesType(string $value)
     {
         return $this->setData(self::DEFAULT_SALES_TYPE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

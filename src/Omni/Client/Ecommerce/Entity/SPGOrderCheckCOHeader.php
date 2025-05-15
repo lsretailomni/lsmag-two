@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class SPGOrderCheckCOHeader extends \Magento\Framework\DataObject
+class SPGOrderCheckCOHeader extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'SPGOrderCheckCOHeader';
 

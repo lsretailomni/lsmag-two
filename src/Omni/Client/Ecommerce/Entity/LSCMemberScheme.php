@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMemberScheme extends DataObject
+class LSCMemberScheme extends AbstractModel
 {
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
@@ -25,7 +25,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -35,7 +35,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -45,7 +45,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value): self
+    public function setClubCode(string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
@@ -55,7 +55,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::NEXT_SCHEME);
     }
 
-    public function setNextScheme(string $value): self
+    public function setNextScheme(string $value)
     {
         return $this->setData(self::NEXT_SCHEME, $value);
     }
@@ -65,7 +65,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::NEXT_SCHEME_BENEFITS);
     }
 
-    public function setNextSchemeBenefits(string $value): self
+    public function setNextSchemeBenefits(string $value)
     {
         return $this->setData(self::NEXT_SCHEME_BENEFITS, $value);
     }
@@ -75,7 +75,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::UPDATE_SEQUENCE);
     }
 
-    public function setUpdateSequence(int $value): self
+    public function setUpdateSequence(int $value)
     {
         return $this->setData(self::UPDATE_SEQUENCE, $value);
     }
@@ -85,7 +85,7 @@ class LSCMemberScheme extends DataObject
         return $this->getData(self::MIN_POINT_FOR_UPGRADE);
     }
 
-    public function setMinPointForUpgrade(string $value): self
+    public function setMinPointForUpgrade(string $value)
     {
         return $this->setData(self::MIN_POINT_FOR_UPGRADE, $value);
     }

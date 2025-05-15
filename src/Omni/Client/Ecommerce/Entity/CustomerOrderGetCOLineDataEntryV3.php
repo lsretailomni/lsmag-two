@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Framework\DataObject
+class CustomerOrderGetCOLineDataEntryV3 extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'CustomerOrderGetCOLineDataEntryV3';
 

@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCMembershipCard extends DataObject
+class LSCMembershipCard extends AbstractModel
 {
     public const CARD_NO = 'Card No.';
     public const BLOCKED_BY = 'Blocked by';
@@ -26,7 +26,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::CARD_NO);
     }
 
-    public function setCardNo(string $value): self
+    public function setCardNo(string $value)
     {
         return $this->setData(self::CARD_NO, $value);
     }
@@ -36,7 +36,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::BLOCKED_BY);
     }
 
-    public function setBlockedBy(string $value): self
+    public function setBlockedBy(string $value)
     {
         return $this->setData(self::BLOCKED_BY, $value);
     }
@@ -46,7 +46,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::REASON_BLOCKED);
     }
 
-    public function setReasonBlocked(string $value): self
+    public function setReasonBlocked(string $value)
     {
         return $this->setData(self::REASON_BLOCKED, $value);
     }
@@ -56,7 +56,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value): self
+    public function setClubCode(string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
@@ -66,7 +66,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::CONTACT_NO);
     }
 
-    public function setContactNo(string $value): self
+    public function setContactNo(string $value)
     {
         return $this->setData(self::CONTACT_NO, $value);
     }
@@ -76,7 +76,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::DATE_BLOCKED);
     }
 
-    public function setDateBlocked(string $value): self
+    public function setDateBlocked(string $value)
     {
         return $this->setData(self::DATE_BLOCKED, $value);
     }
@@ -86,7 +86,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::LINKED_TO_ACCOUNT);
     }
 
-    public function setLinkedToAccount(bool $value): self
+    public function setLinkedToAccount(bool $value)
     {
         return $this->setData(self::LINKED_TO_ACCOUNT, $value);
     }
@@ -96,7 +96,7 @@ class LSCMembershipCard extends DataObject
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value): self
+    public function setStatus(string $value)
     {
         return $this->setData(self::STATUS, $value);
     }

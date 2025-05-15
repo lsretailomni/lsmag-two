@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransactionOrderDiscount extends \Magento\Framework\DataObject
+class TransactionOrderDiscount extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransactionOrderDiscount';
 

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class WebDeliveryOrder extends \Magento\Framework\DataObject
+class WebDeliveryOrder extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'WebDeliveryOrder';
 

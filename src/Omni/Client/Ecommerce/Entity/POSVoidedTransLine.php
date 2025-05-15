@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class POSVoidedTransLine extends \Magento\Framework\DataObject
+class POSVoidedTransLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'POSVoidedTransLine';
 

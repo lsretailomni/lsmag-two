@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootCOMobilePickUpdateLines extends \Magento\Framework\DataObject
+class RootCOMobilePickUpdateLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootCOMobilePickUpdateLines';
 

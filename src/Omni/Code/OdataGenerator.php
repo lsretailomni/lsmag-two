@@ -264,7 +264,7 @@ class OdataGenerator
                     $recordField['DataSetName']
                 ));
                 $dataSetNames[] = [
-                    'FieldName' => $entityClassName,
+                    'FieldName' => $recordField['DataSetName'],
                     'FieldDataType' => $recordField['isAnArray'] ? 'array' : $entityClassName
                 ];
                 $dataSetName[] = $entityClassName;
@@ -379,7 +379,7 @@ class OdataGenerator
             } elseif (isset($recRef['DataSetName'])) {
                 $name = $recRef['DataSetName'];
             }
-            $entityClassName = str_replace(' ', '', $name);
+            $entityClassName = str_replace(' ', '', $this->formatGivenValue($name));
             $this->registerEntity(
                 $entityClassName,
                 $recordFields,
@@ -568,32 +568,44 @@ PHP;
 
 namespace $baseNamespace;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class $entityClassName extends DataObject
+class $entityClassName extends AbstractModel
 {
 PHP;
-
         foreach ($recordFields as $field) {
-            $optimizedFieldName = $this->formatGivenValue($field['FieldName']);
+            $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
             $constName = str_replace(
                 ' ',
                 '_',
                 strtoupper(preg_replace('/\B([A-Z])/', '_$1', $optimizedFieldName))
             );
+            if ($recursive) {
+                $constIndexName = str_replace(
+                    ' ',
+                    '',
+                    $field['FieldName']
+                );
+            } else {
+                $constIndexName = $field['FieldName'];
+            }
+
             $entityClassCode .= <<<PHP
 
-    public const {$constName} = '{$field['FieldName']}';
+    public const {$constName} = '{$constIndexName}';
 PHP;
         }
 
         $entityClassCode .= "\n";
 
         foreach ($recordFields as $field) {
+            if (strtolower($field['FieldName']) == 'id') {
+                continue;
+            }
             $fieldNameForMethodName = $this->formatGivenValue($field['FieldName'], ' ');
             $fieldNameCapitalized = ucwords($fieldNameForMethodName);
             $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
-            $fieldName = $this->formatGivenValue($field['FieldName']);
+            $fieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
             $constName = str_replace(' ', '_', strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldName)));
 
             if ($recursive) {
@@ -615,7 +627,7 @@ PHP;
         return \$this->getData(self::{$constName});
     }
 
-    public function set$fieldNameCapitalized($phpType \$value): self
+    public function set$fieldNameCapitalized($phpType \$value)
     {
         return \$this->setData(self::{$constName}, \$value);
     }
@@ -728,8 +740,8 @@ class $entityClassName
         \$this->baseUrl = \$baseUrl;
         \$this->connectionParams = \$connectionParams;
         \$this->companyName = \$companyName;
-        \$this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        \$this->request = new {$reqName}();
+        \$this->dataHelper = \$this->createInstance(\\Ls\\Omni\\Helper\\Data::class);
+        \$this->request = \$this->createInstance({$reqName}::class);
     }
 
     public function execute(): {$resName}
@@ -784,7 +796,9 @@ class $entityClassName
         if (!empty(\$fields)) {
             foreach (\$rows as \$row) {
                 \$values = \$row['Fields'] ?? [];
-                \$entry = new {$entityName}();
+                \$entry = \$this->createInstance(
+                    {$entityName}::class
+                );
                 foreach (\$values as \$value) {
                     \$entry->setData(\$fields[\$value['FieldIndex']], \$value['FieldValue']);
                 }
@@ -792,19 +806,34 @@ class $entityClassName
             }
         }
 
-        return new {$resName}([
-            'records' => \$results,
-            'status' => \$data['Status'] ?? '',
-            'errorText' => \$data['ErrorText'] ?? '',
-            'lastKey' => \$data['LastKey'] ?? '',
-            'lastEntryNo' => \$data['LastEntryNo'] ?? 0,
-            'endOfTable' => \$data['EndOfTable'] ?? false
-        ]);
+        return \$this->createInstance(
+                    {$resName}::class,
+                     [
+                        'data' => [
+                        'records' => \$results,
+                        'status' => \$data['Status'] ?? '',
+                        'errorText' => \$data['ErrorText'] ?? '',
+                        'lastKey' => \$data['LastKey'] ?? '',
+                        'lastEntryNo' => \$data['LastEntryNo'] ?? 0,
+                        'endOfTable' => \$data['EndOfTable'] ?? false
+                        ]
+                     ]
+                );
     }
 
-    public function & setOperationInput(array \$params = []) : {$reqName}
+    public function createInstance(string \$entityClassName, array \$data = [])
     {
-        \$this->setRequest(new {$reqName}(\$params));
+        return ObjectManager::getInstance()->create(\$entityClassName, \$data);
+    }
+
+    public function & setOperationInput(array \$params = []): {$reqName}
+    {
+        \$this->setRequest(
+            \$this->createInstance(
+                {$reqName}::class,
+                ['data' => \$params]
+            )
+        );
         \$request = \$this->getRequest();
 
         return \$request;
@@ -1039,8 +1068,8 @@ class $entityClassName
         \$this->baseUrl = \$baseUrl;
         \$this->connectionParams = \$connectionParams;
         \$this->companyName = \$companyName;
-        \$this->dataHelper = ObjectManager::getInstance()->get(\\Ls\\Omni\\Helper\\Data::class);
-        \$this->request = new $reqFqcn();
+        \$this->dataHelper = \$this->createInstance(\\Ls\\Omni\\Helper\\Data::class);
+        \$this->request = \$this->createInstance({$reqFqcn}::class);
     }
 
     public function execute(): $resFqcn
@@ -1063,19 +1092,28 @@ class $entityClassName
     public function formatResponse(\$data): $resFqcn
     {
         \$requiredDataSetName = explode(',', '$targetDataSetName');
-        \$finalEntry = new $entityFqcn();
+        \$finalEntry = \$this->createInstance({$entityFqcn}::class);
         if (is_array(\$requiredDataSetName)) {
             foreach (\$requiredDataSetName as \$dataSet) {
                 \$entityClassName = str_replace(' ', '', \$dataSet);
                 // Try flat response structure
                 if (isset(\$data[\$dataSet]) && is_array(\$data[\$dataSet])) {
-                    \$entity = new $entityFqcn(\$data['$targetDataSetName']);
+                    \$entity = \$this->createInstance(
+                        {$entityFqcn}::class,
+                         ['data' => \$data['$targetDataSetName']]
+                     );
 
-                    return new $resFqcn([
-                        'records' => [\$entity],
-                        'ResponseCode' => \$data['ResponseCode'] ?? '',
-                        'ErrorText' => \$data['ErrorText'] ?? '',
-                    ]);
+                    return \$this->createInstance(
+                        {$resFqcn}::class,
+                       [
+                       'data' =>
+                           [
+                                'records' => [\$entity],
+                                'ResponseCode' => \$data['ResponseCode'] ?? '',
+                                'ErrorText' => \$data['ErrorText'] ?? '',
+                           ]
+                       ]
+                    );
                 }
                 \$fields = \$rows = [];
                 \$recRef = \$this->findNestedDataSet(\$data, \$entityClassName);
@@ -1093,7 +1131,7 @@ class $entityClassName
                     \$count = count(\$rows);
                     \$entries = [];
                     foreach (\$rows as \$index => \$row) {
-                        \$entry = new \$className();
+                        \$entry = \$this->createInstance(\$className);
                         foreach (\$row['Fields'] ?? [] as \$field) {
                             \$entry->setData(\$fields[\$field['FieldIndex']], \$field['FieldValue']);
                         }
@@ -1104,19 +1142,29 @@ class $entityClassName
                     }
                 }
             }
-            return new $resFqcn([
-                'records' => [\$finalEntry],
-                'ResponseCode' => \$data['ResponseCode'] ?? '',
-                'ErrorText' => \$data['ErrorText'] ?? ''
-            ]);
+            return \$this->createInstance(
+                {$resFqcn}::class,
+                [
+                'data' =>
+                    [
+                        'records' => [\$finalEntry],
+                        'ResponseCode' => \$data['ResponseCode'] ?? '',
+                        'ErrorText' => \$data['ErrorText'] ?? '',
+                    ]
+                ]
+            );
         }
-
-        // Fallback
-        return new $resFqcn([
-            'records' => [],
-            'ResponseCode' => \$data['ResponseCode'] ?? '',
-            'ErrorText' => \$data['ErrorText'] ?? 'Unable to parse response.',
-        ]);
+        return \$this->createInstance(
+            {$resFqcn}::class,
+             [
+             'data' =>
+                 [
+                    'records' => [],
+                    'ResponseCode' => \$data['ResponseCode'] ?? '',
+                    'ErrorText' => \$data['ErrorText'] ?? 'Unable to parse response.',
+                 ]
+            ]
+        );
     }
 
     public function findNestedDataSet(\$data, string \$target): ?array
@@ -1143,9 +1191,19 @@ class $entityClassName
         return null;
     }
 
+    public function createInstance(string \$entityClassName, array \$data = [])
+    {
+        return ObjectManager::getInstance()->create(\$entityClassName, \$data);
+    }
+
     public function & setOperationInput(array \$params = []): $reqFqcn
     {
-        \$this->setRequest(new {$reqFqcn}(\$params));
+        \$this->setRequest(
+            \$this->createInstance(
+                {$reqFqcn}::class,
+                ['data' => \$params]
+            )
+        );
         \$request = \$this->getRequest();
 
         return \$request;

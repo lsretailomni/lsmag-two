@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootStoreInventoryGetLines extends \Magento\Framework\DataObject
+class RootStoreInventoryGetLines extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootStoreInventoryGetLines';
 

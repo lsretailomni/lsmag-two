@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MemberPointSetup extends \Magento\Framework\DataObject
+class MemberPointSetup extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MemberPointSetup';
 

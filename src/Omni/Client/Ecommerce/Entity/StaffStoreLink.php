@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class StaffStoreLink extends \Magento\Framework\DataObject
+class StaffStoreLink extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'StaffStoreLink';
 

@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class GetItemDocument extends \Magento\Framework\DataObject implements RequestInterface
+class GetItemDocument extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
 {
     public const CLASS_NAME = 'GetItemDocument';
 

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MembershipCard extends \Magento\Framework\DataObject
+class MembershipCard extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MembershipCard';
 

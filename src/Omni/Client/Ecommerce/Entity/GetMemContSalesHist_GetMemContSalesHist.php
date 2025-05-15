@@ -7,20 +7,20 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class GetMemContSalesHist_GetMemContSalesHist extends DataObject
+class GetMemContSalesHist_GetMemContSalesHist extends AbstractModel
 {
-    public const L_S_C_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
 
 
     public function getLSCMemberSalesBuffer(): ?array
     {
-        return $this->getData(self::L_S_C_MEMBER_SALES_BUFFER);
+        return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLSCMemberSalesBuffer(array $value): self
+    public function setLSCMemberSalesBuffer(array $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_SALES_BUFFER, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 }

@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class MobilePosRetSaveResult extends \Magento\Framework\DataObject implements ResponseInterface
+class MobilePosRetSaveResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'MobilePosRetSave_Result';
 

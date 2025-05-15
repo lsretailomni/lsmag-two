@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class PublishedOfferLine extends \Magento\Framework\DataObject
+class PublishedOfferLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'PublishedOfferLine';
 

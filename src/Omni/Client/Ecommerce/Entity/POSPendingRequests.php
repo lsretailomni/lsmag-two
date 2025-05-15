@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class POSPendingRequests extends \Magento\Framework\DataObject
+class POSPendingRequests extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'POSPendingRequests';
 

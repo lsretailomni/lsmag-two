@@ -7,28 +7,28 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class TenderView extends DataObject
+class TenderView extends AbstractModel
 {
     public const CODE = 'Code';
     public const STORE_NO = 'Store No.';
     public const DESCRIPTION = 'Description';
     public const FUNCTION = 'Function';
-    public const VALID_ON_MOBILE_P_O_S = 'Valid on Mobile POS';
+    public const VALID_ON_MOBILE_POS = 'Valid on Mobile POS';
     public const CHANGE_TEND_CODE = 'Change Tend. Code';
     public const ABOVE_MIN_CHANGE_TENDER_TYPE = 'Above Min. Change Tender Type';
     public const MIN_CHANGE = 'Min. Change';
     public const ROUNDING = 'Rounding';
     public const ROUNDING_TO = 'Rounding To';
-    public const RETURN_MINUS_ALLOWED = 'Return/Minus Allowed';
+    public const RETURNMINUS_ALLOWED = 'Return/Minus Allowed';
     public const FOREIGN_CURRENCY = 'Foreign Currency';
     public const UNDERTENDER_ALLOWED = 'Undertender Allowed';
     public const OVERTENDER_ALLOWED = 'Overtender Allowed';
     public const OVERTENDER_MAX_AMT = 'Overtender Max. Amt.';
     public const COUNTING_REQUIRED = 'Counting Required';
     public const DRAWER_OPENS = 'Drawer Opens';
-    public const DATE_ENTRY_CODES = 'DateEntryCodes';
+    public const DATEENTRYCODES = 'DateEntryCodes';
 
 
     public function getCode(): ?string
@@ -36,7 +36,7 @@ class TenderView extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -46,7 +46,7 @@ class TenderView extends DataObject
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value): self
+    public function setStoreNo(string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -56,7 +56,7 @@ class TenderView extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -66,19 +66,19 @@ class TenderView extends DataObject
         return $this->getData(self::FUNCTION);
     }
 
-    public function setFunction(int $value): self
+    public function setFunction(int $value)
     {
         return $this->setData(self::FUNCTION, $value);
     }
 
     public function getValidOnMobilePOS(): ?bool
     {
-        return $this->getData(self::VALID_ON_MOBILE_P_O_S);
+        return $this->getData(self::VALID_ON_MOBILE_POS);
     }
 
-    public function setValidOnMobilePOS(bool $value): self
+    public function setValidOnMobilePOS(bool $value)
     {
-        return $this->setData(self::VALID_ON_MOBILE_P_O_S, $value);
+        return $this->setData(self::VALID_ON_MOBILE_POS, $value);
     }
 
     public function getChangeTendCode(): ?string
@@ -86,7 +86,7 @@ class TenderView extends DataObject
         return $this->getData(self::CHANGE_TEND_CODE);
     }
 
-    public function setChangeTendCode(string $value): self
+    public function setChangeTendCode(string $value)
     {
         return $this->setData(self::CHANGE_TEND_CODE, $value);
     }
@@ -96,7 +96,7 @@ class TenderView extends DataObject
         return $this->getData(self::ABOVE_MIN_CHANGE_TENDER_TYPE);
     }
 
-    public function setAboveMinChangeTenderType(string $value): self
+    public function setAboveMinChangeTenderType(string $value)
     {
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
@@ -106,7 +106,7 @@ class TenderView extends DataObject
         return $this->getData(self::MIN_CHANGE);
     }
 
-    public function setMinChange(string $value): self
+    public function setMinChange(string $value)
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
@@ -116,7 +116,7 @@ class TenderView extends DataObject
         return $this->getData(self::ROUNDING);
     }
 
-    public function setRounding(int $value): self
+    public function setRounding(int $value)
     {
         return $this->setData(self::ROUNDING, $value);
     }
@@ -126,19 +126,19 @@ class TenderView extends DataObject
         return $this->getData(self::ROUNDING_TO);
     }
 
-    public function setRoundingTo(string $value): self
+    public function setRoundingTo(string $value)
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
 
     public function getReturnMinusAllowed(): ?bool
     {
-        return $this->getData(self::RETURN_MINUS_ALLOWED);
+        return $this->getData(self::RETURNMINUS_ALLOWED);
     }
 
-    public function setReturnMinusAllowed(bool $value): self
+    public function setReturnMinusAllowed(bool $value)
     {
-        return $this->setData(self::RETURN_MINUS_ALLOWED, $value);
+        return $this->setData(self::RETURNMINUS_ALLOWED, $value);
     }
 
     public function getForeignCurrency(): ?bool
@@ -146,7 +146,7 @@ class TenderView extends DataObject
         return $this->getData(self::FOREIGN_CURRENCY);
     }
 
-    public function setForeignCurrency(bool $value): self
+    public function setForeignCurrency(bool $value)
     {
         return $this->setData(self::FOREIGN_CURRENCY, $value);
     }
@@ -156,7 +156,7 @@ class TenderView extends DataObject
         return $this->getData(self::UNDERTENDER_ALLOWED);
     }
 
-    public function setUndertenderAllowed(bool $value): self
+    public function setUndertenderAllowed(bool $value)
     {
         return $this->setData(self::UNDERTENDER_ALLOWED, $value);
     }
@@ -166,7 +166,7 @@ class TenderView extends DataObject
         return $this->getData(self::OVERTENDER_ALLOWED);
     }
 
-    public function setOvertenderAllowed(bool $value): self
+    public function setOvertenderAllowed(bool $value)
     {
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
@@ -176,7 +176,7 @@ class TenderView extends DataObject
         return $this->getData(self::OVERTENDER_MAX_AMT);
     }
 
-    public function setOvertenderMaxAmt(string $value): self
+    public function setOvertenderMaxAmt(string $value)
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }
@@ -186,7 +186,7 @@ class TenderView extends DataObject
         return $this->getData(self::COUNTING_REQUIRED);
     }
 
-    public function setCountingRequired(bool $value): self
+    public function setCountingRequired(bool $value)
     {
         return $this->setData(self::COUNTING_REQUIRED, $value);
     }
@@ -196,18 +196,18 @@ class TenderView extends DataObject
         return $this->getData(self::DRAWER_OPENS);
     }
 
-    public function setDrawerOpens(bool $value): self
+    public function setDrawerOpens(bool $value)
     {
         return $this->setData(self::DRAWER_OPENS, $value);
     }
 
     public function getDateEntryCodes(): ?string
     {
-        return $this->getData(self::DATE_ENTRY_CODES);
+        return $this->getData(self::DATEENTRYCODES);
     }
 
-    public function setDateEntryCodes(string $value): self
+    public function setDateEntryCodes(string $value)
     {
-        return $this->setData(self::DATE_ENTRY_CODES, $value);
+        return $this->setData(self::DATEENTRYCODES, $value);
     }
 }

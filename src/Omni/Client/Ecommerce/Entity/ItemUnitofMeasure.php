@@ -7,14 +7,14 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class ItemUnitofMeasure extends DataObject
+class ItemUnitofMeasure extends AbstractModel
 {
     public const ITEM_NO = 'Item No.';
     public const CODE = 'Code';
     public const QTY_PER_UNIT_OF_MEASURE = 'Qty. per Unit of Measure';
-    public const L_S_C_ECOM_SELECTION = 'LSC Ecom Selection';
+    public const LSC_ECOM_SELECTION = 'LSC Ecom Selection';
 
 
     public function getItemNo(): ?string
@@ -22,7 +22,7 @@ class ItemUnitofMeasure extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -32,7 +32,7 @@ class ItemUnitofMeasure extends DataObject
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value): self
+    public function setCode(string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -42,18 +42,18 @@ class ItemUnitofMeasure extends DataObject
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(string $value): self
+    public function setQtyPerUnitOfMeasure(string $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
 
     public function getLSCEcomSelection(): ?string
     {
-        return $this->getData(self::L_S_C_ECOM_SELECTION);
+        return $this->getData(self::LSC_ECOM_SELECTION);
     }
 
-    public function setLSCEcomSelection(string $value): self
+    public function setLSCEcomSelection(string $value)
     {
-        return $this->setData(self::L_S_C_ECOM_SELECTION, $value);
+        return $this->setData(self::LSC_ECOM_SELECTION, $value);
     }
 }

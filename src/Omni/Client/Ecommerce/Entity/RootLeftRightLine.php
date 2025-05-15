@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootLeftRightLine extends \Magento\Framework\DataObject
+class RootLeftRightLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootLeftRightLine';
 

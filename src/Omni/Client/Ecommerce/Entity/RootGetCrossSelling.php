@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetCrossSelling extends \Magento\Framework\DataObject
+class RootGetCrossSelling extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetCrossSelling';
 

@@ -7,94 +7,94 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class VATPostingSetup extends DataObject
+class VATPostingSetup extends AbstractModel
 {
-    public const V_A_T_BUS_POSTING_GROUP = 'VAT Bus. Posting Group';
-    public const V_A_T_PROD_POSTING_GROUP = 'VAT Prod. Posting Group';
-    public const V_A_T_CALCULATION_TYPE = 'VAT Calculation Type';
-    public const V_A_T = 'VAT %';
-    public const UNREALIZED_V_A_T_TYPE = 'Unrealized VAT Type';
+    public const VAT_BUS_POSTING_GROUP = 'VAT Bus. Posting Group';
+    public const VAT_PROD_POSTING_GROUP = 'VAT Prod. Posting Group';
+    public const VAT_CALCULATION_TYPE = 'VAT Calculation Type';
+    public const VAT = 'VAT %';
+    public const UNREALIZED_VAT_TYPE = 'Unrealized VAT Type';
     public const ADJUST_FOR_PAYMENT_DISCOUNT = 'Adjust for Payment Discount';
-    public const SALES_V_A_T_ACCOUNT = 'Sales VAT Account';
-    public const SALES_V_A_T_UNREAL_ACCOUNT = 'Sales VAT Unreal. Account';
-    public const PURCHASE_V_A_T_ACCOUNT = 'Purchase VAT Account';
-    public const PURCH_V_A_T_UNREAL_ACCOUNT = 'Purch. VAT Unreal. Account';
-    public const REVERSE_CHRG_V_A_T_ACC = 'Reverse Chrg. VAT Acc.';
-    public const REVERSE_CHRG_V_A_T_UNREAL_ACC = 'Reverse Chrg. VAT Unreal. Acc.';
-    public const V_A_T_IDENTIFIER = 'VAT Identifier';
-    public const E_U_SERVICE = 'EU Service';
-    public const V_A_T_CLAUSE_CODE = 'VAT Clause Code';
+    public const SALES_VAT_ACCOUNT = 'Sales VAT Account';
+    public const SALES_VAT_UNREAL_ACCOUNT = 'Sales VAT Unreal. Account';
+    public const PURCHASE_VAT_ACCOUNT = 'Purchase VAT Account';
+    public const PURCH_VAT_UNREAL_ACCOUNT = 'Purch. VAT Unreal. Account';
+    public const REVERSE_CHRG_VAT_ACC = 'Reverse Chrg. VAT Acc.';
+    public const REVERSE_CHRG_VAT_UNREAL_ACC = 'Reverse Chrg. VAT Unreal. Acc.';
+    public const VAT_IDENTIFIER = 'VAT Identifier';
+    public const EU_SERVICE = 'EU Service';
+    public const VAT_CLAUSE_CODE = 'VAT Clause Code';
     public const CERTIFICATE_OF_SUPPLY_REQUIRED = 'Certificate of Supply Required';
     public const TAX_CATEGORY = 'Tax Category';
     public const DESCRIPTION = 'Description';
     public const BLOCKED = 'Blocked';
-    public const SALE_V_A_T_REPORTING_CODE = 'Sale VAT Reporting Code';
-    public const PURCH_V_A_T_REPORTING_CODE = 'Purch. VAT Reporting Code';
-    public const SALES_TAX_CODE_S_A_F_T = 'Sales Tax Code SAF-T';
-    public const PURCHASE_TAX_CODE_S_A_F_T = 'Purchase Tax Code SAF-T';
+    public const SALE_VAT_REPORTING_CODE = 'Sale VAT Reporting Code';
+    public const PURCH_VAT_REPORTING_CODE = 'Purch. VAT Reporting Code';
+    public const SALES_TAX_CODE_SAFT = 'Sales Tax Code SAF-T';
+    public const PURCHASE_TAX_CODE_SAFT = 'Purchase Tax Code SAF-T';
     public const STARTING_DATE = 'Starting Date';
-    public const NON_DEDUCTIBLE_V_A_T = 'Non-Deductible VAT %';
-    public const NON_DED_PURCHASE_V_A_T_ACCOUNT = 'Non-Ded. Purchase VAT Account';
-    public const ALLOW_NON_DEDUCTIBLE_V_A_T = 'Allow Non-Deductible VAT';
-    public const L_S_C_V_A_T_GROUP_CODE = 'LSC VAT Group Code';
-    public const L_S_C_P_O_S_TERMINAL_V_A_T_CODE = 'LSC POS Terminal VAT Code';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const NONDEDUCTIBLE_VAT = 'Non-Deductible VAT %';
+    public const NONDED_PURCHASE_VAT_ACCOUNT = 'Non-Ded. Purchase VAT Account';
+    public const ALLOW_NONDEDUCTIBLE_VAT = 'Allow Non-Deductible VAT';
+    public const LSC_VAT_GROUP_CODE = 'LSC VAT Group Code';
+    public const LSC_POS_TERMINAL_VAT_CODE = 'LSC POS Terminal VAT Code';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getVATBusPostingGroup(): ?string
     {
-        return $this->getData(self::V_A_T_BUS_POSTING_GROUP);
+        return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
 
-    public function setVATBusPostingGroup(string $value): self
+    public function setVATBusPostingGroup(string $value)
     {
-        return $this->setData(self::V_A_T_BUS_POSTING_GROUP, $value);
+        return $this->setData(self::VAT_BUS_POSTING_GROUP, $value);
     }
 
     public function getVATProdPostingGroup(): ?string
     {
-        return $this->getData(self::V_A_T_PROD_POSTING_GROUP);
+        return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value): self
+    public function setVATProdPostingGroup(string $value)
     {
-        return $this->setData(self::V_A_T_PROD_POSTING_GROUP, $value);
+        return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
     public function getVATCalculationType(): ?string
     {
-        return $this->getData(self::V_A_T_CALCULATION_TYPE);
+        return $this->getData(self::VAT_CALCULATION_TYPE);
     }
 
-    public function setVATCalculationType(string $value): self
+    public function setVATCalculationType(string $value)
     {
-        return $this->setData(self::V_A_T_CALCULATION_TYPE, $value);
+        return $this->setData(self::VAT_CALCULATION_TYPE, $value);
     }
 
     public function getVAT(): ?string
     {
-        return $this->getData(self::V_A_T);
+        return $this->getData(self::VAT);
     }
 
-    public function setVAT(string $value): self
+    public function setVAT(string $value)
     {
-        return $this->setData(self::V_A_T, $value);
+        return $this->setData(self::VAT, $value);
     }
 
     public function getUnrealizedVATType(): ?string
     {
-        return $this->getData(self::UNREALIZED_V_A_T_TYPE);
+        return $this->getData(self::UNREALIZED_VAT_TYPE);
     }
 
-    public function setUnrealizedVATType(string $value): self
+    public function setUnrealizedVATType(string $value)
     {
-        return $this->setData(self::UNREALIZED_V_A_T_TYPE, $value);
+        return $this->setData(self::UNREALIZED_VAT_TYPE, $value);
     }
 
     public function getAdjustForPaymentDiscount(): ?bool
@@ -102,99 +102,99 @@ class VATPostingSetup extends DataObject
         return $this->getData(self::ADJUST_FOR_PAYMENT_DISCOUNT);
     }
 
-    public function setAdjustForPaymentDiscount(bool $value): self
+    public function setAdjustForPaymentDiscount(bool $value)
     {
         return $this->setData(self::ADJUST_FOR_PAYMENT_DISCOUNT, $value);
     }
 
     public function getSalesVATAccount(): ?string
     {
-        return $this->getData(self::SALES_V_A_T_ACCOUNT);
+        return $this->getData(self::SALES_VAT_ACCOUNT);
     }
 
-    public function setSalesVATAccount(string $value): self
+    public function setSalesVATAccount(string $value)
     {
-        return $this->setData(self::SALES_V_A_T_ACCOUNT, $value);
+        return $this->setData(self::SALES_VAT_ACCOUNT, $value);
     }
 
     public function getSalesVATUnrealAccount(): ?string
     {
-        return $this->getData(self::SALES_V_A_T_UNREAL_ACCOUNT);
+        return $this->getData(self::SALES_VAT_UNREAL_ACCOUNT);
     }
 
-    public function setSalesVATUnrealAccount(string $value): self
+    public function setSalesVATUnrealAccount(string $value)
     {
-        return $this->setData(self::SALES_V_A_T_UNREAL_ACCOUNT, $value);
+        return $this->setData(self::SALES_VAT_UNREAL_ACCOUNT, $value);
     }
 
     public function getPurchaseVATAccount(): ?string
     {
-        return $this->getData(self::PURCHASE_V_A_T_ACCOUNT);
+        return $this->getData(self::PURCHASE_VAT_ACCOUNT);
     }
 
-    public function setPurchaseVATAccount(string $value): self
+    public function setPurchaseVATAccount(string $value)
     {
-        return $this->setData(self::PURCHASE_V_A_T_ACCOUNT, $value);
+        return $this->setData(self::PURCHASE_VAT_ACCOUNT, $value);
     }
 
     public function getPurchVATUnrealAccount(): ?string
     {
-        return $this->getData(self::PURCH_V_A_T_UNREAL_ACCOUNT);
+        return $this->getData(self::PURCH_VAT_UNREAL_ACCOUNT);
     }
 
-    public function setPurchVATUnrealAccount(string $value): self
+    public function setPurchVATUnrealAccount(string $value)
     {
-        return $this->setData(self::PURCH_V_A_T_UNREAL_ACCOUNT, $value);
+        return $this->setData(self::PURCH_VAT_UNREAL_ACCOUNT, $value);
     }
 
     public function getReverseChrgVATAcc(): ?string
     {
-        return $this->getData(self::REVERSE_CHRG_V_A_T_ACC);
+        return $this->getData(self::REVERSE_CHRG_VAT_ACC);
     }
 
-    public function setReverseChrgVATAcc(string $value): self
+    public function setReverseChrgVATAcc(string $value)
     {
-        return $this->setData(self::REVERSE_CHRG_V_A_T_ACC, $value);
+        return $this->setData(self::REVERSE_CHRG_VAT_ACC, $value);
     }
 
     public function getReverseChrgVATUnrealAcc(): ?string
     {
-        return $this->getData(self::REVERSE_CHRG_V_A_T_UNREAL_ACC);
+        return $this->getData(self::REVERSE_CHRG_VAT_UNREAL_ACC);
     }
 
-    public function setReverseChrgVATUnrealAcc(string $value): self
+    public function setReverseChrgVATUnrealAcc(string $value)
     {
-        return $this->setData(self::REVERSE_CHRG_V_A_T_UNREAL_ACC, $value);
+        return $this->setData(self::REVERSE_CHRG_VAT_UNREAL_ACC, $value);
     }
 
     public function getVATIdentifier(): ?string
     {
-        return $this->getData(self::V_A_T_IDENTIFIER);
+        return $this->getData(self::VAT_IDENTIFIER);
     }
 
-    public function setVATIdentifier(string $value): self
+    public function setVATIdentifier(string $value)
     {
-        return $this->setData(self::V_A_T_IDENTIFIER, $value);
+        return $this->setData(self::VAT_IDENTIFIER, $value);
     }
 
     public function getEUService(): ?bool
     {
-        return $this->getData(self::E_U_SERVICE);
+        return $this->getData(self::EU_SERVICE);
     }
 
-    public function setEUService(bool $value): self
+    public function setEUService(bool $value)
     {
-        return $this->setData(self::E_U_SERVICE, $value);
+        return $this->setData(self::EU_SERVICE, $value);
     }
 
     public function getVATClauseCode(): ?string
     {
-        return $this->getData(self::V_A_T_CLAUSE_CODE);
+        return $this->getData(self::VAT_CLAUSE_CODE);
     }
 
-    public function setVATClauseCode(string $value): self
+    public function setVATClauseCode(string $value)
     {
-        return $this->setData(self::V_A_T_CLAUSE_CODE, $value);
+        return $this->setData(self::VAT_CLAUSE_CODE, $value);
     }
 
     public function getCertificateOfSupplyRequired(): ?bool
@@ -202,7 +202,7 @@ class VATPostingSetup extends DataObject
         return $this->getData(self::CERTIFICATE_OF_SUPPLY_REQUIRED);
     }
 
-    public function setCertificateOfSupplyRequired(bool $value): self
+    public function setCertificateOfSupplyRequired(bool $value)
     {
         return $this->setData(self::CERTIFICATE_OF_SUPPLY_REQUIRED, $value);
     }
@@ -212,7 +212,7 @@ class VATPostingSetup extends DataObject
         return $this->getData(self::TAX_CATEGORY);
     }
 
-    public function setTaxCategory(string $value): self
+    public function setTaxCategory(string $value)
     {
         return $this->setData(self::TAX_CATEGORY, $value);
     }
@@ -222,7 +222,7 @@ class VATPostingSetup extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -232,49 +232,49 @@ class VATPostingSetup extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
 
     public function getSaleVATReportingCode(): ?string
     {
-        return $this->getData(self::SALE_V_A_T_REPORTING_CODE);
+        return $this->getData(self::SALE_VAT_REPORTING_CODE);
     }
 
-    public function setSaleVATReportingCode(string $value): self
+    public function setSaleVATReportingCode(string $value)
     {
-        return $this->setData(self::SALE_V_A_T_REPORTING_CODE, $value);
+        return $this->setData(self::SALE_VAT_REPORTING_CODE, $value);
     }
 
     public function getPurchVATReportingCode(): ?string
     {
-        return $this->getData(self::PURCH_V_A_T_REPORTING_CODE);
+        return $this->getData(self::PURCH_VAT_REPORTING_CODE);
     }
 
-    public function setPurchVATReportingCode(string $value): self
+    public function setPurchVATReportingCode(string $value)
     {
-        return $this->setData(self::PURCH_V_A_T_REPORTING_CODE, $value);
+        return $this->setData(self::PURCH_VAT_REPORTING_CODE, $value);
     }
 
     public function getSalesTaxCodeSAFT(): ?string
     {
-        return $this->getData(self::SALES_TAX_CODE_S_A_F_T);
+        return $this->getData(self::SALES_TAX_CODE_SAFT);
     }
 
-    public function setSalesTaxCodeSAFT(string $value): self
+    public function setSalesTaxCodeSAFT(string $value)
     {
-        return $this->setData(self::SALES_TAX_CODE_S_A_F_T, $value);
+        return $this->setData(self::SALES_TAX_CODE_SAFT, $value);
     }
 
     public function getPurchaseTaxCodeSAFT(): ?string
     {
-        return $this->getData(self::PURCHASE_TAX_CODE_S_A_F_T);
+        return $this->getData(self::PURCHASE_TAX_CODE_SAFT);
     }
 
-    public function setPurchaseTaxCodeSAFT(string $value): self
+    public function setPurchaseTaxCodeSAFT(string $value)
     {
-        return $this->setData(self::PURCHASE_TAX_CODE_S_A_F_T, $value);
+        return $this->setData(self::PURCHASE_TAX_CODE_SAFT, $value);
     }
 
     public function getStartingDate(): ?string
@@ -282,108 +282,108 @@ class VATPostingSetup extends DataObject
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value): self
+    public function setStartingDate(string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
 
     public function getNonDeductibleVAT(): ?string
     {
-        return $this->getData(self::NON_DEDUCTIBLE_V_A_T);
+        return $this->getData(self::NONDEDUCTIBLE_VAT);
     }
 
-    public function setNonDeductibleVAT(string $value): self
+    public function setNonDeductibleVAT(string $value)
     {
-        return $this->setData(self::NON_DEDUCTIBLE_V_A_T, $value);
+        return $this->setData(self::NONDEDUCTIBLE_VAT, $value);
     }
 
     public function getNonDedPurchaseVATAccount(): ?string
     {
-        return $this->getData(self::NON_DED_PURCHASE_V_A_T_ACCOUNT);
+        return $this->getData(self::NONDED_PURCHASE_VAT_ACCOUNT);
     }
 
-    public function setNonDedPurchaseVATAccount(string $value): self
+    public function setNonDedPurchaseVATAccount(string $value)
     {
-        return $this->setData(self::NON_DED_PURCHASE_V_A_T_ACCOUNT, $value);
+        return $this->setData(self::NONDED_PURCHASE_VAT_ACCOUNT, $value);
     }
 
     public function getAllowNonDeductibleVAT(): ?string
     {
-        return $this->getData(self::ALLOW_NON_DEDUCTIBLE_V_A_T);
+        return $this->getData(self::ALLOW_NONDEDUCTIBLE_VAT);
     }
 
-    public function setAllowNonDeductibleVAT(string $value): self
+    public function setAllowNonDeductibleVAT(string $value)
     {
-        return $this->setData(self::ALLOW_NON_DEDUCTIBLE_V_A_T, $value);
+        return $this->setData(self::ALLOW_NONDEDUCTIBLE_VAT, $value);
     }
 
     public function getLSCVATGroupCode(): ?string
     {
-        return $this->getData(self::L_S_C_V_A_T_GROUP_CODE);
+        return $this->getData(self::LSC_VAT_GROUP_CODE);
     }
 
-    public function setLSCVATGroupCode(string $value): self
+    public function setLSCVATGroupCode(string $value)
     {
-        return $this->setData(self::L_S_C_V_A_T_GROUP_CODE, $value);
+        return $this->setData(self::LSC_VAT_GROUP_CODE, $value);
     }
 
     public function getLSCPOSTerminalVATCode(): ?string
     {
-        return $this->getData(self::L_S_C_P_O_S_TERMINAL_V_A_T_CODE);
+        return $this->getData(self::LSC_POS_TERMINAL_VAT_CODE);
     }
 
-    public function setLSCPOSTerminalVATCode(string $value): self
+    public function setLSCPOSTerminalVATCode(string $value)
     {
-        return $this->setData(self::L_S_C_P_O_S_TERMINAL_V_A_T_CODE, $value);
+        return $this->setData(self::LSC_POS_TERMINAL_VAT_CODE, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

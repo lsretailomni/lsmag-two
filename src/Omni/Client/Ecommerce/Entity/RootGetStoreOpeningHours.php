@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetStoreOpeningHours extends \Magento\Framework\DataObject
+class RootGetStoreOpeningHours extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetStoreOpeningHours';
 

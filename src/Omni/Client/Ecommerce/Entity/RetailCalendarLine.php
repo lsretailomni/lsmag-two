@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RetailCalendarLine extends \Magento\Framework\DataObject
+class RetailCalendarLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RetailCalendarLine';
 

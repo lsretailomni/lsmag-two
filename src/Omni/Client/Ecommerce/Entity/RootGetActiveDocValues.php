@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetActiveDocValues extends \Magento\Framework\DataObject
+class RootGetActiveDocValues extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetActiveDocValues';
 

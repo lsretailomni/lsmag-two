@@ -23,8 +23,8 @@ class GetMemberContactInfo_GetMemberContactInfo
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse
@@ -47,19 +47,28 @@ class GetMemberContactInfo_GetMemberContactInfo
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse
     {
         $requiredDataSetName = explode(',', 'LSCMemberContact,LSCMembershipCard,LSCMemberLoginCard,LSCMemberAccount,LSCMemberScheme,LSCMemberClub,LSCMemberContactAttrList,LSCFlowFieldBuffer');
-        $finalEntry = new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo();
+        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
                 $entityClassName = str_replace(' ', '', $dataSet);
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
-                    $entity = new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo($data['LSCMemberContact,LSCMembershipCard,LSCMemberLoginCard,LSCMemberAccount,LSCMemberScheme,LSCMemberClub,LSCMemberContactAttrList,LSCFlowFieldBuffer']);
+                    $entity = $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfo::class,
+                         ['data' => $data['LSCMemberContact,LSCMembershipCard,LSCMemberLoginCard,LSCMemberAccount,LSCMemberScheme,LSCMemberClub,LSCMemberContactAttrList,LSCFlowFieldBuffer']]
+                     );
 
-                    return new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse([
-                        'records' => [$entity],
-                        'ResponseCode' => $data['ResponseCode'] ?? '',
-                        'ErrorText' => $data['ErrorText'] ?? '',
-                    ]);
+                    return $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse::class,
+                       [
+                       'data' =>
+                           [
+                                'records' => [$entity],
+                                'ResponseCode' => $data['ResponseCode'] ?? '',
+                                'ErrorText' => $data['ErrorText'] ?? '',
+                           ]
+                       ]
+                    );
                 }
                 $fields = $rows = [];
                 $recRef = $this->findNestedDataSet($data, $entityClassName);
@@ -77,7 +86,7 @@ class GetMemberContactInfo_GetMemberContactInfo
                     $count = count($rows);
                     $entries = [];
                     foreach ($rows as $index => $row) {
-                        $entry = new $className();
+                        $entry = $this->createInstance($className);
                         foreach ($row['Fields'] ?? [] as $field) {
                             $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
                         }
@@ -88,19 +97,29 @@ class GetMemberContactInfo_GetMemberContactInfo
                     }
                 }
             }
-            return new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse([
-                'records' => [$finalEntry],
-                'ResponseCode' => $data['ResponseCode'] ?? '',
-                'ErrorText' => $data['ErrorText'] ?? ''
-            ]);
+            return $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse::class,
+                [
+                'data' =>
+                    [
+                        'records' => [$finalEntry],
+                        'ResponseCode' => $data['ResponseCode'] ?? '',
+                        'ErrorText' => $data['ErrorText'] ?? '',
+                    ]
+                ]
+            );
         }
-
-        // Fallback
-        return new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse([
-            'records' => [],
-            'ResponseCode' => $data['ResponseCode'] ?? '',
-            'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
-        ]);
+        return $this->createInstance(
+            \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoResponse::class,
+             [
+             'data' =>
+                 [
+                    'records' => [],
+                    'ResponseCode' => $data['ResponseCode'] ?? '',
+                    'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
+                 ]
+            ]
+        );
     }
 
     public function findNestedDataSet($data, string $target): ?array
@@ -127,9 +146,19 @@ class GetMemberContactInfo_GetMemberContactInfo
         return null;
     }
 
+    public function createInstance(string $entityClassName, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest($params));
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetMemberContactInfo_GetMemberContactInfoRequest::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

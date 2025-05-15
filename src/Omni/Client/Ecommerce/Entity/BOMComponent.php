@@ -7,18 +7,18 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class BOMComponent extends DataObject
+class BOMComponent extends AbstractModel
 {
     public const PARENT_ITEM_NO = 'Parent Item No.';
     public const LINE_NO = 'Line No.';
     public const DESCRIPTION = 'Description';
     public const UNIT_OF_MEASURE_CODE = 'Unit of Measure Code';
     public const QUANTITY_PER = 'Quantity per';
-    public const L_S_C_ITEM_NO = 'LSC Item No.';
-    public const L_S_C_EXCLUSION = 'LSC Exclusion';
-    public const L_S_C_PRICE_ON_EXCLUSION = 'LSC Price on Exclusion';
+    public const LSC_ITEM_NO = 'LSC Item No.';
+    public const LSC_EXCLUSION = 'LSC Exclusion';
+    public const LSC_PRICE_ON_EXCLUSION = 'LSC Price on Exclusion';
 
 
     public function getParentItemNo(): ?string
@@ -26,7 +26,7 @@ class BOMComponent extends DataObject
         return $this->getData(self::PARENT_ITEM_NO);
     }
 
-    public function setParentItemNo(string $value): self
+    public function setParentItemNo(string $value)
     {
         return $this->setData(self::PARENT_ITEM_NO, $value);
     }
@@ -36,7 +36,7 @@ class BOMComponent extends DataObject
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value): self
+    public function setLineNo(int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -46,7 +46,7 @@ class BOMComponent extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -56,7 +56,7 @@ class BOMComponent extends DataObject
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value): self
+    public function setUnitOfMeasureCode(string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
@@ -66,38 +66,38 @@ class BOMComponent extends DataObject
         return $this->getData(self::QUANTITY_PER);
     }
 
-    public function setQuantityPer(string $value): self
+    public function setQuantityPer(string $value)
     {
         return $this->setData(self::QUANTITY_PER, $value);
     }
 
     public function getLSCItemNo(): ?string
     {
-        return $this->getData(self::L_S_C_ITEM_NO);
+        return $this->getData(self::LSC_ITEM_NO);
     }
 
-    public function setLSCItemNo(string $value): self
+    public function setLSCItemNo(string $value)
     {
-        return $this->setData(self::L_S_C_ITEM_NO, $value);
+        return $this->setData(self::LSC_ITEM_NO, $value);
     }
 
     public function getLSCExclusion(): ?string
     {
-        return $this->getData(self::L_S_C_EXCLUSION);
+        return $this->getData(self::LSC_EXCLUSION);
     }
 
-    public function setLSCExclusion(string $value): self
+    public function setLSCExclusion(string $value)
     {
-        return $this->setData(self::L_S_C_EXCLUSION, $value);
+        return $this->setData(self::LSC_EXCLUSION, $value);
     }
 
     public function getLSCPriceOnExclusion(): ?string
     {
-        return $this->getData(self::L_S_C_PRICE_ON_EXCLUSION);
+        return $this->getData(self::LSC_PRICE_ON_EXCLUSION);
     }
 
-    public function setLSCPriceOnExclusion(string $value): self
+    public function setLSCPriceOnExclusion(string $value)
     {
-        return $this->setData(self::L_S_C_PRICE_ON_EXCLUSION, $value);
+        return $this->setData(self::LSC_PRICE_ON_EXCLUSION, $value);
     }
 }

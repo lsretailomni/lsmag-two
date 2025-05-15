@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MemberCouponBuffer extends \Magento\Framework\DataObject
+class MemberCouponBuffer extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MemberCouponBuffer';
 

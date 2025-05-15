@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class MobilePosPostPrecalc extends \Magento\Framework\DataObject implements RequestInterface
+class MobilePosPostPrecalc extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
 {
     public const CLASS_NAME = 'MobilePosPostPrecalc';
 

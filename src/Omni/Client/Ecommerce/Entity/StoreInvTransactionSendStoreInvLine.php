@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class StoreInvTransactionSendStoreInvLine extends \Magento\Framework\DataObject
+class StoreInvTransactionSendStoreInvLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'StoreInvTransactionSendStoreInvLine';
 

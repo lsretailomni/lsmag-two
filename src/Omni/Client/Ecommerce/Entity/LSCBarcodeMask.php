@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCBarcodeMask extends DataObject
+class LSCBarcodeMask extends AbstractModel
 {
     public const ENTRY_NO = 'Entry No.';
     public const MASK = 'Mask';
@@ -18,11 +18,11 @@ class LSCBarcodeMask extends DataObject
     public const PREFIX = 'Prefix';
     public const SYMBOLOGY = 'Symbology';
     public const NUMBER_SERIES = 'Number Series';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getEntryNo(): ?int
@@ -30,7 +30,7 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::ENTRY_NO);
     }
 
-    public function setEntryNo(int $value): self
+    public function setEntryNo(int $value)
     {
         return $this->setData(self::ENTRY_NO, $value);
     }
@@ -40,7 +40,7 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::MASK);
     }
 
-    public function setMask(string $value): self
+    public function setMask(string $value)
     {
         return $this->setData(self::MASK, $value);
     }
@@ -50,7 +50,7 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -60,7 +60,7 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -70,7 +70,7 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::PREFIX);
     }
 
-    public function setPrefix(string $value): self
+    public function setPrefix(string $value)
     {
         return $this->setData(self::PREFIX, $value);
     }
@@ -80,7 +80,7 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::SYMBOLOGY);
     }
 
-    public function setSymbology(string $value): self
+    public function setSymbology(string $value)
     {
         return $this->setData(self::SYMBOLOGY, $value);
     }
@@ -90,58 +90,58 @@ class LSCBarcodeMask extends DataObject
         return $this->getData(self::NUMBER_SERIES);
     }
 
-    public function setNumberSeries(string $value): self
+    public function setNumberSeries(string $value)
     {
         return $this->setData(self::NUMBER_SERIES, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

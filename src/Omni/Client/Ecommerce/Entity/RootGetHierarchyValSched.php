@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetHierarchyValSched extends \Magento\Framework\DataObject
+class RootGetHierarchyValSched extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetHierarchyVal.Sched';
 

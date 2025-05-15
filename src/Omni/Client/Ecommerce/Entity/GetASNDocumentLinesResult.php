@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class GetASNDocumentLinesResult extends \Magento\Framework\DataObject implements ResponseInterface
+class GetASNDocumentLinesResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'GetASNDocumentLines_Result';
 

@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetReturnPolicy extends \Magento\Framework\DataObject
+class RootGetReturnPolicy extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetReturnPolicy';
 

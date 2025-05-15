@@ -10,7 +10,7 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\ResponseInterface;
 
-class MobilelPosGetLastReceiptNoResult extends \Magento\Framework\DataObject implements ResponseInterface
+class MobilelPosGetLastReceiptNoResult extends \Magento\Catalog\Model\AbstractModel implements ResponseInterface
 {
     public const CLASS_NAME = 'MobilelPosGetLastReceiptNo_Result';
 

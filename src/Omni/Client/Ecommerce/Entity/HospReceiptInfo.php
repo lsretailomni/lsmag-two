@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class HospReceiptInfo extends \Magento\Framework\DataObject
+class HospReceiptInfo extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'HospReceiptInfo';
 

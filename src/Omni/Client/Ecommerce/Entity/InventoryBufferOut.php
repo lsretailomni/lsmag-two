@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class InventoryBufferOut extends \Magento\Framework\DataObject
+class InventoryBufferOut extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'InventoryBufferOut';
 

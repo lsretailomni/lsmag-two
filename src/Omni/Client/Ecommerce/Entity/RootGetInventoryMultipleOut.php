@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetInventoryMultipleOut extends \Magento\Framework\DataObject
+class RootGetInventoryMultipleOut extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetInventoryMultipleOut';
 

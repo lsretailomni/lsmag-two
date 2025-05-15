@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class MemberNotificationImages extends \Magento\Framework\DataObject
+class MemberNotificationImages extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'MemberNotificationImages';
 

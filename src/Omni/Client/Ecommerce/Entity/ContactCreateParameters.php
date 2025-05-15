@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class ContactCreateParameters extends \Magento\Framework\DataObject
+class ContactCreateParameters extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'ContactCreateParameters';
 

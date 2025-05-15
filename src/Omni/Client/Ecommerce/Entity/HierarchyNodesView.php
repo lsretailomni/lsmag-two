@@ -7,18 +7,18 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class HierarchyNodesView extends DataObject
+class HierarchyNodesView extends AbstractModel
 {
     public const HIERARCHY_CODE = 'Hierarchy Code';
-    public const NODE_I_D = 'Node ID';
-    public const PARENT_NODE_I_D = 'Parent Node ID';
+    public const NODE_ID = 'Node ID';
+    public const PARENT_NODE_ID = 'Parent Node ID';
     public const DESCRIPTION = 'Description';
     public const CHILDREN_ORDER = 'Children Order';
     public const INDENTATION = 'Indentation';
     public const PRESENTATION_ORDER = 'Presentation Order';
-    public const RETAIL_IMAGE_I_D = 'Retail Image ID';
+    public const RETAIL_IMAGE_ID = 'Retail Image ID';
 
 
     public function getHierarchyCode(): ?string
@@ -26,29 +26,29 @@ class HierarchyNodesView extends DataObject
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value): self
+    public function setHierarchyCode(string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
 
     public function getNodeID(): ?string
     {
-        return $this->getData(self::NODE_I_D);
+        return $this->getData(self::NODE_ID);
     }
 
-    public function setNodeID(string $value): self
+    public function setNodeID(string $value)
     {
-        return $this->setData(self::NODE_I_D, $value);
+        return $this->setData(self::NODE_ID, $value);
     }
 
     public function getParentNodeID(): ?string
     {
-        return $this->getData(self::PARENT_NODE_I_D);
+        return $this->getData(self::PARENT_NODE_ID);
     }
 
-    public function setParentNodeID(string $value): self
+    public function setParentNodeID(string $value)
     {
-        return $this->setData(self::PARENT_NODE_I_D, $value);
+        return $this->setData(self::PARENT_NODE_ID, $value);
     }
 
     public function getDescription(): ?string
@@ -56,7 +56,7 @@ class HierarchyNodesView extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -66,7 +66,7 @@ class HierarchyNodesView extends DataObject
         return $this->getData(self::CHILDREN_ORDER);
     }
 
-    public function setChildrenOrder(int $value): self
+    public function setChildrenOrder(int $value)
     {
         return $this->setData(self::CHILDREN_ORDER, $value);
     }
@@ -76,7 +76,7 @@ class HierarchyNodesView extends DataObject
         return $this->getData(self::INDENTATION);
     }
 
-    public function setIndentation(int $value): self
+    public function setIndentation(int $value)
     {
         return $this->setData(self::INDENTATION, $value);
     }
@@ -86,18 +86,18 @@ class HierarchyNodesView extends DataObject
         return $this->getData(self::PRESENTATION_ORDER);
     }
 
-    public function setPresentationOrder(int $value): self
+    public function setPresentationOrder(int $value)
     {
         return $this->setData(self::PRESENTATION_ORDER, $value);
     }
 
     public function getRetailImageID(): ?string
     {
-        return $this->getData(self::RETAIL_IMAGE_I_D);
+        return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
-    public function setRetailImageID(string $value): self
+    public function setRetailImageID(string $value)
     {
-        return $this->setData(self::RETAIL_IMAGE_I_D, $value);
+        return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
 }

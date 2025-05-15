@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class VoucherEntries extends \Magento\Framework\DataObject
+class VoucherEntries extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'VoucherEntries';
 

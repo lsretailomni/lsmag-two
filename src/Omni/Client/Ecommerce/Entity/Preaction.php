@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class Preaction extends \Magento\Framework\DataObject
+class Preaction extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'Preaction';
 

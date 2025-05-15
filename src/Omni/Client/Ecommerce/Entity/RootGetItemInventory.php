@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetItemInventory extends \Magento\Framework\DataObject
+class RootGetItemInventory extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetItemInventory';
 

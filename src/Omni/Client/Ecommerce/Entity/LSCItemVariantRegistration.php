@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCItemVariantRegistration extends DataObject
+class LSCItemVariantRegistration extends AbstractModel
 {
     public const BARCODE = 'Barcode';
     public const DIMENSION_1_WEIGHT = 'Dimension 1 Weight';
@@ -21,10 +21,10 @@ class LSCItemVariantRegistration extends DataObject
     public const FRAMEWORK_CODE = 'Framework Code';
     public const ITEM_NO = 'Item No.';
     public const LOGICAL_ORDER = 'Logical Order';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const VARIANT = 'Variant';
     public const VARIANT_DIMENSION_1 = 'Variant Dimension 1';
     public const VARIANT_DIMENSION_2 = 'Variant Dimension 2';
@@ -33,7 +33,7 @@ class LSCItemVariantRegistration extends DataObject
     public const VARIANT_DIMENSION_5 = 'Variant Dimension 5';
     public const VARIANT_DIMENSION_6 = 'Variant Dimension 6';
     public const VARIANT_WEIGHT = 'Variant Weight';
-    public const SYSTEM_ID = '$systemId';
+    public const SYSTEMID = '$systemId';
 
 
     public function getBarcode(): ?string
@@ -41,7 +41,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::BARCODE);
     }
 
-    public function setBarcode(string $value): self
+    public function setBarcode(string $value)
     {
         return $this->setData(self::BARCODE, $value);
     }
@@ -51,7 +51,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::DIMENSION_1_WEIGHT);
     }
 
-    public function setDimension1Weight(string $value): self
+    public function setDimension1Weight(string $value)
     {
         return $this->setData(self::DIMENSION_1_WEIGHT, $value);
     }
@@ -61,7 +61,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::DIMENSION_2_WEIGHT);
     }
 
-    public function setDimension2Weight(string $value): self
+    public function setDimension2Weight(string $value)
     {
         return $this->setData(self::DIMENSION_2_WEIGHT, $value);
     }
@@ -71,7 +71,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::DIMENSION_3_WEIGHT);
     }
 
-    public function setDimension3Weight(string $value): self
+    public function setDimension3Weight(string $value)
     {
         return $this->setData(self::DIMENSION_3_WEIGHT, $value);
     }
@@ -81,7 +81,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::DIMENSION_4_WEIGHT);
     }
 
-    public function setDimension4Weight(string $value): self
+    public function setDimension4Weight(string $value)
     {
         return $this->setData(self::DIMENSION_4_WEIGHT, $value);
     }
@@ -91,7 +91,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::DIMENSION_5_WEIGHT);
     }
 
-    public function setDimension5Weight(string $value): self
+    public function setDimension5Weight(string $value)
     {
         return $this->setData(self::DIMENSION_5_WEIGHT, $value);
     }
@@ -101,7 +101,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::DIMENSION_6_WEIGHT);
     }
 
-    public function setDimension6Weight(string $value): self
+    public function setDimension6Weight(string $value)
     {
         return $this->setData(self::DIMENSION_6_WEIGHT, $value);
     }
@@ -111,7 +111,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value): self
+    public function setFrameworkCode(string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -121,7 +121,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value): self
+    public function setItemNo(string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -131,49 +131,49 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(string $value): self
+    public function setLogicalOrder(string $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
     public function getVariant(): ?string
@@ -181,7 +181,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT);
     }
 
-    public function setVariant(string $value): self
+    public function setVariant(string $value)
     {
         return $this->setData(self::VARIANT, $value);
     }
@@ -191,7 +191,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_1);
     }
 
-    public function setVariantDimension1(string $value): self
+    public function setVariantDimension1(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_1, $value);
     }
@@ -201,7 +201,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_2);
     }
 
-    public function setVariantDimension2(string $value): self
+    public function setVariantDimension2(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_2, $value);
     }
@@ -211,7 +211,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_3);
     }
 
-    public function setVariantDimension3(string $value): self
+    public function setVariantDimension3(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_3, $value);
     }
@@ -221,7 +221,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_4);
     }
 
-    public function setVariantDimension4(string $value): self
+    public function setVariantDimension4(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_4, $value);
     }
@@ -231,7 +231,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_5);
     }
 
-    public function setVariantDimension5(string $value): self
+    public function setVariantDimension5(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_5, $value);
     }
@@ -241,7 +241,7 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_DIMENSION_6);
     }
 
-    public function setVariantDimension6(string $value): self
+    public function setVariantDimension6(string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_6, $value);
     }
@@ -251,18 +251,18 @@ class LSCItemVariantRegistration extends DataObject
         return $this->getData(self::VARIANT_WEIGHT);
     }
 
-    public function setVariantWeight(string $value): self
+    public function setVariantWeight(string $value)
     {
         return $this->setData(self::VARIANT_WEIGHT, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 }

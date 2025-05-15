@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class Token extends \Magento\Framework\DataObject
+class Token extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'Token';
 

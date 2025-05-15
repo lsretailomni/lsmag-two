@@ -7,97 +7,97 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class GetMemberContactInfo_GetMemberContactInfo extends DataObject
+class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
 {
-    public const L_S_C_MEMBER_CONTACT = 'LSCMemberContact';
-    public const L_S_C_MEMBERSHIP_CARD = 'LSCMembershipCard';
-    public const L_S_C_MEMBER_LOGIN_CARD = 'LSCMemberLoginCard';
-    public const L_S_C_MEMBER_ACCOUNT = 'LSCMemberAccount';
-    public const L_S_C_MEMBER_SCHEME = 'LSCMemberScheme';
-    public const L_S_C_MEMBER_CLUB = 'LSCMemberClub';
-    public const L_S_C_MEMBER_CONTACT_ATTR_LIST = 'LSCMemberContactAttrList';
-    public const L_S_C_FLOW_FIELD_BUFFER = 'LSCFlowFieldBuffer';
+    public const LSC_MEMBER_CONTACT = 'LSCMemberContact';
+    public const LSC_MEMBERSHIP_CARD = 'LSCMembershipCard';
+    public const LSC_MEMBER_LOGIN_CARD = 'LSCMemberLoginCard';
+    public const LSC_MEMBER_ACCOUNT = 'LSCMemberAccount';
+    public const LSC_MEMBER_SCHEME = 'LSCMemberScheme';
+    public const LSC_MEMBER_CLUB = 'LSCMemberClub';
+    public const LSC_MEMBER_CONTACT_ATTR_LIST = 'LSCMemberContactAttr.List';
+    public const LSC_FLOWFIELD_BUFFER = 'LSCFlowFieldBuffer';
 
 
     public function getLSCMemberContact(): ?LSCMemberContact
     {
-        return $this->getData(self::L_S_C_MEMBER_CONTACT);
+        return $this->getData(self::LSC_MEMBER_CONTACT);
     }
 
-    public function setLSCMemberContact(LSCMemberContact $value): self
+    public function setLSCMemberContact(LSCMemberContact $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_CONTACT, $value);
+        return $this->setData(self::LSC_MEMBER_CONTACT, $value);
     }
 
     public function getLSCMembershipCard(): ?array
     {
-        return $this->getData(self::L_S_C_MEMBERSHIP_CARD);
+        return $this->getData(self::LSC_MEMBERSHIP_CARD);
     }
 
-    public function setLSCMembershipCard(array $value): self
+    public function setLSCMembershipCard(array $value)
     {
-        return $this->setData(self::L_S_C_MEMBERSHIP_CARD, $value);
+        return $this->setData(self::LSC_MEMBERSHIP_CARD, $value);
     }
 
     public function getLSCMemberLoginCard(): ?LSCMemberLoginCard
     {
-        return $this->getData(self::L_S_C_MEMBER_LOGIN_CARD);
+        return $this->getData(self::LSC_MEMBER_LOGIN_CARD);
     }
 
-    public function setLSCMemberLoginCard(LSCMemberLoginCard $value): self
+    public function setLSCMemberLoginCard(LSCMemberLoginCard $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_LOGIN_CARD, $value);
+        return $this->setData(self::LSC_MEMBER_LOGIN_CARD, $value);
     }
 
     public function getLSCMemberAccount(): ?LSCMemberAccount
     {
-        return $this->getData(self::L_S_C_MEMBER_ACCOUNT);
+        return $this->getData(self::LSC_MEMBER_ACCOUNT);
     }
 
-    public function setLSCMemberAccount(LSCMemberAccount $value): self
+    public function setLSCMemberAccount(LSCMemberAccount $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_ACCOUNT, $value);
+        return $this->setData(self::LSC_MEMBER_ACCOUNT, $value);
     }
 
     public function getLSCMemberScheme(): ?LSCMemberScheme
     {
-        return $this->getData(self::L_S_C_MEMBER_SCHEME);
+        return $this->getData(self::LSC_MEMBER_SCHEME);
     }
 
-    public function setLSCMemberScheme(LSCMemberScheme $value): self
+    public function setLSCMemberScheme(LSCMemberScheme $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_SCHEME, $value);
+        return $this->setData(self::LSC_MEMBER_SCHEME, $value);
     }
 
     public function getLSCMemberClub(): ?LSCMemberClub
     {
-        return $this->getData(self::L_S_C_MEMBER_CLUB);
+        return $this->getData(self::LSC_MEMBER_CLUB);
     }
 
-    public function setLSCMemberClub(LSCMemberClub $value): self
+    public function setLSCMemberClub(LSCMemberClub $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_CLUB, $value);
+        return $this->setData(self::LSC_MEMBER_CLUB, $value);
     }
 
     public function getLSCMemberContactAttrList(): ?array
     {
-        return $this->getData(self::L_S_C_MEMBER_CONTACT_ATTR_LIST);
+        return $this->getData(self::LSC_MEMBER_CONTACT_ATTR_LIST);
     }
 
-    public function setLSCMemberContactAttrList(array $value): self
+    public function setLSCMemberContactAttrList(array $value)
     {
-        return $this->setData(self::L_S_C_MEMBER_CONTACT_ATTR_LIST, $value);
+        return $this->setData(self::LSC_MEMBER_CONTACT_ATTR_LIST, $value);
     }
 
     public function getLSCFlowFieldBuffer(): ?array
     {
-        return $this->getData(self::L_S_C_FLOW_FIELD_BUFFER);
+        return $this->getData(self::LSC_FLOWFIELD_BUFFER);
     }
 
-    public function setLSCFlowFieldBuffer(array $value): self
+    public function setLSCFlowFieldBuffer(array $value)
     {
-        return $this->setData(self::L_S_C_FLOW_FIELD_BUFFER, $value);
+        return $this->setData(self::LSC_FLOWFIELD_BUFFER, $value);
     }
 }

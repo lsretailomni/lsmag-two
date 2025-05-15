@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class RootGetMemberInfoForPos extends \Magento\Framework\DataObject
+class RootGetMemberInfoForPos extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'RootGetMemberInfoForPos';
 

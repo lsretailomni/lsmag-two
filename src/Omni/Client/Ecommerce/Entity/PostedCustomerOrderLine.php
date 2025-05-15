@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class PostedCustomerOrderLine extends \Magento\Framework\DataObject
+class PostedCustomerOrderLine extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'PostedCustomerOrderLine';
 

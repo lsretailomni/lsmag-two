@@ -23,8 +23,8 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
         $this->baseUrl = $baseUrl;
         $this->connectionParams = $connectionParams;
         $this->companyName = $companyName;
-        $this->dataHelper = ObjectManager::getInstance()->get(\Ls\Omni\Helper\Data::class);
-        $this->request = new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdRequest();
+        $this->dataHelper = $this->createInstance(\Ls\Omni\Helper\Data::class);
+        $this->request = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdRequest::class);
     }
 
     public function execute(): \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse
@@ -47,19 +47,28 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
     public function formatResponse($data): \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse
     {
         $requiredDataSetName = explode(',', 'LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry,SalesShipmentHeader,SalesShipmentLine');
-        $finalEntry = new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId();
+        $finalEntry = $this->createInstance(\Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId::class);
         if (is_array($requiredDataSetName)) {
             foreach ($requiredDataSetName as $dataSet) {
                 $entityClassName = str_replace(' ', '', $dataSet);
                 // Try flat response structure
                 if (isset($data[$dataSet]) && is_array($data[$dataSet])) {
-                    $entity = new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId($data['LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry,SalesShipmentHeader,SalesShipmentLine']);
+                    $entity = $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderId::class,
+                         ['data' => $data['LSCMemberSalesBuffer,LSCMemberSalesDocLine,LSCMemberSalesDocDiscLine,LSCMemberSalesDataEntry,SalesShipmentHeader,SalesShipmentLine']]
+                     );
 
-                    return new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse([
-                        'records' => [$entity],
-                        'ResponseCode' => $data['ResponseCode'] ?? '',
-                        'ErrorText' => $data['ErrorText'] ?? '',
-                    ]);
+                    return $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse::class,
+                       [
+                       'data' =>
+                           [
+                                'records' => [$entity],
+                                'ResponseCode' => $data['ResponseCode'] ?? '',
+                                'ErrorText' => $data['ErrorText'] ?? '',
+                           ]
+                       ]
+                    );
                 }
                 $fields = $rows = [];
                 $recRef = $this->findNestedDataSet($data, $entityClassName);
@@ -77,7 +86,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
                     $count = count($rows);
                     $entries = [];
                     foreach ($rows as $index => $row) {
-                        $entry = new $className();
+                        $entry = $this->createInstance($className);
                         foreach ($row['Fields'] ?? [] as $field) {
                             $entry->setData($fields[$field['FieldIndex']], $field['FieldValue']);
                         }
@@ -88,19 +97,29 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
                     }
                 }
             }
-            return new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse([
-                'records' => [$finalEntry],
-                'ResponseCode' => $data['ResponseCode'] ?? '',
-                'ErrorText' => $data['ErrorText'] ?? ''
-            ]);
+            return $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse::class,
+                [
+                'data' =>
+                    [
+                        'records' => [$finalEntry],
+                        'ResponseCode' => $data['ResponseCode'] ?? '',
+                        'ErrorText' => $data['ErrorText'] ?? '',
+                    ]
+                ]
+            );
         }
-
-        // Fallback
-        return new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse([
-            'records' => [],
-            'ResponseCode' => $data['ResponseCode'] ?? '',
-            'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
-        ]);
+        return $this->createInstance(
+            \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdResponse::class,
+             [
+             'data' =>
+                 [
+                    'records' => [],
+                    'ResponseCode' => $data['ResponseCode'] ?? '',
+                    'ErrorText' => $data['ErrorText'] ?? 'Unable to parse response.',
+                 ]
+            ]
+        );
     }
 
     public function findNestedDataSet($data, string $target): ?array
@@ -127,9 +146,19 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId
         return null;
     }
 
+    public function createInstance(string $entityClassName, array $data = [])
+    {
+        return ObjectManager::getInstance()->create($entityClassName, $data);
+    }
+
     public function & setOperationInput(array $params = []): \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdRequest
     {
-        $this->setRequest(new \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdRequest($params));
+        $this->setRequest(
+            $this->createInstance(
+                \Ls\Omni\Client\Ecommerce\Entity\GetSalesInfoByOrderId_GetSalesInfoByOrderIdRequest::class,
+                ['data' => $params]
+            )
+        );
         $request = $this->getRequest();
 
         return $request;

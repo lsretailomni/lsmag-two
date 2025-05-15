@@ -7,9 +7,9 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
-class LSCWIItemBuffer extends DataObject
+class LSCWIItemBuffer extends AbstractModel
 {
     public const NO = 'No.';
     public const DESCRIPTION = 'Description';
@@ -30,37 +30,37 @@ class LSCWIItemBuffer extends DataObject
     public const TARIFF_NO = 'Tariff No.';
     public const BLOCKED = 'Blocked';
     public const BLOCK_REASON = 'Block Reason';
-    public const PRICE_INCLUDES_V_A_T = 'Price Includes VAT';
-    public const COUNTRY_REGION_OF_ORIGIN_CODE = 'Country/Region of Origin Code';
-    public const V_A_T_PROD_POSTING_GROUP = 'VAT Prod. Posting Group';
+    public const PRICE_INCLUDES_VAT = 'Price Includes VAT';
+    public const COUNTRYREGION_OF_ORIGIN_CODE = 'Country/Region of Origin Code';
+    public const VAT_PROD_POSTING_GROUP = 'VAT Prod. Posting Group';
     public const SALES_UNIT_OF_MEASURE = 'Sales Unit of Measure';
     public const PURCH_UNIT_OF_MEASURE = 'Purch. Unit of Measure';
     public const ITEM_CATEGORY_CODE = 'Item Category Code';
     public const ITEM_TRACKING_CODE = 'Item Tracking Code';
-    public const L_S_C_DIVISION_CODE = 'LSC Division Code';
-    public const L_S_C_RETAIL_PRODUCT_CODE = 'LSC Retail Product Code';
-    public const L_S_C_SPECIAL_GROUP_CODES = 'LSC Special Group Codes';
-    public const L_S_C_VARIANT_FRAMEWORK_CODE = 'LSC Variant Framework Code';
+    public const LSC_DIVISION_CODE = 'LSC Division Code';
+    public const LSC_RETAIL_PRODUCT_CODE = 'LSC Retail Product Code';
+    public const LSC_SPECIAL_GROUP_CODES = 'LSC Special Group Codes';
+    public const LSC_VARIANT_FRAMEWORK_CODE = 'LSC Variant Framework Code';
     public const SEASON_CODE = 'Season Code';
     public const ITEM_HTML = 'Item Html';
-    public const BLOCK_SALE_ON_P_O_S = 'Block Sale on POS';
+    public const BLOCK_SALE_ON_POS = 'Block Sale on POS';
     public const BLOCK_PURCHASE_RETURN = 'Block Purchase Return';
-    public const BLOCKED_ON_E_COMMERCE = 'Blocked on eCommerce';
+    public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
     public const BLOCK_DISCOUNT = 'Block Discount';
     public const BLOCK_MANUAL_PRICE_CHANGE = 'Block Manual Price Change';
     public const BLOCK_NEGATIVE_ADJUSTMENT = 'Block Negative Adjustment';
     public const BLOCK_POSITIVE_ADJUSTMENT = 'Block Positive Adjustment';
-    public const L_S_C_ITEM_FAMILY_CODE = 'LSC Item Family Code';
-    public const L_S_C_ZERO_PRICE_VALID = 'LSC Zero Price Valid';
-    public const L_S_C_NO_DISCOUNT_ALLOWED = 'LSC No Discount Allowed';
-    public const L_S_C_KEYING_IN_PRICE = 'LSC Keying in Price';
-    public const L_S_C_SCALE_ITEM = 'LSC Scale Item';
-    public const L_S_C_KEYING_IN_QUANTITY = 'LSC Keying in Quantity';
-    public const SYSTEM_ID = '$systemId';
-    public const SYSTEM_CREATED_AT = 'SystemCreatedAt';
-    public const SYSTEM_CREATED_BY = 'SystemCreatedBy';
-    public const SYSTEM_MODIFIED_AT = 'SystemModifiedAt';
-    public const SYSTEM_MODIFIED_BY = 'SystemModifiedBy';
+    public const LSC_ITEM_FAMILY_CODE = 'LSC Item Family Code';
+    public const LSC_ZERO_PRICE_VALID = 'LSC Zero Price Valid';
+    public const LSC_NO_DISCOUNT_ALLOWED = 'LSC No Discount Allowed';
+    public const LSC_KEYING_IN_PRICE = 'LSC Keying in Price';
+    public const LSC_SCALE_ITEM = 'LSC Scale Item';
+    public const LSC_KEYING_IN_QUANTITY = 'LSC Keying in Quantity';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
 
     public function getNo(): ?string
@@ -68,7 +68,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value): self
+    public function setNo(string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -78,7 +78,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value): self
+    public function setDescription(string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -88,7 +88,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::SEARCH_DESCRIPTION);
     }
 
-    public function setSearchDescription(string $value): self
+    public function setSearchDescription(string $value)
     {
         return $this->setData(self::SEARCH_DESCRIPTION, $value);
     }
@@ -98,7 +98,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
 
-    public function setBaseUnitOfMeasure(string $value): self
+    public function setBaseUnitOfMeasure(string $value)
     {
         return $this->setData(self::BASE_UNIT_OF_MEASURE, $value);
     }
@@ -108,7 +108,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::PRICE_UNIT_CONVERSION);
     }
 
-    public function setPriceUnitConversion(int $value): self
+    public function setPriceUnitConversion(int $value)
     {
         return $this->setData(self::PRICE_UNIT_CONVERSION, $value);
     }
@@ -118,7 +118,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value): self
+    public function setType(string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -128,7 +128,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::ITEM_DISC_GROUP);
     }
 
-    public function setItemDiscGroup(string $value): self
+    public function setItemDiscGroup(string $value)
     {
         return $this->setData(self::ITEM_DISC_GROUP, $value);
     }
@@ -138,7 +138,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::ALLOW_INVOICE_DISC);
     }
 
-    public function setAllowInvoiceDisc(bool $value): self
+    public function setAllowInvoiceDisc(bool $value)
     {
         return $this->setData(self::ALLOW_INVOICE_DISC, $value);
     }
@@ -148,7 +148,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value): self
+    public function setUnitPrice(string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -158,7 +158,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value): self
+    public function setVendorNo(string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -168,7 +168,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::VENDOR_ITEM_NO);
     }
 
-    public function setVendorItemNo(string $value): self
+    public function setVendorItemNo(string $value)
     {
         return $this->setData(self::VENDOR_ITEM_NO, $value);
     }
@@ -178,7 +178,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::ALTERNATIVE_ITEM_NO);
     }
 
-    public function setAlternativeItemNo(string $value): self
+    public function setAlternativeItemNo(string $value)
     {
         return $this->setData(self::ALTERNATIVE_ITEM_NO, $value);
     }
@@ -188,7 +188,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::GROSS_WEIGHT);
     }
 
-    public function setGrossWeight(string $value): self
+    public function setGrossWeight(string $value)
     {
         return $this->setData(self::GROSS_WEIGHT, $value);
     }
@@ -198,7 +198,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::NET_WEIGHT);
     }
 
-    public function setNetWeight(string $value): self
+    public function setNetWeight(string $value)
     {
         return $this->setData(self::NET_WEIGHT, $value);
     }
@@ -208,7 +208,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::UNITS_PER_PARCEL);
     }
 
-    public function setUnitsPerParcel(string $value): self
+    public function setUnitsPerParcel(string $value)
     {
         return $this->setData(self::UNITS_PER_PARCEL, $value);
     }
@@ -218,7 +218,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::UNIT_VOLUME);
     }
 
-    public function setUnitVolume(string $value): self
+    public function setUnitVolume(string $value)
     {
         return $this->setData(self::UNIT_VOLUME, $value);
     }
@@ -228,7 +228,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::TARIFF_NO);
     }
 
-    public function setTariffNo(string $value): self
+    public function setTariffNo(string $value)
     {
         return $this->setData(self::TARIFF_NO, $value);
     }
@@ -238,7 +238,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value): self
+    public function setBlocked(bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -248,39 +248,39 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCK_REASON);
     }
 
-    public function setBlockReason(string $value): self
+    public function setBlockReason(string $value)
     {
         return $this->setData(self::BLOCK_REASON, $value);
     }
 
     public function getPriceIncludesVAT(): ?bool
     {
-        return $this->getData(self::PRICE_INCLUDES_V_A_T);
+        return $this->getData(self::PRICE_INCLUDES_VAT);
     }
 
-    public function setPriceIncludesVAT(bool $value): self
+    public function setPriceIncludesVAT(bool $value)
     {
-        return $this->setData(self::PRICE_INCLUDES_V_A_T, $value);
+        return $this->setData(self::PRICE_INCLUDES_VAT, $value);
     }
 
     public function getCountryRegionOfOriginCode(): ?string
     {
-        return $this->getData(self::COUNTRY_REGION_OF_ORIGIN_CODE);
+        return $this->getData(self::COUNTRYREGION_OF_ORIGIN_CODE);
     }
 
-    public function setCountryRegionOfOriginCode(string $value): self
+    public function setCountryRegionOfOriginCode(string $value)
     {
-        return $this->setData(self::COUNTRY_REGION_OF_ORIGIN_CODE, $value);
+        return $this->setData(self::COUNTRYREGION_OF_ORIGIN_CODE, $value);
     }
 
     public function getVATProdPostingGroup(): ?string
     {
-        return $this->getData(self::V_A_T_PROD_POSTING_GROUP);
+        return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value): self
+    public function setVATProdPostingGroup(string $value)
     {
-        return $this->setData(self::V_A_T_PROD_POSTING_GROUP, $value);
+        return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
     public function getSalesUnitOfMeasure(): ?string
@@ -288,7 +288,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::SALES_UNIT_OF_MEASURE);
     }
 
-    public function setSalesUnitOfMeasure(string $value): self
+    public function setSalesUnitOfMeasure(string $value)
     {
         return $this->setData(self::SALES_UNIT_OF_MEASURE, $value);
     }
@@ -298,7 +298,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::PURCH_UNIT_OF_MEASURE);
     }
 
-    public function setPurchUnitOfMeasure(string $value): self
+    public function setPurchUnitOfMeasure(string $value)
     {
         return $this->setData(self::PURCH_UNIT_OF_MEASURE, $value);
     }
@@ -308,7 +308,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
-    public function setItemCategoryCode(string $value): self
+    public function setItemCategoryCode(string $value)
     {
         return $this->setData(self::ITEM_CATEGORY_CODE, $value);
     }
@@ -318,49 +318,49 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::ITEM_TRACKING_CODE);
     }
 
-    public function setItemTrackingCode(string $value): self
+    public function setItemTrackingCode(string $value)
     {
         return $this->setData(self::ITEM_TRACKING_CODE, $value);
     }
 
     public function getLSCDivisionCode(): ?string
     {
-        return $this->getData(self::L_S_C_DIVISION_CODE);
+        return $this->getData(self::LSC_DIVISION_CODE);
     }
 
-    public function setLSCDivisionCode(string $value): self
+    public function setLSCDivisionCode(string $value)
     {
-        return $this->setData(self::L_S_C_DIVISION_CODE, $value);
+        return $this->setData(self::LSC_DIVISION_CODE, $value);
     }
 
     public function getLSCRetailProductCode(): ?string
     {
-        return $this->getData(self::L_S_C_RETAIL_PRODUCT_CODE);
+        return $this->getData(self::LSC_RETAIL_PRODUCT_CODE);
     }
 
-    public function setLSCRetailProductCode(string $value): self
+    public function setLSCRetailProductCode(string $value)
     {
-        return $this->setData(self::L_S_C_RETAIL_PRODUCT_CODE, $value);
+        return $this->setData(self::LSC_RETAIL_PRODUCT_CODE, $value);
     }
 
     public function getLSCSpecialGroupCodes(): ?string
     {
-        return $this->getData(self::L_S_C_SPECIAL_GROUP_CODES);
+        return $this->getData(self::LSC_SPECIAL_GROUP_CODES);
     }
 
-    public function setLSCSpecialGroupCodes(string $value): self
+    public function setLSCSpecialGroupCodes(string $value)
     {
-        return $this->setData(self::L_S_C_SPECIAL_GROUP_CODES, $value);
+        return $this->setData(self::LSC_SPECIAL_GROUP_CODES, $value);
     }
 
     public function getLSCVariantFrameworkCode(): ?string
     {
-        return $this->getData(self::L_S_C_VARIANT_FRAMEWORK_CODE);
+        return $this->getData(self::LSC_VARIANT_FRAMEWORK_CODE);
     }
 
-    public function setLSCVariantFrameworkCode(string $value): self
+    public function setLSCVariantFrameworkCode(string $value)
     {
-        return $this->setData(self::L_S_C_VARIANT_FRAMEWORK_CODE, $value);
+        return $this->setData(self::LSC_VARIANT_FRAMEWORK_CODE, $value);
     }
 
     public function getSeasonCode(): ?string
@@ -368,7 +368,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::SEASON_CODE);
     }
 
-    public function setSeasonCode(string $value): self
+    public function setSeasonCode(string $value)
     {
         return $this->setData(self::SEASON_CODE, $value);
     }
@@ -378,19 +378,19 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::ITEM_HTML);
     }
 
-    public function setItemHtml(string $value): self
+    public function setItemHtml(string $value)
     {
         return $this->setData(self::ITEM_HTML, $value);
     }
 
     public function getBlockSaleOnPOS(): ?bool
     {
-        return $this->getData(self::BLOCK_SALE_ON_P_O_S);
+        return $this->getData(self::BLOCK_SALE_ON_POS);
     }
 
-    public function setBlockSaleOnPOS(bool $value): self
+    public function setBlockSaleOnPOS(bool $value)
     {
-        return $this->setData(self::BLOCK_SALE_ON_P_O_S, $value);
+        return $this->setData(self::BLOCK_SALE_ON_POS, $value);
     }
 
     public function getBlockPurchaseReturn(): ?bool
@@ -398,19 +398,19 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCK_PURCHASE_RETURN);
     }
 
-    public function setBlockPurchaseReturn(bool $value): self
+    public function setBlockPurchaseReturn(bool $value)
     {
         return $this->setData(self::BLOCK_PURCHASE_RETURN, $value);
     }
 
     public function getBlockedOnECommerce(): ?bool
     {
-        return $this->getData(self::BLOCKED_ON_E_COMMERCE);
+        return $this->getData(self::BLOCKED_ON_ECOMMERCE);
     }
 
-    public function setBlockedOnECommerce(bool $value): self
+    public function setBlockedOnECommerce(bool $value)
     {
-        return $this->setData(self::BLOCKED_ON_E_COMMERCE, $value);
+        return $this->setData(self::BLOCKED_ON_ECOMMERCE, $value);
     }
 
     public function getBlockDiscount(): ?bool
@@ -418,7 +418,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCK_DISCOUNT);
     }
 
-    public function setBlockDiscount(bool $value): self
+    public function setBlockDiscount(bool $value)
     {
         return $this->setData(self::BLOCK_DISCOUNT, $value);
     }
@@ -428,7 +428,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCK_MANUAL_PRICE_CHANGE);
     }
 
-    public function setBlockManualPriceChange(bool $value): self
+    public function setBlockManualPriceChange(bool $value)
     {
         return $this->setData(self::BLOCK_MANUAL_PRICE_CHANGE, $value);
     }
@@ -438,7 +438,7 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCK_NEGATIVE_ADJUSTMENT);
     }
 
-    public function setBlockNegativeAdjustment(bool $value): self
+    public function setBlockNegativeAdjustment(bool $value)
     {
         return $this->setData(self::BLOCK_NEGATIVE_ADJUSTMENT, $value);
     }
@@ -448,118 +448,118 @@ class LSCWIItemBuffer extends DataObject
         return $this->getData(self::BLOCK_POSITIVE_ADJUSTMENT);
     }
 
-    public function setBlockPositiveAdjustment(bool $value): self
+    public function setBlockPositiveAdjustment(bool $value)
     {
         return $this->setData(self::BLOCK_POSITIVE_ADJUSTMENT, $value);
     }
 
     public function getLSCItemFamilyCode(): ?string
     {
-        return $this->getData(self::L_S_C_ITEM_FAMILY_CODE);
+        return $this->getData(self::LSC_ITEM_FAMILY_CODE);
     }
 
-    public function setLSCItemFamilyCode(string $value): self
+    public function setLSCItemFamilyCode(string $value)
     {
-        return $this->setData(self::L_S_C_ITEM_FAMILY_CODE, $value);
+        return $this->setData(self::LSC_ITEM_FAMILY_CODE, $value);
     }
 
     public function getLSCZeroPriceValid(): ?bool
     {
-        return $this->getData(self::L_S_C_ZERO_PRICE_VALID);
+        return $this->getData(self::LSC_ZERO_PRICE_VALID);
     }
 
-    public function setLSCZeroPriceValid(bool $value): self
+    public function setLSCZeroPriceValid(bool $value)
     {
-        return $this->setData(self::L_S_C_ZERO_PRICE_VALID, $value);
+        return $this->setData(self::LSC_ZERO_PRICE_VALID, $value);
     }
 
     public function getLSCNoDiscountAllowed(): ?bool
     {
-        return $this->getData(self::L_S_C_NO_DISCOUNT_ALLOWED);
+        return $this->getData(self::LSC_NO_DISCOUNT_ALLOWED);
     }
 
-    public function setLSCNoDiscountAllowed(bool $value): self
+    public function setLSCNoDiscountAllowed(bool $value)
     {
-        return $this->setData(self::L_S_C_NO_DISCOUNT_ALLOWED, $value);
+        return $this->setData(self::LSC_NO_DISCOUNT_ALLOWED, $value);
     }
 
     public function getLSCKeyingInPrice(): ?string
     {
-        return $this->getData(self::L_S_C_KEYING_IN_PRICE);
+        return $this->getData(self::LSC_KEYING_IN_PRICE);
     }
 
-    public function setLSCKeyingInPrice(string $value): self
+    public function setLSCKeyingInPrice(string $value)
     {
-        return $this->setData(self::L_S_C_KEYING_IN_PRICE, $value);
+        return $this->setData(self::LSC_KEYING_IN_PRICE, $value);
     }
 
     public function getLSCScaleItem(): ?bool
     {
-        return $this->getData(self::L_S_C_SCALE_ITEM);
+        return $this->getData(self::LSC_SCALE_ITEM);
     }
 
-    public function setLSCScaleItem(bool $value): self
+    public function setLSCScaleItem(bool $value)
     {
-        return $this->setData(self::L_S_C_SCALE_ITEM, $value);
+        return $this->setData(self::LSC_SCALE_ITEM, $value);
     }
 
     public function getLSCKeyingInQuantity(): ?string
     {
-        return $this->getData(self::L_S_C_KEYING_IN_QUANTITY);
+        return $this->getData(self::LSC_KEYING_IN_QUANTITY);
     }
 
-    public function setLSCKeyingInQuantity(string $value): self
+    public function setLSCKeyingInQuantity(string $value)
     {
-        return $this->setData(self::L_S_C_KEYING_IN_QUANTITY, $value);
+        return $this->setData(self::LSC_KEYING_IN_QUANTITY, $value);
     }
 
     public function getSystemId(): ?string
     {
-        return $this->getData(self::SYSTEM_ID);
+        return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value): self
+    public function setSystemId(string $value)
     {
-        return $this->setData(self::SYSTEM_ID, $value);
+        return $this->setData(self::SYSTEMID, $value);
     }
 
     public function getSystemCreatedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_CREATED_AT);
+        return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value): self
+    public function setSystemCreatedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_AT, $value);
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
     public function getSystemCreatedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_CREATED_BY);
+        return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value): self
+    public function setSystemCreatedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_CREATED_BY, $value);
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
     public function getSystemModifiedAt(): ?\DateTime
     {
-        return $this->getData(self::SYSTEM_MODIFIED_AT);
+        return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value): self
+    public function setSystemModifiedAt(\DateTime $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_AT, $value);
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
     public function getSystemModifiedBy(): ?string
     {
-        return $this->getData(self::SYSTEM_MODIFIED_BY);
+        return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value): self
+    public function setSystemModifiedBy(string $value)
     {
-        return $this->setData(self::SYSTEM_MODIFIED_BY, $value);
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }

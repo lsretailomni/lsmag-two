@@ -8,7 +8,7 @@
 
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class TransTenderDeclarEntry extends \Magento\Framework\DataObject
+class TransTenderDeclarEntry extends \Magento\Catalog\Model\AbstractModel
 {
     public const CLASS_NAME = 'TransTenderDeclarEntry';
 
