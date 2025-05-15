@@ -64,7 +64,7 @@ class ClientGenerate extends Command
         $restrictions = array_keys($metadata->getRestrictions());
         // $this->clean($baseDir);
         $odataGenerator = new OdataGenerator();
-        $odataGenerator->generate($entityDir, $operationDir, $this->getOmniDataHelper(), $output);
+        $classMap = $odataGenerator->generate($entityDir, $operationDir, $this->getOmniDataHelper(), $output);
 
         foreach ($metadata->getEntities() as $entity) {
             if (array_search($entity->getName(), $restrictions) === false) {
@@ -111,6 +111,7 @@ class ClientGenerate extends Command
         $filename = AbstractGenerator::path($baseDir, 'ClassMap.php');
 
         $generator = new ClassMapGenerator($metadata);
+        $generator->setCustomClassMap($classMap);
         $content   = $generator->generate();
         // @codingStandardsIgnoreLine
         file_put_contents($filename, $content);

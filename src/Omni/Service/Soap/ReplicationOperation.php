@@ -42,9 +42,8 @@ class ReplicationOperation extends Operation
         Element $request,
         Element $response
     ) {
-
         parent::__construct($name, $request, $response);
-        $this->entity_name = $this->discoverEntity($response);
+        $this->entity_name = $name;
         $this->base_path   = $this->discoverBasePath();
     }
 
@@ -150,8 +149,7 @@ class ReplicationOperation extends Operation
      */
     public function getTableName()
     {
-
-        return strtolower($this->case_helper->toSnakeCase($this->entity_name));
+        return strtolower($this->case_helper->toSnakeCase($this->getModelName()));
     }
 
     /**
@@ -178,9 +176,17 @@ class ReplicationOperation extends Operation
     /**
      * @return string
      */
+    public function getModelName()
+    {
+        return 'Repl'. $this->getEntityName();
+    }
+
+    /**
+     * @return string
+     */
     public function getMainEntityFqn()
     {
-        return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getEntityName());
+        return AbstractGenerator::fqn(self::BASE_MODEL_NAMESPACE, $this->getModelName());
     }
 
     /**
@@ -190,7 +196,7 @@ class ReplicationOperation extends Operation
      */
     public function getMainEntityPath($absolute = false)
     {
-        return $this->getPath(AbstractGenerator::path('Model', $this->getEntityName() . '.php'), $absolute);
+        return $this->getPath(AbstractGenerator::path('Model', $this->getModelName() . '.php'), $absolute);
     }
 
     private function getPath($path, $absolute = false)
@@ -236,7 +242,7 @@ class ReplicationOperation extends Operation
      */
     public function getInterfaceName()
     {
-        return $this->entity_name . 'Interface';
+        return 'Repl'. $this->entity_name . 'Interface';
     }
 
     /**

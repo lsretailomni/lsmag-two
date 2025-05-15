@@ -11,13 +11,51 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
 {
+    public const DESCRIPTION = 'Description';
+    public const DOCUMENT_NO = 'DocumentNo.';
+    public const LINE_NO = 'LineNo.';
     public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
-    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
-    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
     public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
+    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
+    public const NO = 'No.';
+    public const QUANTITY = 'Quantity';
     public const SALES_SHIPMENT_HEADER = 'SalesShipmentHeader';
     public const SALES_SHIPMENT_LINE = 'SalesShipmentLine';
+    public const TYPE = 'Type';
+    public const UNIT_OF_MEASURE_CODE = 'UnitofMeasureCode';
+    public const VARIANT_CODE = 'VariantCode';
 
+
+    public function getDescription(): ?Text
+    {
+        return $this->getData(self::DESCRIPTION);
+    }
+
+    public function setDescription(Text $value)
+    {
+        return $this->setData(self::DESCRIPTION, $value);
+    }
+
+    public function getDocumentNo(): ?Code
+    {
+        return $this->getData(self::DOCUMENT_NO);
+    }
+
+    public function setDocumentNo(Code $value)
+    {
+        return $this->setData(self::DOCUMENT_NO, $value);
+    }
+
+    public function getLineNo(): ?Integer
+    {
+        return $this->getData(self::LINE_NO);
+    }
+
+    public function setLineNo(Integer $value)
+    {
+        return $this->setData(self::LINE_NO, $value);
+    }
 
     public function getLSCMemberSalesBuffer(): ?LSCMemberSalesBuffer
     {
@@ -29,14 +67,14 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
-    public function getLSCMemberSalesDocLine(): ?array
+    public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
     {
-        return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
+        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
 
-    public function setLSCMemberSalesDocLine(array $value)
+    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
     {
-        return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
     public function getLSCMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
@@ -49,14 +87,34 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
+    public function getLSCMemberSalesDocLine(): ?array
     {
-        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
+        return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
+    public function setLSCMemberSalesDocLine(array $value)
     {
-        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
+    }
+
+    public function getNo(): ?Code
+    {
+        return $this->getData(self::NO);
+    }
+
+    public function setNo(Code $value)
+    {
+        return $this->setData(self::NO, $value);
+    }
+
+    public function getQuantity(): ?Decimal
+    {
+        return $this->getData(self::QUANTITY);
+    }
+
+    public function setQuantity(Decimal $value)
+    {
+        return $this->setData(self::QUANTITY, $value);
     }
 
     public function getSalesShipmentHeader(): ?SalesShipmentHeader
@@ -77,5 +135,35 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
     public function setSalesShipmentLine(SalesShipmentLine $value)
     {
         return $this->setData(self::SALES_SHIPMENT_LINE, $value);
+    }
+
+    public function getType(): ?Option
+    {
+        return $this->getData(self::TYPE);
+    }
+
+    public function setType(Option $value)
+    {
+        return $this->setData(self::TYPE, $value);
+    }
+
+    public function getUnitOfMeasureCode(): ?Code
+    {
+        return $this->getData(self::UNIT_OF_MEASURE_CODE);
+    }
+
+    public function setUnitOfMeasureCode(Code $value)
+    {
+        return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
+    }
+
+    public function getVariantCode(): ?Code
+    {
+        return $this->getData(self::VARIANT_CODE);
+    }
+
+    public function setVariantCode(Code $value)
+    {
+        return $this->setData(self::VARIANT_CODE, $value);
     }
 }

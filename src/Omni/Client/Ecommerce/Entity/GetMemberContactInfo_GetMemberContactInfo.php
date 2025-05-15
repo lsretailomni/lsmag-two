@@ -11,44 +11,69 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
 {
-    public const LSC_MEMBER_CONTACT = 'LSCMemberContact';
-    public const LSC_MEMBERSHIP_CARD = 'LSCMembershipCard';
-    public const LSC_MEMBER_LOGIN_CARD = 'LSCMemberLoginCard';
-    public const LSC_MEMBER_ACCOUNT = 'LSCMemberAccount';
-    public const LSC_MEMBER_SCHEME = 'LSCMemberScheme';
-    public const LSC_MEMBER_CLUB = 'LSCMemberClub';
-    public const LSC_MEMBER_CONTACT_ATTR_LIST = 'LSCMemberContactAttr.List';
+    public const DECIMAL_VALUE = 'DecimalValue';
+    public const FIELD_NAME = 'FieldName';
+    public const FIELD_NO = 'FieldNo.';
+    public const KEY = 'Key';
     public const LSC_FLOWFIELD_BUFFER = 'LSCFlowFieldBuffer';
+    public const LSC_MEMBER_ACCOUNT = 'LSCMemberAccount';
+    public const LSC_MEMBER_CLUB = 'LSCMemberClub';
+    public const LSC_MEMBER_CONTACT = 'LSCMemberContact';
+    public const LSC_MEMBER_CONTACT_ATTR_LIST = 'LSCMemberContactAttr.List';
+    public const LSC_MEMBER_LOGIN_CARD = 'LSCMemberLoginCard';
+    public const LSC_MEMBER_SCHEME = 'LSCMemberScheme';
+    public const LSC_MEMBERSHIP_CARD = 'LSCMembershipCard';
+    public const TABLE_NO = 'TableNo.';
 
 
-    public function getLSCMemberContact(): ?LSCMemberContact
+    public function getDecimalValue(): ?Decimal
     {
-        return $this->getData(self::LSC_MEMBER_CONTACT);
+        return $this->getData(self::DECIMAL_VALUE);
     }
 
-    public function setLSCMemberContact(LSCMemberContact $value)
+    public function setDecimalValue(Decimal $value)
     {
-        return $this->setData(self::LSC_MEMBER_CONTACT, $value);
+        return $this->setData(self::DECIMAL_VALUE, $value);
     }
 
-    public function getLSCMembershipCard(): ?array
+    public function getFieldName(): ?Text
     {
-        return $this->getData(self::LSC_MEMBERSHIP_CARD);
+        return $this->getData(self::FIELD_NAME);
     }
 
-    public function setLSCMembershipCard(array $value)
+    public function setFieldName(Text $value)
     {
-        return $this->setData(self::LSC_MEMBERSHIP_CARD, $value);
+        return $this->setData(self::FIELD_NAME, $value);
     }
 
-    public function getLSCMemberLoginCard(): ?LSCMemberLoginCard
+    public function getFieldNo(): ?Integer
     {
-        return $this->getData(self::LSC_MEMBER_LOGIN_CARD);
+        return $this->getData(self::FIELD_NO);
     }
 
-    public function setLSCMemberLoginCard(LSCMemberLoginCard $value)
+    public function setFieldNo(Integer $value)
     {
-        return $this->setData(self::LSC_MEMBER_LOGIN_CARD, $value);
+        return $this->setData(self::FIELD_NO, $value);
+    }
+
+    public function getKey(): ?RecordId
+    {
+        return $this->getData(self::KEY);
+    }
+
+    public function setKey(RecordId $value)
+    {
+        return $this->setData(self::KEY, $value);
+    }
+
+    public function getLSCFlowFieldBuffer(): ?array
+    {
+        return $this->getData(self::LSC_FLOWFIELD_BUFFER);
+    }
+
+    public function setLSCFlowFieldBuffer(array $value)
+    {
+        return $this->setData(self::LSC_FLOWFIELD_BUFFER, $value);
     }
 
     public function getLSCMemberAccount(): ?LSCMemberAccount
@@ -61,16 +86,6 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_ACCOUNT, $value);
     }
 
-    public function getLSCMemberScheme(): ?LSCMemberScheme
-    {
-        return $this->getData(self::LSC_MEMBER_SCHEME);
-    }
-
-    public function setLSCMemberScheme(LSCMemberScheme $value)
-    {
-        return $this->setData(self::LSC_MEMBER_SCHEME, $value);
-    }
-
     public function getLSCMemberClub(): ?LSCMemberClub
     {
         return $this->getData(self::LSC_MEMBER_CLUB);
@@ -79,6 +94,16 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
     public function setLSCMemberClub(LSCMemberClub $value)
     {
         return $this->setData(self::LSC_MEMBER_CLUB, $value);
+    }
+
+    public function getLSCMemberContact(): ?LSCMemberContact
+    {
+        return $this->getData(self::LSC_MEMBER_CONTACT);
+    }
+
+    public function setLSCMemberContact(LSCMemberContact $value)
+    {
+        return $this->setData(self::LSC_MEMBER_CONTACT, $value);
     }
 
     public function getLSCMemberContactAttrList(): ?array
@@ -91,13 +116,43 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_CONTACT_ATTR_LIST, $value);
     }
 
-    public function getLSCFlowFieldBuffer(): ?array
+    public function getLSCMemberLoginCard(): ?LSCMemberLoginCard
     {
-        return $this->getData(self::LSC_FLOWFIELD_BUFFER);
+        return $this->getData(self::LSC_MEMBER_LOGIN_CARD);
     }
 
-    public function setLSCFlowFieldBuffer(array $value)
+    public function setLSCMemberLoginCard(LSCMemberLoginCard $value)
     {
-        return $this->setData(self::LSC_FLOWFIELD_BUFFER, $value);
+        return $this->setData(self::LSC_MEMBER_LOGIN_CARD, $value);
+    }
+
+    public function getLSCMemberScheme(): ?LSCMemberScheme
+    {
+        return $this->getData(self::LSC_MEMBER_SCHEME);
+    }
+
+    public function setLSCMemberScheme(LSCMemberScheme $value)
+    {
+        return $this->setData(self::LSC_MEMBER_SCHEME, $value);
+    }
+
+    public function getLSCMembershipCard(): ?array
+    {
+        return $this->getData(self::LSC_MEMBERSHIP_CARD);
+    }
+
+    public function setLSCMembershipCard(array $value)
+    {
+        return $this->setData(self::LSC_MEMBERSHIP_CARD, $value);
+    }
+
+    public function getTableNo(): ?Integer
+    {
+        return $this->getData(self::TABLE_NO);
+    }
+
+    public function setTableNo(Integer $value)
+    {
+        return $this->setData(self::TABLE_NO, $value);
     }
 }

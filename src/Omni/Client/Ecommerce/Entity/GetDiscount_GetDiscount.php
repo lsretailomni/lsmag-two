@@ -11,12 +11,32 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetDiscount_GetDiscount extends AbstractModel
 {
+    public const LSC_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
+    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
     public const LSC_WI_DISCOUNTS = 'LSCWIDiscounts';
     public const LSC_WI_MIX__MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
     public const LSC_WI_PRICE = 'LSCWIPrice';
-    public const LSC_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
-    public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
 
+
+    public function getLSCPeriodicDiscount(): ?array
+    {
+        return $this->getData(self::LSC_PERIODIC_DISCOUNT);
+    }
+
+    public function setLSCPeriodicDiscount(array $value)
+    {
+        return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
+    }
+
+    public function getLSCPeriodicDiscountBenefits(): ?LSCPeriodicDiscountBenefits
+    {
+        return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
+    }
+
+    public function setLSCPeriodicDiscountBenefits(LSCPeriodicDiscountBenefits $value)
+    {
+        return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
+    }
 
     public function getLSCWIDiscounts(): ?LSCWIDiscounts
     {
@@ -46,25 +66,5 @@ class GetDiscount_GetDiscount extends AbstractModel
     public function setLSCWIPrice(LSCWIPrice $value)
     {
         return $this->setData(self::LSC_WI_PRICE, $value);
-    }
-
-    public function getLSCPeriodicDiscount(): ?array
-    {
-        return $this->getData(self::LSC_PERIODIC_DISCOUNT);
-    }
-
-    public function setLSCPeriodicDiscount(array $value)
-    {
-        return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
-    }
-
-    public function getLSCPeriodicDiscountBenefits(): ?LSCPeriodicDiscountBenefits
-    {
-        return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
-    }
-
-    public function setLSCPeriodicDiscountBenefits(LSCPeriodicDiscountBenefits $value)
-    {
-        return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
     }
 }

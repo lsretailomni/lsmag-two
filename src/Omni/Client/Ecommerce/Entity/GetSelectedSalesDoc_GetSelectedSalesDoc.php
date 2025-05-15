@@ -11,11 +11,111 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
 {
+    public const AMOUNT = 'Amount';
+    public const APPLIED_AMOUNT = 'AppliedAmount';
+    public const CREATED_BY_LINE_NO = 'CreatedbyLineNo.';
+    public const CURRENCY_CODE = 'CurrencyCode';
+    public const DATA_ENTRY_BALANCE = 'DataEntryBalance';
+    public const DATE_CREATED = 'DateCreated';
+    public const ENTRY_CODE = 'EntryCode';
+    public const ENTRY_TYPE = 'EntryType';
+    public const EXPIRING_DATE = 'ExpiringDate';
     public const LSC_MEMBER_SALES_BUFFER = 'LSCMemberSalesBuffer';
-    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
-    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
     public const LSC_MEMBER_SALES_DATA_ENTRY = 'LSCMemberSalesDataEntry';
+    public const LSC_MEMBER_SALES_DOC_DISC_LINE = 'LSCMemberSalesDocDiscLine';
+    public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
+    public const PIN = 'PIN';
 
+
+    public function getAmount(): ?Decimal
+    {
+        return $this->getData(self::AMOUNT);
+    }
+
+    public function setAmount(Decimal $value)
+    {
+        return $this->setData(self::AMOUNT, $value);
+    }
+
+    public function getAppliedAmount(): ?Decimal
+    {
+        return $this->getData(self::APPLIED_AMOUNT);
+    }
+
+    public function setAppliedAmount(Decimal $value)
+    {
+        return $this->setData(self::APPLIED_AMOUNT, $value);
+    }
+
+    public function getCreatedByLineNo(): ?Integer
+    {
+        return $this->getData(self::CREATED_BY_LINE_NO);
+    }
+
+    public function setCreatedByLineNo(Integer $value)
+    {
+        return $this->setData(self::CREATED_BY_LINE_NO, $value);
+    }
+
+    public function getCurrencyCode(): ?Code
+    {
+        return $this->getData(self::CURRENCY_CODE);
+    }
+
+    public function setCurrencyCode(Code $value)
+    {
+        return $this->setData(self::CURRENCY_CODE, $value);
+    }
+
+    public function getDataEntryBalance(): ?Decimal
+    {
+        return $this->getData(self::DATA_ENTRY_BALANCE);
+    }
+
+    public function setDataEntryBalance(Decimal $value)
+    {
+        return $this->setData(self::DATA_ENTRY_BALANCE, $value);
+    }
+
+    public function getDateCreated(): ?Date
+    {
+        return $this->getData(self::DATE_CREATED);
+    }
+
+    public function setDateCreated(Date $value)
+    {
+        return $this->setData(self::DATE_CREATED, $value);
+    }
+
+    public function getEntryCode(): ?Code
+    {
+        return $this->getData(self::ENTRY_CODE);
+    }
+
+    public function setEntryCode(Code $value)
+    {
+        return $this->setData(self::ENTRY_CODE, $value);
+    }
+
+    public function getEntryType(): ?Code
+    {
+        return $this->getData(self::ENTRY_TYPE);
+    }
+
+    public function setEntryType(Code $value)
+    {
+        return $this->setData(self::ENTRY_TYPE, $value);
+    }
+
+    public function getExpiringDate(): ?Date
+    {
+        return $this->getData(self::EXPIRING_DATE);
+    }
+
+    public function setExpiringDate(Date $value)
+    {
+        return $this->setData(self::EXPIRING_DATE, $value);
+    }
 
     public function getLSCMemberSalesBuffer(): ?LSCMemberSalesBuffer
     {
@@ -27,14 +127,14 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
-    public function getLSCMemberSalesDocLine(): ?array
+    public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
     {
-        return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
+        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
 
-    public function setLSCMemberSalesDocLine(array $value)
+    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
     {
-        return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
     public function getLSCMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
@@ -47,13 +147,23 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
+    public function getLSCMemberSalesDocLine(): ?array
     {
-        return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
+        return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
+    public function setLSCMemberSalesDocLine(array $value)
     {
-        return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
+        return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
+    }
+
+    public function getPIN(): ?Integer
+    {
+        return $this->getData(self::PIN);
+    }
+
+    public function setPIN(Integer $value)
+    {
+        return $this->setData(self::PIN, $value);
     }
 }

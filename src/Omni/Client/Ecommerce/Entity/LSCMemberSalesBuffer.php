@@ -31,6 +31,7 @@ class LSCMemberSalesBuffer extends AbstractModel
     public const EXTERNAL_ID = 'External ID';
     public const GROSS_AMOUNT = 'Gross Amount';
     public const HOUSEAPARTMENT_NO = 'House/Apartment No.';
+    public const LSC_MEMBER_SALES_BUFFER = 'LSC Member Sales Buffer';
     public const MEMBER_CARD_NO = 'Member Card No.';
     public const MOBILE_PHONE_NO = 'Mobile Phone No.';
     public const NAME = 'Name';
@@ -262,6 +263,16 @@ class LSCMemberSalesBuffer extends AbstractModel
     public function setHouseApartmentNo(string $value)
     {
         return $this->setData(self::HOUSEAPARTMENT_NO, $value);
+    }
+
+    public function getLSCMemberSalesBuffer(): ?string
+    {
+        return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
+    }
+
+    public function setLSCMemberSalesBuffer(string $value)
+    {
+        return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
     public function getMemberCardNo(): ?string

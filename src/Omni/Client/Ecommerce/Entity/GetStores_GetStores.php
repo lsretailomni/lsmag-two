@@ -11,11 +11,43 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetStores_GetStores extends AbstractModel
 {
+    public const CODE = 'Code';
+    public const DESCRIPTION = 'Description';
+    public const LSC_SALES_TYPE = 'LSCSalesType';
     public const LSC_STORE = 'LSCStore';
     public const LSC_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
     public const LSC_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
-    public const LSC_SALES_TYPE = 'LSCSalesType';
 
+
+    public function getCode(): ?Code
+    {
+        return $this->getData(self::CODE);
+    }
+
+    public function setCode(Code $value)
+    {
+        return $this->setData(self::CODE, $value);
+    }
+
+    public function getDescription(): ?Text
+    {
+        return $this->getData(self::DESCRIPTION);
+    }
+
+    public function setDescription(Text $value)
+    {
+        return $this->setData(self::DESCRIPTION, $value);
+    }
+
+    public function getLSCSalesType(): ?array
+    {
+        return $this->getData(self::LSC_SALES_TYPE);
+    }
+
+    public function setLSCSalesType(array $value)
+    {
+        return $this->setData(self::LSC_SALES_TYPE, $value);
+    }
 
     public function getLSCStore(): ?array
     {
@@ -45,15 +77,5 @@ class GetStores_GetStores extends AbstractModel
     public function setLSCStorePriceGroup(array $value)
     {
         return $this->setData(self::LSC_STORE_PRICE_GROUP, $value);
-    }
-
-    public function getLSCSalesType(): ?array
-    {
-        return $this->getData(self::LSC_SALES_TYPE);
-    }
-
-    public function setLSCSalesType(array $value)
-    {
-        return $this->setData(self::LSC_SALES_TYPE, $value);
     }
 }

@@ -11,26 +11,51 @@ use Magento\Catalog\Model\AbstractModel;
 
 class GetItem_GetItem extends AbstractModel
 {
+    public const BOM_COMPONENT = 'BOMComponent';
+    public const INFOCODE_CODE = 'InfocodeCode';
     public const ITEM = 'Item';
-    public const LSC_ITEM_STATUS_LINK = 'LSCItemStatusLink';
-    public const LSC_ITEM_HTML_ML = 'LSCItemHTMLML';
-    public const LSC_RETAIL_IMAGE_LINK = 'LSCRetailImageLink';
-    public const LSC_ITEMSPECIAL_GROUP_LINK = 'LSCItem/SpecialGroupLink';
-    public const LSC_ITEM_SECTION_LOCATION = 'LSCItemSectionLocation';
-    public const LSC_SECTION_SHELF = 'LSCSectionShelf';
-    public const LSC_STORE_SECTION = 'LSCStoreSection';
-    public const LSC_WI_PRICE = 'LSCWIPrice';
     public const ITEM_UNIT_OF_MEASURE = 'ItemUnitofMeasure';
-    public const UNIT_OF_MEASURE = 'UnitofMeasure';
-    public const LSC_ITEM_VARIANT_REGISTRATION = 'LSCItemVariantRegistration';
-    public const LSC_EXTD_VARIANT_VALUES = 'LSCExtd.VariantValues';
     public const LSC_ATTRIBUTE = 'LSCAttribute';
     public const LSC_ATTRIBUTE_VALUE = 'LSCAttributeValue';
-    public const BOM_COMPONENT = 'BOMComponent';
+    public const LSC_EXTD_VARIANT_VALUES = 'LSCExtd.VariantValues';
     public const LSC_INFOCODE = 'LSCInfocode';
     public const LSC_INFORMATION_SUBCODE = 'LSCInformationSubcode';
+    public const LSC_ITEM_HTML_ML = 'LSCItemHTMLML';
+    public const LSC_ITEM_SECTION_LOCATION = 'LSCItemSectionLocation';
+    public const LSC_ITEM_STATUS_LINK = 'LSCItemStatusLink';
+    public const LSC_ITEM_VARIANT_REGISTRATION = 'LSCItemVariantRegistration';
+    public const LSC_ITEMSPECIAL_GROUP_LINK = 'LSCItem/SpecialGroupLink';
+    public const LSC_RETAIL_IMAGE_LINK = 'LSCRetailImageLink';
+    public const LSC_SECTION_SHELF = 'LSCSectionShelf';
+    public const LSC_STORE_SECTION = 'LSCStoreSection';
     public const LSC_TABLE_SPECIFIC_INFOCODE = 'LSCTableSpecificInfocode';
+    public const LSC_WI_PRICE = 'LSCWIPrice';
+    public const TABLE_ID = 'TableID';
+    public const UNIT_OF_MEASURE = 'UnitofMeasure';
+    public const USAGE_CATEGORY = 'UsageCategory';
+    public const USAGE_SUBCATEGORY = 'UsageSub-Category';
+    public const VALUE = 'Value';
 
+
+    public function getBOMComponent(): ?BOMComponent
+    {
+        return $this->getData(self::BOM_COMPONENT);
+    }
+
+    public function setBOMComponent(BOMComponent $value)
+    {
+        return $this->setData(self::BOM_COMPONENT, $value);
+    }
+
+    public function getInfocodeCode(): ?Code
+    {
+        return $this->getData(self::INFOCODE_CODE);
+    }
+
+    public function setInfocodeCode(Code $value)
+    {
+        return $this->setData(self::INFOCODE_CODE, $value);
+    }
 
     public function getItem(): ?Item
     {
@@ -42,86 +67,6 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::ITEM, $value);
     }
 
-    public function getLSCItemStatusLink(): ?LSCItemStatusLink
-    {
-        return $this->getData(self::LSC_ITEM_STATUS_LINK);
-    }
-
-    public function setLSCItemStatusLink(LSCItemStatusLink $value)
-    {
-        return $this->setData(self::LSC_ITEM_STATUS_LINK, $value);
-    }
-
-    public function getLSCItemHTMLML(): ?LSCItemHTMLML
-    {
-        return $this->getData(self::LSC_ITEM_HTML_ML);
-    }
-
-    public function setLSCItemHTMLML(LSCItemHTMLML $value)
-    {
-        return $this->setData(self::LSC_ITEM_HTML_ML, $value);
-    }
-
-    public function getLSCRetailImageLink(): ?LSCRetailImageLink
-    {
-        return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
-    }
-
-    public function setLSCRetailImageLink(LSCRetailImageLink $value)
-    {
-        return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
-    }
-
-    public function getLSCItemSpecialGroupLink(): ?array
-    {
-        return $this->getData(self::LSC_ITEMSPECIAL_GROUP_LINK);
-    }
-
-    public function setLSCItemSpecialGroupLink(array $value)
-    {
-        return $this->setData(self::LSC_ITEMSPECIAL_GROUP_LINK, $value);
-    }
-
-    public function getLSCItemSectionLocation(): ?LSCItemSectionLocation
-    {
-        return $this->getData(self::LSC_ITEM_SECTION_LOCATION);
-    }
-
-    public function setLSCItemSectionLocation(LSCItemSectionLocation $value)
-    {
-        return $this->setData(self::LSC_ITEM_SECTION_LOCATION, $value);
-    }
-
-    public function getLSCSectionShelf(): ?LSCSectionShelf
-    {
-        return $this->getData(self::LSC_SECTION_SHELF);
-    }
-
-    public function setLSCSectionShelf(LSCSectionShelf $value)
-    {
-        return $this->setData(self::LSC_SECTION_SHELF, $value);
-    }
-
-    public function getLSCStoreSection(): ?LSCStoreSection
-    {
-        return $this->getData(self::LSC_STORE_SECTION);
-    }
-
-    public function setLSCStoreSection(LSCStoreSection $value)
-    {
-        return $this->setData(self::LSC_STORE_SECTION, $value);
-    }
-
-    public function getLSCWIPrice(): ?LSCWIPrice
-    {
-        return $this->getData(self::LSC_WI_PRICE);
-    }
-
-    public function setLSCWIPrice(LSCWIPrice $value)
-    {
-        return $this->setData(self::LSC_WI_PRICE, $value);
-    }
-
     public function getItemUnitOfMeasure(): ?ItemUnitofMeasure
     {
         return $this->getData(self::ITEM_UNIT_OF_MEASURE);
@@ -130,36 +75,6 @@ class GetItem_GetItem extends AbstractModel
     public function setItemUnitOfMeasure(ItemUnitofMeasure $value)
     {
         return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
-    }
-
-    public function getUnitOfMeasure(): ?UnitofMeasure
-    {
-        return $this->getData(self::UNIT_OF_MEASURE);
-    }
-
-    public function setUnitOfMeasure(UnitofMeasure $value)
-    {
-        return $this->setData(self::UNIT_OF_MEASURE, $value);
-    }
-
-    public function getLSCItemVariantRegistration(): ?LSCItemVariantRegistration
-    {
-        return $this->getData(self::LSC_ITEM_VARIANT_REGISTRATION);
-    }
-
-    public function setLSCItemVariantRegistration(LSCItemVariantRegistration $value)
-    {
-        return $this->setData(self::LSC_ITEM_VARIANT_REGISTRATION, $value);
-    }
-
-    public function getLSCExtdVariantValues(): ?LSCExtdVariantValues
-    {
-        return $this->getData(self::LSC_EXTD_VARIANT_VALUES);
-    }
-
-    public function setLSCExtdVariantValues(LSCExtdVariantValues $value)
-    {
-        return $this->setData(self::LSC_EXTD_VARIANT_VALUES, $value);
     }
 
     public function getLSCAttribute(): ?array
@@ -182,14 +97,14 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ATTRIBUTE_VALUE, $value);
     }
 
-    public function getBOMComponent(): ?BOMComponent
+    public function getLSCExtdVariantValues(): ?LSCExtdVariantValues
     {
-        return $this->getData(self::BOM_COMPONENT);
+        return $this->getData(self::LSC_EXTD_VARIANT_VALUES);
     }
 
-    public function setBOMComponent(BOMComponent $value)
+    public function setLSCExtdVariantValues(LSCExtdVariantValues $value)
     {
-        return $this->setData(self::BOM_COMPONENT, $value);
+        return $this->setData(self::LSC_EXTD_VARIANT_VALUES, $value);
     }
 
     public function getLSCInfocode(): ?LSCInfocode
@@ -212,6 +127,86 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_INFORMATION_SUBCODE, $value);
     }
 
+    public function getLSCItemHTMLML(): ?LSCItemHTMLML
+    {
+        return $this->getData(self::LSC_ITEM_HTML_ML);
+    }
+
+    public function setLSCItemHTMLML(LSCItemHTMLML $value)
+    {
+        return $this->setData(self::LSC_ITEM_HTML_ML, $value);
+    }
+
+    public function getLSCItemSectionLocation(): ?LSCItemSectionLocation
+    {
+        return $this->getData(self::LSC_ITEM_SECTION_LOCATION);
+    }
+
+    public function setLSCItemSectionLocation(LSCItemSectionLocation $value)
+    {
+        return $this->setData(self::LSC_ITEM_SECTION_LOCATION, $value);
+    }
+
+    public function getLSCItemStatusLink(): ?LSCItemStatusLink
+    {
+        return $this->getData(self::LSC_ITEM_STATUS_LINK);
+    }
+
+    public function setLSCItemStatusLink(LSCItemStatusLink $value)
+    {
+        return $this->setData(self::LSC_ITEM_STATUS_LINK, $value);
+    }
+
+    public function getLSCItemVariantRegistration(): ?LSCItemVariantRegistration
+    {
+        return $this->getData(self::LSC_ITEM_VARIANT_REGISTRATION);
+    }
+
+    public function setLSCItemVariantRegistration(LSCItemVariantRegistration $value)
+    {
+        return $this->setData(self::LSC_ITEM_VARIANT_REGISTRATION, $value);
+    }
+
+    public function getLSCItemSpecialGroupLink(): ?array
+    {
+        return $this->getData(self::LSC_ITEMSPECIAL_GROUP_LINK);
+    }
+
+    public function setLSCItemSpecialGroupLink(array $value)
+    {
+        return $this->setData(self::LSC_ITEMSPECIAL_GROUP_LINK, $value);
+    }
+
+    public function getLSCRetailImageLink(): ?LSCRetailImageLink
+    {
+        return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
+    }
+
+    public function setLSCRetailImageLink(LSCRetailImageLink $value)
+    {
+        return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
+    }
+
+    public function getLSCSectionShelf(): ?LSCSectionShelf
+    {
+        return $this->getData(self::LSC_SECTION_SHELF);
+    }
+
+    public function setLSCSectionShelf(LSCSectionShelf $value)
+    {
+        return $this->setData(self::LSC_SECTION_SHELF, $value);
+    }
+
+    public function getLSCStoreSection(): ?LSCStoreSection
+    {
+        return $this->getData(self::LSC_STORE_SECTION);
+    }
+
+    public function setLSCStoreSection(LSCStoreSection $value)
+    {
+        return $this->setData(self::LSC_STORE_SECTION, $value);
+    }
+
     public function getLSCTableSpecificInfocode(): ?LSCTableSpecificInfocode
     {
         return $this->getData(self::LSC_TABLE_SPECIFIC_INFOCODE);
@@ -220,5 +215,65 @@ class GetItem_GetItem extends AbstractModel
     public function setLSCTableSpecificInfocode(LSCTableSpecificInfocode $value)
     {
         return $this->setData(self::LSC_TABLE_SPECIFIC_INFOCODE, $value);
+    }
+
+    public function getLSCWIPrice(): ?LSCWIPrice
+    {
+        return $this->getData(self::LSC_WI_PRICE);
+    }
+
+    public function setLSCWIPrice(LSCWIPrice $value)
+    {
+        return $this->setData(self::LSC_WI_PRICE, $value);
+    }
+
+    public function getTableID(): ?Integer
+    {
+        return $this->getData(self::TABLE_ID);
+    }
+
+    public function setTableID(Integer $value)
+    {
+        return $this->setData(self::TABLE_ID, $value);
+    }
+
+    public function getUnitOfMeasure(): ?UnitofMeasure
+    {
+        return $this->getData(self::UNIT_OF_MEASURE);
+    }
+
+    public function setUnitOfMeasure(UnitofMeasure $value)
+    {
+        return $this->setData(self::UNIT_OF_MEASURE, $value);
+    }
+
+    public function getUsageCategory(): ?Option
+    {
+        return $this->getData(self::USAGE_CATEGORY);
+    }
+
+    public function setUsageCategory(Option $value)
+    {
+        return $this->setData(self::USAGE_CATEGORY, $value);
+    }
+
+    public function getUsageSubCategory(): ?Option
+    {
+        return $this->getData(self::USAGE_SUBCATEGORY);
+    }
+
+    public function setUsageSubCategory(Option $value)
+    {
+        return $this->setData(self::USAGE_SUBCATEGORY, $value);
+    }
+
+    public function getValue(): ?Code
+    {
+        return $this->getData(self::VALUE);
+    }
+
+    public function setValue(Code $value)
+    {
+        return $this->setData(self::VALUE, $value);
     }
 }

@@ -116,7 +116,7 @@ class OdataGenerator
      * @param string $operationDir
      * @param Data $omniDataHelper
      * @param OutputInterface $output
-     * @return void
+     * @return array
      * @throws GuzzleException
      * @throws NoSuchEntityException
      */
@@ -217,17 +217,22 @@ class OdataGenerator
                 }
             }
         }
+        $classMap = [];
 
         foreach ($this->entities as $entityClassName => $entity) {
             $this->generateEntityContent(
                 $entityDir,
                 $baseNamespace,
                 $output,
-                $entityClassName,
+                $entity['sanitizedClassName'],
                 $entity['RecordFields'],
                 $entity['recursive']
             );
+
+            $classMap[$entityClassName] = $entity['sanitizedClassName'];
         }
+
+        return $classMap;
     }
 
     /**
@@ -269,6 +274,7 @@ class OdataGenerator
                 ];
                 $dataSetName[] = $entityClassName;
                 $this->registerEntity(
+                    $recordField['DataSetName'],
                     $entityClassName,
                     $recordField['DataSetFields']
                 );
@@ -276,6 +282,7 @@ class OdataGenerator
         }
         $entityClassName = $action;
         $this->registerEntity(
+            $recordField['DataSetName'],
             $entityClassName,
             $dataSetNames,
             true
@@ -327,6 +334,7 @@ class OdataGenerator
     ) {
         $entityClassName = str_replace(' ', '', $dataSetName);
         $this->registerEntity(
+            $dataSetName,
             $entityClassName,
             $recordFields
         );
@@ -381,6 +389,7 @@ class OdataGenerator
             }
             $entityClassName = str_replace(' ', '', $this->formatGivenValue($name));
             $this->registerEntity(
+                $name,
                 $entityClassName,
                 $recordFields,
             );
@@ -1439,13 +1448,15 @@ PHP;
     /**
      * Register entities collection
      *
-     * @param string $entityClassName
+     * @param string $unsanitizedEntityClassName
+     * @param string $sanitizedEntityClassName
      * @param array $recordFields
      * @param bool $recursive
      * @return void
      */
     public function registerEntity(
-        string $entityClassName,
+        string $unsanitizedEntityClassName,
+        string $sanitizedEntityClassName,
         array $recordFields,
         bool $recursive = false
     ) {
@@ -1461,14 +1472,15 @@ PHP;
             ];
         }
 
-        if (!isset($this->entities[$entityClassName])) {
-            $this->entities[$entityClassName] = [
+        if (!isset($this->entities[$unsanitizedEntityClassName])) {
+            $this->entities[$unsanitizedEntityClassName] = [
+                'sanitizedClassName' => $sanitizedEntityClassName,
                 'RecordFields' => array_values($mergedFields),
                 'recursive' => $recursive
             ];
         } else {
             // Merge with existing fields
-            $existingFields = $this->entities[$entityClassName]['RecordFields'] ?? [];
+            $existingFields = $this->entities[$unsanitizedEntityClassName]['RecordFields'] ?? [];
             foreach ($existingFields as $field) {
                 if (!isset($mergedFields[$field['FieldName']])) {
                     $mergedFields[$field['FieldName']] = $field;
@@ -1488,7 +1500,8 @@ PHP;
                 }
             });
 
-            $this->entities[$entityClassName] = [
+            $this->entities[$unsanitizedEntityClassName] = [
+                'sanitizedClassName' => $sanitizedEntityClassName,
                 'RecordFields' => array_values($mergedFields),
                 'recursive' => $recursive
             ];
