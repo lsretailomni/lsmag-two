@@ -39,8 +39,8 @@ class ClientPing extends Command
         $pingResponse = $this->getOmniDataHelper()->omniPing();
 
         // Output the result based on the ping response
-        if (is_array($pingResponse) && !empty($pingResponse)) {
-            foreach ($pingResponse as $index => $response) {
+        if (!empty($pingResponse)) {
+            foreach ($pingResponse->getData() as $index => $response) {
                 $output->writeln(sprintf('%s:%s', $index, $response));
             }
         } else {
