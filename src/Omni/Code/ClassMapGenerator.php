@@ -7,6 +7,32 @@ use Laminas\Code\Generator\MethodGenerator;
 class ClassMapGenerator extends AbstractOmniGenerator
 {
     /**
+     * @var array
+     */
+    public array $customClassMap;
+
+    /**
+     * Get custom class map
+     *
+     * @return array
+     */
+    public function getCustomClassMap(): array
+    {
+        return $this->customClassMap;
+    }
+
+    /**
+     * Set custom class map
+     *
+     * @param array $classMap
+     * @return void
+     */
+    public function setCustomClassMap(array $classMap)
+    {
+        $this->customClassMap = $classMap;
+    }
+
+    /**
      * Generates a class map for the entities and restrictions.
      *
      * It maps each entity and restriction to its fully qualified namespace.
@@ -52,6 +78,18 @@ class ClassMapGenerator extends AbstractOmniGenerator
                 // Append the restriction's name and FQN to the class map.
                 $classMapBody .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $restrictionName, $fqn);
             }
+        }
+
+        foreach ($this->getCustomClassMap() as $unsanitizedName => $sanitizedName) {
+            $fqn = self::fqn(
+                $this->baseNamespace,
+                'Entity',
+                preg_replace('/[-._]/', '', $sanitizedName)
+            );
+
+            $fqn = str_replace('\\', '\\\\', $fqn);
+
+            $classMapBody .= sprintf("\t\t'%1\$s' => '%2\$s',\n", $unsanitizedName, $fqn);
         }
 
         // Create the 'getClassMap' method for the class map generation.

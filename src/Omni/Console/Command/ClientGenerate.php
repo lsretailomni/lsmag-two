@@ -3,9 +3,11 @@
 namespace Ls\Omni\Console\Command;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Code\ClassMapGenerator;
 use \Ls\Omni\Code\EntityGenerator;
+use \Ls\Omni\Code\OdataGenerator;
 use \Ls\Omni\Code\OperationGenerator;
 use \Ls\Omni\Code\RestrictionGenerator;
 use \Ls\Omni\Console\Command;
@@ -39,10 +41,16 @@ class ClientGenerate extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
-     * @throws Exception
+     * @throws Exception|GuzzleException
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+        $interfaceFolder = ucfirst($this->type->getValue());
+
+        $modulePath   = $this->dirReader->getModuleDir('', 'Ls_Omni');
+        $baseDir      = AbstractGenerator::path($modulePath, 'Client', $interfaceFolder);
+        $operationDir = AbstractGenerator::path($baseDir, 'Operation');
+        $entityDir    = AbstractGenerator::path($baseDir, 'Entity');
         $fs     = new Filesystem();
         $cwd    = getcwd();
         $wsdl   = Service::getUrl($this->type, $this->baseUrl);
@@ -53,16 +61,10 @@ class ClientGenerate extends Command
             $output->writeln("ERROR: Unable to establish connection with the endpoint");
             return 0;
         }
-
         $restrictions = array_keys($metadata->getRestrictions());
-
-        $interfaceFolder = ucfirst($this->type->getValue());
-
-        $modulePath   = $this->dirReader->getModuleDir('', 'Ls_Omni');
-        $baseDir      = AbstractGenerator::path($modulePath, 'Client', $interfaceFolder);
-        $operationDir = AbstractGenerator::path($baseDir, 'Operation');
-        $entityDir    = AbstractGenerator::path($baseDir, 'Entity');
         // $this->clean($baseDir);
+        $odataGenerator = new OdataGenerator();
+        $classMap = $odataGenerator->generate($entityDir, $operationDir, $this->getOmniDataHelper(), $output);
 
         foreach ($metadata->getEntities() as $entity) {
             if (array_search($entity->getName(), $restrictions) === false) {
@@ -109,6 +111,7 @@ class ClientGenerate extends Command
         $filename = AbstractGenerator::path($baseDir, 'ClassMap.php');
 
         $generator = new ClassMapGenerator($metadata);
+        $generator->setCustomClassMap($classMap);
         $content   = $generator->generate();
         // @codingStandardsIgnoreLine
         file_put_contents($filename, $content);

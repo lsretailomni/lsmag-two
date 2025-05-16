@@ -25,9 +25,9 @@ class NavStore implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $stores       = $this->getNavStores();
+        $stores       = current($this->getNavStores());
         $optionList = [['value' => '', 'label' => __('Please select your web store')]];
-        foreach ($stores as $store) {
+        foreach ($stores->getLSCStore() ?? [] as $store) {
             $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
         }
         return $optionList;
@@ -41,11 +41,6 @@ class NavStore implements OptionSourceInterface
      */
     public function getNavStores()
     {
-        return $this->helper->fetchWebStores(
-            '',
-            [],
-            [],
-            ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
-        );
+        return $this->helper->fetchWebStores();
     }
 }

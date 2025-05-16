@@ -260,7 +260,6 @@ class Data
      * @param array $query
      * @param string $websiteId
      * @return bool
-     * @throws GuzzleException
      * @throws NoSuchEntityException
      */
     public function isEndpointResponding($baseUrl, $connectionParams, $query, $websiteId)
@@ -278,11 +277,11 @@ class Data
             $response = $omniDataHelper->omniPing($baseUrl, $connectionParams, $query);
 
             if ($response &&
-                !empty($response['LSRetailVersion'])
+                !empty($response->getLSRetailVersion())
             ) {
                 $this->cacheHelper->persistContentInCache(
                     $cacheId,
-                    $response,
+                    $response->getData(),
                     [Type::CACHE_TAG],
                     $this->getCommerceServiceHeartbeatTimeout()
                 );
@@ -291,8 +290,8 @@ class Data
                     $this->setNotificationEmailSent(0);
                 }
 
-                if (!empty($response['LSRetailLicenseKeyActive']) &&
-                    !empty($response['LSRetailLicenseUnitEcom'])
+                if (!empty($response->getLSRetailLicenseKeyActive()) &&
+                    !empty($response->getLSRetailLicenseUnitEcom())
                 ) {
                     $this->setLicenseStatus("1");
                 } else {

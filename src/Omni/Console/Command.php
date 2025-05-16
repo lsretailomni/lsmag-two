@@ -3,6 +3,7 @@
 namespace Ls\Omni\Console;
 
 use \Ls\Omni\Exception\InvalidServiceTypeException;
+use \Ls\Omni\Helper\Data;
 use \Ls\Omni\Service\Service;
 use \Ls\Omni\Service\ServiceType;
 use Magento\Framework\App\ObjectManager;
@@ -34,6 +35,11 @@ class Command extends SymfonyCommand
 
     /** @var Reader */
     public $dirReader;
+
+    /**
+     * @var Data
+     */
+    public $omniDataHelper;
 
     /**
      * @param Service $service
@@ -88,5 +94,21 @@ class Command extends SymfonyCommand
         $service = $objectManager->create(Service::class);
 
         return $service->getOmniBaseUrl();
+    }
+
+    /**
+     * Get omni data helper using lazy load
+     *
+     * @return Data
+     */
+    public function getOmniDataHelper()
+    {
+        if ($this->omniDataHelper) {
+            return $this->omniDataHelper;
+        }
+
+        $this->omniDataHelper = ObjectManager::getInstance()->get(Data::class);
+
+        return $this->omniDataHelper;
     }
 }

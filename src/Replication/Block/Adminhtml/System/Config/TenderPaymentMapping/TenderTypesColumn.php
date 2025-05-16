@@ -102,7 +102,6 @@ class TenderTypesColumn extends Select
         $storeTenderTypes = [];
 
         $websiteId = (int)$this->request->getParam('website');
-        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
 
         if ($websiteId == 0 && $this->lsr->getStoreManagerObject()->isSingleStoreMode()) {
             $stores               = $this->lsr->getAllStores();
@@ -112,25 +111,14 @@ class TenderTypesColumn extends Select
             $storeTenderTypeArray = $this->helper->getTenderTypes($websiteId);
         }
         if (empty($storeTenderTypeArray)) {
-            $storeTenderTypeArray = $this->dataHelper->fetchWebStoreTenderTypes(
-                '',
-                [],
-                [],
-                [
-                    'storeNo' => $webStore,
-                    'batchSize' => 100,
-                    'fullRepl' => true,
-                    'lastKey' => '',
-                    'lastEntryNo' => 0
-                ]
-            );
+            $storeTenderTypeArray = $this->dataHelper->fetchWebStoreTenderTypes();
         }
         $storeTenderTypes[] = ['value' => '', 'label' => __('Select tender type')];
         if (!empty($storeTenderTypeArray)) {
             foreach ($storeTenderTypeArray as $storeTenderType) {
                 $storeTenderTypes[] = [
-                    'value' => $storeTenderType['Code'],
-                    'label' => $storeTenderType['Description']
+                    'value' => $storeTenderType->getCode(),
+                    'label' => $storeTenderType->getDescription()
                 ];
             }
         }

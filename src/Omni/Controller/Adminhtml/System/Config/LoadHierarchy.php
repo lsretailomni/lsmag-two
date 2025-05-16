@@ -5,6 +5,7 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -61,13 +62,15 @@ class LoadHierarchy extends Action
             if ($this->lsr->validateBaseUrl(
                 $baseUrl,
                 $connectionParams,
-                ['company' => $companyName],
+                ['companyName' => $companyName],
                 $scopeId
             )) {
-                $hierarchies = $this->helper->fetchWebStoreHierarchies(
+                $hierarchyOperation = new HierarchyView(
                     $baseUrl,
                     $connectionParams,
-                    ['company' => $companyName],
+                    $companyName,
+                );
+                $hierarchyOperation->setOperationInput(
                     [
                         'storeNo' => $storeId,
                         'batchSize' => 100,
@@ -76,14 +79,15 @@ class LoadHierarchy extends Action
                         'lastEntryNo' => 0
                     ]
                 );
+                $hierarchies = $hierarchyOperation->execute()->getRecords();
             }
 
             if (!empty($hierarchies)) {
                 $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
                 foreach ($hierarchies as $hierarchy) {
                     $optionList[] = [
-                        'value' => $hierarchy['Hierarchy Code'],
-                        'label' => $hierarchy['Description']
+                        'value' => $hierarchy->getHierarchyCode(),
+                        'label' => $hierarchy->getDescription()
                     ];
                 }
             } else {

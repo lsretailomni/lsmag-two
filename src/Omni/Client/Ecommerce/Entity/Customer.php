@@ -5,446 +5,1397 @@
  * @codingStandardsIgnoreFile
  */
 
-
 namespace Ls\Omni\Client\Ecommerce\Entity;
 
-class Customer extends Entity
+use Magento\Catalog\Model\AbstractModel;
+
+class Customer extends AbstractModel
 {
-    /**
-     * @property Address $Address
-     */
-    protected $Address = null;
+    public const NO = 'No.';
+    public const NAME = 'Name';
+    public const SEARCH_NAME = 'Search Name';
+    public const NAME_2 = 'Name 2';
+    public const ADDRESS = 'Address';
+    public const ADDRESS_2 = 'Address 2';
+    public const CITY = 'City';
+    public const CONTACT = 'Contact';
+    public const PHONE_NO = 'Phone No.';
+    public const TELEX_NO = 'Telex No.';
+    public const DOCUMENT_SENDING_PROFILE = 'Document Sending Profile';
+    public const SHIPTO_CODE = 'Ship-to Code';
+    public const OUR_ACCOUNT_NO = 'Our Account No.';
+    public const TERRITORY_CODE = 'Territory Code';
+    public const GLOBAL_DIMENSION_1_CODE = 'Global Dimension 1 Code';
+    public const GLOBAL_DIMENSION_2_CODE = 'Global Dimension 2 Code';
+    public const CHAIN_NAME = 'Chain Name';
+    public const BUDGETED_AMOUNT = 'Budgeted Amount';
+    public const CREDIT_LIMIT_LCY = 'Credit Limit (LCY)';
+    public const CUSTOMER_POSTING_GROUP = 'Customer Posting Group';
+    public const CURRENCY_CODE = 'Currency Code';
+    public const CUSTOMER_PRICE_GROUP = 'Customer Price Group';
+    public const LANGUAGE_CODE = 'Language Code';
+    public const REGISTRATION_NUMBER = 'Registration Number';
+    public const STATISTICS_GROUP = 'Statistics Group';
+    public const PAYMENT_TERMS_CODE = 'Payment Terms Code';
+    public const FIN_CHARGE_TERMS_CODE = 'Fin. Charge Terms Code';
+    public const SALESPERSON_CODE = 'Salesperson Code';
+    public const SHIPMENT_METHOD_CODE = 'Shipment Method Code';
+    public const SHIPPING_AGENT_CODE = 'Shipping Agent Code';
+    public const PLACE_OF_EXPORT = 'Place of Export';
+    public const INVOICE_DISC_CODE = 'Invoice Disc. Code';
+    public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
+    public const COUNTRYREGION_CODE = 'Country/Region Code';
+    public const COLLECTION_METHOD = 'Collection Method';
+    public const AMOUNT = 'Amount';
+    public const BLOCKED = 'Blocked';
+    public const INVOICE_COPIES = 'Invoice Copies';
+    public const LAST_STATEMENT_NO = 'Last Statement No.';
+    public const PRINT_STATEMENTS = 'Print Statements';
+    public const BILLTO_CUSTOMER_NO = 'Bill-to Customer No.';
+    public const PRIORITY = 'Priority';
+    public const PAYMENT_METHOD_CODE = 'Payment Method Code';
+    public const FORMAT_REGION = 'Format Region';
+    public const LAST_MODIFIED_DATE_TIME = 'Last Modified Date Time';
+    public const LAST_DATE_MODIFIED = 'Last Date Modified';
+    public const APPLICATION_METHOD = 'Application Method';
+    public const PRICES_INCLUDING_VAT = 'Prices Including VAT';
+    public const LOCATION_CODE = 'Location Code';
+    public const FAX_NO = 'Fax No.';
+    public const TELEX_ANSWER_BACK = 'Telex Answer Back';
+    public const VAT_REGISTRATION_NO = 'VAT Registration No.';
+    public const COMBINE_SHIPMENTS = 'Combine Shipments';
+    public const GEN_BUS_POSTING_GROUP = 'Gen. Bus. Posting Group';
+    public const GLN = 'GLN';
+    public const POST_CODE = 'Post Code';
+    public const COUNTY = 'County';
+    public const EORI_NUMBER = 'EORI Number';
+    public const USE_GLN_IN_ELECTRONIC_DOCUMENT = 'Use GLN in Electronic Document';
+    public const EMAIL = 'E-Mail';
+    public const HOME_PAGE = 'Home Page';
+    public const REMINDER_TERMS_CODE = 'Reminder Terms Code';
+    public const NO_SERIES = 'No. Series';
+    public const TAX_AREA_CODE = 'Tax Area Code';
+    public const TAX_LIABLE = 'Tax Liable';
+    public const VAT_BUS_POSTING_GROUP = 'VAT Bus. Posting Group';
+    public const RESERVE = 'Reserve';
+    public const BLOCK_PAYMENT_TOLERANCE = 'Block Payment Tolerance';
+    public const IC_PARTNER_CODE = 'IC Partner Code';
+    public const PREPAYMENT = 'Prepayment %';
+    public const PARTNER_TYPE = 'Partner Type';
+    public const INTRASTAT_PARTNER_TYPE = 'Intrastat Partner Type';
+    public const EXCLUDE_FROM_PMT_PRACTICES = 'Exclude from Pmt. Practices';
+    public const IMAGE = 'Image';
+    public const PRIVACY_BLOCKED = 'Privacy Blocked';
+    public const DISABLE_SEARCH_BY_NAME = 'Disable Search by Name';
+    public const ALLOW_MULTIPLE_POSTING_GROUPS = 'Allow Multiple Posting Groups';
+    public const PREFERRED_BANK_ACCOUNT_CODE = 'Preferred Bank Account Code';
+    public const CASH_FLOW_PAYMENT_TERMS_CODE = 'Cash Flow Payment Terms Code';
+    public const DEFAULT_TRANS_TYPE = 'Default Trans. Type';
+    public const DEFAULT_TRANS_TYPE__RETURN = 'Default Trans. Type - Return';
+    public const DEF_TRANSPORT_METHOD = 'Def. Transport Method';
+    public const PRIMARY_CONTACT_NO = 'Primary Contact No.';
+    public const CONTACT_TYPE = 'Contact Type';
+    public const MOBILE_PHONE_NO = 'Mobile Phone No.';
+    public const RESPONSIBILITY_CENTER = 'Responsibility Center';
+    public const SHIPPING_ADVICE = 'Shipping Advice';
+    public const SHIPPING_TIME = 'Shipping Time';
+    public const SHIPPING_AGENT_SERVICE_CODE = 'Shipping Agent Service Code';
+    public const SERVICE_ZONE_CODE = 'Service Zone Code';
+    public const COMBINE_SERVICE_SHIPMENTS = 'Combine Service Shipments';
+    public const PRICE_CALCULATION_METHOD = 'Price Calculation Method';
+    public const ALLOW_LINE_DISC = 'Allow Line Disc.';
+    public const BASE_CALENDAR_CODE = 'Base Calendar Code';
+    public const COPY_SELLTO_ADDR_TO_QTE_FROM = 'Copy Sell-to Addr. to Qte From';
+    public const VALIDATE_EU_VAT_REG_NO = 'Validate EU Vat Reg. No.';
+    public const CURRENCY_ID = 'Currency Id';
+    public const PAYMENT_TERMS_ID = 'Payment Terms Id';
+    public const SHIPMENT_METHOD_ID = 'Shipment Method Id';
+    public const PAYMENT_METHOD_ID = 'Payment Method Id';
+    public const TAX_AREA_ID = 'Tax Area ID';
+    public const CONTACT_ID = 'Contact ID';
+    public const CONTACT_GRAPH_ID = 'Contact Graph Id';
+    public const LSC_DATE_CREATED = 'LSC Date Created';
+    public const LSC_CREATED_BY_USER = 'LSC Created by User';
+    public const LSC_EXTERNAL_ID = 'LSC External ID';
+    public const LSC_CUSTOMER_ID = 'LSC Customer ID';
+    public const LSC_REASON_CODE = 'LSC Reason Code';
+    public const LSC_RESTRICTION_FUNCTIONALITY = 'LSC Restriction Functionality';
+    public const LSC_PRINT_DOCUMENT_INVOICE = 'LSC Print Document Invoice';
+    public const LSC_TRANSACTION_LIMIT = 'LSC Transaction Limit';
+    public const LSC_DAYTIME_PHONE_NO = 'LSC Daytime Phone No.';
+    public const LSC_HOUSEAPARTMENT_NO = 'LSC House/Apartment No.';
+    public const LSC_RETAIL_CUSTOMER_GROUP = 'LSC Retail Customer Group';
+    public const LSC_DEFAULT_WEIGHT = 'LSC Default Weight';
+    public const LSC_OTHER_TENDER_IN_FINALIZING = 'LSC Other Tender in Finalizing';
+    public const LSC_POST_AS_SHIPMENT = 'LSC Post as Shipment';
+    public const LSC_INCL_INCEXP_ON_SALES_DOC = 'LSC Incl. Inc/Exp on Sales Doc';
+    public const LSC_AMTCHARGEDONPOSINT = 'LSC AmtChargedOnPOSInt';
+    public const LSC_AMTCHARGEDPOSTEDINT = 'LSC AmtChargedPostedInt';
+    public const LSC_BALANCELCYINT = 'LSC BalanceLCYInt';
+    public const SYSTEMID = '$systemId';
+    public const SYSTEMCREATEDAT = 'SystemCreatedAt';
+    public const SYSTEMCREATEDBY = 'SystemCreatedBy';
+    public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
+    public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    /**
-     * @property Currency $Currency
-     */
-    protected $Currency = null;
 
-    /**
-     * @property string $DiscountGroup
-     */
-    protected $DiscountGroup = null;
-
-    /**
-     * @property string $Email
-     */
-    protected $Email = null;
-
-    /**
-     * @property string $FirstName
-     */
-    protected $FirstName = null;
-
-    /**
-     * @property int $InclTax
-     */
-    protected $InclTax = null;
-
-    /**
-     * @property boolean $IsBlocked
-     */
-    protected $IsBlocked = null;
-
-    /**
-     * @property string $LastName
-     */
-    protected $LastName = null;
-
-    /**
-     * @property string $MiddleName
-     */
-    protected $MiddleName = null;
-
-    /**
-     * @property string $Name
-     */
-    protected $Name = null;
-
-    /**
-     * @property string $NamePrefix
-     */
-    protected $NamePrefix = null;
-
-    /**
-     * @property string $NameSuffix
-     */
-    protected $NameSuffix = null;
-
-    /**
-     * @property string $PaymentTerms
-     */
-    protected $PaymentTerms = null;
-
-    /**
-     * @property string $PriceGroup
-     */
-    protected $PriceGroup = null;
-
-    /**
-     * @property string $ReceiptEmail
-     */
-    protected $ReceiptEmail = null;
-
-    /**
-     * @property int $ReceiptOption
-     */
-    protected $ReceiptOption = null;
-
-    /**
-     * @property string $ShippingLocation
-     */
-    protected $ShippingLocation = null;
-
-    /**
-     * @property string $TaxGroup
-     */
-    protected $TaxGroup = null;
-
-    /**
-     * @property string $Url
-     */
-    protected $Url = null;
-
-    /**
-     * @param Address $Address
-     * @return $this
-     */
-    public function setAddress($Address)
+    public function getNo(): ?string
     {
-        $this->Address = $Address;
-        return $this;
+        return $this->getData(self::NO);
     }
 
-    /**
-     * @return Address
-     */
-    public function getAddress()
+    public function setNo(string $value)
     {
-        return $this->Address;
+        return $this->setData(self::NO, $value);
     }
 
-    /**
-     * @param Currency $Currency
-     * @return $this
-     */
-    public function setCurrency($Currency)
+    public function getName(): ?string
     {
-        $this->Currency = $Currency;
-        return $this;
+        return $this->getData(self::NAME);
     }
 
-    /**
-     * @return Currency
-     */
-    public function getCurrency()
+    public function setName(string $value)
     {
-        return $this->Currency;
+        return $this->setData(self::NAME, $value);
     }
 
-    /**
-     * @param string $DiscountGroup
-     * @return $this
-     */
-    public function setDiscountGroup($DiscountGroup)
+    public function getSearchName(): ?string
     {
-        $this->DiscountGroup = $DiscountGroup;
-        return $this;
+        return $this->getData(self::SEARCH_NAME);
     }
 
-    /**
-     * @return string
-     */
-    public function getDiscountGroup()
+    public function setSearchName(string $value)
     {
-        return $this->DiscountGroup;
+        return $this->setData(self::SEARCH_NAME, $value);
     }
 
-    /**
-     * @param string $Email
-     * @return $this
-     */
-    public function setEmail($Email)
+    public function getName2(): ?string
     {
-        $this->Email = $Email;
-        return $this;
+        return $this->getData(self::NAME_2);
     }
 
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function setName2(string $value)
     {
-        return $this->Email;
+        return $this->setData(self::NAME_2, $value);
     }
 
-    /**
-     * @param string $FirstName
-     * @return $this
-     */
-    public function setFirstName($FirstName)
+    public function getAddress(): ?string
     {
-        $this->FirstName = $FirstName;
-        return $this;
+        return $this->getData(self::ADDRESS);
     }
 
-    /**
-     * @return string
-     */
-    public function getFirstName()
+    public function setAddress(string $value)
     {
-        return $this->FirstName;
+        return $this->setData(self::ADDRESS, $value);
     }
 
-    /**
-     * @param int $InclTax
-     * @return $this
-     */
-    public function setInclTax($InclTax)
+    public function getAddress2(): ?string
     {
-        $this->InclTax = $InclTax;
-        return $this;
+        return $this->getData(self::ADDRESS_2);
     }
 
-    /**
-     * @return int
-     */
-    public function getInclTax()
+    public function setAddress2(string $value)
     {
-        return $this->InclTax;
+        return $this->setData(self::ADDRESS_2, $value);
     }
 
-    /**
-     * @param boolean $IsBlocked
-     * @return $this
-     */
-    public function setIsBlocked($IsBlocked)
+    public function getCity(): ?string
     {
-        $this->IsBlocked = $IsBlocked;
-        return $this;
+        return $this->getData(self::CITY);
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsBlocked()
+    public function setCity(string $value)
     {
-        return $this->IsBlocked;
+        return $this->setData(self::CITY, $value);
     }
 
-    /**
-     * @param string $LastName
-     * @return $this
-     */
-    public function setLastName($LastName)
+    public function getContact(): ?string
     {
-        $this->LastName = $LastName;
-        return $this;
+        return $this->getData(self::CONTACT);
     }
 
-    /**
-     * @return string
-     */
-    public function getLastName()
+    public function setContact(string $value)
     {
-        return $this->LastName;
+        return $this->setData(self::CONTACT, $value);
     }
 
-    /**
-     * @param string $MiddleName
-     * @return $this
-     */
-    public function setMiddleName($MiddleName)
+    public function getPhoneNo(): ?string
     {
-        $this->MiddleName = $MiddleName;
-        return $this;
+        return $this->getData(self::PHONE_NO);
     }
 
-    /**
-     * @return string
-     */
-    public function getMiddleName()
+    public function setPhoneNo(string $value)
     {
-        return $this->MiddleName;
+        return $this->setData(self::PHONE_NO, $value);
     }
 
-    /**
-     * @param string $Name
-     * @return $this
-     */
-    public function setName($Name)
+    public function getTelexNo(): ?string
     {
-        $this->Name = $Name;
-        return $this;
+        return $this->getData(self::TELEX_NO);
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function setTelexNo(string $value)
     {
-        return $this->Name;
+        return $this->setData(self::TELEX_NO, $value);
     }
 
-    /**
-     * @param string $NamePrefix
-     * @return $this
-     */
-    public function setNamePrefix($NamePrefix)
+    public function getDocumentSendingProfile(): ?string
     {
-        $this->NamePrefix = $NamePrefix;
-        return $this;
+        return $this->getData(self::DOCUMENT_SENDING_PROFILE);
     }
 
-    /**
-     * @return string
-     */
-    public function getNamePrefix()
+    public function setDocumentSendingProfile(string $value)
     {
-        return $this->NamePrefix;
+        return $this->setData(self::DOCUMENT_SENDING_PROFILE, $value);
     }
 
-    /**
-     * @param string $NameSuffix
-     * @return $this
-     */
-    public function setNameSuffix($NameSuffix)
+    public function getShipToCode(): ?string
     {
-        $this->NameSuffix = $NameSuffix;
-        return $this;
+        return $this->getData(self::SHIPTO_CODE);
     }
 
-    /**
-     * @return string
-     */
-    public function getNameSuffix()
+    public function setShipToCode(string $value)
     {
-        return $this->NameSuffix;
+        return $this->setData(self::SHIPTO_CODE, $value);
     }
 
-    /**
-     * @param string $PaymentTerms
-     * @return $this
-     */
-    public function setPaymentTerms($PaymentTerms)
+    public function getOurAccountNo(): ?string
     {
-        $this->PaymentTerms = $PaymentTerms;
-        return $this;
+        return $this->getData(self::OUR_ACCOUNT_NO);
     }
 
-    /**
-     * @return string
-     */
-    public function getPaymentTerms()
+    public function setOurAccountNo(string $value)
     {
-        return $this->PaymentTerms;
+        return $this->setData(self::OUR_ACCOUNT_NO, $value);
     }
 
-    /**
-     * @param string $PriceGroup
-     * @return $this
-     */
-    public function setPriceGroup($PriceGroup)
+    public function getTerritoryCode(): ?string
     {
-        $this->PriceGroup = $PriceGroup;
-        return $this;
+        return $this->getData(self::TERRITORY_CODE);
     }
 
-    /**
-     * @return string
-     */
-    public function getPriceGroup()
+    public function setTerritoryCode(string $value)
     {
-        return $this->PriceGroup;
+        return $this->setData(self::TERRITORY_CODE, $value);
     }
 
-    /**
-     * @param string $ReceiptEmail
-     * @return $this
-     */
-    public function setReceiptEmail($ReceiptEmail)
+    public function getGlobalDimension1Code(): ?string
     {
-        $this->ReceiptEmail = $ReceiptEmail;
-        return $this;
+        return $this->getData(self::GLOBAL_DIMENSION_1_CODE);
     }
 
-    /**
-     * @return string
-     */
-    public function getReceiptEmail()
+    public function setGlobalDimension1Code(string $value)
     {
-        return $this->ReceiptEmail;
+        return $this->setData(self::GLOBAL_DIMENSION_1_CODE, $value);
     }
 
-    /**
-     * @param int $ReceiptOption
-     * @return $this
-     */
-    public function setReceiptOption($ReceiptOption)
+    public function getGlobalDimension2Code(): ?string
     {
-        $this->ReceiptOption = $ReceiptOption;
-        return $this;
+        return $this->getData(self::GLOBAL_DIMENSION_2_CODE);
     }
 
-    /**
-     * @return int
-     */
-    public function getReceiptOption()
+    public function setGlobalDimension2Code(string $value)
     {
-        return $this->ReceiptOption;
+        return $this->setData(self::GLOBAL_DIMENSION_2_CODE, $value);
     }
 
-    /**
-     * @param string $ShippingLocation
-     * @return $this
-     */
-    public function setShippingLocation($ShippingLocation)
+    public function getChainName(): ?string
     {
-        $this->ShippingLocation = $ShippingLocation;
-        return $this;
+        return $this->getData(self::CHAIN_NAME);
     }
 
-    /**
-     * @return string
-     */
-    public function getShippingLocation()
+    public function setChainName(string $value)
     {
-        return $this->ShippingLocation;
+        return $this->setData(self::CHAIN_NAME, $value);
     }
 
-    /**
-     * @param string $TaxGroup
-     * @return $this
-     */
-    public function setTaxGroup($TaxGroup)
+    public function getBudgetedAmount(): ?string
     {
-        $this->TaxGroup = $TaxGroup;
-        return $this;
+        return $this->getData(self::BUDGETED_AMOUNT);
     }
 
-    /**
-     * @return string
-     */
-    public function getTaxGroup()
+    public function setBudgetedAmount(string $value)
     {
-        return $this->TaxGroup;
+        return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
 
-    /**
-     * @param string $Url
-     * @return $this
-     */
-    public function setUrl($Url)
+    public function getCreditLimitLCY(): ?string
     {
-        $this->Url = $Url;
-        return $this;
+        return $this->getData(self::CREDIT_LIMIT_LCY);
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl()
+    public function setCreditLimitLCY(string $value)
     {
-        return $this->Url;
+        return $this->setData(self::CREDIT_LIMIT_LCY, $value);
+    }
+
+    public function getCustomerPostingGroup(): ?string
+    {
+        return $this->getData(self::CUSTOMER_POSTING_GROUP);
+    }
+
+    public function setCustomerPostingGroup(string $value)
+    {
+        return $this->setData(self::CUSTOMER_POSTING_GROUP, $value);
+    }
+
+    public function getCurrencyCode(): ?string
+    {
+        return $this->getData(self::CURRENCY_CODE);
+    }
+
+    public function setCurrencyCode(string $value)
+    {
+        return $this->setData(self::CURRENCY_CODE, $value);
+    }
+
+    public function getCustomerPriceGroup(): ?string
+    {
+        return $this->getData(self::CUSTOMER_PRICE_GROUP);
+    }
+
+    public function setCustomerPriceGroup(string $value)
+    {
+        return $this->setData(self::CUSTOMER_PRICE_GROUP, $value);
+    }
+
+    public function getLanguageCode(): ?string
+    {
+        return $this->getData(self::LANGUAGE_CODE);
+    }
+
+    public function setLanguageCode(string $value)
+    {
+        return $this->setData(self::LANGUAGE_CODE, $value);
+    }
+
+    public function getRegistrationNumber(): ?string
+    {
+        return $this->getData(self::REGISTRATION_NUMBER);
+    }
+
+    public function setRegistrationNumber(string $value)
+    {
+        return $this->setData(self::REGISTRATION_NUMBER, $value);
+    }
+
+    public function getStatisticsGroup(): ?int
+    {
+        return $this->getData(self::STATISTICS_GROUP);
+    }
+
+    public function setStatisticsGroup(int $value)
+    {
+        return $this->setData(self::STATISTICS_GROUP, $value);
+    }
+
+    public function getPaymentTermsCode(): ?string
+    {
+        return $this->getData(self::PAYMENT_TERMS_CODE);
+    }
+
+    public function setPaymentTermsCode(string $value)
+    {
+        return $this->setData(self::PAYMENT_TERMS_CODE, $value);
+    }
+
+    public function getFinChargeTermsCode(): ?string
+    {
+        return $this->getData(self::FIN_CHARGE_TERMS_CODE);
+    }
+
+    public function setFinChargeTermsCode(string $value)
+    {
+        return $this->setData(self::FIN_CHARGE_TERMS_CODE, $value);
+    }
+
+    public function getSalespersonCode(): ?string
+    {
+        return $this->getData(self::SALESPERSON_CODE);
+    }
+
+    public function setSalespersonCode(string $value)
+    {
+        return $this->setData(self::SALESPERSON_CODE, $value);
+    }
+
+    public function getShipmentMethodCode(): ?string
+    {
+        return $this->getData(self::SHIPMENT_METHOD_CODE);
+    }
+
+    public function setShipmentMethodCode(string $value)
+    {
+        return $this->setData(self::SHIPMENT_METHOD_CODE, $value);
+    }
+
+    public function getShippingAgentCode(): ?string
+    {
+        return $this->getData(self::SHIPPING_AGENT_CODE);
+    }
+
+    public function setShippingAgentCode(string $value)
+    {
+        return $this->setData(self::SHIPPING_AGENT_CODE, $value);
+    }
+
+    public function getPlaceOfExport(): ?string
+    {
+        return $this->getData(self::PLACE_OF_EXPORT);
+    }
+
+    public function setPlaceOfExport(string $value)
+    {
+        return $this->setData(self::PLACE_OF_EXPORT, $value);
+    }
+
+    public function getInvoiceDiscCode(): ?string
+    {
+        return $this->getData(self::INVOICE_DISC_CODE);
+    }
+
+    public function setInvoiceDiscCode(string $value)
+    {
+        return $this->setData(self::INVOICE_DISC_CODE, $value);
+    }
+
+    public function getCustomerDiscGroup(): ?string
+    {
+        return $this->getData(self::CUSTOMER_DISC_GROUP);
+    }
+
+    public function setCustomerDiscGroup(string $value)
+    {
+        return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
+    }
+
+    public function getCountryRegionCode(): ?string
+    {
+        return $this->getData(self::COUNTRYREGION_CODE);
+    }
+
+    public function setCountryRegionCode(string $value)
+    {
+        return $this->setData(self::COUNTRYREGION_CODE, $value);
+    }
+
+    public function getCollectionMethod(): ?string
+    {
+        return $this->getData(self::COLLECTION_METHOD);
+    }
+
+    public function setCollectionMethod(string $value)
+    {
+        return $this->setData(self::COLLECTION_METHOD, $value);
+    }
+
+    public function getAmount(): ?string
+    {
+        return $this->getData(self::AMOUNT);
+    }
+
+    public function setAmount(string $value)
+    {
+        return $this->setData(self::AMOUNT, $value);
+    }
+
+    public function getBlocked(): ?string
+    {
+        return $this->getData(self::BLOCKED);
+    }
+
+    public function setBlocked(string $value)
+    {
+        return $this->setData(self::BLOCKED, $value);
+    }
+
+    public function getInvoiceCopies(): ?int
+    {
+        return $this->getData(self::INVOICE_COPIES);
+    }
+
+    public function setInvoiceCopies(int $value)
+    {
+        return $this->setData(self::INVOICE_COPIES, $value);
+    }
+
+    public function getLastStatementNo(): ?int
+    {
+        return $this->getData(self::LAST_STATEMENT_NO);
+    }
+
+    public function setLastStatementNo(int $value)
+    {
+        return $this->setData(self::LAST_STATEMENT_NO, $value);
+    }
+
+    public function getPrintStatements(): ?bool
+    {
+        return $this->getData(self::PRINT_STATEMENTS);
+    }
+
+    public function setPrintStatements(bool $value)
+    {
+        return $this->setData(self::PRINT_STATEMENTS, $value);
+    }
+
+    public function getBillToCustomerNo(): ?string
+    {
+        return $this->getData(self::BILLTO_CUSTOMER_NO);
+    }
+
+    public function setBillToCustomerNo(string $value)
+    {
+        return $this->setData(self::BILLTO_CUSTOMER_NO, $value);
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->getData(self::PRIORITY);
+    }
+
+    public function setPriority(int $value)
+    {
+        return $this->setData(self::PRIORITY, $value);
+    }
+
+    public function getPaymentMethodCode(): ?string
+    {
+        return $this->getData(self::PAYMENT_METHOD_CODE);
+    }
+
+    public function setPaymentMethodCode(string $value)
+    {
+        return $this->setData(self::PAYMENT_METHOD_CODE, $value);
+    }
+
+    public function getFormatRegion(): ?string
+    {
+        return $this->getData(self::FORMAT_REGION);
+    }
+
+    public function setFormatRegion(string $value)
+    {
+        return $this->setData(self::FORMAT_REGION, $value);
+    }
+
+    public function getLastModifiedDateTime(): ?\DateTime
+    {
+        return $this->getData(self::LAST_MODIFIED_DATE_TIME);
+    }
+
+    public function setLastModifiedDateTime(\DateTime $value)
+    {
+        return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
+    }
+
+    public function getLastDateModified(): ?string
+    {
+        return $this->getData(self::LAST_DATE_MODIFIED);
+    }
+
+    public function setLastDateModified(string $value)
+    {
+        return $this->setData(self::LAST_DATE_MODIFIED, $value);
+    }
+
+    public function getApplicationMethod(): ?string
+    {
+        return $this->getData(self::APPLICATION_METHOD);
+    }
+
+    public function setApplicationMethod(string $value)
+    {
+        return $this->setData(self::APPLICATION_METHOD, $value);
+    }
+
+    public function getPricesIncludingVAT(): ?bool
+    {
+        return $this->getData(self::PRICES_INCLUDING_VAT);
+    }
+
+    public function setPricesIncludingVAT(bool $value)
+    {
+        return $this->setData(self::PRICES_INCLUDING_VAT, $value);
+    }
+
+    public function getLocationCode(): ?string
+    {
+        return $this->getData(self::LOCATION_CODE);
+    }
+
+    public function setLocationCode(string $value)
+    {
+        return $this->setData(self::LOCATION_CODE, $value);
+    }
+
+    public function getFaxNo(): ?string
+    {
+        return $this->getData(self::FAX_NO);
+    }
+
+    public function setFaxNo(string $value)
+    {
+        return $this->setData(self::FAX_NO, $value);
+    }
+
+    public function getTelexAnswerBack(): ?string
+    {
+        return $this->getData(self::TELEX_ANSWER_BACK);
+    }
+
+    public function setTelexAnswerBack(string $value)
+    {
+        return $this->setData(self::TELEX_ANSWER_BACK, $value);
+    }
+
+    public function getVATRegistrationNo(): ?string
+    {
+        return $this->getData(self::VAT_REGISTRATION_NO);
+    }
+
+    public function setVATRegistrationNo(string $value)
+    {
+        return $this->setData(self::VAT_REGISTRATION_NO, $value);
+    }
+
+    public function getCombineShipments(): ?bool
+    {
+        return $this->getData(self::COMBINE_SHIPMENTS);
+    }
+
+    public function setCombineShipments(bool $value)
+    {
+        return $this->setData(self::COMBINE_SHIPMENTS, $value);
+    }
+
+    public function getGenBusPostingGroup(): ?string
+    {
+        return $this->getData(self::GEN_BUS_POSTING_GROUP);
+    }
+
+    public function setGenBusPostingGroup(string $value)
+    {
+        return $this->setData(self::GEN_BUS_POSTING_GROUP, $value);
+    }
+
+    public function getGLN(): ?string
+    {
+        return $this->getData(self::GLN);
+    }
+
+    public function setGLN(string $value)
+    {
+        return $this->setData(self::GLN, $value);
+    }
+
+    public function getPostCode(): ?string
+    {
+        return $this->getData(self::POST_CODE);
+    }
+
+    public function setPostCode(string $value)
+    {
+        return $this->setData(self::POST_CODE, $value);
+    }
+
+    public function getCounty(): ?string
+    {
+        return $this->getData(self::COUNTY);
+    }
+
+    public function setCounty(string $value)
+    {
+        return $this->setData(self::COUNTY, $value);
+    }
+
+    public function getEORINumber(): ?string
+    {
+        return $this->getData(self::EORI_NUMBER);
+    }
+
+    public function setEORINumber(string $value)
+    {
+        return $this->setData(self::EORI_NUMBER, $value);
+    }
+
+    public function getUseGLNInElectronicDocument(): ?bool
+    {
+        return $this->getData(self::USE_GLN_IN_ELECTRONIC_DOCUMENT);
+    }
+
+    public function setUseGLNInElectronicDocument(bool $value)
+    {
+        return $this->setData(self::USE_GLN_IN_ELECTRONIC_DOCUMENT, $value);
+    }
+
+    public function getEMail(): ?string
+    {
+        return $this->getData(self::EMAIL);
+    }
+
+    public function setEMail(string $value)
+    {
+        return $this->setData(self::EMAIL, $value);
+    }
+
+    public function getHomePage(): ?string
+    {
+        return $this->getData(self::HOME_PAGE);
+    }
+
+    public function setHomePage(string $value)
+    {
+        return $this->setData(self::HOME_PAGE, $value);
+    }
+
+    public function getReminderTermsCode(): ?string
+    {
+        return $this->getData(self::REMINDER_TERMS_CODE);
+    }
+
+    public function setReminderTermsCode(string $value)
+    {
+        return $this->setData(self::REMINDER_TERMS_CODE, $value);
+    }
+
+    public function getNoSeries(): ?string
+    {
+        return $this->getData(self::NO_SERIES);
+    }
+
+    public function setNoSeries(string $value)
+    {
+        return $this->setData(self::NO_SERIES, $value);
+    }
+
+    public function getTaxAreaCode(): ?string
+    {
+        return $this->getData(self::TAX_AREA_CODE);
+    }
+
+    public function setTaxAreaCode(string $value)
+    {
+        return $this->setData(self::TAX_AREA_CODE, $value);
+    }
+
+    public function getTaxLiable(): ?bool
+    {
+        return $this->getData(self::TAX_LIABLE);
+    }
+
+    public function setTaxLiable(bool $value)
+    {
+        return $this->setData(self::TAX_LIABLE, $value);
+    }
+
+    public function getVATBusPostingGroup(): ?string
+    {
+        return $this->getData(self::VAT_BUS_POSTING_GROUP);
+    }
+
+    public function setVATBusPostingGroup(string $value)
+    {
+        return $this->setData(self::VAT_BUS_POSTING_GROUP, $value);
+    }
+
+    public function getReserve(): ?string
+    {
+        return $this->getData(self::RESERVE);
+    }
+
+    public function setReserve(string $value)
+    {
+        return $this->setData(self::RESERVE, $value);
+    }
+
+    public function getBlockPaymentTolerance(): ?bool
+    {
+        return $this->getData(self::BLOCK_PAYMENT_TOLERANCE);
+    }
+
+    public function setBlockPaymentTolerance(bool $value)
+    {
+        return $this->setData(self::BLOCK_PAYMENT_TOLERANCE, $value);
+    }
+
+    public function getICPartnerCode(): ?string
+    {
+        return $this->getData(self::IC_PARTNER_CODE);
+    }
+
+    public function setICPartnerCode(string $value)
+    {
+        return $this->setData(self::IC_PARTNER_CODE, $value);
+    }
+
+    public function getPrepayment(): ?string
+    {
+        return $this->getData(self::PREPAYMENT);
+    }
+
+    public function setPrepayment(string $value)
+    {
+        return $this->setData(self::PREPAYMENT, $value);
+    }
+
+    public function getPartnerType(): ?string
+    {
+        return $this->getData(self::PARTNER_TYPE);
+    }
+
+    public function setPartnerType(string $value)
+    {
+        return $this->setData(self::PARTNER_TYPE, $value);
+    }
+
+    public function getIntrastatPartnerType(): ?string
+    {
+        return $this->getData(self::INTRASTAT_PARTNER_TYPE);
+    }
+
+    public function setIntrastatPartnerType(string $value)
+    {
+        return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
+    }
+
+    public function getExcludeFromPmtPractices(): ?bool
+    {
+        return $this->getData(self::EXCLUDE_FROM_PMT_PRACTICES);
+    }
+
+    public function setExcludeFromPmtPractices(bool $value)
+    {
+        return $this->setData(self::EXCLUDE_FROM_PMT_PRACTICES, $value);
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->getData(self::IMAGE);
+    }
+
+    public function setImage(string $value)
+    {
+        return $this->setData(self::IMAGE, $value);
+    }
+
+    public function getPrivacyBlocked(): ?bool
+    {
+        return $this->getData(self::PRIVACY_BLOCKED);
+    }
+
+    public function setPrivacyBlocked(bool $value)
+    {
+        return $this->setData(self::PRIVACY_BLOCKED, $value);
+    }
+
+    public function getDisableSearchByName(): ?bool
+    {
+        return $this->getData(self::DISABLE_SEARCH_BY_NAME);
+    }
+
+    public function setDisableSearchByName(bool $value)
+    {
+        return $this->setData(self::DISABLE_SEARCH_BY_NAME, $value);
+    }
+
+    public function getAllowMultiplePostingGroups(): ?bool
+    {
+        return $this->getData(self::ALLOW_MULTIPLE_POSTING_GROUPS);
+    }
+
+    public function setAllowMultiplePostingGroups(bool $value)
+    {
+        return $this->setData(self::ALLOW_MULTIPLE_POSTING_GROUPS, $value);
+    }
+
+    public function getPreferredBankAccountCode(): ?string
+    {
+        return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
+    }
+
+    public function setPreferredBankAccountCode(string $value)
+    {
+        return $this->setData(self::PREFERRED_BANK_ACCOUNT_CODE, $value);
+    }
+
+    public function getCashFlowPaymentTermsCode(): ?string
+    {
+        return $this->getData(self::CASH_FLOW_PAYMENT_TERMS_CODE);
+    }
+
+    public function setCashFlowPaymentTermsCode(string $value)
+    {
+        return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
+    }
+
+    public function getDefaultTransType(): ?string
+    {
+        return $this->getData(self::DEFAULT_TRANS_TYPE);
+    }
+
+    public function setDefaultTransType(string $value)
+    {
+        return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
+    }
+
+    public function getDefaultTransTypeReturn(): ?string
+    {
+        return $this->getData(self::DEFAULT_TRANS_TYPE__RETURN);
+    }
+
+    public function setDefaultTransTypeReturn(string $value)
+    {
+        return $this->setData(self::DEFAULT_TRANS_TYPE__RETURN, $value);
+    }
+
+    public function getDefTransportMethod(): ?string
+    {
+        return $this->getData(self::DEF_TRANSPORT_METHOD);
+    }
+
+    public function setDefTransportMethod(string $value)
+    {
+        return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
+    }
+
+    public function getPrimaryContactNo(): ?string
+    {
+        return $this->getData(self::PRIMARY_CONTACT_NO);
+    }
+
+    public function setPrimaryContactNo(string $value)
+    {
+        return $this->setData(self::PRIMARY_CONTACT_NO, $value);
+    }
+
+    public function getContactType(): ?string
+    {
+        return $this->getData(self::CONTACT_TYPE);
+    }
+
+    public function setContactType(string $value)
+    {
+        return $this->setData(self::CONTACT_TYPE, $value);
+    }
+
+    public function getMobilePhoneNo(): ?string
+    {
+        return $this->getData(self::MOBILE_PHONE_NO);
+    }
+
+    public function setMobilePhoneNo(string $value)
+    {
+        return $this->setData(self::MOBILE_PHONE_NO, $value);
+    }
+
+    public function getResponsibilityCenter(): ?string
+    {
+        return $this->getData(self::RESPONSIBILITY_CENTER);
+    }
+
+    public function setResponsibilityCenter(string $value)
+    {
+        return $this->setData(self::RESPONSIBILITY_CENTER, $value);
+    }
+
+    public function getShippingAdvice(): ?string
+    {
+        return $this->getData(self::SHIPPING_ADVICE);
+    }
+
+    public function setShippingAdvice(string $value)
+    {
+        return $this->setData(self::SHIPPING_ADVICE, $value);
+    }
+
+    public function getShippingTime(): ?string
+    {
+        return $this->getData(self::SHIPPING_TIME);
+    }
+
+    public function setShippingTime(string $value)
+    {
+        return $this->setData(self::SHIPPING_TIME, $value);
+    }
+
+    public function getShippingAgentServiceCode(): ?string
+    {
+        return $this->getData(self::SHIPPING_AGENT_SERVICE_CODE);
+    }
+
+    public function setShippingAgentServiceCode(string $value)
+    {
+        return $this->setData(self::SHIPPING_AGENT_SERVICE_CODE, $value);
+    }
+
+    public function getServiceZoneCode(): ?string
+    {
+        return $this->getData(self::SERVICE_ZONE_CODE);
+    }
+
+    public function setServiceZoneCode(string $value)
+    {
+        return $this->setData(self::SERVICE_ZONE_CODE, $value);
+    }
+
+    public function getCombineServiceShipments(): ?bool
+    {
+        return $this->getData(self::COMBINE_SERVICE_SHIPMENTS);
+    }
+
+    public function setCombineServiceShipments(bool $value)
+    {
+        return $this->setData(self::COMBINE_SERVICE_SHIPMENTS, $value);
+    }
+
+    public function getPriceCalculationMethod(): ?string
+    {
+        return $this->getData(self::PRICE_CALCULATION_METHOD);
+    }
+
+    public function setPriceCalculationMethod(string $value)
+    {
+        return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
+    }
+
+    public function getAllowLineDisc(): ?bool
+    {
+        return $this->getData(self::ALLOW_LINE_DISC);
+    }
+
+    public function setAllowLineDisc(bool $value)
+    {
+        return $this->setData(self::ALLOW_LINE_DISC, $value);
+    }
+
+    public function getBaseCalendarCode(): ?string
+    {
+        return $this->getData(self::BASE_CALENDAR_CODE);
+    }
+
+    public function setBaseCalendarCode(string $value)
+    {
+        return $this->setData(self::BASE_CALENDAR_CODE, $value);
+    }
+
+    public function getCopySellToAddrToQteFrom(): ?string
+    {
+        return $this->getData(self::COPY_SELLTO_ADDR_TO_QTE_FROM);
+    }
+
+    public function setCopySellToAddrToQteFrom(string $value)
+    {
+        return $this->setData(self::COPY_SELLTO_ADDR_TO_QTE_FROM, $value);
+    }
+
+    public function getValidateEUVatRegNo(): ?bool
+    {
+        return $this->getData(self::VALIDATE_EU_VAT_REG_NO);
+    }
+
+    public function setValidateEUVatRegNo(bool $value)
+    {
+        return $this->setData(self::VALIDATE_EU_VAT_REG_NO, $value);
+    }
+
+    public function getCurrencyId(): ?string
+    {
+        return $this->getData(self::CURRENCY_ID);
+    }
+
+    public function setCurrencyId(string $value)
+    {
+        return $this->setData(self::CURRENCY_ID, $value);
+    }
+
+    public function getPaymentTermsId(): ?string
+    {
+        return $this->getData(self::PAYMENT_TERMS_ID);
+    }
+
+    public function setPaymentTermsId(string $value)
+    {
+        return $this->setData(self::PAYMENT_TERMS_ID, $value);
+    }
+
+    public function getShipmentMethodId(): ?string
+    {
+        return $this->getData(self::SHIPMENT_METHOD_ID);
+    }
+
+    public function setShipmentMethodId(string $value)
+    {
+        return $this->setData(self::SHIPMENT_METHOD_ID, $value);
+    }
+
+    public function getPaymentMethodId(): ?string
+    {
+        return $this->getData(self::PAYMENT_METHOD_ID);
+    }
+
+    public function setPaymentMethodId(string $value)
+    {
+        return $this->setData(self::PAYMENT_METHOD_ID, $value);
+    }
+
+    public function getTaxAreaID(): ?string
+    {
+        return $this->getData(self::TAX_AREA_ID);
+    }
+
+    public function setTaxAreaID(string $value)
+    {
+        return $this->setData(self::TAX_AREA_ID, $value);
+    }
+
+    public function getContactID(): ?string
+    {
+        return $this->getData(self::CONTACT_ID);
+    }
+
+    public function setContactID(string $value)
+    {
+        return $this->setData(self::CONTACT_ID, $value);
+    }
+
+    public function getContactGraphId(): ?string
+    {
+        return $this->getData(self::CONTACT_GRAPH_ID);
+    }
+
+    public function setContactGraphId(string $value)
+    {
+        return $this->setData(self::CONTACT_GRAPH_ID, $value);
+    }
+
+    public function getLSCDateCreated(): ?string
+    {
+        return $this->getData(self::LSC_DATE_CREATED);
+    }
+
+    public function setLSCDateCreated(string $value)
+    {
+        return $this->setData(self::LSC_DATE_CREATED, $value);
+    }
+
+    public function getLSCCreatedByUser(): ?string
+    {
+        return $this->getData(self::LSC_CREATED_BY_USER);
+    }
+
+    public function setLSCCreatedByUser(string $value)
+    {
+        return $this->setData(self::LSC_CREATED_BY_USER, $value);
+    }
+
+    public function getLSCExternalID(): ?string
+    {
+        return $this->getData(self::LSC_EXTERNAL_ID);
+    }
+
+    public function setLSCExternalID(string $value)
+    {
+        return $this->setData(self::LSC_EXTERNAL_ID, $value);
+    }
+
+    public function getLSCCustomerID(): ?string
+    {
+        return $this->getData(self::LSC_CUSTOMER_ID);
+    }
+
+    public function setLSCCustomerID(string $value)
+    {
+        return $this->setData(self::LSC_CUSTOMER_ID, $value);
+    }
+
+    public function getLSCReasonCode(): ?string
+    {
+        return $this->getData(self::LSC_REASON_CODE);
+    }
+
+    public function setLSCReasonCode(string $value)
+    {
+        return $this->setData(self::LSC_REASON_CODE, $value);
+    }
+
+    public function getLSCRestrictionFunctionality(): ?string
+    {
+        return $this->getData(self::LSC_RESTRICTION_FUNCTIONALITY);
+    }
+
+    public function setLSCRestrictionFunctionality(string $value)
+    {
+        return $this->setData(self::LSC_RESTRICTION_FUNCTIONALITY, $value);
+    }
+
+    public function getLSCPrintDocumentInvoice(): ?bool
+    {
+        return $this->getData(self::LSC_PRINT_DOCUMENT_INVOICE);
+    }
+
+    public function setLSCPrintDocumentInvoice(bool $value)
+    {
+        return $this->setData(self::LSC_PRINT_DOCUMENT_INVOICE, $value);
+    }
+
+    public function getLSCTransactionLimit(): ?string
+    {
+        return $this->getData(self::LSC_TRANSACTION_LIMIT);
+    }
+
+    public function setLSCTransactionLimit(string $value)
+    {
+        return $this->setData(self::LSC_TRANSACTION_LIMIT, $value);
+    }
+
+    public function getLSCDaytimePhoneNo(): ?string
+    {
+        return $this->getData(self::LSC_DAYTIME_PHONE_NO);
+    }
+
+    public function setLSCDaytimePhoneNo(string $value)
+    {
+        return $this->setData(self::LSC_DAYTIME_PHONE_NO, $value);
+    }
+
+    public function getLSCHouseApartmentNo(): ?string
+    {
+        return $this->getData(self::LSC_HOUSEAPARTMENT_NO);
+    }
+
+    public function setLSCHouseApartmentNo(string $value)
+    {
+        return $this->setData(self::LSC_HOUSEAPARTMENT_NO, $value);
+    }
+
+    public function getLSCRetailCustomerGroup(): ?string
+    {
+        return $this->getData(self::LSC_RETAIL_CUSTOMER_GROUP);
+    }
+
+    public function setLSCRetailCustomerGroup(string $value)
+    {
+        return $this->setData(self::LSC_RETAIL_CUSTOMER_GROUP, $value);
+    }
+
+    public function getLSCDefaultWeight(): ?string
+    {
+        return $this->getData(self::LSC_DEFAULT_WEIGHT);
+    }
+
+    public function setLSCDefaultWeight(string $value)
+    {
+        return $this->setData(self::LSC_DEFAULT_WEIGHT, $value);
+    }
+
+    public function getLSCOtherTenderInFinalizing(): ?bool
+    {
+        return $this->getData(self::LSC_OTHER_TENDER_IN_FINALIZING);
+    }
+
+    public function setLSCOtherTenderInFinalizing(bool $value)
+    {
+        return $this->setData(self::LSC_OTHER_TENDER_IN_FINALIZING, $value);
+    }
+
+    public function getLSCPostAsShipment(): ?bool
+    {
+        return $this->getData(self::LSC_POST_AS_SHIPMENT);
+    }
+
+    public function setLSCPostAsShipment(bool $value)
+    {
+        return $this->setData(self::LSC_POST_AS_SHIPMENT, $value);
+    }
+
+    public function getLSCInclIncExpOnSalesDoc(): ?bool
+    {
+        return $this->getData(self::LSC_INCL_INCEXP_ON_SALES_DOC);
+    }
+
+    public function setLSCInclIncExpOnSalesDoc(bool $value)
+    {
+        return $this->setData(self::LSC_INCL_INCEXP_ON_SALES_DOC, $value);
+    }
+
+    public function getLSCAmtChargedOnPOSInt(): ?string
+    {
+        return $this->getData(self::LSC_AMTCHARGEDONPOSINT);
+    }
+
+    public function setLSCAmtChargedOnPOSInt(string $value)
+    {
+        return $this->setData(self::LSC_AMTCHARGEDONPOSINT, $value);
+    }
+
+    public function getLSCAmtChargedPostedInt(): ?string
+    {
+        return $this->getData(self::LSC_AMTCHARGEDPOSTEDINT);
+    }
+
+    public function setLSCAmtChargedPostedInt(string $value)
+    {
+        return $this->setData(self::LSC_AMTCHARGEDPOSTEDINT, $value);
+    }
+
+    public function getLSCBalanceLCYInt(): ?string
+    {
+        return $this->getData(self::LSC_BALANCELCYINT);
+    }
+
+    public function setLSCBalanceLCYInt(string $value)
+    {
+        return $this->setData(self::LSC_BALANCELCYINT, $value);
+    }
+
+    public function getSystemId(): ?string
+    {
+        return $this->getData(self::SYSTEMID);
+    }
+
+    public function setSystemId(string $value)
+    {
+        return $this->setData(self::SYSTEMID, $value);
+    }
+
+    public function getSystemCreatedAt(): ?\DateTime
+    {
+        return $this->getData(self::SYSTEMCREATEDAT);
+    }
+
+    public function setSystemCreatedAt(\DateTime $value)
+    {
+        return $this->setData(self::SYSTEMCREATEDAT, $value);
+    }
+
+    public function getSystemCreatedBy(): ?string
+    {
+        return $this->getData(self::SYSTEMCREATEDBY);
+    }
+
+    public function setSystemCreatedBy(string $value)
+    {
+        return $this->setData(self::SYSTEMCREATEDBY, $value);
+    }
+
+    public function getSystemModifiedAt(): ?\DateTime
+    {
+        return $this->getData(self::SYSTEMMODIFIEDAT);
+    }
+
+    public function setSystemModifiedAt(\DateTime $value)
+    {
+        return $this->setData(self::SYSTEMMODIFIEDAT, $value);
+    }
+
+    public function getSystemModifiedBy(): ?string
+    {
+        return $this->getData(self::SYSTEMMODIFIEDBY);
+    }
+
+    public function setSystemModifiedBy(string $value)
+    {
+        return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 }
-

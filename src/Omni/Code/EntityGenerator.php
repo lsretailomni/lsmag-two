@@ -15,7 +15,7 @@ use Laminas\Code\Generator\DocBlock\Tag;
 use Laminas\Code\Generator\DocBlockGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\ParameterGenerator;
-use Magento\Framework\DataObject;
+use Magento\Catalog\Model\AbstractModel;
 
 class EntityGenerator extends AbstractOmniGenerator
 {
@@ -59,7 +59,7 @@ class EntityGenerator extends AbstractOmniGenerator
         $types = $this->metadata->getTypes();
         $classNameOptimized = preg_replace('/[-._]/', '', $this->entity->getName());
         $this->class->setName($classNameOptimized);
-        $this->class->setExtendedClass(DataObject::class);
+        $this->class->setExtendedClass(AbstractModel::class);
         $this->class->setNamespaceName($entityNamespace);
         $this->class->addConstant('CLASS_NAME', $this->entity->getName());
 

@@ -31,27 +31,14 @@ class HierarchyCode implements OptionSourceInterface
      */
     public function toOptionArray()
     {
-        $websiteId = (int)$this->request->getParam('website');
-        $webStore = $this->lsr->getWebsiteConfig(LSR::SC_SERVICE_STORE, $websiteId);
-        $hierarchies = $this->helper->fetchWebStoreHierarchies(
-            '',
-            [],
-            [],
-            [
-                'storeNo' => $webStore,
-                'batchSize' => 100,
-                'fullRepl' => true,
-                'lastKey' => '',
-                'lastEntryNo' => 0
-            ]
-        );
+        $hierarchies = $this->helper->fetchWebStoreHierarchies();
 
         if (!empty($hierarchies)) {
             $optionList = [['value' => '', 'label' => __('Please select your hierarchy code')]];
             foreach ($hierarchies as $hierarchy) {
                 $optionList[] = [
-                    'value' => $hierarchy['Hierarchy Code'],
-                    'label' => $hierarchy['Description']
+                    'value' => $hierarchy->getHierarchyCode(),
+                    'label' => $hierarchy->getDescription()
                 ];
             }
         } else {

@@ -10,34 +10,72 @@ namespace Ls\Omni\Client\Ecommerce\Entity;
 
 use Ls\Omni\Client\RequestInterface;
 
-class SecurityCheckProfile implements RequestInterface
+class SecurityCheckProfile extends \Magento\Catalog\Model\AbstractModel implements RequestInterface
 {
-    /**
-     * @property string $orderNo
-     */
-    protected $orderNo = null;
+    public const CLASS_NAME = 'SecurityCheckProfile';
+
+    public const RESPONSE_CODE = 'responseCode';
+
+    public const ERROR_TEXT = 'errorText';
+
+    public const SECURITY_PROFILE_EXIST = 'securityProfileExist';
+
+    public const STORE_NO = 'storeNo';
+
+    public const CUSTOMER_ORDER_I_D = 'customerOrderID';
 
     /**
-     * @property string $storeNo
-     */
-    protected $storeNo = null;
-
-    /**
-     * @param string $orderNo
+     * @param string $responseCode
      * @return $this
      */
-    public function setOrderNo($orderNo)
+    public function setResponseCode($responseCode)
     {
-        $this->orderNo = $orderNo;
+        $this->setData(self::RESPONSE_CODE, $responseCode);
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getOrderNo()
+    public function getResponseCode()
     {
-        return $this->orderNo;
+        return $this->getData(self::RESPONSE_CODE);
+    }
+
+    /**
+     * @param string $errorText
+     * @return $this
+     */
+    public function setErrorText($errorText)
+    {
+        $this->setData(self::ERROR_TEXT, $errorText);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getErrorText()
+    {
+        return $this->getData(self::ERROR_TEXT);
+    }
+
+    /**
+     * @param boolean $securityProfileExist
+     * @return $this
+     */
+    public function setSecurityProfileExist($securityProfileExist)
+    {
+        $this->setData(self::SECURITY_PROFILE_EXIST, $securityProfileExist);
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSecurityProfileExist()
+    {
+        return $this->getData(self::SECURITY_PROFILE_EXIST);
     }
 
     /**
@@ -46,7 +84,7 @@ class SecurityCheckProfile implements RequestInterface
      */
     public function setStoreNo($storeNo)
     {
-        $this->storeNo = $storeNo;
+        $this->setData(self::STORE_NO, $storeNo);
         return $this;
     }
 
@@ -55,7 +93,25 @@ class SecurityCheckProfile implements RequestInterface
      */
     public function getStoreNo()
     {
-        return $this->storeNo;
+        return $this->getData(self::STORE_NO);
+    }
+
+    /**
+     * @param string $customerOrderID
+     * @return $this
+     */
+    public function setCustomerOrderID($customerOrderID)
+    {
+        $this->setData(self::CUSTOMER_ORDER_I_D, $customerOrderID);
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerOrderID()
+    {
+        return $this->getData(self::CUSTOMER_ORDER_I_D);
     }
 }
 

@@ -9,7 +9,10 @@ use \Ls\Omni\Client\Ecommerce\Entity;
 use \Ls\Omni\Client\Ecommerce\Entity\Enum\StoreHourCalendarType;
 use \Ls\Omni\Client\Ecommerce\Entity\StoreHours;
 use \Ls\Omni\Client\Ecommerce\Operation;
+use \Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
+use \Ls\Omni\Client\Ecommerce\Operation\LSCTenderType;
 use \Ls\Omni\Client\Ecommerce\Operation\StoreGetById;
+use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Model\Cache\Type;
 use \Ls\Omni\Model\Central\GuzzleClient;
 use \Ls\Omni\Model\Central\TokenRequestService;
@@ -173,15 +176,15 @@ class Data extends AbstractHelper
      * @param RequestInterface $request
      */
     public function __construct(
-        Context $context,
-        ReplStoreRepositoryInterface $storeRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        SessionManagerInterface $session,
-        CheckoutSession $checkoutSession,
-        ManagerInterface $messageManager,
+        Context                                $context,
+        ReplStoreRepositoryInterface           $storeRepository,
+        SearchCriteriaBuilder                  $searchCriteriaBuilder,
+        SessionManagerInterface                $session,
+        CheckoutSession                        $checkoutSession,
+        ManagerInterface                       $messageManager,
         \Magento\Framework\Pricing\Helper\Data $priceHelper,
-        LoyaltyHelper $loyaltyHelper,
-        CartRepositoryInterface $cartRepository,
+        LoyaltyHelper                          $loyaltyHelper,
+        CartRepositoryInterface                $cartRepository,
         CacheHelper                            $cacheHelper,
         LSR                                    $lsr,
         DateTime                               $date,
@@ -193,9 +196,9 @@ class Data extends AbstractHelper
         ReplStoreTenderTypeRepositoryInterface $storeTenderTypeRepository,
         File                                   $fileSystemDriver,
         GuzzleClient                           $guzzleClient,
-        StoreManagerInterface $storeManager,
-        TokenRequestService $tokenRequestService,
-        RequestInterface $request,
+        StoreManagerInterface                  $storeManager,
+        TokenRequestService                    $tokenRequestService,
+        RequestInterface                       $request,
     ) {
         $this->storeRepository               = $storeRepository;
         $this->searchCriteriaBuilder         = $searchCriteriaBuilder;
@@ -217,8 +220,8 @@ class Data extends AbstractHelper
         $this->fileSystemDriver              = $fileSystemDriver;
         $this->guzzleClient                  = $guzzleClient;
         $this->storeManager                  = $storeManager;
-        $this->tokenRequestService            = $tokenRequestService;
-        $this->request = $request;
+        $this->tokenRequestService           = $tokenRequestService;
+        $this->request                       = $request;
         parent::__construct($context);
     }
 
@@ -254,7 +257,7 @@ class Data extends AbstractHelper
             } else {
                 // @codingStandardsIgnoreLine
                 $request = new StoreGetById();
-                $request->getOperationInput()->setStoreId($storeId);
+                $request->setOperationInput()->setStoreId($storeId);
                 $response     = $request->execute();
                 $storeResults = [];
 
@@ -487,7 +490,7 @@ class Data extends AbstractHelper
     /**
      * Parse ping response and save configuration
      *
-     * @param array $pingResponseText
+     * @param mixed $pingResponseText
      * @param string $websiteId
      * @return array
      */
@@ -497,10 +500,10 @@ class Data extends AbstractHelper
             $lsCentralVersion = "";
             $lsRetailLicenseIsActive = $lsRetailLicenseUnitEcomIsActive = false;
 
-            if (!empty($pingResponseText['LSRetailVersion'] &&
-                str_contains($pingResponseText['LSRetailVersion'], 'LS Central'))
+            if (!empty($pingResponseText->getLSRetailVersion() &&
+                str_contains($pingResponseText->getLSRetailVersion(), 'LS Central'))
             ) {
-                $lsCentralVersion = explode('LS Central ', $pingResponseText['LSRetailVersion'])[1];
+                $lsCentralVersion = explode('LS Central ', $pingResponseText->getLSRetailVersion())[1];
 
                 if (!empty($websiteId)) {
                     $this->updateConfigValueWebsite(
@@ -513,13 +516,9 @@ class Data extends AbstractHelper
                 }
             }
 
-            if (isset($pingResponseText['LSRetailLicenseKeyActive'])) {
-                $lsRetailLicenseIsActive = $pingResponseText['LSRetailLicenseKeyActive'];
-            }
+            $lsRetailLicenseIsActive = $pingResponseText->getLSRetailLicenseKeyActive();
 
-            if (isset($pingResponseText['LSRetailLicenseUnitEcom'])) {
-                $lsRetailLicenseUnitEcomIsActive = $pingResponseText['LSRetailLicenseUnitEcom'];
-            }
+            $lsRetailLicenseUnitEcomIsActive = $pingResponseText->getLSRetailLicenseUnitEcom();
         } catch (Exception $e) {
             $this->_logger->critical($e);
         }
@@ -601,8 +600,8 @@ class Data extends AbstractHelper
             $this->lsr->getWebsiteConfig(LSR::SC_TENANT, $this->getScopeId());
         $connectionParams['environmentName'] = $connectionParams['environmentName'] ??
             $this->lsr->getWebsiteConfig(LSR::SC_ENVIRONMENT_NAME, $this->getScopeId());
-        $query['company'] = $query['company'] ??
-            $this->lsr->getWebsiteConfig(LSR::SC_COMPANY_NAME, $this->getScopeId());
+        $query['company'] = !empty($query['company']) ?
+            $query['company'] : $this->lsr->getWebsiteConfig(LSR::SC_COMPANY_NAME, $this->getScopeId());
 
         $connectionParams['token'] =
             $this->fetchValidToken(
@@ -613,196 +612,156 @@ class Data extends AbstractHelper
     }
 
     /**
-     * Function for commerce service ping
+     * Function for central service ping
      *
      * @param string $baseUrl
      * @param array $connectionParams
-     * @param array $query
-     * @return array|mixed|null
-     * @throws GuzzleException
+     * @param array $companyName
+     * @return false|Entity\TestConnectionResponse|mixed
      */
-    public function omniPing($baseUrl = '', $connectionParams = [], $query = [])
+    public function omniPing($baseUrl = '', $connectionParams = [], $companyName = [])
     {
-        $result = null;
-        try {
-            $this->setMissingParameters($baseUrl, $connectionParams, $query);
-            $result = $this->guzzleClient->makeRequest(
-                $baseUrl,
-                'TestConnectionOData_TestConnection',
-                'POST',
-                'odata',
-                $connectionParams,
-                $query
-            );
+        $testConnectionOperation = new TestConnectionResponse(
+            $baseUrl,
+            $connectionParams,
+            $companyName['company'] ?? ''
+        );
 
-            $result = $result['TestConnectionResponse'] ?? [];
-        } catch (Exception $e) {
-            $this->_logger->debug($e->getMessage());
-        }
-
-        return $result;
+        return current($testConnectionOperation->execute()->getRecords());
     }
 
     /**
      * Fetch webstores from central
      *
-     * @param string $baseUrl
-     * @param array $connectionParams
-     * @param array $query
-     * @param array $data
      * @return array
-     * @throws GuzzleException|NoSuchEntityException
      */
-    public function fetchWebStores($baseUrl = '', $connectionParams = [], $query = [], $data = [])
+    public function fetchWebStores()
     {
-        $this->setMissingParameters($baseUrl, $connectionParams, $query);
-        $response = $this->guzzleClient->makeRequest(
-            $baseUrl,
-            'GetStores_GetStores',
-            'POST',
-            'odata',
-            $connectionParams,
-            $query,
-            $data
+        $webStoreOperation = new Operation\GetStores_GetStores();
+        $webStoreOperation->setOperationInput(
+            ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
         );
 
-        return $this->parseDataSetResponse(
-            $response['StoreInfo']['DataCollection'] ?? [],
-            'LSC Store',
-            ['No.', 'Name']
-        );
-    }
-
-    /**
-     * Format web service response
-     *
-     * @param array $dataSets
-     * @param string $dataSetName
-     * @param array $fieldNames
-     * @param string $dataSetListIndexName
-     * @param string $dataSetListName
-     * @param string $dataSetListFieldsIndexName
-     * @param string $dataSetListRowsIndexName
-     * @return array
-     */
-    public function parseDataSetResponse(
-        array $dataSets,
-        string $dataSetName,
-        array $fieldNames,
-        string $dataSetListIndexName = 'DynDataSet',
-        string $dataSetListName = 'DataSetName',
-        string $dataSetListFieldsIndexName = 'DataSetFields',
-        string $dataSetListRowsIndexName = 'DataSetRows'
-    ): array {
-        $results = [];
-
-        foreach ($dataSets as $dataset) {
-            $dynDataSet = $dataset[$dataSetListIndexName] ?? [];
-            if (($dynDataSet[$dataSetListName] ?? '') === $dataSetName) {
-                $fieldsDefinition = $dynDataSet[$dataSetListFieldsIndexName] ?? [];
-                $rows = $dynDataSet[$dataSetListRowsIndexName] ?? [];
-
-                // Map FieldIndex => FieldName
-                $fieldIndexToName = [];
-                foreach ($fieldsDefinition as $field) {
-                    if (in_array($field['FieldName'], $fieldNames, true)) {
-                        $fieldIndexToName[$field['FieldIndex']] = $field['FieldName'];
-                    }
-
-                    if (count($fieldIndexToName) == count($fieldNames)) {
-                        break;
-                    }
-                }
-
-                // Extract values from each row
-                foreach ($rows as $row) {
-                    $fields = $row['Fields'] ?? [];
-                    $entry = [];
-
-                    foreach ($fields as $field) {
-                        $index = $field['FieldIndex'];
-                        if (isset($fieldIndexToName[$index])) {
-                            $entry[$fieldIndexToName[$index]] = $field['FieldValue'];
-                        }
-
-                        if (count($entry) == count($fieldIndexToName)) {
-                            break;
-                        }
-                    }
-
-                    if (!empty($entry)) {
-                        $results[] = $entry;
-                    }
-                }
-
-                break;
-            }
-        }
-
-        return $results;
+        return $webStoreOperation->execute()->getRecords();
     }
 
     /**
      * Fetch hierarchies from central
      *
-     * @param string $baseUrl
-     * @param array $connectionParams
-     * @param array $query
-     * @param array $data
      * @return array
-     * @throws GuzzleException|NoSuchEntityException
+     * @throws NoSuchEntityException
      */
-    public function fetchWebStoreHierarchies($baseUrl = '', $connectionParams = [], $query = [], $data = [])
+    public function fetchWebStoreHierarchies()
     {
-        $this->setMissingParameters($baseUrl, $connectionParams, $query);
-        $response = $this->guzzleClient->makeRequest(
-            $baseUrl,
-            'ODataRequest_GetHierarchy',
-            'POST',
-            'odata',
-            $connectionParams,
-            $query,
-            $data
+        $storeCode = $this->lsr->getWebsiteConfig(
+            LSR::SC_SERVICE_STORE,
+            $this->getScopeId()
+        );
+        $hierarchyOperation = new HierarchyView();
+        $hierarchyOperation->setOperationInput(
+            [
+                'storeNo' => $storeCode,
+                'batchSize' => 100,
+                'fullRepl' => true,
+                'lastKey' => '',
+                'lastEntryNo' => 0
+            ]
         );
 
-        return $this->parseDataSetResponse(
-            $response['DataSet'] ?? [],
-            'HierarchyView',
-            ['Hierarchy Code', 'Description']
-        );
+        return $hierarchyOperation->execute()->getRecords() ?? [];
     }
 
     /**
      * Fetch hierarchies from central
      *
+     * @return mixed
+     * @throws NoSuchEntityException|GuzzleException
+     */
+    public function fetchWebStoreTenderTypes()
+    {
+        $storeCode = $this->lsr->getWebsiteConfig(
+            LSR::SC_SERVICE_STORE,
+            $this->getScopeId()
+        );
+        $tenderTypeOperation = new LSCTenderType();
+        $tenderTypeOperation->setOperationInput(
+            [
+                'storeNo' => $storeCode,
+                'batchSize' => 100,
+                'fullRepl' => true,
+                'lastKey' => '',
+                'lastEntryNo' => 0
+            ]
+        );
+
+        return $tenderTypeOperation->execute()->getRecords() ?? [];
+    }
+
+    /**
+     * Make given odata request
+     *
+     * @param string $action
      * @param string $baseUrl
      * @param array $connectionParams
      * @param array $query
      * @param array $data
-     * @return array
-     * @throws GuzzleException|NoSuchEntityException
+     * @param string $method
+     * @return mixed|string|null
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
      */
-    public function fetchWebStoreTenderTypes($baseUrl = '', $connectionParams = [], $query = [], $data = [])
-    {
+    public function fetchGivenOdata(
+        $action,
+        $baseUrl = '',
+        $connectionParams = [],
+        $query = [],
+        $data = [],
+        $method = 'POST'
+    ) {
         $this->setMissingParameters($baseUrl, $connectionParams, $query);
-        $response = $this->guzzleClient->makeRequest(
+
+        return $this->guzzleClient->makeRequest(
             $baseUrl,
-            'ODataRequest_GetTenderType',
-            'POST',
+            $action,
+            $method,
             'odata',
             $connectionParams,
             $query,
             $data
         );
+    }
 
-        return $this->parseDataSetResponse(
-            $response['TableData'] ?? [],
-            'LSC Tender Type',
-            ['Code', 'Description'],
-            'RecRefJson',
-            'TableName',
-            'RecordFields',
-            'Records'
+    /**
+     * Make odata request
+     *
+     * @param string $action
+     * @param string $responseName
+     * @param mixed $data
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param array $query
+     * @return mixed
+     * @throws GuzzleException
+     * @throws NoSuchEntityException
+     */
+    public function makeRequest(
+        $action,
+        $responseName,
+        $data,
+        $baseUrl = '',
+        $connectionParams = [],
+        $query = []
+    ) {
+        $this->setMissingParameters($baseUrl, $connectionParams, $query);
+
+        return $this->guzzleClient->makeRequest(
+            $baseUrl,
+            $action,
+            'POST',
+            'odata',
+            $connectionParams,
+            $query,
+            $data
         );
     }
 
@@ -816,15 +775,15 @@ class Data extends AbstractHelper
      * @return \DOMXPath
      * @throws GuzzleException|NoSuchEntityException
      */
-    public function fetchOmniWrapperCodeUnit($baseUrl = '', $connectionParams = [], $query = [], $data = [])
+    public function fetchOdataV4Xml($baseUrl = '', $connectionParams = [], $query = [], $data = [])
     {
         $this->setMissingParameters($baseUrl, $connectionParams, $query);
 
         $response = $this->guzzleClient->makeRequest(
             $baseUrl,
-            'OmniWrapper',
+            '$metadata',
             'GET',
-            'codeunit',
+            'odata',
             $connectionParams,
             $query,
             $data
@@ -835,7 +794,7 @@ class Data extends AbstractHelper
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput       = true;
         $xpath = new \DOMXPath($dom);
-        $xpath->registerNamespace('xsd', 'http://www.w3.org/2001/XMLSchema');
+        $xpath->registerNamespace('edm', 'http://docs.oasis-open.org/odata/ns/edm');
 
         return $xpath;
     }
@@ -1069,7 +1028,7 @@ class Data extends AbstractHelper
         $request->setClient($client);
         $request->setToken($lsKey);
         $client->setClassmap($request->getClassMap());
-        $request->getOperationInput()->setReplRequest(
+        $request->setOperationInput()->setReplRequest(
             (new Entity\ReplRequest())
                 ->setBatchSize(1000)
                 ->setFullReplication(1)
@@ -1142,7 +1101,7 @@ class Data extends AbstractHelper
      * @return string
      * @throws NoSuchEntityException
      */
-    function getLicenseStatusHtml($lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive)
+    public function getLicenseStatusHtml($lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive)
     {
         if ($lsRetailLicenseIsActive === true && $lsRetailLicenseUnitEcomIsActive === true) {
             $this->lsr->setLicenseValidity("1");

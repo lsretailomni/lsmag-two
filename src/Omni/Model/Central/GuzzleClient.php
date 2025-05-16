@@ -3,19 +3,26 @@ namespace Ls\Omni\Model\Central;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Exception\RequestException;
-use Ls\Core\Model\LSR;
+use GuzzleHttp\HandlerStack;
+use \Ls\Core\Model\LSR;
+use \Ls\Replication\Logger\FlatReplicationLogger;
+use \Ls\Replication\Logger\OmniLogger;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use function PHPUnit\Framework\isJson;
 
 class GuzzleClient
 {
     /**
      * @param LoggerInterface $logger
+     * @param OmniLogger $omniLogger
+     * @param FlatReplicationLogger $flatReplicationLogger
      * @param LSR $lsr
      */
     public function __construct(
         public LoggerInterface $logger,
+        public OmniLogger $omniLogger,
+        public FlatReplicationLogger $flatReplicationLogger,
         public LSR $lsr
     ) {
     }
@@ -46,16 +53,20 @@ class GuzzleClient
                 $token = $options['token'];
                 $headers['Authorization'] = 'Bearer ' . $token;
             }
+            $handlerStack = HandlerStack::create();
+            if ($this->lsr->getWebsiteConfig(LSR::SC_SERVICE_DEBUG, $this->lsr->getCurrentWebsiteId())) {
+                $handlerStack->push($this->getLoggingMiddleware());
+            }
 
             $client = new Client([
                 'base_uri' => $baseUrl,
                 'timeout'  => 10.0,
-                'headers'  => $headers
+                'headers'  => $headers,
+                'handler'  => $handlerStack
             ]);
             $type = $type == 'odata' ? 'ODataV4' : 'WS/Codeunit';
 
             $endpoint = 'V2.0/' . $tenant . '/' . $environmentName . '/' . $type . '/' . $action;
-
             if ($method == 'POST') {
                 if (!empty($query)) {
                     $payload['query'] = $query;
@@ -77,7 +88,7 @@ class GuzzleClient
             }
 
             if ($response->getStatusCode() == 200) {
-                $body = $response->getBody()->getContents();
+                $body = (string) $response->getBody();
 
                 if ($this->isJson($body)) {
                     $outer = json_decode($body, true);
@@ -91,6 +102,70 @@ class GuzzleClient
         }
 
         return null;
+    }
+
+    /**
+     * Get middleware for guzzle client
+     *
+     * @return callable
+     */
+    private function getLoggingMiddleware(): callable
+    {
+        return function (callable $handler) {
+            return function (
+                RequestInterface $request,
+                array $options
+            ) use ($handler) {
+                $requestTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+                $this->omniLogger->debug(
+                    sprintf(
+                        "==== REQUEST ==== %s ==== %s ====",
+                        $requestTime->format("m-d-Y H:i:s.u"),
+                        $request->getMethod() . ' ' . $request->getUri()
+                    )
+                );
+                $body = (string) $request->getBody();
+                if (!empty($body)) {
+                    $this->omniLogger->debug(sprintf('Request Body: %s ', $body));
+                }
+
+                return $handler($request, $options)->then(
+                    function (ResponseInterface $response) use ($requestTime, $request) {
+                        $responseTime = \DateTime::createFromFormat('U.u', number_format(microtime(true), 6, '.', ''));
+                        $this->omniLogger->debug(
+                            sprintf(
+                                "==== RESPONSE ==== %s ==== %s ==== %s",
+                                $responseTime->format("m-d-Y H:i:s.u"),
+                                $request->getMethod() . ' ' . $request->getUri(),
+                                $response->getStatusCode()
+                            )
+                        );
+
+                        $body = (string) $response->getBody();
+                        if (!empty($body)) {
+                            if ($this->isJson($body)) {
+                                $outer = json_decode($body, true);
+                                $decoded = isset($outer['value']) ? json_decode($outer['value'], true) : $outer;
+                                $prettyJson = json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+                                $this->omniLogger->debug("Response Body:\n" . $prettyJson);
+                            } else {
+                                $this->omniLogger->debug(sprintf('Response Body: %s', $body));
+                            }
+                        }
+                        $timeElapsed = $requestTime->diff($responseTime);
+                        $seconds = $timeElapsed->s + $timeElapsed->f;
+                        $this->omniLogger->debug(
+                            sprintf(
+                                "==== Time Elapsed ==== %s ====  ====",
+                                $timeElapsed->format("%i minute(s) " . $seconds . " second(s)")
+                            )
+                        );
+
+                        return $response;
+                    }
+                );
+            };
+        };
     }
 
     /**

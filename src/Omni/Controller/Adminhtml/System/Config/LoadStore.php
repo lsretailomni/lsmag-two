@@ -5,6 +5,8 @@ namespace Ls\Omni\Controller\Adminhtml\System\Config;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use \Ls\Core\Model\LSR;
+use \Ls\Omni\Client\Ecommerce\Operation\GetStores_GetStores;
+use \Ls\Omni\Client\Ecommerce\Operation\TestConnectionResponse;
 use \Ls\Omni\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -67,10 +69,17 @@ class LoadStore extends Action
             $pong = $this->helper->omniPing(
                 $baseUrl,
                 $connectionParams,
-                ['company' => $companyName]
+                ['companyName' => $companyName]
             );
 
-            if (is_array($pong) && !empty($pong)) {
+            $testConnectionOperation = new TestConnectionResponse(
+                $baseUrl,
+                $connectionParams,
+                $companyName,
+            );
+            $pong = current($testConnectionOperation->execute()->getRecords());
+
+            if (!empty($pong)) {
                 list($lsCentralVersion, $lsRetailLicenseIsActive, $lsRetailLicenseUnitEcomIsActive) =
                     $this->helper->parsePingResponseAndSaveToConfigData($pong, $scopeId);
 
@@ -80,19 +89,22 @@ class LoadStore extends Action
                     ['company' => $companyName],
                     $scopeId
                 )) {
-                    $stores = $this->helper->fetchWebStores(
+                    $webStoreOperation = new GetStores_GetStores(
                         $baseUrl,
                         $connectionParams,
-                        ['company' => $companyName],
+                        $companyName,
+                    );
+                    $webStoreOperation->setOperationInput(
                         ['storeGetType' => '3', 'searchText' => '', 'includeDetail' => false]
                     );
+                    $stores = current($webStoreOperation->execute()->getRecords());
                 }
 
                 if (!empty($stores)) {
                     $optionList = null;
                     $optionList = [['value' => '', 'label' => __('Please select your web store')]];
-                    foreach ($stores as $store) {
-                        $optionList[] = ['value' => $store['No.'], 'label' => $store['Name']];
+                    foreach ($stores->getLSCStore() ?? [] as $store) {
+                        $optionList[] = ['value' => $store->getNo(), 'label' => $store->getName()];
                     }
                 }
             } else {
@@ -110,7 +122,7 @@ class LoadStore extends Action
                 'store' => $optionList,
                 'hierarchy' => $hierarchyPlaceholder,
                 'version' => $lsCentralVersion,
-                'pong' => $pong,
+                'pong' => $pong->getData(),
                 'licenseHtml' => $licenseHtml
             ]
         );
