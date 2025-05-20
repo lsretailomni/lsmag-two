@@ -690,36 +690,47 @@ abstract class AbstractReplicationTask
     public function fetchDataGivenStore($storeId)
     {
         $lsr = $this->getLsrModel();
+        $lsr->setStoreId($storeId);
         // Need to check if is_lsr is enabled on each store and only process the relevant store.
         if ($lsr->isLSR($storeId, $this->defaultScope)) {
-            $this->rep_helper->updateConfigValue(
-                $this->rep_helper->getDateTime(),
-                $this->getConfigPathLastExecute(),
-                $storeId,
-                $this->defaultScope
+//            $this->rep_helper->updateConfigValue(
+//                $this->rep_helper->getDateTime(),
+//                $this->getConfigPathLastExecute(),
+//                $storeId,
+//                $this->defaultScope
+//            );
+//
+//            list($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl, $appId) =
+//                $this->getRequiredParamsForMakingRequest($lsr, $storeId);
+//
+//            $isFirstTime = $this->isFirstTime($storeId);
+//
+//            if (isset($isFirstTime) && $isFirstTime == 1) {
+//                $fullReplication = 0;
+//
+//                if ($this->isLastKeyAlwaysZero($storeId)) {
+//                    return;
+//                }
+//            }
+            $isFirstTime = true;
+            $storeNo = $this->getLsrModel()->getWebsiteConfig(
+                LSR::SC_SERVICE_STORE,
+                $storeId
             );
-
-            list($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl, $appId) =
-                $this->getRequiredParamsForMakingRequest($lsr, $storeId);
-
-            $isFirstTime = $this->isFirstTime($storeId);
-
-            if (isset($isFirstTime) && $isFirstTime == 1) {
-                $fullReplication = 0;
-
-                if ($this->isLastKeyAlwaysZero($storeId)) {
-                    return;
-                }
-            }
+            $fullRepl = false;
+            $batchSize = 5;
+            $lastEntryNo = 161492;
+            $lastKey = '';
 
             $request = $this->makeRequest(
-                $lastKey,
-                $fullReplication,
+                '',
+                [],
+                '',
+                $fullRepl,
                 $batchSize,
-                $webStoreID,
-                $maxKey,
-                $baseUrl,
-                $appId
+                $storeNo,
+                $lastEntryNo,
+                $lastKey
             );
 
             $this->processResponseGivenRequest($request, $storeId, $isFirstTime);
@@ -742,18 +753,21 @@ abstract class AbstractReplicationTask
             $response         = $request->execute();
             $this->cronStatus = false;
 
-            if ($response && method_exists($response, 'getResult')) {
-                $result                 = $response->getResult();
-                $lastKey                = $result->getLastKey();
-                $maxKey                 = $result->getMaxKey();
-                $remaining              = $result->getRecordsRemaining();
+            if ($response && method_exists($response, 'getRecords')) {
+                $result                 = $response->getRecords();
+//                $lastKey                = $response->getLastKeyNo();
+//                $maxKey                 = $response->getMaxKey();
+                $lastEntryNo = $response->getLastEntryNo();
+                $lastKey = $response->getLastKey();
+                $remaining              = $response->getEndOfTable() ? 0 : 1;
                 $this->recordsRemaining = $remaining;
-                $traversable            = $this->getIterator($result);
 
-                if ($traversable != null) {
+//                $traversable            = $this->getIterator($result);
+
+                if ($result != null) {
                     // @codingStandardsIgnoreLine
-                    if (count($traversable) > 0) {
-                        foreach ($traversable as $source) {
+                    if (count($result) > 0) {
+                        foreach ($result as $source) {
                             //TODO need to understand this before we modify it.
                             $source->setScope($this->defaultScope)
                                 ->setScopeId($storeId);
@@ -767,8 +781,8 @@ abstract class AbstractReplicationTask
                 if ($remaining == 0) {
                     $this->cronStatus = true;
                 }
-                $this->persistLastKey($lastKey, $storeId);
-                $this->persistMaxKey($maxKey, $storeId);
+//                $this->persistLastKey($lastKey, $storeId);
+//                $this->persistMaxKey($maxKey, $storeId);
                 if (!isset($isFirstTime) || $isFirstTime == 0) {
                     $this->rep_helper->updateCronStatus(
                         $this->cronStatus,
@@ -802,13 +816,13 @@ abstract class AbstractReplicationTask
         } else {
             $confPath = $this->getConfigPath();
 
-            if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
-                $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
-                $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
-                $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
-            ) {
-                $this->defaultScope = ScopeInterface::SCOPE_STORES;
-            }
+//            if ($confPath == ReplEcommDataTranslationTask::CONFIG_PATH ||
+//                $confPath == ReplEcommDataTranslationLangCodeTask::CONFIG_PATH ||
+//                $confPath == ReplEcommHtmlTranslationTask::CONFIG_PATH ||
+//                $confPath == ReplEcommDealHtmlTranslationTask::CONFIG_PATH
+//            ) {
+//                $this->defaultScope = ScopeInterface::SCOPE_STORES;
+//            }
         }
     }
 
@@ -863,16 +877,26 @@ abstract class AbstractReplicationTask
     /**
      * Making request with required parameters
      *
-     * @param $lastKey
-     * @param $fullReplication
-     * @param $batchSize
-     * @param $storeId
-     * @param $maxKey
-     * @param $baseUrl
-     * @param $appId
-     * @return OperationInterface
+     * @param string $baseUrl
+     * @param array $connectionParams
+     * @param string $companyName
+     * @param bool $fullRepl
+     * @param int $batchSize
+     * @param string $storeNo
+     * @param int $lastEntryNo
+     * @param string $lastKey
+     * @return mixed
      */
-    abstract public function makeRequest($lastKey, $fullReplication, $batchSize, $storeId, $maxKey, $baseUrl, $appId);
+    abstract public function makeRequest(
+        string $baseUrl = '',
+        array $connectionParams = [],
+        string $companyName = '',
+        bool $fullRepl = false,
+        int $batchSize = 100,
+        string $storeNo = '',
+        int $lastEntryNo = 0,
+        string $lastKey = ''
+    );
 
     abstract public function getFactory();
 
