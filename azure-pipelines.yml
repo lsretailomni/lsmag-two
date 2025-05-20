@@ -32,9 +32,9 @@ services:
 strategy:
   matrix:
     magento_2_4_6_php_8_1:
-      phpVersion: '8.1'
-      magentoVersion: '2.4.6-p1'
-      databaseName: 'magento_2_4_6_php_8_1'
+      phpVersion: '8.3'
+      magentoVersion: '2.4.7-p3'
+      databaseName: 'magento_2_4_7_php_8_3'
       composerOverride: '{}'
       phpunitVersion: '^9'
 

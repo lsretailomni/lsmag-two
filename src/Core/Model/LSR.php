@@ -993,7 +993,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getOmniVersion($storeId = null, $scope = null)
     {
-        if(!$this->isEnabled($storeId)) {
+        if (!$this->isEnabled($storeId, $scope)) {
             $scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT;
         }
 
@@ -1128,7 +1128,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function getCustomerIntegrationOnFrontend(): bool
     {
-        return (bool) $this->scopeConfig->getValue(self::LS_CUSTOMER_INTEGRATION_ACTIVE);
+        return (bool)$this->scopeConfig->getValue(self::LS_CUSTOMER_INTEGRATION_ACTIVE);
     }
 
     /**
@@ -1140,7 +1140,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getBasketIntegrationOnFrontend(bool $computed = true): bool
     {
         if (!$computed) {
-            return (bool) $this->scopeConfig->getValue(self::LS_BASKET_INTEGRATION_ACTIVE);
+            return (bool)$this->scopeConfig->getValue(self::LS_BASKET_INTEGRATION_ACTIVE);
         }
 
         return $this->getCustomerIntegrationOnFrontend() && $this->getBasketIntegrationOnFrontend(false);
@@ -1155,7 +1155,7 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getOrderIntegrationOnFrontend(bool $computed = true): bool
     {
         if (!$computed) {
-            return (bool) $this->scopeConfig->getValue(self::LS_ORDER_INTEGRATION_ACTIVE);
+            return (bool)$this->scopeConfig->getValue(self::LS_ORDER_INTEGRATION_ACTIVE);
         }
 
         return $this->getCustomerIntegrationOnFrontend() && $this->getOrderIntegrationOnFrontend(false);
@@ -1169,8 +1169,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
     public function getStopFpcPurge(&$tags)
     {
         $config = $this->fpcInvalidateFlag && (bool)$this->scopeConfig->getValue(
-            self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
-        );
+                self::SC_REPLICATION_DEFAULT_STOP_FPC_PURGE
+            );
 
         if (!$config) {
             return false;
@@ -1479,7 +1479,8 @@ Go to Stores > Configuration > LS Retail > General Configuration.';
      */
     public function isPushNotificationsEnabled()
     {
-        $configuredNotificationType = $this->getNotificationType() != null ? explode(',', $this->getNotificationType()) : [];
+        $configuredNotificationType = $this->getNotificationType() != null ? explode(',',
+            $this->getNotificationType()) : [];
 
         return in_array(LSR::LS_NOTIFICATION_PUSH_NOTIFICATION, $configuredNotificationType);
     }
