@@ -413,6 +413,79 @@
       <column name="repl_lsc_member_contact_id"/>
     </constraint>
   </table>
+  <table name="ls_replication_repl_contactview" resource="default" engine="innodb" comment="ContactView">
+    <column xsi:type="int" name="repl_contactview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_contactview_id"/>
+    <column xsi:type="text" name="account_no" nullable="true" comment="account_no"/>
+    <column xsi:type="text" name="club_code" nullable="true" comment="club_code"/>
+    <column xsi:type="text" name="scheme_code" nullable="true" comment="scheme_code"/>
+    <column xsi:type="text" name="contact_no" nullable="true" comment="contact_no"/>
+    <column xsi:type="boolean" name="main_contact" default="0" nullable="true" comment="main_contact"/>
+    <column xsi:type="text" name="name" nullable="true" comment="name"/>
+    <column xsi:type="text" name="search_name" nullable="true" comment="search_name"/>
+    <column xsi:type="text" name="name_2" nullable="true" comment="name_2"/>
+    <column xsi:type="text" name="address" nullable="true" comment="address"/>
+    <column xsi:type="text" name="address_2" nullable="true" comment="address_2"/>
+    <column xsi:type="text" name="city" nullable="true" comment="city"/>
+    <column xsi:type="text" name="houseapartment_no" nullable="true" comment="houseapartment_no"/>
+    <column xsi:type="text" name="post_code" nullable="true" comment="post_code"/>
+    <column xsi:type="text" name="email" nullable="true" comment="email"/>
+    <column xsi:type="text" name="home_page" nullable="true" comment="home_page"/>
+    <column xsi:type="text" name="phone_no" nullable="true" comment="phone_no"/>
+    <column xsi:type="text" name="mobile_phone_no" nullable="true" comment="mobile_phone_no"/>
+    <column xsi:type="text" name="territory_code" nullable="true" comment="territory_code"/>
+    <column xsi:type="text" name="county" nullable="true" comment="county"/>
+    <column xsi:type="text" name="countryregion_code" nullable="true" comment="countryregion_code"/>
+    <column xsi:type="text" name="language_code" nullable="true" comment="language_code"/>
+    <column xsi:type="text" name="gender" nullable="true" comment="gender"/>
+    <column xsi:type="text" name="date_of_birth" nullable="true" comment="date_of_birth"/>
+    <column xsi:type="text" name="birthday" nullable="true" comment="birthday"/>
+    <column xsi:type="text" name="contact_gender" nullable="true" comment="contact_gender"/>
+    <column xsi:type="text" name="marital_status" nullable="true" comment="marital_status"/>
+    <column xsi:type="text" name="guest_type" nullable="true" comment="guest_type"/>
+    <column xsi:type="text" name="expiration_period_type" nullable="true" comment="expiration_period_type"/>
+    <column xsi:type="boolean" name="blocked" default="0" nullable="true" comment="blocked"/>
+    <column xsi:type="text" name="reason_blocked" nullable="true" comment="reason_blocked"/>
+    <column xsi:type="text" name="date_blocked" nullable="true" comment="date_blocked"/>
+    <column xsi:type="text" name="blocked_by" nullable="true" comment="blocked_by"/>
+    <column xsi:type="text" name="created_date" nullable="true" comment="created_date"/>
+    <column xsi:type="text" name="created_by" nullable="true" comment="created_by"/>
+    <column xsi:type="boolean" name="privacy_blocked" default="0" nullable="true" comment="privacy_blocked"/>
+    <column xsi:type="text" name="no_series" nullable="true" comment="no_series"/>
+    <column xsi:type="text" name="external_id" nullable="true" comment="external_id"/>
+    <column xsi:type="text" name="external_system" nullable="true" comment="external_system"/>
+    <column xsi:type="text" name="member_card_temporary" nullable="true" comment="member_card_temporary"/>
+    <column xsi:type="text" name="first_name" nullable="true" comment="first_name"/>
+    <column xsi:type="text" name="middle_name" nullable="true" comment="middle_name"/>
+    <column xsi:type="text" name="surname" nullable="true" comment="surname"/>
+    <column xsi:type="text" name="salutation_code" nullable="true" comment="salutation_code"/>
+    <column xsi:type="text" name="search_email" nullable="true" comment="search_email"/>
+    <column xsi:type="text" name="send_receipt_by_email" nullable="true" comment="send_receipt_by_email"/>
+    <column xsi:type="text" name="city_search_internal" nullable="true" comment="city_search_internal"/>
+    <column xsi:type="text" name="post_code_search_internal" nullable="true" comment="post_code_search_internal"/>
+    <column xsi:type="int" name="default_token" padding="11" nullable="true" comment="default_token"/>
+    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
+    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
+    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
+    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
+    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
+    <column xsi:type="text" name="cardno" nullable="true" comment="cardno"/>
+    <column xsi:type="text" name="loginid" nullable="true" comment="loginid"/>
+    <column xsi:type="text" name="customerid" nullable="true" comment="customerid"/>
+    <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_contactview_id"/>
+    </constraint>
+  </table>
   <table name="ls_replication_repl_countryview" resource="default" engine="innodb" comment="CountryView">
     <column xsi:type="int" name="repl_countryview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_countryview_id"/>
     <column xsi:type="text" name="code" nullable="true" comment="code"/>
@@ -3021,6 +3094,34 @@
     <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_lsc_wi_discounts_id"/>
+    </constraint>
+  </table>
+  <table name="ls_replication_repl_lsc_wi_image_buffer" resource="default" engine="innodb" comment="LSC WI Image Buffer">
+    <column xsi:type="int" name="repl_lsc_wi_image_buffer_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_wi_image_buffer_id"/>
+    <column xsi:type="text" name="code" nullable="true" comment="code"/>
+    <column xsi:type="text" name="description" nullable="true" comment="description"/>
+    <column xsi:type="text" name="image_id" nullable="true" comment="image_id"/>
+    <column xsi:type="text" name="image_blob" nullable="true" comment="image_blob"/>
+    <column xsi:type="int" name="height" padding="11" nullable="true" comment="height"/>
+    <column xsi:type="int" name="width" padding="11" nullable="true" comment="width"/>
+    <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
+    <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
+    <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
+    <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
+    <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
+    <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
+    <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
+    <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
+    <column xsi:type="boolean" name="processed" default="0" nullable="true" comment="Flag to check if data is already copied into Magento. 0 means needs to be copied into Magento tables &amp; 1 means already copied"/>
+    <column xsi:type="boolean" name="is_updated" default="0" nullable="true" comment="Flag to check if data is already updated from Omni into Magento. 0 means already updated &amp; 1 means needs to be updated into Magento tables"/>
+    <column xsi:type="boolean" name="is_failed" default="0" nullable="true" comment="Flag to check if data is already added from Flat into Magento successfully or not. 0 means already added successfully &amp; 1 means failed to add successfully into Magento tables"/>
+    <column xsi:type="varchar" name="identity_value" length="200" nullable="true" comment="Hash value of all unique columns"/>
+    <column xsi:type="text" name="checksum" nullable="true" comment="Checksum"/>
+    <column xsi:type="timestamp" name="processed_at" nullable="true" comment="Processed At"/>
+    <column xsi:type="timestamp" name="created_at" default="CURRENT_TIMESTAMP" on_update="false" nullable="true" comment="Created At"/>
+    <column xsi:type="timestamp" name="updated_at" default="CURRENT_TIMESTAMP" on_update="true" nullable="true" comment="Updated At"/>
+    <constraint xsi:type="primary" referenceId="PRIMARY">
+      <column name="repl_lsc_wi_image_buffer_id"/>
     </constraint>
   </table>
   <table name="ls_replication_repl_lsc_wi_inv_location_buffer" resource="default" engine="innodb" comment="LSC WI Inv Location Buffer">
