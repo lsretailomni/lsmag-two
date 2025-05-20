@@ -20,33 +20,49 @@ class HierarchyNodesView extends AbstractModel
     public const PRESENTATION_ORDER = 'Presentation Order';
     public const RETAIL_IMAGE_ID = 'Retail Image ID';
 
+    public array $dbColumnsMapping = [
+	self::HIERARCHY_CODE => 'hierarchy_code',
+	self::NODE_ID => 'node_id',
+	self::PARENT_NODE_ID => 'parent_node_id',
+	self::DESCRIPTION => 'description',
+	self::CHILDREN_ORDER => 'children_order',
+	self::INDENTATION => 'indentation',
+	self::PRESENTATION_ORDER => 'presentation_order',
+	self::RETAIL_IMAGE_ID => 'retail_image_id',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value)
+    public function setHierarchyCode(?string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
 
-    public function getNodeID(): ?string
+    public function getNodeId(): ?string
     {
         return $this->getData(self::NODE_ID);
     }
 
-    public function setNodeID(string $value)
+    public function setNodeId(?string $value)
     {
         return $this->setData(self::NODE_ID, $value);
     }
 
-    public function getParentNodeID(): ?string
+    public function getParentNodeId(): ?string
     {
         return $this->getData(self::PARENT_NODE_ID);
     }
 
-    public function setParentNodeID(string $value)
+    public function setParentNodeId(?string $value)
     {
         return $this->setData(self::PARENT_NODE_ID, $value);
     }
@@ -56,7 +72,7 @@ class HierarchyNodesView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -66,7 +82,7 @@ class HierarchyNodesView extends AbstractModel
         return $this->getData(self::CHILDREN_ORDER);
     }
 
-    public function setChildrenOrder(int $value)
+    public function setChildrenOrder(?int $value)
     {
         return $this->setData(self::CHILDREN_ORDER, $value);
     }
@@ -76,7 +92,7 @@ class HierarchyNodesView extends AbstractModel
         return $this->getData(self::INDENTATION);
     }
 
-    public function setIndentation(int $value)
+    public function setIndentation(?int $value)
     {
         return $this->setData(self::INDENTATION, $value);
     }
@@ -86,17 +102,17 @@ class HierarchyNodesView extends AbstractModel
         return $this->getData(self::PRESENTATION_ORDER);
     }
 
-    public function setPresentationOrder(int $value)
+    public function setPresentationOrder(?int $value)
     {
         return $this->setData(self::PRESENTATION_ORDER, $value);
     }
 
-    public function getRetailImageID(): ?string
+    public function getRetailImageId(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
-    public function setRetailImageID(string $value)
+    public function setRetailImageId(?string $value)
     {
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }

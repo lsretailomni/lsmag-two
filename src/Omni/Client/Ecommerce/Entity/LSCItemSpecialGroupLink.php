@@ -14,13 +14,23 @@ class LSCItemSpecialGroupLink extends AbstractModel
     public const ITEM_NO = 'Item No.';
     public const SPECIAL_GROUP_CODE = 'Special Group Code';
 
+    public array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::SPECIAL_GROUP_CODE => 'special_group_code',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -30,7 +40,7 @@ class LSCItemSpecialGroupLink extends AbstractModel
         return $this->getData(self::SPECIAL_GROUP_CODE);
     }
 
-    public function setSpecialGroupCode(string $value)
+    public function setSpecialGroupCode(?string $value)
     {
         return $this->setData(self::SPECIAL_GROUP_CODE, $value);
     }

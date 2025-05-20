@@ -108,13 +108,117 @@ class Vendor extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::NO => 'no',
+	self::NAME => 'name',
+	self::SEARCH_NAME => 'search_name',
+	self::NAME_2 => 'name_2',
+	self::ADDRESS => 'address',
+	self::ADDRESS_2 => 'address_2',
+	self::CITY => 'city',
+	self::CONTACT => 'contact',
+	self::PHONE_NO => 'phone_no',
+	self::TELEX_NO => 'telex_no',
+	self::OUR_ACCOUNT_NO => 'our_account_no',
+	self::TERRITORY_CODE => 'territory_code',
+	self::GLOBAL_DIMENSION_1_CODE => 'global_dimension_1_code',
+	self::GLOBAL_DIMENSION_2_CODE => 'global_dimension_2_code',
+	self::BUDGETED_AMOUNT => 'budgeted_amount',
+	self::VENDOR_POSTING_GROUP => 'vendor_posting_group',
+	self::CURRENCY_CODE => 'currency_code',
+	self::LANGUAGE_CODE => 'language_code',
+	self::REGISTRATION_NUMBER => 'registration_number',
+	self::STATISTICS_GROUP => 'statistics_group',
+	self::PAYMENT_TERMS_CODE => 'payment_terms_code',
+	self::FIN_CHARGE_TERMS_CODE => 'fin_charge_terms_code',
+	self::PURCHASER_CODE => 'purchaser_code',
+	self::SHIPMENT_METHOD_CODE => 'shipment_method_code',
+	self::SHIPPING_AGENT_CODE => 'shipping_agent_code',
+	self::INVOICE_DISC_CODE => 'invoice_disc_code',
+	self::COUNTRYREGION_CODE => 'countryregion_code',
+	self::BLOCKED => 'blocked',
+	self::PAYTO_VENDOR_NO => 'payto_vendor_no',
+	self::PRIORITY => 'priority',
+	self::PAYMENT_METHOD_CODE => 'payment_method_code',
+	self::FORMAT_REGION => 'format_region',
+	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
+	self::LAST_DATE_MODIFIED => 'last_date_modified',
+	self::APPLICATION_METHOD => 'application_method',
+	self::PRICES_INCLUDING_VAT => 'prices_including_vat',
+	self::FAX_NO => 'fax_no',
+	self::TELEX_ANSWER_BACK => 'telex_answer_back',
+	self::VAT_REGISTRATION_NO => 'vat_registration_no',
+	self::GEN_BUS_POSTING_GROUP => 'gen_bus_posting_group',
+	self::GLN => 'gln',
+	self::POST_CODE => 'post_code',
+	self::COUNTY => 'county',
+	self::EORI_NUMBER => 'eori_number',
+	self::EMAIL => 'email',
+	self::HOME_PAGE => 'home_page',
+	self::NO_SERIES => 'no_series',
+	self::TAX_AREA_CODE => 'tax_area_code',
+	self::TAX_LIABLE => 'tax_liable',
+	self::VAT_BUS_POSTING_GROUP => 'vat_bus_posting_group',
+	self::BLOCK_PAYMENT_TOLERANCE => 'block_payment_tolerance',
+	self::IC_PARTNER_CODE => 'ic_partner_code',
+	self::PREPAYMENT => 'prepayment',
+	self::PARTNER_TYPE => 'partner_type',
+	self::INTRASTAT_PARTNER_TYPE => 'intrastat_partner_type',
+	self::EXCLUDE_FROM_PMT_PRACTICES => 'exclude_from_pmt_practices',
+	self::COMPANY_SIZE_CODE => 'company_size_code',
+	self::IMAGE => 'image',
+	self::PRIVACY_BLOCKED => 'privacy_blocked',
+	self::DISABLE_SEARCH_BY_NAME => 'disable_search_by_name',
+	self::CREDITOR_NO => 'creditor_no',
+	self::ALLOW_MULTIPLE_POSTING_GROUPS => 'allow_multiple_posting_groups',
+	self::PREFERRED_BANK_ACCOUNT_CODE => 'preferred_bank_account_code',
+	self::CASH_FLOW_PAYMENT_TERMS_CODE => 'cash_flow_payment_terms_code',
+	self::DEFAULT_TRANS_TYPE => 'default_trans_type',
+	self::DEFAULT_TRANS_TYPE__RETURN => 'default_trans_type__return',
+	self::DEF_TRANSPORT_METHOD => 'def_transport_method',
+	self::PRIMARY_CONTACT_NO => 'primary_contact_no',
+	self::MOBILE_PHONE_NO => 'mobile_phone_no',
+	self::RESPONSIBILITY_CENTER => 'responsibility_center',
+	self::LOCATION_CODE => 'location_code',
+	self::LEAD_TIME_CALCULATION => 'lead_time_calculation',
+	self::RECEIVE_EDOCUMENT_TO => 'receive_edocument_to',
+	self::SUST_CERT_NO => 'sust_cert_no',
+	self::SUST_CERT_NAME => 'sust_cert_name',
+	self::PRICE_CALCULATION_METHOD => 'price_calculation_method',
+	self::BASE_CALENDAR_CODE => 'base_calendar_code',
+	self::DOCUMENT_SENDING_PROFILE => 'document_sending_profile',
+	self::VALIDATE_EU_VAT_REG_NO => 'validate_eu_vat_reg_no',
+	self::CURRENCY_ID => 'currency_id',
+	self::PAYMENT_TERMS_ID => 'payment_terms_id',
+	self::PAYMENT_METHOD_ID => 'payment_method_id',
+	self::OVERRECEIPT_CODE => 'overreceipt_code',
+	self::LSC_RTC_FILTER_FIELD => 'lsc_rtc_filter_field',
+	self::LSC_ENABLE_FOR_REL_CALENDAR => 'lsc_enable_for_rel_calendar',
+	self::LSC_RELEASE_CALENDAR_GROUP => 'lsc_release_calendar_group',
+	self::LSC_BUYER_GROUP_CODE => 'lsc_buyer_group_code',
+	self::LSC_BUYER_ID => 'lsc_buyer_id',
+	self::LSC_ASN_TRUST_PROFILE => 'lsc_asn_trust_profile',
+	self::LSC_TRUST_LEVEL => 'lsc_trust_level',
+	self::LSC_VALIDATE_TRACKING_CODE => 'lsc_validate_tracking_code',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -124,7 +228,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value)
+    public function setName(?string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -134,7 +238,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::SEARCH_NAME);
     }
 
-    public function setSearchName(string $value)
+    public function setSearchName(?string $value)
     {
         return $this->setData(self::SEARCH_NAME, $value);
     }
@@ -144,7 +248,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::NAME_2);
     }
 
-    public function setName2(string $value)
+    public function setName2(?string $value)
     {
         return $this->setData(self::NAME_2, $value);
     }
@@ -154,7 +258,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value)
+    public function setAddress(?string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -164,7 +268,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::ADDRESS_2);
     }
 
-    public function setAddress2(string $value)
+    public function setAddress2(?string $value)
     {
         return $this->setData(self::ADDRESS_2, $value);
     }
@@ -174,7 +278,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value)
+    public function setCity(?string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -184,7 +288,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::CONTACT);
     }
 
-    public function setContact(string $value)
+    public function setContact(?string $value)
     {
         return $this->setData(self::CONTACT, $value);
     }
@@ -194,7 +298,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value)
+    public function setPhoneNo(?string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -204,7 +308,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::TELEX_NO);
     }
 
-    public function setTelexNo(string $value)
+    public function setTelexNo(?string $value)
     {
         return $this->setData(self::TELEX_NO, $value);
     }
@@ -214,7 +318,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::OUR_ACCOUNT_NO);
     }
 
-    public function setOurAccountNo(string $value)
+    public function setOurAccountNo(?string $value)
     {
         return $this->setData(self::OUR_ACCOUNT_NO, $value);
     }
@@ -224,7 +328,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::TERRITORY_CODE);
     }
 
-    public function setTerritoryCode(string $value)
+    public function setTerritoryCode(?string $value)
     {
         return $this->setData(self::TERRITORY_CODE, $value);
     }
@@ -234,7 +338,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::GLOBAL_DIMENSION_1_CODE);
     }
 
-    public function setGlobalDimension1Code(string $value)
+    public function setGlobalDimension1Code(?string $value)
     {
         return $this->setData(self::GLOBAL_DIMENSION_1_CODE, $value);
     }
@@ -244,7 +348,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::GLOBAL_DIMENSION_2_CODE);
     }
 
-    public function setGlobalDimension2Code(string $value)
+    public function setGlobalDimension2Code(?string $value)
     {
         return $this->setData(self::GLOBAL_DIMENSION_2_CODE, $value);
     }
@@ -254,7 +358,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::BUDGETED_AMOUNT);
     }
 
-    public function setBudgetedAmount(string $value)
+    public function setBudgetedAmount(?string $value)
     {
         return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
@@ -264,7 +368,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::VENDOR_POSTING_GROUP);
     }
 
-    public function setVendorPostingGroup(string $value)
+    public function setVendorPostingGroup(?string $value)
     {
         return $this->setData(self::VENDOR_POSTING_GROUP, $value);
     }
@@ -274,7 +378,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -284,7 +388,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::LANGUAGE_CODE);
     }
 
-    public function setLanguageCode(string $value)
+    public function setLanguageCode(?string $value)
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
@@ -294,7 +398,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::REGISTRATION_NUMBER);
     }
 
-    public function setRegistrationNumber(string $value)
+    public function setRegistrationNumber(?string $value)
     {
         return $this->setData(self::REGISTRATION_NUMBER, $value);
     }
@@ -304,7 +408,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::STATISTICS_GROUP);
     }
 
-    public function setStatisticsGroup(int $value)
+    public function setStatisticsGroup(?int $value)
     {
         return $this->setData(self::STATISTICS_GROUP, $value);
     }
@@ -314,7 +418,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PAYMENT_TERMS_CODE);
     }
 
-    public function setPaymentTermsCode(string $value)
+    public function setPaymentTermsCode(?string $value)
     {
         return $this->setData(self::PAYMENT_TERMS_CODE, $value);
     }
@@ -324,7 +428,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::FIN_CHARGE_TERMS_CODE);
     }
 
-    public function setFinChargeTermsCode(string $value)
+    public function setFinChargeTermsCode(?string $value)
     {
         return $this->setData(self::FIN_CHARGE_TERMS_CODE, $value);
     }
@@ -334,7 +438,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PURCHASER_CODE);
     }
 
-    public function setPurchaserCode(string $value)
+    public function setPurchaserCode(?string $value)
     {
         return $this->setData(self::PURCHASER_CODE, $value);
     }
@@ -344,7 +448,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::SHIPMENT_METHOD_CODE);
     }
 
-    public function setShipmentMethodCode(string $value)
+    public function setShipmentMethodCode(?string $value)
     {
         return $this->setData(self::SHIPMENT_METHOD_CODE, $value);
     }
@@ -354,7 +458,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::SHIPPING_AGENT_CODE);
     }
 
-    public function setShippingAgentCode(string $value)
+    public function setShippingAgentCode(?string $value)
     {
         return $this->setData(self::SHIPPING_AGENT_CODE, $value);
     }
@@ -364,7 +468,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::INVOICE_DISC_CODE);
     }
 
-    public function setInvoiceDiscCode(string $value)
+    public function setInvoiceDiscCode(?string $value)
     {
         return $this->setData(self::INVOICE_DISC_CODE, $value);
     }
@@ -374,7 +478,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::COUNTRYREGION_CODE);
     }
 
-    public function setCountryRegionCode(string $value)
+    public function setCountryRegionCode(?string $value)
     {
         return $this->setData(self::COUNTRYREGION_CODE, $value);
     }
@@ -384,7 +488,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(string $value)
+    public function setBlocked(?string $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -394,7 +498,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PAYTO_VENDOR_NO);
     }
 
-    public function setPayToVendorNo(string $value)
+    public function setPayToVendorNo(?string $value)
     {
         return $this->setData(self::PAYTO_VENDOR_NO, $value);
     }
@@ -404,7 +508,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value)
+    public function setPriority(?int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
@@ -414,7 +518,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PAYMENT_METHOD_CODE);
     }
 
-    public function setPaymentMethodCode(string $value)
+    public function setPaymentMethodCode(?string $value)
     {
         return $this->setData(self::PAYMENT_METHOD_CODE, $value);
     }
@@ -424,7 +528,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::FORMAT_REGION);
     }
 
-    public function setFormatRegion(string $value)
+    public function setFormatRegion(?string $value)
     {
         return $this->setData(self::FORMAT_REGION, $value);
     }
@@ -434,7 +538,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value)
+    public function setLastModifiedDateTime(?\DateTime $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
@@ -444,7 +548,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value)
+    public function setLastDateModified(?string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -454,17 +558,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::APPLICATION_METHOD);
     }
 
-    public function setApplicationMethod(string $value)
+    public function setApplicationMethod(?string $value)
     {
         return $this->setData(self::APPLICATION_METHOD, $value);
     }
 
-    public function getPricesIncludingVAT(): ?bool
+    public function getPricesIncludingVat(): ?bool
     {
         return $this->getData(self::PRICES_INCLUDING_VAT);
     }
 
-    public function setPricesIncludingVAT(bool $value)
+    public function setPricesIncludingVat(?bool $value)
     {
         return $this->setData(self::PRICES_INCLUDING_VAT, $value);
     }
@@ -474,7 +578,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::FAX_NO);
     }
 
-    public function setFaxNo(string $value)
+    public function setFaxNo(?string $value)
     {
         return $this->setData(self::FAX_NO, $value);
     }
@@ -484,17 +588,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::TELEX_ANSWER_BACK);
     }
 
-    public function setTelexAnswerBack(string $value)
+    public function setTelexAnswerBack(?string $value)
     {
         return $this->setData(self::TELEX_ANSWER_BACK, $value);
     }
 
-    public function getVATRegistrationNo(): ?string
+    public function getVatRegistrationNo(): ?string
     {
         return $this->getData(self::VAT_REGISTRATION_NO);
     }
 
-    public function setVATRegistrationNo(string $value)
+    public function setVatRegistrationNo(?string $value)
     {
         return $this->setData(self::VAT_REGISTRATION_NO, $value);
     }
@@ -504,17 +608,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::GEN_BUS_POSTING_GROUP);
     }
 
-    public function setGenBusPostingGroup(string $value)
+    public function setGenBusPostingGroup(?string $value)
     {
         return $this->setData(self::GEN_BUS_POSTING_GROUP, $value);
     }
 
-    public function getGLN(): ?string
+    public function getGln(): ?string
     {
         return $this->getData(self::GLN);
     }
 
-    public function setGLN(string $value)
+    public function setGln(?string $value)
     {
         return $this->setData(self::GLN, $value);
     }
@@ -524,7 +628,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value)
+    public function setPostCode(?string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -534,17 +638,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value)
+    public function setCounty(?string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
 
-    public function getEORINumber(): ?string
+    public function getEoriNumber(): ?string
     {
         return $this->getData(self::EORI_NUMBER);
     }
 
-    public function setEORINumber(string $value)
+    public function setEoriNumber(?string $value)
     {
         return $this->setData(self::EORI_NUMBER, $value);
     }
@@ -554,7 +658,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::EMAIL);
     }
 
-    public function setEMail(string $value)
+    public function setEMail(?string $value)
     {
         return $this->setData(self::EMAIL, $value);
     }
@@ -564,7 +668,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::HOME_PAGE);
     }
 
-    public function setHomePage(string $value)
+    public function setHomePage(?string $value)
     {
         return $this->setData(self::HOME_PAGE, $value);
     }
@@ -574,7 +678,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::NO_SERIES);
     }
 
-    public function setNoSeries(string $value)
+    public function setNoSeries(?string $value)
     {
         return $this->setData(self::NO_SERIES, $value);
     }
@@ -584,7 +688,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::TAX_AREA_CODE);
     }
 
-    public function setTaxAreaCode(string $value)
+    public function setTaxAreaCode(?string $value)
     {
         return $this->setData(self::TAX_AREA_CODE, $value);
     }
@@ -594,17 +698,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::TAX_LIABLE);
     }
 
-    public function setTaxLiable(bool $value)
+    public function setTaxLiable(?bool $value)
     {
         return $this->setData(self::TAX_LIABLE, $value);
     }
 
-    public function getVATBusPostingGroup(): ?string
+    public function getVatBusPostingGroup(): ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
 
-    public function setVATBusPostingGroup(string $value)
+    public function setVatBusPostingGroup(?string $value)
     {
         return $this->setData(self::VAT_BUS_POSTING_GROUP, $value);
     }
@@ -614,17 +718,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::BLOCK_PAYMENT_TOLERANCE);
     }
 
-    public function setBlockPaymentTolerance(bool $value)
+    public function setBlockPaymentTolerance(?bool $value)
     {
         return $this->setData(self::BLOCK_PAYMENT_TOLERANCE, $value);
     }
 
-    public function getICPartnerCode(): ?string
+    public function getIcPartnerCode(): ?string
     {
         return $this->getData(self::IC_PARTNER_CODE);
     }
 
-    public function setICPartnerCode(string $value)
+    public function setIcPartnerCode(?string $value)
     {
         return $this->setData(self::IC_PARTNER_CODE, $value);
     }
@@ -634,7 +738,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PREPAYMENT);
     }
 
-    public function setPrepayment(string $value)
+    public function setPrepayment(?string $value)
     {
         return $this->setData(self::PREPAYMENT, $value);
     }
@@ -644,7 +748,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PARTNER_TYPE);
     }
 
-    public function setPartnerType(string $value)
+    public function setPartnerType(?string $value)
     {
         return $this->setData(self::PARTNER_TYPE, $value);
     }
@@ -654,7 +758,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::INTRASTAT_PARTNER_TYPE);
     }
 
-    public function setIntrastatPartnerType(string $value)
+    public function setIntrastatPartnerType(?string $value)
     {
         return $this->setData(self::INTRASTAT_PARTNER_TYPE, $value);
     }
@@ -664,7 +768,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::EXCLUDE_FROM_PMT_PRACTICES);
     }
 
-    public function setExcludeFromPmtPractices(bool $value)
+    public function setExcludeFromPmtPractices(?bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_PMT_PRACTICES, $value);
     }
@@ -674,7 +778,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::COMPANY_SIZE_CODE);
     }
 
-    public function setCompanySizeCode(string $value)
+    public function setCompanySizeCode(?string $value)
     {
         return $this->setData(self::COMPANY_SIZE_CODE, $value);
     }
@@ -684,7 +788,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::IMAGE);
     }
 
-    public function setImage(string $value)
+    public function setImage(?string $value)
     {
         return $this->setData(self::IMAGE, $value);
     }
@@ -694,7 +798,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PRIVACY_BLOCKED);
     }
 
-    public function setPrivacyBlocked(bool $value)
+    public function setPrivacyBlocked(?bool $value)
     {
         return $this->setData(self::PRIVACY_BLOCKED, $value);
     }
@@ -704,7 +808,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::DISABLE_SEARCH_BY_NAME);
     }
 
-    public function setDisableSearchByName(bool $value)
+    public function setDisableSearchByName(?bool $value)
     {
         return $this->setData(self::DISABLE_SEARCH_BY_NAME, $value);
     }
@@ -714,7 +818,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::CREDITOR_NO);
     }
 
-    public function setCreditorNo(string $value)
+    public function setCreditorNo(?string $value)
     {
         return $this->setData(self::CREDITOR_NO, $value);
     }
@@ -724,7 +828,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::ALLOW_MULTIPLE_POSTING_GROUPS);
     }
 
-    public function setAllowMultiplePostingGroups(bool $value)
+    public function setAllowMultiplePostingGroups(?bool $value)
     {
         return $this->setData(self::ALLOW_MULTIPLE_POSTING_GROUPS, $value);
     }
@@ -734,7 +838,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PREFERRED_BANK_ACCOUNT_CODE);
     }
 
-    public function setPreferredBankAccountCode(string $value)
+    public function setPreferredBankAccountCode(?string $value)
     {
         return $this->setData(self::PREFERRED_BANK_ACCOUNT_CODE, $value);
     }
@@ -744,7 +848,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::CASH_FLOW_PAYMENT_TERMS_CODE);
     }
 
-    public function setCashFlowPaymentTermsCode(string $value)
+    public function setCashFlowPaymentTermsCode(?string $value)
     {
         return $this->setData(self::CASH_FLOW_PAYMENT_TERMS_CODE, $value);
     }
@@ -754,7 +858,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::DEFAULT_TRANS_TYPE);
     }
 
-    public function setDefaultTransType(string $value)
+    public function setDefaultTransType(?string $value)
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE, $value);
     }
@@ -764,7 +868,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::DEFAULT_TRANS_TYPE__RETURN);
     }
 
-    public function setDefaultTransTypeReturn(string $value)
+    public function setDefaultTransTypeReturn(?string $value)
     {
         return $this->setData(self::DEFAULT_TRANS_TYPE__RETURN, $value);
     }
@@ -774,7 +878,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::DEF_TRANSPORT_METHOD);
     }
 
-    public function setDefTransportMethod(string $value)
+    public function setDefTransportMethod(?string $value)
     {
         return $this->setData(self::DEF_TRANSPORT_METHOD, $value);
     }
@@ -784,7 +888,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PRIMARY_CONTACT_NO);
     }
 
-    public function setPrimaryContactNo(string $value)
+    public function setPrimaryContactNo(?string $value)
     {
         return $this->setData(self::PRIMARY_CONTACT_NO, $value);
     }
@@ -794,7 +898,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::MOBILE_PHONE_NO);
     }
 
-    public function setMobilePhoneNo(string $value)
+    public function setMobilePhoneNo(?string $value)
     {
         return $this->setData(self::MOBILE_PHONE_NO, $value);
     }
@@ -804,7 +908,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::RESPONSIBILITY_CENTER);
     }
 
-    public function setResponsibilityCenter(string $value)
+    public function setResponsibilityCenter(?string $value)
     {
         return $this->setData(self::RESPONSIBILITY_CENTER, $value);
     }
@@ -814,7 +918,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value)
+    public function setLocationCode(?string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -824,7 +928,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::LEAD_TIME_CALCULATION);
     }
 
-    public function setLeadTimeCalculation(string $value)
+    public function setLeadTimeCalculation(?string $value)
     {
         return $this->setData(self::LEAD_TIME_CALCULATION, $value);
     }
@@ -834,7 +938,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::RECEIVE_EDOCUMENT_TO);
     }
 
-    public function setReceiveEDocumentTo(string $value)
+    public function setReceiveEDocumentTo(?string $value)
     {
         return $this->setData(self::RECEIVE_EDOCUMENT_TO, $value);
     }
@@ -844,7 +948,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::SUST_CERT_NO);
     }
 
-    public function setSustCertNo(string $value)
+    public function setSustCertNo(?string $value)
     {
         return $this->setData(self::SUST_CERT_NO, $value);
     }
@@ -854,7 +958,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::SUST_CERT_NAME);
     }
 
-    public function setSustCertName(string $value)
+    public function setSustCertName(?string $value)
     {
         return $this->setData(self::SUST_CERT_NAME, $value);
     }
@@ -864,7 +968,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PRICE_CALCULATION_METHOD);
     }
 
-    public function setPriceCalculationMethod(string $value)
+    public function setPriceCalculationMethod(?string $value)
     {
         return $this->setData(self::PRICE_CALCULATION_METHOD, $value);
     }
@@ -874,7 +978,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::BASE_CALENDAR_CODE);
     }
 
-    public function setBaseCalendarCode(string $value)
+    public function setBaseCalendarCode(?string $value)
     {
         return $this->setData(self::BASE_CALENDAR_CODE, $value);
     }
@@ -884,17 +988,17 @@ class Vendor extends AbstractModel
         return $this->getData(self::DOCUMENT_SENDING_PROFILE);
     }
 
-    public function setDocumentSendingProfile(string $value)
+    public function setDocumentSendingProfile(?string $value)
     {
         return $this->setData(self::DOCUMENT_SENDING_PROFILE, $value);
     }
 
-    public function getValidateEUVatRegNo(): ?bool
+    public function getValidateEuVatRegNo(): ?bool
     {
         return $this->getData(self::VALIDATE_EU_VAT_REG_NO);
     }
 
-    public function setValidateEUVatRegNo(bool $value)
+    public function setValidateEuVatRegNo(?bool $value)
     {
         return $this->setData(self::VALIDATE_EU_VAT_REG_NO, $value);
     }
@@ -904,7 +1008,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::CURRENCY_ID);
     }
 
-    public function setCurrencyId(string $value)
+    public function setCurrencyId(?string $value)
     {
         return $this->setData(self::CURRENCY_ID, $value);
     }
@@ -914,7 +1018,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PAYMENT_TERMS_ID);
     }
 
-    public function setPaymentTermsId(string $value)
+    public function setPaymentTermsId(?string $value)
     {
         return $this->setData(self::PAYMENT_TERMS_ID, $value);
     }
@@ -924,7 +1028,7 @@ class Vendor extends AbstractModel
         return $this->getData(self::PAYMENT_METHOD_ID);
     }
 
-    public function setPaymentMethodId(string $value)
+    public function setPaymentMethodId(?string $value)
     {
         return $this->setData(self::PAYMENT_METHOD_ID, $value);
     }
@@ -934,137 +1038,137 @@ class Vendor extends AbstractModel
         return $this->getData(self::OVERRECEIPT_CODE);
     }
 
-    public function setOverReceiptCode(string $value)
+    public function setOverReceiptCode(?string $value)
     {
         return $this->setData(self::OVERRECEIPT_CODE, $value);
     }
 
-    public function getLSCRTCFilterField(): ?string
+    public function getLscRtcFilterField(): ?string
     {
         return $this->getData(self::LSC_RTC_FILTER_FIELD);
     }
 
-    public function setLSCRTCFilterField(string $value)
+    public function setLscRtcFilterField(?string $value)
     {
         return $this->setData(self::LSC_RTC_FILTER_FIELD, $value);
     }
 
-    public function getLSCEnableForRelCalendar(): ?bool
+    public function getLscEnableForRelCalendar(): ?bool
     {
         return $this->getData(self::LSC_ENABLE_FOR_REL_CALENDAR);
     }
 
-    public function setLSCEnableForRelCalendar(bool $value)
+    public function setLscEnableForRelCalendar(?bool $value)
     {
         return $this->setData(self::LSC_ENABLE_FOR_REL_CALENDAR, $value);
     }
 
-    public function getLSCReleaseCalendarGroup(): ?string
+    public function getLscReleaseCalendarGroup(): ?string
     {
         return $this->getData(self::LSC_RELEASE_CALENDAR_GROUP);
     }
 
-    public function setLSCReleaseCalendarGroup(string $value)
+    public function setLscReleaseCalendarGroup(?string $value)
     {
         return $this->setData(self::LSC_RELEASE_CALENDAR_GROUP, $value);
     }
 
-    public function getLSCBuyerGroupCode(): ?string
+    public function getLscBuyerGroupCode(): ?string
     {
         return $this->getData(self::LSC_BUYER_GROUP_CODE);
     }
 
-    public function setLSCBuyerGroupCode(string $value)
+    public function setLscBuyerGroupCode(?string $value)
     {
         return $this->setData(self::LSC_BUYER_GROUP_CODE, $value);
     }
 
-    public function getLSCBuyerID(): ?string
+    public function getLscBuyerId(): ?string
     {
         return $this->getData(self::LSC_BUYER_ID);
     }
 
-    public function setLSCBuyerID(string $value)
+    public function setLscBuyerId(?string $value)
     {
         return $this->setData(self::LSC_BUYER_ID, $value);
     }
 
-    public function getLSCASNTrustProfile(): ?string
+    public function getLscAsnTrustProfile(): ?string
     {
         return $this->getData(self::LSC_ASN_TRUST_PROFILE);
     }
 
-    public function setLSCASNTrustProfile(string $value)
+    public function setLscAsnTrustProfile(?string $value)
     {
         return $this->setData(self::LSC_ASN_TRUST_PROFILE, $value);
     }
 
-    public function getLSCTrustLevel(): ?string
+    public function getLscTrustLevel(): ?string
     {
         return $this->getData(self::LSC_TRUST_LEVEL);
     }
 
-    public function setLSCTrustLevel(string $value)
+    public function setLscTrustLevel(?string $value)
     {
         return $this->setData(self::LSC_TRUST_LEVEL, $value);
     }
 
-    public function getLSCValidateTrackingCode(): ?bool
+    public function getLscValidateTrackingCode(): ?bool
     {
         return $this->getData(self::LSC_VALIDATE_TRACKING_CODE);
     }
 
-    public function setLSCValidateTrackingCode(bool $value)
+    public function setLscValidateTrackingCode(?bool $value)
     {
         return $this->setData(self::LSC_VALIDATE_TRACKING_CODE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

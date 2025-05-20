@@ -26,23 +26,45 @@ class HierarchyDealLineView extends AbstractModel
     public const ADDED_AMOUNT = 'Added Amount';
     public const RETAIL_IMAGE_ID = 'Retail Image ID';
 
+    public array $dbColumnsMapping = [
+	self::HIERARCHY_CODE => 'hierarchy_code',
+	self::NODE_ID => 'node_id',
+	self::OFFER_NO => 'offer_no',
+	self::OFFER_LINE_NO => 'offer_line_no',
+	self::DEAL_MODIFIER_LINE_NO => 'deal_modifier_line_no',
+	self::DEAL_MODIFIER_CODE => 'deal_modifier_code',
+	self::ITEM_NO => 'item_no',
+	self::DESCRIPTION => 'description',
+	self::VARIANT_CODE => 'variant_code',
+	self::UNIT_OF_MEASURE => 'unit_of_measure',
+	self::MIN_SELECTION => 'min_selection',
+	self::MAX_ITEM_SELECTION => 'max_item_selection',
+	self::ADDED_AMOUNT => 'added_amount',
+	self::RETAIL_IMAGE_ID => 'retail_image_id',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value)
+    public function setHierarchyCode(?string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
 
-    public function getNodeID(): ?string
+    public function getNodeId(): ?string
     {
         return $this->getData(self::NODE_ID);
     }
 
-    public function setNodeID(string $value)
+    public function setNodeId(?string $value)
     {
         return $this->setData(self::NODE_ID, $value);
     }
@@ -52,7 +74,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value)
+    public function setOfferNo(?string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -62,7 +84,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::OFFER_LINE_NO);
     }
 
-    public function setOfferLineNo(int $value)
+    public function setOfferLineNo(?int $value)
     {
         return $this->setData(self::OFFER_LINE_NO, $value);
     }
@@ -72,7 +94,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::DEAL_MODIFIER_LINE_NO);
     }
 
-    public function setDealModifierLineNo(int $value)
+    public function setDealModifierLineNo(?int $value)
     {
         return $this->setData(self::DEAL_MODIFIER_LINE_NO, $value);
     }
@@ -82,7 +104,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::DEAL_MODIFIER_CODE);
     }
 
-    public function setDealModifierCode(string $value)
+    public function setDealModifierCode(?string $value)
     {
         return $this->setData(self::DEAL_MODIFIER_CODE, $value);
     }
@@ -92,7 +114,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -102,7 +124,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -112,7 +134,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -122,7 +144,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value)
+    public function setUnitOfMeasure(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -132,7 +154,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::MIN_SELECTION);
     }
 
-    public function setMinSelection(int $value)
+    public function setMinSelection(?int $value)
     {
         return $this->setData(self::MIN_SELECTION, $value);
     }
@@ -142,7 +164,7 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::MAX_ITEM_SELECTION);
     }
 
-    public function setMaxItemSelection(int $value)
+    public function setMaxItemSelection(?int $value)
     {
         return $this->setData(self::MAX_ITEM_SELECTION, $value);
     }
@@ -152,17 +174,17 @@ class HierarchyDealLineView extends AbstractModel
         return $this->getData(self::ADDED_AMOUNT);
     }
 
-    public function setAddedAmount(string $value)
+    public function setAddedAmount(?string $value)
     {
         return $this->setData(self::ADDED_AMOUNT, $value);
     }
 
-    public function getRetailImageID(): ?string
+    public function getRetailImageId(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
-    public function setRetailImageID(string $value)
+    public function setRetailImageId(?string $value)
     {
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }

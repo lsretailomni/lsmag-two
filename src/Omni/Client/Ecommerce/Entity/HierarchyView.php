@@ -19,13 +19,28 @@ class HierarchyView extends AbstractModel
     public const SALES_TYPE_FILTER = 'Sales Type Filter';
     public const VALIDATION_SCHEDULE_ID = 'Validation Schedule ID';
 
+    public array $dbColumnsMapping = [
+	self::HIERARCHY_CODE => 'hierarchy_code',
+	self::DESCRIPTION => 'description',
+	self::TYPE => 'type',
+	self::START_DATE => 'start_date',
+	self::PRIORITY => 'priority',
+	self::SALES_TYPE_FILTER => 'sales_type_filter',
+	self::VALIDATION_SCHEDULE_ID => 'validation_schedule_id',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value)
+    public function setHierarchyCode(?string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
@@ -35,7 +50,7 @@ class HierarchyView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -45,7 +60,7 @@ class HierarchyView extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -55,7 +70,7 @@ class HierarchyView extends AbstractModel
         return $this->getData(self::START_DATE);
     }
 
-    public function setStartDate(\DateTime $value)
+    public function setStartDate(?\DateTime $value)
     {
         return $this->setData(self::START_DATE, $value);
     }
@@ -65,7 +80,7 @@ class HierarchyView extends AbstractModel
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value)
+    public function setPriority(?int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
@@ -75,17 +90,17 @@ class HierarchyView extends AbstractModel
         return $this->getData(self::SALES_TYPE_FILTER);
     }
 
-    public function setSalesTypeFilter(string $value)
+    public function setSalesTypeFilter(?string $value)
     {
         return $this->setData(self::SALES_TYPE_FILTER, $value);
     }
 
-    public function getValidationScheduleID(): ?string
+    public function getValidationScheduleId(): ?string
     {
         return $this->getData(self::VALIDATION_SCHEDULE_ID);
     }
 
-    public function setValidationScheduleID(string $value)
+    public function setValidationScheduleId(?string $value)
     {
         return $this->setData(self::VALIDATION_SCHEDULE_ID, $value);
     }

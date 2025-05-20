@@ -55,6 +55,11 @@ class Currency
             $recRef = [];
         }
 
+        $deletedRows = [];
+        if (isset($data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'])) {
+            $deletedRows = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'];
+        }
+
         if (isset($recRef['RecordFields'])) {
             $fieldsDefinition = $recRef['RecordFields'];
         } elseif (isset($recRef['DataSetFields'])) {
@@ -86,6 +91,20 @@ class Currency
                     $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
                 }
                 $results[] = $entry;
+            }
+
+            if (!empty($deletedRows)) {
+                foreach ($deletedRows as $row) {
+                    $values = $row['Fields'] ?? [];
+                    $entry = $this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\LSCAttribute::class
+                    );
+                    $entry->setData('is_deleted', true);
+                    foreach ($values as $value) {
+                        $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    }
+                    $results[] = $entry;
+                }
             }
         }
 

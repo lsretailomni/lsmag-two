@@ -21,13 +21,30 @@ class LSCItemHTMLML extends AbstractModel
     public const URL = 'URL';
     public const SYSTEMID = '$systemId';
 
+    public array $dbColumnsMapping = [
+	self::HTML => 'html',
+	self::ITEM_NO => 'item_no',
+	self::LANGUAGE => 'language',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::URL => 'url',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getHtml(): ?string
     {
         return $this->getData(self::HTML);
     }
 
-    public function setHtml(string $value)
+    public function setHtml(?string $value)
     {
         return $this->setData(self::HTML, $value);
     }
@@ -37,7 +54,7 @@ class LSCItemHTMLML extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -47,67 +64,67 @@ class LSCItemHTMLML extends AbstractModel
         return $this->getData(self::LANGUAGE);
     }
 
-    public function setLanguage(string $value)
+    public function setLanguage(?string $value)
     {
         return $this->setData(self::LANGUAGE, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getURL(): ?string
+    public function getUrl(): ?string
     {
         return $this->getData(self::URL);
     }
 
-    public function setURL(string $value)
+    public function setUrl(?string $value)
     {
         return $this->setData(self::URL, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

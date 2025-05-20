@@ -34,13 +34,43 @@ class ItemUoMUpdView extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const DESCRIPTION = 'Description';
 
+    public array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::CODE => 'code',
+	self::QTY_PER_UNIT_OF_MEASURE => 'qty_per_unit_of_measure',
+	self::QTY_ROUNDING_PRECISION => 'qty_rounding_precision',
+	self::LENGTH => 'length',
+	self::WIDTH => 'width',
+	self::HEIGHT => 'height',
+	self::CUBAGE => 'cubage',
+	self::WEIGHT => 'weight',
+	self::LSC_NO_IN_BARCODE => 'lsc_no_in_barcode',
+	self::LSC_PRINT_SHELF_LABEL => 'lsc_print_shelf_label',
+	self::LSC_TEXT_ON_SHELF_LABEL => 'lsc_text_on_shelf_label',
+	self::LSC_COUNT_AS_1_ON_RECEIPT => 'lsc_count_as_1_on_receipt',
+	self::LSC_POS_SELECTION => 'lsc_pos_selection',
+	self::LSC_ORDER => 'lsc_order',
+	self::LSC_ECOM_SELECTION => 'lsc_ecom_selection',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::DESCRIPTION => 'description',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -50,7 +80,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -60,7 +90,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(string $value)
+    public function setQtyPerUnitOfMeasure(?string $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
@@ -70,7 +100,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::QTY_ROUNDING_PRECISION);
     }
 
-    public function setQtyRoundingPrecision(string $value)
+    public function setQtyRoundingPrecision(?string $value)
     {
         return $this->setData(self::QTY_ROUNDING_PRECISION, $value);
     }
@@ -80,7 +110,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::LENGTH);
     }
 
-    public function setLength(string $value)
+    public function setLength(?string $value)
     {
         return $this->setData(self::LENGTH, $value);
     }
@@ -90,7 +120,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::WIDTH);
     }
 
-    public function setWidth(string $value)
+    public function setWidth(?string $value)
     {
         return $this->setData(self::WIDTH, $value);
     }
@@ -100,7 +130,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::HEIGHT);
     }
 
-    public function setHeight(string $value)
+    public function setHeight(?string $value)
     {
         return $this->setData(self::HEIGHT, $value);
     }
@@ -110,7 +140,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::CUBAGE);
     }
 
-    public function setCubage(string $value)
+    public function setCubage(?string $value)
     {
         return $this->setData(self::CUBAGE, $value);
     }
@@ -120,127 +150,127 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::WEIGHT);
     }
 
-    public function setWeight(string $value)
+    public function setWeight(?string $value)
     {
         return $this->setData(self::WEIGHT, $value);
     }
 
-    public function getLSCNoInBarcode(): ?string
+    public function getLscNoInBarcode(): ?string
     {
         return $this->getData(self::LSC_NO_IN_BARCODE);
     }
 
-    public function setLSCNoInBarcode(string $value)
+    public function setLscNoInBarcode(?string $value)
     {
         return $this->setData(self::LSC_NO_IN_BARCODE, $value);
     }
 
-    public function getLSCPrintShelfLabel(): ?bool
+    public function getLscPrintShelfLabel(): ?bool
     {
         return $this->getData(self::LSC_PRINT_SHELF_LABEL);
     }
 
-    public function setLSCPrintShelfLabel(bool $value)
+    public function setLscPrintShelfLabel(?bool $value)
     {
         return $this->setData(self::LSC_PRINT_SHELF_LABEL, $value);
     }
 
-    public function getLSCTextOnShelfLabel(): ?string
+    public function getLscTextOnShelfLabel(): ?string
     {
         return $this->getData(self::LSC_TEXT_ON_SHELF_LABEL);
     }
 
-    public function setLSCTextOnShelfLabel(string $value)
+    public function setLscTextOnShelfLabel(?string $value)
     {
         return $this->setData(self::LSC_TEXT_ON_SHELF_LABEL, $value);
     }
 
-    public function getLSCCountAs1OnReceipt(): ?bool
+    public function getLscCountAs1OnReceipt(): ?bool
     {
         return $this->getData(self::LSC_COUNT_AS_1_ON_RECEIPT);
     }
 
-    public function setLSCCountAs1OnReceipt(bool $value)
+    public function setLscCountAs1OnReceipt(?bool $value)
     {
         return $this->setData(self::LSC_COUNT_AS_1_ON_RECEIPT, $value);
     }
 
-    public function getLSCPOSSelection(): ?string
+    public function getLscPosSelection(): ?string
     {
         return $this->getData(self::LSC_POS_SELECTION);
     }
 
-    public function setLSCPOSSelection(string $value)
+    public function setLscPosSelection(?string $value)
     {
         return $this->setData(self::LSC_POS_SELECTION, $value);
     }
 
-    public function getLSCOrder(): ?int
+    public function getLscOrder(): ?int
     {
         return $this->getData(self::LSC_ORDER);
     }
 
-    public function setLSCOrder(int $value)
+    public function setLscOrder(?int $value)
     {
         return $this->setData(self::LSC_ORDER, $value);
     }
 
-    public function getLSCEcomSelection(): ?string
+    public function getLscEcomSelection(): ?string
     {
         return $this->getData(self::LSC_ECOM_SELECTION);
     }
 
-    public function setLSCEcomSelection(string $value)
+    public function setLscEcomSelection(?string $value)
     {
         return $this->setData(self::LSC_ECOM_SELECTION, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
@@ -250,7 +280,7 @@ class ItemUoMUpdView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }

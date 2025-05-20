@@ -26,13 +26,35 @@ class LSCAttributeOptionValue extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::ATTRIBUTE_CODE => 'attribute_code',
+	self::SEQUENCE => 'sequence',
+	self::OPTION_VALUE => 'option_value',
+	self::WEIGHT => 'weight',
+	self::HIDE_VALUE_ON_POS => 'hide_value_on_pos',
+	self::HIDE_VALUE_FOR_CUSTOMER => 'hide_value_for_customer',
+	self::OPTION_VALUE_CUST => 'option_value_cust',
+	self::LINKED_ATTRIBUTE_CODE => 'linked_attribute_code',
+	self::LINK_ATTRIBUTE_OPTION_SEQ => 'link_attribute_option_seq',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getAttributeCode(): ?string
     {
         return $this->getData(self::ATTRIBUTE_CODE);
     }
 
-    public function setAttributeCode(string $value)
+    public function setAttributeCode(?string $value)
     {
         return $this->setData(self::ATTRIBUTE_CODE, $value);
     }
@@ -42,7 +64,7 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::SEQUENCE);
     }
 
-    public function setSequence(int $value)
+    public function setSequence(?int $value)
     {
         return $this->setData(self::SEQUENCE, $value);
     }
@@ -52,7 +74,7 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::OPTION_VALUE);
     }
 
-    public function setOptionValue(string $value)
+    public function setOptionValue(?string $value)
     {
         return $this->setData(self::OPTION_VALUE, $value);
     }
@@ -62,17 +84,17 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::WEIGHT);
     }
 
-    public function setWeight(int $value)
+    public function setWeight(?int $value)
     {
         return $this->setData(self::WEIGHT, $value);
     }
 
-    public function getHideValueOnPOS(): ?bool
+    public function getHideValueOnPos(): ?bool
     {
         return $this->getData(self::HIDE_VALUE_ON_POS);
     }
 
-    public function setHideValueOnPOS(bool $value)
+    public function setHideValueOnPos(?bool $value)
     {
         return $this->setData(self::HIDE_VALUE_ON_POS, $value);
     }
@@ -82,7 +104,7 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::HIDE_VALUE_FOR_CUSTOMER);
     }
 
-    public function setHideValueForCustomer(bool $value)
+    public function setHideValueForCustomer(?bool $value)
     {
         return $this->setData(self::HIDE_VALUE_FOR_CUSTOMER, $value);
     }
@@ -92,7 +114,7 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::OPTION_VALUE_CUST);
     }
 
-    public function setOptionValueCust(string $value)
+    public function setOptionValueCust(?string $value)
     {
         return $this->setData(self::OPTION_VALUE_CUST, $value);
     }
@@ -102,7 +124,7 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::LINKED_ATTRIBUTE_CODE);
     }
 
-    public function setLinkedAttributeCode(string $value)
+    public function setLinkedAttributeCode(?string $value)
     {
         return $this->setData(self::LINKED_ATTRIBUTE_CODE, $value);
     }
@@ -112,57 +134,57 @@ class LSCAttributeOptionValue extends AbstractModel
         return $this->getData(self::LINK_ATTRIBUTE_OPTION_SEQ);
     }
 
-    public function setLinkAttributeOptionSeq(int $value)
+    public function setLinkAttributeOptionSeq(?int $value)
     {
         return $this->setData(self::LINK_ATTRIBUTE_OPTION_SEQ, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

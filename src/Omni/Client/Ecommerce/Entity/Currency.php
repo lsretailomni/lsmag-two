@@ -53,13 +53,62 @@ class Currency extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::LAST_DATE_MODIFIED => 'last_date_modified',
+	self::LAST_DATE_ADJUSTED => 'last_date_adjusted',
+	self::ISO_CODE => 'iso_code',
+	self::ISO_NUMERIC_CODE => 'iso_numeric_code',
+	self::UNREALIZED_GAINS_ACC => 'unrealized_gains_acc',
+	self::REALIZED_GAINS_ACC => 'realized_gains_acc',
+	self::UNREALIZED_LOSSES_ACC => 'unrealized_losses_acc',
+	self::REALIZED_LOSSES_ACC => 'realized_losses_acc',
+	self::INVOICE_ROUNDING_PRECISION => 'invoice_rounding_precision',
+	self::INVOICE_ROUNDING_TYPE => 'invoice_rounding_type',
+	self::AMOUNT_ROUNDING_PRECISION => 'amount_rounding_precision',
+	self::UNITAMOUNT_ROUNDING_PRECISION => 'unitamount_rounding_precision',
+	self::DESCRIPTION => 'description',
+	self::AMOUNT_DECIMAL_PLACES => 'amount_decimal_places',
+	self::UNITAMOUNT_DECIMAL_PLACES => 'unitamount_decimal_places',
+	self::REALIZED_GL_GAINS_ACCOUNT => 'realized_gl_gains_account',
+	self::REALIZED_GL_LOSSES_ACCOUNT => 'realized_gl_losses_account',
+	self::APPLN_ROUNDING_PRECISION => 'appln_rounding_precision',
+	self::EMU_CURRENCY => 'emu_currency',
+	self::CURRENCY_FACTOR => 'currency_factor',
+	self::RESIDUAL_GAINS_ACCOUNT => 'residual_gains_account',
+	self::RESIDUAL_LOSSES_ACCOUNT => 'residual_losses_account',
+	self::CONV_LCY_RNDG_DEBIT_ACC => 'conv_lcy_rndg_debit_acc',
+	self::CONV_LCY_RNDG_CREDIT_ACC => 'conv_lcy_rndg_credit_acc',
+	self::MAX_VAT_DIFFERENCE_ALLOWED => 'max_vat_difference_allowed',
+	self::VAT_ROUNDING_TYPE => 'vat_rounding_type',
+	self::PAYMENT_TOLERANCE => 'payment_tolerance',
+	self::MAX_PAYMENT_TOLERANCE_AMOUNT => 'max_payment_tolerance_amount',
+	self::SYMBOL => 'symbol',
+	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
+	self::LSC_LOWEST_ACCEPT_DENOM_AMT => 'lsc_lowest_accept_denom_amt',
+	self::LSC_DENOMINATION_ROUNDING_TYPE => 'lsc_denomination_rounding_type',
+	self::LSC_POS_CURRENCY_SYMBOL => 'lsc_pos_currency_symbol',
+	self::LSC_PLACEMENT_OF_CURR_SYMBOL => 'lsc_placement_of_curr_symbol',
+	self::LSC_FISCAL_PRINTER_ID => 'lsc_fiscal_printer_id',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -69,7 +118,7 @@ class Currency extends AbstractModel
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value)
+    public function setLastDateModified(?string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -79,27 +128,27 @@ class Currency extends AbstractModel
         return $this->getData(self::LAST_DATE_ADJUSTED);
     }
 
-    public function setLastDateAdjusted(string $value)
+    public function setLastDateAdjusted(?string $value)
     {
         return $this->setData(self::LAST_DATE_ADJUSTED, $value);
     }
 
-    public function getISOCode(): ?string
+    public function getIsoCode(): ?string
     {
         return $this->getData(self::ISO_CODE);
     }
 
-    public function setISOCode(string $value)
+    public function setIsoCode(?string $value)
     {
         return $this->setData(self::ISO_CODE, $value);
     }
 
-    public function getISONumericCode(): ?string
+    public function getIsoNumericCode(): ?string
     {
         return $this->getData(self::ISO_NUMERIC_CODE);
     }
 
-    public function setISONumericCode(string $value)
+    public function setIsoNumericCode(?string $value)
     {
         return $this->setData(self::ISO_NUMERIC_CODE, $value);
     }
@@ -109,7 +158,7 @@ class Currency extends AbstractModel
         return $this->getData(self::UNREALIZED_GAINS_ACC);
     }
 
-    public function setUnrealizedGainsAcc(string $value)
+    public function setUnrealizedGainsAcc(?string $value)
     {
         return $this->setData(self::UNREALIZED_GAINS_ACC, $value);
     }
@@ -119,7 +168,7 @@ class Currency extends AbstractModel
         return $this->getData(self::REALIZED_GAINS_ACC);
     }
 
-    public function setRealizedGainsAcc(string $value)
+    public function setRealizedGainsAcc(?string $value)
     {
         return $this->setData(self::REALIZED_GAINS_ACC, $value);
     }
@@ -129,7 +178,7 @@ class Currency extends AbstractModel
         return $this->getData(self::UNREALIZED_LOSSES_ACC);
     }
 
-    public function setUnrealizedLossesAcc(string $value)
+    public function setUnrealizedLossesAcc(?string $value)
     {
         return $this->setData(self::UNREALIZED_LOSSES_ACC, $value);
     }
@@ -139,7 +188,7 @@ class Currency extends AbstractModel
         return $this->getData(self::REALIZED_LOSSES_ACC);
     }
 
-    public function setRealizedLossesAcc(string $value)
+    public function setRealizedLossesAcc(?string $value)
     {
         return $this->setData(self::REALIZED_LOSSES_ACC, $value);
     }
@@ -149,7 +198,7 @@ class Currency extends AbstractModel
         return $this->getData(self::INVOICE_ROUNDING_PRECISION);
     }
 
-    public function setInvoiceRoundingPrecision(string $value)
+    public function setInvoiceRoundingPrecision(?string $value)
     {
         return $this->setData(self::INVOICE_ROUNDING_PRECISION, $value);
     }
@@ -159,7 +208,7 @@ class Currency extends AbstractModel
         return $this->getData(self::INVOICE_ROUNDING_TYPE);
     }
 
-    public function setInvoiceRoundingType(string $value)
+    public function setInvoiceRoundingType(?string $value)
     {
         return $this->setData(self::INVOICE_ROUNDING_TYPE, $value);
     }
@@ -169,7 +218,7 @@ class Currency extends AbstractModel
         return $this->getData(self::AMOUNT_ROUNDING_PRECISION);
     }
 
-    public function setAmountRoundingPrecision(string $value)
+    public function setAmountRoundingPrecision(?string $value)
     {
         return $this->setData(self::AMOUNT_ROUNDING_PRECISION, $value);
     }
@@ -179,7 +228,7 @@ class Currency extends AbstractModel
         return $this->getData(self::UNITAMOUNT_ROUNDING_PRECISION);
     }
 
-    public function setUnitAmountRoundingPrecision(string $value)
+    public function setUnitAmountRoundingPrecision(?string $value)
     {
         return $this->setData(self::UNITAMOUNT_ROUNDING_PRECISION, $value);
     }
@@ -189,7 +238,7 @@ class Currency extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -199,7 +248,7 @@ class Currency extends AbstractModel
         return $this->getData(self::AMOUNT_DECIMAL_PLACES);
     }
 
-    public function setAmountDecimalPlaces(string $value)
+    public function setAmountDecimalPlaces(?string $value)
     {
         return $this->setData(self::AMOUNT_DECIMAL_PLACES, $value);
     }
@@ -209,7 +258,7 @@ class Currency extends AbstractModel
         return $this->getData(self::UNITAMOUNT_DECIMAL_PLACES);
     }
 
-    public function setUnitAmountDecimalPlaces(string $value)
+    public function setUnitAmountDecimalPlaces(?string $value)
     {
         return $this->setData(self::UNITAMOUNT_DECIMAL_PLACES, $value);
     }
@@ -219,7 +268,7 @@ class Currency extends AbstractModel
         return $this->getData(self::REALIZED_GL_GAINS_ACCOUNT);
     }
 
-    public function setRealizedGLGainsAccount(string $value)
+    public function setRealizedGLGainsAccount(?string $value)
     {
         return $this->setData(self::REALIZED_GL_GAINS_ACCOUNT, $value);
     }
@@ -229,7 +278,7 @@ class Currency extends AbstractModel
         return $this->getData(self::REALIZED_GL_LOSSES_ACCOUNT);
     }
 
-    public function setRealizedGLLossesAccount(string $value)
+    public function setRealizedGLLossesAccount(?string $value)
     {
         return $this->setData(self::REALIZED_GL_LOSSES_ACCOUNT, $value);
     }
@@ -239,17 +288,17 @@ class Currency extends AbstractModel
         return $this->getData(self::APPLN_ROUNDING_PRECISION);
     }
 
-    public function setApplnRoundingPrecision(string $value)
+    public function setApplnRoundingPrecision(?string $value)
     {
         return $this->setData(self::APPLN_ROUNDING_PRECISION, $value);
     }
 
-    public function getEMUCurrency(): ?bool
+    public function getEmuCurrency(): ?bool
     {
         return $this->getData(self::EMU_CURRENCY);
     }
 
-    public function setEMUCurrency(bool $value)
+    public function setEmuCurrency(?bool $value)
     {
         return $this->setData(self::EMU_CURRENCY, $value);
     }
@@ -259,7 +308,7 @@ class Currency extends AbstractModel
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
-    public function setCurrencyFactor(string $value)
+    public function setCurrencyFactor(?string $value)
     {
         return $this->setData(self::CURRENCY_FACTOR, $value);
     }
@@ -269,7 +318,7 @@ class Currency extends AbstractModel
         return $this->getData(self::RESIDUAL_GAINS_ACCOUNT);
     }
 
-    public function setResidualGainsAccount(string $value)
+    public function setResidualGainsAccount(?string $value)
     {
         return $this->setData(self::RESIDUAL_GAINS_ACCOUNT, $value);
     }
@@ -279,47 +328,47 @@ class Currency extends AbstractModel
         return $this->getData(self::RESIDUAL_LOSSES_ACCOUNT);
     }
 
-    public function setResidualLossesAccount(string $value)
+    public function setResidualLossesAccount(?string $value)
     {
         return $this->setData(self::RESIDUAL_LOSSES_ACCOUNT, $value);
     }
 
-    public function getConvLCYRndgDebitAcc(): ?string
+    public function getConvLcyRndgDebitAcc(): ?string
     {
         return $this->getData(self::CONV_LCY_RNDG_DEBIT_ACC);
     }
 
-    public function setConvLCYRndgDebitAcc(string $value)
+    public function setConvLcyRndgDebitAcc(?string $value)
     {
         return $this->setData(self::CONV_LCY_RNDG_DEBIT_ACC, $value);
     }
 
-    public function getConvLCYRndgCreditAcc(): ?string
+    public function getConvLcyRndgCreditAcc(): ?string
     {
         return $this->getData(self::CONV_LCY_RNDG_CREDIT_ACC);
     }
 
-    public function setConvLCYRndgCreditAcc(string $value)
+    public function setConvLcyRndgCreditAcc(?string $value)
     {
         return $this->setData(self::CONV_LCY_RNDG_CREDIT_ACC, $value);
     }
 
-    public function getMaxVATDifferenceAllowed(): ?string
+    public function getMaxVatDifferenceAllowed(): ?string
     {
         return $this->getData(self::MAX_VAT_DIFFERENCE_ALLOWED);
     }
 
-    public function setMaxVATDifferenceAllowed(string $value)
+    public function setMaxVatDifferenceAllowed(?string $value)
     {
         return $this->setData(self::MAX_VAT_DIFFERENCE_ALLOWED, $value);
     }
 
-    public function getVATRoundingType(): ?string
+    public function getVatRoundingType(): ?string
     {
         return $this->getData(self::VAT_ROUNDING_TYPE);
     }
 
-    public function setVATRoundingType(string $value)
+    public function setVatRoundingType(?string $value)
     {
         return $this->setData(self::VAT_ROUNDING_TYPE, $value);
     }
@@ -329,7 +378,7 @@ class Currency extends AbstractModel
         return $this->getData(self::PAYMENT_TOLERANCE);
     }
 
-    public function setPaymentTolerance(string $value)
+    public function setPaymentTolerance(?string $value)
     {
         return $this->setData(self::PAYMENT_TOLERANCE, $value);
     }
@@ -339,7 +388,7 @@ class Currency extends AbstractModel
         return $this->getData(self::MAX_PAYMENT_TOLERANCE_AMOUNT);
     }
 
-    public function setMaxPaymentToleranceAmount(string $value)
+    public function setMaxPaymentToleranceAmount(?string $value)
     {
         return $this->setData(self::MAX_PAYMENT_TOLERANCE_AMOUNT, $value);
     }
@@ -349,7 +398,7 @@ class Currency extends AbstractModel
         return $this->getData(self::SYMBOL);
     }
 
-    public function setSymbol(string $value)
+    public function setSymbol(?string $value)
     {
         return $this->setData(self::SYMBOL, $value);
     }
@@ -359,107 +408,107 @@ class Currency extends AbstractModel
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value)
+    public function setLastModifiedDateTime(?\DateTime $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
 
-    public function getLSCLowestAcceptDenomAmt(): ?string
+    public function getLscLowestAcceptDenomAmt(): ?string
     {
         return $this->getData(self::LSC_LOWEST_ACCEPT_DENOM_AMT);
     }
 
-    public function setLSCLowestAcceptDenomAmt(string $value)
+    public function setLscLowestAcceptDenomAmt(?string $value)
     {
         return $this->setData(self::LSC_LOWEST_ACCEPT_DENOM_AMT, $value);
     }
 
-    public function getLSCDenominationRoundingType(): ?string
+    public function getLscDenominationRoundingType(): ?string
     {
         return $this->getData(self::LSC_DENOMINATION_ROUNDING_TYPE);
     }
 
-    public function setLSCDenominationRoundingType(string $value)
+    public function setLscDenominationRoundingType(?string $value)
     {
         return $this->setData(self::LSC_DENOMINATION_ROUNDING_TYPE, $value);
     }
 
-    public function getLSCPOSCurrencySymbol(): ?string
+    public function getLscPosCurrencySymbol(): ?string
     {
         return $this->getData(self::LSC_POS_CURRENCY_SYMBOL);
     }
 
-    public function setLSCPOSCurrencySymbol(string $value)
+    public function setLscPosCurrencySymbol(?string $value)
     {
         return $this->setData(self::LSC_POS_CURRENCY_SYMBOL, $value);
     }
 
-    public function getLSCPlacementOfCurrSymbol(): ?string
+    public function getLscPlacementOfCurrSymbol(): ?string
     {
         return $this->getData(self::LSC_PLACEMENT_OF_CURR_SYMBOL);
     }
 
-    public function setLSCPlacementOfCurrSymbol(string $value)
+    public function setLscPlacementOfCurrSymbol(?string $value)
     {
         return $this->setData(self::LSC_PLACEMENT_OF_CURR_SYMBOL, $value);
     }
 
-    public function getLSCFiscalPrinterID(): ?int
+    public function getLscFiscalPrinterId(): ?int
     {
         return $this->getData(self::LSC_FISCAL_PRINTER_ID);
     }
 
-    public function setLSCFiscalPrinterID(int $value)
+    public function setLscFiscalPrinterId(?int $value)
     {
         return $this->setData(self::LSC_FISCAL_PRINTER_ID, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

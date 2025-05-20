@@ -39,13 +39,48 @@ class Item extends AbstractModel
     public const TARIFF_NO = 'Tariff No.';
     public const BLOCKED = 'Blocked';
 
+    public array $dbColumnsMapping = [
+	self::NO => 'no',
+	self::DESCRIPTION => 'description',
+	self::DESCRIPTION_2 => 'description_2',
+	self::VAT_PROD_POSTING_GROUP => 'vat_prod_posting_group',
+	self::TYPE => 'type',
+	self::BASE_UNIT_OF_MEASURE => 'base_unit_of_measure',
+	self::SALES_UNIT_OF_MEASURE => 'sales_unit_of_measure',
+	self::PURCH_UNIT_OF_MEASURE => 'purch_unit_of_measure',
+	self::VENDOR_NO => 'vendor_no',
+	self::VENDOR_ITEM_NO => 'vendor_item_no',
+	self::UNIT_PRICE => 'unit_price',
+	self::GROSS_WEIGHT => 'gross_weight',
+	self::COUNTRYREGION_OF_ORIGIN_CODE => 'countryregion_of_origin_code',
+	self::ITEM_TRACKING_CODE => 'item_tracking_code',
+	self::ITEM_CATEGORY_CODE => 'item_category_code',
+	self::UNITS_PER_PARCEL => 'units_per_parcel',
+	self::UNIT_VOLUME => 'unit_volume',
+	self::LSC_ZERO_PRICE_VALID => 'lsc_zero_price_valid',
+	self::LSC_SCALE_ITEM => 'lsc_scale_item',
+	self::LSC_RETAIL_PRODUCT_CODE => 'lsc_retail_product_code',
+	self::LSC_KEYING_IN_PRICE => 'lsc_keying_in_price',
+	self::LSC_KEYING_IN_QUANTITY => 'lsc_keying_in_quantity',
+	self::LSC_NO_DISCOUNT_ALLOWED => 'lsc_no_discount_allowed',
+	self::LSC_SEASON_CODE => 'lsc_season_code',
+	self::LSC_ITEM_FAMILY_CODE => 'lsc_item_family_code',
+	self::TARIFF_NO => 'tariff_no',
+	self::BLOCKED => 'blocked',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -55,7 +90,7 @@ class Item extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -65,17 +100,17 @@ class Item extends AbstractModel
         return $this->getData(self::DESCRIPTION_2);
     }
 
-    public function setDescription2(string $value)
+    public function setDescription2(?string $value)
     {
         return $this->setData(self::DESCRIPTION_2, $value);
     }
 
-    public function getVATProdPostingGroup(): ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value)
+    public function setVatProdPostingGroup(?string $value)
     {
         return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
@@ -85,7 +120,7 @@ class Item extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -95,7 +130,7 @@ class Item extends AbstractModel
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
 
-    public function setBaseUnitOfMeasure(string $value)
+    public function setBaseUnitOfMeasure(?string $value)
     {
         return $this->setData(self::BASE_UNIT_OF_MEASURE, $value);
     }
@@ -105,7 +140,7 @@ class Item extends AbstractModel
         return $this->getData(self::SALES_UNIT_OF_MEASURE);
     }
 
-    public function setSalesUnitOfMeasure(string $value)
+    public function setSalesUnitOfMeasure(?string $value)
     {
         return $this->setData(self::SALES_UNIT_OF_MEASURE, $value);
     }
@@ -115,7 +150,7 @@ class Item extends AbstractModel
         return $this->getData(self::PURCH_UNIT_OF_MEASURE);
     }
 
-    public function setPurchUnitOfMeasure(string $value)
+    public function setPurchUnitOfMeasure(?string $value)
     {
         return $this->setData(self::PURCH_UNIT_OF_MEASURE, $value);
     }
@@ -125,7 +160,7 @@ class Item extends AbstractModel
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value)
+    public function setVendorNo(?string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -135,7 +170,7 @@ class Item extends AbstractModel
         return $this->getData(self::VENDOR_ITEM_NO);
     }
 
-    public function setVendorItemNo(string $value)
+    public function setVendorItemNo(?string $value)
     {
         return $this->setData(self::VENDOR_ITEM_NO, $value);
     }
@@ -145,7 +180,7 @@ class Item extends AbstractModel
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value)
+    public function setUnitPrice(?string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -155,7 +190,7 @@ class Item extends AbstractModel
         return $this->getData(self::GROSS_WEIGHT);
     }
 
-    public function setGrossWeight(string $value)
+    public function setGrossWeight(?string $value)
     {
         return $this->setData(self::GROSS_WEIGHT, $value);
     }
@@ -165,7 +200,7 @@ class Item extends AbstractModel
         return $this->getData(self::COUNTRYREGION_OF_ORIGIN_CODE);
     }
 
-    public function setCountryRegionOfOriginCode(string $value)
+    public function setCountryRegionOfOriginCode(?string $value)
     {
         return $this->setData(self::COUNTRYREGION_OF_ORIGIN_CODE, $value);
     }
@@ -175,7 +210,7 @@ class Item extends AbstractModel
         return $this->getData(self::ITEM_TRACKING_CODE);
     }
 
-    public function setItemTrackingCode(string $value)
+    public function setItemTrackingCode(?string $value)
     {
         return $this->setData(self::ITEM_TRACKING_CODE, $value);
     }
@@ -185,7 +220,7 @@ class Item extends AbstractModel
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
-    public function setItemCategoryCode(string $value)
+    public function setItemCategoryCode(?string $value)
     {
         return $this->setData(self::ITEM_CATEGORY_CODE, $value);
     }
@@ -195,7 +230,7 @@ class Item extends AbstractModel
         return $this->getData(self::UNITS_PER_PARCEL);
     }
 
-    public function setUnitsPerParcel(string $value)
+    public function setUnitsPerParcel(?string $value)
     {
         return $this->setData(self::UNITS_PER_PARCEL, $value);
     }
@@ -205,87 +240,87 @@ class Item extends AbstractModel
         return $this->getData(self::UNIT_VOLUME);
     }
 
-    public function setUnitVolume(string $value)
+    public function setUnitVolume(?string $value)
     {
         return $this->setData(self::UNIT_VOLUME, $value);
     }
 
-    public function getLSCZeroPriceValid(): ?bool
+    public function getLscZeroPriceValid(): ?bool
     {
         return $this->getData(self::LSC_ZERO_PRICE_VALID);
     }
 
-    public function setLSCZeroPriceValid(bool $value)
+    public function setLscZeroPriceValid(?bool $value)
     {
         return $this->setData(self::LSC_ZERO_PRICE_VALID, $value);
     }
 
-    public function getLSCScaleItem(): ?bool
+    public function getLscScaleItem(): ?bool
     {
         return $this->getData(self::LSC_SCALE_ITEM);
     }
 
-    public function setLSCScaleItem(bool $value)
+    public function setLscScaleItem(?bool $value)
     {
         return $this->setData(self::LSC_SCALE_ITEM, $value);
     }
 
-    public function getLSCRetailProductCode(): ?string
+    public function getLscRetailProductCode(): ?string
     {
         return $this->getData(self::LSC_RETAIL_PRODUCT_CODE);
     }
 
-    public function setLSCRetailProductCode(string $value)
+    public function setLscRetailProductCode(?string $value)
     {
         return $this->setData(self::LSC_RETAIL_PRODUCT_CODE, $value);
     }
 
-    public function getLSCKeyingInPrice(): ?string
+    public function getLscKeyingInPrice(): ?string
     {
         return $this->getData(self::LSC_KEYING_IN_PRICE);
     }
 
-    public function setLSCKeyingInPrice(string $value)
+    public function setLscKeyingInPrice(?string $value)
     {
         return $this->setData(self::LSC_KEYING_IN_PRICE, $value);
     }
 
-    public function getLSCKeyingInQuantity(): ?string
+    public function getLscKeyingInQuantity(): ?string
     {
         return $this->getData(self::LSC_KEYING_IN_QUANTITY);
     }
 
-    public function setLSCKeyingInQuantity(string $value)
+    public function setLscKeyingInQuantity(?string $value)
     {
         return $this->setData(self::LSC_KEYING_IN_QUANTITY, $value);
     }
 
-    public function getLSCNoDiscountAllowed(): ?bool
+    public function getLscNoDiscountAllowed(): ?bool
     {
         return $this->getData(self::LSC_NO_DISCOUNT_ALLOWED);
     }
 
-    public function setLSCNoDiscountAllowed(bool $value)
+    public function setLscNoDiscountAllowed(?bool $value)
     {
         return $this->setData(self::LSC_NO_DISCOUNT_ALLOWED, $value);
     }
 
-    public function getLSCSeasonCode(): ?string
+    public function getLscSeasonCode(): ?string
     {
         return $this->getData(self::LSC_SEASON_CODE);
     }
 
-    public function setLSCSeasonCode(string $value)
+    public function setLscSeasonCode(?string $value)
     {
         return $this->setData(self::LSC_SEASON_CODE, $value);
     }
 
-    public function getLSCItemFamilyCode(): ?string
+    public function getLscItemFamilyCode(): ?string
     {
         return $this->getData(self::LSC_ITEM_FAMILY_CODE);
     }
 
-    public function setLSCItemFamilyCode(string $value)
+    public function setLscItemFamilyCode(?string $value)
     {
         return $this->setData(self::LSC_ITEM_FAMILY_CODE, $value);
     }
@@ -295,7 +330,7 @@ class Item extends AbstractModel
         return $this->getData(self::TARIFF_NO);
     }
 
-    public function setTariffNo(string $value)
+    public function setTariffNo(?string $value)
     {
         return $this->setData(self::TARIFF_NO, $value);
     }
@@ -305,7 +340,7 @@ class Item extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value)
+    public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }

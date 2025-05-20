@@ -54,13 +54,63 @@ class LSCRetailProductGroup extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::ITEM_CATEGORY_CODE => 'item_category_code',
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+	self::SHELF_LABEL_DESCRIPTION => 'shelf_label_description',
+	self::ITEM_TEMPLATE_CODE => 'item_template_code',
+	self::POS_MENU_LINK => 'pos_menu_link',
+	self::MIN_LOC_PROF_INVENTORY => 'min_loc_prof_inventory',
+	self::BARCODE_MASK => 'barcode_mask',
+	self::USE_EAN_STANDARD_BARC => 'use_ean_standard_barc',
+	self::DEFAULT_PROFIT => 'default_profit',
+	self::DISPENSE_PRINTER_GROUP => 'dispense_printer_group',
+	self::DISABLE_DISPENSE_PRINTING => 'disable_dispense_printing',
+	self::POS_INVENTORY_LOOKUP => 'pos_inventory_lookup',
+	self::LAST_DATE_MODIFIED => 'last_date_modified',
+	self::INVENTORY_FREE_ENTRY_TRACKING => 'inventory_free_entry_tracking',
+	self::VARIANT_FRAMEWORK_CODE => 'variant_framework_code',
+	self::PRIMARY_KEY => 'primary_key',
+	self::DIVISION_CODE => 'division_code',
+	self::ITEM_ERROR_CHECK_CODE => 'item_error_check_code',
+	self::SUGGESTED_QTY_ON_POS => 'suggested_qty_on_pos',
+	self::DEFAULT_BASE_UOM => 'default_base_uom',
+	self::QTY_NOT_IN_DECIMAL => 'qty_not_in_decimal',
+	self::PROFIT_GOAL => 'profit_goal',
+	self::BUYER_GROUP_CODE => 'buyer_group_code',
+	self::REPLEN_DATA_PROFILE => 'replen_data_profile',
+	self::BUYER_ID => 'buyer_id',
+	self::REPLEN_TRANSFER_RULE_CODE => 'replen_transfer_rule_code',
+	self::DEF_ITEM_DISTR_TYPE => 'def_item_distr_type',
+	self::DEF_ITEM_DISTR_CODE => 'def_item_distr_code',
+	self::EXCLUDE_FROM_REPLENISHMENT => 'exclude_from_replenishment',
+	self::EXCLUDE_FROM_OOS_CALC => 'exclude_from_oos_calc',
+	self::NOT_DISCOUNTABLE => 'not_discountable',
+	self::PHYS_INVT_COUNTING_PERIOD_CODE => 'phys_invt_counting_period_code',
+	self::ALLOCATION_RULE_CODE => 'allocation_rule_code',
+	self::OUTBOUND_CODE => 'outbound_code',
+	self::SORT_ORDER => 'sort_order',
+	self::PLB_GROUP => 'plb_group',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getItemCategoryCode(): ?string
     {
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
-    public function setItemCategoryCode(string $value)
+    public function setItemCategoryCode(?string $value)
     {
         return $this->setData(self::ITEM_CATEGORY_CODE, $value);
     }
@@ -70,7 +120,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -80,7 +130,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -90,7 +140,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::SHELF_LABEL_DESCRIPTION);
     }
 
-    public function setShelfLabelDescription(string $value)
+    public function setShelfLabelDescription(?string $value)
     {
         return $this->setData(self::SHELF_LABEL_DESCRIPTION, $value);
     }
@@ -100,17 +150,17 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::ITEM_TEMPLATE_CODE);
     }
 
-    public function setItemTemplateCode(string $value)
+    public function setItemTemplateCode(?string $value)
     {
         return $this->setData(self::ITEM_TEMPLATE_CODE, $value);
     }
 
-    public function getPOSMenuLink(): ?string
+    public function getPosMenuLink(): ?string
     {
         return $this->getData(self::POS_MENU_LINK);
     }
 
-    public function setPOSMenuLink(string $value)
+    public function setPosMenuLink(?string $value)
     {
         return $this->setData(self::POS_MENU_LINK, $value);
     }
@@ -120,7 +170,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::MIN_LOC_PROF_INVENTORY);
     }
 
-    public function setMinLocProfInventory(int $value)
+    public function setMinLocProfInventory(?int $value)
     {
         return $this->setData(self::MIN_LOC_PROF_INVENTORY, $value);
     }
@@ -130,17 +180,17 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::BARCODE_MASK);
     }
 
-    public function setBarcodeMask(string $value)
+    public function setBarcodeMask(?string $value)
     {
         return $this->setData(self::BARCODE_MASK, $value);
     }
 
-    public function getUseEANStandardBarc(): ?bool
+    public function getUseEanStandardBarc(): ?bool
     {
         return $this->getData(self::USE_EAN_STANDARD_BARC);
     }
 
-    public function setUseEANStandardBarc(bool $value)
+    public function setUseEanStandardBarc(?bool $value)
     {
         return $this->setData(self::USE_EAN_STANDARD_BARC, $value);
     }
@@ -150,7 +200,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DEFAULT_PROFIT);
     }
 
-    public function setDefaultProfit(string $value)
+    public function setDefaultProfit(?string $value)
     {
         return $this->setData(self::DEFAULT_PROFIT, $value);
     }
@@ -160,7 +210,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DISPENSE_PRINTER_GROUP);
     }
 
-    public function setDispensePrinterGroup(string $value)
+    public function setDispensePrinterGroup(?string $value)
     {
         return $this->setData(self::DISPENSE_PRINTER_GROUP, $value);
     }
@@ -170,17 +220,17 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DISABLE_DISPENSE_PRINTING);
     }
 
-    public function setDisableDispensePrinting(bool $value)
+    public function setDisableDispensePrinting(?bool $value)
     {
         return $this->setData(self::DISABLE_DISPENSE_PRINTING, $value);
     }
 
-    public function getPOSInventoryLookup(): ?bool
+    public function getPosInventoryLookup(): ?bool
     {
         return $this->getData(self::POS_INVENTORY_LOOKUP);
     }
 
-    public function setPOSInventoryLookup(bool $value)
+    public function setPosInventoryLookup(?bool $value)
     {
         return $this->setData(self::POS_INVENTORY_LOOKUP, $value);
     }
@@ -190,7 +240,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value)
+    public function setLastDateModified(?string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -200,7 +250,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::INVENTORY_FREE_ENTRY_TRACKING);
     }
 
-    public function setInventoryFreeEntryTracking(bool $value)
+    public function setInventoryFreeEntryTracking(?bool $value)
     {
         return $this->setData(self::INVENTORY_FREE_ENTRY_TRACKING, $value);
     }
@@ -210,7 +260,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::VARIANT_FRAMEWORK_CODE);
     }
 
-    public function setVariantFrameworkCode(string $value)
+    public function setVariantFrameworkCode(?string $value)
     {
         return $this->setData(self::VARIANT_FRAMEWORK_CODE, $value);
     }
@@ -220,7 +270,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::PRIMARY_KEY);
     }
 
-    public function setPrimaryKey(string $value)
+    public function setPrimaryKey(?string $value)
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
@@ -230,7 +280,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DIVISION_CODE);
     }
 
-    public function setDivisionCode(string $value)
+    public function setDivisionCode(?string $value)
     {
         return $this->setData(self::DIVISION_CODE, $value);
     }
@@ -240,27 +290,27 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::ITEM_ERROR_CHECK_CODE);
     }
 
-    public function setItemErrorCheckCode(string $value)
+    public function setItemErrorCheckCode(?string $value)
     {
         return $this->setData(self::ITEM_ERROR_CHECK_CODE, $value);
     }
 
-    public function getSuggestedQtyOnPOS(): ?string
+    public function getSuggestedQtyOnPos(): ?string
     {
         return $this->getData(self::SUGGESTED_QTY_ON_POS);
     }
 
-    public function setSuggestedQtyOnPOS(string $value)
+    public function setSuggestedQtyOnPos(?string $value)
     {
         return $this->setData(self::SUGGESTED_QTY_ON_POS, $value);
     }
 
-    public function getDefaultBaseUOM(): ?string
+    public function getDefaultBaseUom(): ?string
     {
         return $this->getData(self::DEFAULT_BASE_UOM);
     }
 
-    public function setDefaultBaseUOM(string $value)
+    public function setDefaultBaseUom(?string $value)
     {
         return $this->setData(self::DEFAULT_BASE_UOM, $value);
     }
@@ -270,7 +320,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::QTY_NOT_IN_DECIMAL);
     }
 
-    public function setQtyNotInDecimal(bool $value)
+    public function setQtyNotInDecimal(?bool $value)
     {
         return $this->setData(self::QTY_NOT_IN_DECIMAL, $value);
     }
@@ -280,7 +330,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::PROFIT_GOAL);
     }
 
-    public function setProfitGoal(string $value)
+    public function setProfitGoal(?string $value)
     {
         return $this->setData(self::PROFIT_GOAL, $value);
     }
@@ -290,7 +340,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::BUYER_GROUP_CODE);
     }
 
-    public function setBuyerGroupCode(string $value)
+    public function setBuyerGroupCode(?string $value)
     {
         return $this->setData(self::BUYER_GROUP_CODE, $value);
     }
@@ -300,17 +350,17 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::REPLEN_DATA_PROFILE);
     }
 
-    public function setReplenDataProfile(string $value)
+    public function setReplenDataProfile(?string $value)
     {
         return $this->setData(self::REPLEN_DATA_PROFILE, $value);
     }
 
-    public function getBuyerID(): ?string
+    public function getBuyerId(): ?string
     {
         return $this->getData(self::BUYER_ID);
     }
 
-    public function setBuyerID(string $value)
+    public function setBuyerId(?string $value)
     {
         return $this->setData(self::BUYER_ID, $value);
     }
@@ -320,7 +370,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::REPLEN_TRANSFER_RULE_CODE);
     }
 
-    public function setReplenTransferRuleCode(string $value)
+    public function setReplenTransferRuleCode(?string $value)
     {
         return $this->setData(self::REPLEN_TRANSFER_RULE_CODE, $value);
     }
@@ -330,7 +380,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DEF_ITEM_DISTR_TYPE);
     }
 
-    public function setDefItemDistrType(string $value)
+    public function setDefItemDistrType(?string $value)
     {
         return $this->setData(self::DEF_ITEM_DISTR_TYPE, $value);
     }
@@ -340,7 +390,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::DEF_ITEM_DISTR_CODE);
     }
 
-    public function setDefItemDistrCode(string $value)
+    public function setDefItemDistrCode(?string $value)
     {
         return $this->setData(self::DEF_ITEM_DISTR_CODE, $value);
     }
@@ -350,17 +400,17 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::EXCLUDE_FROM_REPLENISHMENT);
     }
 
-    public function setExcludeFromReplenishment(bool $value)
+    public function setExcludeFromReplenishment(?bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_REPLENISHMENT, $value);
     }
 
-    public function getExcludeFromOOSCalc(): ?bool
+    public function getExcludeFromOosCalc(): ?bool
     {
         return $this->getData(self::EXCLUDE_FROM_OOS_CALC);
     }
 
-    public function setExcludeFromOOSCalc(bool $value)
+    public function setExcludeFromOosCalc(?bool $value)
     {
         return $this->setData(self::EXCLUDE_FROM_OOS_CALC, $value);
     }
@@ -370,7 +420,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::NOT_DISCOUNTABLE);
     }
 
-    public function setNotDiscountable(bool $value)
+    public function setNotDiscountable(?bool $value)
     {
         return $this->setData(self::NOT_DISCOUNTABLE, $value);
     }
@@ -380,7 +430,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::PHYS_INVT_COUNTING_PERIOD_CODE);
     }
 
-    public function setPhysInvtCountingPeriodCode(string $value)
+    public function setPhysInvtCountingPeriodCode(?string $value)
     {
         return $this->setData(self::PHYS_INVT_COUNTING_PERIOD_CODE, $value);
     }
@@ -390,7 +440,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::ALLOCATION_RULE_CODE);
     }
 
-    public function setAllocationRuleCode(string $value)
+    public function setAllocationRuleCode(?string $value)
     {
         return $this->setData(self::ALLOCATION_RULE_CODE, $value);
     }
@@ -400,7 +450,7 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::OUTBOUND_CODE);
     }
 
-    public function setOutboundCode(string $value)
+    public function setOutboundCode(?string $value)
     {
         return $this->setData(self::OUTBOUND_CODE, $value);
     }
@@ -410,67 +460,67 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->getData(self::SORT_ORDER);
     }
 
-    public function setSortOrder(int $value)
+    public function setSortOrder(?int $value)
     {
         return $this->setData(self::SORT_ORDER, $value);
     }
 
-    public function getPLBGroup(): ?bool
+    public function getPlbGroup(): ?bool
     {
         return $this->getData(self::PLB_GROUP);
     }
 
-    public function setPLBGroup(bool $value)
+    public function setPlbGroup(?bool $value)
     {
         return $this->setData(self::PLB_GROUP, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

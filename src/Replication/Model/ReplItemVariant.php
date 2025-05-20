@@ -8,11 +8,10 @@
 
 namespace Ls\Replication\Model;
 
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\DataObject\IdentityInterface;
 use Ls\Replication\Api\Data\ReplItemVariantInterface;
 
-class ReplItemVariant extends AbstractModel implements ReplItemVariantInterface, IdentityInterface
+class ReplItemVariant extends \Ls\Omni\Client\Ecommerce\Entity\ItemVariant implements ReplItemVariantInterface, IdentityInterface
 {
     public const CACHE_TAG = 'ls_replication_repl_item_variant';
 
@@ -20,389 +19,110 @@ class ReplItemVariant extends AbstractModel implements ReplItemVariantInterface,
 
     protected $_eventPrefix = 'ls_replication_repl_item_variant';
 
-    /**
-     * @property string $Description
-     */
-    protected $Description = null;
-
-    /**
-     * @property string $Description2
-     */
-    protected $Description2 = null;
-
-    /**
-     * @property boolean $IsDeleted
-     */
-    protected $IsDeleted = null;
-
-    /**
-     * @property string $ItemId
-     */
-    protected $ItemId = null;
-
-    /**
-     * @property string $VariantId
-     */
-    protected $VariantId = null;
-
-    /**
-     * @property string $scope
-     */
-    protected $scope = null;
-
-    /**
-     * @property int $scope_id
-     */
-    protected $scope_id = null;
-
-    /**
-     * @property boolean $processed
-     */
-    protected $processed = null;
-
-    /**
-     * @property boolean $is_updated
-     */
-    protected $is_updated = null;
-
-    /**
-     * @property boolean $is_failed
-     */
-    protected $is_failed = null;
-
-    /**
-     * @property string $created_at
-     */
-    protected $created_at = null;
-
-    /**
-     * @property string $updated_at
-     */
-    protected $updated_at = null;
-
-    /**
-     * @property string $identity_value
-     */
-    protected $identity_value = null;
-
-    /**
-     * @property string $checksum
-     */
-    protected $checksum = null;
-
-    /**
-     * @property string $processed_at
-     */
-    protected $processed_at = null;
-
     public function _construct()
     {
-        $this->_init( 'Ls\Replication\Model\ResourceModel\ReplItemVariant' );
+        $this->_init('Ls\Replication\Model\ResourceModel\ReplItemVariant');
     }
 
     public function getIdentities()
     {
-        return [ self::CACHE_TAG . '_' . $this->getId() ];
+        return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    /**
-     * @param string $Description
-     * @return $this
-     */
-    public function setDescription($Description)
+    public function setProcessed(bool $processed)
     {
-        $this->setData( 'Description', $Description );
-        $this->Description = $Description;
-        $this->setDataChanges( TRUE );
+        $this->setData('processed', $processed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getProcessed() : bool
     {
-        return $this->getData( 'Description' );
+        return $this->getData('processed');
     }
 
-    /**
-     * @param string $Description2
-     * @return $this
-     */
-    public function setDescription2($Description2)
+    public function setIsUpdated(bool $is_updated)
     {
-        $this->setData( 'Description2', $Description2 );
-        $this->Description2 = $Description2;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_updated', $is_updated);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription2()
+    public function getIsUpdated() : bool
     {
-        return $this->getData( 'Description2' );
+        return $this->getData('is_updated');
     }
 
-    /**
-     * @param boolean $IsDeleted
-     * @return $this
-     */
-    public function setIsDeleted($IsDeleted)
+    public function setIsFailed(bool $is_failed)
     {
-        $this->setData( 'IsDeleted', $IsDeleted );
-        $this->IsDeleted = $IsDeleted;
-        $this->setDataChanges( TRUE );
+        $this->setData('is_failed', $is_failed);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getIsDeleted()
+    public function getIsFailed() : bool
     {
-        return $this->getData( 'IsDeleted' );
+        return $this->getData('is_failed');
     }
 
-    /**
-     * @param string $ItemId
-     * @return $this
-     */
-    public function setItemId($ItemId)
+    public function setCreatedAt(string $created_at)
     {
-        $this->setData( 'ItemId', $ItemId );
-        $this->ItemId = $ItemId;
-        $this->setDataChanges( TRUE );
+        $this->setData('created_at', $created_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getItemId()
+    public function getCreatedAt() : string
     {
-        return $this->getData( 'ItemId' );
+        return $this->getData('created_at');
     }
 
-    /**
-     * @param string $VariantId
-     * @return $this
-     */
-    public function setVariantId($VariantId)
+    public function setUpdatedAt(string $updated_at)
     {
-        $this->setData( 'VariantId', $VariantId );
-        $this->VariantId = $VariantId;
-        $this->setDataChanges( TRUE );
+        $this->setData('updated_at', $updated_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getVariantId()
+    public function getUpdatedAt() : string
     {
-        return $this->getData( 'VariantId' );
+        return $this->getData('updated_at');
     }
 
-    /**
-     * @param string $scope
-     * @return $this
-     */
-    public function setScope($scope)
+    public function setIdentityValue(string $identity_value)
     {
-        $this->setData( 'scope', $scope );
-        $this->scope = $scope;
-        $this->setDataChanges( TRUE );
+        $this->setData('identity_value', $identity_value);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getScope()
+    public function getIdentityValue() : string
     {
-        return $this->getData( 'scope' );
+        return $this->getData('identity_value');
     }
 
-    /**
-     * @param int $scope_id
-     * @return $this
-     */
-    public function setScopeId($scope_id)
+    public function setChecksum(string $checksum)
     {
-        $this->setData( 'scope_id', $scope_id );
-        $this->scope_id = $scope_id;
-        $this->setDataChanges( TRUE );
+        $this->setData('checksum', $checksum);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getScopeId()
+    public function getChecksum() : string
     {
-        return $this->getData( 'scope_id' );
+        return $this->getData('checksum');
     }
 
-    /**
-     * @param boolean $processed
-     * @return $this
-     */
-    public function setProcessed($processed)
+    public function setProcessedAt(string $processed_at)
     {
-        $this->setData( 'processed', $processed );
-        $this->processed = $processed;
-        $this->setDataChanges( TRUE );
+        $this->setData('processed_at', $processed_at);
+        $this->setDataChanges(true);
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
-    public function getProcessed()
+    public function getProcessedAt() : string
     {
-        return $this->getData( 'processed' );
-    }
-
-    /**
-     * @param boolean $is_updated
-     * @return $this
-     */
-    public function setIsUpdated($is_updated)
-    {
-        $this->setData( 'is_updated', $is_updated );
-        $this->is_updated = $is_updated;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsUpdated()
-    {
-        return $this->getData( 'is_updated' );
-    }
-
-    /**
-     * @param boolean $is_failed
-     * @return $this
-     */
-    public function setIsFailed($is_failed)
-    {
-        $this->setData( 'is_failed', $is_failed );
-        $this->is_failed = $is_failed;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsFailed()
-    {
-        return $this->getData( 'is_failed' );
-    }
-
-    /**
-     * @param string $created_at
-     * @return $this
-     */
-    public function setCreatedAt($created_at)
-    {
-        $this->setData( 'created_at', $created_at );
-        $this->created_at = $created_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreatedAt()
-    {
-        return $this->getData( 'created_at' );
-    }
-
-    /**
-     * @param string $updated_at
-     * @return $this
-     */
-    public function setUpdatedAt($updated_at)
-    {
-        $this->setData( 'updated_at', $updated_at );
-        $this->updated_at = $updated_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUpdatedAt()
-    {
-        return $this->getData( 'updated_at' );
-    }
-
-    /**
-     * @param string $identity_value
-     * @return $this
-     */
-    public function setIdentityValue($identity_value)
-    {
-        $this->setData( 'identity_value', $identity_value );
-        $this->identity_value = $identity_value;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentityValue()
-    {
-        return $this->getData( 'identity_value' );
-    }
-
-    /**
-     * @param string $checksum
-     * @return $this
-     */
-    public function setChecksum($checksum)
-    {
-        $this->setData( 'checksum', $checksum );
-        $this->checksum = $checksum;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getChecksum()
-    {
-        return $this->getData( 'checksum' );
-    }
-
-    /**
-     * @param string $processed_at
-     * @return $this
-     */
-    public function setProcessedAt($processed_at)
-    {
-        $this->setData( 'processed_at', $processed_at );
-        $this->processed_at = $processed_at;
-        $this->setDataChanges( TRUE );
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getProcessedAt()
-    {
-        return $this->getData( 'processed_at' );
+        return $this->getData('processed_at');
     }
 }
 

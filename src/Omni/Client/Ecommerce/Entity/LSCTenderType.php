@@ -105,13 +105,114 @@ class LSCTenderType extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+	self::FUNCTION => 'function',
+	self::VALID_ON_MOBILE_POS => 'valid_on_mobile_pos',
+	self::SCAN_QR_CODE => 'scan_qr_code',
+	self::NO_IN_TRANSACTION => 'no_in_transaction',
+	self::CHANGE_TEND_CODE => 'change_tend_code',
+	self::ABOVE_MIN_CHANGE_TENDER_TYPE => 'above_min_change_tender_type',
+	self::MIN_CHANGE => 'min_change',
+	self::ROUNDING => 'rounding',
+	self::ROUNDING_TO => 'rounding_to',
+	self::MIN_AMOUNT_ENTERED => 'min_amount_entered',
+	self::MAX_AMOUNT_ENTERED => 'max_amount_entered',
+	self::MIN_AMOUNT_ALLOWED => 'min_amount_allowed',
+	self::MAX_AMOUNT_ALLOWED => 'max_amount_allowed',
+	self::MAY_BE_USED => 'may_be_used',
+	self::MANAGER_KEY_CONTROL => 'manager_key_control',
+	self::KEYBOARD_ENTRY_ALLOWED => 'keyboard_entry_allowed',
+	self::OVERTENDER_ALLOWED => 'overtender_allowed',
+	self::OVERTENDER_MAX_AMT => 'overtender_max_amt',
+	self::UNDERTENDER_ALLOWED => 'undertender_allowed',
+	self::RETURNMINUS_ALLOWED => 'returnminus_allowed',
+	self::DRAWER_OPENS => 'drawer_opens',
+	self::ENDORSE_CHECK => 'endorse_check',
+	self::CARDACCOUNT_NO => 'cardaccount_no',
+	self::ASK_FOR_DATE => 'ask_for_date',
+	self::SEEK_AUTHORIZATION => 'seek_authorization',
+	self::PRINT_SEPARATE_INVOICE => 'print_separate_invoice',
+	self::FRONT_OF_CHECK => 'front_of_check',
+	self::KEYBOARD_ENTRY_REQUIRED => 'keyboard_entry_required',
+	self::PAY_ACCOUNT_BILL => 'pay_account_bill',
+	self::MARKING_ONLY => 'marking_only',
+	self::FOREIGN_CURRENCY => 'foreign_currency',
+	self::ENDORSEMENT_LINE_1 => 'endorsement_line_1',
+	self::ENDORSEMENT_LINE_2 => 'endorsement_line_2',
+	self::CHECK_PAYEE => 'check_payee',
+	self::SLIP_BACK_IN_PRINTER => 'slip_back_in_printer',
+	self::ASK_FOR_CARDACCOUNT => 'ask_for_cardaccount',
+	self::INVOICE_IN_PRINTER => 'invoice_in_printer',
+	self::SLIP_FRONT_IN_PRINTER => 'slip_front_in_printer',
+	self::CHANGE_LINE_ON_RECEIPT => 'change_line_on_receipt',
+	self::POS_COUNT_ENTRIES => 'pos_count_entries',
+	self::TAKEN_TO_BANK => 'taken_to_bank',
+	self::COUNTING_REQUIRED => 'counting_required',
+	self::FLOAT_ALLOWED => 'float_allowed',
+	self::MULTIPLY_IN_TENDER_OPERATIONS => 'multiply_in_tender_operations',
+	self::ACCOUNT_TYPE => 'account_type',
+	self::ACCOUNT_NO => 'account_no',
+	self::ACCOUNT_NAME => 'account_name',
+	self::CHARGE => 'charge',
+	self::CHARGE_TO_ACCOUNT_NO => 'charge_to_account_no',
+	self::STORE_NO => 'store_no',
+	self::DIFFERENCE_GL_ACC => 'difference_gl_acc',
+	self::LAST_DATE_MODIFIED => 'last_date_modified',
+	self::PRIMARY_KEY => 'primary_key',
+	self::REFUND_GL_ACCOUNT_NO => 'refund_gl_account_no',
+	self::REFUND_DIRECTLY => 'refund_directly',
+	self::COMPRESS_PAYM_ENTRIES => 'compress_paym_entries',
+	self::PRINT_IN_CID_REPORT => 'print_in_cid_report',
+	self::POS_PICKUP_WARNING_AMOUNT => 'pos_pickup_warning_amount',
+	self::BANK_ACCOUNT_TYPE => 'bank_account_type',
+	self::BANK_ACCOUNT_NO => 'bank_account_no',
+	self::BANK_ACCOUNT_NAME => 'bank_account_name',
+	self::BANK_DIFF_GL_ACC => 'bank_diff_gl_acc',
+	self::TAKEN_TO_SAFE => 'taken_to_safe',
+	self::POS_PICKUP_WARNING_TEXT => 'pos_pickup_warning_text',
+	self::COUNT_BY_DENOMINATIONS => 'count_by_denominations',
+	self::REMOVEFLOAT_TYPE => 'removefloat_type',
+	self::FAST_CLOSING_METHOD => 'fast_closing_method',
+	self::EXCLUDE_COINS_TO_BANK => 'exclude_coins_to_bank',
+	self::TO_BANK_BY_DENOM => 'to_bank_by_denom',
+	self::TO_SAFE_BY_DENOM => 'to_safe_by_denom',
+	self::FIXED_FLOAT_BY_DENOM => 'fixed_float_by_denom',
+	self::USE_BAGS_FOR_BANK => 'use_bags_for_bank',
+	self::BANK_BAGS_NO_TYPE => 'bank_bags_no_type',
+	self::BANK_BAGS_NOS => 'bank_bags_nos',
+	self::USE_BAGS_FOR_SAFE => 'use_bags_for_safe',
+	self::SAFE_BAGS_NO_TYPE => 'safe_bags_no_type',
+	self::SAFE_BAGS_NOS => 'safe_bags_nos',
+	self::FIXED_FLOAT => 'fixed_float',
+	self::USE_BAGS_FOR_FIXED_FLOAT => 'use_bags_for_fixed_float',
+	self::FIXED_FLOAT_BAGS_NO_TYPE => 'fixed_float_bags_no_type',
+	self::FIXED_FLOAT_BAGS_NOS => 'fixed_float_bags_nos',
+	self::OUTBOUND_CODE => 'outbound_code',
+	self::WIC_TENDER_TYPE => 'wic_tender_type',
+	self::FOOD_STAMP => 'food_stamp',
+	self::AUTO_ACCOUNT_PAYMENT_TENDER => 'auto_account_payment_tender',
+	self::DO_NOT_POST => 'do_not_post',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -121,7 +222,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -131,27 +232,27 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FUNCTION);
     }
 
-    public function setFunction(string $value)
+    public function setFunction(?string $value)
     {
         return $this->setData(self::FUNCTION, $value);
     }
 
-    public function getValidOnMobilePOS(): ?bool
+    public function getValidOnMobilePos(): ?bool
     {
         return $this->getData(self::VALID_ON_MOBILE_POS);
     }
 
-    public function setValidOnMobilePOS(bool $value)
+    public function setValidOnMobilePos(?bool $value)
     {
         return $this->setData(self::VALID_ON_MOBILE_POS, $value);
     }
 
-    public function getScanQRCode(): ?bool
+    public function getScanQrCode(): ?bool
     {
         return $this->getData(self::SCAN_QR_CODE);
     }
 
-    public function setScanQRCode(bool $value)
+    public function setScanQrCode(?bool $value)
     {
         return $this->setData(self::SCAN_QR_CODE, $value);
     }
@@ -161,7 +262,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::NO_IN_TRANSACTION);
     }
 
-    public function setNoInTransaction(string $value)
+    public function setNoInTransaction(?string $value)
     {
         return $this->setData(self::NO_IN_TRANSACTION, $value);
     }
@@ -171,7 +272,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::CHANGE_TEND_CODE);
     }
 
-    public function setChangeTendCode(string $value)
+    public function setChangeTendCode(?string $value)
     {
         return $this->setData(self::CHANGE_TEND_CODE, $value);
     }
@@ -181,7 +282,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ABOVE_MIN_CHANGE_TENDER_TYPE);
     }
 
-    public function setAboveMinChangeTenderType(string $value)
+    public function setAboveMinChangeTenderType(?string $value)
     {
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
@@ -191,7 +292,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MIN_CHANGE);
     }
 
-    public function setMinChange(string $value)
+    public function setMinChange(?string $value)
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
@@ -201,7 +302,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ROUNDING);
     }
 
-    public function setRounding(string $value)
+    public function setRounding(?string $value)
     {
         return $this->setData(self::ROUNDING, $value);
     }
@@ -211,7 +312,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ROUNDING_TO);
     }
 
-    public function setRoundingTo(string $value)
+    public function setRoundingTo(?string $value)
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
@@ -221,7 +322,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MIN_AMOUNT_ENTERED);
     }
 
-    public function setMinAmountEntered(string $value)
+    public function setMinAmountEntered(?string $value)
     {
         return $this->setData(self::MIN_AMOUNT_ENTERED, $value);
     }
@@ -231,7 +332,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MAX_AMOUNT_ENTERED);
     }
 
-    public function setMaxAmountEntered(string $value)
+    public function setMaxAmountEntered(?string $value)
     {
         return $this->setData(self::MAX_AMOUNT_ENTERED, $value);
     }
@@ -241,7 +342,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MIN_AMOUNT_ALLOWED);
     }
 
-    public function setMinAmountAllowed(string $value)
+    public function setMinAmountAllowed(?string $value)
     {
         return $this->setData(self::MIN_AMOUNT_ALLOWED, $value);
     }
@@ -251,7 +352,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MAX_AMOUNT_ALLOWED);
     }
 
-    public function setMaxAmountAllowed(string $value)
+    public function setMaxAmountAllowed(?string $value)
     {
         return $this->setData(self::MAX_AMOUNT_ALLOWED, $value);
     }
@@ -261,7 +362,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MAY_BE_USED);
     }
 
-    public function setMayBeUsed(bool $value)
+    public function setMayBeUsed(?bool $value)
     {
         return $this->setData(self::MAY_BE_USED, $value);
     }
@@ -271,7 +372,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MANAGER_KEY_CONTROL);
     }
 
-    public function setManagerKeyControl(bool $value)
+    public function setManagerKeyControl(?bool $value)
     {
         return $this->setData(self::MANAGER_KEY_CONTROL, $value);
     }
@@ -281,7 +382,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::KEYBOARD_ENTRY_ALLOWED);
     }
 
-    public function setKeyboardEntryAllowed(bool $value)
+    public function setKeyboardEntryAllowed(?bool $value)
     {
         return $this->setData(self::KEYBOARD_ENTRY_ALLOWED, $value);
     }
@@ -291,7 +392,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::OVERTENDER_ALLOWED);
     }
 
-    public function setOvertenderAllowed(bool $value)
+    public function setOvertenderAllowed(?bool $value)
     {
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
@@ -301,7 +402,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::OVERTENDER_MAX_AMT);
     }
 
-    public function setOvertenderMaxAmt(string $value)
+    public function setOvertenderMaxAmt(?string $value)
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }
@@ -311,7 +412,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::UNDERTENDER_ALLOWED);
     }
 
-    public function setUndertenderAllowed(bool $value)
+    public function setUndertenderAllowed(?bool $value)
     {
         return $this->setData(self::UNDERTENDER_ALLOWED, $value);
     }
@@ -321,7 +422,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::RETURNMINUS_ALLOWED);
     }
 
-    public function setReturnMinusAllowed(bool $value)
+    public function setReturnMinusAllowed(?bool $value)
     {
         return $this->setData(self::RETURNMINUS_ALLOWED, $value);
     }
@@ -331,7 +432,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::DRAWER_OPENS);
     }
 
-    public function setDrawerOpens(bool $value)
+    public function setDrawerOpens(?bool $value)
     {
         return $this->setData(self::DRAWER_OPENS, $value);
     }
@@ -341,7 +442,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ENDORSE_CHECK);
     }
 
-    public function setEndorseCheck(bool $value)
+    public function setEndorseCheck(?bool $value)
     {
         return $this->setData(self::ENDORSE_CHECK, $value);
     }
@@ -351,7 +452,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::CARDACCOUNT_NO);
     }
 
-    public function setCardAccountNo(bool $value)
+    public function setCardAccountNo(?bool $value)
     {
         return $this->setData(self::CARDACCOUNT_NO, $value);
     }
@@ -361,7 +462,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ASK_FOR_DATE);
     }
 
-    public function setAskForDate(bool $value)
+    public function setAskForDate(?bool $value)
     {
         return $this->setData(self::ASK_FOR_DATE, $value);
     }
@@ -371,7 +472,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::SEEK_AUTHORIZATION);
     }
 
-    public function setSeekAuthorization(string $value)
+    public function setSeekAuthorization(?string $value)
     {
         return $this->setData(self::SEEK_AUTHORIZATION, $value);
     }
@@ -381,7 +482,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::PRINT_SEPARATE_INVOICE);
     }
 
-    public function setPrintSeparateInvoice(bool $value)
+    public function setPrintSeparateInvoice(?bool $value)
     {
         return $this->setData(self::PRINT_SEPARATE_INVOICE, $value);
     }
@@ -391,7 +492,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FRONT_OF_CHECK);
     }
 
-    public function setFrontOfCheck(bool $value)
+    public function setFrontOfCheck(?bool $value)
     {
         return $this->setData(self::FRONT_OF_CHECK, $value);
     }
@@ -401,7 +502,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::KEYBOARD_ENTRY_REQUIRED);
     }
 
-    public function setKeyboardEntryRequired(bool $value)
+    public function setKeyboardEntryRequired(?bool $value)
     {
         return $this->setData(self::KEYBOARD_ENTRY_REQUIRED, $value);
     }
@@ -411,7 +512,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::PAY_ACCOUNT_BILL);
     }
 
-    public function setPayAccountBill(bool $value)
+    public function setPayAccountBill(?bool $value)
     {
         return $this->setData(self::PAY_ACCOUNT_BILL, $value);
     }
@@ -421,7 +522,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MARKING_ONLY);
     }
 
-    public function setMarkingOnly(bool $value)
+    public function setMarkingOnly(?bool $value)
     {
         return $this->setData(self::MARKING_ONLY, $value);
     }
@@ -431,7 +532,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FOREIGN_CURRENCY);
     }
 
-    public function setForeignCurrency(bool $value)
+    public function setForeignCurrency(?bool $value)
     {
         return $this->setData(self::FOREIGN_CURRENCY, $value);
     }
@@ -441,7 +542,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ENDORSEMENT_LINE_1);
     }
 
-    public function setEndorsementLine1(string $value)
+    public function setEndorsementLine1(?string $value)
     {
         return $this->setData(self::ENDORSEMENT_LINE_1, $value);
     }
@@ -451,7 +552,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ENDORSEMENT_LINE_2);
     }
 
-    public function setEndorsementLine2(string $value)
+    public function setEndorsementLine2(?string $value)
     {
         return $this->setData(self::ENDORSEMENT_LINE_2, $value);
     }
@@ -461,7 +562,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::CHECK_PAYEE);
     }
 
-    public function setCheckPayee(string $value)
+    public function setCheckPayee(?string $value)
     {
         return $this->setData(self::CHECK_PAYEE, $value);
     }
@@ -471,7 +572,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::SLIP_BACK_IN_PRINTER);
     }
 
-    public function setSlipBackInPrinter(string $value)
+    public function setSlipBackInPrinter(?string $value)
     {
         return $this->setData(self::SLIP_BACK_IN_PRINTER, $value);
     }
@@ -481,7 +582,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ASK_FOR_CARDACCOUNT);
     }
 
-    public function setAskForCardAccount(string $value)
+    public function setAskForCardAccount(?string $value)
     {
         return $this->setData(self::ASK_FOR_CARDACCOUNT, $value);
     }
@@ -491,7 +592,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::INVOICE_IN_PRINTER);
     }
 
-    public function setInvoiceInPrinter(string $value)
+    public function setInvoiceInPrinter(?string $value)
     {
         return $this->setData(self::INVOICE_IN_PRINTER, $value);
     }
@@ -501,7 +602,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::SLIP_FRONT_IN_PRINTER);
     }
 
-    public function setSlipFrontInPrinter(string $value)
+    public function setSlipFrontInPrinter(?string $value)
     {
         return $this->setData(self::SLIP_FRONT_IN_PRINTER, $value);
     }
@@ -511,17 +612,17 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::CHANGE_LINE_ON_RECEIPT);
     }
 
-    public function setChangeLineOnReceipt(string $value)
+    public function setChangeLineOnReceipt(?string $value)
     {
         return $this->setData(self::CHANGE_LINE_ON_RECEIPT, $value);
     }
 
-    public function getPOSCountEntries(): ?bool
+    public function getPosCountEntries(): ?bool
     {
         return $this->getData(self::POS_COUNT_ENTRIES);
     }
 
-    public function setPOSCountEntries(bool $value)
+    public function setPosCountEntries(?bool $value)
     {
         return $this->setData(self::POS_COUNT_ENTRIES, $value);
     }
@@ -531,7 +632,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::TAKEN_TO_BANK);
     }
 
-    public function setTakenToBank(bool $value)
+    public function setTakenToBank(?bool $value)
     {
         return $this->setData(self::TAKEN_TO_BANK, $value);
     }
@@ -541,7 +642,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::COUNTING_REQUIRED);
     }
 
-    public function setCountingRequired(bool $value)
+    public function setCountingRequired(?bool $value)
     {
         return $this->setData(self::COUNTING_REQUIRED, $value);
     }
@@ -551,7 +652,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FLOAT_ALLOWED);
     }
 
-    public function setFloatAllowed(bool $value)
+    public function setFloatAllowed(?bool $value)
     {
         return $this->setData(self::FLOAT_ALLOWED, $value);
     }
@@ -561,7 +662,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::MULTIPLY_IN_TENDER_OPERATIONS);
     }
 
-    public function setMultiplyInTenderOperations(bool $value)
+    public function setMultiplyInTenderOperations(?bool $value)
     {
         return $this->setData(self::MULTIPLY_IN_TENDER_OPERATIONS, $value);
     }
@@ -571,7 +672,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(string $value)
+    public function setAccountType(?string $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }
@@ -581,7 +682,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value)
+    public function setAccountNo(?string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -591,7 +692,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::ACCOUNT_NAME);
     }
 
-    public function setAccountName(string $value)
+    public function setAccountName(?string $value)
     {
         return $this->setData(self::ACCOUNT_NAME, $value);
     }
@@ -601,7 +702,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::CHARGE);
     }
 
-    public function setCharge(string $value)
+    public function setCharge(?string $value)
     {
         return $this->setData(self::CHARGE, $value);
     }
@@ -611,7 +712,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::CHARGE_TO_ACCOUNT_NO);
     }
 
-    public function setChargeToAccountNo(string $value)
+    public function setChargeToAccountNo(?string $value)
     {
         return $this->setData(self::CHARGE_TO_ACCOUNT_NO, $value);
     }
@@ -621,7 +722,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -631,7 +732,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::DIFFERENCE_GL_ACC);
     }
 
-    public function setDifferenceGLAcc(string $value)
+    public function setDifferenceGLAcc(?string $value)
     {
         return $this->setData(self::DIFFERENCE_GL_ACC, $value);
     }
@@ -641,7 +742,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::LAST_DATE_MODIFIED);
     }
 
-    public function setLastDateModified(string $value)
+    public function setLastDateModified(?string $value)
     {
         return $this->setData(self::LAST_DATE_MODIFIED, $value);
     }
@@ -651,7 +752,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::PRIMARY_KEY);
     }
 
-    public function setPrimaryKey(string $value)
+    public function setPrimaryKey(?string $value)
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
@@ -661,7 +762,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::REFUND_GL_ACCOUNT_NO);
     }
 
-    public function setRefundGLAccountNo(string $value)
+    public function setRefundGLAccountNo(?string $value)
     {
         return $this->setData(self::REFUND_GL_ACCOUNT_NO, $value);
     }
@@ -671,7 +772,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::REFUND_DIRECTLY);
     }
 
-    public function setRefundDirectly(bool $value)
+    public function setRefundDirectly(?bool $value)
     {
         return $this->setData(self::REFUND_DIRECTLY, $value);
     }
@@ -681,27 +782,27 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::COMPRESS_PAYM_ENTRIES);
     }
 
-    public function setCompressPaymEntries(bool $value)
+    public function setCompressPaymEntries(?bool $value)
     {
         return $this->setData(self::COMPRESS_PAYM_ENTRIES, $value);
     }
 
-    public function getPrintInCIDReport(): ?bool
+    public function getPrintInCidReport(): ?bool
     {
         return $this->getData(self::PRINT_IN_CID_REPORT);
     }
 
-    public function setPrintInCIDReport(bool $value)
+    public function setPrintInCidReport(?bool $value)
     {
         return $this->setData(self::PRINT_IN_CID_REPORT, $value);
     }
 
-    public function getPOSPickupWarningAmount(): ?string
+    public function getPosPickupWarningAmount(): ?string
     {
         return $this->getData(self::POS_PICKUP_WARNING_AMOUNT);
     }
 
-    public function setPOSPickupWarningAmount(string $value)
+    public function setPosPickupWarningAmount(?string $value)
     {
         return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }
@@ -711,7 +812,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::BANK_ACCOUNT_TYPE);
     }
 
-    public function setBankAccountType(string $value)
+    public function setBankAccountType(?string $value)
     {
         return $this->setData(self::BANK_ACCOUNT_TYPE, $value);
     }
@@ -721,7 +822,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::BANK_ACCOUNT_NO);
     }
 
-    public function setBankAccountNo(string $value)
+    public function setBankAccountNo(?string $value)
     {
         return $this->setData(self::BANK_ACCOUNT_NO, $value);
     }
@@ -731,7 +832,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::BANK_ACCOUNT_NAME);
     }
 
-    public function setBankAccountName(string $value)
+    public function setBankAccountName(?string $value)
     {
         return $this->setData(self::BANK_ACCOUNT_NAME, $value);
     }
@@ -741,7 +842,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::BANK_DIFF_GL_ACC);
     }
 
-    public function setBankDiffGLAcc(string $value)
+    public function setBankDiffGLAcc(?string $value)
     {
         return $this->setData(self::BANK_DIFF_GL_ACC, $value);
     }
@@ -751,17 +852,17 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::TAKEN_TO_SAFE);
     }
 
-    public function setTakenToSafe(bool $value)
+    public function setTakenToSafe(?bool $value)
     {
         return $this->setData(self::TAKEN_TO_SAFE, $value);
     }
 
-    public function getPOSPickupWarningText(): ?string
+    public function getPosPickupWarningText(): ?string
     {
         return $this->getData(self::POS_PICKUP_WARNING_TEXT);
     }
 
-    public function setPOSPickupWarningText(string $value)
+    public function setPosPickupWarningText(?string $value)
     {
         return $this->setData(self::POS_PICKUP_WARNING_TEXT, $value);
     }
@@ -771,7 +872,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::COUNT_BY_DENOMINATIONS);
     }
 
-    public function setCountByDenominations(bool $value)
+    public function setCountByDenominations(?bool $value)
     {
         return $this->setData(self::COUNT_BY_DENOMINATIONS, $value);
     }
@@ -781,7 +882,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::REMOVEFLOAT_TYPE);
     }
 
-    public function setRemoveFloatType(string $value)
+    public function setRemoveFloatType(?string $value)
     {
         return $this->setData(self::REMOVEFLOAT_TYPE, $value);
     }
@@ -791,7 +892,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FAST_CLOSING_METHOD);
     }
 
-    public function setFastClosingMethod(string $value)
+    public function setFastClosingMethod(?string $value)
     {
         return $this->setData(self::FAST_CLOSING_METHOD, $value);
     }
@@ -801,7 +902,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::EXCLUDE_COINS_TO_BANK);
     }
 
-    public function setExcludeCoinsToBank(bool $value)
+    public function setExcludeCoinsToBank(?bool $value)
     {
         return $this->setData(self::EXCLUDE_COINS_TO_BANK, $value);
     }
@@ -811,7 +912,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::TO_BANK_BY_DENOM);
     }
 
-    public function setToBankByDenom(bool $value)
+    public function setToBankByDenom(?bool $value)
     {
         return $this->setData(self::TO_BANK_BY_DENOM, $value);
     }
@@ -821,7 +922,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::TO_SAFE_BY_DENOM);
     }
 
-    public function setToSafeByDenom(bool $value)
+    public function setToSafeByDenom(?bool $value)
     {
         return $this->setData(self::TO_SAFE_BY_DENOM, $value);
     }
@@ -831,7 +932,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FIXED_FLOAT_BY_DENOM);
     }
 
-    public function setFixedFloatByDenom(bool $value)
+    public function setFixedFloatByDenom(?bool $value)
     {
         return $this->setData(self::FIXED_FLOAT_BY_DENOM, $value);
     }
@@ -841,7 +942,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::USE_BAGS_FOR_BANK);
     }
 
-    public function setUseBagsForBank(bool $value)
+    public function setUseBagsForBank(?bool $value)
     {
         return $this->setData(self::USE_BAGS_FOR_BANK, $value);
     }
@@ -851,7 +952,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::BANK_BAGS_NO_TYPE);
     }
 
-    public function setBankBagsNoType(string $value)
+    public function setBankBagsNoType(?string $value)
     {
         return $this->setData(self::BANK_BAGS_NO_TYPE, $value);
     }
@@ -861,7 +962,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::BANK_BAGS_NOS);
     }
 
-    public function setBankBagsNos(string $value)
+    public function setBankBagsNos(?string $value)
     {
         return $this->setData(self::BANK_BAGS_NOS, $value);
     }
@@ -871,7 +972,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::USE_BAGS_FOR_SAFE);
     }
 
-    public function setUseBagsForSafe(bool $value)
+    public function setUseBagsForSafe(?bool $value)
     {
         return $this->setData(self::USE_BAGS_FOR_SAFE, $value);
     }
@@ -881,7 +982,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::SAFE_BAGS_NO_TYPE);
     }
 
-    public function setSafeBagsNoType(string $value)
+    public function setSafeBagsNoType(?string $value)
     {
         return $this->setData(self::SAFE_BAGS_NO_TYPE, $value);
     }
@@ -891,7 +992,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::SAFE_BAGS_NOS);
     }
 
-    public function setSafeBagsNos(string $value)
+    public function setSafeBagsNos(?string $value)
     {
         return $this->setData(self::SAFE_BAGS_NOS, $value);
     }
@@ -901,7 +1002,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FIXED_FLOAT);
     }
 
-    public function setFixedFloat(bool $value)
+    public function setFixedFloat(?bool $value)
     {
         return $this->setData(self::FIXED_FLOAT, $value);
     }
@@ -911,7 +1012,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::USE_BAGS_FOR_FIXED_FLOAT);
     }
 
-    public function setUseBagsForFixedFloat(bool $value)
+    public function setUseBagsForFixedFloat(?bool $value)
     {
         return $this->setData(self::USE_BAGS_FOR_FIXED_FLOAT, $value);
     }
@@ -921,7 +1022,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FIXED_FLOAT_BAGS_NO_TYPE);
     }
 
-    public function setFixedFloatBagsNoType(string $value)
+    public function setFixedFloatBagsNoType(?string $value)
     {
         return $this->setData(self::FIXED_FLOAT_BAGS_NO_TYPE, $value);
     }
@@ -931,7 +1032,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FIXED_FLOAT_BAGS_NOS);
     }
 
-    public function setFixedFloatBagsNos(string $value)
+    public function setFixedFloatBagsNos(?string $value)
     {
         return $this->setData(self::FIXED_FLOAT_BAGS_NOS, $value);
     }
@@ -941,17 +1042,17 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::OUTBOUND_CODE);
     }
 
-    public function setOutboundCode(string $value)
+    public function setOutboundCode(?string $value)
     {
         return $this->setData(self::OUTBOUND_CODE, $value);
     }
 
-    public function getWICTenderType(): ?bool
+    public function getWicTenderType(): ?bool
     {
         return $this->getData(self::WIC_TENDER_TYPE);
     }
 
-    public function setWICTenderType(bool $value)
+    public function setWicTenderType(?bool $value)
     {
         return $this->setData(self::WIC_TENDER_TYPE, $value);
     }
@@ -961,7 +1062,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::FOOD_STAMP);
     }
 
-    public function setFoodStamp(bool $value)
+    public function setFoodStamp(?bool $value)
     {
         return $this->setData(self::FOOD_STAMP, $value);
     }
@@ -971,7 +1072,7 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::AUTO_ACCOUNT_PAYMENT_TENDER);
     }
 
-    public function setAutoAccountPaymentTender(bool $value)
+    public function setAutoAccountPaymentTender(?bool $value)
     {
         return $this->setData(self::AUTO_ACCOUNT_PAYMENT_TENDER, $value);
     }
@@ -981,57 +1082,57 @@ class LSCTenderType extends AbstractModel
         return $this->getData(self::DO_NOT_POST);
     }
 
-    public function setDoNotPost(bool $value)
+    public function setDoNotPost(?bool $value)
     {
         return $this->setData(self::DO_NOT_POST, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

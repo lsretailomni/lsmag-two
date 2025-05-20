@@ -15,13 +15,24 @@ class LSCStoreSection extends AbstractModel
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
 
+    public array $dbColumnsMapping = [
+	self::STORE_NO => 'store_no',
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getStoreNo(): ?string
     {
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -31,7 +42,7 @@ class LSCStoreSection extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -41,7 +52,7 @@ class LSCStoreSection extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }

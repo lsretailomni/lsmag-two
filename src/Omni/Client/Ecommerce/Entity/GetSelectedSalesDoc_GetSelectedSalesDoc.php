@@ -26,13 +26,35 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
     public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
     public const PIN = 'PIN';
 
+    public array $dbColumnsMapping = [
+	self::AMOUNT => 'amount',
+	self::APPLIED_AMOUNT => 'applied_amount',
+	self::CREATED_BY_LINE_NO => 'created_by_line_no',
+	self::CURRENCY_CODE => 'currency_code',
+	self::DATA_ENTRY_BALANCE => 'data_entry_balance',
+	self::DATE_CREATED => 'date_created',
+	self::ENTRY_CODE => 'entry_code',
+	self::ENTRY_TYPE => 'entry_type',
+	self::EXPIRING_DATE => 'expiring_date',
+	self::LSC_MEMBER_SALES_BUFFER => 'lsc_member_sales_buffer',
+	self::LSC_MEMBER_SALES_DATA_ENTRY => 'lsc_member_sales_data_entry',
+	self::LSC_MEMBER_SALES_DOC_DISC_LINE => 'lsc_member_sales_doc_disc_line',
+	self::LSC_MEMBER_SALES_DOC_LINE => 'lsc_member_sales_doc_line',
+	self::PIN => 'pin',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getAmount(): ?Decimal
     {
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(Decimal $value)
+    public function setAmount(?Decimal $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
@@ -42,7 +64,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::APPLIED_AMOUNT);
     }
 
-    public function setAppliedAmount(Decimal $value)
+    public function setAppliedAmount(?Decimal $value)
     {
         return $this->setData(self::APPLIED_AMOUNT, $value);
     }
@@ -52,7 +74,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::CREATED_BY_LINE_NO);
     }
 
-    public function setCreatedByLineNo(Integer $value)
+    public function setCreatedByLineNo(?Integer $value)
     {
         return $this->setData(self::CREATED_BY_LINE_NO, $value);
     }
@@ -62,7 +84,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(Code $value)
+    public function setCurrencyCode(?Code $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -72,7 +94,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::DATA_ENTRY_BALANCE);
     }
 
-    public function setDataEntryBalance(Decimal $value)
+    public function setDataEntryBalance(?Decimal $value)
     {
         return $this->setData(self::DATA_ENTRY_BALANCE, $value);
     }
@@ -82,7 +104,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::DATE_CREATED);
     }
 
-    public function setDateCreated(Date $value)
+    public function setDateCreated(?Date $value)
     {
         return $this->setData(self::DATE_CREATED, $value);
     }
@@ -92,7 +114,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::ENTRY_CODE);
     }
 
-    public function setEntryCode(Code $value)
+    public function setEntryCode(?Code $value)
     {
         return $this->setData(self::ENTRY_CODE, $value);
     }
@@ -102,7 +124,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::ENTRY_TYPE);
     }
 
-    public function setEntryType(Code $value)
+    public function setEntryType(?Code $value)
     {
         return $this->setData(self::ENTRY_TYPE, $value);
     }
@@ -112,57 +134,57 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->getData(self::EXPIRING_DATE);
     }
 
-    public function setExpiringDate(Date $value)
+    public function setExpiringDate(?Date $value)
     {
         return $this->setData(self::EXPIRING_DATE, $value);
     }
 
-    public function getLSCMemberSalesBuffer(): ?LSCMemberSalesBuffer
+    public function getLscMemberSalesBuffer(): ?LSCMemberSalesBuffer
     {
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
 
-    public function setLSCMemberSalesBuffer(LSCMemberSalesBuffer $value)
+    public function setLscMemberSalesBuffer(?LSCMemberSalesBuffer $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
-    public function getLSCMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
+    public function getLscMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
     {
         return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
 
-    public function setLSCMemberSalesDataEntry(LSCMemberSalesDataEntry $value)
+    public function setLscMemberSalesDataEntry(?LSCMemberSalesDataEntry $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
-    public function getLSCMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
+    public function getLscMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
 
-    public function setLSCMemberSalesDocDiscLine(LSCMemberSalesDocDiscLine $value)
+    public function setLscMemberSalesDocDiscLine(?LSCMemberSalesDocDiscLine $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getLSCMemberSalesDocLine(): ?array
+    public function getLscMemberSalesDocLine(): ?array
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
 
-    public function setLSCMemberSalesDocLine(array $value)
+    public function setLscMemberSalesDocLine(?array $value)
     {
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
-    public function getPIN(): ?Integer
+    public function getPin(): ?Integer
     {
         return $this->getData(self::PIN);
     }
 
-    public function setPIN(Integer $value)
+    public function setPin(?Integer $value)
     {
         return $this->setData(self::PIN, $value);
     }

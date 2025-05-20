@@ -29,7 +29,7 @@ use \Ls\Replication\Model\ReplCurrencySearchResultsFactory;
 class ReplCurrencyRepositoryTest extends TestCase
 {
     /**
-     * @property ReplCurrencyFactory $objectFactory
+     * @property Ls\Omni\Client\Ecommerce\Entity\CurrencyFactory $objectFactory
      */
     protected $objectFactory = null;
 
@@ -60,15 +60,15 @@ class ReplCurrencyRepositoryTest extends TestCase
 
     public function setUp() : void
     {
-        $this->objectFactory = $this->createPartialMock(ReplCurrencyFactory::class, ['create']);
+        $this->objectFactory = $this->createPartialMock(Ls\Omni\Client\Ecommerce\Entity\CurrencyFactory::class, ['create']);
         $this->collectionFactory = $this->createMock(CollectionFactory::class);
         $this->resultFactory = $this->createMock(ReplCurrencySearchResultsFactory::class);
         $this->entityInterface = $this->createMock(ReplCurrencyInterface::class);
         $this->entitySearchResultsInterface = $this->createMock(ReplCurrencySearchResultsInterface::class);
         $this->model = new ReplCurrencyRepository(
-                $this->objectFactory,
-                $this->collectionFactory,
-                $this->resultFactory
+            $this->objectFactory,
+            $this->collectionFactory,
+            $this->resultFactory
         );
     }
 
@@ -77,8 +77,8 @@ class ReplCurrencyRepositoryTest extends TestCase
         $entityId = 1;
         $entityMock = $this->createMock(ReplCurrencyRepository::class);
         $entityMock->method('getById')
-             ->with($entityId)
-             ->willReturn($entityId);
+            ->with($entityId)
+            ->willReturn($entityId);
         $this->assertEquals($entityId, $entityMock->getById($entityId));
     }
 
@@ -89,12 +89,12 @@ class ReplCurrencyRepositoryTest extends TestCase
         $entityId = 1;
         $entityMock = $this->createMock(ReplCurrencyRepository::class);
         $entityMock->method('getById')
-             ->with($entityId)
-             ->willThrowException(
-                 new NoSuchEntityException(
-                     new Phrase('Object with id ' . $entityId . ' does not exist.')
-                 )
-             );
+            ->with($entityId)
+            ->willThrowException(
+                new NoSuchEntityException(
+                    new Phrase('Object with id ' . $entityId . ' does not exist.')
+                )
+            );
         $entityMock->getById($entityId);
     }
 
@@ -103,8 +103,8 @@ class ReplCurrencyRepositoryTest extends TestCase
         $searchCriteria = $this->getMockBuilder(SearchCriteriaInterface::class)->getMock();
         $entityMock = $this->createMock(ReplCurrencyRepository::class);
         $entityMock->method('getList')
-             ->with($searchCriteria)
-             ->willReturn($this->entitySearchResultsInterface);
+            ->with($searchCriteria)
+            ->willReturn($this->entitySearchResultsInterface);
         $this->assertEquals($this->entitySearchResultsInterface, $entityMock->getList($searchCriteria));
     }
 
@@ -112,8 +112,8 @@ class ReplCurrencyRepositoryTest extends TestCase
     {
         $entityMock = $this->createMock(ReplCurrencyRepository::class);
         $entityMock->method('save')
-             ->with($this->entityInterface)
-             ->willReturn($this->entityInterface);
+            ->with($this->entityInterface)
+            ->willReturn($this->entityInterface);
         $this->assertEquals($this->entityInterface, $entityMock->save($this->entityInterface));
     }
 
@@ -123,12 +123,12 @@ class ReplCurrencyRepositoryTest extends TestCase
         $this->expectException(\Magento\Framework\Exception\CouldNotSaveException::class);
         $entityMock = $this->createMock(ReplCurrencyRepository::class);
         $entityMock->method('save')
-             ->with($this->entityInterface)
-             ->willThrowException(
-                 new CouldNotSaveException(
-                     __('Could not save entity')
-                 )
-             );
+            ->with($this->entityInterface)
+            ->willThrowException(
+                new CouldNotSaveException(
+                    __('Could not save entity')
+                )
+            );
         $entityMock->save($this->entityInterface);
     }
 }

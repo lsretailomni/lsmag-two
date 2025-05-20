@@ -46,53 +46,95 @@ class VATPostingSetup extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::VAT_BUS_POSTING_GROUP => 'vat_bus_posting_group',
+	self::VAT_PROD_POSTING_GROUP => 'vat_prod_posting_group',
+	self::VAT_CALCULATION_TYPE => 'vat_calculation_type',
+	self::VAT => 'vat',
+	self::UNREALIZED_VAT_TYPE => 'unrealized_vat_type',
+	self::ADJUST_FOR_PAYMENT_DISCOUNT => 'adjust_for_payment_discount',
+	self::SALES_VAT_ACCOUNT => 'sales_vat_account',
+	self::SALES_VAT_UNREAL_ACCOUNT => 'sales_vat_unreal_account',
+	self::PURCHASE_VAT_ACCOUNT => 'purchase_vat_account',
+	self::PURCH_VAT_UNREAL_ACCOUNT => 'purch_vat_unreal_account',
+	self::REVERSE_CHRG_VAT_ACC => 'reverse_chrg_vat_acc',
+	self::REVERSE_CHRG_VAT_UNREAL_ACC => 'reverse_chrg_vat_unreal_acc',
+	self::VAT_IDENTIFIER => 'vat_identifier',
+	self::EU_SERVICE => 'eu_service',
+	self::VAT_CLAUSE_CODE => 'vat_clause_code',
+	self::CERTIFICATE_OF_SUPPLY_REQUIRED => 'certificate_of_supply_required',
+	self::TAX_CATEGORY => 'tax_category',
+	self::DESCRIPTION => 'description',
+	self::BLOCKED => 'blocked',
+	self::SALE_VAT_REPORTING_CODE => 'sale_vat_reporting_code',
+	self::PURCH_VAT_REPORTING_CODE => 'purch_vat_reporting_code',
+	self::SALES_TAX_CODE_SAFT => 'sales_tax_code_saft',
+	self::PURCHASE_TAX_CODE_SAFT => 'purchase_tax_code_saft',
+	self::STARTING_DATE => 'starting_date',
+	self::NONDEDUCTIBLE_VAT => 'nondeductible_vat',
+	self::NONDED_PURCHASE_VAT_ACCOUNT => 'nonded_purchase_vat_account',
+	self::ALLOW_NONDEDUCTIBLE_VAT => 'allow_nondeductible_vat',
+	self::LSC_VAT_GROUP_CODE => 'lsc_vat_group_code',
+	self::LSC_POS_TERMINAL_VAT_CODE => 'lsc_pos_terminal_vat_code',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
 
-    public function getVATBusPostingGroup(): ?string
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
+
+    public function getVatBusPostingGroup(): ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GROUP);
     }
 
-    public function setVATBusPostingGroup(string $value)
+    public function setVatBusPostingGroup(?string $value)
     {
         return $this->setData(self::VAT_BUS_POSTING_GROUP, $value);
     }
 
-    public function getVATProdPostingGroup(): ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value)
+    public function setVatProdPostingGroup(?string $value)
     {
         return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
-    public function getVATCalculationType(): ?string
+    public function getVatCalculationType(): ?string
     {
         return $this->getData(self::VAT_CALCULATION_TYPE);
     }
 
-    public function setVATCalculationType(string $value)
+    public function setVatCalculationType(?string $value)
     {
         return $this->setData(self::VAT_CALCULATION_TYPE, $value);
     }
 
-    public function getVAT(): ?string
+    public function getVat(): ?string
     {
         return $this->getData(self::VAT);
     }
 
-    public function setVAT(string $value)
+    public function setVat(?string $value)
     {
         return $this->setData(self::VAT, $value);
     }
 
-    public function getUnrealizedVATType(): ?string
+    public function getUnrealizedVatType(): ?string
     {
         return $this->getData(self::UNREALIZED_VAT_TYPE);
     }
 
-    public function setUnrealizedVATType(string $value)
+    public function setUnrealizedVatType(?string $value)
     {
         return $this->setData(self::UNREALIZED_VAT_TYPE, $value);
     }
@@ -102,97 +144,97 @@ class VATPostingSetup extends AbstractModel
         return $this->getData(self::ADJUST_FOR_PAYMENT_DISCOUNT);
     }
 
-    public function setAdjustForPaymentDiscount(bool $value)
+    public function setAdjustForPaymentDiscount(?bool $value)
     {
         return $this->setData(self::ADJUST_FOR_PAYMENT_DISCOUNT, $value);
     }
 
-    public function getSalesVATAccount(): ?string
+    public function getSalesVatAccount(): ?string
     {
         return $this->getData(self::SALES_VAT_ACCOUNT);
     }
 
-    public function setSalesVATAccount(string $value)
+    public function setSalesVatAccount(?string $value)
     {
         return $this->setData(self::SALES_VAT_ACCOUNT, $value);
     }
 
-    public function getSalesVATUnrealAccount(): ?string
+    public function getSalesVatUnrealAccount(): ?string
     {
         return $this->getData(self::SALES_VAT_UNREAL_ACCOUNT);
     }
 
-    public function setSalesVATUnrealAccount(string $value)
+    public function setSalesVatUnrealAccount(?string $value)
     {
         return $this->setData(self::SALES_VAT_UNREAL_ACCOUNT, $value);
     }
 
-    public function getPurchaseVATAccount(): ?string
+    public function getPurchaseVatAccount(): ?string
     {
         return $this->getData(self::PURCHASE_VAT_ACCOUNT);
     }
 
-    public function setPurchaseVATAccount(string $value)
+    public function setPurchaseVatAccount(?string $value)
     {
         return $this->setData(self::PURCHASE_VAT_ACCOUNT, $value);
     }
 
-    public function getPurchVATUnrealAccount(): ?string
+    public function getPurchVatUnrealAccount(): ?string
     {
         return $this->getData(self::PURCH_VAT_UNREAL_ACCOUNT);
     }
 
-    public function setPurchVATUnrealAccount(string $value)
+    public function setPurchVatUnrealAccount(?string $value)
     {
         return $this->setData(self::PURCH_VAT_UNREAL_ACCOUNT, $value);
     }
 
-    public function getReverseChrgVATAcc(): ?string
+    public function getReverseChrgVatAcc(): ?string
     {
         return $this->getData(self::REVERSE_CHRG_VAT_ACC);
     }
 
-    public function setReverseChrgVATAcc(string $value)
+    public function setReverseChrgVatAcc(?string $value)
     {
         return $this->setData(self::REVERSE_CHRG_VAT_ACC, $value);
     }
 
-    public function getReverseChrgVATUnrealAcc(): ?string
+    public function getReverseChrgVatUnrealAcc(): ?string
     {
         return $this->getData(self::REVERSE_CHRG_VAT_UNREAL_ACC);
     }
 
-    public function setReverseChrgVATUnrealAcc(string $value)
+    public function setReverseChrgVatUnrealAcc(?string $value)
     {
         return $this->setData(self::REVERSE_CHRG_VAT_UNREAL_ACC, $value);
     }
 
-    public function getVATIdentifier(): ?string
+    public function getVatIdentifier(): ?string
     {
         return $this->getData(self::VAT_IDENTIFIER);
     }
 
-    public function setVATIdentifier(string $value)
+    public function setVatIdentifier(?string $value)
     {
         return $this->setData(self::VAT_IDENTIFIER, $value);
     }
 
-    public function getEUService(): ?bool
+    public function getEuService(): ?bool
     {
         return $this->getData(self::EU_SERVICE);
     }
 
-    public function setEUService(bool $value)
+    public function setEuService(?bool $value)
     {
         return $this->setData(self::EU_SERVICE, $value);
     }
 
-    public function getVATClauseCode(): ?string
+    public function getVatClauseCode(): ?string
     {
         return $this->getData(self::VAT_CLAUSE_CODE);
     }
 
-    public function setVATClauseCode(string $value)
+    public function setVatClauseCode(?string $value)
     {
         return $this->setData(self::VAT_CLAUSE_CODE, $value);
     }
@@ -202,7 +244,7 @@ class VATPostingSetup extends AbstractModel
         return $this->getData(self::CERTIFICATE_OF_SUPPLY_REQUIRED);
     }
 
-    public function setCertificateOfSupplyRequired(bool $value)
+    public function setCertificateOfSupplyRequired(?bool $value)
     {
         return $this->setData(self::CERTIFICATE_OF_SUPPLY_REQUIRED, $value);
     }
@@ -212,7 +254,7 @@ class VATPostingSetup extends AbstractModel
         return $this->getData(self::TAX_CATEGORY);
     }
 
-    public function setTaxCategory(string $value)
+    public function setTaxCategory(?string $value)
     {
         return $this->setData(self::TAX_CATEGORY, $value);
     }
@@ -222,7 +264,7 @@ class VATPostingSetup extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -232,47 +274,47 @@ class VATPostingSetup extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value)
+    public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
 
-    public function getSaleVATReportingCode(): ?string
+    public function getSaleVatReportingCode(): ?string
     {
         return $this->getData(self::SALE_VAT_REPORTING_CODE);
     }
 
-    public function setSaleVATReportingCode(string $value)
+    public function setSaleVatReportingCode(?string $value)
     {
         return $this->setData(self::SALE_VAT_REPORTING_CODE, $value);
     }
 
-    public function getPurchVATReportingCode(): ?string
+    public function getPurchVatReportingCode(): ?string
     {
         return $this->getData(self::PURCH_VAT_REPORTING_CODE);
     }
 
-    public function setPurchVATReportingCode(string $value)
+    public function setPurchVatReportingCode(?string $value)
     {
         return $this->setData(self::PURCH_VAT_REPORTING_CODE, $value);
     }
 
-    public function getSalesTaxCodeSAFT(): ?string
+    public function getSalesTaxCodeSafT(): ?string
     {
         return $this->getData(self::SALES_TAX_CODE_SAFT);
     }
 
-    public function setSalesTaxCodeSAFT(string $value)
+    public function setSalesTaxCodeSafT(?string $value)
     {
         return $this->setData(self::SALES_TAX_CODE_SAFT, $value);
     }
 
-    public function getPurchaseTaxCodeSAFT(): ?string
+    public function getPurchaseTaxCodeSafT(): ?string
     {
         return $this->getData(self::PURCHASE_TAX_CODE_SAFT);
     }
 
-    public function setPurchaseTaxCodeSAFT(string $value)
+    public function setPurchaseTaxCodeSafT(?string $value)
     {
         return $this->setData(self::PURCHASE_TAX_CODE_SAFT, $value);
     }
@@ -282,107 +324,107 @@ class VATPostingSetup extends AbstractModel
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value)
+    public function setStartingDate(?string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
 
-    public function getNonDeductibleVAT(): ?string
+    public function getNonDeductibleVat(): ?string
     {
         return $this->getData(self::NONDEDUCTIBLE_VAT);
     }
 
-    public function setNonDeductibleVAT(string $value)
+    public function setNonDeductibleVat(?string $value)
     {
         return $this->setData(self::NONDEDUCTIBLE_VAT, $value);
     }
 
-    public function getNonDedPurchaseVATAccount(): ?string
+    public function getNonDedPurchaseVatAccount(): ?string
     {
         return $this->getData(self::NONDED_PURCHASE_VAT_ACCOUNT);
     }
 
-    public function setNonDedPurchaseVATAccount(string $value)
+    public function setNonDedPurchaseVatAccount(?string $value)
     {
         return $this->setData(self::NONDED_PURCHASE_VAT_ACCOUNT, $value);
     }
 
-    public function getAllowNonDeductibleVAT(): ?string
+    public function getAllowNonDeductibleVat(): ?string
     {
         return $this->getData(self::ALLOW_NONDEDUCTIBLE_VAT);
     }
 
-    public function setAllowNonDeductibleVAT(string $value)
+    public function setAllowNonDeductibleVat(?string $value)
     {
         return $this->setData(self::ALLOW_NONDEDUCTIBLE_VAT, $value);
     }
 
-    public function getLSCVATGroupCode(): ?string
+    public function getLscVatGroupCode(): ?string
     {
         return $this->getData(self::LSC_VAT_GROUP_CODE);
     }
 
-    public function setLSCVATGroupCode(string $value)
+    public function setLscVatGroupCode(?string $value)
     {
         return $this->setData(self::LSC_VAT_GROUP_CODE, $value);
     }
 
-    public function getLSCPOSTerminalVATCode(): ?string
+    public function getLscPosTerminalVatCode(): ?string
     {
         return $this->getData(self::LSC_POS_TERMINAL_VAT_CODE);
     }
 
-    public function setLSCPOSTerminalVATCode(string $value)
+    public function setLscPosTerminalVatCode(?string $value)
     {
         return $this->setData(self::LSC_POS_TERMINAL_VAT_CODE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

@@ -23,13 +23,32 @@ class LSCInformationSubcode extends AbstractModel
     public const AMOUNT_PERCENT = 'Amount /Percent';
     public const TIME_MODIFIER_MINUTES = 'Time Modifier Minutes';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::SUBCODE => 'subcode',
+	self::DESCRIPTION => 'description',
+	self::VARIANT_CODE => 'variant_code',
+	self::UNIT_OF_MEASURE => 'unit_of_measure',
+	self::TRIGGER_FUNCTION => 'trigger_function',
+	self::TRIGGER_CODE => 'trigger_code',
+	self::PRICE_TYPE => 'price_type',
+	self::PRICE_HANDLING => 'price_handling',
+	self::AMOUNT_PERCENT => 'amount_percent',
+	self::TIME_MODIFIER_MINUTES => 'time_modifier_minutes',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -39,7 +58,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::SUBCODE);
     }
 
-    public function setSubcode(string $value)
+    public function setSubcode(?string $value)
     {
         return $this->setData(self::SUBCODE, $value);
     }
@@ -49,7 +68,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -59,7 +78,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -69,7 +88,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value)
+    public function setUnitOfMeasure(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -79,7 +98,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::TRIGGER_FUNCTION);
     }
 
-    public function setTriggerFunction(string $value)
+    public function setTriggerFunction(?string $value)
     {
         return $this->setData(self::TRIGGER_FUNCTION, $value);
     }
@@ -89,7 +108,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::TRIGGER_CODE);
     }
 
-    public function setTriggerCode(string $value)
+    public function setTriggerCode(?string $value)
     {
         return $this->setData(self::TRIGGER_CODE, $value);
     }
@@ -99,7 +118,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::PRICE_TYPE);
     }
 
-    public function setPriceType(string $value)
+    public function setPriceType(?string $value)
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
@@ -109,7 +128,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::PRICE_HANDLING);
     }
 
-    public function setPriceHandling(string $value)
+    public function setPriceHandling(?string $value)
     {
         return $this->setData(self::PRICE_HANDLING, $value);
     }
@@ -119,7 +138,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::AMOUNT_PERCENT);
     }
 
-    public function setAmountPercent(string $value)
+    public function setAmountPercent(?string $value)
     {
         return $this->setData(self::AMOUNT_PERCENT, $value);
     }
@@ -129,7 +148,7 @@ class LSCInformationSubcode extends AbstractModel
         return $this->getData(self::TIME_MODIFIER_MINUTES);
     }
 
-    public function setTimeModifierMinutes(string $value)
+    public function setTimeModifierMinutes(?string $value)
     {
         return $this->setData(self::TIME_MODIFIER_MINUTES, $value);
     }

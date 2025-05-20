@@ -23,4 +23,29 @@ class BaseODataResponse
         $this->lastEntryNo = (int)($data['lastEntryNo'] ?? 0);
         $this->endOfTable = (bool)($data['endOfTable'] ?? false);
     }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function getErrorText(): string
+    {
+        return $this->errorText;
+    }
+
+    public function getLastKey(): string
+    {
+        return $this->lastKey;
+    }
+
+    public function getLastEntryNo(): int
+    {
+        return $this->lastEntryNo;
+    }
+
+    public function getEndOfTable(): bool
+    {
+        return $this->endOfTable;
+    }
 }

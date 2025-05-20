@@ -17,13 +17,26 @@ class LSCInfocode extends AbstractModel
     public const EXPLANATORY_HEADER_TEXT = 'Explanatory Header Text';
     public const PROMPT = 'Prompt';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::MIN_SELECTION => 'min_selection',
+	self::MAX_SELECTION => 'max_selection',
+	self::EXPLANATORY_HEADER_TEXT => 'explanatory_header_text',
+	self::PROMPT => 'prompt',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -33,7 +46,7 @@ class LSCInfocode extends AbstractModel
         return $this->getData(self::MIN_SELECTION);
     }
 
-    public function setMinSelection(int $value)
+    public function setMinSelection(?int $value)
     {
         return $this->setData(self::MIN_SELECTION, $value);
     }
@@ -43,7 +56,7 @@ class LSCInfocode extends AbstractModel
         return $this->getData(self::MAX_SELECTION);
     }
 
-    public function setMaxSelection(int $value)
+    public function setMaxSelection(?int $value)
     {
         return $this->setData(self::MAX_SELECTION, $value);
     }
@@ -53,7 +66,7 @@ class LSCInfocode extends AbstractModel
         return $this->getData(self::EXPLANATORY_HEADER_TEXT);
     }
 
-    public function setExplanatoryHeaderText(string $value)
+    public function setExplanatoryHeaderText(?string $value)
     {
         return $this->setData(self::EXPLANATORY_HEADER_TEXT, $value);
     }
@@ -63,7 +76,7 @@ class LSCInfocode extends AbstractModel
         return $this->getData(self::PROMPT);
     }
 
-    public function setPrompt(string $value)
+    public function setPrompt(?string $value)
     {
         return $this->setData(self::PROMPT, $value);
     }

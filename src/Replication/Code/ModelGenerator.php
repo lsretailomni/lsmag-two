@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -8,32 +9,26 @@ use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Helper\ReplicationHelper;
 use Magento\Framework\DataObject\IdentityInterface;
-use Magento\Framework\Model\AbstractModel;
 use ReflectionClass;
 use ReflectionException;
 use Laminas\Code\Generator\MethodGenerator;
 use Laminas\Code\Generator\PropertyGenerator;
 
 /**
- * Class ModelGenerator
- * @package Ls\Replication\Code
+ * Responsible for generating Magento model classes for replication entities.
  */
 class ModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static $namespace = 'Ls\\Replication\\Model';
+    public static string $namespace = 'Ls\\Replication\\Model';
 
     /** @var ReplicationOperation */
-    public $operation;
+    public ReplicationOperation $operation;
 
     /** @var ReflectionClass */
-    public $reflected_entity;
-
-    /** @var string */
-    public $table_name;
+    public ReflectionClass $reflectedEntity;
 
     /**
-     * ModelGenerator constructor.
      * @param ReplicationOperation $operation
      * @throws Exception
      * @throws ReflectionException
@@ -42,43 +37,43 @@ class ModelGenerator extends AbstractGenerator
     {
         parent::__construct();
         $this->operation = $operation;
-        // @codingStandardsIgnoreStart
-        $this->reflected_entity = new ReflectionClass($this->operation->getOmniEntityFqn());
-        // @codingStandardsIgnoreLine
+        $this->reflectedEntity = new ReflectionClass($this->operation->getOmniEntityFqn());
     }
 
     /**
+     * Get the class name to be generated.
+     *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
-        return $this->reflected_entity->getShortName();
+        return $this->reflectedEntity->getShortName();
     }
 
     /**
+     * Generate the Magento model class code.
+     *
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
-        $interface_name = $this->operation->getInterfaceName();
-        $entity_name    = $this->operation->getEntityName();
+        $interfaceName = $this->operation->getInterfaceName();
 
-        $contructor_method = new MethodGenerator();
-        $contructor_method->setName('_construct');
-        $contructor_method->setBody("\$this->_init( 'Ls\\Replication\\Model\\ResourceModel\\$entity_name' );");
+        $constructorMethod = new MethodGenerator();
+        $constructorMethod->setName('_construct');
+        $constructorMethod->setBody("\$this->_init('Ls\\Replication\\Model\\ResourceModel\\" . $this->operation->getModelName() . "');");
 
-        $identities_method = new MethodGenerator();
-        $identities_method->setName('getIdentities');
-        $identities_method->setBody('return [ self::CACHE_TAG . \'_\' . $this->getId() ];');
+        $identitiesMethod = new MethodGenerator();
+        $identitiesMethod->setName('getIdentities');
+        $identitiesMethod->setBody('return [self::CACHE_TAG . \'_\' . $this->getId()];');
 
         $this->class->setNamespaceName(self::$namespace);
-        $this->class->addUse(AbstractModel::class);
         $this->class->addUse(IdentityInterface::class);
         $this->class->addUse($this->operation->getInterfaceFqn());
 
-        $this->class->setName($this->operation->getEntityName());
-        $this->class->setExtendedClass(AbstractModel::class);
-        $this->class->setImplementedInterfaces([$this->operation->getInterfaceName(), IdentityInterface::class]);
+        $this->class->setName($this->operation->getModelName());
+        $this->class->setExtendedClass($this->operation->getOmniEntityFqn());
+        $this->class->setImplementedInterfaces([$interfaceName, IdentityInterface::class]);
 
         $this->class->addConstant('CACHE_TAG', 'ls_replication_' . $this->operation->getTableName());
         $this->class->addProperty(
@@ -91,61 +86,25 @@ class ModelGenerator extends AbstractGenerator
             'ls_replication_' . $this->operation->getTableName(),
             PropertyGenerator::FLAG_PROTECTED
         );
-        $this->class->addMethodFromGenerator($contructor_method);
-        $this->class->addMethodFromGenerator($identities_method);
 
-        $property_regex = '/\@property\s(:?\w+)\s\$(:?\w+)/';
-        foreach ($this->reflected_entity->getProperties() as $property) {
-            $property_name = $property->getName();
-            if ($property_name[0] == '_') {
-                continue;
-            }
-            preg_match($property_regex, $property->getDocComment(), $matches);
-            if (empty($matches)) {
-                continue;
-            }
-            $property_type = $matches[1];
-
-            $pascal_name   = $property_name;
-            $variable_name = $property_name;
-
-            if ($property_name == 'Id') {
-                $pascal_name   = 'NavId';
-                $variable_name = 'nav_id';
-            } elseif ($property_name == 'scope') {
-                $pascal_name   = 'Scope';
-                $variable_name = 'scope';
-            } elseif ($property_name == 'scope_id') {
-                $pascal_name   = 'ScopeId';
-                $variable_name = 'scope_id';
-            }
-            $this->createProperty(
-                null,
-                $property_type,
-                [PropertyGenerator::FLAG_PROTECTED],
-                [
-                    'pascal_name'   => $pascal_name,
-                    'variable_name' => $variable_name,
-                    'model'         => true
-                ]
-            );
-        }
+        $this->class->addMethodFromGenerator($constructorMethod);
+        $this->class->addMethodFromGenerator($identitiesMethod);
 
         $this->createProperty(
             null,
-            'boolean',
+            'bool',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true]
         );
         $this->createProperty(
             null,
-            'boolean',
+            'bool',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true]
         );
         $this->createProperty(
             null,
-            'boolean',
+            'bool',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'model' => true]
         );
@@ -179,18 +138,21 @@ class ModelGenerator extends AbstractGenerator
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'model' => true]
         );
+
         $content = $this->file->generate();
+
         $content = str_replace(
             'extends Magento\\Framework\\Model\\AbstractModel',
             'extends AbstractModel',
             $content
         );
-        $content = str_replace("implements \\$interface_name", "implements $interface_name", $content);
+        $content = str_replace("implements \\$interfaceName", "implements $interfaceName", $content);
         $content = str_replace(
             ', Magento\\Framework\\DataObject\\IdentityInterface',
             ', IdentityInterface',
             $content
         );
-        return $content;
+
+        return $this->removeBackSlashFromBuiltinReturnTypes($content);
     }
 }

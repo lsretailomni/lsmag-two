@@ -25,23 +25,44 @@ class HierarchyNodesLinkView extends AbstractModel
     public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const STATUS = 'Status';
 
+    public array $dbColumnsMapping = [
+	self::HIERARCHY_CODE => 'hierarchy_code',
+	self::NODE_ID => 'node_id',
+	self::TYPE => 'type',
+	self::NO => 'no',
+	self::DESCRIPTION => 'description',
+	self::ITEM_UNIT_OF_MEASURE => 'item_unit_of_measure',
+	self::SORT_ORDER => 'sort_order',
+	self::RETAIL_IMAGE_ID => 'retail_image_id',
+	self::MEMBER_TYPE => 'member_type',
+	self::MEMBER_VALUE => 'member_value',
+	self::DEAL_PRICE => 'deal_price',
+	self::VALIDATION_PERIOD_ID => 'validation_period_id',
+	self::STATUS => 'status',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getHierarchyCode(): ?string
     {
         return $this->getData(self::HIERARCHY_CODE);
     }
 
-    public function setHierarchyCode(string $value)
+    public function setHierarchyCode(?string $value)
     {
         return $this->setData(self::HIERARCHY_CODE, $value);
     }
 
-    public function getNodeID(): ?string
+    public function getNodeId(): ?string
     {
         return $this->getData(self::NODE_ID);
     }
 
-    public function setNodeID(string $value)
+    public function setNodeId(?string $value)
     {
         return $this->setData(self::NODE_ID, $value);
     }
@@ -51,7 +72,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -61,7 +82,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -71,7 +92,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -81,7 +102,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::ITEM_UNIT_OF_MEASURE);
     }
 
-    public function setItemUnitOfMeasure(string $value)
+    public function setItemUnitOfMeasure(?string $value)
     {
         return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
     }
@@ -91,17 +112,17 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::SORT_ORDER);
     }
 
-    public function setSortOrder(int $value)
+    public function setSortOrder(?int $value)
     {
         return $this->setData(self::SORT_ORDER, $value);
     }
 
-    public function getRetailImageID(): ?string
+    public function getRetailImageId(): ?string
     {
         return $this->getData(self::RETAIL_IMAGE_ID);
     }
 
-    public function setRetailImageID(string $value)
+    public function setRetailImageId(?string $value)
     {
         return $this->setData(self::RETAIL_IMAGE_ID, $value);
     }
@@ -111,7 +132,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::MEMBER_TYPE);
     }
 
-    public function setMemberType(string $value)
+    public function setMemberType(?string $value)
     {
         return $this->setData(self::MEMBER_TYPE, $value);
     }
@@ -121,7 +142,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::MEMBER_VALUE);
     }
 
-    public function setMemberValue(string $value)
+    public function setMemberValue(?string $value)
     {
         return $this->setData(self::MEMBER_VALUE, $value);
     }
@@ -131,17 +152,17 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::DEAL_PRICE);
     }
 
-    public function setDealPrice(string $value)
+    public function setDealPrice(?string $value)
     {
         return $this->setData(self::DEAL_PRICE, $value);
     }
 
-    public function getValidationPeriodID(): ?string
+    public function getValidationPeriodId(): ?string
     {
         return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value)
+    public function setValidationPeriodId(?string $value)
     {
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
@@ -151,7 +172,7 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?string $value)
     {
         return $this->setData(self::STATUS, $value);
     }

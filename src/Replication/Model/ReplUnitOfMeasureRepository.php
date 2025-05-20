@@ -15,9 +15,9 @@ use Magento\Framework\Api\SearchCriteriaInterface;
 use Exception;
 use Magento\Framework\Phrase;
 use Magento\Framework\Api\SortOrder;
+use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\Collection;
 use Ls\Replication\Model\ResourceModel\ReplUnitOfMeasure\CollectionFactory;
-use Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface;
 use Ls\Replication\Api\Data\ReplUnitOfMeasureInterface;
 use Ls\Replication\Model\ReplUnitOfMeasureFactory;
 use Ls\Replication\Model\ReplUnitOfMeasureSearchResultsFactory;
@@ -25,65 +25,67 @@ use Ls\Replication\Model\ReplUnitOfMeasureSearchResultsFactory;
 class ReplUnitOfMeasureRepository implements ReplUnitOfMeasureRepositoryInterface
 {
     /**
-     * @property ReplUnitOfMeasureFactory $object_factory
+     * @property ReplUnitOfMeasureFactory $objectFactory
      */
-    protected $object_factory = null;
+    public $objectFactory = null;
 
     /**
-     * @property CollectionFactory $collection_factory
+     * @property CollectionFactory $collectionFactory
      */
-    protected $collection_factory = null;
+    public $collectionFactory = null;
 
     /**
-     * @property ReplUnitOfMeasureSearchResultsFactory $result_factory
+     * @property ReplUnitOfMeasureSearchResultsFactory $resultFactory
      */
-    protected $result_factory = null;
+    public $resultFactory = null;
 
-    public function __construct(ReplUnitOfMeasureFactory $object_factory, CollectionFactory $collection_factory, ReplUnitOfMeasureSearchResultsFactory $result_factory)
+    public function __construct(ReplUnitOfMeasureFactory $objectFactory, CollectionFactory $collectionFactory, ReplUnitOfMeasureSearchResultsFactory $resultFactory)
     {
-        $this->object_factory = $object_factory;
-        $this->collection_factory = $collection_factory;
-        $this->result_factory = $result_factory;
+        $this->objectFactory = $objectFactory;
+        $this->collectionFactory = $collectionFactory;
+        $this->resultFactory = $resultFactory;
     }
 
     public function getList(SearchCriteriaInterface $criteria)
     {
         /** @var SearchResultInterface $results */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $results = $this->result_factory->create();
-        $results->setSearchCriteria( $criteria );
+        $results = $this->resultFactory->create();
+        $results->setSearchCriteria($criteria);
+
         /** @var Collection $collection */
-        /** @noinspection PhpUndefinedMethodInspection */
-        $collection = $this->collection_factory->create();
-        foreach ( $criteria->getFilterGroups() as $filter_group ) {
-            $fields = [ ];
-            $conditions = [ ];
-            foreach ( $filter_group->getFilters() as $filter ) {
-                $condition = $filter->getConditionType() ? $filter->getConditionType() : 'eq';
+        $collection = $this->collectionFactory->create();
+        foreach ($criteria->getFilterGroups() as $filterGroup) {
+            $fields = [];
+            $conditions = [];
+            foreach ($filterGroup->getFilters() as $filter) {
+                $condition = $filter->getConditionType() ?: 'eq';
                 $fields[] = $filter->getField();
-                $conditions[] = [ $condition => $filter->getValue() ];
+                $conditions[] = [$condition => $filter->getValue()];
             }
-            if ( $fields ) {
-                $collection->addFieldToFilter( $fields, $conditions );
+            if ($fields) {
+                $collection->addFieldToFilter($fields, $conditions);
             }
         }
-        $results->setTotalCount( $collection->getSize() );
-        $sort_orders = $criteria->getSortOrders();
-        if ( $sort_orders ) {
-            /** @var SortOrder $sort_order */
-            foreach ( $sort_orders as $sort_order ) {
-                $collection->addOrder( $sort_order->getField(),
-                                       ( $sort_order->getDirection() == SortOrder::SORT_ASC ) ? 'ASC' : 'DESC'
+        $results->setTotalCount($collection->getSize());
+
+        $sortOrders = $criteria->getSortOrders();
+        if ($sortOrders) {
+            foreach ($sortOrders as $sortOrder) {
+                $collection->addOrder(
+                    $sortOrder->getField(),
+                    ($sortOrder->getDirection() === SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
                 );
             }
         }
-        $collection->setCurPage( $criteria->getCurrentPage() );
-        $collection->setPageSize( $criteria->getPageSize() );
-        $objects = [ ];
-        foreach ( $collection as $object_model ) {
-            $objects[] = $object_model;
+
+        $collection->setCurPage($criteria->getCurrentPage());
+        $collection->setPageSize($criteria->getPageSize());
+
+        $objects = [];
+        foreach ($collection as $objectModel) {
+            $objects[] = $objectModel;
         }
-        $results->setItems( $objects );
+        $results->setItems($objects);
 
         return $results;
     }
@@ -92,8 +94,8 @@ class ReplUnitOfMeasureRepository implements ReplUnitOfMeasureRepositoryInterfac
     {
         try {
             $object->save();
-        } catch ( Exception $e ) {
-            throw new CouldNotSaveException( new Phrase( $e->getMessage() ) );
+        } catch (Exception $e) {
+            throw new CouldNotSaveException(new Phrase($e->getMessage()));
         }
 
         return $object;
@@ -101,10 +103,10 @@ class ReplUnitOfMeasureRepository implements ReplUnitOfMeasureRepositoryInterfac
 
     public function getById($id)
     {
-        $object = $this->object_factory->create();
-        $object->load( $id );
-        if ( ! $object->getId() ) {
-            throw new NoSuchEntityException( new Phrase( "Object with id '$id' does not exist." ) );
+        $object = $this->objectFactory->create();
+        $object->load($id);
+        if (!$object->getId()) {
+            throw new NoSuchEntityException(new Phrase("Object with id '$id' does not exist."));
         }
 
         return $object;
@@ -114,16 +116,16 @@ class ReplUnitOfMeasureRepository implements ReplUnitOfMeasureRepositoryInterfac
     {
         try {
             $object->delete();
-        } catch ( Exception $e) {
-            throw new CouldNotDeleteException( new Phrase( $e->getMessage() ) );
+        } catch (Exception $e) {
+            throw new CouldNotDeleteException(new Phrase($e->getMessage()));
         }
 
-        return TRUE;
+        return true;
     }
 
     public function deleteById($id)
     {
-        return $this->delete( $this->getById( $id ) );
+        return $this->delete($this->getById($id));
     }
 }
 

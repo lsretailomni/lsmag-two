@@ -29,13 +29,38 @@ class StaffPermissionView extends AbstractModel
     public const MAX_DISCOUNT_TO_GIVE = 'Max. Discount to Give %';
     public const MAX_TOTAL_DISCOUNT = 'Max. Total Discount %';
 
+    public array $dbColumnsMapping = [
+	self::STAFF => 'staff',
+	self::MANAGER_PRIVILEGES => 'manager_privileges',
+	self::VOID_TRANSACTION => 'void_transaction',
+	self::XZYREPORT_PRINTING => 'xzyreport_printing',
+	self::TENDER_DECLARATION => 'tender_declaration',
+	self::FLOATING_DECLARATION => 'floating_declaration',
+	self::PRICE_OVERRIDE => 'price_override',
+	self::SUSPEND_TRANSACTION => 'suspend_transaction',
+	self::RETURN_IN_TRANSACTION => 'return_in_transaction',
+	self::VOID_LINE => 'void_line',
+	self::ADD_PAYMENT => 'add_payment',
+	self::CREATE_CUSTOMERS => 'create_customers',
+	self::VIEW_SALES_HISTORY => 'view_sales_history',
+	self::CUSTOMER_COMMENTS => 'customer_comments',
+	self::UPDATE_CUSTOMERS => 'update_customers',
+	self::MAX_DISCOUNT_TO_GIVE => 'max_discount_to_give',
+	self::MAX_TOTAL_DISCOUNT => 'max_total_discount',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getStaff(): ?string
     {
         return $this->getData(self::STAFF);
     }
 
-    public function setStaff(string $value)
+    public function setStaff(?string $value)
     {
         return $this->setData(self::STAFF, $value);
     }
@@ -45,7 +70,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::MANAGER_PRIVILEGES);
     }
 
-    public function setManagerPrivileges(string $value)
+    public function setManagerPrivileges(?string $value)
     {
         return $this->setData(self::MANAGER_PRIVILEGES, $value);
     }
@@ -55,17 +80,17 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::VOID_TRANSACTION);
     }
 
-    public function setVoidTransaction(string $value)
+    public function setVoidTransaction(?string $value)
     {
         return $this->setData(self::VOID_TRANSACTION, $value);
     }
 
-    public function getXZYReportPrinting(): ?string
+    public function getXzyReportPrinting(): ?string
     {
         return $this->getData(self::XZYREPORT_PRINTING);
     }
 
-    public function setXZYReportPrinting(string $value)
+    public function setXzyReportPrinting(?string $value)
     {
         return $this->setData(self::XZYREPORT_PRINTING, $value);
     }
@@ -75,7 +100,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::TENDER_DECLARATION);
     }
 
-    public function setTenderDeclaration(string $value)
+    public function setTenderDeclaration(?string $value)
     {
         return $this->setData(self::TENDER_DECLARATION, $value);
     }
@@ -85,7 +110,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::FLOATING_DECLARATION);
     }
 
-    public function setFloatingDeclaration(string $value)
+    public function setFloatingDeclaration(?string $value)
     {
         return $this->setData(self::FLOATING_DECLARATION, $value);
     }
@@ -95,7 +120,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::PRICE_OVERRIDE);
     }
 
-    public function setPriceOverride(string $value)
+    public function setPriceOverride(?string $value)
     {
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
@@ -105,7 +130,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::SUSPEND_TRANSACTION);
     }
 
-    public function setSuspendTransaction(string $value)
+    public function setSuspendTransaction(?string $value)
     {
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
@@ -115,7 +140,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::RETURN_IN_TRANSACTION);
     }
 
-    public function setReturnInTransaction(string $value)
+    public function setReturnInTransaction(?string $value)
     {
         return $this->setData(self::RETURN_IN_TRANSACTION, $value);
     }
@@ -125,7 +150,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::VOID_LINE);
     }
 
-    public function setVoidLine(string $value)
+    public function setVoidLine(?string $value)
     {
         return $this->setData(self::VOID_LINE, $value);
     }
@@ -135,7 +160,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::ADD_PAYMENT);
     }
 
-    public function setAddPayment(string $value)
+    public function setAddPayment(?string $value)
     {
         return $this->setData(self::ADD_PAYMENT, $value);
     }
@@ -145,7 +170,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::CREATE_CUSTOMERS);
     }
 
-    public function setCreateCustomers(string $value)
+    public function setCreateCustomers(?string $value)
     {
         return $this->setData(self::CREATE_CUSTOMERS, $value);
     }
@@ -155,7 +180,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::VIEW_SALES_HISTORY);
     }
 
-    public function setViewSalesHistory(string $value)
+    public function setViewSalesHistory(?string $value)
     {
         return $this->setData(self::VIEW_SALES_HISTORY, $value);
     }
@@ -165,7 +190,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::CUSTOMER_COMMENTS);
     }
 
-    public function setCustomerComments(string $value)
+    public function setCustomerComments(?string $value)
     {
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
@@ -175,7 +200,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::UPDATE_CUSTOMERS);
     }
 
-    public function setUpdateCustomers(string $value)
+    public function setUpdateCustomers(?string $value)
     {
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
@@ -185,7 +210,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
 
-    public function setMaxDiscountToGive(string $value)
+    public function setMaxDiscountToGive(?string $value)
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
@@ -195,7 +220,7 @@ class StaffPermissionView extends AbstractModel
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
     }
 
-    public function setMaxTotalDiscount(string $value)
+    public function setMaxTotalDiscount(?string $value)
     {
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }

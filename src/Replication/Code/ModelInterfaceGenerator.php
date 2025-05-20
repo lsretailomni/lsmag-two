@@ -1,36 +1,35 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
 use Exception;
+use Laminas\Code\Generator\MethodGenerator;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Helper\ReplicationHelper;
 use ReflectionClass;
 use ReflectionException;
-use Laminas\Code\Generator\PropertyGenerator;
 
 /**
- * Class ModelInterfaceGenerator
- * @package Ls\Replication\Code
+ * Responsible for generating interface code for replication model entities.
  */
 class ModelInterfaceGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static $namespace = "Ls\\Replication\\Api\\Data";
+    public static string $namespace = "Ls\\Replication\\Api\\Data";
 
-    /** @var  string */
-    protected $entity_fqn;
+    /** @var string */
+    public string $entityFqn;
 
     /** @var ReflectionClass */
-    protected $reflected_entity;
+    public ReflectionClass $reflectedEntity;
 
     /** @var ReplicationOperation */
-    protected $operation;
+    public ReplicationOperation $operation;
 
     /**
-     * ModelInterfaceGenerator constructor.
      * @param ReplicationOperation $operation
      * @throws Exception
      * @throws ReflectionException
@@ -40,114 +39,99 @@ class ModelInterfaceGenerator extends AbstractGenerator
         parent::__construct();
         $this->class = new InterfaceGenerator();
         $this->file->setClass($this->class);
-        $this->operation        = $operation;
-        $this->entity_fqn       = $this->operation->getOmniEntityFqn();
-        $this->reflected_entity = new ReflectionClass($this->entity_fqn);
+        $this->operation = $operation;
+        $this->entityFqn = $this->operation->getOmniEntityFqn();
+        $this->reflectedEntity = new ReflectionClass($this->entityFqn);
     }
 
     /**
+     * Generate the interface content.
+     *
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
+        $originalClass = $this->entityFqn;
         $this->class->setNamespaceName(self::$namespace);
         $this->class->setName($this->getName());
 
-        $property_regex = '/\@property\s(:?\w+)\s\$(:?\w+)/';
-        foreach ($this->reflected_entity->getProperties() as $property) {
-            $property_name = $property->getName();
-            if ($property_name[0] == '_') {
+        foreach ($this->reflectedEntity->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->getDeclaringClass()->getName() !== $originalClass) {
                 continue;
             }
-            preg_match($property_regex, $property->getDocComment(), $matches);
-            if (empty($matches)) {
-                continue;
-            }
-            $property_type = $matches[1];
-            $pascal_name   = $property_name;
-            $variable_name = $property_name;
 
-            if ($property_name == 'Id') {
-                $pascal_name   = 'NavId';
-                $variable_name = 'nav_id';
-            } elseif ($property_name == 'scope') {
-                $pascal_name   = 'Scope';
-                $variable_name = 'scope';
-            } elseif ($property_name == 'scope_id') {
-                $pascal_name   = 'ScopeId';
-                $variable_name = 'scope_id';
-            }
-            $this->createProperty(
-                null,
-                $property_type,
-                [PropertyGenerator::FLAG_PROTECTED],
-                [
-                    'pascal_name'   => $pascal_name,
-                    'variable_name' => $variable_name,
-                    'interface'     => true
-                ]
+            $this->copyGivenMethod(
+                $method->getName(),
+                MethodGenerator::VISIBILITY_PUBLIC,
+                false,
+                $method->getParameters(),
+                $method->getReturnType()
             );
         }
 
         $this->createProperty(
             null,
-            'boolean',
-            [PropertyGenerator::FLAG_PROTECTED],
+            'bool',
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'boolean',
-            [PropertyGenerator::FLAG_PROTECTED],
+            'bool',
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'boolean',
-            [PropertyGenerator::FLAG_PROTECTED],
+            'bool',
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'interface' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [PropertyGenerator::FLAG_PROTECTED],
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'interface' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [PropertyGenerator::FLAG_PROTECTED],
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'interface' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [PropertyGenerator::FLAG_PROTECTED],
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'IdentityValue', 'variable_name' => ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, 'interface' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [PropertyGenerator::FLAG_PROTECTED],
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'Checksum', 'variable_name' => 'checksum', 'interface' => true]
         );
         $this->createProperty(
             null,
             'string',
-            [PropertyGenerator::FLAG_PROTECTED],
+            [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'interface' => true]
         );
+
         $content = $this->file->generate();
 
+        // Replace empty body with semicolon
         $content = preg_replace('/\s+{\s+}+/', ";", $content);
 
-        return $content;
+        return $this->removeBackSlashFromBuiltinReturnTypes($content);
     }
 
     /**
+     * Get the interface name from the replication operation.
+     *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->operation->getInterfaceName();
     }

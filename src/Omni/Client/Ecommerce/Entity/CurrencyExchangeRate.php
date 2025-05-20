@@ -27,13 +27,36 @@ class CurrencyExchangeRate extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::CURRENCY_CODE => 'currency_code',
+	self::STARTING_DATE => 'starting_date',
+	self::EXCHANGE_RATE_AMOUNT => 'exchange_rate_amount',
+	self::ADJUSTMENT_EXCH_RATE_AMOUNT => 'adjustment_exch_rate_amount',
+	self::RELATIONAL_CURRENCY_CODE => 'relational_currency_code',
+	self::RELATIONAL_EXCH_RATE_AMOUNT => 'relational_exch_rate_amount',
+	self::FIX_EXCHANGE_RATE_AMOUNT => 'fix_exchange_rate_amount',
+	self::RELATIONAL_ADJMT_EXCH_RATE_AMT => 'relational_adjmt_exch_rate_amt',
+	self::LSC_POS_EXCHANGE_RATE_AMOUNT => 'lsc_pos_exchange_rate_amount',
+	self::LSC_POS_REL_EXCH_RATE_AMOUNT => 'lsc_pos_rel_exch_rate_amount',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -43,7 +66,7 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value)
+    public function setStartingDate(?string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
@@ -53,7 +76,7 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setExchangeRateAmount(string $value)
+    public function setExchangeRateAmount(?string $value)
     {
         return $this->setData(self::EXCHANGE_RATE_AMOUNT, $value);
     }
@@ -63,7 +86,7 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::ADJUSTMENT_EXCH_RATE_AMOUNT);
     }
 
-    public function setAdjustmentExchRateAmount(string $value)
+    public function setAdjustmentExchRateAmount(?string $value)
     {
         return $this->setData(self::ADJUSTMENT_EXCH_RATE_AMOUNT, $value);
     }
@@ -73,7 +96,7 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::RELATIONAL_CURRENCY_CODE);
     }
 
-    public function setRelationalCurrencyCode(string $value)
+    public function setRelationalCurrencyCode(?string $value)
     {
         return $this->setData(self::RELATIONAL_CURRENCY_CODE, $value);
     }
@@ -83,7 +106,7 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::RELATIONAL_EXCH_RATE_AMOUNT);
     }
 
-    public function setRelationalExchRateAmount(string $value)
+    public function setRelationalExchRateAmount(?string $value)
     {
         return $this->setData(self::RELATIONAL_EXCH_RATE_AMOUNT, $value);
     }
@@ -93,7 +116,7 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::FIX_EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setFixExchangeRateAmount(string $value)
+    public function setFixExchangeRateAmount(?string $value)
     {
         return $this->setData(self::FIX_EXCHANGE_RATE_AMOUNT, $value);
     }
@@ -103,77 +126,77 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->getData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT);
     }
 
-    public function setRelationalAdjmtExchRateAmt(string $value)
+    public function setRelationalAdjmtExchRateAmt(?string $value)
     {
         return $this->setData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT, $value);
     }
 
-    public function getLSCPOSExchangeRateAmount(): ?string
+    public function getLscPosExchangeRateAmount(): ?string
     {
         return $this->getData(self::LSC_POS_EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setLSCPOSExchangeRateAmount(string $value)
+    public function setLscPosExchangeRateAmount(?string $value)
     {
         return $this->setData(self::LSC_POS_EXCHANGE_RATE_AMOUNT, $value);
     }
 
-    public function getLSCPOSRelExchRateAmount(): ?string
+    public function getLscPosRelExchRateAmount(): ?string
     {
         return $this->getData(self::LSC_POS_REL_EXCH_RATE_AMOUNT);
     }
 
-    public function setLSCPOSRelExchRateAmount(string $value)
+    public function setLscPosRelExchRateAmount(?string $value)
     {
         return $this->setData(self::LSC_POS_REL_EXCH_RATE_AMOUNT, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

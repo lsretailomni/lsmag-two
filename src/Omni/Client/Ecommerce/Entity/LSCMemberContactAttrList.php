@@ -18,13 +18,27 @@ class LSCMemberContactAttrList extends AbstractModel
     public const DESCRIPTION = 'Description';
     public const VALUE = 'Value';
 
+    public array $dbColumnsMapping = [
+	self::ACCOUNT_NO => 'account_no',
+	self::CONTACT_NO => 'contact_no',
+	self::CODE => 'code',
+	self::TYPE => 'type',
+	self::DESCRIPTION => 'description',
+	self::VALUE => 'value',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getAccountNo(): ?string
     {
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value)
+    public function setAccountNo(?string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -34,7 +48,7 @@ class LSCMemberContactAttrList extends AbstractModel
         return $this->getData(self::CONTACT_NO);
     }
 
-    public function setContactNo(string $value)
+    public function setContactNo(?string $value)
     {
         return $this->setData(self::CONTACT_NO, $value);
     }
@@ -44,7 +58,7 @@ class LSCMemberContactAttrList extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -54,7 +68,7 @@ class LSCMemberContactAttrList extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -64,7 +78,7 @@ class LSCMemberContactAttrList extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -74,7 +88,7 @@ class LSCMemberContactAttrList extends AbstractModel
         return $this->getData(self::VALUE);
     }
 
-    public function setValue(string $value)
+    public function setValue(?string $value)
     {
         return $this->setData(self::VALUE, $value);
     }

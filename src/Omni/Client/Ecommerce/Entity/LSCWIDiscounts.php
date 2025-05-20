@@ -39,13 +39,48 @@ class LSCWIDiscounts extends AbstractModel
     public const VARIANT_CODE = 'Variant Code';
     public const SYSTEMID = '$systemId';
 
+    public array $dbColumnsMapping = [
+	self::CUSTOMER_DISC_GROUP => 'customer_disc_group',
+	self::DESCRIPTION => 'description',
+	self::DISCOUNT => 'discount',
+	self::DISCOUNT_AMOUNT_VALUE => 'discount_amount_value',
+	self::DISCOUNT_TYPE => 'discount_type',
+	self::EXCLUDE => 'exclude',
+	self::FROM_DATE => 'from_date',
+	self::ITEM_NO => 'item_no',
+	self::LAST_MODIFY_DATE => 'last_modify_date',
+	self::LOYALTY_SCHEME_CODE => 'loyalty_scheme_code',
+	self::MINIMUM_QUANTITY => 'minimum_quantity',
+	self::OFFER_NO => 'offer_no',
+	self::POPUP_LINE_1 => 'popup_line_1',
+	self::POPUP_LINE_2 => 'popup_line_2',
+	self::POPUP_LINE_3 => 'popup_line_3',
+	self::PRIORITY_NO => 'priority_no',
+	self::STORE_NO => 'store_no',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::TO_DATE => 'to_date',
+	self::TYPE => 'type',
+	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
+	self::VALIDATION_PERIOD_ID => 'validation_period_id',
+	self::VARIANT_CODE => 'variant_code',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCustomerDiscGroup(): ?string
     {
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value)
+    public function setCustomerDiscGroup(?string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
@@ -55,7 +90,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -65,7 +100,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::DISCOUNT);
     }
 
-    public function setDiscount(string $value)
+    public function setDiscount(?string $value)
     {
         return $this->setData(self::DISCOUNT, $value);
     }
@@ -75,7 +110,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(string $value)
+    public function setDiscountAmountValue(?string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }
@@ -85,7 +120,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(string $value)
+    public function setDiscountType(?string $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
@@ -95,7 +130,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::EXCLUDE);
     }
 
-    public function setExclude(bool $value)
+    public function setExclude(?bool $value)
     {
         return $this->setData(self::EXCLUDE, $value);
     }
@@ -105,7 +140,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::FROM_DATE);
     }
 
-    public function setFromDate(string $value)
+    public function setFromDate(?string $value)
     {
         return $this->setData(self::FROM_DATE, $value);
     }
@@ -115,7 +150,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -125,7 +160,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::LAST_MODIFY_DATE);
     }
 
-    public function setLastModifyDate(string $value)
+    public function setLastModifyDate(?string $value)
     {
         return $this->setData(self::LAST_MODIFY_DATE, $value);
     }
@@ -135,7 +170,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::LOYALTY_SCHEME_CODE);
     }
 
-    public function setLoyaltySchemeCode(string $value)
+    public function setLoyaltySchemeCode(?string $value)
     {
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
@@ -145,7 +180,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(string $value)
+    public function setMinimumQuantity(?string $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
@@ -155,7 +190,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value)
+    public function setOfferNo(?string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -165,7 +200,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::POPUP_LINE_1);
     }
 
-    public function setPopUpLine1(string $value)
+    public function setPopUpLine1(?string $value)
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
@@ -175,7 +210,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::POPUP_LINE_2);
     }
 
-    public function setPopUpLine2(string $value)
+    public function setPopUpLine2(?string $value)
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
@@ -185,7 +220,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::POPUP_LINE_3);
     }
 
-    public function setPopUpLine3(string $value)
+    public function setPopUpLine3(?string $value)
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
@@ -195,7 +230,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::PRIORITY_NO);
     }
 
-    public function setPriorityNo(int $value)
+    public function setPriorityNo(?int $value)
     {
         return $this->setData(self::PRIORITY_NO, $value);
     }
@@ -205,47 +240,47 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
@@ -255,7 +290,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::TO_DATE);
     }
 
-    public function setToDate(string $value)
+    public function setToDate(?string $value)
     {
         return $this->setData(self::TO_DATE, $value);
     }
@@ -265,7 +300,7 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -275,17 +310,17 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value)
+    public function setUnitOfMeasureCode(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getValidationPeriodID(): ?string
+    public function getValidationPeriodId(): ?string
     {
         return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value)
+    public function setValidationPeriodId(?string $value)
     {
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
@@ -295,17 +330,17 @@ class LSCWIDiscounts extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

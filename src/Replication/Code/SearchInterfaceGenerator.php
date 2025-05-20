@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -8,21 +9,20 @@ use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Api\SearchResultsInterface;
 use Laminas\Code\Generator\ParameterGenerator;
+use Laminas\Code\Generator\InterfaceGenerator;
 
 /**
- * Class SearchInterfaceGenerator
- * @package Ls\Replication\Code
+ * Generates an API Data Search Interface extending Magento's SearchResultsInterface.
  */
 class SearchInterfaceGenerator extends AbstractGenerator
 {
-    /** @var string */
+    /** @var string $namespace Namespace for generated API Data interfaces */
     public static $namespace = "Ls\\Replication\\Api\\Data";
 
-    /** @var ReplicationOperation */
-    protected $operation;
+    /** @var ReplicationOperation $operation Holds the replication operation details */
+    public $operation;
 
     /**
-     * SearchInterfaceGenerator constructor.
      * @param ReplicationOperation $operation
      * @throws Exception
      */
@@ -35,31 +35,36 @@ class SearchInterfaceGenerator extends AbstractGenerator
     }
 
     /**
-     * @return string
+     * Generates the PHP interface code as string.
+     *
+     * @return string Generated interface PHP code
      */
-    public function generate()
+    public function generate(): string
     {
         $this->class->setNamespaceName(self::$namespace);
         $this->class->setName($this->operation->getSearchInterfaceName());
         $this->class->addUse(SearchResultsInterface::class);
+
+        // Add getItems method without parameters
         $this->class->addMethod('getItems');
-        $this->class->addMethod('setItems', [ParameterGenerator::fromArray(['name' => 'items', 'type' => 'array'])]);
-        $content        = $this->file->generate();
-        $interface_name = "interface {$this->operation->getSearchInterfaceName()}";
-        $not_abstract   = <<<CODE
 
-    {
-    }
-
-CODE;
-
-        $content = preg_replace('/\s+{\s+}+/', ";", $content);
-        $content = str_replace(
-            $interface_name,
-            "$interface_name extends SearchResultsInterface",
-            $content
+        // Add setItems method with array parameter named 'items'
+        $this->class->addMethod(
+            'setItems',
+            [ParameterGenerator::fromArray(['name' => 'items', 'type' => 'array'])]
         );
 
-        return $content;
+        $content = $this->file->generate();
+
+        $interfaceName = "interface {$this->operation->getSearchInterfaceName()}";
+        // Remove empty method bodies and replace with semicolon (interface method declarations)
+        $content = preg_replace('/\s+{\s+}+/', ";", $content);
+
+        // Add "extends SearchResultsInterface" to interface declaration
+        return str_replace(
+            $interfaceName,
+            "$interfaceName extends SearchResultsInterface",
+            $content
+        );
     }
 }

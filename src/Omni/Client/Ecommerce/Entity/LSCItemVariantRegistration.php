@@ -35,13 +35,44 @@ class LSCItemVariantRegistration extends AbstractModel
     public const VARIANT_WEIGHT = 'Variant Weight';
     public const SYSTEMID = '$systemId';
 
+    public array $dbColumnsMapping = [
+	self::BARCODE => 'barcode',
+	self::DIMENSION_1_WEIGHT => 'dimension_1_weight',
+	self::DIMENSION_2_WEIGHT => 'dimension_2_weight',
+	self::DIMENSION_3_WEIGHT => 'dimension_3_weight',
+	self::DIMENSION_4_WEIGHT => 'dimension_4_weight',
+	self::DIMENSION_5_WEIGHT => 'dimension_5_weight',
+	self::DIMENSION_6_WEIGHT => 'dimension_6_weight',
+	self::FRAMEWORK_CODE => 'framework_code',
+	self::ITEM_NO => 'item_no',
+	self::LOGICAL_ORDER => 'logical_order',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::VARIANT => 'variant',
+	self::VARIANT_DIMENSION_1 => 'variant_dimension_1',
+	self::VARIANT_DIMENSION_2 => 'variant_dimension_2',
+	self::VARIANT_DIMENSION_3 => 'variant_dimension_3',
+	self::VARIANT_DIMENSION_4 => 'variant_dimension_4',
+	self::VARIANT_DIMENSION_5 => 'variant_dimension_5',
+	self::VARIANT_DIMENSION_6 => 'variant_dimension_6',
+	self::VARIANT_WEIGHT => 'variant_weight',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getBarcode(): ?string
     {
         return $this->getData(self::BARCODE);
     }
 
-    public function setBarcode(string $value)
+    public function setBarcode(?string $value)
     {
         return $this->setData(self::BARCODE, $value);
     }
@@ -51,7 +82,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::DIMENSION_1_WEIGHT);
     }
 
-    public function setDimension1Weight(string $value)
+    public function setDimension1Weight(?string $value)
     {
         return $this->setData(self::DIMENSION_1_WEIGHT, $value);
     }
@@ -61,7 +92,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::DIMENSION_2_WEIGHT);
     }
 
-    public function setDimension2Weight(string $value)
+    public function setDimension2Weight(?string $value)
     {
         return $this->setData(self::DIMENSION_2_WEIGHT, $value);
     }
@@ -71,7 +102,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::DIMENSION_3_WEIGHT);
     }
 
-    public function setDimension3Weight(string $value)
+    public function setDimension3Weight(?string $value)
     {
         return $this->setData(self::DIMENSION_3_WEIGHT, $value);
     }
@@ -81,7 +112,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::DIMENSION_4_WEIGHT);
     }
 
-    public function setDimension4Weight(string $value)
+    public function setDimension4Weight(?string $value)
     {
         return $this->setData(self::DIMENSION_4_WEIGHT, $value);
     }
@@ -91,7 +122,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::DIMENSION_5_WEIGHT);
     }
 
-    public function setDimension5Weight(string $value)
+    public function setDimension5Weight(?string $value)
     {
         return $this->setData(self::DIMENSION_5_WEIGHT, $value);
     }
@@ -101,7 +132,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::DIMENSION_6_WEIGHT);
     }
 
-    public function setDimension6Weight(string $value)
+    public function setDimension6Weight(?string $value)
     {
         return $this->setData(self::DIMENSION_6_WEIGHT, $value);
     }
@@ -111,7 +142,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::FRAMEWORK_CODE);
     }
 
-    public function setFrameworkCode(string $value)
+    public function setFrameworkCode(?string $value)
     {
         return $this->setData(self::FRAMEWORK_CODE, $value);
     }
@@ -121,7 +152,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -131,47 +162,47 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::LOGICAL_ORDER);
     }
 
-    public function setLogicalOrder(string $value)
+    public function setLogicalOrder(?string $value)
     {
         return $this->setData(self::LOGICAL_ORDER, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
@@ -181,7 +212,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT);
     }
 
-    public function setVariant(string $value)
+    public function setVariant(?string $value)
     {
         return $this->setData(self::VARIANT, $value);
     }
@@ -191,7 +222,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_1);
     }
 
-    public function setVariantDimension1(string $value)
+    public function setVariantDimension1(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_1, $value);
     }
@@ -201,7 +232,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_2);
     }
 
-    public function setVariantDimension2(string $value)
+    public function setVariantDimension2(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_2, $value);
     }
@@ -211,7 +242,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_3);
     }
 
-    public function setVariantDimension3(string $value)
+    public function setVariantDimension3(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_3, $value);
     }
@@ -221,7 +252,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_4);
     }
 
-    public function setVariantDimension4(string $value)
+    public function setVariantDimension4(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_4, $value);
     }
@@ -231,7 +262,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_5);
     }
 
-    public function setVariantDimension5(string $value)
+    public function setVariantDimension5(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_5, $value);
     }
@@ -241,7 +272,7 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_DIMENSION_6);
     }
 
-    public function setVariantDimension6(string $value)
+    public function setVariantDimension6(?string $value)
     {
         return $this->setData(self::VARIANT_DIMENSION_6, $value);
     }
@@ -251,17 +282,17 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->getData(self::VARIANT_WEIGHT);
     }
 
-    public function setVariantWeight(string $value)
+    public function setVariantWeight(?string $value)
     {
         return $this->setData(self::VARIANT_WEIGHT, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

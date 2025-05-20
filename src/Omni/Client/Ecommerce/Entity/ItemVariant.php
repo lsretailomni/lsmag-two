@@ -28,13 +28,37 @@ class ItemVariant extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::ITEM_NO => 'item_no',
+	self::DESCRIPTION => 'description',
+	self::DESCRIPTION_2 => 'description_2',
+	self::ITEM_ID => 'item_id',
+	self::BLOCKED => 'blocked',
+	self::SALES_BLOCKED => 'sales_blocked',
+	self::PURCHASING_BLOCKED => 'purchasing_blocked',
+	self::SERVICE_BLOCKED => 'service_blocked',
+	self::PRODUCTION_BLOCKED => 'production_blocked',
+	self::LSC_COMMON_ITEM_NO => 'lsc_common_item_no',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -44,7 +68,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -54,7 +78,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -64,7 +88,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::DESCRIPTION_2);
     }
 
-    public function setDescription2(string $value)
+    public function setDescription2(?string $value)
     {
         return $this->setData(self::DESCRIPTION_2, $value);
     }
@@ -74,7 +98,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::ITEM_ID);
     }
 
-    public function setItemId(string $value)
+    public function setItemId(?string $value)
     {
         return $this->setData(self::ITEM_ID, $value);
     }
@@ -84,7 +108,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value)
+    public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -94,7 +118,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::SALES_BLOCKED);
     }
 
-    public function setSalesBlocked(bool $value)
+    public function setSalesBlocked(?bool $value)
     {
         return $this->setData(self::SALES_BLOCKED, $value);
     }
@@ -104,7 +128,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::PURCHASING_BLOCKED);
     }
 
-    public function setPurchasingBlocked(bool $value)
+    public function setPurchasingBlocked(?bool $value)
     {
         return $this->setData(self::PURCHASING_BLOCKED, $value);
     }
@@ -114,7 +138,7 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::SERVICE_BLOCKED);
     }
 
-    public function setServiceBlocked(bool $value)
+    public function setServiceBlocked(?bool $value)
     {
         return $this->setData(self::SERVICE_BLOCKED, $value);
     }
@@ -124,67 +148,67 @@ class ItemVariant extends AbstractModel
         return $this->getData(self::PRODUCTION_BLOCKED);
     }
 
-    public function setProductionBlocked(string $value)
+    public function setProductionBlocked(?string $value)
     {
         return $this->setData(self::PRODUCTION_BLOCKED, $value);
     }
 
-    public function getLSCCommonItemNo(): ?string
+    public function getLscCommonItemNo(): ?string
     {
         return $this->getData(self::LSC_COMMON_ITEM_NO);
     }
 
-    public function setLSCCommonItemNo(string $value)
+    public function setLscCommonItemNo(?string $value)
     {
         return $this->setData(self::LSC_COMMON_ITEM_NO, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

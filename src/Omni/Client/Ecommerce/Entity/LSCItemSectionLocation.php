@@ -16,13 +16,25 @@ class LSCItemSectionLocation extends AbstractModel
     public const SECTION_CODE = 'Section Code';
     public const SHELF_CODE = 'Shelf Code';
 
+    public array $dbColumnsMapping = [
+	self::ITEM_NO => 'item_no',
+	self::STORE_NO => 'store_no',
+	self::SECTION_CODE => 'section_code',
+	self::SHELF_CODE => 'shelf_code',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getItemNo(): ?string
     {
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
@@ -32,7 +44,7 @@ class LSCItemSectionLocation extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -42,7 +54,7 @@ class LSCItemSectionLocation extends AbstractModel
         return $this->getData(self::SECTION_CODE);
     }
 
-    public function setSectionCode(string $value)
+    public function setSectionCode(?string $value)
     {
         return $this->setData(self::SECTION_CODE, $value);
     }
@@ -52,7 +64,7 @@ class LSCItemSectionLocation extends AbstractModel
         return $this->getData(self::SHELF_CODE);
     }
 
-    public function setShelfCode(string $value)
+    public function setShelfCode(?string $value)
     {
         return $this->setData(self::SHELF_CODE, $value);
     }

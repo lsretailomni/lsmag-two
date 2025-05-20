@@ -28,13 +28,37 @@ class LSCSTAFFStoreLink extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::STAFF_ID => 'staff_id',
+	self::STORE_NO => 'store_no',
+	self::PERMISSION_GRP => 'permission_grp',
+	self::PERMISSION_GROUP => 'permission_group',
+	self::POS_INTERFACE_PROFILE => 'pos_interface_profile',
+	self::POS_STYLE_PROFILE => 'pos_style_profile',
+	self::POS_MENU_PROFILE => 'pos_menu_profile',
+	self::DELIVERY_DRIVER => 'delivery_driver',
+	self::FLOAT => 'float',
+	self::ON_CALL => 'on_call',
+	self::DEFAULT_SALES_TYPE => 'default_sales_type',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
 
-    public function getStaffID(): ?string
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
+
+    public function getStaffId(): ?string
     {
         return $this->getData(self::STAFF_ID);
     }
 
-    public function setStaffID(string $value)
+    public function setStaffId(?string $value)
     {
         return $this->setData(self::STAFF_ID, $value);
     }
@@ -44,7 +68,7 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -54,7 +78,7 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::PERMISSION_GRP);
     }
 
-    public function setPermissionGrp(string $value)
+    public function setPermissionGrp(?string $value)
     {
         return $this->setData(self::PERMISSION_GRP, $value);
     }
@@ -64,37 +88,37 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::PERMISSION_GROUP);
     }
 
-    public function setPermissionGroup(string $value)
+    public function setPermissionGroup(?string $value)
     {
         return $this->setData(self::PERMISSION_GROUP, $value);
     }
 
-    public function getPOSInterfaceProfile(): ?string
+    public function getPosInterfaceProfile(): ?string
     {
         return $this->getData(self::POS_INTERFACE_PROFILE);
     }
 
-    public function setPOSInterfaceProfile(string $value)
+    public function setPosInterfaceProfile(?string $value)
     {
         return $this->setData(self::POS_INTERFACE_PROFILE, $value);
     }
 
-    public function getPOSStyleProfile(): ?string
+    public function getPosStyleProfile(): ?string
     {
         return $this->getData(self::POS_STYLE_PROFILE);
     }
 
-    public function setPOSStyleProfile(string $value)
+    public function setPosStyleProfile(?string $value)
     {
         return $this->setData(self::POS_STYLE_PROFILE, $value);
     }
 
-    public function getPOSMenuProfile(): ?string
+    public function getPosMenuProfile(): ?string
     {
         return $this->getData(self::POS_MENU_PROFILE);
     }
 
-    public function setPOSMenuProfile(string $value)
+    public function setPosMenuProfile(?string $value)
     {
         return $this->setData(self::POS_MENU_PROFILE, $value);
     }
@@ -104,7 +128,7 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::DELIVERY_DRIVER);
     }
 
-    public function setDeliveryDriver(bool $value)
+    public function setDeliveryDriver(?bool $value)
     {
         return $this->setData(self::DELIVERY_DRIVER, $value);
     }
@@ -114,7 +138,7 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::FLOAT);
     }
 
-    public function setFloat(string $value)
+    public function setFloat(?string $value)
     {
         return $this->setData(self::FLOAT, $value);
     }
@@ -124,7 +148,7 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::ON_CALL);
     }
 
-    public function setOnCall(bool $value)
+    public function setOnCall(?bool $value)
     {
         return $this->setData(self::ON_CALL, $value);
     }
@@ -134,57 +158,57 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->getData(self::DEFAULT_SALES_TYPE);
     }
 
-    public function setDefaultSalesType(string $value)
+    public function setDefaultSalesType(?string $value)
     {
         return $this->setData(self::DEFAULT_SALES_TYPE, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

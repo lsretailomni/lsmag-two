@@ -61,13 +61,70 @@ class PriceListLine extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::PRICE_LIST_CODE => 'price_list_code',
+	self::LINE_NO => 'line_no',
+	self::SOURCE_TYPE => 'source_type',
+	self::SOURCE_NO => 'source_no',
+	self::PARENT_SOURCE_NO => 'parent_source_no',
+	self::SOURCE_ID => 'source_id',
+	self::ASSET_TYPE => 'asset_type',
+	self::ASSET_NO => 'asset_no',
+	self::VARIANT_CODE => 'variant_code',
+	self::CURRENCY_CODE => 'currency_code',
+	self::WORK_TYPE_CODE => 'work_type_code',
+	self::STARTING_DATE => 'starting_date',
+	self::ENDING_DATE => 'ending_date',
+	self::MINIMUM_QUANTITY => 'minimum_quantity',
+	self::UNIT_OF_MEASURE_CODE => 'unit_of_measure_code',
+	self::AMOUNT_TYPE => 'amount_type',
+	self::UNIT_PRICE => 'unit_price',
+	self::COST_FACTOR => 'cost_factor',
+	self::UNIT_COST => 'unit_cost',
+	self::LINE_DISCOUNT => 'line_discount',
+	self::ALLOW_LINE_DISC => 'allow_line_disc',
+	self::ALLOW_INVOICE_DISC => 'allow_invoice_disc',
+	self::PRICE_INCLUDES_VAT => 'price_includes_vat',
+	self::VAT_BUS_POSTING_GR_PRICE => 'vat_bus_posting_gr_price',
+	self::VAT_PROD_POSTING_GROUP => 'vat_prod_posting_group',
+	self::ASSET_ID => 'asset_id',
+	self::LINE_AMOUNT => 'line_amount',
+	self::PRICE_TYPE => 'price_type',
+	self::DESCRIPTION => 'description',
+	self::STATUS => 'status',
+	self::DIRECT_UNIT_COST => 'direct_unit_cost',
+	self::SOURCE_GROUP => 'source_group',
+	self::PRODUCT_NO => 'product_no',
+	self::ASSIGNTO_NO => 'assignto_no',
+	self::ASSIGNTO_PARENT_NO => 'assignto_parent_no',
+	self::VARIANT_CODE_LOOKUP => 'variant_code_lookup',
+	self::UNIT_OF_MEASURE_CODE_LOOKUP => 'unit_of_measure_code_lookup',
+	self::LSC_MARKUP => 'lsc_markup',
+	self::LSC_PROFIT => 'lsc_profit',
+	self::LSC_PROFIT_LCY => 'lsc_profit_lcy',
+	self::LSC_UNIT_PRICE_INCLUDING_VAT => 'lsc_unit_price_including_vat',
+	self::LSC_WHOLESALE_PRICE => 'lsc_wholesale_price',
+	self::LSC_WHOLESALE_DISCOUNT => 'lsc_wholesale_discount',
+	self::LSC_COMP_PRICE_INCL_VAT => 'lsc_comp_price_incl_vat',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getPriceListCode(): ?string
     {
         return $this->getData(self::PRICE_LIST_CODE);
     }
 
-    public function setPriceListCode(string $value)
+    public function setPriceListCode(?string $value)
     {
         return $this->setData(self::PRICE_LIST_CODE, $value);
     }
@@ -77,7 +134,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -87,7 +144,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::SOURCE_TYPE);
     }
 
-    public function setSourceType(string $value)
+    public function setSourceType(?string $value)
     {
         return $this->setData(self::SOURCE_TYPE, $value);
     }
@@ -97,7 +154,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::SOURCE_NO);
     }
 
-    public function setSourceNo(string $value)
+    public function setSourceNo(?string $value)
     {
         return $this->setData(self::SOURCE_NO, $value);
     }
@@ -107,17 +164,17 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::PARENT_SOURCE_NO);
     }
 
-    public function setParentSourceNo(string $value)
+    public function setParentSourceNo(?string $value)
     {
         return $this->setData(self::PARENT_SOURCE_NO, $value);
     }
 
-    public function getSourceID(): ?string
+    public function getSourceId(): ?string
     {
         return $this->getData(self::SOURCE_ID);
     }
 
-    public function setSourceID(string $value)
+    public function setSourceId(?string $value)
     {
         return $this->setData(self::SOURCE_ID, $value);
     }
@@ -127,7 +184,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ASSET_TYPE);
     }
 
-    public function setAssetType(string $value)
+    public function setAssetType(?string $value)
     {
         return $this->setData(self::ASSET_TYPE, $value);
     }
@@ -137,7 +194,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ASSET_NO);
     }
 
-    public function setAssetNo(string $value)
+    public function setAssetNo(?string $value)
     {
         return $this->setData(self::ASSET_NO, $value);
     }
@@ -147,7 +204,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -157,7 +214,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -167,7 +224,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::WORK_TYPE_CODE);
     }
 
-    public function setWorkTypeCode(string $value)
+    public function setWorkTypeCode(?string $value)
     {
         return $this->setData(self::WORK_TYPE_CODE, $value);
     }
@@ -177,7 +234,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::STARTING_DATE);
     }
 
-    public function setStartingDate(string $value)
+    public function setStartingDate(?string $value)
     {
         return $this->setData(self::STARTING_DATE, $value);
     }
@@ -187,7 +244,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ENDING_DATE);
     }
 
-    public function setEndingDate(string $value)
+    public function setEndingDate(?string $value)
     {
         return $this->setData(self::ENDING_DATE, $value);
     }
@@ -197,7 +254,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(string $value)
+    public function setMinimumQuantity(?string $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
@@ -207,7 +264,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
 
-    public function setUnitOfMeasureCode(string $value)
+    public function setUnitOfMeasureCode(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
@@ -217,7 +274,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::AMOUNT_TYPE);
     }
 
-    public function setAmountType(string $value)
+    public function setAmountType(?string $value)
     {
         return $this->setData(self::AMOUNT_TYPE, $value);
     }
@@ -227,7 +284,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value)
+    public function setUnitPrice(?string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -237,7 +294,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::COST_FACTOR);
     }
 
-    public function setCostFactor(string $value)
+    public function setCostFactor(?string $value)
     {
         return $this->setData(self::COST_FACTOR, $value);
     }
@@ -247,7 +304,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::UNIT_COST);
     }
 
-    public function setUnitCost(string $value)
+    public function setUnitCost(?string $value)
     {
         return $this->setData(self::UNIT_COST, $value);
     }
@@ -257,7 +314,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::LINE_DISCOUNT);
     }
 
-    public function setLineDiscount(string $value)
+    public function setLineDiscount(?string $value)
     {
         return $this->setData(self::LINE_DISCOUNT, $value);
     }
@@ -267,7 +324,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ALLOW_LINE_DISC);
     }
 
-    public function setAllowLineDisc(bool $value)
+    public function setAllowLineDisc(?bool $value)
     {
         return $this->setData(self::ALLOW_LINE_DISC, $value);
     }
@@ -277,47 +334,47 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ALLOW_INVOICE_DISC);
     }
 
-    public function setAllowInvoiceDisc(bool $value)
+    public function setAllowInvoiceDisc(?bool $value)
     {
         return $this->setData(self::ALLOW_INVOICE_DISC, $value);
     }
 
-    public function getPriceIncludesVAT(): ?bool
+    public function getPriceIncludesVat(): ?bool
     {
         return $this->getData(self::PRICE_INCLUDES_VAT);
     }
 
-    public function setPriceIncludesVAT(bool $value)
+    public function setPriceIncludesVat(?bool $value)
     {
         return $this->setData(self::PRICE_INCLUDES_VAT, $value);
     }
 
-    public function getVATBusPostingGrPrice(): ?string
+    public function getVatBusPostingGrPrice(): ?string
     {
         return $this->getData(self::VAT_BUS_POSTING_GR_PRICE);
     }
 
-    public function setVATBusPostingGrPrice(string $value)
+    public function setVatBusPostingGrPrice(?string $value)
     {
         return $this->setData(self::VAT_BUS_POSTING_GR_PRICE, $value);
     }
 
-    public function getVATProdPostingGroup(): ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value)
+    public function setVatProdPostingGroup(?string $value)
     {
         return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
 
-    public function getAssetID(): ?string
+    public function getAssetId(): ?string
     {
         return $this->getData(self::ASSET_ID);
     }
 
-    public function setAssetID(string $value)
+    public function setAssetId(?string $value)
     {
         return $this->setData(self::ASSET_ID, $value);
     }
@@ -327,7 +384,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::LINE_AMOUNT);
     }
 
-    public function setLineAmount(string $value)
+    public function setLineAmount(?string $value)
     {
         return $this->setData(self::LINE_AMOUNT, $value);
     }
@@ -337,7 +394,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::PRICE_TYPE);
     }
 
-    public function setPriceType(string $value)
+    public function setPriceType(?string $value)
     {
         return $this->setData(self::PRICE_TYPE, $value);
     }
@@ -347,7 +404,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -357,7 +414,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -367,7 +424,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::DIRECT_UNIT_COST);
     }
 
-    public function setDirectUnitCost(string $value)
+    public function setDirectUnitCost(?string $value)
     {
         return $this->setData(self::DIRECT_UNIT_COST, $value);
     }
@@ -377,7 +434,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::SOURCE_GROUP);
     }
 
-    public function setSourceGroup(string $value)
+    public function setSourceGroup(?string $value)
     {
         return $this->setData(self::SOURCE_GROUP, $value);
     }
@@ -387,7 +444,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::PRODUCT_NO);
     }
 
-    public function setProductNo(string $value)
+    public function setProductNo(?string $value)
     {
         return $this->setData(self::PRODUCT_NO, $value);
     }
@@ -397,7 +454,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ASSIGNTO_NO);
     }
 
-    public function setAssignToNo(string $value)
+    public function setAssignToNo(?string $value)
     {
         return $this->setData(self::ASSIGNTO_NO, $value);
     }
@@ -407,7 +464,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::ASSIGNTO_PARENT_NO);
     }
 
-    public function setAssignToParentNo(string $value)
+    public function setAssignToParentNo(?string $value)
     {
         return $this->setData(self::ASSIGNTO_PARENT_NO, $value);
     }
@@ -417,7 +474,7 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::VARIANT_CODE_LOOKUP);
     }
 
-    public function setVariantCodeLookup(string $value)
+    public function setVariantCodeLookup(?string $value)
     {
         return $this->setData(self::VARIANT_CODE_LOOKUP, $value);
     }
@@ -427,127 +484,127 @@ class PriceListLine extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE_CODE_LOOKUP);
     }
 
-    public function setUnitOfMeasureCodeLookup(string $value)
+    public function setUnitOfMeasureCodeLookup(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE_CODE_LOOKUP, $value);
     }
 
-    public function getLSCMarkup(): ?string
+    public function getLscMarkup(): ?string
     {
         return $this->getData(self::LSC_MARKUP);
     }
 
-    public function setLSCMarkup(string $value)
+    public function setLscMarkup(?string $value)
     {
         return $this->setData(self::LSC_MARKUP, $value);
     }
 
-    public function getLSCProfit(): ?string
+    public function getLscProfit(): ?string
     {
         return $this->getData(self::LSC_PROFIT);
     }
 
-    public function setLSCProfit(string $value)
+    public function setLscProfit(?string $value)
     {
         return $this->setData(self::LSC_PROFIT, $value);
     }
 
-    public function getLSCProfitLCY(): ?string
+    public function getLscProfitLcy(): ?string
     {
         return $this->getData(self::LSC_PROFIT_LCY);
     }
 
-    public function setLSCProfitLCY(string $value)
+    public function setLscProfitLcy(?string $value)
     {
         return $this->setData(self::LSC_PROFIT_LCY, $value);
     }
 
-    public function getLSCUnitPriceIncludingVAT(): ?string
+    public function getLscUnitPriceIncludingVat(): ?string
     {
         return $this->getData(self::LSC_UNIT_PRICE_INCLUDING_VAT);
     }
 
-    public function setLSCUnitPriceIncludingVAT(string $value)
+    public function setLscUnitPriceIncludingVat(?string $value)
     {
         return $this->setData(self::LSC_UNIT_PRICE_INCLUDING_VAT, $value);
     }
 
-    public function getLSCWholesalePrice(): ?string
+    public function getLscWholesalePrice(): ?string
     {
         return $this->getData(self::LSC_WHOLESALE_PRICE);
     }
 
-    public function setLSCWholesalePrice(string $value)
+    public function setLscWholesalePrice(?string $value)
     {
         return $this->setData(self::LSC_WHOLESALE_PRICE, $value);
     }
 
-    public function getLSCWholesaleDiscount(): ?string
+    public function getLscWholesaleDiscount(): ?string
     {
         return $this->getData(self::LSC_WHOLESALE_DISCOUNT);
     }
 
-    public function setLSCWholesaleDiscount(string $value)
+    public function setLscWholesaleDiscount(?string $value)
     {
         return $this->setData(self::LSC_WHOLESALE_DISCOUNT, $value);
     }
 
-    public function getLSCCompPriceInclVAT(): ?string
+    public function getLscCompPriceInclVat(): ?string
     {
         return $this->getData(self::LSC_COMP_PRICE_INCL_VAT);
     }
 
-    public function setLSCCompPriceInclVAT(string $value)
+    public function setLscCompPriceInclVat(?string $value)
     {
         return $this->setData(self::LSC_COMP_PRICE_INCL_VAT, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

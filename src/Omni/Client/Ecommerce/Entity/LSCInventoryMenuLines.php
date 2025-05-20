@@ -37,13 +37,46 @@ class LSCInventoryMenuLines extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::DEVICE_TYPE => 'device_type',
+	self::MENU_CODE => 'menu_code',
+	self::STORE_NO => 'store_no',
+	self::LINE_NO => 'line_no',
+	self::DESCRIPTION => 'description',
+	self::TEXT => 'text',
+	self::LINE_TYPE => 'line_type',
+	self::CODE => 'code',
+	self::BITMAP => 'bitmap',
+	self::STATUS => 'status',
+	self::CODE_TYPE => 'code_type',
+	self::LOCATION_CODE => 'location_code',
+	self::VENDOR_NO => 'vendor_no',
+	self::CUSTOMER_NO => 'customer_no',
+	self::CARD_VIEW_CODE => 'card_view_code',
+	self::ITEM_NO => 'item_no',
+	self::WORKSHEETSEQNO => 'worksheetseqno',
+	self::WORKSHEET_TYPE => 'worksheet_type',
+	self::WORKSHEET_DESCRIPTION => 'worksheet_description',
+	self::WEB_CLIENT_URL => 'web_client_url',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getDeviceType(): ?string
     {
         return $this->getData(self::DEVICE_TYPE);
     }
 
-    public function setDeviceType(string $value)
+    public function setDeviceType(?string $value)
     {
         return $this->setData(self::DEVICE_TYPE, $value);
     }
@@ -53,7 +86,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::MENU_CODE);
     }
 
-    public function setMenuCode(string $value)
+    public function setMenuCode(?string $value)
     {
         return $this->setData(self::MENU_CODE, $value);
     }
@@ -63,7 +96,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -73,7 +106,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -83,7 +116,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -93,7 +126,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::TEXT);
     }
 
-    public function setText(string $value)
+    public function setText(?string $value)
     {
         return $this->setData(self::TEXT, $value);
     }
@@ -103,7 +136,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::LINE_TYPE);
     }
 
-    public function setLineType(string $value)
+    public function setLineType(?string $value)
     {
         return $this->setData(self::LINE_TYPE, $value);
     }
@@ -113,7 +146,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -123,7 +156,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::BITMAP);
     }
 
-    public function setBitmap(string $value)
+    public function setBitmap(?string $value)
     {
         return $this->setData(self::BITMAP, $value);
     }
@@ -133,7 +166,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -143,7 +176,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::CODE_TYPE);
     }
 
-    public function setCodeType(string $value)
+    public function setCodeType(?string $value)
     {
         return $this->setData(self::CODE_TYPE, $value);
     }
@@ -153,7 +186,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::LOCATION_CODE);
     }
 
-    public function setLocationCode(string $value)
+    public function setLocationCode(?string $value)
     {
         return $this->setData(self::LOCATION_CODE, $value);
     }
@@ -163,7 +196,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value)
+    public function setVendorNo(?string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -173,7 +206,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::CUSTOMER_NO);
     }
 
-    public function setCustomerNo(string $value)
+    public function setCustomerNo(?string $value)
     {
         return $this->setData(self::CUSTOMER_NO, $value);
     }
@@ -183,7 +216,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::CARD_VIEW_CODE);
     }
 
-    public function setCardViewCode(string $value)
+    public function setCardViewCode(?string $value)
     {
         return $this->setData(self::CARD_VIEW_CODE, $value);
     }
@@ -193,17 +226,17 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::ITEM_NO);
     }
 
-    public function setItemNo(string $value)
+    public function setItemNo(?string $value)
     {
         return $this->setData(self::ITEM_NO, $value);
     }
 
-    public function getWorksheetSeqNo(): ?int
+    public function getWorksheetseqno(): ?int
     {
         return $this->getData(self::WORKSHEETSEQNO);
     }
 
-    public function setWorksheetSeqNo(int $value)
+    public function setWorksheetseqno(?int $value)
     {
         return $this->setData(self::WORKSHEETSEQNO, $value);
     }
@@ -213,7 +246,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::WORKSHEET_TYPE);
     }
 
-    public function setWorksheetType(string $value)
+    public function setWorksheetType(?string $value)
     {
         return $this->setData(self::WORKSHEET_TYPE, $value);
     }
@@ -223,7 +256,7 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::WORKSHEET_DESCRIPTION);
     }
 
-    public function setWorksheetDescription(string $value)
+    public function setWorksheetDescription(?string $value)
     {
         return $this->setData(self::WORKSHEET_DESCRIPTION, $value);
     }
@@ -233,57 +266,57 @@ class LSCInventoryMenuLines extends AbstractModel
         return $this->getData(self::WEB_CLIENT_URL);
     }
 
-    public function setWebClientUrl(string $value)
+    public function setWebClientUrl(?string $value)
     {
         return $this->setData(self::WEB_CLIENT_URL, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

@@ -448,6 +448,26 @@ class BaseODataRequest
         \$this->lastKey = (string)(\$data['lastKey'] ?? '');
         \$this->lastEntryNo = (int)(\$data['lastEntryNo'] ?? 0);
     }
+
+    public function getBatchSize(): int
+    {
+        return \$this->batchSize;
+    }
+
+    public function getFullRepl(): bool
+    {
+        return \$this->fullRepl;
+    }
+
+    public function getLastKey(): string
+    {
+        return \$this->lastKey;
+    }
+
+    public function getLastEntryNo(): int
+    {
+        return \$this->lastEntryNo;
+    }
 }
 PHP;
         $odataRequestBaseClassFileName = AbstractGenerator::path($entityDir, "BaseODataRequest.php");
@@ -489,6 +509,31 @@ class BaseODataResponse
         \$this->lastKey = (string)(\$data['lastKey'] ?? '');
         \$this->lastEntryNo = (int)(\$data['lastEntryNo'] ?? 0);
         \$this->endOfTable = (bool)(\$data['endOfTable'] ?? false);
+    }
+
+    public function getStatus(): string
+    {
+        return \$this->status;
+    }
+
+    public function getErrorText(): string
+    {
+        return \$this->errorText;
+    }
+
+    public function getLastKey(): string
+    {
+        return \$this->lastKey;
+    }
+
+    public function getLastEntryNo(): int
+    {
+        return \$this->lastEntryNo;
+    }
+
+    public function getEndOfTable(): bool
+    {
+        return \$this->endOfTable;
     }
 }
 PHP;
@@ -582,6 +627,7 @@ use Magento\Catalog\Model\AbstractModel;
 class $entityClassName extends AbstractModel
 {
 PHP;
+        $mapping = '';
         foreach ($recordFields as $field) {
             $optimizedFieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
             $constName = str_replace(
@@ -598,21 +644,39 @@ PHP;
             } else {
                 $constIndexName = $field['FieldName'];
             }
+            $columnName = strtolower($constName);
+            $mapping .= "\n\tself::{$constName} => '{$columnName}',";
 
             $entityClassCode .= <<<PHP
 
     public const {$constName} = '{$constIndexName}';
 PHP;
         }
+        $entityClassCode .= "\n";
+        $entityClassCode .= <<<PHP
+
+    public array \$dbColumnsMapping = [{$mapping}
+    ];
+PHP;
 
         $entityClassCode .= "\n";
 
+        $entityClassCode .= <<<PHP
+
+    public function getDbColumnsMapping(): array
+    {
+        return \$this->dbColumnsMapping;
+    }
+PHP;
+        $entityClassCode .= "\n";
+
         foreach ($recordFields as $field) {
+            $dataTypeRequired = true;
             if (strtolower($field['FieldName']) == 'id') {
-                continue;
+                $dataTypeRequired = false;
             }
             $fieldNameForMethodName = $this->formatGivenValue($field['FieldName'], ' ');
-            $fieldNameCapitalized = ucwords($fieldNameForMethodName);
+            $fieldNameCapitalized = ucwords(strtolower($fieldNameForMethodName));
             $fieldNameCapitalized = str_replace(' ', '', $fieldNameCapitalized);
             $fieldName = $this->formatGivenValue(ucwords(strtolower($field['FieldName'])));
             $constName = str_replace(' ', '_', strtoupper(preg_replace('/\B([A-Z])/', '_$1', $fieldName)));
@@ -628,15 +692,17 @@ PHP;
                 };
             }
 
+            $returnType = $dataTypeRequired ? ': ?'. $phpType : '';
+            $phpType = $dataTypeRequired ? '?'.$phpType : '';
             $entityClassCode .= <<<PHP
 
 
-    public function get$fieldNameCapitalized(): ?$phpType
+    public function get$fieldNameCapitalized()$returnType
     {
         return \$this->getData(self::{$constName});
     }
 
-    public function set$fieldNameCapitalized($phpType \$value)
+    public function set$fieldNameCapitalized({$phpType} \$value)
     {
         return \$this->setData(self::{$constName}, \$value);
     }
@@ -781,6 +847,11 @@ class $entityClassName
             \$recRef = [];
         }
 
+        \$deletedRows = [];
+        if (isset(\$data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'])) {
+            \$deletedRows = \$data['DataSet']['DataSetDel']['DynDataSet']['DataSetRows'];
+        }
+
         if (isset(\$recRef['RecordFields'])) {
             \$fieldsDefinition = \$recRef['RecordFields'];
         } elseif (isset(\$recRef['DataSetFields'])) {
@@ -812,6 +883,20 @@ class $entityClassName
                     \$entry->setData(\$fields[\$value['FieldIndex']], \$value['FieldValue']);
                 }
                 \$results[] = \$entry;
+            }
+
+            if (!empty(\$deletedRows)) {
+                foreach (\$deletedRows as \$row) {
+                    \$values = \$row['Fields'] ?? [];
+                    \$entry = \$this->createInstance(
+                        \Ls\Omni\Client\Ecommerce\Entity\LSCAttribute::class
+                    );
+                    \$entry->setData('is_deleted', true);
+                    foreach (\$values as \$value) {
+                        \$entry->setData(\$fields[\$value['FieldIndex']], \$value['FieldValue']);
+                    }
+                    \$results[] = \$entry;
+                }
             }
         }
 

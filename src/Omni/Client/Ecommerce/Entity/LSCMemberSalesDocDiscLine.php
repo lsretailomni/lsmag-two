@@ -19,13 +19,28 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
     public const OFFER_NO = 'Offer No.';
     public const OFFER_TYPE = 'Offer Type';
 
+    public array $dbColumnsMapping = [
+	self::DESCRIPTION => 'description',
+	self::DISCOUNT_AMOUNT => 'discount_amount',
+	self::DOCUMENT_ID => 'document_id',
+	self::DOCUMENT_LINE_NO => 'document_line_no',
+	self::LINE_NO => 'line_no',
+	self::OFFER_NO => 'offer_no',
+	self::OFFER_TYPE => 'offer_type',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getDescription(): ?string
     {
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -35,17 +50,17 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value)
+    public function setDiscountAmount(?string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
 
-    public function getDocumentID(): ?string
+    public function getDocumentId(): ?string
     {
         return $this->getData(self::DOCUMENT_ID);
     }
 
-    public function setDocumentID(string $value)
+    public function setDocumentId(?string $value)
     {
         return $this->setData(self::DOCUMENT_ID, $value);
     }
@@ -55,7 +70,7 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->getData(self::DOCUMENT_LINE_NO);
     }
 
-    public function setDocumentLineNo(int $value)
+    public function setDocumentLineNo(?int $value)
     {
         return $this->setData(self::DOCUMENT_LINE_NO, $value);
     }
@@ -65,7 +80,7 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -75,7 +90,7 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value)
+    public function setOfferNo(?string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -85,7 +100,7 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->getData(self::OFFER_TYPE);
     }
 
-    public function setOfferType(string $value)
+    public function setOfferType(?string $value)
     {
         return $this->setData(self::OFFER_TYPE, $value);
     }

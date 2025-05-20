@@ -1,5 +1,6 @@
 <?php
 // @codingStandardsIgnoreFile
+declare(strict_types=1);
 
 namespace Ls\Replication\Code;
 
@@ -7,27 +8,21 @@ use Exception;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-use ReflectionClass;
 use ReflectionException;
 use Laminas\Code\Generator\MethodGenerator;
 
 /**
- * Class ResourceModelGenerator
- * @package Ls\Replication\Code
+ * Generates the resource model class for a replication entity.
  */
 class ResourceModelGenerator extends AbstractGenerator
 {
     /** @var string */
-    public static $namespace = 'Ls\\Replication\\Model\\ResourceModel';
-
-    /** @var ReflectionClass */
-    protected $reflected_entity;
+    public static string $namespace = 'Ls\\Replication\\Model\\ResourceModel';
 
     /** @var ReplicationOperation */
-    protected $operation;
+    public ReplicationOperation $operation;
 
     /**
-     * ResourceModelGenerator constructor.
      * @param ReplicationOperation $operation
      * @throws Exception
      * @throws ReflectionException
@@ -35,32 +30,38 @@ class ResourceModelGenerator extends AbstractGenerator
     public function __construct(ReplicationOperation $operation)
     {
         parent::__construct();
-        $this->operation        = $operation;
-        $this->reflected_entity = new ReflectionClass($this->operation->getMainEntityFqn());
+        $this->operation = $operation;
     }
 
     /**
+     * Generate the resource model class content.
+     *
      * @return string
      */
-    public function generate()
+    public function generate(): string
     {
-        $interface_name    = $this->operation->getInterfaceName();
-        $contructor_method = new MethodGenerator();
-        $contructor_method->setName('_construct');
-        $idx_column = $this->operation->getTableName() . '_id';
-        $contructor_method->setBody("\$this->_init( 'ls_replication_{$this->operation->getTableName()}', '$idx_column' );");
+        $interfaceName = $this->operation->getInterfaceName();
+
+        $constructorMethod = new MethodGenerator();
+        $constructorMethod->setName('_construct');
+
+        $indexColumn = $this->operation->getTableName() . '_id';
+        $constructorMethod->setBody("\$this->_init('ls_replication_{$this->operation->getTableName()}', '$indexColumn');");
+
         $this->class->setNamespaceName(self::$namespace);
         $this->class->addUse(AbstractDb::class);
         $this->class->setName($this->getName());
         $this->class->setExtendedClass(AbstractDb::class);
-        $this->class->addMethodFromGenerator($contructor_method);
+        $this->class->addMethodFromGenerator($constructorMethod);
+
         $content = $this->file->generate();
+
         $content = str_replace(
             'extends Magento\\Framework\\Model\\ResourceModel\\Db\\AbstractDb',
             'extends AbstractDb',
             $content
         );
-        $content = str_replace("implements \\$interface_name", "implements $interface_name", $content);
+        $content = str_replace("implements \\$interfaceName", "implements $interfaceName", $content);
         $content = str_replace(
             ', \\Magento\\Framework\\DataObject\\IdentityInterface',
             ', IdentityInterface',
@@ -71,10 +72,12 @@ class ResourceModelGenerator extends AbstractGenerator
     }
 
     /**
+     * Get the name of the resource model class to generate.
+     *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
-        return $this->operation->getEntityName();
+        return $this->operation->getModelName();
     }
 }

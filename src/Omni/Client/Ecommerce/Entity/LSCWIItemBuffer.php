@@ -62,13 +62,71 @@ class LSCWIItemBuffer extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::NO => 'no',
+	self::DESCRIPTION => 'description',
+	self::SEARCH_DESCRIPTION => 'search_description',
+	self::BASE_UNIT_OF_MEASURE => 'base_unit_of_measure',
+	self::PRICE_UNIT_CONVERSION => 'price_unit_conversion',
+	self::TYPE => 'type',
+	self::ITEM_DISC_GROUP => 'item_disc_group',
+	self::ALLOW_INVOICE_DISC => 'allow_invoice_disc',
+	self::UNIT_PRICE => 'unit_price',
+	self::VENDOR_NO => 'vendor_no',
+	self::VENDOR_ITEM_NO => 'vendor_item_no',
+	self::ALTERNATIVE_ITEM_NO => 'alternative_item_no',
+	self::GROSS_WEIGHT => 'gross_weight',
+	self::NET_WEIGHT => 'net_weight',
+	self::UNITS_PER_PARCEL => 'units_per_parcel',
+	self::UNIT_VOLUME => 'unit_volume',
+	self::TARIFF_NO => 'tariff_no',
+	self::BLOCKED => 'blocked',
+	self::BLOCK_REASON => 'block_reason',
+	self::PRICE_INCLUDES_VAT => 'price_includes_vat',
+	self::COUNTRYREGION_OF_ORIGIN_CODE => 'countryregion_of_origin_code',
+	self::VAT_PROD_POSTING_GROUP => 'vat_prod_posting_group',
+	self::SALES_UNIT_OF_MEASURE => 'sales_unit_of_measure',
+	self::PURCH_UNIT_OF_MEASURE => 'purch_unit_of_measure',
+	self::ITEM_CATEGORY_CODE => 'item_category_code',
+	self::ITEM_TRACKING_CODE => 'item_tracking_code',
+	self::LSC_DIVISION_CODE => 'lsc_division_code',
+	self::LSC_RETAIL_PRODUCT_CODE => 'lsc_retail_product_code',
+	self::LSC_SPECIAL_GROUP_CODES => 'lsc_special_group_codes',
+	self::LSC_VARIANT_FRAMEWORK_CODE => 'lsc_variant_framework_code',
+	self::SEASON_CODE => 'season_code',
+	self::ITEM_HTML => 'item_html',
+	self::BLOCK_SALE_ON_POS => 'block_sale_on_pos',
+	self::BLOCK_PURCHASE_RETURN => 'block_purchase_return',
+	self::BLOCKED_ON_ECOMMERCE => 'blocked_on_ecommerce',
+	self::BLOCK_DISCOUNT => 'block_discount',
+	self::BLOCK_MANUAL_PRICE_CHANGE => 'block_manual_price_change',
+	self::BLOCK_NEGATIVE_ADJUSTMENT => 'block_negative_adjustment',
+	self::BLOCK_POSITIVE_ADJUSTMENT => 'block_positive_adjustment',
+	self::LSC_ITEM_FAMILY_CODE => 'lsc_item_family_code',
+	self::LSC_ZERO_PRICE_VALID => 'lsc_zero_price_valid',
+	self::LSC_NO_DISCOUNT_ALLOWED => 'lsc_no_discount_allowed',
+	self::LSC_KEYING_IN_PRICE => 'lsc_keying_in_price',
+	self::LSC_SCALE_ITEM => 'lsc_scale_item',
+	self::LSC_KEYING_IN_QUANTITY => 'lsc_keying_in_quantity',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -78,7 +136,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -88,7 +146,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::SEARCH_DESCRIPTION);
     }
 
-    public function setSearchDescription(string $value)
+    public function setSearchDescription(?string $value)
     {
         return $this->setData(self::SEARCH_DESCRIPTION, $value);
     }
@@ -98,7 +156,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BASE_UNIT_OF_MEASURE);
     }
 
-    public function setBaseUnitOfMeasure(string $value)
+    public function setBaseUnitOfMeasure(?string $value)
     {
         return $this->setData(self::BASE_UNIT_OF_MEASURE, $value);
     }
@@ -108,7 +166,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::PRICE_UNIT_CONVERSION);
     }
 
-    public function setPriceUnitConversion(int $value)
+    public function setPriceUnitConversion(?int $value)
     {
         return $this->setData(self::PRICE_UNIT_CONVERSION, $value);
     }
@@ -118,7 +176,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -128,7 +186,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::ITEM_DISC_GROUP);
     }
 
-    public function setItemDiscGroup(string $value)
+    public function setItemDiscGroup(?string $value)
     {
         return $this->setData(self::ITEM_DISC_GROUP, $value);
     }
@@ -138,7 +196,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::ALLOW_INVOICE_DISC);
     }
 
-    public function setAllowInvoiceDisc(bool $value)
+    public function setAllowInvoiceDisc(?bool $value)
     {
         return $this->setData(self::ALLOW_INVOICE_DISC, $value);
     }
@@ -148,7 +206,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(string $value)
+    public function setUnitPrice(?string $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -158,7 +216,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::VENDOR_NO);
     }
 
-    public function setVendorNo(string $value)
+    public function setVendorNo(?string $value)
     {
         return $this->setData(self::VENDOR_NO, $value);
     }
@@ -168,7 +226,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::VENDOR_ITEM_NO);
     }
 
-    public function setVendorItemNo(string $value)
+    public function setVendorItemNo(?string $value)
     {
         return $this->setData(self::VENDOR_ITEM_NO, $value);
     }
@@ -178,7 +236,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::ALTERNATIVE_ITEM_NO);
     }
 
-    public function setAlternativeItemNo(string $value)
+    public function setAlternativeItemNo(?string $value)
     {
         return $this->setData(self::ALTERNATIVE_ITEM_NO, $value);
     }
@@ -188,7 +246,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::GROSS_WEIGHT);
     }
 
-    public function setGrossWeight(string $value)
+    public function setGrossWeight(?string $value)
     {
         return $this->setData(self::GROSS_WEIGHT, $value);
     }
@@ -198,7 +256,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::NET_WEIGHT);
     }
 
-    public function setNetWeight(string $value)
+    public function setNetWeight(?string $value)
     {
         return $this->setData(self::NET_WEIGHT, $value);
     }
@@ -208,7 +266,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::UNITS_PER_PARCEL);
     }
 
-    public function setUnitsPerParcel(string $value)
+    public function setUnitsPerParcel(?string $value)
     {
         return $this->setData(self::UNITS_PER_PARCEL, $value);
     }
@@ -218,7 +276,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::UNIT_VOLUME);
     }
 
-    public function setUnitVolume(string $value)
+    public function setUnitVolume(?string $value)
     {
         return $this->setData(self::UNIT_VOLUME, $value);
     }
@@ -228,7 +286,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::TARIFF_NO);
     }
 
-    public function setTariffNo(string $value)
+    public function setTariffNo(?string $value)
     {
         return $this->setData(self::TARIFF_NO, $value);
     }
@@ -238,7 +296,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCKED);
     }
 
-    public function setBlocked(bool $value)
+    public function setBlocked(?bool $value)
     {
         return $this->setData(self::BLOCKED, $value);
     }
@@ -248,17 +306,17 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCK_REASON);
     }
 
-    public function setBlockReason(string $value)
+    public function setBlockReason(?string $value)
     {
         return $this->setData(self::BLOCK_REASON, $value);
     }
 
-    public function getPriceIncludesVAT(): ?bool
+    public function getPriceIncludesVat(): ?bool
     {
         return $this->getData(self::PRICE_INCLUDES_VAT);
     }
 
-    public function setPriceIncludesVAT(bool $value)
+    public function setPriceIncludesVat(?bool $value)
     {
         return $this->setData(self::PRICE_INCLUDES_VAT, $value);
     }
@@ -268,17 +326,17 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::COUNTRYREGION_OF_ORIGIN_CODE);
     }
 
-    public function setCountryRegionOfOriginCode(string $value)
+    public function setCountryRegionOfOriginCode(?string $value)
     {
         return $this->setData(self::COUNTRYREGION_OF_ORIGIN_CODE, $value);
     }
 
-    public function getVATProdPostingGroup(): ?string
+    public function getVatProdPostingGroup(): ?string
     {
         return $this->getData(self::VAT_PROD_POSTING_GROUP);
     }
 
-    public function setVATProdPostingGroup(string $value)
+    public function setVatProdPostingGroup(?string $value)
     {
         return $this->setData(self::VAT_PROD_POSTING_GROUP, $value);
     }
@@ -288,7 +346,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::SALES_UNIT_OF_MEASURE);
     }
 
-    public function setSalesUnitOfMeasure(string $value)
+    public function setSalesUnitOfMeasure(?string $value)
     {
         return $this->setData(self::SALES_UNIT_OF_MEASURE, $value);
     }
@@ -298,7 +356,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::PURCH_UNIT_OF_MEASURE);
     }
 
-    public function setPurchUnitOfMeasure(string $value)
+    public function setPurchUnitOfMeasure(?string $value)
     {
         return $this->setData(self::PURCH_UNIT_OF_MEASURE, $value);
     }
@@ -308,7 +366,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::ITEM_CATEGORY_CODE);
     }
 
-    public function setItemCategoryCode(string $value)
+    public function setItemCategoryCode(?string $value)
     {
         return $this->setData(self::ITEM_CATEGORY_CODE, $value);
     }
@@ -318,47 +376,47 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::ITEM_TRACKING_CODE);
     }
 
-    public function setItemTrackingCode(string $value)
+    public function setItemTrackingCode(?string $value)
     {
         return $this->setData(self::ITEM_TRACKING_CODE, $value);
     }
 
-    public function getLSCDivisionCode(): ?string
+    public function getLscDivisionCode(): ?string
     {
         return $this->getData(self::LSC_DIVISION_CODE);
     }
 
-    public function setLSCDivisionCode(string $value)
+    public function setLscDivisionCode(?string $value)
     {
         return $this->setData(self::LSC_DIVISION_CODE, $value);
     }
 
-    public function getLSCRetailProductCode(): ?string
+    public function getLscRetailProductCode(): ?string
     {
         return $this->getData(self::LSC_RETAIL_PRODUCT_CODE);
     }
 
-    public function setLSCRetailProductCode(string $value)
+    public function setLscRetailProductCode(?string $value)
     {
         return $this->setData(self::LSC_RETAIL_PRODUCT_CODE, $value);
     }
 
-    public function getLSCSpecialGroupCodes(): ?string
+    public function getLscSpecialGroupCodes(): ?string
     {
         return $this->getData(self::LSC_SPECIAL_GROUP_CODES);
     }
 
-    public function setLSCSpecialGroupCodes(string $value)
+    public function setLscSpecialGroupCodes(?string $value)
     {
         return $this->setData(self::LSC_SPECIAL_GROUP_CODES, $value);
     }
 
-    public function getLSCVariantFrameworkCode(): ?string
+    public function getLscVariantFrameworkCode(): ?string
     {
         return $this->getData(self::LSC_VARIANT_FRAMEWORK_CODE);
     }
 
-    public function setLSCVariantFrameworkCode(string $value)
+    public function setLscVariantFrameworkCode(?string $value)
     {
         return $this->setData(self::LSC_VARIANT_FRAMEWORK_CODE, $value);
     }
@@ -368,7 +426,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::SEASON_CODE);
     }
 
-    public function setSeasonCode(string $value)
+    public function setSeasonCode(?string $value)
     {
         return $this->setData(self::SEASON_CODE, $value);
     }
@@ -378,17 +436,17 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::ITEM_HTML);
     }
 
-    public function setItemHtml(string $value)
+    public function setItemHtml(?string $value)
     {
         return $this->setData(self::ITEM_HTML, $value);
     }
 
-    public function getBlockSaleOnPOS(): ?bool
+    public function getBlockSaleOnPos(): ?bool
     {
         return $this->getData(self::BLOCK_SALE_ON_POS);
     }
 
-    public function setBlockSaleOnPOS(bool $value)
+    public function setBlockSaleOnPos(?bool $value)
     {
         return $this->setData(self::BLOCK_SALE_ON_POS, $value);
     }
@@ -398,17 +456,17 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCK_PURCHASE_RETURN);
     }
 
-    public function setBlockPurchaseReturn(bool $value)
+    public function setBlockPurchaseReturn(?bool $value)
     {
         return $this->setData(self::BLOCK_PURCHASE_RETURN, $value);
     }
 
-    public function getBlockedOnECommerce(): ?bool
+    public function getBlockedOnEcommerce(): ?bool
     {
         return $this->getData(self::BLOCKED_ON_ECOMMERCE);
     }
 
-    public function setBlockedOnECommerce(bool $value)
+    public function setBlockedOnEcommerce(?bool $value)
     {
         return $this->setData(self::BLOCKED_ON_ECOMMERCE, $value);
     }
@@ -418,7 +476,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCK_DISCOUNT);
     }
 
-    public function setBlockDiscount(bool $value)
+    public function setBlockDiscount(?bool $value)
     {
         return $this->setData(self::BLOCK_DISCOUNT, $value);
     }
@@ -428,7 +486,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCK_MANUAL_PRICE_CHANGE);
     }
 
-    public function setBlockManualPriceChange(bool $value)
+    public function setBlockManualPriceChange(?bool $value)
     {
         return $this->setData(self::BLOCK_MANUAL_PRICE_CHANGE, $value);
     }
@@ -438,7 +496,7 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCK_NEGATIVE_ADJUSTMENT);
     }
 
-    public function setBlockNegativeAdjustment(bool $value)
+    public function setBlockNegativeAdjustment(?bool $value)
     {
         return $this->setData(self::BLOCK_NEGATIVE_ADJUSTMENT, $value);
     }
@@ -448,117 +506,117 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->getData(self::BLOCK_POSITIVE_ADJUSTMENT);
     }
 
-    public function setBlockPositiveAdjustment(bool $value)
+    public function setBlockPositiveAdjustment(?bool $value)
     {
         return $this->setData(self::BLOCK_POSITIVE_ADJUSTMENT, $value);
     }
 
-    public function getLSCItemFamilyCode(): ?string
+    public function getLscItemFamilyCode(): ?string
     {
         return $this->getData(self::LSC_ITEM_FAMILY_CODE);
     }
 
-    public function setLSCItemFamilyCode(string $value)
+    public function setLscItemFamilyCode(?string $value)
     {
         return $this->setData(self::LSC_ITEM_FAMILY_CODE, $value);
     }
 
-    public function getLSCZeroPriceValid(): ?bool
+    public function getLscZeroPriceValid(): ?bool
     {
         return $this->getData(self::LSC_ZERO_PRICE_VALID);
     }
 
-    public function setLSCZeroPriceValid(bool $value)
+    public function setLscZeroPriceValid(?bool $value)
     {
         return $this->setData(self::LSC_ZERO_PRICE_VALID, $value);
     }
 
-    public function getLSCNoDiscountAllowed(): ?bool
+    public function getLscNoDiscountAllowed(): ?bool
     {
         return $this->getData(self::LSC_NO_DISCOUNT_ALLOWED);
     }
 
-    public function setLSCNoDiscountAllowed(bool $value)
+    public function setLscNoDiscountAllowed(?bool $value)
     {
         return $this->setData(self::LSC_NO_DISCOUNT_ALLOWED, $value);
     }
 
-    public function getLSCKeyingInPrice(): ?string
+    public function getLscKeyingInPrice(): ?string
     {
         return $this->getData(self::LSC_KEYING_IN_PRICE);
     }
 
-    public function setLSCKeyingInPrice(string $value)
+    public function setLscKeyingInPrice(?string $value)
     {
         return $this->setData(self::LSC_KEYING_IN_PRICE, $value);
     }
 
-    public function getLSCScaleItem(): ?bool
+    public function getLscScaleItem(): ?bool
     {
         return $this->getData(self::LSC_SCALE_ITEM);
     }
 
-    public function setLSCScaleItem(bool $value)
+    public function setLscScaleItem(?bool $value)
     {
         return $this->setData(self::LSC_SCALE_ITEM, $value);
     }
 
-    public function getLSCKeyingInQuantity(): ?string
+    public function getLscKeyingInQuantity(): ?string
     {
         return $this->getData(self::LSC_KEYING_IN_QUANTITY);
     }
 
-    public function setLSCKeyingInQuantity(string $value)
+    public function setLscKeyingInQuantity(?string $value)
     {
         return $this->setData(self::LSC_KEYING_IN_QUANTITY, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

@@ -73,13 +73,82 @@ class PeriodicDiscView extends AbstractModel
     public const TENDER_OFFER_AMOUNT = 'Tender Offer Amount';
     public const STORE_GROUP_CODES = 'Store Group Codes';
 
+    public array $dbColumnsMapping = [
+	self::OFFER_NO => 'offer_no',
+	self::LINE_NO => 'line_no',
+	self::TYPE => 'type',
+	self::NO => 'no',
+	self::VARIANT_CODE => 'variant_code',
+	self::DESCRIPTION => 'description',
+	self::STANDARD_PRICE_INCLUDING_VAT => 'standard_price_including_vat',
+	self::STANDARD_PRICE => 'standard_price',
+	self::SPLIT_DEAL_PRICEDISC => 'split_deal_pricedisc',
+	self::DEAL_PRICEDISC => 'deal_pricedisc',
+	self::PRICE_GROUP => 'price_group',
+	self::CURRENCY_CODE => 'currency_code',
+	self::UNIT_OF_MEASURE => 'unit_of_measure',
+	self::PROD_GROUP_CATEGORY => 'prod_group_category',
+	self::VALID_FROM_BEFORE_EXP_DATE => 'valid_from_before_exp_date',
+	self::VALID_TO_BEFORE_EXP_DATE => 'valid_to_before_exp_date',
+	self::LINE_GROUP => 'line_group',
+	self::NO_OF_ITEMS_NEEDED => 'no_of_items_needed',
+	self::DISC_TYPE => 'disc_type',
+	self::DISCOUNT_AMOUNT => 'discount_amount',
+	self::OFFER_PRICE => 'offer_price',
+	self::OFFER_PRICE_INCLUDING_VAT => 'offer_price_including_vat',
+	self::DISCOUNT_AMOUNT_INCLUDING_VAT => 'discount_amount_including_vat',
+	self::TRIGGER_POPUP_ON_POS => 'trigger_popup_on_pos',
+	self::VARIANT_TYPE => 'variant_type',
+	self::EXCLUDE => 'exclude',
+	self::MEMBER_POINTS => 'member_points',
+	self::PROMPT_AT_SCAN => 'prompt_at_scan',
+	self::HEADER_TYPE => 'header_type',
+	self::PLANNED_DEMAND_TYPE => 'planned_demand_type',
+	self::PLANNED_DEMAND => 'planned_demand',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::STATUS => 'status',
+	self::HEAD_PRICE_GROUP => 'head_price_group',
+	self::PRIORITY => 'priority',
+	self::VALIDATION_PERIOD_ID => 'validation_period_id',
+	self::DISCOUNT_TYPE => 'discount_type',
+	self::DEAL_PRICE_VALUE => 'deal_price_value',
+	self::DISCOUNT__VALUE => 'discount__value',
+	self::DISCOUNT_AMOUNT_VALUE => 'discount_amount_value',
+	self::CUSTOMER_DISC_GROUP => 'customer_disc_group',
+	self::AMOUNT_TO_TRIGGER => 'amount_to_trigger',
+	self::MEMBER_VALUE => 'member_value',
+	self::POPUP_LINE_1 => 'popup_line_1',
+	self::POPUP_LINE_2 => 'popup_line_2',
+	self::POPUP_LINE_3 => 'popup_line_3',
+	self::COUPON_CODE => 'coupon_code',
+	self::COUPON_QTY_NEEDED => 'coupon_qty_needed',
+	self::MEMBER_TYPE => 'member_type',
+	self::MEMBER_ATTRIBUTE => 'member_attribute',
+	self::MAXIMUM_DISCOUNT_AMOUNT => 'maximum_discount_amount',
+	self::TENDER_TYPE_CODE => 'tender_type_code',
+	self::TENDER_TYPE_VALUE => 'tender_type_value',
+	self::PROMPT_FOR_ACTION => 'prompt_for_action',
+	self::TENDER_OFFER => 'tender_offer',
+	self::TENDER_OFFER_AMOUNT => 'tender_offer_amount',
+	self::STORE_GROUP_CODES => 'store_group_codes',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getOfferNo(): ?string
     {
         return $this->getData(self::OFFER_NO);
     }
 
-    public function setOfferNo(string $value)
+    public function setOfferNo(?string $value)
     {
         return $this->setData(self::OFFER_NO, $value);
     }
@@ -89,7 +158,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::LINE_NO);
     }
 
-    public function setLineNo(int $value)
+    public function setLineNo(?int $value)
     {
         return $this->setData(self::LINE_NO, $value);
     }
@@ -99,7 +168,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::TYPE);
     }
 
-    public function setType(string $value)
+    public function setType(?string $value)
     {
         return $this->setData(self::TYPE, $value);
     }
@@ -109,7 +178,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -119,7 +188,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::VARIANT_CODE);
     }
 
-    public function setVariantCode(string $value)
+    public function setVariantCode(?string $value)
     {
         return $this->setData(self::VARIANT_CODE, $value);
     }
@@ -129,17 +198,17 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getStandardPriceIncludingVAT(): ?string
+    public function getStandardPriceIncludingVat(): ?string
     {
         return $this->getData(self::STANDARD_PRICE_INCLUDING_VAT);
     }
 
-    public function setStandardPriceIncludingVAT(string $value)
+    public function setStandardPriceIncludingVat(?string $value)
     {
         return $this->setData(self::STANDARD_PRICE_INCLUDING_VAT, $value);
     }
@@ -149,7 +218,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::STANDARD_PRICE);
     }
 
-    public function setStandardPrice(string $value)
+    public function setStandardPrice(?string $value)
     {
         return $this->setData(self::STANDARD_PRICE, $value);
     }
@@ -159,7 +228,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::SPLIT_DEAL_PRICEDISC);
     }
 
-    public function setSplitDealPriceDisc(string $value)
+    public function setSplitDealPriceDisc(?string $value)
     {
         return $this->setData(self::SPLIT_DEAL_PRICEDISC, $value);
     }
@@ -169,7 +238,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DEAL_PRICEDISC);
     }
 
-    public function setDealPriceDisc(string $value)
+    public function setDealPriceDisc(?string $value)
     {
         return $this->setData(self::DEAL_PRICEDISC, $value);
     }
@@ -179,7 +248,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PRICE_GROUP);
     }
 
-    public function setPriceGroup(string $value)
+    public function setPriceGroup(?string $value)
     {
         return $this->setData(self::PRICE_GROUP, $value);
     }
@@ -189,7 +258,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -199,7 +268,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::UNIT_OF_MEASURE);
     }
 
-    public function setUnitOfMeasure(string $value)
+    public function setUnitOfMeasure(?string $value)
     {
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
@@ -209,7 +278,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PROD_GROUP_CATEGORY);
     }
 
-    public function setProdGroupCategory(string $value)
+    public function setProdGroupCategory(?string $value)
     {
         return $this->setData(self::PROD_GROUP_CATEGORY, $value);
     }
@@ -219,7 +288,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::VALID_FROM_BEFORE_EXP_DATE);
     }
 
-    public function setValidFromBeforeExpDate(string $value)
+    public function setValidFromBeforeExpDate(?string $value)
     {
         return $this->setData(self::VALID_FROM_BEFORE_EXP_DATE, $value);
     }
@@ -229,7 +298,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::VALID_TO_BEFORE_EXP_DATE);
     }
 
-    public function setValidToBeforeExpDate(string $value)
+    public function setValidToBeforeExpDate(?string $value)
     {
         return $this->setData(self::VALID_TO_BEFORE_EXP_DATE, $value);
     }
@@ -239,7 +308,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::LINE_GROUP);
     }
 
-    public function setLineGroup(string $value)
+    public function setLineGroup(?string $value)
     {
         return $this->setData(self::LINE_GROUP, $value);
     }
@@ -249,7 +318,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::NO_OF_ITEMS_NEEDED);
     }
 
-    public function setNoOfItemsNeeded(int $value)
+    public function setNoOfItemsNeeded(?int $value)
     {
         return $this->setData(self::NO_OF_ITEMS_NEEDED, $value);
     }
@@ -259,7 +328,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DISC_TYPE);
     }
 
-    public function setDiscType(string $value)
+    public function setDiscType(?string $value)
     {
         return $this->setData(self::DISC_TYPE, $value);
     }
@@ -269,7 +338,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(string $value)
+    public function setDiscountAmount(?string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
@@ -279,37 +348,37 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::OFFER_PRICE);
     }
 
-    public function setOfferPrice(string $value)
+    public function setOfferPrice(?string $value)
     {
         return $this->setData(self::OFFER_PRICE, $value);
     }
 
-    public function getOfferPriceIncludingVAT(): ?string
+    public function getOfferPriceIncludingVat(): ?string
     {
         return $this->getData(self::OFFER_PRICE_INCLUDING_VAT);
     }
 
-    public function setOfferPriceIncludingVAT(string $value)
+    public function setOfferPriceIncludingVat(?string $value)
     {
         return $this->setData(self::OFFER_PRICE_INCLUDING_VAT, $value);
     }
 
-    public function getDiscountAmountIncludingVAT(): ?string
+    public function getDiscountAmountIncludingVat(): ?string
     {
         return $this->getData(self::DISCOUNT_AMOUNT_INCLUDING_VAT);
     }
 
-    public function setDiscountAmountIncludingVAT(string $value)
+    public function setDiscountAmountIncludingVat(?string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_INCLUDING_VAT, $value);
     }
 
-    public function getTriggerPopUpOnPOS(): ?bool
+    public function getTriggerPopUpOnPos(): ?bool
     {
         return $this->getData(self::TRIGGER_POPUP_ON_POS);
     }
 
-    public function setTriggerPopUpOnPOS(bool $value)
+    public function setTriggerPopUpOnPos(?bool $value)
     {
         return $this->setData(self::TRIGGER_POPUP_ON_POS, $value);
     }
@@ -319,7 +388,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::VARIANT_TYPE);
     }
 
-    public function setVariantType(string $value)
+    public function setVariantType(?string $value)
     {
         return $this->setData(self::VARIANT_TYPE, $value);
     }
@@ -329,7 +398,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::EXCLUDE);
     }
 
-    public function setExclude(bool $value)
+    public function setExclude(?bool $value)
     {
         return $this->setData(self::EXCLUDE, $value);
     }
@@ -339,7 +408,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::MEMBER_POINTS);
     }
 
-    public function setMemberPoints(string $value)
+    public function setMemberPoints(?string $value)
     {
         return $this->setData(self::MEMBER_POINTS, $value);
     }
@@ -349,7 +418,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PROMPT_AT_SCAN);
     }
 
-    public function setPromptAtScan(bool $value)
+    public function setPromptAtScan(?bool $value)
     {
         return $this->setData(self::PROMPT_AT_SCAN, $value);
     }
@@ -359,7 +428,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::HEADER_TYPE);
     }
 
-    public function setHeaderType(string $value)
+    public function setHeaderType(?string $value)
     {
         return $this->setData(self::HEADER_TYPE, $value);
     }
@@ -369,7 +438,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PLANNED_DEMAND_TYPE);
     }
 
-    public function setPlannedDemandType(string $value)
+    public function setPlannedDemandType(?string $value)
     {
         return $this->setData(self::PLANNED_DEMAND_TYPE, $value);
     }
@@ -379,57 +448,57 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PLANNED_DEMAND);
     }
 
-    public function setPlannedDemand(string $value)
+    public function setPlannedDemand(?string $value)
     {
         return $this->setData(self::PLANNED_DEMAND, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
@@ -439,7 +508,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::STATUS);
     }
 
-    public function setStatus(string $value)
+    public function setStatus(?string $value)
     {
         return $this->setData(self::STATUS, $value);
     }
@@ -449,7 +518,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::HEAD_PRICE_GROUP);
     }
 
-    public function setHeadPriceGroup(string $value)
+    public function setHeadPriceGroup(?string $value)
     {
         return $this->setData(self::HEAD_PRICE_GROUP, $value);
     }
@@ -459,17 +528,17 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PRIORITY);
     }
 
-    public function setPriority(int $value)
+    public function setPriority(?int $value)
     {
         return $this->setData(self::PRIORITY, $value);
     }
 
-    public function getValidationPeriodID(): ?string
+    public function getValidationPeriodId(): ?string
     {
         return $this->getData(self::VALIDATION_PERIOD_ID);
     }
 
-    public function setValidationPeriodID(string $value)
+    public function setValidationPeriodId(?string $value)
     {
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
@@ -479,7 +548,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DISCOUNT_TYPE);
     }
 
-    public function setDiscountType(string $value)
+    public function setDiscountType(?string $value)
     {
         return $this->setData(self::DISCOUNT_TYPE, $value);
     }
@@ -489,7 +558,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DEAL_PRICE_VALUE);
     }
 
-    public function setDealPriceValue(string $value)
+    public function setDealPriceValue(?string $value)
     {
         return $this->setData(self::DEAL_PRICE_VALUE, $value);
     }
@@ -499,7 +568,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DISCOUNT__VALUE);
     }
 
-    public function setDiscountValue(string $value)
+    public function setDiscountValue(?string $value)
     {
         return $this->setData(self::DISCOUNT__VALUE, $value);
     }
@@ -509,7 +578,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(string $value)
+    public function setDiscountAmountValue(?string $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }
@@ -519,7 +588,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::CUSTOMER_DISC_GROUP);
     }
 
-    public function setCustomerDiscGroup(string $value)
+    public function setCustomerDiscGroup(?string $value)
     {
         return $this->setData(self::CUSTOMER_DISC_GROUP, $value);
     }
@@ -529,7 +598,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::AMOUNT_TO_TRIGGER);
     }
 
-    public function setAmountToTrigger(string $value)
+    public function setAmountToTrigger(?string $value)
     {
         return $this->setData(self::AMOUNT_TO_TRIGGER, $value);
     }
@@ -539,7 +608,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::MEMBER_VALUE);
     }
 
-    public function setMemberValue(string $value)
+    public function setMemberValue(?string $value)
     {
         return $this->setData(self::MEMBER_VALUE, $value);
     }
@@ -549,7 +618,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::POPUP_LINE_1);
     }
 
-    public function setPopUpLine1(string $value)
+    public function setPopUpLine1(?string $value)
     {
         return $this->setData(self::POPUP_LINE_1, $value);
     }
@@ -559,7 +628,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::POPUP_LINE_2);
     }
 
-    public function setPopUpLine2(string $value)
+    public function setPopUpLine2(?string $value)
     {
         return $this->setData(self::POPUP_LINE_2, $value);
     }
@@ -569,7 +638,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::POPUP_LINE_3);
     }
 
-    public function setPopUpLine3(string $value)
+    public function setPopUpLine3(?string $value)
     {
         return $this->setData(self::POPUP_LINE_3, $value);
     }
@@ -579,7 +648,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::COUPON_CODE);
     }
 
-    public function setCouponCode(string $value)
+    public function setCouponCode(?string $value)
     {
         return $this->setData(self::COUPON_CODE, $value);
     }
@@ -589,7 +658,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::COUPON_QTY_NEEDED);
     }
 
-    public function setCouponQtyNeeded(string $value)
+    public function setCouponQtyNeeded(?string $value)
     {
         return $this->setData(self::COUPON_QTY_NEEDED, $value);
     }
@@ -599,7 +668,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::MEMBER_TYPE);
     }
 
-    public function setMemberType(string $value)
+    public function setMemberType(?string $value)
     {
         return $this->setData(self::MEMBER_TYPE, $value);
     }
@@ -609,7 +678,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::MEMBER_ATTRIBUTE);
     }
 
-    public function setMemberAttribute(string $value)
+    public function setMemberAttribute(?string $value)
     {
         return $this->setData(self::MEMBER_ATTRIBUTE, $value);
     }
@@ -619,7 +688,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::MAXIMUM_DISCOUNT_AMOUNT);
     }
 
-    public function setMaximumDiscountAmount(string $value)
+    public function setMaximumDiscountAmount(?string $value)
     {
         return $this->setData(self::MAXIMUM_DISCOUNT_AMOUNT, $value);
     }
@@ -629,7 +698,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::TENDER_TYPE_CODE);
     }
 
-    public function setTenderTypeCode(string $value)
+    public function setTenderTypeCode(?string $value)
     {
         return $this->setData(self::TENDER_TYPE_CODE, $value);
     }
@@ -639,7 +708,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::TENDER_TYPE_VALUE);
     }
 
-    public function setTenderTypeValue(string $value)
+    public function setTenderTypeValue(?string $value)
     {
         return $this->setData(self::TENDER_TYPE_VALUE, $value);
     }
@@ -649,7 +718,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::PROMPT_FOR_ACTION);
     }
 
-    public function setPromptForAction(string $value)
+    public function setPromptForAction(?string $value)
     {
         return $this->setData(self::PROMPT_FOR_ACTION, $value);
     }
@@ -659,7 +728,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::TENDER_OFFER);
     }
 
-    public function setTenderOffer(string $value)
+    public function setTenderOffer(?string $value)
     {
         return $this->setData(self::TENDER_OFFER, $value);
     }
@@ -669,7 +738,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::TENDER_OFFER_AMOUNT);
     }
 
-    public function setTenderOfferAmount(string $value)
+    public function setTenderOfferAmount(?string $value)
     {
         return $this->setData(self::TENDER_OFFER_AMOUNT, $value);
     }
@@ -679,7 +748,7 @@ class PeriodicDiscView extends AbstractModel
         return $this->getData(self::STORE_GROUP_CODES);
     }
 
-    public function setStoreGroupCodes(string $value)
+    public function setStoreGroupCodes(?string $value)
     {
         return $this->setData(self::STORE_GROUP_CODES, $value);
     }

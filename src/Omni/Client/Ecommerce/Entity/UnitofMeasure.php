@@ -24,13 +24,33 @@ class UnitofMeasure extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const SYSTEMID = '$systemId';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+	self::INTERNATIONAL_STANDARD_CODE => 'international_standard_code',
+	self::LAST_MODIFIED_DATE_TIME => 'last_modified_date_time',
+	self::LSC_POS_MIN_DENOMINATOR => 'lsc_pos_min_denominator',
+	self::LSC_WEIGHT_UNIT_OF_MEASURE => 'lsc_weight_unit_of_measure',
+	self::SYMBOL => 'symbol',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+	self::SYSTEMID => 'systemid',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -40,7 +60,7 @@ class UnitofMeasure extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -50,7 +70,7 @@ class UnitofMeasure extends AbstractModel
         return $this->getData(self::INTERNATIONAL_STANDARD_CODE);
     }
 
-    public function setInternationalStandardCode(string $value)
+    public function setInternationalStandardCode(?string $value)
     {
         return $this->setData(self::INTERNATIONAL_STANDARD_CODE, $value);
     }
@@ -60,27 +80,27 @@ class UnitofMeasure extends AbstractModel
         return $this->getData(self::LAST_MODIFIED_DATE_TIME);
     }
 
-    public function setLastModifiedDateTime(\DateTime $value)
+    public function setLastModifiedDateTime(?\DateTime $value)
     {
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
 
-    public function getLSCPOSMinDenominator(): ?string
+    public function getLscPosMinDenominator(): ?string
     {
         return $this->getData(self::LSC_POS_MIN_DENOMINATOR);
     }
 
-    public function setLSCPOSMinDenominator(string $value)
+    public function setLscPosMinDenominator(?string $value)
     {
         return $this->setData(self::LSC_POS_MIN_DENOMINATOR, $value);
     }
 
-    public function getLSCWeightUnitOfMeasure(): ?bool
+    public function getLscWeightUnitOfMeasure(): ?bool
     {
         return $this->getData(self::LSC_WEIGHT_UNIT_OF_MEASURE);
     }
 
-    public function setLSCWeightUnitOfMeasure(bool $value)
+    public function setLscWeightUnitOfMeasure(?bool $value)
     {
         return $this->setData(self::LSC_WEIGHT_UNIT_OF_MEASURE, $value);
     }
@@ -90,57 +110,57 @@ class UnitofMeasure extends AbstractModel
         return $this->getData(self::SYMBOL);
     }
 
-    public function setSymbol(string $value)
+    public function setSymbol(?string $value)
     {
         return $this->setData(self::SYMBOL, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }

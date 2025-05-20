@@ -72,6 +72,7 @@ class COFilteredListV2 extends AbstractOperation
 
     public function setClient(\OmniClient $client)
     {
+        $this->setData('client', $client);
         return $this;
     }
 
@@ -82,6 +83,7 @@ class COFilteredListV2 extends AbstractOperation
 
     public function setRequest(\COFilteredListV2Request $request)
     {
+        $this->setData('request', $request);
         return $this;
     }
 
@@ -92,6 +94,7 @@ class COFilteredListV2 extends AbstractOperation
 
     public function setResponse(\COFilteredListV2Response $response)
     {
+        $this->setData('response', $response);
         return $this;
     }
 
@@ -102,6 +105,7 @@ class COFilteredListV2 extends AbstractOperation
 
     public function setRequestXml(string $requestXml)
     {
+        $this->setData('requestXml', $requestXml);
         return $this;
     }
 
@@ -112,6 +116,7 @@ class COFilteredListV2 extends AbstractOperation
 
     public function setResponseXml(string $responseXml)
     {
+        $this->setData('responseXml', $responseXml);
         return $this;
     }
 
@@ -122,6 +127,7 @@ class COFilteredListV2 extends AbstractOperation
 
     public function setError(\Exception $error)
     {
+        $this->setData('error', $error);
         return $this;
     }
 

@@ -21,13 +21,30 @@ class LSCDataTranslation extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::TRANSLATION_ID => 'translation_id',
+	self::KEY => 'key',
+	self::LANGUAGE_CODE => 'language_code',
+	self::TRANSLATION => 'translation',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
 
-    public function getTranslationID(): ?string
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
+
+    public function getTranslationId(): ?string
     {
         return $this->getData(self::TRANSLATION_ID);
     }
 
-    public function setTranslationID(string $value)
+    public function setTranslationId(?string $value)
     {
         return $this->setData(self::TRANSLATION_ID, $value);
     }
@@ -37,7 +54,7 @@ class LSCDataTranslation extends AbstractModel
         return $this->getData(self::KEY);
     }
 
-    public function setKey(string $value)
+    public function setKey(?string $value)
     {
         return $this->setData(self::KEY, $value);
     }
@@ -47,7 +64,7 @@ class LSCDataTranslation extends AbstractModel
         return $this->getData(self::LANGUAGE_CODE);
     }
 
-    public function setLanguageCode(string $value)
+    public function setLanguageCode(?string $value)
     {
         return $this->setData(self::LANGUAGE_CODE, $value);
     }
@@ -57,57 +74,57 @@ class LSCDataTranslation extends AbstractModel
         return $this->getData(self::TRANSLATION);
     }
 
-    public function setTranslation(string $value)
+    public function setTranslation(?string $value)
     {
         return $this->setData(self::TRANSLATION, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

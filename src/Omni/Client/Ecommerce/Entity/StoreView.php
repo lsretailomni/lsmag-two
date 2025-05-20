@@ -35,13 +35,44 @@ class StoreView extends AbstractModel
     public const STORE_GROUP_CODES = 'Store Group Codes';
     public const PRICE_GROUP_CODES = 'Price Group Codes';
 
+    public array $dbColumnsMapping = [
+	self::NO => 'no',
+	self::NAME => 'name',
+	self::ADDRESS => 'address',
+	self::ADDRESS2 => 'address2',
+	self::POST_CODE => 'post_code',
+	self::CITY => 'city',
+	self::COUNTY => 'county',
+	self::COUNTRY_CODE => 'country_code',
+	self::LATITUDE => 'latitude',
+	self::LONGITUDE => 'longitude',
+	self::PHONE_NO => 'phone_no',
+	self::CURRENCY_CODE => 'currency_code',
+	self::FUNCTIONALITY_PROFILE => 'functionality_profile',
+	self::STORE_VAT_BUS_POST_GR => 'store_vat_bus_post_gr',
+	self::CLICK_AND_COLLECT => 'click_and_collect',
+	self::LOYALTY => 'loyalty',
+	self::WEB_STORE => 'web_store',
+	self::WEB_STORE_POS_TERMINAL => 'web_store_pos_terminal',
+	self::WEB_STORE_STAFF_ID => 'web_store_staff_id',
+	self::CALC_INV_FOR_SOURCING_LOCATION => 'calc_inv_for_sourcing_location',
+	self::LCY_CODE => 'lcy_code',
+	self::STORE_GROUP_CODES => 'store_group_codes',
+	self::PRICE_GROUP_CODES => 'price_group_codes',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getNo(): ?string
     {
         return $this->getData(self::NO);
     }
 
-    public function setNo(string $value)
+    public function setNo(?string $value)
     {
         return $this->setData(self::NO, $value);
     }
@@ -51,7 +82,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::NAME);
     }
 
-    public function setName(string $value)
+    public function setName(?string $value)
     {
         return $this->setData(self::NAME, $value);
     }
@@ -61,7 +92,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::ADDRESS);
     }
 
-    public function setAddress(string $value)
+    public function setAddress(?string $value)
     {
         return $this->setData(self::ADDRESS, $value);
     }
@@ -71,7 +102,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::ADDRESS2);
     }
 
-    public function setAddress2(string $value)
+    public function setAddress2(?string $value)
     {
         return $this->setData(self::ADDRESS2, $value);
     }
@@ -81,7 +112,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::POST_CODE);
     }
 
-    public function setPostCode(string $value)
+    public function setPostCode(?string $value)
     {
         return $this->setData(self::POST_CODE, $value);
     }
@@ -91,7 +122,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::CITY);
     }
 
-    public function setCity(string $value)
+    public function setCity(?string $value)
     {
         return $this->setData(self::CITY, $value);
     }
@@ -101,7 +132,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::COUNTY);
     }
 
-    public function setCounty(string $value)
+    public function setCounty(?string $value)
     {
         return $this->setData(self::COUNTY, $value);
     }
@@ -111,7 +142,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::COUNTRY_CODE);
     }
 
-    public function setCountryCode(string $value)
+    public function setCountryCode(?string $value)
     {
         return $this->setData(self::COUNTRY_CODE, $value);
     }
@@ -121,7 +152,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::LATITUDE);
     }
 
-    public function setLatitude(string $value)
+    public function setLatitude(?string $value)
     {
         return $this->setData(self::LATITUDE, $value);
     }
@@ -131,7 +162,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::LONGITUDE);
     }
 
-    public function setLongitude(string $value)
+    public function setLongitude(?string $value)
     {
         return $this->setData(self::LONGITUDE, $value);
     }
@@ -141,7 +172,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::PHONE_NO);
     }
 
-    public function setPhoneNo(string $value)
+    public function setPhoneNo(?string $value)
     {
         return $this->setData(self::PHONE_NO, $value);
     }
@@ -151,7 +182,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -161,17 +192,17 @@ class StoreView extends AbstractModel
         return $this->getData(self::FUNCTIONALITY_PROFILE);
     }
 
-    public function setFunctionalityProfile(string $value)
+    public function setFunctionalityProfile(?string $value)
     {
         return $this->setData(self::FUNCTIONALITY_PROFILE, $value);
     }
 
-    public function getStoreVATBusPostGr(): ?string
+    public function getStoreVatBusPostGr(): ?string
     {
         return $this->getData(self::STORE_VAT_BUS_POST_GR);
     }
 
-    public function setStoreVATBusPostGr(string $value)
+    public function setStoreVatBusPostGr(?string $value)
     {
         return $this->setData(self::STORE_VAT_BUS_POST_GR, $value);
     }
@@ -181,7 +212,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::CLICK_AND_COLLECT);
     }
 
-    public function setClickAndCollect(bool $value)
+    public function setClickAndCollect(?bool $value)
     {
         return $this->setData(self::CLICK_AND_COLLECT, $value);
     }
@@ -191,7 +222,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::LOYALTY);
     }
 
-    public function setLoyalty(bool $value)
+    public function setLoyalty(?bool $value)
     {
         return $this->setData(self::LOYALTY, $value);
     }
@@ -201,27 +232,27 @@ class StoreView extends AbstractModel
         return $this->getData(self::WEB_STORE);
     }
 
-    public function setWebStore(bool $value)
+    public function setWebStore(?bool $value)
     {
         return $this->setData(self::WEB_STORE, $value);
     }
 
-    public function getWebStorePOSTerminal(): ?string
+    public function getWebStorePosTerminal(): ?string
     {
         return $this->getData(self::WEB_STORE_POS_TERMINAL);
     }
 
-    public function setWebStorePOSTerminal(string $value)
+    public function setWebStorePosTerminal(?string $value)
     {
         return $this->setData(self::WEB_STORE_POS_TERMINAL, $value);
     }
 
-    public function getWebStoreStaffID(): ?string
+    public function getWebStoreStaffId(): ?string
     {
         return $this->getData(self::WEB_STORE_STAFF_ID);
     }
 
-    public function setWebStoreStaffID(string $value)
+    public function setWebStoreStaffId(?string $value)
     {
         return $this->setData(self::WEB_STORE_STAFF_ID, $value);
     }
@@ -231,17 +262,17 @@ class StoreView extends AbstractModel
         return $this->getData(self::CALC_INV_FOR_SOURCING_LOCATION);
     }
 
-    public function setCalcInvForSourcingLocation(bool $value)
+    public function setCalcInvForSourcingLocation(?bool $value)
     {
         return $this->setData(self::CALC_INV_FOR_SOURCING_LOCATION, $value);
     }
 
-    public function getLCYCode(): ?string
+    public function getLcyCode(): ?string
     {
         return $this->getData(self::LCY_CODE);
     }
 
-    public function setLCYCode(string $value)
+    public function setLcyCode(?string $value)
     {
         return $this->setData(self::LCY_CODE, $value);
     }
@@ -251,7 +282,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::STORE_GROUP_CODES);
     }
 
-    public function setStoreGroupCodes(string $value)
+    public function setStoreGroupCodes(?string $value)
     {
         return $this->setData(self::STORE_GROUP_CODES, $value);
     }
@@ -261,7 +292,7 @@ class StoreView extends AbstractModel
         return $this->getData(self::PRICE_GROUP_CODES);
     }
 
-    public function setPriceGroupCodes(string $value)
+    public function setPriceGroupCodes(?string $value)
     {
         return $this->setData(self::PRICE_GROUP_CODES, $value);
     }

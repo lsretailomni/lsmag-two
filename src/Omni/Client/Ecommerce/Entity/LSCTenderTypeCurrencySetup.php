@@ -28,13 +28,37 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
+    public array $dbColumnsMapping = [
+	self::CURRENCY_CODE => 'currency_code',
+	self::DESCRIPTION => 'description',
+	self::STORE_NO => 'store_no',
+	self::TENDER_TYPE_CODE => 'tender_type_code',
+	self::ACCOUNT_TYPE => 'account_type',
+	self::ACCOUNT_NO => 'account_no',
+	self::ACCOUNT_NAME => 'account_name',
+	self::DIFFERENCE_GL_ACC => 'difference_gl_acc',
+	self::PRIMARY_KEY => 'primary_key',
+	self::POS_PICKUP_WARNING_AMOUNT => 'pos_pickup_warning_amount',
+	self::POS_PICKUP_WARNING_TEXT => 'pos_pickup_warning_text',
+	self::SYSTEMID => 'systemid',
+	self::SYSTEMCREATEDAT => 'systemcreatedat',
+	self::SYSTEMCREATEDBY => 'systemcreatedby',
+	self::SYSTEMMODIFIEDAT => 'systemmodifiedat',
+	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCurrencyCode(): ?string
     {
         return $this->getData(self::CURRENCY_CODE);
     }
 
-    public function setCurrencyCode(string $value)
+    public function setCurrencyCode(?string $value)
     {
         return $this->setData(self::CURRENCY_CODE, $value);
     }
@@ -44,7 +68,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -54,7 +78,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::STORE_NO);
     }
 
-    public function setStoreNo(string $value)
+    public function setStoreNo(?string $value)
     {
         return $this->setData(self::STORE_NO, $value);
     }
@@ -64,7 +88,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::TENDER_TYPE_CODE);
     }
 
-    public function setTenderTypeCode(string $value)
+    public function setTenderTypeCode(?string $value)
     {
         return $this->setData(self::TENDER_TYPE_CODE, $value);
     }
@@ -74,7 +98,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::ACCOUNT_TYPE);
     }
 
-    public function setAccountType(string $value)
+    public function setAccountType(?string $value)
     {
         return $this->setData(self::ACCOUNT_TYPE, $value);
     }
@@ -84,7 +108,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::ACCOUNT_NO);
     }
 
-    public function setAccountNo(string $value)
+    public function setAccountNo(?string $value)
     {
         return $this->setData(self::ACCOUNT_NO, $value);
     }
@@ -94,7 +118,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::ACCOUNT_NAME);
     }
 
-    public function setAccountName(string $value)
+    public function setAccountName(?string $value)
     {
         return $this->setData(self::ACCOUNT_NAME, $value);
     }
@@ -104,7 +128,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::DIFFERENCE_GL_ACC);
     }
 
-    public function setDifferenceGLAcc(string $value)
+    public function setDifferenceGLAcc(?string $value)
     {
         return $this->setData(self::DIFFERENCE_GL_ACC, $value);
     }
@@ -114,77 +138,77 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->getData(self::PRIMARY_KEY);
     }
 
-    public function setPrimaryKey(string $value)
+    public function setPrimaryKey(?string $value)
     {
         return $this->setData(self::PRIMARY_KEY, $value);
     }
 
-    public function getPOSPickupWarningAmount(): ?string
+    public function getPosPickupWarningAmount(): ?string
     {
         return $this->getData(self::POS_PICKUP_WARNING_AMOUNT);
     }
 
-    public function setPOSPickupWarningAmount(string $value)
+    public function setPosPickupWarningAmount(?string $value)
     {
         return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }
 
-    public function getPOSPickupWarningText(): ?string
+    public function getPosPickupWarningText(): ?string
     {
         return $this->getData(self::POS_PICKUP_WARNING_TEXT);
     }
 
-    public function setPOSPickupWarningText(string $value)
+    public function setPosPickupWarningText(?string $value)
     {
         return $this->setData(self::POS_PICKUP_WARNING_TEXT, $value);
     }
 
-    public function getSystemId(): ?string
+    public function getSystemid(): ?string
     {
         return $this->getData(self::SYSTEMID);
     }
 
-    public function setSystemId(string $value)
+    public function setSystemid(?string $value)
     {
         return $this->setData(self::SYSTEMID, $value);
     }
 
-    public function getSystemCreatedAt(): ?\DateTime
+    public function getSystemcreatedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMCREATEDAT);
     }
 
-    public function setSystemCreatedAt(\DateTime $value)
+    public function setSystemcreatedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMCREATEDAT, $value);
     }
 
-    public function getSystemCreatedBy(): ?string
+    public function getSystemcreatedby(): ?string
     {
         return $this->getData(self::SYSTEMCREATEDBY);
     }
 
-    public function setSystemCreatedBy(string $value)
+    public function setSystemcreatedby(?string $value)
     {
         return $this->setData(self::SYSTEMCREATEDBY, $value);
     }
 
-    public function getSystemModifiedAt(): ?\DateTime
+    public function getSystemmodifiedat(): ?\DateTime
     {
         return $this->getData(self::SYSTEMMODIFIEDAT);
     }
 
-    public function setSystemModifiedAt(\DateTime $value)
+    public function setSystemmodifiedat(?\DateTime $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDAT, $value);
     }
 
-    public function getSystemModifiedBy(): ?string
+    public function getSystemmodifiedby(): ?string
     {
         return $this->getData(self::SYSTEMMODIFIEDBY);
     }
 
-    public function setSystemModifiedBy(string $value)
+    public function setSystemmodifiedby(?string $value)
     {
         return $this->setData(self::SYSTEMMODIFIEDBY, $value);
     }

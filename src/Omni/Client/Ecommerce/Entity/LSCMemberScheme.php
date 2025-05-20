@@ -19,13 +19,28 @@ class LSCMemberScheme extends AbstractModel
     public const UPDATE_SEQUENCE = 'Update Sequence';
     public const MIN_POINT_FOR_UPGRADE = 'Min. Point for Upgrade';
 
+    public array $dbColumnsMapping = [
+	self::CODE => 'code',
+	self::DESCRIPTION => 'description',
+	self::CLUB_CODE => 'club_code',
+	self::NEXT_SCHEME => 'next_scheme',
+	self::NEXT_SCHEME_BENEFITS => 'next_scheme_benefits',
+	self::UPDATE_SEQUENCE => 'update_sequence',
+	self::MIN_POINT_FOR_UPGRADE => 'min_point_for_upgrade',
+    ];
+
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
 
     public function getCode(): ?string
     {
         return $this->getData(self::CODE);
     }
 
-    public function setCode(string $value)
+    public function setCode(?string $value)
     {
         return $this->setData(self::CODE, $value);
     }
@@ -35,7 +50,7 @@ class LSCMemberScheme extends AbstractModel
         return $this->getData(self::DESCRIPTION);
     }
 
-    public function setDescription(string $value)
+    public function setDescription(?string $value)
     {
         return $this->setData(self::DESCRIPTION, $value);
     }
@@ -45,7 +60,7 @@ class LSCMemberScheme extends AbstractModel
         return $this->getData(self::CLUB_CODE);
     }
 
-    public function setClubCode(string $value)
+    public function setClubCode(?string $value)
     {
         return $this->setData(self::CLUB_CODE, $value);
     }
@@ -55,7 +70,7 @@ class LSCMemberScheme extends AbstractModel
         return $this->getData(self::NEXT_SCHEME);
     }
 
-    public function setNextScheme(string $value)
+    public function setNextScheme(?string $value)
     {
         return $this->setData(self::NEXT_SCHEME, $value);
     }
@@ -65,7 +80,7 @@ class LSCMemberScheme extends AbstractModel
         return $this->getData(self::NEXT_SCHEME_BENEFITS);
     }
 
-    public function setNextSchemeBenefits(string $value)
+    public function setNextSchemeBenefits(?string $value)
     {
         return $this->setData(self::NEXT_SCHEME_BENEFITS, $value);
     }
@@ -75,7 +90,7 @@ class LSCMemberScheme extends AbstractModel
         return $this->getData(self::UPDATE_SEQUENCE);
     }
 
-    public function setUpdateSequence(int $value)
+    public function setUpdateSequence(?int $value)
     {
         return $this->setData(self::UPDATE_SEQUENCE, $value);
     }
@@ -85,7 +100,7 @@ class LSCMemberScheme extends AbstractModel
         return $this->getData(self::MIN_POINT_FOR_UPGRADE);
     }
 
-    public function setMinPointForUpgrade(string $value)
+    public function setMinPointForUpgrade(?string $value)
     {
         return $this->setData(self::MIN_POINT_FOR_UPGRADE, $value);
     }

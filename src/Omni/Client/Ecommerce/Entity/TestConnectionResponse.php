@@ -18,63 +18,77 @@ class TestConnectionResponse extends AbstractModel
     public const LSRETAILLICENSEKEYACTIVE = 'LSRetailLicenseKeyActive';
     public const LSRETAILLICENSEUNITECOM = 'LSRetailLicenseUnitEcom';
 
+    public array $dbColumnsMapping = [
+	self::APPLICATIONVERSION => 'applicationversion',
+	self::APPLICATIONBUILD => 'applicationbuild',
+	self::LSRETAILVERSION => 'lsretailversion',
+	self::LSRETAILCOPYRIGHT => 'lsretailcopyright',
+	self::LSRETAILLICENSEKEYACTIVE => 'lsretaillicensekeyactive',
+	self::LSRETAILLICENSEUNITECOM => 'lsretaillicenseunitecom',
+    ];
 
-    public function getApplicationVersion(): ?string
+    public function getDbColumnsMapping(): array
+    {
+        return $this->dbColumnsMapping;
+    }
+
+
+    public function getApplicationversion(): ?string
     {
         return $this->getData(self::APPLICATIONVERSION);
     }
 
-    public function setApplicationVersion(string $value)
+    public function setApplicationversion(?string $value)
     {
         return $this->setData(self::APPLICATIONVERSION, $value);
     }
 
-    public function getApplicationBuild(): ?string
+    public function getApplicationbuild(): ?string
     {
         return $this->getData(self::APPLICATIONBUILD);
     }
 
-    public function setApplicationBuild(string $value)
+    public function setApplicationbuild(?string $value)
     {
         return $this->setData(self::APPLICATIONBUILD, $value);
     }
 
-    public function getLSRetailVersion(): ?string
+    public function getLsretailversion(): ?string
     {
         return $this->getData(self::LSRETAILVERSION);
     }
 
-    public function setLSRetailVersion(string $value)
+    public function setLsretailversion(?string $value)
     {
         return $this->setData(self::LSRETAILVERSION, $value);
     }
 
-    public function getLSRetailCopyright(): ?string
+    public function getLsretailcopyright(): ?string
     {
         return $this->getData(self::LSRETAILCOPYRIGHT);
     }
 
-    public function setLSRetailCopyright(string $value)
+    public function setLsretailcopyright(?string $value)
     {
         return $this->setData(self::LSRETAILCOPYRIGHT, $value);
     }
 
-    public function getLSRetailLicenseKeyActive(): ?bool
+    public function getLsretaillicensekeyactive(): ?bool
     {
         return $this->getData(self::LSRETAILLICENSEKEYACTIVE);
     }
 
-    public function setLSRetailLicenseKeyActive(bool $value)
+    public function setLsretaillicensekeyactive(?bool $value)
     {
         return $this->setData(self::LSRETAILLICENSEKEYACTIVE, $value);
     }
 
-    public function getLSRetailLicenseUnitEcom(): ?bool
+    public function getLsretaillicenseunitecom(): ?bool
     {
         return $this->getData(self::LSRETAILLICENSEUNITECOM);
     }
 
-    public function setLSRetailLicenseUnitEcom(bool $value)
+    public function setLsretaillicenseunitecom(?bool $value)
     {
         return $this->setData(self::LSRETAILLICENSEUNITECOM, $value);
     }
