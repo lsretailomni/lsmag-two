@@ -3063,7 +3063,8 @@ class ReplicationHelper extends AbstractHelper
             }
             foreach ($items as $item) {
                 $allowUom = true;
-                if ($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) {
+                if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
+                    $item->getEComSelection() == 1) {
                     $allowUom = false;
                 }
                 if ($allowUom) {

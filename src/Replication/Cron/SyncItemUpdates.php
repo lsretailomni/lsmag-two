@@ -151,7 +151,10 @@ class SyncItemUpdates extends ProductCreateTask
                     }
                 } else {
                     $product = $this->replicationHelper->getProductDataByIdentificationAttributes(
-                        $hierarchyLeaf->getNavId()
+                        $hierarchyLeaf->getNavId(),
+                        '',
+                        '',
+                        $this->store->getId()
                     );
                     if ($product) {
                         $this->replicationHelper->assignProductToCategories($product, $this->store);
