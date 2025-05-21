@@ -1795,7 +1795,7 @@ class ProductCreateTask
                         $itemId,
                         '',
                         '',
-                        $this->store->getId()
+                        'all'
                     );
                     if ($productData->getTypeId() == 'configurable') {
                         $children = $productData->getTypeInstance()->getUsedProducts($productData);

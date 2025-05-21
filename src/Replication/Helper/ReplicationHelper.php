@@ -3821,14 +3821,15 @@ class ReplicationHelper extends AbstractHelper
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
-        if ($storeId !== '' && $storeId !== 'global') {
+        if ($storeId !== '' && $storeId !== 'global' && $storeId !== 'all') {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
                 $storeId
             )->create();
-        } elseif ($storeId === 'global') {
+        } elseif ($storeId === 'global' || $storeId === 'all') {
             //add no store filter to fetch item id present in any store view
             $searchCriteria = $searchCriteria->create();
+            $this->lsr->setStoreId(0);
         } else {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
