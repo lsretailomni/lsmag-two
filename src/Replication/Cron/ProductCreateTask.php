@@ -609,11 +609,11 @@ class ProductCreateTask
                                 );
 
                                 $variants             = $this->getNewOrUpdatedProductVariants(-1, $item->getNavId());
-                                $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 $totalUomCodes        = $this->replicationHelper->getUomCodes(
                                     $item->getNavId(),
                                     $this->getScopeId()
                                 );
+                                $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item->getNavId());
                                 //Update UOM attributes for simple products
                                 if (empty($variants) && count($totalUomCodes[$item->getNavId()]) == 1) {
                                     foreach ($uomCodesNotProcessed as $uomCode) {
@@ -793,6 +793,13 @@ class ProductCreateTask
                             if ($fullReplicationVariantStatus == 1) {
                                 $this->updateVariantsOnly();
                                 $this->caterVariantsRemoval();
+                            }
+                            $fullReplicationItemUnitOfMeasure = $this->lsr->getConfigValueFromDb(
+                                ReplEcommItemUnitOfMeasuresTask::CONFIG_PATH_STATUS,
+                                ScopeInterface::SCOPE_WEBSITES,
+                                $this->getScopeId()
+                            );
+                            if ($fullReplicationItemUnitOfMeasure == 1) {
                                 $this->caterUomsRemoval();
                             }
                             if ($fullReplicationStandardVariantStatus == 1) {
@@ -1530,14 +1537,14 @@ class ProductCreateTask
                 /** @var ReplBarcodeRepository $itemBarcodes */
                 $itemBarcodes = $this->_getBarcode($item);
                 /** @var ReplItemRepository $itemData */
-                $itemData             = $this->_getItem($item);
-                $productVariants      = $this->getNewOrUpdatedProductVariants(-1, $item);
-                $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
+                $itemData        = $this->_getItem($item);
+                $productVariants = $this->getNewOrUpdatedProductVariants(-1, $item);
                 if (!empty($itemData)) {
-                    $totalUomCodes = $this->replicationHelper->getUomCodes(
+                    $totalUomCodes        = $this->replicationHelper->getUomCodes(
                         $itemData->getNavId(),
                         $this->getScopeId()
                     );
+                    $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(-1, $item);
                     if (count($totalUomCodes[$itemData->getNavId()]) > 1) {
                         if (!empty($productVariants) && empty($uomCodesNotProcessed)) {
                             $uomCodesNotProcessed = $this->getNewOrUpdatedProductUoms(
