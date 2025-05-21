@@ -2322,12 +2322,13 @@ class ProductCreateTask
                 $this->webStoreId,
                 $this->getScopeId()
             );
-
-            if (fmod((float)$itemStock->getQuantity(), 1) != 0) {
-                $stockItem
-                    ->setIsQtyDecimal(1)
-                    ->setUseConfigMinSaleQty(0)
-                    ->setMinSaleQty(0.1);
+            if ($itemStock) {
+                if (fmod((float)$itemStock->getQuantity(), 1) != 0) {
+                    $stockItem
+                        ->setIsQtyDecimal(1)
+                        ->setUseConfigMinSaleQty(0)
+                        ->setMinSaleQty(0.1);
+                }
             }
         }
         try {
