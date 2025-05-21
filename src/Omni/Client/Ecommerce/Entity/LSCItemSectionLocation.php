@@ -16,16 +16,16 @@ class LSCItemSectionLocation extends AbstractModel
     public const SECTION_CODE = 'Section Code';
     public const SHELF_CODE = 'Shelf Code';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::STORE_NO => 'store_no',
 	self::SECTION_CODE => 'section_code',
 	self::SHELF_CODE => 'shelf_code',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

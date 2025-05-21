@@ -195,6 +195,7 @@ CODE);
      * @param string $methodName
      * @param string $visibility
      * @param bool $isAbstract
+     * @param array $flags
      * @param array $parameters
      * @param ReflectionNamedType|null $returnType
      * @return void
@@ -203,6 +204,7 @@ CODE);
         string $methodName,
         string $visibility,
         bool $isAbstract = false,
+        array $flags = [],
         array $parameters = [],
         ReflectionNamedType $returnType = null
     ): void {
@@ -210,6 +212,7 @@ CODE);
         $methodGen->setName($methodName);
         $methodGen->setVisibility($visibility);
         $methodGen->setAbstract($isAbstract);
+        $methodGen->setFlags($flags);
 
         $builtinTypes = [
             'int', 'float', 'string', 'bool', 'array', 'object', 'mixed', 'void',

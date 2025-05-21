@@ -29,7 +29,7 @@ class StaffPermissionView extends AbstractModel
     public const MAX_DISCOUNT_TO_GIVE = 'Max. Discount to Give %';
     public const MAX_TOTAL_DISCOUNT = 'Max. Total Discount %';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::STAFF => 'staff',
 	self::MANAGER_PRIVILEGES => 'manager_privileges',
 	self::VOID_TRANSACTION => 'void_transaction',
@@ -49,9 +49,9 @@ class StaffPermissionView extends AbstractModel
 	self::MAX_TOTAL_DISCOUNT => 'max_total_discount',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

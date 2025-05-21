@@ -62,7 +62,7 @@ class LSCWIItemBuffer extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::NO => 'no',
 	self::DESCRIPTION => 'description',
 	self::SEARCH_DESCRIPTION => 'search_description',
@@ -115,9 +115,9 @@ class LSCWIItemBuffer extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

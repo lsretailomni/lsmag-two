@@ -39,7 +39,7 @@ class LSCWIDiscounts extends AbstractModel
     public const VARIANT_CODE = 'Variant Code';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CUSTOMER_DISC_GROUP => 'customer_disc_group',
 	self::DESCRIPTION => 'description',
 	self::DISCOUNT => 'discount',
@@ -69,9 +69,9 @@ class LSCWIDiscounts extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

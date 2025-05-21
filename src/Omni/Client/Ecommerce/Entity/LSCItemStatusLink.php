@@ -28,7 +28,7 @@ class LSCItemStatusLink extends AbstractModel
     public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
     public const BLOCK_SALES_RETURN = 'Block Sales Return';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::STATUS_CODE => 'status_code',
 	self::VARIANT_DIMENSION_1_CODE => 'variant_dimension_1_code',
@@ -47,9 +47,9 @@ class LSCItemStatusLink extends AbstractModel
 	self::BLOCK_SALES_RETURN => 'block_sales_return',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

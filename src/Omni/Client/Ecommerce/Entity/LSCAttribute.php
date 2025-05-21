@@ -35,7 +35,7 @@ class LSCAttribute extends AbstractModel
     public const VALUE_TYPE = 'Value Type';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ATTRIBUTE_IS_DIN_AREA_SECTION => 'attribute_is_din_area_section',
 	self::ATTRIBUTE_TYPE_ID => 'attribute_type_id',
 	self::CODE => 'code',
@@ -61,9 +61,9 @@ class LSCAttribute extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

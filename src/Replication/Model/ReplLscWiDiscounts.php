@@ -29,98 +29,98 @@ class ReplLscWiDiscounts extends \Ls\Omni\Client\Ecommerce\Entity\LSCWIDiscounts
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
-    public function setProcessed(bool $processed)
+    public function setProcessed(?bool $processed)
     {
         $this->setData('processed', $processed);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getProcessed() : bool
+    public function getProcessed() : ?bool
     {
         return $this->getData('processed');
     }
 
-    public function setIsUpdated(bool $is_updated)
+    public function setIsUpdated(?bool $is_updated)
     {
         $this->setData('is_updated', $is_updated);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getIsUpdated() : bool
+    public function getIsUpdated() : ?bool
     {
         return $this->getData('is_updated');
     }
 
-    public function setIsFailed(bool $is_failed)
+    public function setIsFailed(?bool $is_failed)
     {
         $this->setData('is_failed', $is_failed);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getIsFailed() : bool
+    public function getIsFailed() : ?bool
     {
         return $this->getData('is_failed');
     }
 
-    public function setCreatedAt(string $created_at)
+    public function setCreatedAt(?string $created_at)
     {
         $this->setData('created_at', $created_at);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getCreatedAt() : string
+    public function getCreatedAt() : ?string
     {
         return $this->getData('created_at');
     }
 
-    public function setUpdatedAt(string $updated_at)
+    public function setUpdatedAt(?string $updated_at)
     {
         $this->setData('updated_at', $updated_at);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getUpdatedAt() : string
+    public function getUpdatedAt() : ?string
     {
         return $this->getData('updated_at');
     }
 
-    public function setIdentityValue(string $identity_value)
+    public function setIdentityValue(?string $identity_value)
     {
         $this->setData('identity_value', $identity_value);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getIdentityValue() : string
+    public function getIdentityValue() : ?string
     {
         return $this->getData('identity_value');
     }
 
-    public function setChecksum(string $checksum)
+    public function setChecksum(?string $checksum)
     {
         $this->setData('checksum', $checksum);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getChecksum() : string
+    public function getChecksum() : ?string
     {
         return $this->getData('checksum');
     }
 
-    public function setProcessedAt(string $processed_at)
+    public function setProcessedAt(?string $processed_at)
     {
         $this->setData('processed_at', $processed_at);
         $this->setDataChanges(true);
         return $this;
     }
 
-    public function getProcessedAt() : string
+    public function getProcessedAt() : ?string
     {
         return $this->getData('processed_at');
     }

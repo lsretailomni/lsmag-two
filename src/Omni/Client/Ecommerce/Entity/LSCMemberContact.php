@@ -65,7 +65,7 @@ class LSCMemberContact extends AbstractModel
     public const TERRITORY_CODE = 'Territory Code';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ACCOUNT_NO => 'account_no',
 	self::ADDRESS => 'address',
 	self::ADDRESS_2 => 'address_2',
@@ -121,9 +121,9 @@ class LSCMemberContact extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

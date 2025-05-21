@@ -3,10 +3,10 @@
 namespace Ls\Replication\Cron;
 
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 use IteratorAggregate;
 use \Ls\Core\Model\Data as LsHelper;
 use \Ls\Core\Model\LSR;
-use \Ls\Omni\Client\OperationInterface;
 use \Ls\Replication\Helper\ReplicationHelper;
 use \Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
@@ -60,7 +60,6 @@ abstract class AbstractReplicationTask
     public $defaultScope = ScopeInterface::SCOPE_WEBSITES;
 
     /**
-     * AbstractReplicationTask constructor.
      * @param ScopeConfigInterface $scope_config
      * @param Config $resource_config
      * @param Logger $logger
@@ -137,9 +136,11 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param null $storeData
-     * @return array
-     * @throws ReflectionException
+     * Entry point for the cron when running manually from admin
+     *
+     * @param $storeData
+     * @return int[]
+     * @throws NoSuchEntityException
      */
     public function executeManually($storeData = null)
     {
@@ -149,6 +150,7 @@ abstract class AbstractReplicationTask
 
     /**
      * Update the Custom Replication Success Status
+     *
      * @param bool $storeId
      */
     public function updateSuccessStatus($storeId = false)
@@ -203,27 +205,6 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * @param array $array
-     * @param $object
-     * @return mixed
-     */
-    public function toObject(array $array, $object)
-    {
-        $class   = get_class($object);
-        $methods = get_class_methods($class);
-        foreach ($methods as $method) {
-            preg_match(' /^(set)(.*?)$/i', $method, $results);
-            $pre = $results[1] ?? '';
-            $k   = $results[2] ?? '';
-            $k   = strtolower(substr($k, 0, 1)) . substr($k, 1);
-            if ($pre == 'set' && !empty($array[$k])) {
-                $object->$method($array[$k]);
-            }
-        }
-        return $object;
-    }
-
-    /**
      * Save new source or update already existing source
      *
      * @param array $properties
@@ -232,6 +213,7 @@ abstract class AbstractReplicationTask
      */
     public function saveSource($properties, $source)
     {
+        $isDeleted = 0;
         if ($source->getIsDeleted()) {
             $uniqueAttributes = (array_key_exists(
                 $this->getConfigPath(),
@@ -239,6 +221,7 @@ abstract class AbstractReplicationTask
             )) ?
                 ReplicationHelper::DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()] :
                 ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
+            $isDeleted = 1;
         } else {
             $uniqueAttributes = ReplicationHelper::JOB_CODE_UNIQUE_FIELD_ARRAY[$this->getConfigPath()];
         }
@@ -267,9 +250,14 @@ abstract class AbstractReplicationTask
                 false
             ));
         }
-        $checksum             = $this->getHashGivenString($source);
-        $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source);
-        $entityArray          = $this->checkEntityExistByAttributes($uniqueAttributes, $source, $uniqueAttributesHash);
+        $checksum             = $this->getHashGivenString($source->getData());
+        $uniqueAttributesHash = $this->generateIdentityValue($uniqueAttributes, $source, $properties);
+        $entityArray          = $this->checkEntityExistByAttributes(
+            $uniqueAttributes,
+            $source,
+            $uniqueAttributesHash,
+            $properties
+        );
 
         if (!empty($entityArray)) {
             $entity = reset($entityArray);
@@ -281,22 +269,19 @@ abstract class AbstractReplicationTask
             $entity = $this->getFactory()->create();
         }
 
-        if ($entity->getChecksum() != $checksum) {
-            $entity->setChecksum($checksum);
-            $entity->setIdentityValue($uniqueAttributesHash);
+        $entity->setData('IsDeleted', $isDeleted);
 
-            foreach ($properties as $property) {
-                if ($property === 'nav_id') {
-                    $setMethod = 'setNavId';
-                    $getMethod = 'getId';
-                } else {
-                    $fieldNameCapitalized = str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
-                    $setMethod            = "set$fieldNameCapitalized";
-                    $getMethod            = "get$fieldNameCapitalized";
-                }
-                if ($entity && $source && method_exists($entity, $setMethod) && method_exists($source, $getMethod)) {
-                    $entity->{$setMethod}($source->{$getMethod}());
-                }
+        if ($entity->getChecksum() != $checksum) {
+            $entity->addData(
+                [
+                    'checksum' => $checksum,
+                    'identity_value' => $uniqueAttributesHash,
+                    'scope' => $source->getScope(),
+                    'scope_id' => $source->getScopeId()
+                ]
+            );
+            foreach ($properties as $propertyIndex => $property) {
+                $entity->setData($property, $source->getData($propertyIndex));
             }
         }
 
@@ -316,13 +301,8 @@ abstract class AbstractReplicationTask
     {
         if ($this->properties == null) {
             // @codingStandardsIgnoreStart
-            $reflected_entity = new ReflectionClass($this->getMainEntity());
+            $this->properties = $this->getMainEntity()::getDbColumnsMapping();
             // @codingStandardsIgnoreEnd
-            $properties = [];
-            foreach ($reflected_entity->getProperties() as $property) {
-                $properties[] = $property->getName();
-            }
-            $this->properties = $properties;
         }
         return $this->properties;
     }
@@ -331,12 +311,17 @@ abstract class AbstractReplicationTask
      * Check the Entity exist or not
      *
      * @param array $uniqueAttributes
-     * @param mixed $source
+     * @param $source
      * @param string $uniqueAttributesHash
+     * @param array $properties
      * @return mixed
      */
-    public function checkEntityExistByAttributes($uniqueAttributes, $source, $uniqueAttributesHash)
-    {
+    public function checkEntityExistByAttributes(
+        array $uniqueAttributes,
+        $source,
+        string $uniqueAttributesHash,
+        array $properties
+    ) {
         $criteria = $this->getSearchCriteria();
         $criteria->addFilter(ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, $uniqueAttributesHash);
 
@@ -346,7 +331,8 @@ abstract class AbstractReplicationTask
             $criteria = $this->getSearchCriteria();
 
             foreach ($uniqueAttributes as $attribute) {
-                $sourceValue = $this->getAttributeValue($attribute, $source);
+                $key = array_search($attribute, $properties);
+                $sourceValue = $source->getData($key);
 
                 if ($sourceValue == "") {
                     $criteria->addFilter($attribute, true, 'null');
@@ -379,14 +365,16 @@ abstract class AbstractReplicationTask
      *
      * @param array $uniqueAttributes
      * @param mixed $source
+     * @param array $properties
      * @return int
      */
-    public function generateIdentityValue($uniqueAttributes, $source)
+    public function generateIdentityValue($uniqueAttributes, $source, $properties)
     {
         $uniqueAttributesHash = [];
 
         foreach ($uniqueAttributes as $index => $attribute) {
-            $sourceValue            = $this->getAttributeValue($attribute, $source);
+            $key = array_search($attribute, $properties);
+            $sourceValue = $source->getData($key);
             $uniqueAttributesHash[] = ($sourceValue !== "" ? $sourceValue : $attribute) . '#' . $index;
         }
 
@@ -425,20 +413,6 @@ abstract class AbstractReplicationTask
     {
         // phpcs:ignore Magento2.Security.InsecureFunction
         return crc32(serialize($value));
-    }
-
-    /**
-     * @param $nav_id
-     * @return bool
-     */
-    public function checkNavIdExist($nav_id)
-    {
-        try {
-            $item = $this->getFactory()->create();
-            return $item->loadByAttribute('nav_id', $nav_id);
-        } catch (NoSuchEntityException $e) {
-            return false;
-        }
     }
 
     /**
@@ -486,17 +460,17 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * Get max key
+     * Get last entry no
      *
      * @param $storeId
      * @return mixed|null
      */
-    public function getMaxKey($storeId)
+    public function getLastEntryNo($storeId)
     {
         $lsrModel = $this->getLsrModel();
 
         return $lsrModel->getConfigValueFromDb(
-            $this->getConfigPathMaxKey(),
+            $this->getConfigPathLastEntryNo(),
             $this->defaultScope,
             $storeId
         );
@@ -532,47 +506,27 @@ abstract class AbstractReplicationTask
     }
 
     /**
-     * Persist max key
+     * Persist last entry no
      *
-     * @param $maxKey
-     * @param $storeId
+     * @param string $lastEntryNo
+     * @param string $storeId
      * @return void
      */
-    public function persistMaxKey($maxKey, $storeId)
+    public function persistLastEntryNo($lastEntryNo, $storeId)
     {
-        $this->rep_helper->updateConfigValue($maxKey, $this->getConfigPathMaxKey(), $storeId, $this->defaultScope);
-    }
-
-    /**
-     * @param $result
-     * @return null|Traversable
-     * @throws ReflectionException
-     */
-    public function getIterator($result)
-    {
-        if ($this->iterator_method === null) {
-            // @codingStandardsIgnoreStart
-            $reflected = new ReflectionClass($result);
-            // @codingStandardsIgnoreEnd
-            foreach ($reflected->getMethods() as $method) {
-                $method_name = $method->getName();
-                if (strpos($method_name, 'get') === 0 && !in_array($method, self::$bypass_methods)) {
-                    $this->iterator_method = $method_name;
-                    break;
-                }
-            }
-        }
-        $iterable = $result->{$this->iterator_method}();
-
-        if ($iterable instanceof IteratorAggregate) {
-            return $iterable->getIterator();
-        }
-        return null;
+        $this->rep_helper->updateConfigValue(
+            $lastEntryNo,
+            $this->getConfigPathLastEntryNo(),
+            $storeId,
+            $this->defaultScope
+        );
     }
 
     /**
      * We cant use the DI method to get LSR model in here,
-     * so we need to use the object manager approach to get LSR model.
+     *
+     * So we need to use the object manager approach to get LSR model.
+     *
      * @return LSR
      */
     public function getLsrModel()
@@ -594,6 +548,8 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Get all stores
+     *
      * @return StoreInterface[]
      */
     public function getAllStores()
@@ -602,6 +558,8 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Get all websites
+     *
      * @return StoreInterface[]
      */
     public function getAllWebsites()
@@ -673,19 +631,19 @@ abstract class AbstractReplicationTask
     public function getRequiredParamsForMakingRequest($lsr, $storeId)
     {
         $lastKey    = $this->getLastKey($storeId);
-        $maxKey     = $this->getMaxKey($storeId);
+        $lastEntryNo = $this->getLastEntryNo($storeId);
         $batchSize  = $this->getBatchSize($lsr, $storeId);
         $webStoreID = $this->getWebStoreId($lsr, $storeId);
         $baseUrl    = $this->getBaseUrl($lsr, $storeId);
 
-        return [$lastKey, 1, $batchSize, $webStoreID, $maxKey, $baseUrl, ''];
+        return [$lastKey ?? '', true, $batchSize, $webStoreID, $lastEntryNo ?? 0, $baseUrl, ''];
     }
 
     /**
      * Make request Fetch Data for given store
      *
      * @param $storeId
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function fetchDataGivenStore($storeId)
     {
@@ -693,34 +651,25 @@ abstract class AbstractReplicationTask
         $lsr->setStoreId($storeId);
         // Need to check if is_lsr is enabled on each store and only process the relevant store.
         if ($lsr->isLSR($storeId, $this->defaultScope)) {
-//            $this->rep_helper->updateConfigValue(
-//                $this->rep_helper->getDateTime(),
-//                $this->getConfigPathLastExecute(),
-//                $storeId,
-//                $this->defaultScope
-//            );
-//
-//            list($lastKey, $fullReplication, $batchSize, $webStoreID, $maxKey, $baseUrl, $appId) =
-//                $this->getRequiredParamsForMakingRequest($lsr, $storeId);
-//
-//            $isFirstTime = $this->isFirstTime($storeId);
-//
-//            if (isset($isFirstTime) && $isFirstTime == 1) {
-//                $fullReplication = 0;
-//
-//                if ($this->isLastKeyAlwaysZero($storeId)) {
-//                    return;
-//                }
-//            }
-            $isFirstTime = true;
-            $storeNo = $this->getLsrModel()->getWebsiteConfig(
-                LSR::SC_SERVICE_STORE,
-                $storeId
+            $this->rep_helper->updateConfigValue(
+                $this->rep_helper->getDateTime(),
+                $this->getConfigPathLastExecute(),
+                $storeId,
+                $this->defaultScope
             );
-            $fullRepl = false;
-            $batchSize = 5;
-            $lastEntryNo = 161492;
-            $lastKey = '';
+
+            list($lastKey, $fullRepl, $batchSize, $webStoreID, $lastEntryNo, $baseUrl) =
+                $this->getRequiredParamsForMakingRequest($lsr, $storeId);
+
+            $isFirstTime = $this->isFirstTime($storeId);
+            if (isset($isFirstTime) && $isFirstTime == 1) {
+                $fullRepl = false;
+
+                if ($this->isLastKeyAlwaysZero($storeId)) {
+                    return;
+                }
+            }
+            $isFirstTime = true;
 
             $request = $this->makeRequest(
                 '',
@@ -728,7 +677,7 @@ abstract class AbstractReplicationTask
                 '',
                 $fullRepl,
                 $batchSize,
-                $storeNo,
+                $webStoreID,
                 $lastEntryNo,
                 $lastKey
             );
@@ -754,15 +703,11 @@ abstract class AbstractReplicationTask
             $this->cronStatus = false;
 
             if ($response && method_exists($response, 'getRecords')) {
-                $result                 = $response->getRecords();
-//                $lastKey                = $response->getLastKeyNo();
-//                $maxKey                 = $response->getMaxKey();
+                $result = $response->getRecords();
                 $lastEntryNo = $response->getLastEntryNo();
                 $lastKey = $response->getLastKey();
-                $remaining              = $response->getEndOfTable() ? 0 : 1;
+                $remaining = $response->getEndOfTable() ? 0 : 1;
                 $this->recordsRemaining = $remaining;
-
-//                $traversable            = $this->getIterator($result);
 
                 if ($result != null) {
                     // @codingStandardsIgnoreLine
@@ -781,17 +726,15 @@ abstract class AbstractReplicationTask
                 if ($remaining == 0) {
                     $this->cronStatus = true;
                 }
-//                $this->persistLastKey($lastKey, $storeId);
-//                $this->persistMaxKey($maxKey, $storeId);
-                if (!isset($isFirstTime) || $isFirstTime == 0) {
-                    $this->rep_helper->updateCronStatus(
-                        $this->cronStatus,
-                        $this->getConfigPathStatus(),
-                        $storeId,
-                        false,
-                        $this->defaultScope
-                    );
-                }
+                $this->persistLastKey($lastKey, $storeId);
+                $this->persistLastEntryNo($lastEntryNo, $storeId);
+                $this->rep_helper->updateCronStatus(
+                    $this->cronStatus,
+                    $this->getConfigPathStatus(),
+                    $storeId,
+                    false,
+                    $this->defaultScope
+                );
             } else {
                 $this->logger->debug(
                     'No result found for ' .
@@ -850,29 +793,32 @@ abstract class AbstractReplicationTask
     }
 
     /**
+     * Get config path
+     *
      * @return string
      */
     abstract public function getConfigPath();
 
     /**
+     * Get status config path
+     *
      * @return string
      */
     abstract public function getConfigPathStatus();
 
     /**
+     * Get last_execute config path
+     *
      * @return string
      */
     abstract public function getConfigPathLastExecute();
 
     /**
+     * Get last entry no config path
+     *
      * @return string
      */
-    abstract public function getConfigPathMaxKey();
-
-    /**
-     * @return string
-     */
-    abstract public function getConfigPathAppId();
+    abstract public function getConfigPathLastEntryNo();
 
     /**
      * Making request with required parameters
@@ -898,9 +844,24 @@ abstract class AbstractReplicationTask
         string $lastKey = ''
     );
 
+    /**
+     * Get factory instance
+     *
+     * @return mixed
+     */
     abstract public function getFactory();
 
+    /**
+     * Get repository instance
+     *
+     * @return mixed
+     */
     abstract public function getRepository();
 
+    /**
+     * Get main entry model class
+     *
+     * @return mixed
+     */
     abstract public function getMainEntity();
 }

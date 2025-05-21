@@ -32,7 +32,7 @@ class LSCAttributeValue extends AbstractModel
     public const VALUE_CALCULATED = 'Value Calculated';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ATTRIBUTE_CODE => 'attribute_code',
 	self::ATTRIBUTE_VALUE => 'attribute_value',
 	self::DATE_VALUE => 'date_value',
@@ -55,9 +55,9 @@ class LSCAttributeValue extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

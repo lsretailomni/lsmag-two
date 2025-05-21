@@ -18,7 +18,7 @@ class LSCExtdVariantValues extends AbstractModel
     public const DIMENSION = 'Dimension';
     public const LOGICAL_ORDER = 'Logical Order';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::FRAMEWORK_CODE => 'framework_code',
 	self::ITEM_NO => 'item_no',
 	self::CODE => 'code',
@@ -27,9 +27,9 @@ class LSCExtdVariantValues extends AbstractModel
 	self::LOGICAL_ORDER => 'logical_order',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

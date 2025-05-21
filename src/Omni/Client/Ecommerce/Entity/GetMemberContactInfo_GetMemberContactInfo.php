@@ -25,7 +25,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
     public const LSC_MEMBERSHIP_CARD = 'LSCMembershipCard';
     public const TABLE_NO = 'TableNo.';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::DECIMAL_VALUE => 'decimal_value',
 	self::FIELD_NAME => 'field_name',
 	self::FIELD_NO => 'field_no',
@@ -41,9 +41,9 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
 	self::TABLE_NO => 'table_no',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

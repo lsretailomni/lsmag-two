@@ -28,7 +28,7 @@ class LSCWIItemRecipeBuffer extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::PARENT_ITEM_NO => 'parent_item_no',
 	self::LINE_NO => 'line_no',
 	self::TYPE => 'type',
@@ -47,9 +47,9 @@ class LSCWIItemRecipeBuffer extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

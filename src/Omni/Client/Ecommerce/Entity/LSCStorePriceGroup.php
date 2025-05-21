@@ -14,14 +14,14 @@ class LSCStorePriceGroup extends AbstractModel
     public const STORE = 'Store';
     public const PRICE_GROUP_CODE = 'Price Group Code';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::STORE => 'store',
 	self::PRICE_GROUP_CODE => 'price_group_code',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

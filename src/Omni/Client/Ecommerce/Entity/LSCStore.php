@@ -33,7 +33,7 @@ class LSCStore extends AbstractModel
     public const CALC_INV_FOR_SOURCING_LOCATION = 'Calc Inv for Sourcing Location';
     public const STORE_SALES_TYPE_FILTER = 'Store Sales Type Filter';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::NO => 'no',
 	self::NAME => 'name',
 	self::ADDRESS => 'address',
@@ -57,9 +57,9 @@ class LSCStore extends AbstractModel
 	self::STORE_SALES_TYPE_FILTER => 'store_sales_type_filter',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

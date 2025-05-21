@@ -20,7 +20,7 @@ class LSCMembershipCard extends AbstractModel
     public const LINKED_TO_ACCOUNT = 'Linked to Account';
     public const STATUS = 'Status';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CARD_NO => 'card_no',
 	self::BLOCKED_BY => 'blocked_by',
 	self::REASON_BLOCKED => 'reason_blocked',
@@ -31,9 +31,9 @@ class LSCMembershipCard extends AbstractModel
 	self::STATUS => 'status',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

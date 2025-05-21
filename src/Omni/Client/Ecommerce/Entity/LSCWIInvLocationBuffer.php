@@ -21,7 +21,7 @@ class LSCWIInvLocationBuffer extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::STORE_NO => 'store_no',
 	self::TYPE => 'type',
 	self::LOCATION_CODE => 'location_code',
@@ -33,9 +33,9 @@ class LSCWIInvLocationBuffer extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

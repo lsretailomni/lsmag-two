@@ -50,7 +50,7 @@ class ItemCategory extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::PARENT_CATEGORY => 'parent_category',
 	self::DESCRIPTION => 'description',
@@ -91,9 +91,9 @@ class ItemCategory extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

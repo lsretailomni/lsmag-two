@@ -21,7 +21,7 @@ class LSCDataTranslation extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::TRANSLATION_ID => 'translation_id',
 	self::KEY => 'key',
 	self::LANGUAGE_CODE => 'language_code',
@@ -33,9 +33,9 @@ class LSCDataTranslation extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -19,7 +19,7 @@ class HierarchyView extends AbstractModel
     public const SALES_TYPE_FILTER = 'Sales Type Filter';
     public const VALIDATION_SCHEDULE_ID = 'Validation Schedule ID';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::HIERARCHY_CODE => 'hierarchy_code',
 	self::DESCRIPTION => 'description',
 	self::TYPE => 'type',
@@ -29,9 +29,9 @@ class HierarchyView extends AbstractModel
 	self::VALIDATION_SCHEDULE_ID => 'validation_schedule_id',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

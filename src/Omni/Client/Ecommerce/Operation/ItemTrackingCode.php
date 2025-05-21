@@ -68,6 +68,11 @@ class ItemTrackingCode
             $fieldsDefinition = [];
         }
 
+        $deletedFieldsDefinition = [];
+        if (isset($data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'])) {
+            $deletedFieldsDefinition = $data['DataSet']['DataSetDel']['DynDataSet']['DataSetFields'];
+        }
+
         if (isset($recRef['Records'])) {
             $rows = $recRef['Records'];
         } elseif (isset($recRef['DataSetRows'])) {
@@ -80,6 +85,11 @@ class ItemTrackingCode
         foreach ($fieldsDefinition as $field) {
             $fields[$field['FieldIndex']] = $field['FieldName'];
         }
+
+        foreach ($deletedFieldsDefinition as $field) {
+            $deletedFields[$field['FieldIndex']] = $field['FieldName'];
+        }
+
         $results = [];
         if (!empty($fields)) {
             foreach ($rows as $row) {
@@ -92,19 +102,19 @@ class ItemTrackingCode
                 }
                 $results[] = $entry;
             }
+        }
 
-            if (!empty($deletedRows)) {
-                foreach ($deletedRows as $row) {
-                    $values = $row['Fields'] ?? [];
-                    $entry = $this->createInstance(
-                        \Ls\Omni\Client\Ecommerce\Entity\LSCAttribute::class
-                    );
-                    $entry->setData('is_deleted', true);
-                    foreach ($values as $value) {
-                        $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
-                    }
-                    $results[] = $entry;
+        if (!empty($deletedFields)) {
+            foreach ($deletedRows as $row) {
+                $values = $row['Fields'] ?? [];
+                $entry = $this->createInstance(
+                    \Ls\Omni\Client\Ecommerce\Entity\ItemTrackingCode::class
+                );
+                $entry->setData('is_deleted', true);
+                foreach ($values as $value) {
+                    $entry->setData($deletedFields[$value['FieldIndex']], $value['FieldValue']);
                 }
+                $results[] = $entry;
             }
         }
 

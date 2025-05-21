@@ -22,7 +22,7 @@ class LSCMemberAccount extends AbstractModel
     public const STATUS = 'Status';
     public const ACCOUNT_TYPE = 'Account Type';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::NO => 'no',
 	self::BLOCKED => 'blocked',
 	self::REASON_BLOCKED => 'reason_blocked',
@@ -35,9 +35,9 @@ class LSCMemberAccount extends AbstractModel
 	self::ACCOUNT_TYPE => 'account_type',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -35,7 +35,7 @@ class StoreView extends AbstractModel
     public const STORE_GROUP_CODES = 'Store Group Codes';
     public const PRICE_GROUP_CODES = 'Price Group Codes';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::NO => 'no',
 	self::NAME => 'name',
 	self::ADDRESS => 'address',
@@ -61,9 +61,9 @@ class StoreView extends AbstractModel
 	self::PRICE_GROUP_CODES => 'price_group_codes',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

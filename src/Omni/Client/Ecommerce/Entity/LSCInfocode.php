@@ -17,7 +17,7 @@ class LSCInfocode extends AbstractModel
     public const EXPLANATORY_HEADER_TEXT = 'Explanatory Header Text';
     public const PROMPT = 'Prompt';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::MIN_SELECTION => 'min_selection',
 	self::MAX_SELECTION => 'max_selection',
@@ -25,9 +25,9 @@ class LSCInfocode extends AbstractModel
 	self::PROMPT => 'prompt',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

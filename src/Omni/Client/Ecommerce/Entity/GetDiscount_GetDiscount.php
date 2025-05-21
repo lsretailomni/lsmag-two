@@ -17,7 +17,7 @@ class GetDiscount_GetDiscount extends AbstractModel
     public const LSC_WI_MIX__MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
     public const LSC_WI_PRICE = 'LSCWIPrice';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::LSC_PERIODIC_DISCOUNT => 'lsc_periodic_discount',
 	self::LSC_PERIODIC_DISCOUNT_BENEFITS => 'lsc_periodic_discount_benefits',
 	self::LSC_WI_DISCOUNTS => 'lsc_wi_discounts',
@@ -25,9 +25,9 @@ class GetDiscount_GetDiscount extends AbstractModel
 	self::LSC_WI_PRICE => 'lsc_wi_price',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -14,14 +14,14 @@ class LSCItemSpecialGroupLink extends AbstractModel
     public const ITEM_NO = 'Item No.';
     public const SPECIAL_GROUP_CODE = 'Special Group Code';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::SPECIAL_GROUP_CODE => 'special_group_code',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

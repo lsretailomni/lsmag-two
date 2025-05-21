@@ -14,14 +14,14 @@ class LSCMemberLoginCard extends AbstractModel
     public const LOGIN_ID = 'Login ID';
     public const CARD_NO = 'Card No.';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::LOGIN_ID => 'login_id',
 	self::CARD_NO => 'card_no',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

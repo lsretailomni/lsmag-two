@@ -14,14 +14,14 @@ class LSCStoreGroupSetup extends AbstractModel
     public const STORE_CODE = 'Store Code';
     public const STORE_GROUP = 'Store Group';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::STORE_CODE => 'store_code',
 	self::STORE_GROUP => 'store_group',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

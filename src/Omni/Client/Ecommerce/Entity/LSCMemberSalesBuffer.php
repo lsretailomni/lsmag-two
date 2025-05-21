@@ -64,7 +64,7 @@ class LSCMemberSalesBuffer extends AbstractModel
     public const STORE_NO = 'Store No.';
     public const TERRITORY_CODE = 'Territory Code';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ADDRESS => 'address',
 	self::ADDRESS_2 => 'address_2',
 	self::CITY => 'city',
@@ -119,9 +119,9 @@ class LSCMemberSalesBuffer extends AbstractModel
 	self::TERRITORY_CODE => 'territory_code',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

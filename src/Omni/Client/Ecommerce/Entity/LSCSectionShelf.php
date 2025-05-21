@@ -16,16 +16,16 @@ class LSCSectionShelf extends AbstractModel
     public const CODE = 'Code';
     public const DESCRIPTION = 'Description';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::STORE_NO => 'store_no',
 	self::SECTION_CODE => 'section_code',
 	self::CODE => 'code',
 	self::DESCRIPTION => 'description',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

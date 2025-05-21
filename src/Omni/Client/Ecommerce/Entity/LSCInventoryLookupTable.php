@@ -42,7 +42,7 @@ class LSCInventoryLookupTable extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::VARIANT_CODE => 'variant_code',
 	self::LOCATION => 'location',
@@ -75,9 +75,9 @@ class LSCInventoryLookupTable extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

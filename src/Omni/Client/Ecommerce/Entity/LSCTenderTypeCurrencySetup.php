@@ -28,7 +28,7 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CURRENCY_CODE => 'currency_code',
 	self::DESCRIPTION => 'description',
 	self::STORE_NO => 'store_no',
@@ -47,9 +47,9 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

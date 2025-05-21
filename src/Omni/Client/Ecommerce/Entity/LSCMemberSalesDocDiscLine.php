@@ -19,7 +19,7 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
     public const OFFER_NO = 'Offer No.';
     public const OFFER_TYPE = 'Offer Type';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::DESCRIPTION => 'description',
 	self::DISCOUNT_AMOUNT => 'discount_amount',
 	self::DOCUMENT_ID => 'document_id',
@@ -29,9 +29,9 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
 	self::OFFER_TYPE => 'offer_type',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -25,7 +25,7 @@ class LSCBarcodes extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::BARCODE_NO => 'barcode_no',
 	self::SHOW_FOR_ITEM => 'show_for_item',
@@ -41,9 +41,9 @@ class LSCBarcodes extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

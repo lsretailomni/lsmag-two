@@ -35,7 +35,7 @@ class LSCWIItemModifier extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::PARENT_ITEM_NO => 'parent_item_no',
 	self::INFOCODE_CODE => 'infocode_code',
 	self::SUBCODE => 'subcode',
@@ -61,9 +61,9 @@ class LSCWIItemModifier extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

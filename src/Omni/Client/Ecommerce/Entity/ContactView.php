@@ -68,7 +68,7 @@ class ContactView extends AbstractModel
     public const LOGINID = 'LoginId';
     public const CUSTOMERID = 'CustomerId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ACCOUNT_NO => 'account_no',
 	self::CLUB_CODE => 'club_code',
 	self::SCHEME_CODE => 'scheme_code',
@@ -127,9 +127,9 @@ class ContactView extends AbstractModel
 	self::CUSTOMERID => 'customerid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

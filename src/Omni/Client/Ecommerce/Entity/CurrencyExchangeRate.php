@@ -27,7 +27,7 @@ class CurrencyExchangeRate extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CURRENCY_CODE => 'currency_code',
 	self::STARTING_DATE => 'starting_date',
 	self::EXCHANGE_RATE_AMOUNT => 'exchange_rate_amount',
@@ -45,9 +45,9 @@ class CurrencyExchangeRate extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

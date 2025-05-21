@@ -73,7 +73,7 @@ class PeriodicDiscView extends AbstractModel
     public const TENDER_OFFER_AMOUNT = 'Tender Offer Amount';
     public const STORE_GROUP_CODES = 'Store Group Codes';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::OFFER_NO => 'offer_no',
 	self::LINE_NO => 'line_no',
 	self::TYPE => 'type',
@@ -137,9 +137,9 @@ class PeriodicDiscView extends AbstractModel
 	self::STORE_GROUP_CODES => 'store_group_codes',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

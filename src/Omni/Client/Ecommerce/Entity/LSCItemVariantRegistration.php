@@ -35,7 +35,7 @@ class LSCItemVariantRegistration extends AbstractModel
     public const VARIANT_WEIGHT = 'Variant Weight';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::BARCODE => 'barcode',
 	self::DIMENSION_1_WEIGHT => 'dimension_1_weight',
 	self::DIMENSION_2_WEIGHT => 'dimension_2_weight',
@@ -61,9 +61,9 @@ class LSCItemVariantRegistration extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

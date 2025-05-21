@@ -23,7 +23,7 @@ class LSCInformationSubcode extends AbstractModel
     public const AMOUNT_PERCENT = 'Amount /Percent';
     public const TIME_MODIFIER_MINUTES = 'Time Modifier Minutes';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::SUBCODE => 'subcode',
 	self::DESCRIPTION => 'description',
@@ -37,9 +37,9 @@ class LSCInformationSubcode extends AbstractModel
 	self::TIME_MODIFIER_MINUTES => 'time_modifier_minutes',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

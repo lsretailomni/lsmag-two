@@ -25,7 +25,7 @@ class HierarchyNodesLinkView extends AbstractModel
     public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const STATUS = 'Status';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::HIERARCHY_CODE => 'hierarchy_code',
 	self::NODE_ID => 'node_id',
 	self::TYPE => 'type',
@@ -41,9 +41,9 @@ class HierarchyNodesLinkView extends AbstractModel
 	self::STATUS => 'status',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

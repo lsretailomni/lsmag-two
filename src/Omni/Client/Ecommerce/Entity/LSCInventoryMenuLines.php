@@ -37,7 +37,7 @@ class LSCInventoryMenuLines extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::DEVICE_TYPE => 'device_type',
 	self::MENU_CODE => 'menu_code',
 	self::STORE_NO => 'store_no',
@@ -65,9 +65,9 @@ class LSCInventoryMenuLines extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

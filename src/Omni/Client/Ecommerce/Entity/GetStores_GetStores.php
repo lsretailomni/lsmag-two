@@ -18,7 +18,7 @@ class GetStores_GetStores extends AbstractModel
     public const LSC_STORE_GROUP_SETUP = 'LSCStoreGroupSetup';
     public const LSC_STORE_PRICE_GROUP = 'LSCStorePriceGroup';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::DESCRIPTION => 'description',
 	self::LSC_SALES_TYPE => 'lsc_sales_type',
@@ -27,9 +27,9 @@ class GetStores_GetStores extends AbstractModel
 	self::LSC_STORE_PRICE_GROUP => 'lsc_store_price_group',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

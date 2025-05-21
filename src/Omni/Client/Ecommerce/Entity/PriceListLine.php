@@ -61,7 +61,7 @@ class PriceListLine extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::PRICE_LIST_CODE => 'price_list_code',
 	self::LINE_NO => 'line_no',
 	self::SOURCE_TYPE => 'source_type',
@@ -113,9 +113,9 @@ class PriceListLine extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

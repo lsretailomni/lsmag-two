@@ -8,13 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Logger\Logger;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Config\Model\ResourceModel\Config;
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\LSCWIInvLocationBuffer;
 use Ls\Replication\Api\ReplLscWiInvLocationBufferRepositoryInterface as ReplLscWiInvLocationBufferRepository;
 use Ls\Replication\Model\ReplLscWiInvLocationBufferFactory;
 use Ls\Replication\Api\Data\ReplLscWiInvLocationBufferInterface;
@@ -29,9 +23,7 @@ class ReplLscWiInvLocationBufferTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_lsc_wi_inv_location_buffer';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_lsc_wi_inv_location_buffer';
-
-    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_lsc_wi_inv_location_buffer';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_lsc_wi_inv_location_buffer';
 
     /**
      * @property ReplLscWiInvLocationBufferRepository $repository
@@ -102,32 +94,27 @@ class ReplLscWiInvLocationBufferTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath()
+    public function getConfigPath() : string
     {
         return self::CONFIG_PATH;
     }
 
-    public function getConfigPathStatus()
+    public function getConfigPathStatus() : string
     {
         return self::CONFIG_PATH_STATUS;
     }
 
-    public function getConfigPathLastExecute()
+    public function getConfigPathLastExecute() : string
     {
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
-    public function getConfigPathMaxKey()
+    public function getConfigPathLastEntryNo() : string
     {
-        return self::CONFIG_PATH_MAX_KEY;
+        return self::CONFIG_PATH_LAST_ENTRY_NO;
     }
 
-    public function getConfigPathAppId()
-    {
-        return self::CONFIG_PATH_APP_ID;
-    }
-
-    public function getMainEntity()
+    public function getMainEntity() : ReplLscWiInvLocationBufferInterface
     {
         return $this->dataInterface;
     }

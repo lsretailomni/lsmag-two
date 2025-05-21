@@ -24,7 +24,7 @@ class LSCRetailImageLink extends AbstractModel
     public const TABLENAME = 'TableName';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::DISPLAY_ORDER => 'display_order',
 	self::IMAGE_DESCRIPTION => 'image_description',
 	self::IMAGE_ID => 'image_id',
@@ -39,9 +39,9 @@ class LSCRetailImageLink extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

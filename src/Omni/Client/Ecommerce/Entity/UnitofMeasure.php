@@ -24,7 +24,7 @@ class UnitofMeasure extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::DESCRIPTION => 'description',
 	self::INTERNATIONAL_STANDARD_CODE => 'international_standard_code',
@@ -39,9 +39,9 @@ class UnitofMeasure extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

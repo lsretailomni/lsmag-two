@@ -18,7 +18,7 @@ class TestConnectionResponse extends AbstractModel
     public const LSRETAILLICENSEKEYACTIVE = 'LSRetailLicenseKeyActive';
     public const LSRETAILLICENSEUNITECOM = 'LSRetailLicenseUnitEcom';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::APPLICATIONVERSION => 'applicationversion',
 	self::APPLICATIONBUILD => 'applicationbuild',
 	self::LSRETAILVERSION => 'lsretailversion',
@@ -27,9 +27,9 @@ class TestConnectionResponse extends AbstractModel
 	self::LSRETAILLICENSEUNITECOM => 'lsretaillicenseunitecom',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

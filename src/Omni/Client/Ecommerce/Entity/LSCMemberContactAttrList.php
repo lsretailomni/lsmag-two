@@ -18,7 +18,7 @@ class LSCMemberContactAttrList extends AbstractModel
     public const DESCRIPTION = 'Description';
     public const VALUE = 'Value';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ACCOUNT_NO => 'account_no',
 	self::CONTACT_NO => 'contact_no',
 	self::CODE => 'code',
@@ -27,9 +27,9 @@ class LSCMemberContactAttrList extends AbstractModel
 	self::VALUE => 'value',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

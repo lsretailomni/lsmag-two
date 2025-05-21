@@ -21,7 +21,7 @@ class LSCCollectionFramework extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::UNIT_OF_MEASURE => 'unit_of_measure',
 	self::ITEM => 'item',
 	self::VARIANT => 'variant',
@@ -33,9 +33,9 @@ class LSCCollectionFramework extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

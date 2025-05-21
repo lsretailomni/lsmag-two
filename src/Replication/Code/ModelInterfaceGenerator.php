@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Ls\Replication\Code;
 
 use Exception;
+use Laminas\Code\Generator\AbstractMemberGenerator;
 use Laminas\Code\Generator\MethodGenerator;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
@@ -64,6 +65,7 @@ class ModelInterfaceGenerator extends AbstractGenerator
                 $method->getName(),
                 MethodGenerator::VISIBILITY_PUBLIC,
                 false,
+                $method->isStatic() ? [AbstractMemberGenerator::FLAG_STATIC] : [],
                 $method->getParameters(),
                 $method->getReturnType()
             );
@@ -71,49 +73,49 @@ class ModelInterfaceGenerator extends AbstractGenerator
 
         $this->createProperty(
             null,
-            'bool',
+            '?bool',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'bool',
+            '?bool',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'bool',
+            '?bool',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'IdentityValue', 'variable_name' => ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, 'interface' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'Checksum', 'variable_name' => 'checksum', 'interface' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [MethodGenerator::VISIBILITY_PUBLIC],
             ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'interface' => true]
         );

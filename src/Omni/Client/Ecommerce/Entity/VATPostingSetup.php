@@ -46,7 +46,7 @@ class VATPostingSetup extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::VAT_BUS_POSTING_GROUP => 'vat_bus_posting_group',
 	self::VAT_PROD_POSTING_GROUP => 'vat_prod_posting_group',
 	self::VAT_CALCULATION_TYPE => 'vat_calculation_type',
@@ -83,9 +83,9 @@ class VATPostingSetup extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

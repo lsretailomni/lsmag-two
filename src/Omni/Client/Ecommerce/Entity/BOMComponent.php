@@ -20,7 +20,7 @@ class BOMComponent extends AbstractModel
     public const LSC_EXCLUSION = 'LSC Exclusion';
     public const LSC_PRICE_ON_EXCLUSION = 'LSC Price on Exclusion';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::PARENT_ITEM_NO => 'parent_item_no',
 	self::LINE_NO => 'line_no',
 	self::DESCRIPTION => 'description',
@@ -31,9 +31,9 @@ class BOMComponent extends AbstractModel
 	self::LSC_PRICE_ON_EXCLUSION => 'lsc_price_on_exclusion',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

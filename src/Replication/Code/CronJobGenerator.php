@@ -7,7 +7,6 @@ use Exception;
 use Laminas\Code\Generator\PropertyGenerator;
 use \Ls\Core\Code\AbstractGenerator;
 use \Ls\Core\Model\Data as LsHelper;
-use \Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
 use \Ls\Omni\Service\Soap\ReplicationOperation;
 use \Ls\Replication\Cron\AbstractReplicationTask;
 use \Ls\Replication\Helper\ReplicationHelper;
@@ -30,8 +29,6 @@ class CronJobGenerator extends AbstractGenerator
     public ReplicationOperation $operation;
 
     /**
-     * CronJobGenerator constructor.
-     *
      * @param ReplicationOperation $operation
      * @throws Exception
      */
@@ -52,13 +49,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->setNamespaceName($this->operation->getJobNamespace());
         $this->class->setExtendedClass(AbstractReplicationTask::class);
 
-        $this->class->addUse(Logger::class);
-        $this->class->addUse(ScopeConfigInterface::class);
-        $this->class->addUse(Config::class);
         $this->class->addUse(LsHelper::class, 'LsHelper');
-        $this->class->addUse(ReplicationHelper::class);
-        $this->class->addUse(ReplRequest::class);
-        $this->class->addUse($this->operation->getOperationFqn());
         $this->class->addUse($this->operation->getRepositoryInterfaceFqn(), $this->operation->getRepositoryName());
         $this->class->addUse($this->operation->getFactoryFqn());
         $this->class->addUse($this->operation->getInterfaceFqn());
@@ -71,8 +62,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addConstant('CONFIG_PATH', "ls_mag/replication/{$tableName}");
         $this->class->addConstant('CONFIG_PATH_STATUS', "ls_mag/replication/status_{$tableName}");
         $this->class->addConstant('CONFIG_PATH_LAST_EXECUTE', "ls_mag/replication/last_execute_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_MAX_KEY', "ls_mag/replication/max_key_{$tableName}");
-        $this->class->addConstant('CONFIG_PATH_APP_ID', "ls_mag/replication/app_id_{$tableName}");
+        $this->class->addConstant('CONFIG_PATH_LAST_ENTRY_NO', "ls_mag/replication/last_entry_no_{$tableName}");
 
         $this->createProperty(
             'repository',
@@ -105,8 +95,7 @@ class CronJobGenerator extends AbstractGenerator
         $this->class->addMethodFromGenerator($this->getConfigPath());
         $this->class->addMethodFromGenerator($this->getConfigPathStatus());
         $this->class->addMethodFromGenerator($this->getConfigPathLastExecute());
-        $this->class->addMethodFromGenerator($this->getConfigPathMaxKey());
-        $this->class->addMethodFromGenerator($this->getConfigPathAppId());
+        $this->class->addMethodFromGenerator($this->getConfigPathLastEntryNo());
         $this->class->addMethodFromGenerator($this->getMainEntity());
 
         $content = $this->file->generate();
@@ -131,9 +120,7 @@ class CronJobGenerator extends AbstractGenerator
             ": \\{$factoryName}" => ": {$factoryName}"
         ];
 
-        $content = str_replace(array_keys($replaceMap), array_values($replaceMap), $content);
-
-        return $content;
+        return str_replace(array_keys($replaceMap), array_values($replaceMap), $content);
     }
 
     /**
@@ -141,7 +128,7 @@ class CronJobGenerator extends AbstractGenerator
      *
      * @return MethodGenerator
      */
-    private function getConstructor(): MethodGenerator
+    public function getConstructor(): MethodGenerator
     {
         $constructor = new MethodGenerator();
         $constructor->setName('__construct')
@@ -174,7 +161,7 @@ CODE
      *
      * @return MethodGenerator
      */
-    private function getMakeRequest(): MethodGenerator
+    public function getMakeRequest(): MethodGenerator
     {
         $makeRequest = new MethodGenerator();
         $makeRequest->setName('makeRequest')
@@ -211,12 +198,13 @@ CODE
      *
      * @return MethodGenerator
      */
-    private function getConfigPath(): MethodGenerator
+    public function getConfigPath(): MethodGenerator
     {
         return (new MethodGenerator())
             ->setName('getConfigPath')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED)
-            ->setBody('return self::CONFIG_PATH;');
+            ->setBody('return self::CONFIG_PATH;')
+            ->setReturnType('string');
     }
 
     /**
@@ -224,12 +212,13 @@ CODE
      *
      * @return MethodGenerator
      */
-    private function getConfigPathStatus(): MethodGenerator
+    public function getConfigPathStatus(): MethodGenerator
     {
         return (new MethodGenerator())
             ->setName('getConfigPathStatus')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED)
-            ->setBody('return self::CONFIG_PATH_STATUS;');
+            ->setBody('return self::CONFIG_PATH_STATUS;')
+            ->setReturnType('string');
     }
 
     /**
@@ -237,38 +226,27 @@ CODE
      *
      * @return MethodGenerator
      */
-    private function getConfigPathLastExecute(): MethodGenerator
+    public function getConfigPathLastExecute(): MethodGenerator
     {
         return (new MethodGenerator())
             ->setName('getConfigPathLastExecute')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED)
-            ->setBody('return self::CONFIG_PATH_LAST_EXECUTE;');
+            ->setBody('return self::CONFIG_PATH_LAST_EXECUTE;')
+            ->setReturnType('string');
     }
 
     /**
-     * Get max key config path constant.
+     * Get last entry no config path constant.
      *
      * @return MethodGenerator
      */
-    private function getConfigPathMaxKey(): MethodGenerator
+    public function getConfigPathLastEntryNo(): MethodGenerator
     {
         return (new MethodGenerator())
-            ->setName('getConfigPathMaxKey')
+            ->setName('getConfigPathLastEntryNo')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED)
-            ->setBody('return self::CONFIG_PATH_MAX_KEY;');
-    }
-
-    /**
-     * Get app ID config path constant.
-     *
-     * @return MethodGenerator
-     */
-    private function getConfigPathAppId(): MethodGenerator
-    {
-        return (new MethodGenerator())
-            ->setName('getConfigPathAppId')
-            ->setVisibility(MethodGenerator::FLAG_PROTECTED)
-            ->setBody('return self::CONFIG_PATH_APP_ID;');
+            ->setBody('return self::CONFIG_PATH_LAST_ENTRY_NO;')
+            ->setReturnType('string');
     }
 
     /**
@@ -276,11 +254,12 @@ CODE
      *
      * @return MethodGenerator
      */
-    private function getMainEntity(): MethodGenerator
+    public function getMainEntity(): MethodGenerator
     {
         return (new MethodGenerator())
             ->setName('getMainEntity')
             ->setVisibility(MethodGenerator::FLAG_PROTECTED)
-            ->setBody('return $this->dataInterface;');
+            ->setBody('return $this->dataInterface;')
+            ->setReturnType($this->operation->getInterfaceName());
     }
 }

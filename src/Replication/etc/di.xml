@@ -212,6 +212,39 @@
                 type="Ls\Replication\Model\ReplStoreTenderTypeSearchResults"/>
     <preference for="Ls\Replication\Api\Data\ReplCountryCodeSearchResultsInterface"
                 type="Ls\Replication\Model\ReplCountryCodeSearchResults"/>
+
+
+    <preference for="Ls\Replication\Api\ReplLscAttributeRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscAttributeRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscAttributeInterface"
+                type="Ls\Replication\Model\ReplLscAttribute"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscAttributeSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscAttributeSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscAttributeValueRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscAttributeValueRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscAttributeValueInterface"
+                type="Ls\Replication\Model\ReplLscAttributeValue"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscAttributeValueSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscAttributeValueSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscAttributeOptionValueRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscAttributeOptionValueRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscAttributeOptionValueInterface"
+                type="Ls\Replication\Model\ReplLscAttributeOptionValue"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscAttributeOptionValueSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscAttributeOptionValueSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplVariantregviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplVariantregviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplVariantregviewInterface"
+                type="Ls\Replication\Model\ReplVariantregview"/>
+    <preference for="Ls\Replication\Api\Data\ReplVariantregviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplVariantregviewSearchResults"/>
+
+
+
+
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">

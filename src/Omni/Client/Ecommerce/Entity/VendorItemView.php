@@ -15,15 +15,15 @@ class VendorItemView extends AbstractModel
     public const VENDORNO = 'VendorNo';
     public const VENDORITEMNO = 'VendorItemNo';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEMNO => 'itemno',
 	self::VENDORNO => 'vendorno',
 	self::VENDORITEMNO => 'vendoritemno',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

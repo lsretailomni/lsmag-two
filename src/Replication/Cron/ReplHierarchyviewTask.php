@@ -8,13 +8,7 @@
 
 namespace Ls\Replication\Cron;
 
-use Ls\Replication\Logger\Logger;
-use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Config\Model\ResourceModel\Config;
 use Ls\Core\Model\Data as LsHelper;
-use Ls\Replication\Helper\ReplicationHelper;
-use Ls\Omni\Client\Ecommerce\Entity\ReplRequest;
-use Ls\Omni\Client\Ecommerce\Operation\HierarchyView;
 use Ls\Replication\Api\ReplHierarchyviewRepositoryInterface as ReplHierarchyviewRepository;
 use Ls\Replication\Model\ReplHierarchyviewFactory;
 use Ls\Replication\Api\Data\ReplHierarchyviewInterface;
@@ -29,9 +23,7 @@ class ReplHierarchyviewTask extends AbstractReplicationTask
 
     public const CONFIG_PATH_LAST_EXECUTE = 'ls_mag/replication/last_execute_repl_hierarchyview';
 
-    public const CONFIG_PATH_MAX_KEY = 'ls_mag/replication/max_key_repl_hierarchyview';
-
-    public const CONFIG_PATH_APP_ID = 'ls_mag/replication/app_id_repl_hierarchyview';
+    public const CONFIG_PATH_LAST_ENTRY_NO = 'ls_mag/replication/last_entry_no_repl_hierarchyview';
 
     /**
      * @property ReplHierarchyviewRepository $repository
@@ -102,32 +94,27 @@ class ReplHierarchyviewTask extends AbstractReplicationTask
         return $request;
     }
 
-    public function getConfigPath()
+    public function getConfigPath() : string
     {
         return self::CONFIG_PATH;
     }
 
-    public function getConfigPathStatus()
+    public function getConfigPathStatus() : string
     {
         return self::CONFIG_PATH_STATUS;
     }
 
-    public function getConfigPathLastExecute()
+    public function getConfigPathLastExecute() : string
     {
         return self::CONFIG_PATH_LAST_EXECUTE;
     }
 
-    public function getConfigPathMaxKey()
+    public function getConfigPathLastEntryNo() : string
     {
-        return self::CONFIG_PATH_MAX_KEY;
+        return self::CONFIG_PATH_LAST_ENTRY_NO;
     }
 
-    public function getConfigPathAppId()
-    {
-        return self::CONFIG_PATH_APP_ID;
-    }
-
-    public function getMainEntity()
+    public function getMainEntity() : ReplHierarchyviewInterface
     {
         return $this->dataInterface;
     }

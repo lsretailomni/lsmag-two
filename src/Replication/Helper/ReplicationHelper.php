@@ -262,14 +262,14 @@ class ReplicationHelper extends AbstractHelper
 
     /** @var array List of Replication Tables with unique field for delete */
     public const DELETE_JOB_CODE_UNIQUE_FIELD_ARRAY = [
-        "ls_mag/replication/repl_item_variant_registration" => [
-            "ItemId",
-            "VariantDimension1",
-            "VariantDimension2",
-            "VariantDimension3",
-            "VariantDimension4",
-            "VariantDimension5",
-            "VariantDimension6"
+        "ls_mag/replication/repl_variantregview" => [
+            "item_no",
+            "variant_dimension_1",
+            "variant_dimension_2",
+            "variant_dimension_3",
+            "variant_dimension_4",
+            "variant_dimension_5",
+            "variant_dimension_6",
         ],
         "ls_mag/replication/repl_hierarchy_hosp_deal_line"  => ["DealNo", "DealLineNo", "LineNo", "scope_id"],
 

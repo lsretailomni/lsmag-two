@@ -26,7 +26,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
     public const UNIT_OF_MEASURE_CODE = 'UnitofMeasureCode';
     public const VARIANT_CODE = 'VariantCode';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::DESCRIPTION => 'description',
 	self::DOCUMENT_NO => 'document_no',
 	self::LINE_NO => 'line_no',
@@ -43,9 +43,9 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
 	self::VARIANT_CODE => 'variant_code',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

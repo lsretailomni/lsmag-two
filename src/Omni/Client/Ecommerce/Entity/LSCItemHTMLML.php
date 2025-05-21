@@ -21,7 +21,7 @@ class LSCItemHTMLML extends AbstractModel
     public const URL = 'URL';
     public const SYSTEMID = '$systemId';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::HTML => 'html',
 	self::ITEM_NO => 'item_no',
 	self::LANGUAGE => 'language',
@@ -33,9 +33,9 @@ class LSCItemHTMLML extends AbstractModel
 	self::SYSTEMID => 'systemid',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

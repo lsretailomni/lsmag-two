@@ -34,7 +34,7 @@ class ItemUoMUpdView extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const DESCRIPTION = 'Description';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::CODE => 'code',
 	self::QTY_PER_UNIT_OF_MEASURE => 'qty_per_unit_of_measure',
@@ -59,9 +59,9 @@ class ItemUoMUpdView extends AbstractModel
 	self::DESCRIPTION => 'description',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

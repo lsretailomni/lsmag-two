@@ -19,7 +19,7 @@ class LSCMemberScheme extends AbstractModel
     public const UPDATE_SEQUENCE = 'Update Sequence';
     public const MIN_POINT_FOR_UPGRADE = 'Min. Point for Upgrade';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::DESCRIPTION => 'description',
 	self::CLUB_CODE => 'club_code',
@@ -29,9 +29,9 @@ class LSCMemberScheme extends AbstractModel
 	self::MIN_POINT_FOR_UPGRADE => 'min_point_for_upgrade',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -39,7 +39,7 @@ class Item extends AbstractModel
     public const TARIFF_NO = 'Tariff No.';
     public const BLOCKED = 'Blocked';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::NO => 'no',
 	self::DESCRIPTION => 'description',
 	self::DESCRIPTION_2 => 'description_2',
@@ -69,9 +69,9 @@ class Item extends AbstractModel
 	self::BLOCKED => 'blocked',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

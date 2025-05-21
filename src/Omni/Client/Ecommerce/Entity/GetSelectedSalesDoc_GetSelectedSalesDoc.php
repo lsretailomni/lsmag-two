@@ -26,7 +26,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
     public const LSC_MEMBER_SALES_DOC_LINE = 'LSCMemberSalesDocLine';
     public const PIN = 'PIN';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::AMOUNT => 'amount',
 	self::APPLIED_AMOUNT => 'applied_amount',
 	self::CREATED_BY_LINE_NO => 'created_by_line_no',
@@ -43,9 +43,9 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
 	self::PIN => 'pin',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

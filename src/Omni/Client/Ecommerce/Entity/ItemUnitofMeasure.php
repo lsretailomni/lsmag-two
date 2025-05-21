@@ -16,16 +16,16 @@ class ItemUnitofMeasure extends AbstractModel
     public const QTY_PER_UNIT_OF_MEASURE = 'Qty. per Unit of Measure';
     public const LSC_ECOM_SELECTION = 'LSC Ecom Selection';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::CODE => 'code',
 	self::QTY_PER_UNIT_OF_MEASURE => 'qty_per_unit_of_measure',
 	self::LSC_ECOM_SELECTION => 'lsc_ecom_selection',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -10,7 +10,7 @@ namespace Ls\Replication\Api\Data;
 
 interface ReplUnitOfMeasureInterface
 {
-    public function getDbColumnsMapping() : array;
+    public static function getDbColumnsMapping() : array;
 
     public function getCode() : ?string;
 
@@ -60,36 +60,36 @@ interface ReplUnitOfMeasureInterface
 
     public function setSystemid(?string $value);
 
-    public function setProcessed(bool $processed);
+    public function setProcessed(?bool $processed);
 
-    public function getProcessed() : bool;
+    public function getProcessed() : ?bool;
 
-    public function setIsUpdated(bool $is_updated);
+    public function setIsUpdated(?bool $is_updated);
 
-    public function getIsUpdated() : bool;
+    public function getIsUpdated() : ?bool;
 
-    public function setIsFailed(bool $is_failed);
+    public function setIsFailed(?bool $is_failed);
 
-    public function getIsFailed() : bool;
+    public function getIsFailed() : ?bool;
 
-    public function setCreatedAt(string $created_at);
+    public function setCreatedAt(?string $created_at);
 
-    public function getCreatedAt() : string;
+    public function getCreatedAt() : ?string;
 
-    public function setUpdatedAt(string $updated_at);
+    public function setUpdatedAt(?string $updated_at);
 
-    public function getUpdatedAt() : string;
+    public function getUpdatedAt() : ?string;
 
-    public function setIdentityValue(string $identity_value);
+    public function setIdentityValue(?string $identity_value);
 
-    public function getIdentityValue() : string;
+    public function getIdentityValue() : ?string;
 
-    public function setChecksum(string $checksum);
+    public function setChecksum(?string $checksum);
 
-    public function getChecksum() : string;
+    public function getChecksum() : ?string;
 
-    public function setProcessedAt(string $processed_at);
+    public function setProcessedAt(?string $processed_at);
 
-    public function getProcessedAt() : string;
+    public function getProcessedAt() : ?string;
 }
 

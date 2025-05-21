@@ -2,6 +2,18 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="flat_replication">
+        <job name="repl_lsc_attribute" instance="Ls\Replication\Cron\ReplLscAttributeTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_attribute_value" instance="Ls\Replication\Cron\ReplLscAttributeValueTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_attribute_option_value" instance="Ls\Replication\Cron\ReplLscAttributeOptionValueTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_variantregview" instance="Ls\Replication\Cron\ReplVariantregviewTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
         <!-- Most Important-->
         <job name="repl_item" instance="Ls\Replication\Cron\ReplEcommItemsTask" method="execute">
             <schedule>*/2 * * * *</schedule>

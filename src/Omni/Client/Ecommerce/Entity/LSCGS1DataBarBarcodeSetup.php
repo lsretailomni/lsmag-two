@@ -30,7 +30,7 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::TYPE => 'type',
 	self::IDENTIFIER => 'identifier',
 	self::SECTION_TYPE => 'section_type',
@@ -51,9 +51,9 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

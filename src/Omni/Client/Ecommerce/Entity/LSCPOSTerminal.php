@@ -133,7 +133,7 @@ class LSCPOSTerminal extends AbstractModel
     public const SYSTEMMODIFIEDAT = 'SystemModifiedAt';
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::STORE_NO => 'store_no',
 	self::NO => 'no',
 	self::TERMINAL_TYPE => 'terminal_type',
@@ -257,9 +257,9 @@ class LSCPOSTerminal extends AbstractModel
 	self::SYSTEMMODIFIEDBY => 'systemmodifiedby',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -92,49 +92,49 @@ class ModelGenerator extends AbstractGenerator
 
         $this->createProperty(
             null,
-            'bool',
+            '?bool',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'Processed', 'variable_name' => 'processed', 'model' => true]
         );
         $this->createProperty(
             null,
-            'bool',
+            '?bool',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'IsUpdated', 'variable_name' => 'is_updated', 'model' => true]
         );
         $this->createProperty(
             null,
-            'bool',
+            '?bool',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'IsFailed', 'variable_name' => 'is_failed', 'model' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'CreatedAt', 'variable_name' => 'created_at', 'model' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'UpdatedAt', 'variable_name' => 'updated_at', 'model' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'IdentityValue', 'variable_name' => ReplicationHelper::UNIQUE_HASH_COLUMN_NAME, 'model' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'Checksum', 'variable_name' => 'checksum', 'model' => true]
         );
         $this->createProperty(
             null,
-            'string',
+            '?string',
             [PropertyGenerator::FLAG_PROTECTED],
             ['pascal_name' => 'ProcessedAt', 'variable_name' => 'processed_at', 'model' => true]
         );

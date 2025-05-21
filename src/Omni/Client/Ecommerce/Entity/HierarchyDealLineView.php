@@ -26,7 +26,7 @@ class HierarchyDealLineView extends AbstractModel
     public const ADDED_AMOUNT = 'Added Amount';
     public const RETAIL_IMAGE_ID = 'Retail Image ID';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::HIERARCHY_CODE => 'hierarchy_code',
 	self::NODE_ID => 'node_id',
 	self::OFFER_NO => 'offer_no',
@@ -43,9 +43,9 @@ class HierarchyDealLineView extends AbstractModel
 	self::RETAIL_IMAGE_ID => 'retail_image_id',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

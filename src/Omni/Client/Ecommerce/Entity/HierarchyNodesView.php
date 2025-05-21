@@ -20,7 +20,7 @@ class HierarchyNodesView extends AbstractModel
     public const PRESENTATION_ORDER = 'Presentation Order';
     public const RETAIL_IMAGE_ID = 'Retail Image ID';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::HIERARCHY_CODE => 'hierarchy_code',
 	self::NODE_ID => 'node_id',
 	self::PARENT_NODE_ID => 'parent_node_id',
@@ -31,9 +31,9 @@ class HierarchyNodesView extends AbstractModel
 	self::RETAIL_IMAGE_ID => 'retail_image_id',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

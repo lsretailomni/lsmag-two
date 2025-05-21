@@ -30,7 +30,7 @@ class CountryView extends AbstractModel
     public const SYSTEMMODIFIEDBY = 'SystemModifiedBy';
     public const TAXPOSTGROUP = 'TaxPostGroup';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::NAME => 'name',
 	self::ISO_CODE => 'iso_code',
@@ -51,9 +51,9 @@ class CountryView extends AbstractModel
 	self::TAXPOSTGROUP => 'taxpostgroup',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

@@ -30,7 +30,7 @@ class TenderView extends AbstractModel
     public const DRAWER_OPENS = 'Drawer Opens';
     public const DATEENTRYCODES = 'DateEntryCodes';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::CODE => 'code',
 	self::STORE_NO => 'store_no',
 	self::DESCRIPTION => 'description',
@@ -51,9 +51,9 @@ class TenderView extends AbstractModel
 	self::DATEENTRYCODES => 'dateentrycodes',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

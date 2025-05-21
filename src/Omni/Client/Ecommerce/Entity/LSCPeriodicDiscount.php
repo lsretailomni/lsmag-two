@@ -28,7 +28,7 @@ class LSCPeriodicDiscount extends AbstractModel
     public const DISCOUNT__VALUE = 'Discount % Value';
     public const DISCOUNT_AMOUNT_VALUE = 'Discount Amount Value';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::NO => 'no',
 	self::TYPE => 'type',
 	self::PRIORITY => 'priority',
@@ -47,9 +47,9 @@ class LSCPeriodicDiscount extends AbstractModel
 	self::DISCOUNT_AMOUNT_VALUE => 'discount_amount_value',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

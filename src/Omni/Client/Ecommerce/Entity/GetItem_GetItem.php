@@ -36,7 +36,7 @@ class GetItem_GetItem extends AbstractModel
     public const USAGE_SUBCATEGORY = 'UsageSub-Category';
     public const VALUE = 'Value';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::BOM_COMPONENT => 'bom_component',
 	self::INFOCODE_CODE => 'infocode_code',
 	self::ITEM => 'item',
@@ -63,9 +63,9 @@ class GetItem_GetItem extends AbstractModel
 	self::VALUE => 'value',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

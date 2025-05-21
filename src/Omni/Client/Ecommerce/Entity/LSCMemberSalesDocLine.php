@@ -41,7 +41,7 @@ class LSCMemberSalesDocLine extends AbstractModel
     public const VARIANT_DESCRIPTION = 'Variant Description';
     public const VAT_AMOUNT = 'VAT Amount';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::AMOUNT => 'amount',
 	self::AMOUNT_IN_CURRENCY => 'amount_in_currency',
 	self::CARD_OR_ACCOUNT => 'card_or_account',
@@ -73,9 +73,9 @@ class LSCMemberSalesDocLine extends AbstractModel
 	self::VAT_AMOUNT => 'vat_amount',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 

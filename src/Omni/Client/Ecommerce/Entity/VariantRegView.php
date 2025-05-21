@@ -37,7 +37,7 @@ class VariantRegView extends AbstractModel
     public const BLOCK_SALE_ON_POS = 'Block Sale on POS';
     public const BLOCKED_ON_ECOMMERCE = 'Blocked on eCommerce';
 
-    public array $dbColumnsMapping = [
+    public static array $dbColumnsMapping = [
 	self::ITEM_NO => 'item_no',
 	self::FRAMEWORK_CODE => 'framework_code',
 	self::VARIANT_DIMENSION_1 => 'variant_dimension_1',
@@ -65,9 +65,9 @@ class VariantRegView extends AbstractModel
 	self::BLOCKED_ON_ECOMMERCE => 'blocked_on_ecommerce',
     ];
 
-    public function getDbColumnsMapping(): array
+    public static function getDbColumnsMapping(): array
     {
-        return $this->dbColumnsMapping;
+        return self::$dbColumnsMapping;
     }
 
 
