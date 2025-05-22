@@ -3064,8 +3064,9 @@ class ReplicationHelper extends AbstractHelper
             foreach ($items as $item) {
                 $allowUom = true;
                 if (($purchaseUnitOfMeasure != $salesUnitOfMeasure && $item->getCode() == $purchaseUnitOfMeasure) ||
-                    $item->getEComSelection() == 1) {
+                    ($item->getEComSelection() == 1)) {
                     $allowUom = false;
+                    $item->setData('IsDeleted', 1);
                 }
                 if ($allowUom) {
                     $uomDescription = $this->getUomDescription($item);
@@ -3075,7 +3076,6 @@ class ReplicationHelper extends AbstractHelper
                 } else {
                     $item->setData('processed_at', $this->getDateTime());
                     $item->setData('processed', 1);
-                    $item->setData('is_updated', 0);
                     $this->replItemUomRepository->save($item);
                 }
             }
@@ -3821,14 +3821,15 @@ class ReplicationHelper extends AbstractHelper
             $searchCriteria->addFilter(LSR::LS_UOM_ATTRIBUTE, true, 'null');
         }
 
-        if ($storeId !== '' && $storeId !== 'global') {
+        if ($storeId !== '' && $storeId !== 'global' && $storeId !== 'all') {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
                 $storeId
             )->create();
-        } elseif ($storeId === 'global') {
+        } elseif ($storeId === 'global' || $storeId === 'all') {
             //add no store filter to fetch item id present in any store view
             $searchCriteria = $searchCriteria->create();
+            $this->lsr->setStoreId(0);
         } else {
             $searchCriteria = $searchCriteria->addFilter(
                 'store_id',
