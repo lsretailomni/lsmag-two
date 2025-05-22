@@ -157,7 +157,7 @@ class ReplicationHelper extends AbstractHelper
             "sequence",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_barcode" => ["barcode_no", "scope_id"],
+        "ls_mag/replication/repl_lsc_barcodes" => ["barcode_no", "scope_id"],
         "ls_mag/replication/repl_countryview" => ["name", "scope_id"],
         "ls_mag/replication/repl_currency" => ["code", "scope_id"],
         "ls_mag/replication/repl_currency_exchange_rate" => ["currency_code", "scope_id"],

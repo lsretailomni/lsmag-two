@@ -77,62 +77,62 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->setData(self::BARCODE, $value);
     }
 
-    public function getDimension1Weight(): ?string
+    public function getDimension1Weight(): ?float
     {
         return $this->getData(self::DIMENSION_1_WEIGHT);
     }
 
-    public function setDimension1Weight(?string $value)
+    public function setDimension1Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_1_WEIGHT, $value);
     }
 
-    public function getDimension2Weight(): ?string
+    public function getDimension2Weight(): ?float
     {
         return $this->getData(self::DIMENSION_2_WEIGHT);
     }
 
-    public function setDimension2Weight(?string $value)
+    public function setDimension2Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_2_WEIGHT, $value);
     }
 
-    public function getDimension3Weight(): ?string
+    public function getDimension3Weight(): ?float
     {
         return $this->getData(self::DIMENSION_3_WEIGHT);
     }
 
-    public function setDimension3Weight(?string $value)
+    public function setDimension3Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_3_WEIGHT, $value);
     }
 
-    public function getDimension4Weight(): ?string
+    public function getDimension4Weight(): ?float
     {
         return $this->getData(self::DIMENSION_4_WEIGHT);
     }
 
-    public function setDimension4Weight(?string $value)
+    public function setDimension4Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_4_WEIGHT, $value);
     }
 
-    public function getDimension5Weight(): ?string
+    public function getDimension5Weight(): ?float
     {
         return $this->getData(self::DIMENSION_5_WEIGHT);
     }
 
-    public function setDimension5Weight(?string $value)
+    public function setDimension5Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_5_WEIGHT, $value);
     }
 
-    public function getDimension6Weight(): ?string
+    public function getDimension6Weight(): ?float
     {
         return $this->getData(self::DIMENSION_6_WEIGHT);
     }
 
-    public function setDimension6Weight(?string $value)
+    public function setDimension6Weight(?float $value)
     {
         return $this->setData(self::DIMENSION_6_WEIGHT, $value);
     }
@@ -277,12 +277,12 @@ class LSCItemVariantRegistration extends AbstractModel
         return $this->setData(self::VARIANT_DIMENSION_6, $value);
     }
 
-    public function getVariantWeight(): ?string
+    public function getVariantWeight(): ?float
     {
         return $this->getData(self::VARIANT_WEIGHT);
     }
 
-    public function setVariantWeight(?string $value)
+    public function setVariantWeight(?float $value)
     {
         return $this->setData(self::VARIANT_WEIGHT, $value);
     }

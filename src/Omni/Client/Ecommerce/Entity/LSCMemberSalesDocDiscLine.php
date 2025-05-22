@@ -45,12 +45,12 @@ class LSCMemberSalesDocDiscLine extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getDiscountAmount(): ?string
+    public function getDiscountAmount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(?string $value)
+    public function setDiscountAmount(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }

@@ -28,45 +28,45 @@ interface ReplLscInventoryLookupTableInterface
 
     public function setStoreNo(?string $value);
 
-    public function getPhysInventory() : ?string;
+    public function getPhysInventory() : ?float;
 
-    public function setPhysInventory(?string $value);
+    public function setPhysInventory(?float $value);
 
-    public function getPurchaseOrder() : ?string;
+    public function getPurchaseOrder() : ?float;
 
-    public function setPurchaseOrder(?string $value);
+    public function setPurchaseOrder(?float $value);
 
-    public function getTotalSales() : ?string;
+    public function getTotalSales() : ?float;
 
-    public function setTotalSales(?string $value);
+    public function setTotalSales(?float $value);
 
-    public function getCoResEntries() : ?string;
+    public function getCoResEntries() : ?float;
 
-    public function setCoResEntries(?string $value);
+    public function setCoResEntries(?float $value);
 
-    public function getVarPhysInventory() : ?string;
+    public function getVarPhysInventory() : ?float;
 
-    public function setVarPhysInventory(?string $value);
+    public function setVarPhysInventory(?float $value);
 
-    public function getVarPurchaseOrder() : ?string;
+    public function getVarPurchaseOrder() : ?float;
 
-    public function setVarPurchaseOrder(?string $value);
+    public function setVarPurchaseOrder(?float $value);
 
-    public function getVarTotalSales() : ?string;
+    public function getVarTotalSales() : ?float;
 
-    public function setVarTotalSales(?string $value);
+    public function setVarTotalSales(?float $value);
 
-    public function getVarCoResEntries() : ?string;
+    public function getVarCoResEntries() : ?float;
 
-    public function setVarCoResEntries(?string $value);
+    public function setVarCoResEntries(?float $value);
 
-    public function getPostedSales() : ?string;
+    public function getPostedSales() : ?float;
 
-    public function setPostedSales(?string $value);
+    public function setPostedSales(?float $value);
 
-    public function getVarPostedSales() : ?string;
+    public function getVarPostedSales() : ?float;
 
-    public function setVarPostedSales(?string $value);
+    public function setVarPostedSales(?float $value);
 
     public function getSerialNo() : ?string;
 
@@ -80,25 +80,25 @@ interface ReplLscInventoryLookupTableInterface
 
     public function setExpirationDate(?string $value);
 
-    public function getTotalInvAdjmt() : ?string;
+    public function getTotalInvAdjmt() : ?float;
 
-    public function setTotalInvAdjmt(?string $value);
+    public function setTotalInvAdjmt(?float $value);
 
-    public function getVarTotalInvAdjmt() : ?string;
+    public function getVarTotalInvAdjmt() : ?float;
 
-    public function setVarTotalInvAdjmt(?string $value);
+    public function setVarTotalInvAdjmt(?float $value);
 
-    public function getPostedInvAdjmt() : ?string;
+    public function getPostedInvAdjmt() : ?float;
 
-    public function setPostedInvAdjmt(?string $value);
+    public function setPostedInvAdjmt(?float $value);
 
-    public function getVarPostedInvAdjmt() : ?string;
+    public function getVarPostedInvAdjmt() : ?float;
 
-    public function setVarPostedInvAdjmt(?string $value);
+    public function setVarPostedInvAdjmt(?float $value);
 
-    public function getNetInventory() : ?string;
+    public function getNetInventory() : ?float;
 
-    public function setNetInventory(?string $value);
+    public function setNetInventory(?float $value);
 
     public function getLocationProfile() : ?string;
 
@@ -108,9 +108,9 @@ interface ReplLscInventoryLookupTableInterface
 
     public function setReplicationCounter(?int $value);
 
-    public function getSourcingLocationInventory() : ?string;
+    public function getSourcingLocationInventory() : ?float;
 
-    public function setSourcingLocationInventory(?string $value);
+    public function setSourcingLocationInventory(?float $value);
 
     public function getSystemid() : ?string;
 

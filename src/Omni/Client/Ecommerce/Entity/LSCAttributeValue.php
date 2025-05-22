@@ -171,12 +171,12 @@ class LSCAttributeValue extends AbstractModel
         return $this->setData(self::LINK_TYPE, $value);
     }
 
-    public function getNumericValue(): ?string
+    public function getNumericValue(): ?float
     {
         return $this->getData(self::NUMERIC_VALUE);
     }
 
-    public function setNumericValue(?string $value)
+    public function setNumericValue(?float $value)
     {
         return $this->setData(self::NUMERIC_VALUE, $value);
     }

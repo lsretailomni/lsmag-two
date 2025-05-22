@@ -433,12 +433,12 @@ class LSCPOSTerminal extends AbstractModel
         return $this->setData(self::DISPLAY_LINKED_ITEM, $value);
     }
 
-    public function getFraudSortField(): ?string
+    public function getFraudSortField(): ?float
     {
         return $this->getData(self::FRAUD_SORT_FIELD);
     }
 
-    public function setFraudSortField(?string $value)
+    public function setFraudSortField(?float $value)
     {
         return $this->setData(self::FRAUD_SORT_FIELD, $value);
     }
@@ -1033,12 +1033,12 @@ class LSCPOSTerminal extends AbstractModel
         return $this->setData(self::COPY_OF_INTERFACE_PROFILE, $value);
     }
 
-    public function getIdleTimerInterval(): ?string
+    public function getIdleTimerInterval(): ?float
     {
         return $this->getData(self::IDLE_TIMER_INTERVAL);
     }
 
-    public function setIdleTimerInterval(?string $value)
+    public function setIdleTimerInterval(?float $value)
     {
         return $this->setData(self::IDLE_TIMER_INTERVAL, $value);
     }

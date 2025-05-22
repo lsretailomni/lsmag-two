@@ -133,22 +133,22 @@ class LSCInformationSubcode extends AbstractModel
         return $this->setData(self::PRICE_HANDLING, $value);
     }
 
-    public function getAmountPercent(): ?string
+    public function getAmountPercent(): ?float
     {
         return $this->getData(self::AMOUNT_PERCENT);
     }
 
-    public function setAmountPercent(?string $value)
+    public function setAmountPercent(?float $value)
     {
         return $this->setData(self::AMOUNT_PERCENT, $value);
     }
 
-    public function getTimeModifierMinutes(): ?string
+    public function getTimeModifierMinutes(): ?float
     {
         return $this->getData(self::TIME_MODIFIER_MINUTES);
     }
 
-    public function setTimeModifierMinutes(?string $value)
+    public function setTimeModifierMinutes(?float $value)
     {
         return $this->setData(self::TIME_MODIFIER_MINUTES, $value);
     }

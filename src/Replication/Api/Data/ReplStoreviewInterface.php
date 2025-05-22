@@ -44,13 +44,13 @@ interface ReplStoreviewInterface
 
     public function setCountryCode(?string $value);
 
-    public function getLatitude() : ?string;
+    public function getLatitude() : ?float;
 
-    public function setLatitude(?string $value);
+    public function setLatitude(?float $value);
 
-    public function getLongitude() : ?string;
+    public function getLongitude() : ?float;
 
-    public function setLongitude(?string $value);
+    public function setLongitude(?float $value);
 
     public function getPhoneNo() : ?string;
 

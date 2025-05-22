@@ -20,37 +20,37 @@ interface ReplCurrencyExchangeRateInterface
 
     public function setStartingDate(?string $value);
 
-    public function getExchangeRateAmount() : ?string;
+    public function getExchangeRateAmount() : ?float;
 
-    public function setExchangeRateAmount(?string $value);
+    public function setExchangeRateAmount(?float $value);
 
-    public function getAdjustmentExchRateAmount() : ?string;
+    public function getAdjustmentExchRateAmount() : ?float;
 
-    public function setAdjustmentExchRateAmount(?string $value);
+    public function setAdjustmentExchRateAmount(?float $value);
 
     public function getRelationalCurrencyCode() : ?string;
 
     public function setRelationalCurrencyCode(?string $value);
 
-    public function getRelationalExchRateAmount() : ?string;
+    public function getRelationalExchRateAmount() : ?float;
 
-    public function setRelationalExchRateAmount(?string $value);
+    public function setRelationalExchRateAmount(?float $value);
 
     public function getFixExchangeRateAmount() : ?string;
 
     public function setFixExchangeRateAmount(?string $value);
 
-    public function getRelationalAdjmtExchRateAmt() : ?string;
+    public function getRelationalAdjmtExchRateAmt() : ?float;
 
-    public function setRelationalAdjmtExchRateAmt(?string $value);
+    public function setRelationalAdjmtExchRateAmt(?float $value);
 
-    public function getLscPosExchangeRateAmount() : ?string;
+    public function getLscPosExchangeRateAmount() : ?float;
 
-    public function setLscPosExchangeRateAmount(?string $value);
+    public function setLscPosExchangeRateAmount(?float $value);
 
-    public function getLscPosRelExchRateAmount() : ?string;
+    public function getLscPosRelExchRateAmount() : ?float;
 
-    public function setLscPosRelExchRateAmount(?string $value);
+    public function setLscPosRelExchRateAmount(?float $value);
 
     public function getSystemid() : ?string;
 

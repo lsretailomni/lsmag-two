@@ -48,21 +48,21 @@ interface ReplCurrencyInterface
 
     public function setRealizedLossesAcc(?string $value);
 
-    public function getInvoiceRoundingPrecision() : ?string;
+    public function getInvoiceRoundingPrecision() : ?float;
 
-    public function setInvoiceRoundingPrecision(?string $value);
+    public function setInvoiceRoundingPrecision(?float $value);
 
     public function getInvoiceRoundingType() : ?string;
 
     public function setInvoiceRoundingType(?string $value);
 
-    public function getAmountRoundingPrecision() : ?string;
+    public function getAmountRoundingPrecision() : ?float;
 
-    public function setAmountRoundingPrecision(?string $value);
+    public function setAmountRoundingPrecision(?float $value);
 
-    public function getUnitAmountRoundingPrecision() : ?string;
+    public function getUnitAmountRoundingPrecision() : ?float;
 
-    public function setUnitAmountRoundingPrecision(?string $value);
+    public function setUnitAmountRoundingPrecision(?float $value);
 
     public function getDescription() : ?string;
 
@@ -84,17 +84,17 @@ interface ReplCurrencyInterface
 
     public function setRealizedGLLossesAccount(?string $value);
 
-    public function getApplnRoundingPrecision() : ?string;
+    public function getApplnRoundingPrecision() : ?float;
 
-    public function setApplnRoundingPrecision(?string $value);
+    public function setApplnRoundingPrecision(?float $value);
 
     public function getEmuCurrency() : ?bool;
 
     public function setEmuCurrency(?bool $value);
 
-    public function getCurrencyFactor() : ?string;
+    public function getCurrencyFactor() : ?float;
 
-    public function setCurrencyFactor(?string $value);
+    public function setCurrencyFactor(?float $value);
 
     public function getResidualGainsAccount() : ?string;
 
@@ -112,21 +112,21 @@ interface ReplCurrencyInterface
 
     public function setConvLcyRndgCreditAcc(?string $value);
 
-    public function getMaxVatDifferenceAllowed() : ?string;
+    public function getMaxVatDifferenceAllowed() : ?float;
 
-    public function setMaxVatDifferenceAllowed(?string $value);
+    public function setMaxVatDifferenceAllowed(?float $value);
 
     public function getVatRoundingType() : ?string;
 
     public function setVatRoundingType(?string $value);
 
-    public function getPaymentTolerance() : ?string;
+    public function getPaymentTolerance() : ?float;
 
-    public function setPaymentTolerance(?string $value);
+    public function setPaymentTolerance(?float $value);
 
-    public function getMaxPaymentToleranceAmount() : ?string;
+    public function getMaxPaymentToleranceAmount() : ?float;
 
-    public function setMaxPaymentToleranceAmount(?string $value);
+    public function setMaxPaymentToleranceAmount(?float $value);
 
     public function getSymbol() : ?string;
 
@@ -136,9 +136,9 @@ interface ReplCurrencyInterface
 
     public function setLastModifiedDateTime(?\DateTime $value);
 
-    public function getLscLowestAcceptDenomAmt() : ?string;
+    public function getLscLowestAcceptDenomAmt() : ?float;
 
-    public function setLscLowestAcceptDenomAmt(?string $value);
+    public function setLscLowestAcceptDenomAmt(?float $value);
 
     public function getLscDenominationRoundingType() : ?string;
 

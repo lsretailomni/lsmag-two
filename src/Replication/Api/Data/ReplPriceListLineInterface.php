@@ -64,9 +64,9 @@ interface ReplPriceListLineInterface
 
     public function setEndingDate(?string $value);
 
-    public function getMinimumQuantity() : ?string;
+    public function getMinimumQuantity() : ?float;
 
-    public function setMinimumQuantity(?string $value);
+    public function setMinimumQuantity(?float $value);
 
     public function getUnitOfMeasureCode() : ?string;
 
@@ -76,21 +76,21 @@ interface ReplPriceListLineInterface
 
     public function setAmountType(?string $value);
 
-    public function getUnitPrice() : ?string;
+    public function getUnitPrice() : ?float;
 
-    public function setUnitPrice(?string $value);
+    public function setUnitPrice(?float $value);
 
-    public function getCostFactor() : ?string;
+    public function getCostFactor() : ?float;
 
-    public function setCostFactor(?string $value);
+    public function setCostFactor(?float $value);
 
-    public function getUnitCost() : ?string;
+    public function getUnitCost() : ?float;
 
-    public function setUnitCost(?string $value);
+    public function setUnitCost(?float $value);
 
-    public function getLineDiscount() : ?string;
+    public function getLineDiscount() : ?float;
 
-    public function setLineDiscount(?string $value);
+    public function setLineDiscount(?float $value);
 
     public function getAllowLineDisc() : ?bool;
 
@@ -116,9 +116,9 @@ interface ReplPriceListLineInterface
 
     public function setAssetId(?string $value);
 
-    public function getLineAmount() : ?string;
+    public function getLineAmount() : ?float;
 
-    public function setLineAmount(?string $value);
+    public function setLineAmount(?float $value);
 
     public function getPriceType() : ?string;
 
@@ -132,9 +132,9 @@ interface ReplPriceListLineInterface
 
     public function setStatus(?string $value);
 
-    public function getDirectUnitCost() : ?string;
+    public function getDirectUnitCost() : ?float;
 
-    public function setDirectUnitCost(?string $value);
+    public function setDirectUnitCost(?float $value);
 
     public function getSourceGroup() : ?string;
 
@@ -160,33 +160,33 @@ interface ReplPriceListLineInterface
 
     public function setUnitOfMeasureCodeLookup(?string $value);
 
-    public function getLscMarkup() : ?string;
+    public function getLscMarkup() : ?float;
 
-    public function setLscMarkup(?string $value);
+    public function setLscMarkup(?float $value);
 
-    public function getLscProfit() : ?string;
+    public function getLscProfit() : ?float;
 
-    public function setLscProfit(?string $value);
+    public function setLscProfit(?float $value);
 
-    public function getLscProfitLcy() : ?string;
+    public function getLscProfitLcy() : ?float;
 
-    public function setLscProfitLcy(?string $value);
+    public function setLscProfitLcy(?float $value);
 
-    public function getLscUnitPriceIncludingVat() : ?string;
+    public function getLscUnitPriceIncludingVat() : ?float;
 
-    public function setLscUnitPriceIncludingVat(?string $value);
+    public function setLscUnitPriceIncludingVat(?float $value);
 
-    public function getLscWholesalePrice() : ?string;
+    public function getLscWholesalePrice() : ?float;
 
-    public function setLscWholesalePrice(?string $value);
+    public function setLscWholesalePrice(?float $value);
 
-    public function getLscWholesaleDiscount() : ?string;
+    public function getLscWholesaleDiscount() : ?float;
 
-    public function setLscWholesaleDiscount(?string $value);
+    public function setLscWholesaleDiscount(?float $value);
 
-    public function getLscCompPriceInclVat() : ?string;
+    public function getLscCompPriceInclVat() : ?float;
 
-    public function setLscCompPriceInclVat(?string $value);
+    public function setLscCompPriceInclVat(?float $value);
 
     public function getSystemid() : ?string;
 

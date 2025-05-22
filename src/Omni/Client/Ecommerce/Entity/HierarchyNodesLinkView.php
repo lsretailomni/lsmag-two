@@ -147,12 +147,12 @@ class HierarchyNodesLinkView extends AbstractModel
         return $this->setData(self::MEMBER_VALUE, $value);
     }
 
-    public function getDealPrice(): ?string
+    public function getDealPrice(): ?float
     {
         return $this->getData(self::DEAL_PRICE);
     }
 
-    public function setDealPrice(?string $value)
+    public function setDealPrice(?float $value)
     {
         return $this->setData(self::DEAL_PRICE, $value);
     }

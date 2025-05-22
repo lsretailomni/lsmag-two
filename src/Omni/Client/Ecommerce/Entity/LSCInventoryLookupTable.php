@@ -121,102 +121,102 @@ class LSCInventoryLookupTable extends AbstractModel
         return $this->setData(self::STORE_NO, $value);
     }
 
-    public function getPhysInventory(): ?string
+    public function getPhysInventory(): ?float
     {
         return $this->getData(self::PHYS_INVENTORY);
     }
 
-    public function setPhysInventory(?string $value)
+    public function setPhysInventory(?float $value)
     {
         return $this->setData(self::PHYS_INVENTORY, $value);
     }
 
-    public function getPurchaseOrder(): ?string
+    public function getPurchaseOrder(): ?float
     {
         return $this->getData(self::PURCHASE_ORDER);
     }
 
-    public function setPurchaseOrder(?string $value)
+    public function setPurchaseOrder(?float $value)
     {
         return $this->setData(self::PURCHASE_ORDER, $value);
     }
 
-    public function getTotalSales(): ?string
+    public function getTotalSales(): ?float
     {
         return $this->getData(self::TOTAL_SALES);
     }
 
-    public function setTotalSales(?string $value)
+    public function setTotalSales(?float $value)
     {
         return $this->setData(self::TOTAL_SALES, $value);
     }
 
-    public function getCoResEntries(): ?string
+    public function getCoResEntries(): ?float
     {
         return $this->getData(self::CO_RES_ENTRIES);
     }
 
-    public function setCoResEntries(?string $value)
+    public function setCoResEntries(?float $value)
     {
         return $this->setData(self::CO_RES_ENTRIES, $value);
     }
 
-    public function getVarPhysInventory(): ?string
+    public function getVarPhysInventory(): ?float
     {
         return $this->getData(self::VAR_PHYS_INVENTORY);
     }
 
-    public function setVarPhysInventory(?string $value)
+    public function setVarPhysInventory(?float $value)
     {
         return $this->setData(self::VAR_PHYS_INVENTORY, $value);
     }
 
-    public function getVarPurchaseOrder(): ?string
+    public function getVarPurchaseOrder(): ?float
     {
         return $this->getData(self::VAR_PURCHASE_ORDER);
     }
 
-    public function setVarPurchaseOrder(?string $value)
+    public function setVarPurchaseOrder(?float $value)
     {
         return $this->setData(self::VAR_PURCHASE_ORDER, $value);
     }
 
-    public function getVarTotalSales(): ?string
+    public function getVarTotalSales(): ?float
     {
         return $this->getData(self::VAR_TOTAL_SALES);
     }
 
-    public function setVarTotalSales(?string $value)
+    public function setVarTotalSales(?float $value)
     {
         return $this->setData(self::VAR_TOTAL_SALES, $value);
     }
 
-    public function getVarCoResEntries(): ?string
+    public function getVarCoResEntries(): ?float
     {
         return $this->getData(self::VAR_CO_RES_ENTRIES);
     }
 
-    public function setVarCoResEntries(?string $value)
+    public function setVarCoResEntries(?float $value)
     {
         return $this->setData(self::VAR_CO_RES_ENTRIES, $value);
     }
 
-    public function getPostedSales(): ?string
+    public function getPostedSales(): ?float
     {
         return $this->getData(self::POSTED_SALES);
     }
 
-    public function setPostedSales(?string $value)
+    public function setPostedSales(?float $value)
     {
         return $this->setData(self::POSTED_SALES, $value);
     }
 
-    public function getVarPostedSales(): ?string
+    public function getVarPostedSales(): ?float
     {
         return $this->getData(self::VAR_POSTED_SALES);
     }
 
-    public function setVarPostedSales(?string $value)
+    public function setVarPostedSales(?float $value)
     {
         return $this->setData(self::VAR_POSTED_SALES, $value);
     }
@@ -251,52 +251,52 @@ class LSCInventoryLookupTable extends AbstractModel
         return $this->setData(self::EXPIRATION_DATE, $value);
     }
 
-    public function getTotalInvAdjmt(): ?string
+    public function getTotalInvAdjmt(): ?float
     {
         return $this->getData(self::TOTAL_INV_ADJMT);
     }
 
-    public function setTotalInvAdjmt(?string $value)
+    public function setTotalInvAdjmt(?float $value)
     {
         return $this->setData(self::TOTAL_INV_ADJMT, $value);
     }
 
-    public function getVarTotalInvAdjmt(): ?string
+    public function getVarTotalInvAdjmt(): ?float
     {
         return $this->getData(self::VAR_TOTAL_INV_ADJMT);
     }
 
-    public function setVarTotalInvAdjmt(?string $value)
+    public function setVarTotalInvAdjmt(?float $value)
     {
         return $this->setData(self::VAR_TOTAL_INV_ADJMT, $value);
     }
 
-    public function getPostedInvAdjmt(): ?string
+    public function getPostedInvAdjmt(): ?float
     {
         return $this->getData(self::POSTED_INV_ADJMT);
     }
 
-    public function setPostedInvAdjmt(?string $value)
+    public function setPostedInvAdjmt(?float $value)
     {
         return $this->setData(self::POSTED_INV_ADJMT, $value);
     }
 
-    public function getVarPostedInvAdjmt(): ?string
+    public function getVarPostedInvAdjmt(): ?float
     {
         return $this->getData(self::VAR_POSTED_INV_ADJMT);
     }
 
-    public function setVarPostedInvAdjmt(?string $value)
+    public function setVarPostedInvAdjmt(?float $value)
     {
         return $this->setData(self::VAR_POSTED_INV_ADJMT, $value);
     }
 
-    public function getNetInventory(): ?string
+    public function getNetInventory(): ?float
     {
         return $this->getData(self::NET_INVENTORY);
     }
 
-    public function setNetInventory(?string $value)
+    public function setNetInventory(?float $value)
     {
         return $this->setData(self::NET_INVENTORY, $value);
     }
@@ -321,12 +321,12 @@ class LSCInventoryLookupTable extends AbstractModel
         return $this->setData(self::REPLICATION_COUNTER, $value);
     }
 
-    public function getSourcingLocationInventory(): ?string
+    public function getSourcingLocationInventory(): ?float
     {
         return $this->getData(self::SOURCING_LOCATION_INVENTORY);
     }
 
-    public function setSourcingLocationInventory(?string $value)
+    public function setSourcingLocationInventory(?float $value)
     {
         return $this->setData(self::SOURCING_LOCATION_INVENTORY, $value);
     }

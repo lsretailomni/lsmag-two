@@ -20,9 +20,9 @@ interface ReplLscBarcodeMaskSegmentInterface
 
     public function setSegmentNo(?int $value);
 
-    public function getLength() : ?string;
+    public function getLength() : ?float;
 
-    public function setLength(?string $value);
+    public function setLength(?float $value);
 
     public function getType() : ?string;
 

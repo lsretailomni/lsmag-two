@@ -95,22 +95,22 @@ class LSCWIDiscounts extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getDiscount(): ?string
+    public function getDiscount(): ?float
     {
         return $this->getData(self::DISCOUNT);
     }
 
-    public function setDiscount(?string $value)
+    public function setDiscount(?float $value)
     {
         return $this->setData(self::DISCOUNT, $value);
     }
 
-    public function getDiscountAmountValue(): ?string
+    public function getDiscountAmountValue(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(?string $value)
+    public function setDiscountAmountValue(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }
@@ -175,12 +175,12 @@ class LSCWIDiscounts extends AbstractModel
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
 
-    public function getMinimumQuantity(): ?string
+    public function getMinimumQuantity(): ?float
     {
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(?string $value)
+    public function setMinimumQuantity(?float $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }

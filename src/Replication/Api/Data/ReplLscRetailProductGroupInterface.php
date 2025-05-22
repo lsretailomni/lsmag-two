@@ -48,9 +48,9 @@ interface ReplLscRetailProductGroupInterface
 
     public function setUseEanStandardBarc(?bool $value);
 
-    public function getDefaultProfit() : ?string;
+    public function getDefaultProfit() : ?float;
 
-    public function setDefaultProfit(?string $value);
+    public function setDefaultProfit(?float $value);
 
     public function getDispensePrinterGroup() : ?string;
 
@@ -88,9 +88,9 @@ interface ReplLscRetailProductGroupInterface
 
     public function setItemErrorCheckCode(?string $value);
 
-    public function getSuggestedQtyOnPos() : ?string;
+    public function getSuggestedQtyOnPos() : ?float;
 
-    public function setSuggestedQtyOnPos(?string $value);
+    public function setSuggestedQtyOnPos(?float $value);
 
     public function getDefaultBaseUom() : ?string;
 
@@ -100,9 +100,9 @@ interface ReplLscRetailProductGroupInterface
 
     public function setQtyNotInDecimal(?bool $value);
 
-    public function getProfitGoal() : ?string;
+    public function getProfitGoal() : ?float;
 
-    public function setProfitGoal(?string $value);
+    public function setProfitGoal(?float $value);
 
     public function getBuyerGroupCode() : ?string;
 

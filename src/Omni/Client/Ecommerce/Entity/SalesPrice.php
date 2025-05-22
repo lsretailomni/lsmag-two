@@ -107,12 +107,12 @@ class SalesPrice extends AbstractModel
         return $this->setData(self::STARTING_DATE, $value);
     }
 
-    public function getUnitPrice(): ?string
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(?string $value)
+    public function setUnitPrice(?float $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -157,12 +157,12 @@ class SalesPrice extends AbstractModel
         return $this->setData(self::SALES_TYPE, $value);
     }
 
-    public function getMinimumQuantity(): ?string
+    public function getMinimumQuantity(): ?float
     {
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(?string $value)
+    public function setMinimumQuantity(?float $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
@@ -207,42 +207,42 @@ class SalesPrice extends AbstractModel
         return $this->setData(self::ALLOW_LINE_DISC, $value);
     }
 
-    public function getLscMarkup(): ?string
+    public function getLscMarkup(): ?float
     {
         return $this->getData(self::LSC_MARKUP);
     }
 
-    public function setLscMarkup(?string $value)
+    public function setLscMarkup(?float $value)
     {
         return $this->setData(self::LSC_MARKUP, $value);
     }
 
-    public function getLscProfit(): ?string
+    public function getLscProfit(): ?float
     {
         return $this->getData(self::LSC_PROFIT);
     }
 
-    public function setLscProfit(?string $value)
+    public function setLscProfit(?float $value)
     {
         return $this->setData(self::LSC_PROFIT, $value);
     }
 
-    public function getLscProfitLcy(): ?string
+    public function getLscProfitLcy(): ?float
     {
         return $this->getData(self::LSC_PROFIT_LCY);
     }
 
-    public function setLscProfitLcy(?string $value)
+    public function setLscProfitLcy(?float $value)
     {
         return $this->setData(self::LSC_PROFIT_LCY, $value);
     }
 
-    public function getLscUnitPriceIncludingVat(): ?string
+    public function getLscUnitPriceIncludingVat(): ?float
     {
         return $this->getData(self::LSC_UNIT_PRICE_INCLUDING_VAT);
     }
 
-    public function setLscUnitPriceIncludingVat(?string $value)
+    public function setLscUnitPriceIncludingVat(?float $value)
     {
         return $this->setData(self::LSC_UNIT_PRICE_INCLUDING_VAT, $value);
     }

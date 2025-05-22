@@ -52,17 +52,17 @@ interface ReplLscStaffInterface
 
     public function setPriceOverride(?string $value);
 
-    public function getMaxDiscountToGive() : ?string;
+    public function getMaxDiscountToGive() : ?float;
 
-    public function setMaxDiscountToGive(?string $value);
+    public function setMaxDiscountToGive(?float $value);
 
     public function getSuspendTransaction() : ?string;
 
     public function setSuspendTransaction(?string $value);
 
-    public function getMaxTotalDiscount() : ?string;
+    public function getMaxTotalDiscount() : ?float;
 
-    public function setMaxTotalDiscount(?string $value);
+    public function setMaxTotalDiscount(?float $value);
 
     public function getOpenDrawWithoutSale() : ?string;
 
@@ -84,9 +84,9 @@ interface ReplLscStaffInterface
 
     public function setEmploymentType(?string $value);
 
-    public function getFraudSortField() : ?string;
+    public function getFraudSortField() : ?float;
 
-    public function setFraudSortField(?string $value);
+    public function setFraudSortField(?float $value);
 
     public function getLastDateModified() : ?string;
 
@@ -124,9 +124,9 @@ interface ReplLscStaffInterface
 
     public function setWorkPhoneNo(?string $value);
 
-    public function getHourlyRate() : ?string;
+    public function getHourlyRate() : ?float;
 
-    public function setHourlyRate(?string $value);
+    public function setHourlyRate(?float $value);
 
     public function getPayrollNo() : ?string;
 
@@ -280,9 +280,9 @@ interface ReplLscStaffInterface
 
     public function setCustomerComments(?string $value);
 
-    public function getMaxTenderDeclDifference() : ?string;
+    public function getMaxTenderDeclDifference() : ?float;
 
-    public function setMaxTenderDeclDifference(?string $value);
+    public function setMaxTenderDeclDifference(?float $value);
 
     public function getMaxWarningCount() : ?int;
 

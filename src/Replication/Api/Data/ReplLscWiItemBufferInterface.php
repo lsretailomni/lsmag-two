@@ -44,9 +44,9 @@ interface ReplLscWiItemBufferInterface
 
     public function setAllowInvoiceDisc(?bool $value);
 
-    public function getUnitPrice() : ?string;
+    public function getUnitPrice() : ?float;
 
-    public function setUnitPrice(?string $value);
+    public function setUnitPrice(?float $value);
 
     public function getVendorNo() : ?string;
 
@@ -60,21 +60,21 @@ interface ReplLscWiItemBufferInterface
 
     public function setAlternativeItemNo(?string $value);
 
-    public function getGrossWeight() : ?string;
+    public function getGrossWeight() : ?float;
 
-    public function setGrossWeight(?string $value);
+    public function setGrossWeight(?float $value);
 
-    public function getNetWeight() : ?string;
+    public function getNetWeight() : ?float;
 
-    public function setNetWeight(?string $value);
+    public function setNetWeight(?float $value);
 
-    public function getUnitsPerParcel() : ?string;
+    public function getUnitsPerParcel() : ?float;
 
-    public function setUnitsPerParcel(?string $value);
+    public function setUnitsPerParcel(?float $value);
 
-    public function getUnitVolume() : ?string;
+    public function getUnitVolume() : ?float;
 
-    public function setUnitVolume(?string $value);
+    public function setUnitVolume(?float $value);
 
     public function getTariffNo() : ?string;
 

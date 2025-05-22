@@ -49,12 +49,12 @@ class ItemUnitofMeasure extends AbstractModel
         return $this->setData(self::CODE, $value);
     }
 
-    public function getQtyPerUnitOfMeasure(): ?string
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(?string $value)
+    public function setQtyPerUnitOfMeasure(?float $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }

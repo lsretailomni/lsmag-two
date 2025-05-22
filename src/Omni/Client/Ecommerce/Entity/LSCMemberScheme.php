@@ -95,12 +95,12 @@ class LSCMemberScheme extends AbstractModel
         return $this->setData(self::UPDATE_SEQUENCE, $value);
     }
 
-    public function getMinPointForUpgrade(): ?string
+    public function getMinPointForUpgrade(): ?float
     {
         return $this->getData(self::MIN_POINT_FOR_UPGRADE);
     }
 
-    public function setMinPointForUpgrade(?string $value)
+    public function setMinPointForUpgrade(?float $value)
     {
         return $this->setData(self::MIN_POINT_FOR_UPGRADE, $value);
     }

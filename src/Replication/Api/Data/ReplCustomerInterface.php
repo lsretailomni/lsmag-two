@@ -80,13 +80,13 @@ interface ReplCustomerInterface
 
     public function setChainName(?string $value);
 
-    public function getBudgetedAmount() : ?string;
+    public function getBudgetedAmount() : ?float;
 
-    public function setBudgetedAmount(?string $value);
+    public function setBudgetedAmount(?float $value);
 
-    public function getCreditLimitLcy() : ?string;
+    public function getCreditLimitLcy() : ?float;
 
-    public function setCreditLimitLcy(?string $value);
+    public function setCreditLimitLcy(?float $value);
 
     public function getCustomerPostingGroup() : ?string;
 
@@ -152,9 +152,9 @@ interface ReplCustomerInterface
 
     public function setCollectionMethod(?string $value);
 
-    public function getAmount() : ?string;
+    public function getAmount() : ?float;
 
-    public function setAmount(?string $value);
+    public function setAmount(?float $value);
 
     public function getBlocked() : ?string;
 
@@ -288,9 +288,9 @@ interface ReplCustomerInterface
 
     public function setIcPartnerCode(?string $value);
 
-    public function getPrepayment() : ?string;
+    public function getPrepayment() : ?float;
 
-    public function setPrepayment(?string $value);
+    public function setPrepayment(?float $value);
 
     public function getPartnerType() : ?string;
 
@@ -452,9 +452,9 @@ interface ReplCustomerInterface
 
     public function setLscPrintDocumentInvoice(?bool $value);
 
-    public function getLscTransactionLimit() : ?string;
+    public function getLscTransactionLimit() : ?float;
 
-    public function setLscTransactionLimit(?string $value);
+    public function setLscTransactionLimit(?float $value);
 
     public function getLscDaytimePhoneNo() : ?string;
 
@@ -468,9 +468,9 @@ interface ReplCustomerInterface
 
     public function setLscRetailCustomerGroup(?string $value);
 
-    public function getLscDefaultWeight() : ?string;
+    public function getLscDefaultWeight() : ?float;
 
-    public function setLscDefaultWeight(?string $value);
+    public function setLscDefaultWeight(?float $value);
 
     public function getLscOtherTenderInFinalizing() : ?bool;
 
@@ -484,17 +484,17 @@ interface ReplCustomerInterface
 
     public function setLscInclIncExpOnSalesDoc(?bool $value);
 
-    public function getLscAmtchargedonposint() : ?string;
+    public function getLscAmtchargedonposint() : ?float;
 
-    public function setLscAmtchargedonposint(?string $value);
+    public function setLscAmtchargedonposint(?float $value);
 
-    public function getLscAmtchargedpostedint() : ?string;
+    public function getLscAmtchargedpostedint() : ?float;
 
-    public function setLscAmtchargedpostedint(?string $value);
+    public function setLscAmtchargedpostedint(?float $value);
 
-    public function getLscBalancelcyint() : ?string;
+    public function getLscBalancelcyint() : ?float;
 
-    public function setLscBalancelcyint(?string $value);
+    public function setLscBalancelcyint(?float $value);
 
     public function getSystemid() : ?string;
 

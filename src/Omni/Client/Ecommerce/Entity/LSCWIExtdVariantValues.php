@@ -191,12 +191,12 @@ class LSCWIExtdVariantValues extends AbstractModel
         return $this->setData(self::VIEWING_COLOR, $value);
     }
 
-    public function getDefaultVariantWeight(): ?string
+    public function getDefaultVariantWeight(): ?float
     {
         return $this->getData(self::DEFAULT_VARIANT_WEIGHT);
     }
 
-    public function setDefaultVariantWeight(?string $value)
+    public function setDefaultVariantWeight(?float $value)
     {
         return $this->setData(self::DEFAULT_VARIANT_WEIGHT, $value);
     }

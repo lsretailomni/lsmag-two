@@ -69,12 +69,12 @@ class LSCCollectionFramework extends AbstractModel
         return $this->setData(self::VARIANT, $value);
     }
 
-    public function getQty(): ?string
+    public function getQty(): ?float
     {
         return $this->getData(self::QTY);
     }
 
-    public function setQty(?string $value)
+    public function setQty(?float $value)
     {
         return $this->setData(self::QTY, $value);
     }

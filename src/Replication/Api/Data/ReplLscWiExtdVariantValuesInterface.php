@@ -60,9 +60,9 @@ interface ReplLscWiExtdVariantValuesInterface
 
     public function setViewingColor(?int $value);
 
-    public function getDefaultVariantWeight() : ?string;
+    public function getDefaultVariantWeight() : ?float;
 
-    public function setDefaultVariantWeight(?string $value);
+    public function setDefaultVariantWeight(?float $value);
 
     public function getStatus() : ?string;
 

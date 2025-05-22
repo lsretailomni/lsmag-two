@@ -143,22 +143,22 @@ class LSCStore extends AbstractModel
         return $this->setData(self::COUNTRY_CODE, $value);
     }
 
-    public function getLatitude(): ?string
+    public function getLatitude(): ?float
     {
         return $this->getData(self::LATITUDE);
     }
 
-    public function setLatitude(?string $value)
+    public function setLatitude(?float $value)
     {
         return $this->setData(self::LATITUDE, $value);
     }
 
-    public function getLongitude(): ?string
+    public function getLongitude(): ?float
     {
         return $this->getData(self::LONGITUDE);
     }
 
-    public function setLongitude(?string $value)
+    public function setLongitude(?float $value)
     {
         return $this->setData(self::LONGITUDE, $value);
     }

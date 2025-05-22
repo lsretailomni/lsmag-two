@@ -183,32 +183,32 @@ class LSCPeriodicDiscount extends AbstractModel
         return $this->setData(self::VALIDATION_PERIOD_ID, $value);
     }
 
-    public function getDealPriceValue(): ?string
+    public function getDealPriceValue(): ?float
     {
         return $this->getData(self::DEAL_PRICE_VALUE);
     }
 
-    public function setDealPriceValue(?string $value)
+    public function setDealPriceValue(?float $value)
     {
         return $this->setData(self::DEAL_PRICE_VALUE, $value);
     }
 
-    public function getDiscountValue(): ?string
+    public function getDiscountValue(): ?float
     {
         return $this->getData(self::DISCOUNT__VALUE);
     }
 
-    public function setDiscountValue(?string $value)
+    public function setDiscountValue(?float $value)
     {
         return $this->setData(self::DISCOUNT__VALUE, $value);
     }
 
-    public function getDiscountAmountValue(): ?string
+    public function getDiscountAmountValue(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT_VALUE);
     }
 
-    public function setDiscountAmountValue(?string $value)
+    public function setDiscountAmountValue(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT_VALUE, $value);
     }

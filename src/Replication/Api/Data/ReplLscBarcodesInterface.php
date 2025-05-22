@@ -40,9 +40,9 @@ interface ReplLscBarcodesInterface
 
     public function setUnitOfMeasureCode(?string $value);
 
-    public function getDiscount() : ?string;
+    public function getDiscount() : ?float;
 
-    public function setDiscount(?string $value);
+    public function setDiscount(?float $value);
 
     public function getSystemid() : ?string;
 

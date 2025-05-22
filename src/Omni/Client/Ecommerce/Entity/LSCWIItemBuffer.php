@@ -201,12 +201,12 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->setData(self::ALLOW_INVOICE_DISC, $value);
     }
 
-    public function getUnitPrice(): ?string
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(?string $value)
+    public function setUnitPrice(?float $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
@@ -241,42 +241,42 @@ class LSCWIItemBuffer extends AbstractModel
         return $this->setData(self::ALTERNATIVE_ITEM_NO, $value);
     }
 
-    public function getGrossWeight(): ?string
+    public function getGrossWeight(): ?float
     {
         return $this->getData(self::GROSS_WEIGHT);
     }
 
-    public function setGrossWeight(?string $value)
+    public function setGrossWeight(?float $value)
     {
         return $this->setData(self::GROSS_WEIGHT, $value);
     }
 
-    public function getNetWeight(): ?string
+    public function getNetWeight(): ?float
     {
         return $this->getData(self::NET_WEIGHT);
     }
 
-    public function setNetWeight(?string $value)
+    public function setNetWeight(?float $value)
     {
         return $this->setData(self::NET_WEIGHT, $value);
     }
 
-    public function getUnitsPerParcel(): ?string
+    public function getUnitsPerParcel(): ?float
     {
         return $this->getData(self::UNITS_PER_PARCEL);
     }
 
-    public function setUnitsPerParcel(?string $value)
+    public function setUnitsPerParcel(?float $value)
     {
         return $this->setData(self::UNITS_PER_PARCEL, $value);
     }
 
-    public function getUnitVolume(): ?string
+    public function getUnitVolume(): ?float
     {
         return $this->getData(self::UNIT_VOLUME);
     }
 
-    public function setUnitVolume(?string $value)
+    public function setUnitVolume(?float $value)
     {
         return $this->setData(self::UNIT_VOLUME, $value);
     }

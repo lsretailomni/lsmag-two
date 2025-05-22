@@ -169,12 +169,12 @@ class HierarchyDealLineView extends AbstractModel
         return $this->setData(self::MAX_ITEM_SELECTION, $value);
     }
 
-    public function getAddedAmount(): ?string
+    public function getAddedAmount(): ?float
     {
         return $this->getData(self::ADDED_AMOUNT);
     }
 
-    public function setAddedAmount(?string $value)
+    public function setAddedAmount(?float $value)
     {
         return $this->setData(self::ADDED_AMOUNT, $value);
     }

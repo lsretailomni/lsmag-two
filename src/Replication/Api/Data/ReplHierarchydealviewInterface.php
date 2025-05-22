@@ -56,9 +56,9 @@ interface ReplHierarchydealviewInterface
 
     public function setMaxSelection(?int $value);
 
-    public function getModifierAddedAmount() : ?string;
+    public function getModifierAddedAmount() : ?float;
 
-    public function setModifierAddedAmount(?string $value);
+    public function setModifierAddedAmount(?float $value);
 
     public function getDealModSizeGrIndex() : ?int;
 

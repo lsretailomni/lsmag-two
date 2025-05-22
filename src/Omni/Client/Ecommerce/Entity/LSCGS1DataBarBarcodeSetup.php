@@ -137,12 +137,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::PREFERRED_SEQUENCE, $value);
     }
 
-    public function getDecimals(): ?string
+    public function getDecimals(): ?float
     {
         return $this->getData(self::DECIMALS);
     }
 
-    public function setDecimals(?string $value)
+    public function setDecimals(?float $value)
     {
         return $this->setData(self::DECIMALS, $value);
     }
@@ -167,12 +167,12 @@ class LSCGS1DataBarBarcodeSetup extends AbstractModel
         return $this->setData(self::BARCODE_VALUE, $value);
     }
 
-    public function getValueDec(): ?string
+    public function getValueDec(): ?float
     {
         return $this->getData(self::VALUE_DEC);
     }
 
-    public function setValueDec(?string $value)
+    public function setValueDec(?float $value)
     {
         return $this->setData(self::VALUE_DEC, $value);
     }

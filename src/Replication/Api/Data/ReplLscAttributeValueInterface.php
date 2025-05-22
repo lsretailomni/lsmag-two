@@ -56,9 +56,9 @@ interface ReplLscAttributeValueInterface
 
     public function setLinkType(?string $value);
 
-    public function getNumericValue() : ?string;
+    public function getNumericValue() : ?float;
 
-    public function setNumericValue(?string $value);
+    public function setNumericValue(?float $value);
 
     public function getRetailProductCode() : ?string;
 

@@ -293,12 +293,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::PRICE_OVERRIDE, $value);
     }
 
-    public function getMaxDiscountToGive(): ?string
+    public function getMaxDiscountToGive(): ?float
     {
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
 
-    public function setMaxDiscountToGive(?string $value)
+    public function setMaxDiscountToGive(?float $value)
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
@@ -313,12 +313,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::SUSPEND_TRANSACTION, $value);
     }
 
-    public function getMaxTotalDiscount(): ?string
+    public function getMaxTotalDiscount(): ?float
     {
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
     }
 
-    public function setMaxTotalDiscount(?string $value)
+    public function setMaxTotalDiscount(?float $value)
     {
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }
@@ -373,12 +373,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::EMPLOYMENT_TYPE, $value);
     }
 
-    public function getFraudSortField(): ?string
+    public function getFraudSortField(): ?float
     {
         return $this->getData(self::FRAUD_SORT_FIELD);
     }
 
-    public function setFraudSortField(?string $value)
+    public function setFraudSortField(?float $value)
     {
         return $this->setData(self::FRAUD_SORT_FIELD, $value);
     }
@@ -473,12 +473,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::WORK_PHONE_NO, $value);
     }
 
-    public function getHourlyRate(): ?string
+    public function getHourlyRate(): ?float
     {
         return $this->getData(self::HOURLY_RATE);
     }
 
-    public function setHourlyRate(?string $value)
+    public function setHourlyRate(?float $value)
     {
         return $this->setData(self::HOURLY_RATE, $value);
     }
@@ -863,12 +863,12 @@ class LSCStaff extends AbstractModel
         return $this->setData(self::CUSTOMER_COMMENTS, $value);
     }
 
-    public function getMaxTenderDeclDifference(): ?string
+    public function getMaxTenderDeclDifference(): ?float
     {
         return $this->getData(self::MAX_TENDER_DECL_DIFFERENCE);
     }
 
-    public function setMaxTenderDeclDifference(?string $value)
+    public function setMaxTenderDeclDifference(?float $value)
     {
         return $this->setData(self::MAX_TENDER_DECL_DIFFERENCE, $value);
     }

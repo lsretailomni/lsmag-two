@@ -20,13 +20,13 @@ interface ReplLscWiDiscountsInterface
 
     public function setDescription(?string $value);
 
-    public function getDiscount() : ?string;
+    public function getDiscount() : ?float;
 
-    public function setDiscount(?string $value);
+    public function setDiscount(?float $value);
 
-    public function getDiscountAmountValue() : ?string;
+    public function getDiscountAmountValue() : ?float;
 
-    public function setDiscountAmountValue(?string $value);
+    public function setDiscountAmountValue(?float $value);
 
     public function getDiscountType() : ?string;
 
@@ -52,9 +52,9 @@ interface ReplLscWiDiscountsInterface
 
     public function setLoyaltySchemeCode(?string $value);
 
-    public function getMinimumQuantity() : ?string;
+    public function getMinimumQuantity() : ?float;
 
-    public function setMinimumQuantity(?string $value);
+    public function setMinimumQuantity(?float $value);
 
     public function getOfferNo() : ?string;
 

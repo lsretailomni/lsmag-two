@@ -193,12 +193,12 @@ class Currency extends AbstractModel
         return $this->setData(self::REALIZED_LOSSES_ACC, $value);
     }
 
-    public function getInvoiceRoundingPrecision(): ?string
+    public function getInvoiceRoundingPrecision(): ?float
     {
         return $this->getData(self::INVOICE_ROUNDING_PRECISION);
     }
 
-    public function setInvoiceRoundingPrecision(?string $value)
+    public function setInvoiceRoundingPrecision(?float $value)
     {
         return $this->setData(self::INVOICE_ROUNDING_PRECISION, $value);
     }
@@ -213,22 +213,22 @@ class Currency extends AbstractModel
         return $this->setData(self::INVOICE_ROUNDING_TYPE, $value);
     }
 
-    public function getAmountRoundingPrecision(): ?string
+    public function getAmountRoundingPrecision(): ?float
     {
         return $this->getData(self::AMOUNT_ROUNDING_PRECISION);
     }
 
-    public function setAmountRoundingPrecision(?string $value)
+    public function setAmountRoundingPrecision(?float $value)
     {
         return $this->setData(self::AMOUNT_ROUNDING_PRECISION, $value);
     }
 
-    public function getUnitAmountRoundingPrecision(): ?string
+    public function getUnitAmountRoundingPrecision(): ?float
     {
         return $this->getData(self::UNITAMOUNT_ROUNDING_PRECISION);
     }
 
-    public function setUnitAmountRoundingPrecision(?string $value)
+    public function setUnitAmountRoundingPrecision(?float $value)
     {
         return $this->setData(self::UNITAMOUNT_ROUNDING_PRECISION, $value);
     }
@@ -283,12 +283,12 @@ class Currency extends AbstractModel
         return $this->setData(self::REALIZED_GL_LOSSES_ACCOUNT, $value);
     }
 
-    public function getApplnRoundingPrecision(): ?string
+    public function getApplnRoundingPrecision(): ?float
     {
         return $this->getData(self::APPLN_ROUNDING_PRECISION);
     }
 
-    public function setApplnRoundingPrecision(?string $value)
+    public function setApplnRoundingPrecision(?float $value)
     {
         return $this->setData(self::APPLN_ROUNDING_PRECISION, $value);
     }
@@ -303,12 +303,12 @@ class Currency extends AbstractModel
         return $this->setData(self::EMU_CURRENCY, $value);
     }
 
-    public function getCurrencyFactor(): ?string
+    public function getCurrencyFactor(): ?float
     {
         return $this->getData(self::CURRENCY_FACTOR);
     }
 
-    public function setCurrencyFactor(?string $value)
+    public function setCurrencyFactor(?float $value)
     {
         return $this->setData(self::CURRENCY_FACTOR, $value);
     }
@@ -353,12 +353,12 @@ class Currency extends AbstractModel
         return $this->setData(self::CONV_LCY_RNDG_CREDIT_ACC, $value);
     }
 
-    public function getMaxVatDifferenceAllowed(): ?string
+    public function getMaxVatDifferenceAllowed(): ?float
     {
         return $this->getData(self::MAX_VAT_DIFFERENCE_ALLOWED);
     }
 
-    public function setMaxVatDifferenceAllowed(?string $value)
+    public function setMaxVatDifferenceAllowed(?float $value)
     {
         return $this->setData(self::MAX_VAT_DIFFERENCE_ALLOWED, $value);
     }
@@ -373,22 +373,22 @@ class Currency extends AbstractModel
         return $this->setData(self::VAT_ROUNDING_TYPE, $value);
     }
 
-    public function getPaymentTolerance(): ?string
+    public function getPaymentTolerance(): ?float
     {
         return $this->getData(self::PAYMENT_TOLERANCE);
     }
 
-    public function setPaymentTolerance(?string $value)
+    public function setPaymentTolerance(?float $value)
     {
         return $this->setData(self::PAYMENT_TOLERANCE, $value);
     }
 
-    public function getMaxPaymentToleranceAmount(): ?string
+    public function getMaxPaymentToleranceAmount(): ?float
     {
         return $this->getData(self::MAX_PAYMENT_TOLERANCE_AMOUNT);
     }
 
-    public function setMaxPaymentToleranceAmount(?string $value)
+    public function setMaxPaymentToleranceAmount(?float $value)
     {
         return $this->setData(self::MAX_PAYMENT_TOLERANCE_AMOUNT, $value);
     }
@@ -413,12 +413,12 @@ class Currency extends AbstractModel
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
 
-    public function getLscLowestAcceptDenomAmt(): ?string
+    public function getLscLowestAcceptDenomAmt(): ?float
     {
         return $this->getData(self::LSC_LOWEST_ACCEPT_DENOM_AMT);
     }
 
-    public function setLscLowestAcceptDenomAmt(?string $value)
+    public function setLscLowestAcceptDenomAmt(?float $value)
     {
         return $this->setData(self::LSC_LOWEST_ACCEPT_DENOM_AMT, $value);
     }

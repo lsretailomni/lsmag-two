@@ -52,9 +52,9 @@ interface ReplHierarchynodeslinkviewInterface
 
     public function setMemberValue(?string $value);
 
-    public function getDealPrice() : ?string;
+    public function getDealPrice() : ?float;
 
-    public function setDealPrice(?string $value);
+    public function setDealPrice(?float $value);
 
     public function getValidationPeriodId() : ?string;
 

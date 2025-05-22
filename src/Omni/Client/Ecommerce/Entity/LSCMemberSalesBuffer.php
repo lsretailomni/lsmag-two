@@ -235,12 +235,12 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::DAYTIME_PHONE_NO, $value);
     }
 
-    public function getDiscountAmount(): ?string
+    public function getDiscountAmount(): ?float
     {
         return $this->getData(self::DISCOUNT_AMOUNT);
     }
 
-    public function setDiscountAmount(?string $value)
+    public function setDiscountAmount(?float $value)
     {
         return $this->setData(self::DISCOUNT_AMOUNT, $value);
     }
@@ -305,12 +305,12 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::EXTERNAL_ID, $value);
     }
 
-    public function getGrossAmount(): ?string
+    public function getGrossAmount(): ?float
     {
         return $this->getData(self::GROSS_AMOUNT);
     }
 
-    public function setGrossAmount(?string $value)
+    public function setGrossAmount(?float $value)
     {
         return $this->setData(self::GROSS_AMOUNT, $value);
     }
@@ -365,12 +365,12 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::NAME, $value);
     }
 
-    public function getNetAmount(): ?string
+    public function getNetAmount(): ?float
     {
         return $this->getData(self::NET_AMOUNT);
     }
 
-    public function setNetAmount(?string $value)
+    public function setNetAmount(?float $value)
     {
         return $this->setData(self::NET_AMOUNT, $value);
     }
@@ -405,22 +405,22 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::PHONE_NO, $value);
     }
 
-    public function getPointsRewarded(): ?string
+    public function getPointsRewarded(): ?float
     {
         return $this->getData(self::POINTS_REWARDED);
     }
 
-    public function setPointsRewarded(?string $value)
+    public function setPointsRewarded(?float $value)
     {
         return $this->setData(self::POINTS_REWARDED, $value);
     }
 
-    public function getPointsUsedInOrder(): ?string
+    public function getPointsUsedInOrder(): ?float
     {
         return $this->getData(self::POINTS_USED_IN_ORDER);
     }
 
-    public function setPointsUsedInOrder(?string $value)
+    public function setPointsUsedInOrder(?float $value)
     {
         return $this->setData(self::POINTS_USED_IN_ORDER, $value);
     }
@@ -455,12 +455,12 @@ class LSCMemberSalesBuffer extends AbstractModel
         return $this->setData(self::POSTED, $value);
     }
 
-    public function getQuantity(): ?string
+    public function getQuantity(): ?float
     {
         return $this->getData(self::QUANTITY);
     }
 
-    public function setQuantity(?string $value)
+    public function setQuantity(?float $value)
     {
         return $this->setData(self::QUANTITY, $value);
     }

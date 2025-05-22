@@ -249,12 +249,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::ENDING_DATE, $value);
     }
 
-    public function getMinimumQuantity(): ?string
+    public function getMinimumQuantity(): ?float
     {
         return $this->getData(self::MINIMUM_QUANTITY);
     }
 
-    public function setMinimumQuantity(?string $value)
+    public function setMinimumQuantity(?float $value)
     {
         return $this->setData(self::MINIMUM_QUANTITY, $value);
     }
@@ -279,42 +279,42 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::AMOUNT_TYPE, $value);
     }
 
-    public function getUnitPrice(): ?string
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(?string $value)
+    public function setUnitPrice(?float $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }
 
-    public function getCostFactor(): ?string
+    public function getCostFactor(): ?float
     {
         return $this->getData(self::COST_FACTOR);
     }
 
-    public function setCostFactor(?string $value)
+    public function setCostFactor(?float $value)
     {
         return $this->setData(self::COST_FACTOR, $value);
     }
 
-    public function getUnitCost(): ?string
+    public function getUnitCost(): ?float
     {
         return $this->getData(self::UNIT_COST);
     }
 
-    public function setUnitCost(?string $value)
+    public function setUnitCost(?float $value)
     {
         return $this->setData(self::UNIT_COST, $value);
     }
 
-    public function getLineDiscount(): ?string
+    public function getLineDiscount(): ?float
     {
         return $this->getData(self::LINE_DISCOUNT);
     }
 
-    public function setLineDiscount(?string $value)
+    public function setLineDiscount(?float $value)
     {
         return $this->setData(self::LINE_DISCOUNT, $value);
     }
@@ -379,12 +379,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::ASSET_ID, $value);
     }
 
-    public function getLineAmount(): ?string
+    public function getLineAmount(): ?float
     {
         return $this->getData(self::LINE_AMOUNT);
     }
 
-    public function setLineAmount(?string $value)
+    public function setLineAmount(?float $value)
     {
         return $this->setData(self::LINE_AMOUNT, $value);
     }
@@ -419,12 +419,12 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::STATUS, $value);
     }
 
-    public function getDirectUnitCost(): ?string
+    public function getDirectUnitCost(): ?float
     {
         return $this->getData(self::DIRECT_UNIT_COST);
     }
 
-    public function setDirectUnitCost(?string $value)
+    public function setDirectUnitCost(?float $value)
     {
         return $this->setData(self::DIRECT_UNIT_COST, $value);
     }
@@ -489,72 +489,72 @@ class PriceListLine extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE_CODE_LOOKUP, $value);
     }
 
-    public function getLscMarkup(): ?string
+    public function getLscMarkup(): ?float
     {
         return $this->getData(self::LSC_MARKUP);
     }
 
-    public function setLscMarkup(?string $value)
+    public function setLscMarkup(?float $value)
     {
         return $this->setData(self::LSC_MARKUP, $value);
     }
 
-    public function getLscProfit(): ?string
+    public function getLscProfit(): ?float
     {
         return $this->getData(self::LSC_PROFIT);
     }
 
-    public function setLscProfit(?string $value)
+    public function setLscProfit(?float $value)
     {
         return $this->setData(self::LSC_PROFIT, $value);
     }
 
-    public function getLscProfitLcy(): ?string
+    public function getLscProfitLcy(): ?float
     {
         return $this->getData(self::LSC_PROFIT_LCY);
     }
 
-    public function setLscProfitLcy(?string $value)
+    public function setLscProfitLcy(?float $value)
     {
         return $this->setData(self::LSC_PROFIT_LCY, $value);
     }
 
-    public function getLscUnitPriceIncludingVat(): ?string
+    public function getLscUnitPriceIncludingVat(): ?float
     {
         return $this->getData(self::LSC_UNIT_PRICE_INCLUDING_VAT);
     }
 
-    public function setLscUnitPriceIncludingVat(?string $value)
+    public function setLscUnitPriceIncludingVat(?float $value)
     {
         return $this->setData(self::LSC_UNIT_PRICE_INCLUDING_VAT, $value);
     }
 
-    public function getLscWholesalePrice(): ?string
+    public function getLscWholesalePrice(): ?float
     {
         return $this->getData(self::LSC_WHOLESALE_PRICE);
     }
 
-    public function setLscWholesalePrice(?string $value)
+    public function setLscWholesalePrice(?float $value)
     {
         return $this->setData(self::LSC_WHOLESALE_PRICE, $value);
     }
 
-    public function getLscWholesaleDiscount(): ?string
+    public function getLscWholesaleDiscount(): ?float
     {
         return $this->getData(self::LSC_WHOLESALE_DISCOUNT);
     }
 
-    public function setLscWholesaleDiscount(?string $value)
+    public function setLscWholesaleDiscount(?float $value)
     {
         return $this->setData(self::LSC_WHOLESALE_DISCOUNT, $value);
     }
 
-    public function getLscCompPriceInclVat(): ?string
+    public function getLscCompPriceInclVat(): ?float
     {
         return $this->getData(self::LSC_COMP_PRICE_INCL_VAT);
     }
 
-    public function setLscCompPriceInclVat(?string $value)
+    public function setLscCompPriceInclVat(?float $value)
     {
         return $this->setData(self::LSC_COMP_PRICE_INCL_VAT, $value);
     }

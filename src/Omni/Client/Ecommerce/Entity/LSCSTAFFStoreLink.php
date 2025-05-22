@@ -133,12 +133,12 @@ class LSCSTAFFStoreLink extends AbstractModel
         return $this->setData(self::DELIVERY_DRIVER, $value);
     }
 
-    public function getFloat(): ?string
+    public function getFloat(): ?float
     {
         return $this->getData(self::FLOAT);
     }
 
-    public function setFloat(?string $value)
+    public function setFloat(?float $value)
     {
         return $this->setData(self::FLOAT, $value);
     }

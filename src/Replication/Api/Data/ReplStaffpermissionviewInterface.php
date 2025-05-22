@@ -72,13 +72,13 @@ interface ReplStaffpermissionviewInterface
 
     public function setUpdateCustomers(?string $value);
 
-    public function getMaxDiscountToGive() : ?string;
+    public function getMaxDiscountToGive() : ?float;
 
-    public function setMaxDiscountToGive(?string $value);
+    public function setMaxDiscountToGive(?float $value);
 
-    public function getMaxTotalDiscount() : ?string;
+    public function getMaxTotalDiscount() : ?float;
 
-    public function setMaxTotalDiscount(?string $value);
+    public function setMaxTotalDiscount(?float $value);
 
     public function setProcessed(?bool $processed);
 

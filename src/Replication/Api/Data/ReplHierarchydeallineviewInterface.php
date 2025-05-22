@@ -60,9 +60,9 @@ interface ReplHierarchydeallineviewInterface
 
     public function setMaxItemSelection(?int $value);
 
-    public function getAddedAmount() : ?string;
+    public function getAddedAmount() : ?float;
 
-    public function setAddedAmount(?string $value);
+    public function setAddedAmount(?float $value);
 
     public function getRetailImageId() : ?string;
 

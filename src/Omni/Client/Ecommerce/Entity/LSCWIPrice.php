@@ -105,12 +105,12 @@ class LSCWIPrice extends AbstractModel
         return $this->setData(self::LOYALTY_SCHEME_CODE, $value);
     }
 
-    public function getNetUnitPrice(): ?string
+    public function getNetUnitPrice(): ?float
     {
         return $this->getData(self::NET_UNIT_PRICE);
     }
 
-    public function setNetUnitPrice(?string $value)
+    public function setNetUnitPrice(?float $value)
     {
         return $this->setData(self::NET_UNIT_PRICE, $value);
     }
@@ -125,12 +125,12 @@ class LSCWIPrice extends AbstractModel
         return $this->setData(self::OFFER_NO, $value);
     }
 
-    public function getQtyPerUnitOfMeasure(): ?string
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(?string $value)
+    public function setQtyPerUnitOfMeasure(?float $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
@@ -195,12 +195,12 @@ class LSCWIPrice extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getUnitPrice(): ?string
+    public function getUnitPrice(): ?float
     {
         return $this->getData(self::UNIT_PRICE);
     }
 
-    public function setUnitPrice(?string $value)
+    public function setUnitPrice(?float $value)
     {
         return $this->setData(self::UNIT_PRICE, $value);
     }

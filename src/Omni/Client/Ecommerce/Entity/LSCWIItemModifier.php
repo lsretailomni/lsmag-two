@@ -207,12 +207,12 @@ class LSCWIItemModifier extends AbstractModel
         return $this->setData(self::PRICE_TYPE, $value);
     }
 
-    public function getAmountPercent(): ?string
+    public function getAmountPercent(): ?float
     {
         return $this->getData(self::AMOUNT_PERCENT);
     }
 
-    public function setAmountPercent(?string $value)
+    public function setAmountPercent(?float $value)
     {
         return $this->setData(self::AMOUNT_PERCENT, $value);
     }
@@ -227,22 +227,22 @@ class LSCWIItemModifier extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
 
-    public function getQtyPerUnitOfMeasure(): ?string
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(?string $value)
+    public function setQtyPerUnitOfMeasure(?float $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
 
-    public function getTimeModifierMinutes(): ?string
+    public function getTimeModifierMinutes(): ?float
     {
         return $this->getData(self::TIME_MODIFIER_MINUTES);
     }
 
-    public function setTimeModifierMinutes(?string $value)
+    public function setTimeModifierMinutes(?float $value)
     {
         return $this->setData(self::TIME_MODIFIER_MINUTES, $value);
     }

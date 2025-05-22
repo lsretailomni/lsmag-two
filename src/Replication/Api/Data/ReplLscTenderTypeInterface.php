@@ -44,33 +44,33 @@ interface ReplLscTenderTypeInterface
 
     public function setAboveMinChangeTenderType(?string $value);
 
-    public function getMinChange() : ?string;
+    public function getMinChange() : ?float;
 
-    public function setMinChange(?string $value);
+    public function setMinChange(?float $value);
 
     public function getRounding() : ?string;
 
     public function setRounding(?string $value);
 
-    public function getRoundingTo() : ?string;
+    public function getRoundingTo() : ?float;
 
-    public function setRoundingTo(?string $value);
+    public function setRoundingTo(?float $value);
 
-    public function getMinAmountEntered() : ?string;
+    public function getMinAmountEntered() : ?float;
 
-    public function setMinAmountEntered(?string $value);
+    public function setMinAmountEntered(?float $value);
 
-    public function getMaxAmountEntered() : ?string;
+    public function getMaxAmountEntered() : ?float;
 
-    public function setMaxAmountEntered(?string $value);
+    public function setMaxAmountEntered(?float $value);
 
-    public function getMinAmountAllowed() : ?string;
+    public function getMinAmountAllowed() : ?float;
 
-    public function setMinAmountAllowed(?string $value);
+    public function setMinAmountAllowed(?float $value);
 
-    public function getMaxAmountAllowed() : ?string;
+    public function getMaxAmountAllowed() : ?float;
 
-    public function setMaxAmountAllowed(?string $value);
+    public function setMaxAmountAllowed(?float $value);
 
     public function getMayBeUsed() : ?bool;
 
@@ -88,9 +88,9 @@ interface ReplLscTenderTypeInterface
 
     public function setOvertenderAllowed(?bool $value);
 
-    public function getOvertenderMaxAmt() : ?string;
+    public function getOvertenderMaxAmt() : ?float;
 
-    public function setOvertenderMaxAmt(?string $value);
+    public function setOvertenderMaxAmt(?float $value);
 
     public function getUndertenderAllowed() : ?bool;
 
@@ -208,9 +208,9 @@ interface ReplLscTenderTypeInterface
 
     public function setAccountName(?string $value);
 
-    public function getCharge() : ?string;
+    public function getCharge() : ?float;
 
-    public function setCharge(?string $value);
+    public function setCharge(?float $value);
 
     public function getChargeToAccountNo() : ?string;
 
@@ -248,9 +248,9 @@ interface ReplLscTenderTypeInterface
 
     public function setPrintInCidReport(?bool $value);
 
-    public function getPosPickupWarningAmount() : ?string;
+    public function getPosPickupWarningAmount() : ?float;
 
-    public function setPosPickupWarningAmount(?string $value);
+    public function setPosPickupWarningAmount(?float $value);
 
     public function getBankAccountType() : ?string;
 

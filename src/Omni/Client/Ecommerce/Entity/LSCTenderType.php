@@ -287,12 +287,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
 
-    public function getMinChange(): ?string
+    public function getMinChange(): ?float
     {
         return $this->getData(self::MIN_CHANGE);
     }
 
-    public function setMinChange(?string $value)
+    public function setMinChange(?float $value)
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
@@ -307,52 +307,52 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::ROUNDING, $value);
     }
 
-    public function getRoundingTo(): ?string
+    public function getRoundingTo(): ?float
     {
         return $this->getData(self::ROUNDING_TO);
     }
 
-    public function setRoundingTo(?string $value)
+    public function setRoundingTo(?float $value)
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
 
-    public function getMinAmountEntered(): ?string
+    public function getMinAmountEntered(): ?float
     {
         return $this->getData(self::MIN_AMOUNT_ENTERED);
     }
 
-    public function setMinAmountEntered(?string $value)
+    public function setMinAmountEntered(?float $value)
     {
         return $this->setData(self::MIN_AMOUNT_ENTERED, $value);
     }
 
-    public function getMaxAmountEntered(): ?string
+    public function getMaxAmountEntered(): ?float
     {
         return $this->getData(self::MAX_AMOUNT_ENTERED);
     }
 
-    public function setMaxAmountEntered(?string $value)
+    public function setMaxAmountEntered(?float $value)
     {
         return $this->setData(self::MAX_AMOUNT_ENTERED, $value);
     }
 
-    public function getMinAmountAllowed(): ?string
+    public function getMinAmountAllowed(): ?float
     {
         return $this->getData(self::MIN_AMOUNT_ALLOWED);
     }
 
-    public function setMinAmountAllowed(?string $value)
+    public function setMinAmountAllowed(?float $value)
     {
         return $this->setData(self::MIN_AMOUNT_ALLOWED, $value);
     }
 
-    public function getMaxAmountAllowed(): ?string
+    public function getMaxAmountAllowed(): ?float
     {
         return $this->getData(self::MAX_AMOUNT_ALLOWED);
     }
 
-    public function setMaxAmountAllowed(?string $value)
+    public function setMaxAmountAllowed(?float $value)
     {
         return $this->setData(self::MAX_AMOUNT_ALLOWED, $value);
     }
@@ -397,12 +397,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
 
-    public function getOvertenderMaxAmt(): ?string
+    public function getOvertenderMaxAmt(): ?float
     {
         return $this->getData(self::OVERTENDER_MAX_AMT);
     }
 
-    public function setOvertenderMaxAmt(?string $value)
+    public function setOvertenderMaxAmt(?float $value)
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }
@@ -697,12 +697,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::ACCOUNT_NAME, $value);
     }
 
-    public function getCharge(): ?string
+    public function getCharge(): ?float
     {
         return $this->getData(self::CHARGE);
     }
 
-    public function setCharge(?string $value)
+    public function setCharge(?float $value)
     {
         return $this->setData(self::CHARGE, $value);
     }
@@ -797,12 +797,12 @@ class LSCTenderType extends AbstractModel
         return $this->setData(self::PRINT_IN_CID_REPORT, $value);
     }
 
-    public function getPosPickupWarningAmount(): ?string
+    public function getPosPickupWarningAmount(): ?float
     {
         return $this->getData(self::POS_PICKUP_WARNING_AMOUNT);
     }
 
-    public function setPosPickupWarningAmount(?string $value)
+    public function setPosPickupWarningAmount(?float $value)
     {
         return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }

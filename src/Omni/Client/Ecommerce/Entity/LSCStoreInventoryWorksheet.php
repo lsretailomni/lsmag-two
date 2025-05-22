@@ -317,12 +317,12 @@ class LSCStoreInventoryWorksheet extends AbstractModel
         return $this->setData(self::QUANTITY_METHOD, $value);
     }
 
-    public function getQuickDefaultQuantity(): ?string
+    public function getQuickDefaultQuantity(): ?float
     {
         return $this->getData(self::QUICKDEFAULT_QUANTITY);
     }
 
-    public function setQuickDefaultQuantity(?string $value)
+    public function setQuickDefaultQuantity(?float $value)
     {
         return $this->setData(self::QUICKDEFAULT_QUANTITY, $value);
     }

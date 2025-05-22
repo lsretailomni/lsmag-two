@@ -119,12 +119,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::VAT_CALCULATION_TYPE, $value);
     }
 
-    public function getVat(): ?string
+    public function getVat(): ?float
     {
         return $this->getData(self::VAT);
     }
 
-    public function setVat(?string $value)
+    public function setVat(?float $value)
     {
         return $this->setData(self::VAT, $value);
     }
@@ -329,12 +329,12 @@ class VATPostingSetup extends AbstractModel
         return $this->setData(self::STARTING_DATE, $value);
     }
 
-    public function getNonDeductibleVat(): ?string
+    public function getNonDeductibleVat(): ?float
     {
         return $this->getData(self::NONDEDUCTIBLE_VAT);
     }
 
-    public function setNonDeductibleVat(?string $value)
+    public function setNonDeductibleVat(?float $value)
     {
         return $this->setData(self::NONDEDUCTIBLE_VAT, $value);
     }

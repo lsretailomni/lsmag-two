@@ -100,9 +100,9 @@ interface ReplLscStoreInventoryWorksheetInterface
 
     public function setQuantityMethod(?string $value);
 
-    public function getQuickDefaultQuantity() : ?string;
+    public function getQuickDefaultQuantity() : ?float;
 
-    public function setQuickDefaultQuantity(?string $value);
+    public function setQuickDefaultQuantity(?float $value);
 
     public function getInvAdjustGroupCode() : ?string;
 

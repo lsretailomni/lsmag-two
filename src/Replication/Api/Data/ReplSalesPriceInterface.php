@@ -28,9 +28,9 @@ interface ReplSalesPriceInterface
 
     public function setStartingDate(?string $value);
 
-    public function getUnitPrice() : ?string;
+    public function getUnitPrice() : ?float;
 
-    public function setUnitPrice(?string $value);
+    public function setUnitPrice(?float $value);
 
     public function getPriceIncludesVat() : ?bool;
 
@@ -48,9 +48,9 @@ interface ReplSalesPriceInterface
 
     public function setSalesType(?string $value);
 
-    public function getMinimumQuantity() : ?string;
+    public function getMinimumQuantity() : ?float;
 
-    public function setMinimumQuantity(?string $value);
+    public function setMinimumQuantity(?float $value);
 
     public function getEndingDate() : ?string;
 
@@ -68,21 +68,21 @@ interface ReplSalesPriceInterface
 
     public function setAllowLineDisc(?bool $value);
 
-    public function getLscMarkup() : ?string;
+    public function getLscMarkup() : ?float;
 
-    public function setLscMarkup(?string $value);
+    public function setLscMarkup(?float $value);
 
-    public function getLscProfit() : ?string;
+    public function getLscProfit() : ?float;
 
-    public function setLscProfit(?string $value);
+    public function setLscProfit(?float $value);
 
-    public function getLscProfitLcy() : ?string;
+    public function getLscProfitLcy() : ?float;
 
-    public function setLscProfitLcy(?string $value);
+    public function setLscProfitLcy(?float $value);
 
-    public function getLscUnitPriceIncludingVat() : ?string;
+    public function getLscUnitPriceIncludingVat() : ?float;
 
-    public function setLscUnitPriceIncludingVat(?string $value);
+    public function setLscUnitPriceIncludingVat(?float $value);
 
     public function getSystemid() : ?string;
 

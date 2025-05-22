@@ -44,9 +44,9 @@ interface ReplLscStaffStoreLinkInterface
 
     public function setDeliveryDriver(?bool $value);
 
-    public function getFloat() : ?string;
+    public function getFloat() : ?float;
 
-    public function setFloat(?string $value);
+    public function setFloat(?float $value);
 
     public function getOnCall() : ?bool;
 

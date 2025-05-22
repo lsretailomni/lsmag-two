@@ -242,8 +242,404 @@
     <preference for="Ls\Replication\Api\Data\ReplVariantregviewSearchResultsInterface"
                 type="Ls\Replication\Model\ReplVariantregviewSearchResults"/>
 
+    <preference for="Ls\Replication\Api\ReplHierarchyviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplHierarchyviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchyviewInterface"
+                type="Ls\Replication\Model\ReplHierarchyview"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchyviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplHierarchyviewSearchResults"/>
 
+    <preference for="Ls\Replication\Api\ReplHierarchyviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplHierarchyviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchyviewInterface"
+                type="Ls\Replication\Model\ReplHierarchyview"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchyviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplHierarchyviewSearchResults"/>
 
+    <preference for="Ls\Replication\Api\ReplContactviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplContactviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplContactviewInterface"
+                type="Ls\Replication\Model\ReplContactview"/>
+    <preference for="Ls\Replication\Api\Data\ReplContactviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplContactviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplCountryviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplCountryviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplCountryviewInterface"
+                type="Ls\Replication\Model\ReplCountryview"/>
+    <preference for="Ls\Replication\Api\Data\ReplCountryviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplCountryviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplCurrencyExchangeRateRepositoryInterface"
+                type="Ls\Replication\Model\ReplCurrencyExchangeRateRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplCurrencyExchangeRateInterface"
+                type="Ls\Replication\Model\ReplCurrencyExchangeRate"/>
+    <preference for="Ls\Replication\Api\Data\ReplCurrencyExchangeRateSearchResultsInterface"
+                type="Ls\Replication\Model\ReplCurrencyExchangeRateSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplCurrencyRepositoryInterface"
+                type="Ls\Replication\Model\ReplCurrencyRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplCurrencyInterface"
+                type="Ls\Replication\Model\ReplCurrency"/>
+    <preference for="Ls\Replication\Api\Data\ReplCurrencySearchResultsInterface"
+                type="Ls\Replication\Model\ReplCurrencySearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplCustomerRepositoryInterface"
+                type="Ls\Replication\Model\ReplCustomerRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplCustomerInterface"
+                type="Ls\Replication\Model\ReplCustomer"/>
+    <preference for="Ls\Replication\Api\Data\ReplCustomerSearchResultsInterface"
+                type="Ls\Replication\Model\ReplCustomerSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplHierarchydeallineviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplHierarchydeallineviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchydeallineviewInterface"
+                type="Ls\Replication\Model\ReplHierarchydeallineview"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchydeallineviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplHierarchydeallineviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplHierarchydealviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplHierarchydealviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchydealviewInterface"
+                type="Ls\Replication\Model\ReplHierarchydealview"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchydealviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplHierarchydealviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplHierarchynodeslinkviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplHierarchynodeslinkviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchynodeslinkviewInterface"
+                type="Ls\Replication\Model\ReplHierarchynodeslinkview"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchynodeslinkviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplHierarchynodeslinkviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplHierarchynodesviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplHierarchynodesviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchynodesviewInterface"
+                type="Ls\Replication\Model\ReplHierarchynodesview"/>
+    <preference for="Ls\Replication\Api\Data\ReplHierarchynodesviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplHierarchynodesviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplItemCategoryRepositoryInterface"
+                type="Ls\Replication\Model\ReplItemCategoryRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemCategoryInterface"
+                type="Ls\Replication\Model\ReplItemCategory"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemCategorySearchResultsInterface"
+                type="Ls\Replication\Model\ReplItemCategorySearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplItemTrackingCodeRepositoryInterface"
+                type="Ls\Replication\Model\ReplItemTrackingCodeRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemTrackingCodeInterface"
+                type="Ls\Replication\Model\ReplItemTrackingCode"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemTrackingCodeSearchResultsInterface"
+                type="Ls\Replication\Model\ReplItemTrackingCodeSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplItemuomupdviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplItemuomupdviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemuomupdviewInterface"
+                type="Ls\Replication\Model\ReplItemuomupdview"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemuomupdviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplItemuomupdviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplItemVariantRepositoryInterface"
+                type="Ls\Replication\Model\ReplItemVariantRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemVariantInterface"
+                type="Ls\Replication\Model\ReplItemVariant"/>
+    <preference for="Ls\Replication\Api\Data\ReplItemVariantSearchResultsInterface"
+                type="Ls\Replication\Model\ReplItemVariantSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscBarcodeMaskSegmentRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscBarcodeMaskSegmentRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscBarcodeMaskSegmentInterface"
+                type="Ls\Replication\Model\ReplLscBarcodeMaskSegment"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscBarcodeMaskSegmentSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscBarcodeMaskSegmentSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscBarcodeMaskRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscBarcodeMaskRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscBarcodeMaskInterface"
+                type="Ls\Replication\Model\ReplLscBarcodeMask"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscBarcodeMaskSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscBarcodeMaskSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscBarcodesRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscBarcodesRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscBarcodesInterface"
+                type="Ls\Replication\Model\ReplLscBarcodes"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscBarcodesSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscBarcodesSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscCollectionFrameworkRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscCollectionFrameworkRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscCollectionFrameworkInterface"
+                type="Ls\Replication\Model\ReplLscCollectionFramework"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscCollectionFrameworkSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscCollectionFrameworkSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscDataTranslationRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscDataTranslationRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscDataTranslationInterface"
+                type="Ls\Replication\Model\ReplLscDataTranslation"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscDataTranslationSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscDataTranslationkSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscGs1databarBarcodeSetupRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscGs1databarBarcodeSetupRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscGs1databarBarcodeSetupInterface"
+                type="Ls\Replication\Model\ReplLscGs1databarBarcodeSetup"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscGs1databarBarcodeSetupSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscGs1databarBarcodeSetupSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscInventoryLookupTableRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscInventoryLookupTableRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscInventoryLookupTableInterface"
+                type="Ls\Replication\Model\ReplLscInventoryLookupTable"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscInventoryLookupTableSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscInventoryLookupTableSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscInventoryMenuLinesRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscInventoryMenuLinesRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscInventoryMenuLinesInterface"
+                type="Ls\Replication\Model\ReplLscInventoryMenuLines"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscInventoryMenuLinesSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscInventoryMenuLinesSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscItemHtmlMlRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscItemHtmlMlRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscItemHtmlMlInterface"
+                type="Ls\Replication\Model\ReplLscItemHtmlMl"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscItemHtmlMlSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscItemHtmlMlSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscItemVariantRegistrationRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscItemVariantRegistrationRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscItemVariantRegistrationInterface"
+                type="Ls\Replication\Model\ReplLscItemVariantRegistration"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscItemVariantRegistrationSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscItemVariantRegistrationSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscMemberContactRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscMemberContactRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscMemberContactInterface"
+                type="Ls\Replication\Model\ReplLscMemberContact"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscMemberContactSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscMemberContactSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscMobilepluRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscMobilepluRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscMobilepluInterface"
+                type="Ls\Replication\Model\ReplLscMobileplu"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscMobilepluSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscMobilepluSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscOfferHtmlMlRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscOfferHtmlMlRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscOfferHtmlMlInterface"
+                type="Ls\Replication\Model\ReplLscOfferHtmlMl"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscOfferHtmlMlSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscOfferHtmlMlSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscPosTerminalRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscPosTerminalRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscPosTerminalInterface"
+                type="Ls\Replication\Model\ReplLscPosTerminal"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscPosTerminalSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscPosTerminalSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscRetailImageLinkRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscRetailImageLinkRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscRetailImageLinkInterface"
+                type="Ls\Replication\Model\ReplLscRetailImageLink"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscRetailImageLinkSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscRetailImageLinkSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscRetailProductGroupRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscRetailProductGroupRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscRetailProductGroupInterface"
+                type="Ls\Replication\Model\ReplLscRetailProductGroup"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscRetailProductGroupSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscRetailProductGroupSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscStaffStoreLinkRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscStaffStoreLinkRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscStaffStoreLinkInterface"
+                type="Ls\Replication\Model\ReplLscStaffStoreLink"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscStaffStoreLinkSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscStaffStoreLinkSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscStaffRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscStaffRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscStaffInterface"
+                type="Ls\Replication\Model\ReplLscStaff"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscStaffSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscStaffSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscStoreInventoryWorksheetRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscStoreInventoryWorksheetRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscStoreInventoryWorksheetInterface"
+                type="Ls\Replication\Model\ReplLscStoreInventoryWorksheet"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscStoreInventoryWorksheetSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscStoreInventoryWorksheetSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscTenderTypeCurrencySetupRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscTenderTypeCurrencySetupRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeCurrencySetupInterface"
+                type="Ls\Replication\Model\ReplLscTenderTypeCurrencySetup"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeCurrencySetupSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscTenderTypeCurrencySetupSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscTenderTypeRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscTenderTypeRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeInterface"
+                type="Ls\Replication\Model\ReplLscTenderType"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscTenderTypeSetupSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscTenderTypeSetupSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscValidationPeriodRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscValidationPeriodRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscValidationPeriodInterface"
+                type="Ls\Replication\Model\ReplLscValidationPeriod"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscValidationPeriodSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscValidationPeriodSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiDiscountsRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiDiscountsRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiDiscountsInterface"
+                type="Ls\Replication\Model\ReplLscWiDiscounts"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiDiscountsSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiDiscountsSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiExtdVariantValuesRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiExtdVariantValuesRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiExtdVariantValuesInterface"
+                type="Ls\Replication\Model\ReplLscWiExtdVariantValues"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiExtdVariantValuesSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiExtdVariantValuesSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiImageBufferRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiImageBufferRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiImageBufferInterface"
+                type="Ls\Replication\Model\ReplLscWiImageBuffer"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiImageBufferSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiImageBufferSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiInvLocationBufferRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiInvLocationBufferRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiInvLocationBufferInterface"
+                type="Ls\Replication\Model\ReplLscWiInvLocationBuffer"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiInvLocationBufferSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiInvLocationBufferSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiItemBufferRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiItemBufferRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemBufferInterface"
+                type="Ls\Replication\Model\ReplLscWiItemBuffer"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemBufferSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiItemBufferSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiItemLocationBufferRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiItemLocationBufferRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemLocationBufferInterface"
+                type="Ls\Replication\Model\ReplLscWiItemLocationBuffer"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemLocationBufferSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiItemLocationBufferSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiItemModifierRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiItemModifierRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemModifierInterface"
+                type="Ls\Replication\Model\ReplLscWiItemModifier"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemModifierSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiItemModifierSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiItemRecipeBufferRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiItemRecipeBufferRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemRecipeBufferInterface"
+                type="Ls\Replication\Model\ReplLscWiItemRecipeBuffer"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiItemRecipeBufferSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiItemRecipeBufferSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiMixMatchOfferExtRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiMixMatchOfferExtRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiMixMatchOfferExtInterface"
+                type="Ls\Replication\Model\ReplLscWiMixMatchOfferExt"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiMixMatchOfferExtSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiMixMatchOfferExtSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplLscWiPriceRepositoryInterface"
+                type="Ls\Replication\Model\ReplLscWiPriceRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiPriceInterface"
+                type="Ls\Replication\Model\ReplLscWiPrice"/>
+    <preference for="Ls\Replication\Api\Data\ReplLscWiPriceSearchResultsInterface"
+                type="Ls\Replication\Model\ReplLscWiPriceSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplPeriodicdiscviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplPeriodicdiscviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplPeriodicdiscviewInterface"
+                type="Ls\Replication\Model\ReplPeriodicdiscview"/>
+    <preference for="Ls\Replication\Api\Data\ReplPeriodicdiscviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplPeriodicdiscviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplPriceListLineRepositoryInterface"
+                type="Ls\Replication\Model\ReplPriceListLineRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplPriceListLineInterface"
+                type="Ls\Replication\Model\ReplPriceListLine"/>
+    <preference for="Ls\Replication\Api\Data\ReplPriceListLineSearchResultsInterface"
+                type="Ls\Replication\Model\ReplPriceListLineSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplSalesPriceRepositoryInterface"
+                type="Ls\Replication\Model\ReplSalesPriceRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplSalesPriceInterface"
+                type="Ls\Replication\Model\ReplSalesPrice"/>
+    <preference for="Ls\Replication\Api\Data\ReplSalesPriceSearchResultsInterface"
+                type="Ls\Replication\Model\ReplSalesPriceSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplStaffpermissionviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplStaffpermissionviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplStaffpermissionviewInterface"
+                type="Ls\Replication\Model\ReplStaffpermissionview"/>
+    <preference for="Ls\Replication\Api\Data\ReplStaffpermissionviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplStaffpermissionviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplStoreviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplStoreviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplStoreviewInterface"
+                type="Ls\Replication\Model\ReplStoreview"/>
+    <preference for="Ls\Replication\Api\Data\ReplStoreviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplStoreviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplTenderviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplTenderviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplTenderviewInterface"
+                type="Ls\Replication\Model\ReplTenderview"/>
+    <preference for="Ls\Replication\Api\Data\ReplTenderviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplTenderviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplUnitOfMeasureRepositoryInterface"
+                type="Ls\Replication\Model\ReplUnitOfMeasureRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplUnitOfMeasureInterface"
+                type="Ls\Replication\Model\ReplUnitOfMeasure"/>
+    <preference for="Ls\Replication\Api\Data\ReplUnitOfMeasureSearchResultsInterface"
+                type="Ls\Replication\Model\ReplUnitOfMeasureSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplVatPostingSetupRepositoryInterface"
+                type="Ls\Replication\Model\ReplVatPostingSetupRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplVatPostingSetupInterface"
+                type="Ls\Replication\Model\ReplVatPostingSetup"/>
+    <preference for="Ls\Replication\Api\Data\ReplVatPostingSetupSearchResultsInterface"
+                type="Ls\Replication\Model\ReplVatPostingSetupSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplVendoritemviewRepositoryInterface"
+                type="Ls\Replication\Model\ReplVendoritemviewRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplVendoritemviewInterface"
+                type="Ls\Replication\Model\ReplVendoritemview"/>
+    <preference for="Ls\Replication\Api\Data\ReplVendoritemviewSearchResultsInterface"
+                type="Ls\Replication\Model\ReplVendoritemviewSearchResults"/>
+
+    <preference for="Ls\Replication\Api\ReplVendorRepositoryInterface"
+                type="Ls\Replication\Model\ReplVendorRepository"/>
+    <preference for="Ls\Replication\Api\Data\ReplVendorInterface"
+                type="Ls\Replication\Model\ReplVendor"/>
+    <preference for="Ls\Replication\Api\Data\ReplVendorSearchResultsInterface"
+                type="Ls\Replication\Model\ReplVendorSearchResults"/>
 
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>

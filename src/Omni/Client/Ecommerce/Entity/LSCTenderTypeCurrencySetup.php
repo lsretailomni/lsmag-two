@@ -143,12 +143,12 @@ class LSCTenderTypeCurrencySetup extends AbstractModel
         return $this->setData(self::PRIMARY_KEY, $value);
     }
 
-    public function getPosPickupWarningAmount(): ?string
+    public function getPosPickupWarningAmount(): ?float
     {
         return $this->getData(self::POS_PICKUP_WARNING_AMOUNT);
     }
 
-    public function setPosPickupWarningAmount(?string $value)
+    public function setPosPickupWarningAmount(?float $value)
     {
         return $this->setData(self::POS_PICKUP_WARNING_AMOUNT, $value);
     }

@@ -159,12 +159,12 @@ class HierarchyDealView extends AbstractModel
         return $this->setData(self::MAX_SELECTION, $value);
     }
 
-    public function getModifierAddedAmount(): ?string
+    public function getModifierAddedAmount(): ?float
     {
         return $this->getData(self::MODIFIER_ADDED_AMOUNT);
     }
 
-    public function setModifierAddedAmount(?string $value)
+    public function setModifierAddedAmount(?float $value)
     {
         return $this->setData(self::MODIFIER_ADDED_AMOUNT, $value);
     }

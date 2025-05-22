@@ -63,12 +63,12 @@ class LSCBarcodeMaskSegment extends AbstractModel
         return $this->setData(self::SEGMENT_NO, $value);
     }
 
-    public function getLength(): ?string
+    public function getLength(): ?float
     {
         return $this->getData(self::LENGTH);
     }
 
-    public function setLength(?string $value)
+    public function setLength(?float $value)
     {
         return $this->setData(self::LENGTH, $value);
     }

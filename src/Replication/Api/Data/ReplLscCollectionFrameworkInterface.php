@@ -24,9 +24,9 @@ interface ReplLscCollectionFrameworkInterface
 
     public function setVariant(?string $value);
 
-    public function getQty() : ?string;
+    public function getQty() : ?float;
 
-    public function setQty(?string $value);
+    public function setQty(?float $value);
 
     public function getSystemid() : ?string;
 

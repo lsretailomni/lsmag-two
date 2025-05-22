@@ -624,8 +624,8 @@ abstract class AbstractReplicationTask
      *
      * Get full replication and app Id
      *
-     * @param $lsr
-     * @param $storeId
+     * @param LSR $lsr
+     * @param string $storeId
      * @return array
      */
     public function getRequiredParamsForMakingRequest($lsr, $storeId)

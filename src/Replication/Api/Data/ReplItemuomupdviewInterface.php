@@ -20,33 +20,33 @@ interface ReplItemuomupdviewInterface
 
     public function setCode(?string $value);
 
-    public function getQtyPerUnitOfMeasure() : ?string;
+    public function getQtyPerUnitOfMeasure() : ?float;
 
-    public function setQtyPerUnitOfMeasure(?string $value);
+    public function setQtyPerUnitOfMeasure(?float $value);
 
-    public function getQtyRoundingPrecision() : ?string;
+    public function getQtyRoundingPrecision() : ?float;
 
-    public function setQtyRoundingPrecision(?string $value);
+    public function setQtyRoundingPrecision(?float $value);
 
-    public function getLength() : ?string;
+    public function getLength() : ?float;
 
-    public function setLength(?string $value);
+    public function setLength(?float $value);
 
-    public function getWidth() : ?string;
+    public function getWidth() : ?float;
 
-    public function setWidth(?string $value);
+    public function setWidth(?float $value);
 
-    public function getHeight() : ?string;
+    public function getHeight() : ?float;
 
-    public function setHeight(?string $value);
+    public function setHeight(?float $value);
 
-    public function getCubage() : ?string;
+    public function getCubage() : ?float;
 
-    public function setCubage(?string $value);
+    public function setCubage(?float $value);
 
-    public function getWeight() : ?string;
+    public function getWeight() : ?float;
 
-    public function setWeight(?string $value);
+    public function setWeight(?float $value);
 
     public function getLscNoInBarcode() : ?string;
 

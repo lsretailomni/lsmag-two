@@ -205,22 +205,22 @@ class StaffPermissionView extends AbstractModel
         return $this->setData(self::UPDATE_CUSTOMERS, $value);
     }
 
-    public function getMaxDiscountToGive(): ?string
+    public function getMaxDiscountToGive(): ?float
     {
         return $this->getData(self::MAX_DISCOUNT_TO_GIVE);
     }
 
-    public function setMaxDiscountToGive(?string $value)
+    public function setMaxDiscountToGive(?float $value)
     {
         return $this->setData(self::MAX_DISCOUNT_TO_GIVE, $value);
     }
 
-    public function getMaxTotalDiscount(): ?string
+    public function getMaxTotalDiscount(): ?float
     {
         return $this->getData(self::MAX_TOTAL_DISCOUNT);
     }
 
-    public function setMaxTotalDiscount(?string $value)
+    public function setMaxTotalDiscount(?float $value)
     {
         return $this->setData(self::MAX_TOTAL_DISCOUNT, $value);
     }

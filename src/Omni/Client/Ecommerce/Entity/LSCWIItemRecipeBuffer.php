@@ -113,12 +113,12 @@ class LSCWIItemRecipeBuffer extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getQuantityPer(): ?string
+    public function getQuantityPer(): ?float
     {
         return $this->getData(self::QUANTITY_PER);
     }
 
-    public function setQuantityPer(?string $value)
+    public function setQuantityPer(?float $value)
     {
         return $this->setData(self::QUANTITY_PER, $value);
     }
@@ -143,12 +143,12 @@ class LSCWIItemRecipeBuffer extends AbstractModel
         return $this->setData(self::LSC_EXCLUSION, $value);
     }
 
-    public function getLscPriceOnExclusion(): ?string
+    public function getLscPriceOnExclusion(): ?float
     {
         return $this->getData(self::LSC_PRICE_ON_EXCLUSION);
     }
 
-    public function setLscPriceOnExclusion(?string $value)
+    public function setLscPriceOnExclusion(?float $value)
     {
         return $this->setData(self::LSC_PRICE_ON_EXCLUSION, $value);
     }

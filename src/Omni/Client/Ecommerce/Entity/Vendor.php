@@ -353,12 +353,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::GLOBAL_DIMENSION_2_CODE, $value);
     }
 
-    public function getBudgetedAmount(): ?string
+    public function getBudgetedAmount(): ?float
     {
         return $this->getData(self::BUDGETED_AMOUNT);
     }
 
-    public function setBudgetedAmount(?string $value)
+    public function setBudgetedAmount(?float $value)
     {
         return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
@@ -733,12 +733,12 @@ class Vendor extends AbstractModel
         return $this->setData(self::IC_PARTNER_CODE, $value);
     }
 
-    public function getPrepayment(): ?string
+    public function getPrepayment(): ?float
     {
         return $this->getData(self::PREPAYMENT);
     }
 
-    public function setPrepayment(?string $value)
+    public function setPrepayment(?float $value)
     {
         return $this->setData(self::PREPAYMENT, $value);
     }

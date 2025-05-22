@@ -44,9 +44,9 @@ interface ReplLscGs1databarBarcodeSetupInterface
 
     public function setPreferredSequence(?int $value);
 
-    public function getDecimals() : ?string;
+    public function getDecimals() : ?float;
 
-    public function setDecimals(?string $value);
+    public function setDecimals(?float $value);
 
     public function getValueType() : ?string;
 
@@ -56,9 +56,9 @@ interface ReplLscGs1databarBarcodeSetupInterface
 
     public function setBarcodeValue(?string $value);
 
-    public function getValueDec() : ?string;
+    public function getValueDec() : ?float;
 
-    public function setValueDec(?string $value);
+    public function setValueDec(?float $value);
 
     public function getValueDate() : ?string;
 

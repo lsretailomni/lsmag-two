@@ -127,12 +127,12 @@ class TenderView extends AbstractModel
         return $this->setData(self::ABOVE_MIN_CHANGE_TENDER_TYPE, $value);
     }
 
-    public function getMinChange(): ?string
+    public function getMinChange(): ?float
     {
         return $this->getData(self::MIN_CHANGE);
     }
 
-    public function setMinChange(?string $value)
+    public function setMinChange(?float $value)
     {
         return $this->setData(self::MIN_CHANGE, $value);
     }
@@ -147,12 +147,12 @@ class TenderView extends AbstractModel
         return $this->setData(self::ROUNDING, $value);
     }
 
-    public function getRoundingTo(): ?string
+    public function getRoundingTo(): ?float
     {
         return $this->getData(self::ROUNDING_TO);
     }
 
-    public function setRoundingTo(?string $value)
+    public function setRoundingTo(?float $value)
     {
         return $this->setData(self::ROUNDING_TO, $value);
     }
@@ -197,12 +197,12 @@ class TenderView extends AbstractModel
         return $this->setData(self::OVERTENDER_ALLOWED, $value);
     }
 
-    public function getOvertenderMaxAmt(): ?string
+    public function getOvertenderMaxAmt(): ?float
     {
         return $this->getData(self::OVERTENDER_MAX_AMT);
     }
 
-    public function setOvertenderMaxAmt(?string $value)
+    public function setOvertenderMaxAmt(?float $value)
     {
         return $this->setData(self::OVERTENDER_MAX_AMT, $value);
     }

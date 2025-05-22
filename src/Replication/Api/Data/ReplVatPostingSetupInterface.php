@@ -24,9 +24,9 @@ interface ReplVatPostingSetupInterface
 
     public function setVatCalculationType(?string $value);
 
-    public function getVat() : ?string;
+    public function getVat() : ?float;
 
-    public function setVat(?string $value);
+    public function setVat(?float $value);
 
     public function getUnrealizedVatType() : ?string;
 
@@ -108,9 +108,9 @@ interface ReplVatPostingSetupInterface
 
     public function setStartingDate(?string $value);
 
-    public function getNonDeductibleVat() : ?string;
+    public function getNonDeductibleVat() : ?float;
 
-    public function setNonDeductibleVat(?string $value);
+    public function setNonDeductibleVat(?float $value);
 
     public function getNonDedPurchaseVatAccount() : ?string;
 

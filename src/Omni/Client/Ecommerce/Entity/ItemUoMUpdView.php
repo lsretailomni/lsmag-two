@@ -85,72 +85,72 @@ class ItemUoMUpdView extends AbstractModel
         return $this->setData(self::CODE, $value);
     }
 
-    public function getQtyPerUnitOfMeasure(): ?string
+    public function getQtyPerUnitOfMeasure(): ?float
     {
         return $this->getData(self::QTY_PER_UNIT_OF_MEASURE);
     }
 
-    public function setQtyPerUnitOfMeasure(?string $value)
+    public function setQtyPerUnitOfMeasure(?float $value)
     {
         return $this->setData(self::QTY_PER_UNIT_OF_MEASURE, $value);
     }
 
-    public function getQtyRoundingPrecision(): ?string
+    public function getQtyRoundingPrecision(): ?float
     {
         return $this->getData(self::QTY_ROUNDING_PRECISION);
     }
 
-    public function setQtyRoundingPrecision(?string $value)
+    public function setQtyRoundingPrecision(?float $value)
     {
         return $this->setData(self::QTY_ROUNDING_PRECISION, $value);
     }
 
-    public function getLength(): ?string
+    public function getLength(): ?float
     {
         return $this->getData(self::LENGTH);
     }
 
-    public function setLength(?string $value)
+    public function setLength(?float $value)
     {
         return $this->setData(self::LENGTH, $value);
     }
 
-    public function getWidth(): ?string
+    public function getWidth(): ?float
     {
         return $this->getData(self::WIDTH);
     }
 
-    public function setWidth(?string $value)
+    public function setWidth(?float $value)
     {
         return $this->setData(self::WIDTH, $value);
     }
 
-    public function getHeight(): ?string
+    public function getHeight(): ?float
     {
         return $this->getData(self::HEIGHT);
     }
 
-    public function setHeight(?string $value)
+    public function setHeight(?float $value)
     {
         return $this->setData(self::HEIGHT, $value);
     }
 
-    public function getCubage(): ?string
+    public function getCubage(): ?float
     {
         return $this->getData(self::CUBAGE);
     }
 
-    public function setCubage(?string $value)
+    public function setCubage(?float $value)
     {
         return $this->setData(self::CUBAGE, $value);
     }
 
-    public function getWeight(): ?string
+    public function getWeight(): ?float
     {
         return $this->getData(self::WEIGHT);
     }
 
-    public function setWeight(?string $value)
+    public function setWeight(?float $value)
     {
         return $this->setData(self::WEIGHT, $value);
     }

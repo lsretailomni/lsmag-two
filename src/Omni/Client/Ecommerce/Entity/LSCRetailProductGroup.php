@@ -195,12 +195,12 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->setData(self::USE_EAN_STANDARD_BARC, $value);
     }
 
-    public function getDefaultProfit(): ?string
+    public function getDefaultProfit(): ?float
     {
         return $this->getData(self::DEFAULT_PROFIT);
     }
 
-    public function setDefaultProfit(?string $value)
+    public function setDefaultProfit(?float $value)
     {
         return $this->setData(self::DEFAULT_PROFIT, $value);
     }
@@ -295,12 +295,12 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->setData(self::ITEM_ERROR_CHECK_CODE, $value);
     }
 
-    public function getSuggestedQtyOnPos(): ?string
+    public function getSuggestedQtyOnPos(): ?float
     {
         return $this->getData(self::SUGGESTED_QTY_ON_POS);
     }
 
-    public function setSuggestedQtyOnPos(?string $value)
+    public function setSuggestedQtyOnPos(?float $value)
     {
         return $this->setData(self::SUGGESTED_QTY_ON_POS, $value);
     }
@@ -325,12 +325,12 @@ class LSCRetailProductGroup extends AbstractModel
         return $this->setData(self::QTY_NOT_IN_DECIMAL, $value);
     }
 
-    public function getProfitGoal(): ?string
+    public function getProfitGoal(): ?float
     {
         return $this->getData(self::PROFIT_GOAL);
     }
 
-    public function setProfitGoal(?string $value)
+    public function setProfitGoal(?float $value)
     {
         return $this->setData(self::PROFIT_GOAL, $value);
     }

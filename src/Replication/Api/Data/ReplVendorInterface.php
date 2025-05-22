@@ -68,9 +68,9 @@ interface ReplVendorInterface
 
     public function setGlobalDimension2Code(?string $value);
 
-    public function getBudgetedAmount() : ?string;
+    public function getBudgetedAmount() : ?float;
 
-    public function setBudgetedAmount(?string $value);
+    public function setBudgetedAmount(?float $value);
 
     public function getVendorPostingGroup() : ?string;
 
@@ -220,9 +220,9 @@ interface ReplVendorInterface
 
     public function setIcPartnerCode(?string $value);
 
-    public function getPrepayment() : ?string;
+    public function getPrepayment() : ?float;
 
-    public function setPrepayment(?string $value);
+    public function setPrepayment(?float $value);
 
     public function getPartnerType() : ?string;
 

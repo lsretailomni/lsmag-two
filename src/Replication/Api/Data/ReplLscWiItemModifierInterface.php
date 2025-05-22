@@ -68,21 +68,21 @@ interface ReplLscWiItemModifierInterface
 
     public function setPriceType(?string $value);
 
-    public function getAmountPercent() : ?string;
+    public function getAmountPercent() : ?float;
 
-    public function setAmountPercent(?string $value);
+    public function setAmountPercent(?float $value);
 
     public function getUnitOfMeasure() : ?string;
 
     public function setUnitOfMeasure(?string $value);
 
-    public function getQtyPerUnitOfMeasure() : ?string;
+    public function getQtyPerUnitOfMeasure() : ?float;
 
-    public function setQtyPerUnitOfMeasure(?string $value);
+    public function setQtyPerUnitOfMeasure(?float $value);
 
-    public function getTimeModifierMinutes() : ?string;
+    public function getTimeModifierMinutes() : ?float;
 
-    public function setTimeModifierMinutes(?string $value);
+    public function setTimeModifierMinutes(?float $value);
 
     public function getSystemid() : ?string;
 

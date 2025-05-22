@@ -36,9 +36,9 @@ interface ReplLscWiItemRecipeBufferInterface
 
     public function setUnitOfMeasureCode(?string $value);
 
-    public function getQuantityPer() : ?string;
+    public function getQuantityPer() : ?float;
 
-    public function setQuantityPer(?string $value);
+    public function setQuantityPer(?float $value);
 
     public function getLscItemNo() : ?string;
 
@@ -48,9 +48,9 @@ interface ReplLscWiItemRecipeBufferInterface
 
     public function setLscExclusion(?string $value);
 
-    public function getLscPriceOnExclusion() : ?string;
+    public function getLscPriceOnExclusion() : ?float;
 
-    public function setLscPriceOnExclusion(?string $value);
+    public function setLscPriceOnExclusion(?float $value);
 
     public function getRetailImageId() : ?string;
 

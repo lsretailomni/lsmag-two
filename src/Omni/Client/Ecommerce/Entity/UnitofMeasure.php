@@ -85,12 +85,12 @@ class UnitofMeasure extends AbstractModel
         return $this->setData(self::LAST_MODIFIED_DATE_TIME, $value);
     }
 
-    public function getLscPosMinDenominator(): ?string
+    public function getLscPosMinDenominator(): ?float
     {
         return $this->getData(self::LSC_POS_MIN_DENOMINATOR);
     }
 
-    public function setLscPosMinDenominator(?string $value)
+    public function setLscPosMinDenominator(?float $value)
     {
         return $this->setData(self::LSC_POS_MIN_DENOMINATOR, $value);
     }

@@ -60,9 +60,9 @@ interface ReplItemCategoryInterface
 
     public function setLscItemTemplateCode(?string $value);
 
-    public function getLscDifferenceLcy() : ?string;
+    public function getLscDifferenceLcy() : ?float;
 
-    public function setLscDifferenceLcy(?string $value);
+    public function setLscDifferenceLcy(?float $value);
 
     public function getLscItemHierarchyValue() : ?string;
 
@@ -72,9 +72,9 @@ interface ReplItemCategoryInterface
 
     public function setLscPosInventoryLookup(?bool $value);
 
-    public function getLscDefaultProfit() : ?string;
+    public function getLscDefaultProfit() : ?float;
 
-    public function setLscDefaultProfit(?string $value);
+    public function setLscDefaultProfit(?float $value);
 
     public function getLscDispensePrinterGroup() : ?string;
 
@@ -92,13 +92,13 @@ interface ReplItemCategoryInterface
 
     public function setLscItemErrorCheckCode(?string $value);
 
-    public function getLscSuggestedQtyOnPos() : ?string;
+    public function getLscSuggestedQtyOnPos() : ?float;
 
-    public function setLscSuggestedQtyOnPos(?string $value);
+    public function setLscSuggestedQtyOnPos(?float $value);
 
-    public function getLscProfitGoal() : ?string;
+    public function getLscProfitGoal() : ?float;
 
-    public function setLscProfitGoal(?string $value);
+    public function setLscProfitGoal(?float $value);
 
     public function getLscBuyerGroupCode() : ?string;
 

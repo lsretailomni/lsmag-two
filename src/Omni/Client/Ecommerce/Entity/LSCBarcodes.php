@@ -117,12 +117,12 @@ class LSCBarcodes extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getDiscount(): ?string
+    public function getDiscount(): ?float
     {
         return $this->getData(self::DISCOUNT);
     }
 
-    public function setDiscount(?string $value)
+    public function setDiscount(?float $value)
     {
         return $this->setData(self::DISCOUNT, $value);
     }

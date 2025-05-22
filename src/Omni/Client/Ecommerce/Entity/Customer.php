@@ -443,22 +443,22 @@ class Customer extends AbstractModel
         return $this->setData(self::CHAIN_NAME, $value);
     }
 
-    public function getBudgetedAmount(): ?string
+    public function getBudgetedAmount(): ?float
     {
         return $this->getData(self::BUDGETED_AMOUNT);
     }
 
-    public function setBudgetedAmount(?string $value)
+    public function setBudgetedAmount(?float $value)
     {
         return $this->setData(self::BUDGETED_AMOUNT, $value);
     }
 
-    public function getCreditLimitLcy(): ?string
+    public function getCreditLimitLcy(): ?float
     {
         return $this->getData(self::CREDIT_LIMIT_LCY);
     }
 
-    public function setCreditLimitLcy(?string $value)
+    public function setCreditLimitLcy(?float $value)
     {
         return $this->setData(self::CREDIT_LIMIT_LCY, $value);
     }
@@ -623,12 +623,12 @@ class Customer extends AbstractModel
         return $this->setData(self::COLLECTION_METHOD, $value);
     }
 
-    public function getAmount(): ?string
+    public function getAmount(): ?float
     {
         return $this->getData(self::AMOUNT);
     }
 
-    public function setAmount(?string $value)
+    public function setAmount(?float $value)
     {
         return $this->setData(self::AMOUNT, $value);
     }
@@ -963,12 +963,12 @@ class Customer extends AbstractModel
         return $this->setData(self::IC_PARTNER_CODE, $value);
     }
 
-    public function getPrepayment(): ?string
+    public function getPrepayment(): ?float
     {
         return $this->getData(self::PREPAYMENT);
     }
 
-    public function setPrepayment(?string $value)
+    public function setPrepayment(?float $value)
     {
         return $this->setData(self::PREPAYMENT, $value);
     }
@@ -1373,12 +1373,12 @@ class Customer extends AbstractModel
         return $this->setData(self::LSC_PRINT_DOCUMENT_INVOICE, $value);
     }
 
-    public function getLscTransactionLimit(): ?string
+    public function getLscTransactionLimit(): ?float
     {
         return $this->getData(self::LSC_TRANSACTION_LIMIT);
     }
 
-    public function setLscTransactionLimit(?string $value)
+    public function setLscTransactionLimit(?float $value)
     {
         return $this->setData(self::LSC_TRANSACTION_LIMIT, $value);
     }
@@ -1413,12 +1413,12 @@ class Customer extends AbstractModel
         return $this->setData(self::LSC_RETAIL_CUSTOMER_GROUP, $value);
     }
 
-    public function getLscDefaultWeight(): ?string
+    public function getLscDefaultWeight(): ?float
     {
         return $this->getData(self::LSC_DEFAULT_WEIGHT);
     }
 
-    public function setLscDefaultWeight(?string $value)
+    public function setLscDefaultWeight(?float $value)
     {
         return $this->setData(self::LSC_DEFAULT_WEIGHT, $value);
     }
@@ -1453,32 +1453,32 @@ class Customer extends AbstractModel
         return $this->setData(self::LSC_INCL_INCEXP_ON_SALES_DOC, $value);
     }
 
-    public function getLscAmtchargedonposint(): ?string
+    public function getLscAmtchargedonposint(): ?float
     {
         return $this->getData(self::LSC_AMTCHARGEDONPOSINT);
     }
 
-    public function setLscAmtchargedonposint(?string $value)
+    public function setLscAmtchargedonposint(?float $value)
     {
         return $this->setData(self::LSC_AMTCHARGEDONPOSINT, $value);
     }
 
-    public function getLscAmtchargedpostedint(): ?string
+    public function getLscAmtchargedpostedint(): ?float
     {
         return $this->getData(self::LSC_AMTCHARGEDPOSTEDINT);
     }
 
-    public function setLscAmtchargedpostedint(?string $value)
+    public function setLscAmtchargedpostedint(?float $value)
     {
         return $this->setData(self::LSC_AMTCHARGEDPOSTEDINT, $value);
     }
 
-    public function getLscBalancelcyint(): ?string
+    public function getLscBalancelcyint(): ?float
     {
         return $this->getData(self::LSC_BALANCELCYINT);
     }
 
-    public function setLscBalancelcyint(?string $value)
+    public function setLscBalancelcyint(?float $value)
     {
         return $this->setData(self::LSC_BALANCELCYINT, $value);
     }

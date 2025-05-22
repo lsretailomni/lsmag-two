@@ -40,17 +40,17 @@ interface ReplTenderviewInterface
 
     public function setAboveMinChangeTenderType(?string $value);
 
-    public function getMinChange() : ?string;
+    public function getMinChange() : ?float;
 
-    public function setMinChange(?string $value);
+    public function setMinChange(?float $value);
 
     public function getRounding() : ?int;
 
     public function setRounding(?int $value);
 
-    public function getRoundingTo() : ?string;
+    public function getRoundingTo() : ?float;
 
-    public function setRoundingTo(?string $value);
+    public function setRoundingTo(?float $value);
 
     public function getReturnMinusAllowed() : ?bool;
 
@@ -68,9 +68,9 @@ interface ReplTenderviewInterface
 
     public function setOvertenderAllowed(?bool $value);
 
-    public function getOvertenderMaxAmt() : ?string;
+    public function getOvertenderMaxAmt() : ?float;
 
-    public function setOvertenderMaxAmt(?string $value);
+    public function setOvertenderMaxAmt(?float $value);
 
     public function getCountingRequired() : ?bool;
 

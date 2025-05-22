@@ -217,12 +217,12 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::LSC_ITEM_TEMPLATE_CODE, $value);
     }
 
-    public function getLscDifferenceLcy(): ?string
+    public function getLscDifferenceLcy(): ?float
     {
         return $this->getData(self::LSC_DIFFERENCE_LCY);
     }
 
-    public function setLscDifferenceLcy(?string $value)
+    public function setLscDifferenceLcy(?float $value)
     {
         return $this->setData(self::LSC_DIFFERENCE_LCY, $value);
     }
@@ -247,12 +247,12 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::LSC_POS_INVENTORY_LOOKUP, $value);
     }
 
-    public function getLscDefaultProfit(): ?string
+    public function getLscDefaultProfit(): ?float
     {
         return $this->getData(self::LSC_DEFAULT_PROFIT);
     }
 
-    public function setLscDefaultProfit(?string $value)
+    public function setLscDefaultProfit(?float $value)
     {
         return $this->setData(self::LSC_DEFAULT_PROFIT, $value);
     }
@@ -297,22 +297,22 @@ class ItemCategory extends AbstractModel
         return $this->setData(self::LSC_ITEM_ERROR_CHECK_CODE, $value);
     }
 
-    public function getLscSuggestedQtyOnPos(): ?string
+    public function getLscSuggestedQtyOnPos(): ?float
     {
         return $this->getData(self::LSC_SUGGESTED_QTY_ON_POS);
     }
 
-    public function setLscSuggestedQtyOnPos(?string $value)
+    public function setLscSuggestedQtyOnPos(?float $value)
     {
         return $this->setData(self::LSC_SUGGESTED_QTY_ON_POS, $value);
     }
 
-    public function getLscProfitGoal(): ?string
+    public function getLscProfitGoal(): ?float
     {
         return $this->getData(self::LSC_PROFIT_GOAL);
     }
 
-    public function setLscProfitGoal(?string $value)
+    public function setLscProfitGoal(?float $value)
     {
         return $this->setData(self::LSC_PROFIT_GOAL, $value);
     }

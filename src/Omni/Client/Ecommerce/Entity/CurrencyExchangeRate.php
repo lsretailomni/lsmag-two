@@ -71,22 +71,22 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->setData(self::STARTING_DATE, $value);
     }
 
-    public function getExchangeRateAmount(): ?string
+    public function getExchangeRateAmount(): ?float
     {
         return $this->getData(self::EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setExchangeRateAmount(?string $value)
+    public function setExchangeRateAmount(?float $value)
     {
         return $this->setData(self::EXCHANGE_RATE_AMOUNT, $value);
     }
 
-    public function getAdjustmentExchRateAmount(): ?string
+    public function getAdjustmentExchRateAmount(): ?float
     {
         return $this->getData(self::ADJUSTMENT_EXCH_RATE_AMOUNT);
     }
 
-    public function setAdjustmentExchRateAmount(?string $value)
+    public function setAdjustmentExchRateAmount(?float $value)
     {
         return $this->setData(self::ADJUSTMENT_EXCH_RATE_AMOUNT, $value);
     }
@@ -101,12 +101,12 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->setData(self::RELATIONAL_CURRENCY_CODE, $value);
     }
 
-    public function getRelationalExchRateAmount(): ?string
+    public function getRelationalExchRateAmount(): ?float
     {
         return $this->getData(self::RELATIONAL_EXCH_RATE_AMOUNT);
     }
 
-    public function setRelationalExchRateAmount(?string $value)
+    public function setRelationalExchRateAmount(?float $value)
     {
         return $this->setData(self::RELATIONAL_EXCH_RATE_AMOUNT, $value);
     }
@@ -121,32 +121,32 @@ class CurrencyExchangeRate extends AbstractModel
         return $this->setData(self::FIX_EXCHANGE_RATE_AMOUNT, $value);
     }
 
-    public function getRelationalAdjmtExchRateAmt(): ?string
+    public function getRelationalAdjmtExchRateAmt(): ?float
     {
         return $this->getData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT);
     }
 
-    public function setRelationalAdjmtExchRateAmt(?string $value)
+    public function setRelationalAdjmtExchRateAmt(?float $value)
     {
         return $this->setData(self::RELATIONAL_ADJMT_EXCH_RATE_AMT, $value);
     }
 
-    public function getLscPosExchangeRateAmount(): ?string
+    public function getLscPosExchangeRateAmount(): ?float
     {
         return $this->getData(self::LSC_POS_EXCHANGE_RATE_AMOUNT);
     }
 
-    public function setLscPosExchangeRateAmount(?string $value)
+    public function setLscPosExchangeRateAmount(?float $value)
     {
         return $this->setData(self::LSC_POS_EXCHANGE_RATE_AMOUNT, $value);
     }
 
-    public function getLscPosRelExchRateAmount(): ?string
+    public function getLscPosRelExchRateAmount(): ?float
     {
         return $this->getData(self::LSC_POS_REL_EXCH_RATE_AMOUNT);
     }
 
-    public function setLscPosRelExchRateAmount(?string $value)
+    public function setLscPosRelExchRateAmount(?float $value)
     {
         return $this->setData(self::LSC_POS_REL_EXCH_RATE_AMOUNT, $value);
     }

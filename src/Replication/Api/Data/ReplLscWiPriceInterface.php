@@ -32,17 +32,17 @@ interface ReplLscWiPriceInterface
 
     public function setLoyaltySchemeCode(?string $value);
 
-    public function getNetUnitPrice() : ?string;
+    public function getNetUnitPrice() : ?float;
 
-    public function setNetUnitPrice(?string $value);
+    public function setNetUnitPrice(?float $value);
 
     public function getOfferNo() : ?string;
 
     public function setOfferNo(?string $value);
 
-    public function getQtyPerUnitOfMeasure() : ?string;
+    public function getQtyPerUnitOfMeasure() : ?float;
 
-    public function setQtyPerUnitOfMeasure(?string $value);
+    public function setQtyPerUnitOfMeasure(?float $value);
 
     public function getStoreNo() : ?string;
 
@@ -68,9 +68,9 @@ interface ReplLscWiPriceInterface
 
     public function setUnitOfMeasureCode(?string $value);
 
-    public function getUnitPrice() : ?string;
+    public function getUnitPrice() : ?float;
 
-    public function setUnitPrice(?string $value);
+    public function setUnitPrice(?float $value);
 
     public function getVariantCode() : ?string;
 

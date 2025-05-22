@@ -48,9 +48,9 @@ interface ReplLscTenderTypeCurrencySetupInterface
 
     public function setPrimaryKey(?string $value);
 
-    public function getPosPickupWarningAmount() : ?string;
+    public function getPosPickupWarningAmount() : ?float;
 
-    public function setPosPickupWarningAmount(?string $value);
+    public function setPosPickupWarningAmount(?float $value);
 
     public function getPosPickupWarningText() : ?string;
 

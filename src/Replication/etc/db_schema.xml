@@ -123,7 +123,7 @@
     <column xsi:type="varchar" name="link_field_2" length="200" nullable="true" comment="link_field_2"/>
     <column xsi:type="varchar" name="link_field_3" length="200" nullable="true" comment="link_field_3"/>
     <column xsi:type="text" name="link_type" nullable="true" comment="link_type"/>
-    <column xsi:type="text" name="numeric_value" nullable="true" comment="numeric_value"/>
+    <column xsi:type="decimal" name="numeric_value" scale="4" precision="20" nullable="true" comment="numeric_value"/>
     <column xsi:type="text" name="retail_product_code" nullable="true" comment="retail_product_code"/>
     <column xsi:type="int" name="sequence" padding="11" nullable="true" comment="sequence"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
@@ -186,7 +186,7 @@
     <column xsi:type="text" name="last_date_modified" nullable="true" comment="last_date_modified"/>
     <column xsi:type="text" name="variant_code" nullable="true" comment="variant_code"/>
     <column xsi:type="text" name="unit_of_measure_code" nullable="true" comment="unit_of_measure_code"/>
-    <column xsi:type="text" name="discount" nullable="true" comment="discount"/>
+    <column xsi:type="decimal" name="discount" scale="4" precision="20" nullable="true" comment="discount"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -224,6 +224,9 @@
     <index indexType="btree" referenceId="LS_REPLICATION_REPL_LSC_BARCODES_ISDELETED">
       <column name="IsDeleted"/>
     </index>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_LSC_BARCODES_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_lsc_gs_1databar_barcode_setup" resource="default" engine="innodb" comment="LSC GS1DataBar Barcode Setup">
     <column xsi:type="int" name="repl_lsc_gs_1databar_barcode_setup_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_gs_1databar_barcode_setup_id"/>
@@ -235,10 +238,10 @@
     <column xsi:type="text" name="section_mapping" nullable="true" comment="section_mapping"/>
     <column xsi:type="int" name="mapping_starting_char" padding="11" nullable="true" comment="mapping_starting_char"/>
     <column xsi:type="int" name="preferred_sequence" padding="11" nullable="true" comment="preferred_sequence"/>
-    <column xsi:type="text" name="decimals" nullable="true" comment="decimals"/>
+    <column xsi:type="decimal" name="decimals" scale="4" precision="20" nullable="true" comment="decimals"/>
     <column xsi:type="text" name="value_type" nullable="true" comment="value_type"/>
     <column xsi:type="text" name="barcode_value" nullable="true" comment="barcode_value"/>
-    <column xsi:type="text" name="value_dec" nullable="true" comment="value_dec"/>
+    <column xsi:type="decimal" name="value_dec" scale="4" precision="20" nullable="true" comment="value_dec"/>
     <column xsi:type="text" name="value_date" nullable="true" comment="value_date"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
@@ -293,7 +296,7 @@
     <column xsi:type="int" name="repl_lsc_barcode_mask_segment_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_barcode_mask_segment_id"/>
     <column xsi:type="int" name="mask_entry_no" padding="11" nullable="true" comment="mask_entry_no"/>
     <column xsi:type="int" name="segment_no" padding="11" nullable="true" comment="segment_no"/>
-    <column xsi:type="text" name="length" nullable="true" comment="length"/>
+    <column xsi:type="decimal" name="length" scale="4" precision="20" nullable="true" comment="length"/>
     <column xsi:type="text" name="type" nullable="true" comment="type"/>
     <column xsi:type="int" name="decimals" padding="11" nullable="true" comment="decimals"/>
     <column xsi:type="text" name="char" nullable="true" comment="char"/>
@@ -322,7 +325,7 @@
     <column xsi:type="text" name="unit_of_measure" nullable="true" comment="unit_of_measure"/>
     <column xsi:type="text" name="item" nullable="true" comment="item"/>
     <column xsi:type="text" name="variant" nullable="true" comment="variant"/>
-    <column xsi:type="text" name="qty" nullable="true" comment="qty"/>
+    <column xsi:type="decimal" name="qty" scale="4" precision="20" nullable="true" comment="qty"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -550,29 +553,29 @@
     <column xsi:type="text" name="realized_gains_acc" nullable="true" comment="realized_gains_acc"/>
     <column xsi:type="text" name="unrealized_losses_acc" nullable="true" comment="unrealized_losses_acc"/>
     <column xsi:type="text" name="realized_losses_acc" nullable="true" comment="realized_losses_acc"/>
-    <column xsi:type="text" name="invoice_rounding_precision" nullable="true" comment="invoice_rounding_precision"/>
+    <column xsi:type="decimal" name="invoice_rounding_precision" scale="4" precision="20" nullable="true" comment="invoice_rounding_precision"/>
     <column xsi:type="text" name="invoice_rounding_type" nullable="true" comment="invoice_rounding_type"/>
-    <column xsi:type="text" name="amount_rounding_precision" nullable="true" comment="amount_rounding_precision"/>
-    <column xsi:type="text" name="unitamount_rounding_precision" nullable="true" comment="unitamount_rounding_precision"/>
+    <column xsi:type="decimal" name="amount_rounding_precision" scale="4" precision="20" nullable="true" comment="amount_rounding_precision"/>
+    <column xsi:type="decimal" name="unitamount_rounding_precision" scale="4" precision="20" nullable="true" comment="unitamount_rounding_precision"/>
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
     <column xsi:type="text" name="amount_decimal_places" nullable="true" comment="amount_decimal_places"/>
     <column xsi:type="text" name="unitamount_decimal_places" nullable="true" comment="unitamount_decimal_places"/>
     <column xsi:type="text" name="realized_gl_gains_account" nullable="true" comment="realized_gl_gains_account"/>
     <column xsi:type="text" name="realized_gl_losses_account" nullable="true" comment="realized_gl_losses_account"/>
-    <column xsi:type="text" name="appln_rounding_precision" nullable="true" comment="appln_rounding_precision"/>
+    <column xsi:type="decimal" name="appln_rounding_precision" scale="4" precision="20" nullable="true" comment="appln_rounding_precision"/>
     <column xsi:type="boolean" name="emu_currency" default="0" nullable="true" comment="emu_currency"/>
-    <column xsi:type="text" name="currency_factor" nullable="true" comment="currency_factor"/>
+    <column xsi:type="decimal" name="currency_factor" scale="4" precision="20" nullable="true" comment="currency_factor"/>
     <column xsi:type="text" name="residual_gains_account" nullable="true" comment="residual_gains_account"/>
     <column xsi:type="text" name="residual_losses_account" nullable="true" comment="residual_losses_account"/>
     <column xsi:type="text" name="conv_lcy_rndg_debit_acc" nullable="true" comment="conv_lcy_rndg_debit_acc"/>
     <column xsi:type="text" name="conv_lcy_rndg_credit_acc" nullable="true" comment="conv_lcy_rndg_credit_acc"/>
-    <column xsi:type="text" name="max_vat_difference_allowed" nullable="true" comment="max_vat_difference_allowed"/>
+    <column xsi:type="decimal" name="max_vat_difference_allowed" scale="4" precision="20" nullable="true" comment="max_vat_difference_allowed"/>
     <column xsi:type="text" name="vat_rounding_type" nullable="true" comment="vat_rounding_type"/>
-    <column xsi:type="text" name="payment_tolerance" nullable="true" comment="payment_tolerance"/>
-    <column xsi:type="text" name="max_payment_tolerance_amount" nullable="true" comment="max_payment_tolerance_amount"/>
+    <column xsi:type="decimal" name="payment_tolerance" scale="4" precision="20" nullable="true" comment="payment_tolerance"/>
+    <column xsi:type="decimal" name="max_payment_tolerance_amount" scale="4" precision="20" nullable="true" comment="max_payment_tolerance_amount"/>
     <column xsi:type="text" name="symbol" nullable="true" comment="symbol"/>
     <column xsi:type="text" name="last_modified_date_time" nullable="true" comment="last_modified_date_time"/>
-    <column xsi:type="text" name="lsc_lowest_accept_denom_amt" nullable="true" comment="lsc_lowest_accept_denom_amt"/>
+    <column xsi:type="decimal" name="lsc_lowest_accept_denom_amt" scale="4" precision="20" nullable="true" comment="lsc_lowest_accept_denom_amt"/>
     <column xsi:type="text" name="lsc_denomination_rounding_type" nullable="true" comment="lsc_denomination_rounding_type"/>
     <column xsi:type="text" name="lsc_pos_currency_symbol" nullable="true" comment="lsc_pos_currency_symbol"/>
     <column xsi:type="text" name="lsc_placement_of_curr_symbol" nullable="true" comment="lsc_placement_of_curr_symbol"/>
@@ -619,14 +622,14 @@
     <column xsi:type="int" name="repl_currency_exchange_rate_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_currency_exchange_rate_id"/>
     <column xsi:type="varchar" name="currency_code" length="200" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="starting_date" nullable="true" comment="starting_date"/>
-    <column xsi:type="text" name="exchange_rate_amount" nullable="true" comment="exchange_rate_amount"/>
-    <column xsi:type="text" name="adjustment_exch_rate_amount" nullable="true" comment="adjustment_exch_rate_amount"/>
+    <column xsi:type="decimal" name="exchange_rate_amount" scale="4" precision="20" nullable="true" comment="exchange_rate_amount"/>
+    <column xsi:type="decimal" name="adjustment_exch_rate_amount" scale="4" precision="20" nullable="true" comment="adjustment_exch_rate_amount"/>
     <column xsi:type="text" name="relational_currency_code" nullable="true" comment="relational_currency_code"/>
-    <column xsi:type="text" name="relational_exch_rate_amount" nullable="true" comment="relational_exch_rate_amount"/>
+    <column xsi:type="decimal" name="relational_exch_rate_amount" scale="4" precision="20" nullable="true" comment="relational_exch_rate_amount"/>
     <column xsi:type="text" name="fix_exchange_rate_amount" nullable="true" comment="fix_exchange_rate_amount"/>
-    <column xsi:type="text" name="relational_adjmt_exch_rate_amt" nullable="true" comment="relational_adjmt_exch_rate_amt"/>
-    <column xsi:type="text" name="lsc_pos_exchange_rate_amount" nullable="true" comment="lsc_pos_exchange_rate_amount"/>
-    <column xsi:type="text" name="lsc_pos_rel_exch_rate_amount" nullable="true" comment="lsc_pos_rel_exch_rate_amount"/>
+    <column xsi:type="decimal" name="relational_adjmt_exch_rate_amt" scale="4" precision="20" nullable="true" comment="relational_adjmt_exch_rate_amt"/>
+    <column xsi:type="decimal" name="lsc_pos_exchange_rate_amount" scale="4" precision="20" nullable="true" comment="lsc_pos_exchange_rate_amount"/>
+    <column xsi:type="decimal" name="lsc_pos_rel_exch_rate_amount" scale="4" precision="20" nullable="true" comment="lsc_pos_rel_exch_rate_amount"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -684,8 +687,8 @@
     <column xsi:type="text" name="global_dimension_1_code" nullable="true" comment="global_dimension_1_code"/>
     <column xsi:type="text" name="global_dimension_2_code" nullable="true" comment="global_dimension_2_code"/>
     <column xsi:type="text" name="chain_name" nullable="true" comment="chain_name"/>
-    <column xsi:type="text" name="budgeted_amount" nullable="true" comment="budgeted_amount"/>
-    <column xsi:type="text" name="credit_limit_lcy" nullable="true" comment="credit_limit_lcy"/>
+    <column xsi:type="decimal" name="budgeted_amount" scale="4" precision="20" nullable="true" comment="budgeted_amount"/>
+    <column xsi:type="decimal" name="credit_limit_lcy" scale="4" precision="20" nullable="true" comment="credit_limit_lcy"/>
     <column xsi:type="text" name="customer_posting_group" nullable="true" comment="customer_posting_group"/>
     <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="customer_price_group" nullable="true" comment="customer_price_group"/>
@@ -702,7 +705,7 @@
     <column xsi:type="text" name="customer_disc_group" nullable="true" comment="customer_disc_group"/>
     <column xsi:type="text" name="countryregion_code" nullable="true" comment="countryregion_code"/>
     <column xsi:type="text" name="collection_method" nullable="true" comment="collection_method"/>
-    <column xsi:type="text" name="amount" nullable="true" comment="amount"/>
+    <column xsi:type="decimal" name="amount" scale="4" precision="20" nullable="true" comment="amount"/>
     <column xsi:type="text" name="blocked" nullable="true" comment="blocked"/>
     <column xsi:type="int" name="invoice_copies" padding="11" nullable="true" comment="invoice_copies"/>
     <column xsi:type="int" name="last_statement_no" padding="11" nullable="true" comment="last_statement_no"/>
@@ -736,7 +739,7 @@
     <column xsi:type="text" name="reserve" nullable="true" comment="reserve"/>
     <column xsi:type="boolean" name="block_payment_tolerance" default="0" nullable="true" comment="block_payment_tolerance"/>
     <column xsi:type="text" name="ic_partner_code" nullable="true" comment="ic_partner_code"/>
-    <column xsi:type="text" name="prepayment" nullable="true" comment="prepayment"/>
+    <column xsi:type="decimal" name="prepayment" scale="4" precision="20" nullable="true" comment="prepayment"/>
     <column xsi:type="text" name="partner_type" nullable="true" comment="partner_type"/>
     <column xsi:type="text" name="intrastat_partner_type" nullable="true" comment="intrastat_partner_type"/>
     <column xsi:type="boolean" name="exclude_from_pmt_practices" default="0" nullable="true" comment="exclude_from_pmt_practices"/>
@@ -777,17 +780,17 @@
     <column xsi:type="text" name="lsc_reason_code" nullable="true" comment="lsc_reason_code"/>
     <column xsi:type="text" name="lsc_restriction_functionality" nullable="true" comment="lsc_restriction_functionality"/>
     <column xsi:type="boolean" name="lsc_print_document_invoice" default="0" nullable="true" comment="lsc_print_document_invoice"/>
-    <column xsi:type="text" name="lsc_transaction_limit" nullable="true" comment="lsc_transaction_limit"/>
+    <column xsi:type="decimal" name="lsc_transaction_limit" scale="4" precision="20" nullable="true" comment="lsc_transaction_limit"/>
     <column xsi:type="text" name="lsc_daytime_phone_no" nullable="true" comment="lsc_daytime_phone_no"/>
     <column xsi:type="text" name="lsc_houseapartment_no" nullable="true" comment="lsc_houseapartment_no"/>
     <column xsi:type="text" name="lsc_retail_customer_group" nullable="true" comment="lsc_retail_customer_group"/>
-    <column xsi:type="text" name="lsc_default_weight" nullable="true" comment="lsc_default_weight"/>
+    <column xsi:type="decimal" name="lsc_default_weight" scale="4" precision="20" nullable="true" comment="lsc_default_weight"/>
     <column xsi:type="boolean" name="lsc_other_tender_in_finalizing" default="0" nullable="true" comment="lsc_other_tender_in_finalizing"/>
     <column xsi:type="boolean" name="lsc_post_as_shipment" default="0" nullable="true" comment="lsc_post_as_shipment"/>
     <column xsi:type="boolean" name="lsc_incl_incexp_on_sales_doc" default="0" nullable="true" comment="lsc_incl_incexp_on_sales_doc"/>
-    <column xsi:type="text" name="lsc_amtchargedonposint" nullable="true" comment="lsc_amtchargedonposint"/>
-    <column xsi:type="text" name="lsc_amtchargedpostedint" nullable="true" comment="lsc_amtchargedpostedint"/>
-    <column xsi:type="text" name="lsc_balancelcyint" nullable="true" comment="lsc_balancelcyint"/>
+    <column xsi:type="decimal" name="lsc_amtchargedonposint" scale="4" precision="20" nullable="true" comment="lsc_amtchargedonposint"/>
+    <column xsi:type="decimal" name="lsc_amtchargedpostedint" scale="4" precision="20" nullable="true" comment="lsc_amtchargedpostedint"/>
+    <column xsi:type="decimal" name="lsc_balancelcyint" scale="4" precision="20" nullable="true" comment="lsc_balancelcyint"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -884,10 +887,10 @@
     <column xsi:type="text" name="no" nullable="true" comment="no"/>
     <column xsi:type="text" name="variant_code" nullable="true" comment="variant_code"/>
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="standard_price_including_vat" nullable="true" comment="standard_price_including_vat"/>
-    <column xsi:type="text" name="standard_price" nullable="true" comment="standard_price"/>
-    <column xsi:type="text" name="split_deal_pricedisc" nullable="true" comment="split_deal_pricedisc"/>
-    <column xsi:type="text" name="deal_pricedisc" nullable="true" comment="deal_pricedisc"/>
+    <column xsi:type="decimal" name="standard_price_including_vat" scale="4" precision="20" nullable="true" comment="standard_price_including_vat"/>
+    <column xsi:type="decimal" name="standard_price" scale="4" precision="20" nullable="true" comment="standard_price"/>
+    <column xsi:type="decimal" name="split_deal_pricedisc" scale="4" precision="20" nullable="true" comment="split_deal_pricedisc"/>
+    <column xsi:type="decimal" name="deal_pricedisc" scale="4" precision="20" nullable="true" comment="deal_pricedisc"/>
     <column xsi:type="text" name="price_group" nullable="true" comment="price_group"/>
     <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="unit_of_measure" nullable="true" comment="unit_of_measure"/>
@@ -897,18 +900,18 @@
     <column xsi:type="text" name="line_group" nullable="true" comment="line_group"/>
     <column xsi:type="int" name="no_of_items_needed" padding="11" nullable="true" comment="no_of_items_needed"/>
     <column xsi:type="text" name="disc_type" nullable="true" comment="disc_type"/>
-    <column xsi:type="text" name="discount_amount" nullable="true" comment="discount_amount"/>
-    <column xsi:type="text" name="offer_price" nullable="true" comment="offer_price"/>
-    <column xsi:type="text" name="offer_price_including_vat" nullable="true" comment="offer_price_including_vat"/>
-    <column xsi:type="text" name="discount_amount_including_vat" nullable="true" comment="discount_amount_including_vat"/>
+    <column xsi:type="decimal" name="discount_amount" scale="4" precision="20" nullable="true" comment="discount_amount"/>
+    <column xsi:type="decimal" name="offer_price" scale="4" precision="20" nullable="true" comment="offer_price"/>
+    <column xsi:type="decimal" name="offer_price_including_vat" scale="4" precision="20" nullable="true" comment="offer_price_including_vat"/>
+    <column xsi:type="decimal" name="discount_amount_including_vat" scale="4" precision="20" nullable="true" comment="discount_amount_including_vat"/>
     <column xsi:type="boolean" name="trigger_popup_on_pos" default="0" nullable="true" comment="trigger_popup_on_pos"/>
     <column xsi:type="text" name="variant_type" nullable="true" comment="variant_type"/>
     <column xsi:type="boolean" name="exclude" default="0" nullable="true" comment="exclude"/>
-    <column xsi:type="text" name="member_points" nullable="true" comment="member_points"/>
+    <column xsi:type="decimal" name="member_points" scale="4" precision="20" nullable="true" comment="member_points"/>
     <column xsi:type="boolean" name="prompt_at_scan" default="0" nullable="true" comment="prompt_at_scan"/>
     <column xsi:type="text" name="header_type" nullable="true" comment="header_type"/>
     <column xsi:type="text" name="planned_demand_type" nullable="true" comment="planned_demand_type"/>
-    <column xsi:type="text" name="planned_demand" nullable="true" comment="planned_demand"/>
+    <column xsi:type="decimal" name="planned_demand" scale="4" precision="20" nullable="true" comment="planned_demand"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -919,25 +922,25 @@
     <column xsi:type="int" name="priority" padding="11" nullable="true" comment="priority"/>
     <column xsi:type="text" name="validation_period_id" nullable="true" comment="validation_period_id"/>
     <column xsi:type="text" name="discount_type" nullable="true" comment="discount_type"/>
-    <column xsi:type="text" name="deal_price_value" nullable="true" comment="deal_price_value"/>
-    <column xsi:type="text" name="discount__value" nullable="true" comment="discount__value"/>
-    <column xsi:type="text" name="discount_amount_value" nullable="true" comment="discount_amount_value"/>
+    <column xsi:type="decimal" name="deal_price_value" scale="4" precision="20" nullable="true" comment="deal_price_value"/>
+    <column xsi:type="decimal" name="discount__value" scale="4" precision="20" nullable="true" comment="discount__value"/>
+    <column xsi:type="decimal" name="discount_amount_value" scale="4" precision="20" nullable="true" comment="discount_amount_value"/>
     <column xsi:type="text" name="customer_disc_group" nullable="true" comment="customer_disc_group"/>
-    <column xsi:type="text" name="amount_to_trigger" nullable="true" comment="amount_to_trigger"/>
+    <column xsi:type="decimal" name="amount_to_trigger" scale="4" precision="20" nullable="true" comment="amount_to_trigger"/>
     <column xsi:type="text" name="member_value" nullable="true" comment="member_value"/>
     <column xsi:type="text" name="popup_line_1" nullable="true" comment="popup_line_1"/>
     <column xsi:type="text" name="popup_line_2" nullable="true" comment="popup_line_2"/>
     <column xsi:type="text" name="popup_line_3" nullable="true" comment="popup_line_3"/>
     <column xsi:type="text" name="coupon_code" nullable="true" comment="coupon_code"/>
-    <column xsi:type="text" name="coupon_qty_needed" nullable="true" comment="coupon_qty_needed"/>
+    <column xsi:type="decimal" name="coupon_qty_needed" scale="4" precision="20" nullable="true" comment="coupon_qty_needed"/>
     <column xsi:type="text" name="member_type" nullable="true" comment="member_type"/>
     <column xsi:type="text" name="member_attribute" nullable="true" comment="member_attribute"/>
-    <column xsi:type="text" name="maximum_discount_amount" nullable="true" comment="maximum_discount_amount"/>
+    <column xsi:type="decimal" name="maximum_discount_amount" scale="4" precision="20" nullable="true" comment="maximum_discount_amount"/>
     <column xsi:type="text" name="tender_type_code" nullable="true" comment="tender_type_code"/>
     <column xsi:type="text" name="tender_type_value" nullable="true" comment="tender_type_value"/>
     <column xsi:type="text" name="prompt_for_action" nullable="true" comment="prompt_for_action"/>
-    <column xsi:type="text" name="tender_offer" nullable="true" comment="tender_offer"/>
-    <column xsi:type="text" name="tender_offer_amount" nullable="true" comment="tender_offer_amount"/>
+    <column xsi:type="decimal" name="tender_offer" scale="4" precision="20" nullable="true" comment="tender_offer"/>
+    <column xsi:type="decimal" name="tender_offer_amount" scale="4" precision="20" nullable="true" comment="tender_offer_amount"/>
     <column xsi:type="text" name="store_group_codes" nullable="true" comment="store_group_codes"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -968,7 +971,7 @@
     <column xsi:type="boolean" name="selection" default="0" nullable="true" comment="selection"/>
     <column xsi:type="int" name="logical_order" padding="11" nullable="true" comment="logical_order"/>
     <column xsi:type="int" name="viewing_color" padding="11" nullable="true" comment="viewing_color"/>
-    <column xsi:type="text" name="default_variant_weight" nullable="true" comment="default_variant_weight"/>
+    <column xsi:type="decimal" name="default_variant_weight" scale="4" precision="20" nullable="true" comment="default_variant_weight"/>
     <column xsi:type="text" name="status" nullable="true" comment="status"/>
     <column xsi:type="text" name="value_description" nullable="true" comment="value_description"/>
     <column xsi:type="text" name="attribute_1_value" nullable="true" comment="attribute_1_value"/>
@@ -1078,7 +1081,7 @@
     <column xsi:type="varchar" name="unit_of_measure" length="200" nullable="true" comment="unit_of_measure"/>
     <column xsi:type="int" name="min_selection" padding="11" nullable="true" comment="min_selection"/>
     <column xsi:type="int" name="max_selection" padding="11" nullable="true" comment="max_selection"/>
-    <column xsi:type="text" name="modifier_added_amount" nullable="true" comment="modifier_added_amount"/>
+    <column xsi:type="decimal" name="modifier_added_amount" scale="4" precision="20" nullable="true" comment="modifier_added_amount"/>
     <column xsi:type="int" name="deal_mod_size_gr_index" padding="11" nullable="true" comment="deal_mod_size_gr_index"/>
     <column xsi:type="text" name="retail_image_id" nullable="true" comment="retail_image_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
@@ -1137,7 +1140,7 @@
     <column xsi:type="varchar" name="unit_of_measure" length="200" nullable="true" comment="unit_of_measure"/>
     <column xsi:type="int" name="min_selection" padding="11" nullable="true" comment="min_selection"/>
     <column xsi:type="int" name="max_item_selection" padding="11" nullable="true" comment="max_item_selection"/>
-    <column xsi:type="text" name="added_amount" nullable="true" comment="added_amount"/>
+    <column xsi:type="decimal" name="added_amount" scale="4" precision="20" nullable="true" comment="added_amount"/>
     <column xsi:type="text" name="retail_image_id" nullable="true" comment="retail_image_id"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -1193,7 +1196,7 @@
     <column xsi:type="text" name="retail_image_id" nullable="true" comment="retail_image_id"/>
     <column xsi:type="text" name="member_type" nullable="true" comment="member_type"/>
     <column xsi:type="text" name="member_value" nullable="true" comment="member_value"/>
-    <column xsi:type="text" name="deal_price" nullable="true" comment="deal_price"/>
+    <column xsi:type="decimal" name="deal_price" scale="4" precision="20" nullable="true" comment="deal_price"/>
     <column xsi:type="text" name="validation_period_id" nullable="true" comment="validation_period_id"/>
     <column xsi:type="text" name="status" nullable="true" comment="status"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
@@ -1364,7 +1367,7 @@
     <column xsi:type="boolean" name="change_uom_allowed" default="0" nullable="true" comment="change_uom_allowed"/>
     <column xsi:type="text" name="retail_product_filter" nullable="true" comment="retail_product_filter"/>
     <column xsi:type="text" name="quantity_method" nullable="true" comment="quantity_method"/>
-    <column xsi:type="text" name="quickdefault_quantity" nullable="true" comment="quickdefault_quantity"/>
+    <column xsi:type="decimal" name="quickdefault_quantity" scale="4" precision="20" nullable="true" comment="quickdefault_quantity"/>
     <column xsi:type="text" name="inv_adjust_group_code" nullable="true" comment="inv_adjust_group_code"/>
     <column xsi:type="boolean" name="cycle_count" default="0" nullable="true" comment="cycle_count"/>
     <column xsi:type="boolean" name="use_batch_posting" default="0" nullable="true" comment="use_batch_posting"/>
@@ -1472,27 +1475,27 @@
     <column xsi:type="varchar" name="variant_code" length="200" nullable="true" comment="variant_code"/>
     <column xsi:type="text" name="location" nullable="true" comment="location"/>
     <column xsi:type="varchar" name="store_no" length="200" nullable="true" comment="store_no"/>
-    <column xsi:type="text" name="phys_inventory" nullable="true" comment="phys_inventory"/>
-    <column xsi:type="text" name="purchase_order" nullable="true" comment="purchase_order"/>
-    <column xsi:type="text" name="total_sales" nullable="true" comment="total_sales"/>
-    <column xsi:type="text" name="co_res_entries" nullable="true" comment="co_res_entries"/>
-    <column xsi:type="text" name="var_phys_inventory" nullable="true" comment="var_phys_inventory"/>
-    <column xsi:type="text" name="var_purchase_order" nullable="true" comment="var_purchase_order"/>
-    <column xsi:type="text" name="var_total_sales" nullable="true" comment="var_total_sales"/>
-    <column xsi:type="text" name="var_co_res_entries" nullable="true" comment="var_co_res_entries"/>
-    <column xsi:type="text" name="posted_sales" nullable="true" comment="posted_sales"/>
-    <column xsi:type="text" name="var_posted_sales" nullable="true" comment="var_posted_sales"/>
+    <column xsi:type="decimal" name="phys_inventory" scale="4" precision="20" nullable="true" comment="phys_inventory"/>
+    <column xsi:type="decimal" name="purchase_order" scale="4" precision="20" nullable="true" comment="purchase_order"/>
+    <column xsi:type="decimal" name="total_sales" scale="4" precision="20" nullable="true" comment="total_sales"/>
+    <column xsi:type="decimal" name="co_res_entries" scale="4" precision="20" nullable="true" comment="co_res_entries"/>
+    <column xsi:type="decimal" name="var_phys_inventory" scale="4" precision="20" nullable="true" comment="var_phys_inventory"/>
+    <column xsi:type="decimal" name="var_purchase_order" scale="4" precision="20" nullable="true" comment="var_purchase_order"/>
+    <column xsi:type="decimal" name="var_total_sales" scale="4" precision="20" nullable="true" comment="var_total_sales"/>
+    <column xsi:type="decimal" name="var_co_res_entries" scale="4" precision="20" nullable="true" comment="var_co_res_entries"/>
+    <column xsi:type="decimal" name="posted_sales" scale="4" precision="20" nullable="true" comment="posted_sales"/>
+    <column xsi:type="decimal" name="var_posted_sales" scale="4" precision="20" nullable="true" comment="var_posted_sales"/>
     <column xsi:type="text" name="serial_no" nullable="true" comment="serial_no"/>
     <column xsi:type="text" name="lot_no" nullable="true" comment="lot_no"/>
     <column xsi:type="text" name="expiration_date" nullable="true" comment="expiration_date"/>
-    <column xsi:type="text" name="total_inv_adjmt" nullable="true" comment="total_inv_adjmt"/>
-    <column xsi:type="text" name="var_total_inv_adjmt" nullable="true" comment="var_total_inv_adjmt"/>
-    <column xsi:type="text" name="posted_inv_adjmt" nullable="true" comment="posted_inv_adjmt"/>
-    <column xsi:type="text" name="var_posted_inv_adjmt" nullable="true" comment="var_posted_inv_adjmt"/>
-    <column xsi:type="text" name="net_inventory" nullable="true" comment="net_inventory"/>
+    <column xsi:type="decimal" name="total_inv_adjmt" scale="4" precision="20" nullable="true" comment="total_inv_adjmt"/>
+    <column xsi:type="decimal" name="var_total_inv_adjmt" scale="4" precision="20" nullable="true" comment="var_total_inv_adjmt"/>
+    <column xsi:type="decimal" name="posted_inv_adjmt" scale="4" precision="20" nullable="true" comment="posted_inv_adjmt"/>
+    <column xsi:type="decimal" name="var_posted_inv_adjmt" scale="4" precision="20" nullable="true" comment="var_posted_inv_adjmt"/>
+    <column xsi:type="decimal" name="net_inventory" scale="4" precision="20" nullable="true" comment="net_inventory"/>
     <column xsi:type="text" name="location_profile" nullable="true" comment="location_profile"/>
     <column xsi:type="int" name="replication_counter" padding="11" nullable="true" comment="replication_counter"/>
-    <column xsi:type="text" name="sourcing_location_inventory" nullable="true" comment="sourcing_location_inventory"/>
+    <column xsi:type="decimal" name="sourcing_location_inventory" scale="4" precision="20" nullable="true" comment="sourcing_location_inventory"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -1551,16 +1554,16 @@
     <column xsi:type="boolean" name="lsc_negative" default="0" nullable="true" comment="lsc_negative"/>
     <column xsi:type="boolean" name="lsc_not_discountable" default="0" nullable="true" comment="lsc_not_discountable"/>
     <column xsi:type="text" name="lsc_item_template_code" nullable="true" comment="lsc_item_template_code"/>
-    <column xsi:type="text" name="lsc_difference_lcy" nullable="true" comment="lsc_difference_lcy"/>
+    <column xsi:type="decimal" name="lsc_difference_lcy" scale="4" precision="20" nullable="true" comment="lsc_difference_lcy"/>
     <column xsi:type="text" name="lsc_item_hierarchy_value" nullable="true" comment="lsc_item_hierarchy_value"/>
     <column xsi:type="boolean" name="lsc_pos_inventory_lookup" default="0" nullable="true" comment="lsc_pos_inventory_lookup"/>
-    <column xsi:type="text" name="lsc_default_profit" nullable="true" comment="lsc_default_profit"/>
+    <column xsi:type="decimal" name="lsc_default_profit" scale="4" precision="20" nullable="true" comment="lsc_default_profit"/>
     <column xsi:type="text" name="lsc_dispense_printer_group" nullable="true" comment="lsc_dispense_printer_group"/>
     <column xsi:type="int" name="lsc_dispense_print_seq_no" padding="11" nullable="true" comment="lsc_dispense_print_seq_no"/>
     <column xsi:type="text" name="lsc_division_code" nullable="true" comment="lsc_division_code"/>
     <column xsi:type="text" name="lsc_item_error_check_code" nullable="true" comment="lsc_item_error_check_code"/>
-    <column xsi:type="text" name="lsc_suggested_qty_on_pos" nullable="true" comment="lsc_suggested_qty_on_pos"/>
-    <column xsi:type="text" name="lsc_profit_goal" nullable="true" comment="lsc_profit_goal"/>
+    <column xsi:type="decimal" name="lsc_suggested_qty_on_pos" scale="4" precision="20" nullable="true" comment="lsc_suggested_qty_on_pos"/>
+    <column xsi:type="decimal" name="lsc_profit_goal" scale="4" precision="20" nullable="true" comment="lsc_profit_goal"/>
     <column xsi:type="text" name="lsc_buyer_group_code" nullable="true" comment="lsc_buyer_group_code"/>
     <column xsi:type="text" name="lsc_replen_data_profile" nullable="true" comment="lsc_replen_data_profile"/>
     <column xsi:type="text" name="lsc_buyer_id" nullable="true" comment="lsc_buyer_id"/>
@@ -1722,13 +1725,13 @@
     <column xsi:type="int" name="repl_itemuomupdview_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_itemuomupdview_id"/>
     <column xsi:type="varchar" name="item_no" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="varchar" name="code" length="200" nullable="true" comment="code"/>
-    <column xsi:type="text" name="qty_per_unit_of_measure" nullable="true" comment="qty_per_unit_of_measure"/>
-    <column xsi:type="text" name="qty_rounding_precision" nullable="true" comment="qty_rounding_precision"/>
-    <column xsi:type="text" name="length" nullable="true" comment="length"/>
-    <column xsi:type="text" name="width" nullable="true" comment="width"/>
-    <column xsi:type="text" name="height" nullable="true" comment="height"/>
-    <column xsi:type="text" name="cubage" nullable="true" comment="cubage"/>
-    <column xsi:type="text" name="weight" nullable="true" comment="weight"/>
+    <column xsi:type="decimal" name="qty_per_unit_of_measure" scale="4" precision="20" nullable="true" comment="qty_per_unit_of_measure"/>
+    <column xsi:type="decimal" name="qty_rounding_precision" scale="4" precision="20" nullable="true" comment="qty_rounding_precision"/>
+    <column xsi:type="decimal" name="length" scale="4" precision="20" nullable="true" comment="length"/>
+    <column xsi:type="decimal" name="width" scale="4" precision="20" nullable="true" comment="width"/>
+    <column xsi:type="decimal" name="height" scale="4" precision="20" nullable="true" comment="height"/>
+    <column xsi:type="decimal" name="cubage" scale="4" precision="20" nullable="true" comment="cubage"/>
+    <column xsi:type="decimal" name="weight" scale="4" precision="20" nullable="true" comment="weight"/>
     <column xsi:type="text" name="lsc_no_in_barcode" nullable="true" comment="lsc_no_in_barcode"/>
     <column xsi:type="boolean" name="lsc_print_shelf_label" default="0" nullable="true" comment="lsc_print_shelf_label"/>
     <column xsi:type="text" name="lsc_text_on_shelf_label" nullable="true" comment="lsc_text_on_shelf_label"/>
@@ -1860,7 +1863,7 @@
     <column xsi:type="boolean" name="show_offer_html" default="0" nullable="true" comment="show_offer_html"/>
     <column xsi:type="boolean" name="display_terminal_closed" default="0" nullable="true" comment="display_terminal_closed"/>
     <column xsi:type="boolean" name="display_linked_item" default="0" nullable="true" comment="display_linked_item"/>
-    <column xsi:type="text" name="fraud_sort_field" nullable="true" comment="fraud_sort_field"/>
+    <column xsi:type="decimal" name="fraud_sort_field" scale="4" precision="20" nullable="true" comment="fraud_sort_field"/>
     <column xsi:type="boolean" name="manager_key_on_return" default="0" nullable="true" comment="manager_key_on_return"/>
     <column xsi:type="text" name="keylock_staff_perm_group" nullable="true" comment="keylock_staff_perm_group"/>
     <column xsi:type="text" name="slip_if_return" nullable="true" comment="slip_if_return"/>
@@ -1920,7 +1923,7 @@
     <column xsi:type="text" name="sales_type_filter" nullable="true" comment="sales_type_filter"/>
     <column xsi:type="text" name="copy_of_menu_profile" nullable="true" comment="copy_of_menu_profile"/>
     <column xsi:type="text" name="copy_of_interface_profile" nullable="true" comment="copy_of_interface_profile"/>
-    <column xsi:type="text" name="idle_timer_interval" nullable="true" comment="idle_timer_interval"/>
+    <column xsi:type="decimal" name="idle_timer_interval" scale="4" precision="20" nullable="true" comment="idle_timer_interval"/>
     <column xsi:type="text" name="external_printer_id" nullable="true" comment="external_printer_id"/>
     <column xsi:type="text" name="hosp_type_popup_on_logon" nullable="true" comment="hosp_type_popup_on_logon"/>
     <column xsi:type="int" name="receipt_barcode_id" padding="11" nullable="true" comment="receipt_barcode_id"/>
@@ -2023,37 +2026,37 @@
     <column xsi:type="text" name="work_type_code" nullable="true" comment="work_type_code"/>
     <column xsi:type="text" name="starting_date" nullable="true" comment="starting_date"/>
     <column xsi:type="text" name="ending_date" nullable="true" comment="ending_date"/>
-    <column xsi:type="text" name="minimum_quantity" nullable="true" comment="minimum_quantity"/>
+    <column xsi:type="decimal" name="minimum_quantity" scale="4" precision="20" nullable="true" comment="minimum_quantity"/>
     <column xsi:type="text" name="unit_of_measure_code" nullable="true" comment="unit_of_measure_code"/>
     <column xsi:type="text" name="amount_type" nullable="true" comment="amount_type"/>
-    <column xsi:type="text" name="unit_price" nullable="true" comment="unit_price"/>
-    <column xsi:type="text" name="cost_factor" nullable="true" comment="cost_factor"/>
-    <column xsi:type="text" name="unit_cost" nullable="true" comment="unit_cost"/>
-    <column xsi:type="text" name="line_discount" nullable="true" comment="line_discount"/>
+    <column xsi:type="decimal" name="unit_price" scale="4" precision="20" nullable="true" comment="unit_price"/>
+    <column xsi:type="decimal" name="cost_factor" scale="4" precision="20" nullable="true" comment="cost_factor"/>
+    <column xsi:type="decimal" name="unit_cost" scale="4" precision="20" nullable="true" comment="unit_cost"/>
+    <column xsi:type="decimal" name="line_discount" scale="4" precision="20" nullable="true" comment="line_discount"/>
     <column xsi:type="boolean" name="allow_line_disc" default="0" nullable="true" comment="allow_line_disc"/>
     <column xsi:type="boolean" name="allow_invoice_disc" default="0" nullable="true" comment="allow_invoice_disc"/>
     <column xsi:type="boolean" name="price_includes_vat" default="0" nullable="true" comment="price_includes_vat"/>
     <column xsi:type="text" name="vat_bus_posting_gr_price" nullable="true" comment="vat_bus_posting_gr_price"/>
     <column xsi:type="text" name="vat_prod_posting_group" nullable="true" comment="vat_prod_posting_group"/>
     <column xsi:type="text" name="asset_id" nullable="true" comment="asset_id"/>
-    <column xsi:type="text" name="line_amount" nullable="true" comment="line_amount"/>
+    <column xsi:type="decimal" name="line_amount" scale="4" precision="20" nullable="true" comment="line_amount"/>
     <column xsi:type="text" name="price_type" nullable="true" comment="price_type"/>
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
     <column xsi:type="text" name="status" nullable="true" comment="status"/>
-    <column xsi:type="text" name="direct_unit_cost" nullable="true" comment="direct_unit_cost"/>
+    <column xsi:type="decimal" name="direct_unit_cost" scale="4" precision="20" nullable="true" comment="direct_unit_cost"/>
     <column xsi:type="text" name="source_group" nullable="true" comment="source_group"/>
     <column xsi:type="text" name="product_no" nullable="true" comment="product_no"/>
     <column xsi:type="text" name="assignto_no" nullable="true" comment="assignto_no"/>
     <column xsi:type="text" name="assignto_parent_no" nullable="true" comment="assignto_parent_no"/>
     <column xsi:type="text" name="variant_code_lookup" nullable="true" comment="variant_code_lookup"/>
     <column xsi:type="text" name="unit_of_measure_code_lookup" nullable="true" comment="unit_of_measure_code_lookup"/>
-    <column xsi:type="text" name="lsc_markup" nullable="true" comment="lsc_markup"/>
-    <column xsi:type="text" name="lsc_profit" nullable="true" comment="lsc_profit"/>
-    <column xsi:type="text" name="lsc_profit_lcy" nullable="true" comment="lsc_profit_lcy"/>
-    <column xsi:type="text" name="lsc_unit_price_including_vat" nullable="true" comment="lsc_unit_price_including_vat"/>
-    <column xsi:type="text" name="lsc_wholesale_price" nullable="true" comment="lsc_wholesale_price"/>
-    <column xsi:type="text" name="lsc_wholesale_discount" nullable="true" comment="lsc_wholesale_discount"/>
-    <column xsi:type="text" name="lsc_comp_price_incl_vat" nullable="true" comment="lsc_comp_price_incl_vat"/>
+    <column xsi:type="decimal" name="lsc_markup" scale="4" precision="20" nullable="true" comment="lsc_markup"/>
+    <column xsi:type="decimal" name="lsc_profit" scale="4" precision="20" nullable="true" comment="lsc_profit"/>
+    <column xsi:type="decimal" name="lsc_profit_lcy" scale="4" precision="20" nullable="true" comment="lsc_profit_lcy"/>
+    <column xsi:type="decimal" name="lsc_unit_price_including_vat" scale="4" precision="20" nullable="true" comment="lsc_unit_price_including_vat"/>
+    <column xsi:type="decimal" name="lsc_wholesale_price" scale="4" precision="20" nullable="true" comment="lsc_wholesale_price"/>
+    <column xsi:type="decimal" name="lsc_wholesale_discount" scale="4" precision="20" nullable="true" comment="lsc_wholesale_discount"/>
+    <column xsi:type="decimal" name="lsc_comp_price_incl_vat" scale="4" precision="20" nullable="true" comment="lsc_comp_price_incl_vat"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -2085,7 +2088,7 @@
     <column xsi:type="int" name="min_loc_prof_inventory" padding="11" nullable="true" comment="min_loc_prof_inventory"/>
     <column xsi:type="text" name="barcode_mask" nullable="true" comment="barcode_mask"/>
     <column xsi:type="boolean" name="use_ean_standard_barc" default="0" nullable="true" comment="use_ean_standard_barc"/>
-    <column xsi:type="text" name="default_profit" nullable="true" comment="default_profit"/>
+    <column xsi:type="decimal" name="default_profit" scale="4" precision="20" nullable="true" comment="default_profit"/>
     <column xsi:type="text" name="dispense_printer_group" nullable="true" comment="dispense_printer_group"/>
     <column xsi:type="boolean" name="disable_dispense_printing" default="0" nullable="true" comment="disable_dispense_printing"/>
     <column xsi:type="boolean" name="pos_inventory_lookup" default="0" nullable="true" comment="pos_inventory_lookup"/>
@@ -2095,10 +2098,10 @@
     <column xsi:type="text" name="primary_key" nullable="true" comment="primary_key"/>
     <column xsi:type="text" name="division_code" nullable="true" comment="division_code"/>
     <column xsi:type="text" name="item_error_check_code" nullable="true" comment="item_error_check_code"/>
-    <column xsi:type="text" name="suggested_qty_on_pos" nullable="true" comment="suggested_qty_on_pos"/>
+    <column xsi:type="decimal" name="suggested_qty_on_pos" scale="4" precision="20" nullable="true" comment="suggested_qty_on_pos"/>
     <column xsi:type="text" name="default_base_uom" nullable="true" comment="default_base_uom"/>
     <column xsi:type="boolean" name="qty_not_in_decimal" default="0" nullable="true" comment="qty_not_in_decimal"/>
-    <column xsi:type="text" name="profit_goal" nullable="true" comment="profit_goal"/>
+    <column xsi:type="decimal" name="profit_goal" scale="4" precision="20" nullable="true" comment="profit_goal"/>
     <column xsi:type="text" name="buyer_group_code" nullable="true" comment="buyer_group_code"/>
     <column xsi:type="text" name="replen_data_profile" nullable="true" comment="replen_data_profile"/>
     <column xsi:type="text" name="buyer_id" nullable="true" comment="buyer_id"/>
@@ -2157,20 +2160,20 @@
     <column xsi:type="text" name="sales_code" nullable="true" comment="sales_code"/>
     <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="starting_date" nullable="true" comment="starting_date"/>
-    <column xsi:type="text" name="unit_price" nullable="true" comment="unit_price"/>
+    <column xsi:type="decimal" name="unit_price" scale="4" precision="20" nullable="true" comment="unit_price"/>
     <column xsi:type="boolean" name="price_includes_vat" default="0" nullable="true" comment="price_includes_vat"/>
     <column xsi:type="boolean" name="allow_invoice_disc" default="0" nullable="true" comment="allow_invoice_disc"/>
     <column xsi:type="text" name="vat_bus_posting_gr_price" nullable="true" comment="vat_bus_posting_gr_price"/>
     <column xsi:type="text" name="sales_type" nullable="true" comment="sales_type"/>
-    <column xsi:type="text" name="minimum_quantity" nullable="true" comment="minimum_quantity"/>
+    <column xsi:type="decimal" name="minimum_quantity" scale="4" precision="20" nullable="true" comment="minimum_quantity"/>
     <column xsi:type="text" name="ending_date" nullable="true" comment="ending_date"/>
     <column xsi:type="text" name="unit_of_measure_code" nullable="true" comment="unit_of_measure_code"/>
     <column xsi:type="text" name="variant_code" nullable="true" comment="variant_code"/>
     <column xsi:type="boolean" name="allow_line_disc" default="0" nullable="true" comment="allow_line_disc"/>
-    <column xsi:type="text" name="lsc_markup" nullable="true" comment="lsc_markup"/>
-    <column xsi:type="text" name="lsc_profit" nullable="true" comment="lsc_profit"/>
-    <column xsi:type="text" name="lsc_profit_lcy" nullable="true" comment="lsc_profit_lcy"/>
-    <column xsi:type="text" name="lsc_unit_price_including_vat" nullable="true" comment="lsc_unit_price_including_vat"/>
+    <column xsi:type="decimal" name="lsc_markup" scale="4" precision="20" nullable="true" comment="lsc_markup"/>
+    <column xsi:type="decimal" name="lsc_profit" scale="4" precision="20" nullable="true" comment="lsc_profit"/>
+    <column xsi:type="decimal" name="lsc_profit_lcy" scale="4" precision="20" nullable="true" comment="lsc_profit_lcy"/>
+    <column xsi:type="decimal" name="lsc_unit_price_including_vat" scale="4" precision="20" nullable="true" comment="lsc_unit_price_including_vat"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -2203,15 +2206,15 @@
     <column xsi:type="text" name="tender_declaration" nullable="true" comment="tender_declaration"/>
     <column xsi:type="text" name="floating_declaration" nullable="true" comment="floating_declaration"/>
     <column xsi:type="text" name="price_override" nullable="true" comment="price_override"/>
-    <column xsi:type="text" name="max_discount_to_give" nullable="true" comment="max_discount_to_give"/>
+    <column xsi:type="decimal" name="max_discount_to_give" scale="4" precision="20" nullable="true" comment="max_discount_to_give"/>
     <column xsi:type="text" name="suspend_transaction" nullable="true" comment="suspend_transaction"/>
-    <column xsi:type="text" name="max_total_discount" nullable="true" comment="max_total_discount"/>
+    <column xsi:type="decimal" name="max_total_discount" scale="4" precision="20" nullable="true" comment="max_total_discount"/>
     <column xsi:type="text" name="open_draw_without_sale" nullable="true" comment="open_draw_without_sale"/>
     <column xsi:type="text" name="discount_from_perm_group" nullable="true" comment="discount_from_perm_group"/>
     <column xsi:type="text" name="first_name" nullable="true" comment="first_name"/>
     <column xsi:type="text" name="last_name" nullable="true" comment="last_name"/>
     <column xsi:type="text" name="employment_type" nullable="true" comment="employment_type"/>
-    <column xsi:type="text" name="fraud_sort_field" nullable="true" comment="fraud_sort_field"/>
+    <column xsi:type="decimal" name="fraud_sort_field" scale="4" precision="20" nullable="true" comment="fraud_sort_field"/>
     <column xsi:type="text" name="last_date_modified" nullable="true" comment="last_date_modified"/>
     <column xsi:type="text" name="name_on_receipt" nullable="true" comment="name_on_receipt"/>
     <column xsi:type="text" name="address" nullable="true" comment="address"/>
@@ -2221,7 +2224,7 @@
     <column xsi:type="text" name="county" nullable="true" comment="county"/>
     <column xsi:type="text" name="home_phone_no" nullable="true" comment="home_phone_no"/>
     <column xsi:type="text" name="work_phone_no" nullable="true" comment="work_phone_no"/>
-    <column xsi:type="text" name="hourly_rate" nullable="true" comment="hourly_rate"/>
+    <column xsi:type="decimal" name="hourly_rate" scale="4" precision="20" nullable="true" comment="hourly_rate"/>
     <column xsi:type="text" name="payroll_no" nullable="true" comment="payroll_no"/>
     <column xsi:type="boolean" name="blocked" default="0" nullable="true" comment="blocked"/>
     <column xsi:type="text" name="date_to_be_blocked" nullable="true" comment="date_to_be_blocked"/>
@@ -2260,7 +2263,7 @@
     <column xsi:type="text" name="create_customers" nullable="true" comment="create_customers"/>
     <column xsi:type="text" name="view_sales_history" nullable="true" comment="view_sales_history"/>
     <column xsi:type="text" name="customer_comments" nullable="true" comment="customer_comments"/>
-    <column xsi:type="text" name="max_tender_decl_difference" nullable="true" comment="max_tender_decl_difference"/>
+    <column xsi:type="decimal" name="max_tender_decl_difference" scale="4" precision="20" nullable="true" comment="max_tender_decl_difference"/>
     <column xsi:type="int" name="max_warning_count" padding="11" nullable="true" comment="max_warning_count"/>
     <column xsi:type="text" name="show_difference_in_warning" nullable="true" comment="show_difference_in_warning"/>
     <column xsi:type="text" name="action_after_diff_warning" nullable="true" comment="action_after_diff_warning"/>
@@ -2311,8 +2314,8 @@
     <column xsi:type="text" name="view_sales_history" nullable="true" comment="view_sales_history"/>
     <column xsi:type="text" name="customer_comments" nullable="true" comment="customer_comments"/>
     <column xsi:type="text" name="update_customers" nullable="true" comment="update_customers"/>
-    <column xsi:type="text" name="max_discount_to_give" nullable="true" comment="max_discount_to_give"/>
-    <column xsi:type="text" name="max_total_discount" nullable="true" comment="max_total_discount"/>
+    <column xsi:type="decimal" name="max_discount_to_give" scale="4" precision="20" nullable="true" comment="max_discount_to_give"/>
+    <column xsi:type="decimal" name="max_total_discount" scale="4" precision="20" nullable="true" comment="max_total_discount"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
     <column xsi:type="boolean" name="IsDeleted" default="0" nullable="true" comment="Flag to check if data is deleted in Central. 0 means not deleted &amp; 1 means deleted in Central."/>
@@ -2338,8 +2341,8 @@
     <column xsi:type="text" name="city" nullable="true" comment="city"/>
     <column xsi:type="text" name="county" nullable="true" comment="county"/>
     <column xsi:type="text" name="country_code" nullable="true" comment="country_code"/>
-    <column xsi:type="text" name="latitude" nullable="true" comment="latitude"/>
-    <column xsi:type="text" name="longitude" nullable="true" comment="longitude"/>
+    <column xsi:type="decimal" name="latitude" scale="4" precision="20" nullable="true" comment="latitude"/>
+    <column xsi:type="decimal" name="longitude" scale="4" precision="20" nullable="true" comment="longitude"/>
     <column xsi:type="text" name="phone_no" nullable="true" comment="phone_no"/>
     <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="functionality_profile" nullable="true" comment="functionality_profile"/>
@@ -2387,7 +2390,7 @@
     <column xsi:type="text" name="pos_style_profile" nullable="true" comment="pos_style_profile"/>
     <column xsi:type="text" name="pos_menu_profile" nullable="true" comment="pos_menu_profile"/>
     <column xsi:type="boolean" name="delivery_driver" default="0" nullable="true" comment="delivery_driver"/>
-    <column xsi:type="text" name="float" nullable="true" comment="float"/>
+    <column xsi:type="decimal" name="float" scale="4" precision="20" nullable="true" comment="float"/>
     <column xsi:type="boolean" name="on_call" default="0" nullable="true" comment="on_call"/>
     <column xsi:type="text" name="default_sales_type" nullable="true" comment="default_sales_type"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
@@ -2420,18 +2423,18 @@
     <column xsi:type="text" name="no_in_transaction" nullable="true" comment="no_in_transaction"/>
     <column xsi:type="text" name="change_tend_code" nullable="true" comment="change_tend_code"/>
     <column xsi:type="text" name="above_min_change_tender_type" nullable="true" comment="above_min_change_tender_type"/>
-    <column xsi:type="text" name="min_change" nullable="true" comment="min_change"/>
+    <column xsi:type="decimal" name="min_change" scale="4" precision="20" nullable="true" comment="min_change"/>
     <column xsi:type="text" name="rounding" nullable="true" comment="rounding"/>
-    <column xsi:type="text" name="rounding_to" nullable="true" comment="rounding_to"/>
-    <column xsi:type="text" name="min_amount_entered" nullable="true" comment="min_amount_entered"/>
-    <column xsi:type="text" name="max_amount_entered" nullable="true" comment="max_amount_entered"/>
-    <column xsi:type="text" name="min_amount_allowed" nullable="true" comment="min_amount_allowed"/>
-    <column xsi:type="text" name="max_amount_allowed" nullable="true" comment="max_amount_allowed"/>
+    <column xsi:type="decimal" name="rounding_to" scale="4" precision="20" nullable="true" comment="rounding_to"/>
+    <column xsi:type="decimal" name="min_amount_entered" scale="4" precision="20" nullable="true" comment="min_amount_entered"/>
+    <column xsi:type="decimal" name="max_amount_entered" scale="4" precision="20" nullable="true" comment="max_amount_entered"/>
+    <column xsi:type="decimal" name="min_amount_allowed" scale="4" precision="20" nullable="true" comment="min_amount_allowed"/>
+    <column xsi:type="decimal" name="max_amount_allowed" scale="4" precision="20" nullable="true" comment="max_amount_allowed"/>
     <column xsi:type="boolean" name="may_be_used" default="0" nullable="true" comment="may_be_used"/>
     <column xsi:type="boolean" name="manager_key_control" default="0" nullable="true" comment="manager_key_control"/>
     <column xsi:type="boolean" name="keyboard_entry_allowed" default="0" nullable="true" comment="keyboard_entry_allowed"/>
     <column xsi:type="boolean" name="overtender_allowed" default="0" nullable="true" comment="overtender_allowed"/>
-    <column xsi:type="text" name="overtender_max_amt" nullable="true" comment="overtender_max_amt"/>
+    <column xsi:type="decimal" name="overtender_max_amt" scale="4" precision="20" nullable="true" comment="overtender_max_amt"/>
     <column xsi:type="boolean" name="undertender_allowed" default="0" nullable="true" comment="undertender_allowed"/>
     <column xsi:type="boolean" name="returnminus_allowed" default="0" nullable="true" comment="returnminus_allowed"/>
     <column xsi:type="boolean" name="drawer_opens" default="0" nullable="true" comment="drawer_opens"/>
@@ -2461,7 +2464,7 @@
     <column xsi:type="text" name="account_type" nullable="true" comment="account_type"/>
     <column xsi:type="text" name="account_no" nullable="true" comment="account_no"/>
     <column xsi:type="text" name="account_name" nullable="true" comment="account_name"/>
-    <column xsi:type="text" name="charge" nullable="true" comment="charge"/>
+    <column xsi:type="decimal" name="charge" scale="4" precision="20" nullable="true" comment="charge"/>
     <column xsi:type="text" name="charge_to_account_no" nullable="true" comment="charge_to_account_no"/>
     <column xsi:type="text" name="store_no" nullable="true" comment="store_no"/>
     <column xsi:type="text" name="difference_gl_acc" nullable="true" comment="difference_gl_acc"/>
@@ -2471,7 +2474,7 @@
     <column xsi:type="boolean" name="refund_directly" default="0" nullable="true" comment="refund_directly"/>
     <column xsi:type="boolean" name="compress_paym_entries" default="0" nullable="true" comment="compress_paym_entries"/>
     <column xsi:type="boolean" name="print_in_cid_report" default="0" nullable="true" comment="print_in_cid_report"/>
-    <column xsi:type="text" name="pos_pickup_warning_amount" nullable="true" comment="pos_pickup_warning_amount"/>
+    <column xsi:type="decimal" name="pos_pickup_warning_amount" scale="4" precision="20" nullable="true" comment="pos_pickup_warning_amount"/>
     <column xsi:type="text" name="bank_account_type" nullable="true" comment="bank_account_type"/>
     <column xsi:type="text" name="bank_account_no" nullable="true" comment="bank_account_no"/>
     <column xsi:type="text" name="bank_account_name" nullable="true" comment="bank_account_name"/>
@@ -2531,7 +2534,7 @@
     <column xsi:type="text" name="account_name" nullable="true" comment="account_name"/>
     <column xsi:type="text" name="difference_gl_acc" nullable="true" comment="difference_gl_acc"/>
     <column xsi:type="text" name="primary_key" nullable="true" comment="primary_key"/>
-    <column xsi:type="text" name="pos_pickup_warning_amount" nullable="true" comment="pos_pickup_warning_amount"/>
+    <column xsi:type="decimal" name="pos_pickup_warning_amount" scale="4" precision="20" nullable="true" comment="pos_pickup_warning_amount"/>
     <column xsi:type="text" name="pos_pickup_warning_text" nullable="true" comment="pos_pickup_warning_text"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
@@ -2562,14 +2565,14 @@
     <column xsi:type="boolean" name="valid_on_mobile_pos" default="0" nullable="true" comment="valid_on_mobile_pos"/>
     <column xsi:type="text" name="change_tend_code" nullable="true" comment="change_tend_code"/>
     <column xsi:type="text" name="above_min_change_tender_type" nullable="true" comment="above_min_change_tender_type"/>
-    <column xsi:type="text" name="min_change" nullable="true" comment="min_change"/>
+    <column xsi:type="decimal" name="min_change" scale="4" precision="20" nullable="true" comment="min_change"/>
     <column xsi:type="int" name="rounding" padding="11" nullable="true" comment="rounding"/>
-    <column xsi:type="text" name="rounding_to" nullable="true" comment="rounding_to"/>
+    <column xsi:type="decimal" name="rounding_to" scale="4" precision="20" nullable="true" comment="rounding_to"/>
     <column xsi:type="boolean" name="returnminus_allowed" default="0" nullable="true" comment="returnminus_allowed"/>
     <column xsi:type="boolean" name="foreign_currency" default="0" nullable="true" comment="foreign_currency"/>
     <column xsi:type="boolean" name="undertender_allowed" default="0" nullable="true" comment="undertender_allowed"/>
     <column xsi:type="boolean" name="overtender_allowed" default="0" nullable="true" comment="overtender_allowed"/>
-    <column xsi:type="text" name="overtender_max_amt" nullable="true" comment="overtender_max_amt"/>
+    <column xsi:type="decimal" name="overtender_max_amt" scale="4" precision="20" nullable="true" comment="overtender_max_amt"/>
     <column xsi:type="boolean" name="counting_required" default="0" nullable="true" comment="counting_required"/>
     <column xsi:type="boolean" name="drawer_opens" default="0" nullable="true" comment="drawer_opens"/>
     <column xsi:type="text" name="dateentrycodes" nullable="true" comment="dateentrycodes"/>
@@ -2603,7 +2606,7 @@
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
     <column xsi:type="text" name="international_standard_code" nullable="true" comment="international_standard_code"/>
     <column xsi:type="text" name="last_modified_date_time" nullable="true" comment="last_modified_date_time"/>
-    <column xsi:type="text" name="lsc_pos_min_denominator" nullable="true" comment="lsc_pos_min_denominator"/>
+    <column xsi:type="decimal" name="lsc_pos_min_denominator" scale="4" precision="20" nullable="true" comment="lsc_pos_min_denominator"/>
     <column xsi:type="boolean" name="lsc_weight_unit_of_measure" default="0" nullable="true" comment="lsc_weight_unit_of_measure"/>
     <column xsi:type="text" name="symbol" nullable="true" comment="symbol"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
@@ -2649,7 +2652,7 @@
     <column xsi:type="text" name="vat_bus_posting_group" nullable="true" comment="vat_bus_posting_group"/>
     <column xsi:type="text" name="vat_prod_posting_group" nullable="true" comment="vat_prod_posting_group"/>
     <column xsi:type="text" name="vat_calculation_type" nullable="true" comment="vat_calculation_type"/>
-    <column xsi:type="text" name="vat" nullable="true" comment="vat"/>
+    <column xsi:type="decimal" name="vat" scale="4" precision="20" nullable="true" comment="vat"/>
     <column xsi:type="text" name="unrealized_vat_type" nullable="true" comment="unrealized_vat_type"/>
     <column xsi:type="boolean" name="adjust_for_payment_discount" default="0" nullable="true" comment="adjust_for_payment_discount"/>
     <column xsi:type="text" name="sales_vat_account" nullable="true" comment="sales_vat_account"/>
@@ -2670,7 +2673,7 @@
     <column xsi:type="text" name="sales_tax_code_saft" nullable="true" comment="sales_tax_code_saft"/>
     <column xsi:type="text" name="purchase_tax_code_saft" nullable="true" comment="purchase_tax_code_saft"/>
     <column xsi:type="text" name="starting_date" nullable="true" comment="starting_date"/>
-    <column xsi:type="text" name="nondeductible_vat" nullable="true" comment="nondeductible_vat"/>
+    <column xsi:type="decimal" name="nondeductible_vat" scale="4" precision="20" nullable="true" comment="nondeductible_vat"/>
     <column xsi:type="text" name="nonded_purchase_vat_account" nullable="true" comment="nonded_purchase_vat_account"/>
     <column xsi:type="text" name="allow_nondeductible_vat" nullable="true" comment="allow_nondeductible_vat"/>
     <column xsi:type="text" name="lsc_vat_group_code" nullable="true" comment="lsc_vat_group_code"/>
@@ -2780,12 +2783,12 @@
   <table name="ls_replication_repl_lsc_item_variant_registration" resource="default" engine="innodb" comment="LSC Item Variant Registration">
     <column xsi:type="int" name="repl_lsc_item_variant_registration_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_item_variant_registration_id"/>
     <column xsi:type="text" name="barcode" nullable="true" comment="barcode"/>
-    <column xsi:type="text" name="dimension_1_weight" nullable="true" comment="dimension_1_weight"/>
-    <column xsi:type="text" name="dimension_2_weight" nullable="true" comment="dimension_2_weight"/>
-    <column xsi:type="text" name="dimension_3_weight" nullable="true" comment="dimension_3_weight"/>
-    <column xsi:type="text" name="dimension_4_weight" nullable="true" comment="dimension_4_weight"/>
-    <column xsi:type="text" name="dimension_5_weight" nullable="true" comment="dimension_5_weight"/>
-    <column xsi:type="text" name="dimension_6_weight" nullable="true" comment="dimension_6_weight"/>
+    <column xsi:type="decimal" name="dimension_1_weight" scale="4" precision="20" nullable="true" comment="dimension_1_weight"/>
+    <column xsi:type="decimal" name="dimension_2_weight" scale="4" precision="20" nullable="true" comment="dimension_2_weight"/>
+    <column xsi:type="decimal" name="dimension_3_weight" scale="4" precision="20" nullable="true" comment="dimension_3_weight"/>
+    <column xsi:type="decimal" name="dimension_4_weight" scale="4" precision="20" nullable="true" comment="dimension_4_weight"/>
+    <column xsi:type="decimal" name="dimension_5_weight" scale="4" precision="20" nullable="true" comment="dimension_5_weight"/>
+    <column xsi:type="decimal" name="dimension_6_weight" scale="4" precision="20" nullable="true" comment="dimension_6_weight"/>
     <column xsi:type="text" name="framework_code" nullable="true" comment="framework_code"/>
     <column xsi:type="text" name="item_no" nullable="true" comment="item_no"/>
     <column xsi:type="text" name="logical_order" nullable="true" comment="logical_order"/>
@@ -2800,7 +2803,7 @@
     <column xsi:type="text" name="variant_dimension_4" nullable="true" comment="variant_dimension_4"/>
     <column xsi:type="text" name="variant_dimension_5" nullable="true" comment="variant_dimension_5"/>
     <column xsi:type="text" name="variant_dimension_6" nullable="true" comment="variant_dimension_6"/>
-    <column xsi:type="text" name="variant_weight" nullable="true" comment="variant_weight"/>
+    <column xsi:type="decimal" name="variant_weight" scale="4" precision="20" nullable="true" comment="variant_weight"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>
     <column xsi:type="int" name="scope_id" padding="11" nullable="true" comment="Record Scope ID"/>
@@ -2830,13 +2833,13 @@
     <column xsi:type="varchar" name="variant" length="200" nullable="true" comment="variant"/>
     <column xsi:type="text" name="barcode" nullable="true" comment="barcode"/>
     <column xsi:type="text" name="logical_order" nullable="true" comment="logical_order"/>
-    <column xsi:type="text" name="dimension_1_weight" nullable="true" comment="dimension_1_weight"/>
-    <column xsi:type="text" name="dimension_2_weight" nullable="true" comment="dimension_2_weight"/>
-    <column xsi:type="text" name="dimension_3_weight" nullable="true" comment="dimension_3_weight"/>
-    <column xsi:type="text" name="dimension_4_weight" nullable="true" comment="dimension_4_weight"/>
-    <column xsi:type="text" name="dimension_5_weight" nullable="true" comment="dimension_5_weight"/>
-    <column xsi:type="text" name="dimension_6_weight" nullable="true" comment="dimension_6_weight"/>
-    <column xsi:type="text" name="variant_weight" nullable="true" comment="variant_weight"/>
+    <column xsi:type="decimal" name="dimension_1_weight" scale="4" precision="20" nullable="true" comment="dimension_1_weight"/>
+    <column xsi:type="decimal" name="dimension_2_weight" scale="4" precision="20" nullable="true" comment="dimension_2_weight"/>
+    <column xsi:type="decimal" name="dimension_3_weight" scale="4" precision="20" nullable="true" comment="dimension_3_weight"/>
+    <column xsi:type="decimal" name="dimension_4_weight" scale="4" precision="20" nullable="true" comment="dimension_4_weight"/>
+    <column xsi:type="decimal" name="dimension_5_weight" scale="4" precision="20" nullable="true" comment="dimension_5_weight"/>
+    <column xsi:type="decimal" name="dimension_6_weight" scale="4" precision="20" nullable="true" comment="dimension_6_weight"/>
+    <column xsi:type="decimal" name="variant_weight" scale="4" precision="20" nullable="true" comment="variant_weight"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -2896,7 +2899,7 @@
     <column xsi:type="text" name="territory_code" nullable="true" comment="territory_code"/>
     <column xsi:type="text" name="global_dimension_1_code" nullable="true" comment="global_dimension_1_code"/>
     <column xsi:type="text" name="global_dimension_2_code" nullable="true" comment="global_dimension_2_code"/>
-    <column xsi:type="text" name="budgeted_amount" nullable="true" comment="budgeted_amount"/>
+    <column xsi:type="decimal" name="budgeted_amount" scale="4" precision="20" nullable="true" comment="budgeted_amount"/>
     <column xsi:type="text" name="vendor_posting_group" nullable="true" comment="vendor_posting_group"/>
     <column xsi:type="text" name="currency_code" nullable="true" comment="currency_code"/>
     <column xsi:type="text" name="language_code" nullable="true" comment="language_code"/>
@@ -2934,7 +2937,7 @@
     <column xsi:type="text" name="vat_bus_posting_group" nullable="true" comment="vat_bus_posting_group"/>
     <column xsi:type="boolean" name="block_payment_tolerance" default="0" nullable="true" comment="block_payment_tolerance"/>
     <column xsi:type="text" name="ic_partner_code" nullable="true" comment="ic_partner_code"/>
-    <column xsi:type="text" name="prepayment" nullable="true" comment="prepayment"/>
+    <column xsi:type="decimal" name="prepayment" scale="4" precision="20" nullable="true" comment="prepayment"/>
     <column xsi:type="text" name="partner_type" nullable="true" comment="partner_type"/>
     <column xsi:type="text" name="intrastat_partner_type" nullable="true" comment="intrastat_partner_type"/>
     <column xsi:type="boolean" name="exclude_from_pmt_practices" default="0" nullable="true" comment="exclude_from_pmt_practices"/>
@@ -3056,15 +3059,15 @@
     <column xsi:type="int" name="repl_lsc_wi_discounts_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_wi_discounts_id"/>
     <column xsi:type="text" name="customer_disc_group" nullable="true" comment="customer_disc_group"/>
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
-    <column xsi:type="text" name="discount" nullable="true" comment="discount"/>
-    <column xsi:type="text" name="discount_amount_value" nullable="true" comment="discount_amount_value"/>
+    <column xsi:type="decimal" name="discount" scale="4" precision="20" nullable="true" comment="discount"/>
+    <column xsi:type="decimal" name="discount_amount_value" scale="4" precision="20" nullable="true" comment="discount_amount_value"/>
     <column xsi:type="text" name="discount_type" nullable="true" comment="discount_type"/>
     <column xsi:type="boolean" name="exclude" default="0" nullable="true" comment="exclude"/>
     <column xsi:type="text" name="from_date" nullable="true" comment="from_date"/>
     <column xsi:type="text" name="item_no" nullable="true" comment="item_no"/>
     <column xsi:type="text" name="last_modify_date" nullable="true" comment="last_modify_date"/>
     <column xsi:type="text" name="loyalty_scheme_code" nullable="true" comment="loyalty_scheme_code"/>
-    <column xsi:type="text" name="minimum_quantity" nullable="true" comment="minimum_quantity"/>
+    <column xsi:type="decimal" name="minimum_quantity" scale="4" precision="20" nullable="true" comment="minimum_quantity"/>
     <column xsi:type="text" name="offer_no" nullable="true" comment="offer_no"/>
     <column xsi:type="text" name="popup_line_1" nullable="true" comment="popup_line_1"/>
     <column xsi:type="text" name="popup_line_2" nullable="true" comment="popup_line_2"/>
@@ -3160,14 +3163,14 @@
     <column xsi:type="text" name="type" nullable="true" comment="type"/>
     <column xsi:type="text" name="item_disc_group" nullable="true" comment="item_disc_group"/>
     <column xsi:type="boolean" name="allow_invoice_disc" default="0" nullable="true" comment="allow_invoice_disc"/>
-    <column xsi:type="text" name="unit_price" nullable="true" comment="unit_price"/>
+    <column xsi:type="decimal" name="unit_price" scale="4" precision="20" nullable="true" comment="unit_price"/>
     <column xsi:type="text" name="vendor_no" nullable="true" comment="vendor_no"/>
     <column xsi:type="text" name="vendor_item_no" nullable="true" comment="vendor_item_no"/>
     <column xsi:type="text" name="alternative_item_no" nullable="true" comment="alternative_item_no"/>
-    <column xsi:type="text" name="gross_weight" nullable="true" comment="gross_weight"/>
-    <column xsi:type="text" name="net_weight" nullable="true" comment="net_weight"/>
-    <column xsi:type="text" name="units_per_parcel" nullable="true" comment="units_per_parcel"/>
-    <column xsi:type="text" name="unit_volume" nullable="true" comment="unit_volume"/>
+    <column xsi:type="decimal" name="gross_weight" scale="4" precision="20" nullable="true" comment="gross_weight"/>
+    <column xsi:type="decimal" name="net_weight" scale="4" precision="20" nullable="true" comment="net_weight"/>
+    <column xsi:type="decimal" name="units_per_parcel" scale="4" precision="20" nullable="true" comment="units_per_parcel"/>
+    <column xsi:type="decimal" name="unit_volume" scale="4" precision="20" nullable="true" comment="unit_volume"/>
     <column xsi:type="text" name="tariff_no" nullable="true" comment="tariff_no"/>
     <column xsi:type="boolean" name="blocked" default="0" nullable="true" comment="blocked"/>
     <column xsi:type="text" name="block_reason" nullable="true" comment="block_reason"/>
@@ -3285,10 +3288,10 @@
     <column xsi:type="int" name="max_selection" padding="11" nullable="true" comment="max_selection"/>
     <column xsi:type="text" name="price_handling" nullable="true" comment="price_handling"/>
     <column xsi:type="text" name="price_type" nullable="true" comment="price_type"/>
-    <column xsi:type="text" name="amount_percent" nullable="true" comment="amount_percent"/>
+    <column xsi:type="decimal" name="amount_percent" scale="4" precision="20" nullable="true" comment="amount_percent"/>
     <column xsi:type="varchar" name="unit_of_measure" length="200" nullable="true" comment="unit_of_measure"/>
-    <column xsi:type="text" name="qty_per_unit_of_measure" nullable="true" comment="qty_per_unit_of_measure"/>
-    <column xsi:type="text" name="time_modifier_minutes" nullable="true" comment="time_modifier_minutes"/>
+    <column xsi:type="decimal" name="qty_per_unit_of_measure" scale="4" precision="20" nullable="true" comment="qty_per_unit_of_measure"/>
+    <column xsi:type="decimal" name="time_modifier_minutes" scale="4" precision="20" nullable="true" comment="time_modifier_minutes"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
@@ -3347,10 +3350,10 @@
     <column xsi:type="varchar" name="no" length="200" nullable="true" comment="no"/>
     <column xsi:type="text" name="description" nullable="true" comment="description"/>
     <column xsi:type="varchar" name="unit_of_measure_code" length="200" nullable="true" comment="unit_of_measure_code"/>
-    <column xsi:type="text" name="quantity_per" nullable="true" comment="quantity_per"/>
+    <column xsi:type="decimal" name="quantity_per" scale="4" precision="20" nullable="true" comment="quantity_per"/>
     <column xsi:type="text" name="lsc_item_no" nullable="true" comment="lsc_item_no"/>
     <column xsi:type="text" name="lsc_exclusion" nullable="true" comment="lsc_exclusion"/>
-    <column xsi:type="text" name="lsc_price_on_exclusion" nullable="true" comment="lsc_price_on_exclusion"/>
+    <column xsi:type="decimal" name="lsc_price_on_exclusion" scale="4" precision="20" nullable="true" comment="lsc_price_on_exclusion"/>
     <column xsi:type="text" name="retail_image_id" nullable="true" comment="retail_image_id"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
@@ -3442,16 +3445,16 @@
     <column xsi:type="varchar" name="item_no" length="200" nullable="true" comment="item_no"/>
     <column xsi:type="text" name="last_modify_date" nullable="true" comment="last_modify_date"/>
     <column xsi:type="text" name="loyalty_scheme_code" nullable="true" comment="loyalty_scheme_code"/>
-    <column xsi:type="text" name="net_unit_price" nullable="true" comment="net_unit_price"/>
+    <column xsi:type="decimal" name="net_unit_price" scale="4" precision="20" nullable="true" comment="net_unit_price"/>
     <column xsi:type="text" name="offer_no" nullable="true" comment="offer_no"/>
-    <column xsi:type="varchar" name="qty_per_unit_of_measure" length="200" nullable="true" comment="qty_per_unit_of_measure"/>
+    <column xsi:type="decimal" name="qty_per_unit_of_measure" scale="4" precision="20" nullable="true" comment="qty_per_unit_of_measure"/>
     <column xsi:type="varchar" name="store_no" length="200" nullable="true" comment="store_no"/>
     <column xsi:type="text" name="systemcreatedat" nullable="true" comment="systemcreatedat"/>
     <column xsi:type="text" name="systemcreatedby" nullable="true" comment="systemcreatedby"/>
     <column xsi:type="text" name="systemmodifiedat" nullable="true" comment="systemmodifiedat"/>
     <column xsi:type="text" name="systemmodifiedby" nullable="true" comment="systemmodifiedby"/>
     <column xsi:type="varchar" name="unit_of_measure_code" length="200" nullable="true" comment="unit_of_measure_code"/>
-    <column xsi:type="text" name="unit_price" nullable="true" comment="unit_price"/>
+    <column xsi:type="decimal" name="unit_price" scale="4" precision="20" nullable="true" comment="unit_price"/>
     <column xsi:type="varchar" name="variant_code" length="200" nullable="true" comment="variant_code"/>
     <column xsi:type="text" name="systemid" nullable="true" comment="systemid"/>
     <column xsi:type="varchar" name="scope" length="200" nullable="true" comment="Record Scope"/>

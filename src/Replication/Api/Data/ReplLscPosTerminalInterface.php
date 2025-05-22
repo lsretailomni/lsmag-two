@@ -80,9 +80,9 @@ interface ReplLscPosTerminalInterface
 
     public function setDisplayLinkedItem(?bool $value);
 
-    public function getFraudSortField() : ?string;
+    public function getFraudSortField() : ?float;
 
-    public function setFraudSortField(?string $value);
+    public function setFraudSortField(?float $value);
 
     public function getManagerKeyOnReturn() : ?bool;
 
@@ -320,9 +320,9 @@ interface ReplLscPosTerminalInterface
 
     public function setCopyOfInterfaceProfile(?string $value);
 
-    public function getIdleTimerInterval() : ?string;
+    public function getIdleTimerInterval() : ?float;
 
-    public function setIdleTimerInterval(?string $value);
+    public function setIdleTimerInterval(?float $value);
 
     public function getExternalPrinterId() : ?string;
 

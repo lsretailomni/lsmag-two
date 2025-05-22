@@ -11,7 +11,40 @@
         <job name="repl_lsc_attribute_option_value" instance="Ls\Replication\Cron\ReplLscAttributeOptionValueTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
+        <job name="repl_hierarchyview" instance="Ls\Replication\Cron\ReplHierarchyviewTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchynodesview" instance="Ls\Replication\Cron\ReplHierarchynodesviewTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_hierarchynodeslinkview" instance="Ls\Replication\Cron\ReplHierarchynodeslinkviewTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_barcodes" instance="Ls\Replication\Cron\ReplLscBarcodesTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
         <job name="repl_variantregview" instance="Ls\Replication\Cron\ReplVariantregviewTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_wi_extd_variant_values" instance="Ls\Replication\Cron\ReplLscWiExtdVariantValuesTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_unit_of_measure" instance="Ls\Replication\Cron\ReplUnitOfMeasureTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_itemuomupdview" instance="Ls\Replication\Cron\ReplItemuomupdviewTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_wi_price" instance="Ls\Replication\Cron\ReplLscWiPriceTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_inventory_lookup_table" instance="Ls\Replication\Cron\ReplLscInventoryLookupTableTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_lsc_wi_item_buffer" instance="Ls\Replication\Cron\ReplLscWiItemBufferTask" method="execute">
+            <schedule>*/2 * * * *</schedule>
+        </job>
+        <job name="repl_storeview" instance="Ls\Replication\Cron\ReplStoreviewTask" method="execute">
             <schedule>*/2 * * * *</schedule>
         </job>
         <!-- Most Important-->

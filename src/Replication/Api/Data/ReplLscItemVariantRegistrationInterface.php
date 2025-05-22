@@ -16,29 +16,29 @@ interface ReplLscItemVariantRegistrationInterface
 
     public function setBarcode(?string $value);
 
-    public function getDimension1Weight() : ?string;
+    public function getDimension1Weight() : ?float;
 
-    public function setDimension1Weight(?string $value);
+    public function setDimension1Weight(?float $value);
 
-    public function getDimension2Weight() : ?string;
+    public function getDimension2Weight() : ?float;
 
-    public function setDimension2Weight(?string $value);
+    public function setDimension2Weight(?float $value);
 
-    public function getDimension3Weight() : ?string;
+    public function getDimension3Weight() : ?float;
 
-    public function setDimension3Weight(?string $value);
+    public function setDimension3Weight(?float $value);
 
-    public function getDimension4Weight() : ?string;
+    public function getDimension4Weight() : ?float;
 
-    public function setDimension4Weight(?string $value);
+    public function setDimension4Weight(?float $value);
 
-    public function getDimension5Weight() : ?string;
+    public function getDimension5Weight() : ?float;
 
-    public function setDimension5Weight(?string $value);
+    public function setDimension5Weight(?float $value);
 
-    public function getDimension6Weight() : ?string;
+    public function getDimension6Weight() : ?float;
 
-    public function setDimension6Weight(?string $value);
+    public function setDimension6Weight(?float $value);
 
     public function getFrameworkCode() : ?string;
 
@@ -96,9 +96,9 @@ interface ReplLscItemVariantRegistrationInterface
 
     public function setVariantDimension6(?string $value);
 
-    public function getVariantWeight() : ?string;
+    public function getVariantWeight() : ?float;
 
-    public function setVariantWeight(?string $value);
+    public function setVariantWeight(?float $value);
 
     public function getSystemid() : ?string;
 

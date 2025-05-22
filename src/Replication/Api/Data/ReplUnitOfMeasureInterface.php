@@ -28,9 +28,9 @@ interface ReplUnitOfMeasureInterface
 
     public function setLastModifiedDateTime(?\DateTime $value);
 
-    public function getLscPosMinDenominator() : ?string;
+    public function getLscPosMinDenominator() : ?float;
 
-    public function setLscPosMinDenominator(?string $value);
+    public function setLscPosMinDenominator(?float $value);
 
     public function getLscWeightUnitOfMeasure() : ?bool;
 
