@@ -94,14 +94,12 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "is_updated",
             "IsDeleted"
         ],
-        "ls_replication_repl_discount" => [
-            "item_no",
-            "customer_disc_group",
+        "ls_mag/replication/repl_periodicdiscview" => [
             "offer_no",
-            "to_date",
-            "store_no",
+            "customer_disc_group",
+            "no",
+            "unit_of_measure",
             "variant_code",
-            "minimum_quantity",
             "scope_id",
             "processed",
             "is_updated",
@@ -256,7 +254,7 @@ class SchemaUpdateGenerator implements GeneratorInterface
             "IsDeleted"
         ],
         "ls_replication_repl_vendor" => [
-            "name",
+            "no",
             "scope_id",
             "processed",
             "is_updated",

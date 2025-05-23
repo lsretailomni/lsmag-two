@@ -4,11 +4,10 @@ namespace Ls\Replication\Cron;
 
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use IteratorAggregate;
-use \Ls\Core\Model\Data as LsHelper;
-use \Ls\Core\Model\LSR;
-use \Ls\Replication\Helper\ReplicationHelper;
-use \Ls\Replication\Logger\Logger;
+use Ls\Core\Model\Data as LsHelper;
+use Ls\Core\Model\LSR;
+use Ls\Replication\Helper\ReplicationHelper;
+use Ls\Replication\Logger\Logger;
 use Magento\Config\Model\ResourceModel\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ObjectManager;
@@ -17,9 +16,6 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Api\Data\WebsiteInterface;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Store\Model\StoreManagerInterface;
-use ReflectionClass;
-use ReflectionException;
-use Traversable;
 
 /**
  * Abstract replication class for all
@@ -27,9 +23,6 @@ use Traversable;
  */
 abstract class AbstractReplicationTask
 {
-    /** @var array */
-    private static $bypass_methods = ['getMaxKey', 'getLastKey', 'getRecordsRemaining'];
-
     /** @var array All those config path don't have no lastkey means always zero as LastKey */
     private static $no_lastkey_config_path = [
         'ls_mag/replication/repl_country_code',
@@ -46,8 +39,6 @@ abstract class AbstractReplicationTask
     public $resource_config;
     /** @var LsHelper */
     public $ls_helper;
-    /** @var null */
-    public $iterator_method = null;
     /** @var null */
     public $properties = null;
     /** @var ReplicationHelper */
@@ -86,7 +77,7 @@ abstract class AbstractReplicationTask
      *
      * @param mixed $storeData
      * @return void
-     * @throws NoSuchEntityException
+     * @throws NoSuchEntityException|GuzzleException
      */
     public function execute($storeData = null)
     {
@@ -287,7 +278,7 @@ abstract class AbstractReplicationTask
 
         try {
             $this->getRepository()->save($entity);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->debug($e->getMessage());
         }
     }
@@ -766,6 +757,11 @@ abstract class AbstractReplicationTask
 //            ) {
 //                $this->defaultScope = ScopeInterface::SCOPE_STORES;
 //            }
+            if ($confPath == ReplLscDataTranslationTask::CONFIG_PATH ||
+                $confPath == ReplLscItemHtmlMlTask::CONFIG_PATH
+            ) {
+                $this->defaultScope = ScopeInterface::SCOPE_STORES;
+            }
         }
     }
 

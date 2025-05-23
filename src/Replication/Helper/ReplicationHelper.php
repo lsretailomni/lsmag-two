@@ -169,16 +169,15 @@ class ReplicationHelper extends AbstractHelper
             "scope_id"
         ],
         "ls_mag/replication/repl_html_translation" => ["TranslationId", "Key", "LanguageCode", "scope_id"],
+        "ls_mag/replication/repl_lsc_item_html_ml" => ["item_no", "language", "scope_id"],
         "ls_mag/replication/repl_deal_html_translation" => ["TranslationId", "Key", "LanguageCode", "scope_id"],
         "ls_mag/replication/repl_data_translation_lang_code" => ["code", "scope_id"],
-        "ls_replication_repl_lsc_wi_discounts" => [
-            "item_no",
-            "customer_disc_group",
+        "ls_mag/replication/repl_periodicdiscview" => [
             "offer_no",
-            "to_date",
-            "store_no",
+            "customer_disc_group",
+            "no",
+            "unit_of_measure",
             "variant_code",
-            "minimum_quantity",
             "scope_id"
         ],
         "ls_mag/replication/repl_discount_setup" => [
@@ -230,9 +229,9 @@ class ReplicationHelper extends AbstractHelper
         "ls_mag/replication/repl_lsc_retail_product_group" => ["code", "scope_id"],
         "ls_mag/replication/repl_shipping_agent" => ["name", "scope_id"],
         "ls_mag/replication/repl_storeview" => ["no", "scope_id"],
-        "ls_mag/replication/repl_tenderview" => ["code", "scope_id"],
+        "ls_mag/replication/repl_lsc_tender_type" => ["code", "scope_id"],
         "ls_mag/replication/repl_unit_of_measure" => ["code", "scope_id"],
-        "ls_mag/replication/repl_vendor" => ["Name", "scope_id"],
+        "ls_mag/replication/repl_vendor" => ["no", "scope_id"],
         "ls_mag/replication/repl_hierarchydeallineview" => [
             "offer_no",
             "item_no",

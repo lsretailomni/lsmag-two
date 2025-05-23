@@ -98,7 +98,10 @@ class Customer
                     \Ls\Omni\Client\Ecommerce\Entity\Customer::class
                 );
                 foreach ($values as $value) {
-                    $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    if ($entry->getData($fields[$value['FieldIndex']]) === null) {
+                        $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    }
+
                 }
                 $results[] = $entry;
             }
@@ -112,7 +115,9 @@ class Customer
                 );
                 $entry->setData('is_deleted', true);
                 foreach ($values as $value) {
-                    $entry->setData($deletedFields[$value['FieldIndex']], $value['FieldValue']);
+                    if ($entry->getData($deletedFields[$value['FieldIndex']]) === null) {
+                        $entry->setData($deletedFields[$value['FieldIndex']], $value['FieldValue']);
+                    }
                 }
                 $results[] = $entry;
             }

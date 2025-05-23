@@ -98,7 +98,10 @@ class TenderView
                     \Ls\Omni\Client\Ecommerce\Entity\TenderView::class
                 );
                 foreach ($values as $value) {
-                    $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    if ($entry->getData($fields[$value['FieldIndex']]) === null) {
+                        $entry->setData($fields[$value['FieldIndex']], $value['FieldValue']);
+                    }
+
                 }
                 $results[] = $entry;
             }
@@ -112,7 +115,9 @@ class TenderView
                 );
                 $entry->setData('is_deleted', true);
                 foreach ($values as $value) {
-                    $entry->setData($deletedFields[$value['FieldIndex']], $value['FieldValue']);
+                    if ($entry->getData($deletedFields[$value['FieldIndex']]) === null) {
+                        $entry->setData($deletedFields[$value['FieldIndex']], $value['FieldValue']);
+                    }
                 }
                 $results[] = $entry;
             }

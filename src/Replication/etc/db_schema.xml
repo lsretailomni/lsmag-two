@@ -956,6 +956,9 @@
     <constraint xsi:type="primary" referenceId="PRIMARY">
       <column name="repl_periodicdiscview_id"/>
     </constraint>
+    <constraint xsi:type="unique" referenceId="LS_REPLICATION_REPL_PERIODICDISCVIEW_IDENTITY_VALUE">
+      <column name="identity_value"/>
+    </constraint>
   </table>
   <table name="ls_replication_repl_lsc_wi_extd_variant_values" resource="default" engine="innodb" comment="LSC WI Extd. Variant Values">
     <column xsi:type="int" name="repl_lsc_wi_extd_variant_values_id" padding="10" unsigned="false" nullable="false" identity="true" comment="repl_lsc_wi_extd_variant_values_id"/>
