@@ -76,7 +76,7 @@ class Vendor extends AbstractModel
     public const PREFERRED_BANK_ACCOUNT_CODE = 'Preferred Bank Account Code';
     public const CASH_FLOW_PAYMENT_TERMS_CODE = 'Cash Flow Payment Terms Code';
     public const DEFAULT_TRANS_TYPE = 'Default Trans. Type';
-    public const DEFAULT_TRANS_TYPE__RETURN = 'Default Trans. Type - Return';
+    public const DEFAULT_TRANS_TYPE_RETURN = 'Default Trans. Type - Return';
     public const DEF_TRANSPORT_METHOD = 'Def. Transport Method';
     public const PRIMARY_CONTACT_NO = 'Primary Contact No.';
     public const MOBILE_PHONE_NO = 'Mobile Phone No.';
@@ -174,7 +174,7 @@ class Vendor extends AbstractModel
 	self::PREFERRED_BANK_ACCOUNT_CODE => 'preferred_bank_account_code',
 	self::CASH_FLOW_PAYMENT_TERMS_CODE => 'cash_flow_payment_terms_code',
 	self::DEFAULT_TRANS_TYPE => 'default_trans_type',
-	self::DEFAULT_TRANS_TYPE__RETURN => 'default_trans_type__return',
+	self::DEFAULT_TRANS_TYPE_RETURN => 'default_trans_type_return',
 	self::DEF_TRANSPORT_METHOD => 'def_transport_method',
 	self::PRIMARY_CONTACT_NO => 'primary_contact_no',
 	self::MOBILE_PHONE_NO => 'mobile_phone_no',
@@ -865,12 +865,12 @@ class Vendor extends AbstractModel
 
     public function getDefaultTransTypeReturn(): ?string
     {
-        return $this->getData(self::DEFAULT_TRANS_TYPE__RETURN);
+        return $this->getData(self::DEFAULT_TRANS_TYPE_RETURN);
     }
 
     public function setDefaultTransTypeReturn(?string $value)
     {
-        return $this->setData(self::DEFAULT_TRANS_TYPE__RETURN, $value);
+        return $this->setData(self::DEFAULT_TRANS_TYPE_RETURN, $value);
     }
 
     public function getDefTransportMethod(): ?string

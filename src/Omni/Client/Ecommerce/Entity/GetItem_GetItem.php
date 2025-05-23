@@ -159,12 +159,12 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_INFORMATION_SUBCODE, $value);
     }
 
-    public function getLscItemHtmlMl(): ?LSCItemHTMLML
+    public function getLscItemHtmlMl(): ?array
     {
         return $this->getData(self::LSC_ITEM_HTML_ML);
     }
 
-    public function setLscItemHtmlMl(?LSCItemHTMLML $value)
+    public function setLscItemHtmlMl(?array $value)
     {
         return $this->setData(self::LSC_ITEM_HTML_ML, $value);
     }

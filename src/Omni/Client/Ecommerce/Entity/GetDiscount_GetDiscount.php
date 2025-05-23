@@ -14,14 +14,14 @@ class GetDiscount_GetDiscount extends AbstractModel
     public const LSC_PERIODIC_DISCOUNT = 'LSCPeriodicDiscount';
     public const LSC_PERIODIC_DISCOUNT_BENEFITS = 'LSCPeriodicDiscountBenefits';
     public const LSC_WI_DISCOUNTS = 'LSCWIDiscounts';
-    public const LSC_WI_MIX__MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
+    public const LSC_WI_MIX_MATCH_OFFER_EXT = 'LSCWIMix&MatchOfferExt';
     public const LSC_WI_PRICE = 'LSCWIPrice';
 
     public static array $dbColumnsMapping = [
 	self::LSC_PERIODIC_DISCOUNT => 'lsc_periodic_discount',
 	self::LSC_PERIODIC_DISCOUNT_BENEFITS => 'lsc_periodic_discount_benefits',
 	self::LSC_WI_DISCOUNTS => 'lsc_wi_discounts',
-	self::LSC_WI_MIX__MATCH_OFFER_EXT => 'lsc_wi_mix__match_offer_ext',
+	self::LSC_WI_MIX_MATCH_OFFER_EXT => 'lsc_wi_mix_match_offer_ext',
 	self::LSC_WI_PRICE => 'lsc_wi_price',
     ];
 
@@ -63,12 +63,12 @@ class GetDiscount_GetDiscount extends AbstractModel
 
     public function getLscWiMixMatchOfferExt(): ?array
     {
-        return $this->getData(self::LSC_WI_MIX__MATCH_OFFER_EXT);
+        return $this->getData(self::LSC_WI_MIX_MATCH_OFFER_EXT);
     }
 
     public function setLscWiMixMatchOfferExt(?array $value)
     {
-        return $this->setData(self::LSC_WI_MIX__MATCH_OFFER_EXT, $value);
+        return $this->setData(self::LSC_WI_MIX_MATCH_OFFER_EXT, $value);
     }
 
     public function getLscWiPrice(): ?LSCWIPrice

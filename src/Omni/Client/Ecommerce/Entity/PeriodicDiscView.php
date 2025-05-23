@@ -53,7 +53,7 @@ class PeriodicDiscView extends AbstractModel
     public const VALIDATION_PERIOD_ID = 'Validation Period ID';
     public const DISCOUNT_TYPE = 'Discount Type';
     public const DEAL_PRICE_VALUE = 'Deal Price Value';
-    public const DISCOUNT__VALUE = 'Discount % Value';
+    public const DISCOUNT_VALUE = 'Discount % Value';
     public const DISCOUNT_AMOUNT_VALUE = 'Discount Amount Value';
     public const CUSTOMER_DISC_GROUP = 'Customer Disc. Group';
     public const AMOUNT_TO_TRIGGER = 'Amount to Trigger';
@@ -116,7 +116,7 @@ class PeriodicDiscView extends AbstractModel
 	self::VALIDATION_PERIOD_ID => 'validation_period_id',
 	self::DISCOUNT_TYPE => 'discount_type',
 	self::DEAL_PRICE_VALUE => 'deal_price_value',
-	self::DISCOUNT__VALUE => 'discount__value',
+	self::DISCOUNT_VALUE => 'discount_value',
 	self::DISCOUNT_AMOUNT_VALUE => 'discount_amount_value',
 	self::CUSTOMER_DISC_GROUP => 'customer_disc_group',
 	self::AMOUNT_TO_TRIGGER => 'amount_to_trigger',
@@ -565,12 +565,12 @@ class PeriodicDiscView extends AbstractModel
 
     public function getDiscountValue(): ?float
     {
-        return $this->getData(self::DISCOUNT__VALUE);
+        return $this->getData(self::DISCOUNT_VALUE);
     }
 
     public function setDiscountValue(?float $value)
     {
-        return $this->setData(self::DISCOUNT__VALUE, $value);
+        return $this->setData(self::DISCOUNT_VALUE, $value);
     }
 
     public function getDiscountAmountValue(): ?float

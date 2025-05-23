@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_data_translation_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_data_translation_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_lsc_data_translation_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_data_translation_id</item>
+                        <item name="indexField" xsi:type="string">repl_lsc_data_translation_id</item>
                     </item>
                 </item>
             </argument>
@@ -125,7 +125,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Key">
+        <column name="key">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -136,7 +136,7 @@
                 </item>
             </argument>
         </column>
-        <column name="LanguageCode">
+        <column name="language_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -194,7 +194,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Text">
+        <column name="translation">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -205,7 +205,7 @@
                 </item>
             </argument>
         </column>
-        <column name="TranslationId">
+        <column name="translation_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

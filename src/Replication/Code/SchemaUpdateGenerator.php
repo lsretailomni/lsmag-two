@@ -496,6 +496,8 @@ class SchemaUpdateGenerator implements GeneratorInterface
                     }
                 }
 
+                array_multisort(array_column($defaultColumnsArray, 'name'), SORT_ASC, $defaultColumnsArray);
+
                 $allColumnsArray = array_merge($defaultColumnsArray, $extraColumnsArray);
                 foreach ($allColumnsArray as $columnValue) {
                     $extraColumn = $dom->createElement('column');

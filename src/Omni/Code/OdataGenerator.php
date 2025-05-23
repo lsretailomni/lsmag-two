@@ -1455,7 +1455,12 @@ PHP;
      */
     public function formatGivenValue(string $value, string $replaceWith = ''): string
     {
-        return trim(preg_replace('/[\/\[\]()$\-._%&]/', $replaceWith, $value));
+        // Step 1: Remove special characters
+        $cleaned = preg_replace('/[\/\[\]()$\-._%&]/', $replaceWith, $value);
+        // Step 2: Replace multiple spaces with a single space
+        $cleaned = preg_replace('/ {2,}/', ' ', $cleaned);
+
+        return trim($cleaned);
     }
 
     /**
