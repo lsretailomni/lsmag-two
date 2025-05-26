@@ -45,14 +45,14 @@ class LoadTenderType extends Action
     {
         $optionList = $tenderTypes = [];
         try {
-            $storeId         = $this->getRequest()->getParam('storeId');
-            $baseUrl         = $this->getRequest()->getParam('baseUrl');
-            $tenant          = $this->getRequest()->getParam('tenant');
-            $clientId        = $this->getRequest()->getParam('client_id');
-            $clientSecret    = $this->getRequest()->getParam('client_secret');
-            $companyName     = $this->getRequest()->getParam('company_name');
+            $storeId = $this->getRequest()->getParam('storeId');
+            $baseUrl = $this->getRequest()->getParam('baseUrl');
+            $tenant = $this->getRequest()->getParam('tenant');
+            $clientId = $this->getRequest()->getParam('client_id');
+            $clientSecret = $this->getRequest()->getParam('client_secret');
+            $companyName = $this->getRequest()->getParam('company_name');
             $environmentName = $this->getRequest()->getParam('environment_name');
-            $scopeId         = $this->getRequest()->getParam('scopeId');
+            $scopeId = $this->getRequest()->getParam('scopeId');
             $baseUrl = $this->helper->getBaseUrl($baseUrl);
             $connectionParams = [
                 'tenant' => $tenant,

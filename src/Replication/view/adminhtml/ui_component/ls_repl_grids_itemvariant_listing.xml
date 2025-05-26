@@ -94,7 +94,7 @@
                 </item>
             </argument>
         </column>
-        <column name="ItemId">
+        <column name="item_no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -105,7 +105,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantId">
+        <column name="code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -116,7 +116,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Description">
+        <column name="description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -127,7 +127,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Description2">
+        <column name="description_2">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

@@ -31,7 +31,7 @@ class GetDiscount_GetDiscount extends AbstractModel
     }
 
 
-    public function getLscPeriodicDiscount(): ?array
+    public function getLscPeriodicDiscount()
     {
         return $this->getData(self::LSC_PERIODIC_DISCOUNT);
     }
@@ -41,7 +41,7 @@ class GetDiscount_GetDiscount extends AbstractModel
         return $this->setData(self::LSC_PERIODIC_DISCOUNT, $value);
     }
 
-    public function getLscPeriodicDiscountBenefits(): ?LSCPeriodicDiscountBenefits
+    public function getLscPeriodicDiscountBenefits()
     {
         return $this->getData(self::LSC_PERIODIC_DISCOUNT_BENEFITS);
     }
@@ -51,7 +51,7 @@ class GetDiscount_GetDiscount extends AbstractModel
         return $this->setData(self::LSC_PERIODIC_DISCOUNT_BENEFITS, $value);
     }
 
-    public function getLscWiDiscounts(): ?LSCWIDiscounts
+    public function getLscWiDiscounts()
     {
         return $this->getData(self::LSC_WI_DISCOUNTS);
     }
@@ -61,7 +61,7 @@ class GetDiscount_GetDiscount extends AbstractModel
         return $this->setData(self::LSC_WI_DISCOUNTS, $value);
     }
 
-    public function getLscWiMixMatchOfferExt(): ?array
+    public function getLscWiMixMatchOfferExt()
     {
         return $this->getData(self::LSC_WI_MIX_MATCH_OFFER_EXT);
     }
@@ -71,7 +71,7 @@ class GetDiscount_GetDiscount extends AbstractModel
         return $this->setData(self::LSC_WI_MIX_MATCH_OFFER_EXT, $value);
     }
 
-    public function getLscWiPrice(): ?LSCWIPrice
+    public function getLscWiPrice()
     {
         return $this->getData(self::LSC_WI_PRICE);
     }

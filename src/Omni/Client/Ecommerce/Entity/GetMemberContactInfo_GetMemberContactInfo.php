@@ -47,7 +47,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
     }
 
 
-    public function getDecimalValue(): ?Decimal
+    public function getDecimalValue()
     {
         return $this->getData(self::DECIMAL_VALUE);
     }
@@ -57,7 +57,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::DECIMAL_VALUE, $value);
     }
 
-    public function getFieldName(): ?Text
+    public function getFieldName()
     {
         return $this->getData(self::FIELD_NAME);
     }
@@ -67,7 +67,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::FIELD_NAME, $value);
     }
 
-    public function getFieldNo(): ?Integer
+    public function getFieldNo()
     {
         return $this->getData(self::FIELD_NO);
     }
@@ -77,7 +77,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::FIELD_NO, $value);
     }
 
-    public function getKey(): ?RecordId
+    public function getKey()
     {
         return $this->getData(self::KEY);
     }
@@ -87,7 +87,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::KEY, $value);
     }
 
-    public function getLscFlowfieldBuffer(): ?array
+    public function getLscFlowfieldBuffer()
     {
         return $this->getData(self::LSC_FLOWFIELD_BUFFER);
     }
@@ -97,7 +97,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_FLOWFIELD_BUFFER, $value);
     }
 
-    public function getLscMemberAccount(): ?LSCMemberAccount
+    public function getLscMemberAccount()
     {
         return $this->getData(self::LSC_MEMBER_ACCOUNT);
     }
@@ -107,7 +107,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_ACCOUNT, $value);
     }
 
-    public function getLscMemberClub(): ?LSCMemberClub
+    public function getLscMemberClub()
     {
         return $this->getData(self::LSC_MEMBER_CLUB);
     }
@@ -117,7 +117,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_CLUB, $value);
     }
 
-    public function getLscMemberContact(): ?LSCMemberContact
+    public function getLscMemberContact()
     {
         return $this->getData(self::LSC_MEMBER_CONTACT);
     }
@@ -127,7 +127,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_CONTACT, $value);
     }
 
-    public function getLscMemberContactAttrList(): ?array
+    public function getLscMemberContactAttrList()
     {
         return $this->getData(self::LSC_MEMBER_CONTACT_ATTR_LIST);
     }
@@ -137,7 +137,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_CONTACT_ATTR_LIST, $value);
     }
 
-    public function getLscMemberLoginCard(): ?LSCMemberLoginCard
+    public function getLscMemberLoginCard()
     {
         return $this->getData(self::LSC_MEMBER_LOGIN_CARD);
     }
@@ -147,7 +147,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_LOGIN_CARD, $value);
     }
 
-    public function getLscMemberScheme(): ?LSCMemberScheme
+    public function getLscMemberScheme()
     {
         return $this->getData(self::LSC_MEMBER_SCHEME);
     }
@@ -157,7 +157,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SCHEME, $value);
     }
 
-    public function getLscMembershipCard(): ?array
+    public function getLscMembershipCard()
     {
         return $this->getData(self::LSC_MEMBERSHIP_CARD);
     }
@@ -167,7 +167,7 @@ class GetMemberContactInfo_GetMemberContactInfo extends AbstractModel
         return $this->setData(self::LSC_MEMBERSHIP_CARD, $value);
     }
 
-    public function getTableNo(): ?Integer
+    public function getTableNo()
     {
         return $this->getData(self::TABLE_NO);
     }

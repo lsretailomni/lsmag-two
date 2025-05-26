@@ -693,7 +693,7 @@ PHP;
                 };
             }
 
-            $returnType = $dataTypeRequired ? ': ?'. $phpType : '';
+            $returnType = !$recursive && $dataTypeRequired ? ': ?'. $phpType : '';
             $phpType = $dataTypeRequired ? '?'.$phpType : '';
             $entityClassCode .= <<<PHP
 

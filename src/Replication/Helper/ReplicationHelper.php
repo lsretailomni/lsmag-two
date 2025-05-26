@@ -246,10 +246,10 @@ class ReplicationHelper extends AbstractHelper
             "unit_of_measure",
             "scope_id"
         ],
-        "ls_mag/replication/repl_lsc_wi_item_recipe_buffer" => ["No.", "Line No.", "scope_id"],
+        "ls_mag/replication/repl_lsc_wi_item_recipe_buffer" => ["parent_item_no", "line_no", "scope_id"],
         "ls_mag/replication/repl_lsc_wi_item_modifier" => [
             "parent_item_no",
-            "no",
+            "item_no",
             "scope_id"
         ],
         "ls_mag/replication/loy_item" => ["nav_id", "scope_id"],

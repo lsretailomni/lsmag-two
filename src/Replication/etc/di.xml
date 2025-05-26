@@ -731,6 +731,9 @@
                 <item name="ls_repl_grids_country_code_data_source" xsi:type="string">
                     Ls\Replication\Model\ResourceModel\ReplCountryview\Grid\Collection
                 </item>
+                <item name="ls_repl_grids_lsc_item_html_ml_data_source" xsi:type="string">
+                    Ls\Replication\Model\ResourceModel\ReplLscItemHtmlMl\Grid\Collection
+                </item>
             </argument>
         </arguments>
     </type>

@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_inventory_status_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_inv_status_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_lsc_inventory_lookup_table_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_inv_status_id</item>
+                        <item name="indexField" xsi:type="string">repl_lsc_inventory_lookup_table_id</item>
                     </item>
                 </item>
             </argument>
@@ -98,7 +98,7 @@
         <selectionsColumn name="ids">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="indexField" xsi:type="string">repl_inv_status_id</item>
+                    <item name="indexField" xsi:type="string">repl_lsc_inventory_lookup_table_id</item>
                     <item name="sortOrder" xsi:type="number">0</item>
                 </item>
             </argument>
@@ -115,7 +115,7 @@
                 </item>
             </argument>
         </column>
-        <column name="ItemId">
+        <column name="item_no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -126,7 +126,7 @@
                 </item>
             </argument>
         </column>
-        <column name="VariantId">
+        <column name="variant_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -137,7 +137,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Quantity">
+        <column name="net_inventory">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -148,7 +148,7 @@
                 </item>
             </argument>
         </column>
-        <column name="StoreId">
+        <column name="store_no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

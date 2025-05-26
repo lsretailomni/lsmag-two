@@ -20,14 +20,14 @@
                 Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider
             </argument>
             <argument name="name" xsi:type="string">ls_repl_grids_hierarchyleaf_data_source</argument>
-            <argument name="primaryFieldName" xsi:type="string">repl_hierarchy_leaf_id</argument>
+            <argument name="primaryFieldName" xsi:type="string">repl_hierarchynodeslinkview_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/provider</item>
                     <item name="update_url" xsi:type="url" path="mui/index/render"/>
                     <item name="storageConfig" xsi:type="array">
-                        <item name="indexField" xsi:type="string">repl_hierarchy_leaf_id</item>
+                        <item name="indexField" xsi:type="string">repl_hierarchynodeslinkview_id</item>
                     </item>
                 </item>
             </argument>
@@ -94,7 +94,7 @@
                 </item>
             </argument>
         </column>
-        <column name="nav_id">
+        <column name="no">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -105,7 +105,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Description">
+        <column name="description">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -163,7 +163,7 @@
                 </item>
             </argument>
         </column>
-        <column name="HierarchyCode">
+        <column name="hierarchy_code">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -175,7 +175,7 @@
             </argument>
         </column>
 
-        <column name="ImageId">
+        <column name="retail_image_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -186,7 +186,7 @@
                 </item>
             </argument>
         </column>
-        <column name="NodeId">
+        <column name="node_id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>
@@ -197,7 +197,7 @@
                 </item>
             </argument>
         </column>
-        <column name="Type">
+        <column name="type">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="filter" xsi:type="string">text</item>

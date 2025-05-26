@@ -27,7 +27,9 @@ define([
 
             // Fetches store and hierarchy data via AJAX call to the backend
             fetchStores: function () {
-                if (!api.validateBaseUrl()) return;
+                if (!api.validateBaseUrl()) {
+                    return;
+                }
 
                 $.ajax({
                     url: config.ajaxUrl,
@@ -57,7 +59,9 @@ define([
 
             // Fetches hierarchy data for the selected store
             fetchHierarchy: function () {
-                if (!api.validateBaseUrl()) return;
+                if (!api.validateBaseUrl()) {
+                    return;
+                }
 
                 $.ajax({
                     url: config.hierarchyUrl,
@@ -76,7 +80,9 @@ define([
 
             // Fetches and populates tender types for each item
             fetchStoreTenderTypes: function () {
-                if (!api.validateBaseUrl()) return;
+                if (!api.validateBaseUrl()) {
+                    return;
+                }
 
                 $.ajax({
                     url: config.storeTenderTypesUrl,

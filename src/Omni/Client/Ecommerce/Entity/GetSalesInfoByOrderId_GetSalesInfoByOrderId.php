@@ -49,7 +49,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
     }
 
 
-    public function getDescription(): ?Text
+    public function getDescription()
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -59,7 +59,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getDocumentNo(): ?Code
+    public function getDocumentNo()
     {
         return $this->getData(self::DOCUMENT_NO);
     }
@@ -69,7 +69,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::DOCUMENT_NO, $value);
     }
 
-    public function getLineNo(): ?Integer
+    public function getLineNo()
     {
         return $this->getData(self::LINE_NO);
     }
@@ -79,7 +79,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LINE_NO, $value);
     }
 
-    public function getLscMemberSalesBuffer(): ?LSCMemberSalesBuffer
+    public function getLscMemberSalesBuffer()
     {
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
@@ -89,7 +89,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
-    public function getLscMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
+    public function getLscMemberSalesDataEntry()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
@@ -99,7 +99,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
-    public function getLscMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
+    public function getLscMemberSalesDocDiscLine()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
@@ -109,7 +109,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getLscMemberSalesDocLine(): ?array
+    public function getLscMemberSalesDocLine()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
@@ -119,7 +119,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
-    public function getNo(): ?Code
+    public function getNo()
     {
         return $this->getData(self::NO);
     }
@@ -129,7 +129,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::NO, $value);
     }
 
-    public function getQuantity(): ?Decimal
+    public function getQuantity()
     {
         return $this->getData(self::QUANTITY);
     }
@@ -139,7 +139,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::QUANTITY, $value);
     }
 
-    public function getSalesShipmentHeader(): ?SalesShipmentHeader
+    public function getSalesShipmentHeader()
     {
         return $this->getData(self::SALES_SHIPMENT_HEADER);
     }
@@ -149,7 +149,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::SALES_SHIPMENT_HEADER, $value);
     }
 
-    public function getSalesShipmentLine(): ?SalesShipmentLine
+    public function getSalesShipmentLine()
     {
         return $this->getData(self::SALES_SHIPMENT_LINE);
     }
@@ -159,7 +159,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::SALES_SHIPMENT_LINE, $value);
     }
 
-    public function getType(): ?Option
+    public function getType()
     {
         return $this->getData(self::TYPE);
     }
@@ -169,7 +169,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::TYPE, $value);
     }
 
-    public function getUnitOfMeasureCode(): ?Code
+    public function getUnitOfMeasureCode()
     {
         return $this->getData(self::UNIT_OF_MEASURE_CODE);
     }
@@ -179,7 +179,7 @@ class GetSalesInfoByOrderId_GetSalesInfoByOrderId extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE_CODE, $value);
     }
 
-    public function getVariantCode(): ?Code
+    public function getVariantCode()
     {
         return $this->getData(self::VARIANT_CODE);
     }

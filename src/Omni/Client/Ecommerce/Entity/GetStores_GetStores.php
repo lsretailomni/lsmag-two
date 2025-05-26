@@ -33,7 +33,7 @@ class GetStores_GetStores extends AbstractModel
     }
 
 
-    public function getCode(): ?Code
+    public function getCode()
     {
         return $this->getData(self::CODE);
     }
@@ -43,7 +43,7 @@ class GetStores_GetStores extends AbstractModel
         return $this->setData(self::CODE, $value);
     }
 
-    public function getDescription(): ?Text
+    public function getDescription()
     {
         return $this->getData(self::DESCRIPTION);
     }
@@ -53,7 +53,7 @@ class GetStores_GetStores extends AbstractModel
         return $this->setData(self::DESCRIPTION, $value);
     }
 
-    public function getLscSalesType(): ?array
+    public function getLscSalesType()
     {
         return $this->getData(self::LSC_SALES_TYPE);
     }
@@ -63,7 +63,7 @@ class GetStores_GetStores extends AbstractModel
         return $this->setData(self::LSC_SALES_TYPE, $value);
     }
 
-    public function getLscStore(): ?array
+    public function getLscStore()
     {
         return $this->getData(self::LSC_STORE);
     }
@@ -73,7 +73,7 @@ class GetStores_GetStores extends AbstractModel
         return $this->setData(self::LSC_STORE, $value);
     }
 
-    public function getLscStoreGroupSetup(): ?array
+    public function getLscStoreGroupSetup()
     {
         return $this->getData(self::LSC_STORE_GROUP_SETUP);
     }
@@ -83,7 +83,7 @@ class GetStores_GetStores extends AbstractModel
         return $this->setData(self::LSC_STORE_GROUP_SETUP, $value);
     }
 
-    public function getLscStorePriceGroup(): ?array
+    public function getLscStorePriceGroup()
     {
         return $this->getData(self::LSC_STORE_PRICE_GROUP);
     }

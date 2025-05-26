@@ -69,7 +69,7 @@ class GetItem_GetItem extends AbstractModel
     }
 
 
-    public function getBomComponent(): ?BOMComponent
+    public function getBomComponent()
     {
         return $this->getData(self::BOM_COMPONENT);
     }
@@ -79,7 +79,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::BOM_COMPONENT, $value);
     }
 
-    public function getInfocodeCode(): ?Code
+    public function getInfocodeCode()
     {
         return $this->getData(self::INFOCODE_CODE);
     }
@@ -89,7 +89,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::INFOCODE_CODE, $value);
     }
 
-    public function getItem(): ?Item
+    public function getItem()
     {
         return $this->getData(self::ITEM);
     }
@@ -99,7 +99,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::ITEM, $value);
     }
 
-    public function getItemUnitOfMeasure(): ?ItemUnitofMeasure
+    public function getItemUnitOfMeasure()
     {
         return $this->getData(self::ITEM_UNIT_OF_MEASURE);
     }
@@ -109,7 +109,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::ITEM_UNIT_OF_MEASURE, $value);
     }
 
-    public function getLscAttribute(): ?array
+    public function getLscAttribute()
     {
         return $this->getData(self::LSC_ATTRIBUTE);
     }
@@ -119,7 +119,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ATTRIBUTE, $value);
     }
 
-    public function getLscAttributeValue(): ?array
+    public function getLscAttributeValue()
     {
         return $this->getData(self::LSC_ATTRIBUTE_VALUE);
     }
@@ -129,7 +129,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ATTRIBUTE_VALUE, $value);
     }
 
-    public function getLscExtdVariantValues(): ?LSCExtdVariantValues
+    public function getLscExtdVariantValues()
     {
         return $this->getData(self::LSC_EXTD_VARIANT_VALUES);
     }
@@ -139,7 +139,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_EXTD_VARIANT_VALUES, $value);
     }
 
-    public function getLscInfocode(): ?LSCInfocode
+    public function getLscInfocode()
     {
         return $this->getData(self::LSC_INFOCODE);
     }
@@ -149,7 +149,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_INFOCODE, $value);
     }
 
-    public function getLscInformationSubcode(): ?LSCInformationSubcode
+    public function getLscInformationSubcode()
     {
         return $this->getData(self::LSC_INFORMATION_SUBCODE);
     }
@@ -159,7 +159,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_INFORMATION_SUBCODE, $value);
     }
 
-    public function getLscItemHtmlMl(): ?array
+    public function getLscItemHtmlMl()
     {
         return $this->getData(self::LSC_ITEM_HTML_ML);
     }
@@ -169,7 +169,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ITEM_HTML_ML, $value);
     }
 
-    public function getLscItemSectionLocation(): ?LSCItemSectionLocation
+    public function getLscItemSectionLocation()
     {
         return $this->getData(self::LSC_ITEM_SECTION_LOCATION);
     }
@@ -179,7 +179,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ITEM_SECTION_LOCATION, $value);
     }
 
-    public function getLscItemStatusLink(): ?LSCItemStatusLink
+    public function getLscItemStatusLink()
     {
         return $this->getData(self::LSC_ITEM_STATUS_LINK);
     }
@@ -189,7 +189,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ITEM_STATUS_LINK, $value);
     }
 
-    public function getLscItemVariantRegistration(): ?LSCItemVariantRegistration
+    public function getLscItemVariantRegistration()
     {
         return $this->getData(self::LSC_ITEM_VARIANT_REGISTRATION);
     }
@@ -199,7 +199,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ITEM_VARIANT_REGISTRATION, $value);
     }
 
-    public function getLscItemSpecialGroupLink(): ?array
+    public function getLscItemSpecialGroupLink()
     {
         return $this->getData(self::LSC_ITEMSPECIAL_GROUP_LINK);
     }
@@ -209,7 +209,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_ITEMSPECIAL_GROUP_LINK, $value);
     }
 
-    public function getLscRetailImageLink(): ?LSCRetailImageLink
+    public function getLscRetailImageLink()
     {
         return $this->getData(self::LSC_RETAIL_IMAGE_LINK);
     }
@@ -219,7 +219,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_RETAIL_IMAGE_LINK, $value);
     }
 
-    public function getLscSectionShelf(): ?LSCSectionShelf
+    public function getLscSectionShelf()
     {
         return $this->getData(self::LSC_SECTION_SHELF);
     }
@@ -229,7 +229,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_SECTION_SHELF, $value);
     }
 
-    public function getLscStoreSection(): ?LSCStoreSection
+    public function getLscStoreSection()
     {
         return $this->getData(self::LSC_STORE_SECTION);
     }
@@ -239,7 +239,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_STORE_SECTION, $value);
     }
 
-    public function getLscTableSpecificInfocode(): ?LSCTableSpecificInfocode
+    public function getLscTableSpecificInfocode()
     {
         return $this->getData(self::LSC_TABLE_SPECIFIC_INFOCODE);
     }
@@ -249,7 +249,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_TABLE_SPECIFIC_INFOCODE, $value);
     }
 
-    public function getLscWiPrice(): ?LSCWIPrice
+    public function getLscWiPrice()
     {
         return $this->getData(self::LSC_WI_PRICE);
     }
@@ -259,7 +259,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::LSC_WI_PRICE, $value);
     }
 
-    public function getTableId(): ?Integer
+    public function getTableId()
     {
         return $this->getData(self::TABLE_ID);
     }
@@ -269,7 +269,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::TABLE_ID, $value);
     }
 
-    public function getUnitOfMeasure(): ?UnitofMeasure
+    public function getUnitOfMeasure()
     {
         return $this->getData(self::UNIT_OF_MEASURE);
     }
@@ -279,7 +279,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::UNIT_OF_MEASURE, $value);
     }
 
-    public function getUsageCategory(): ?Option
+    public function getUsageCategory()
     {
         return $this->getData(self::USAGE_CATEGORY);
     }
@@ -289,7 +289,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::USAGE_CATEGORY, $value);
     }
 
-    public function getUsageSubCategory(): ?Option
+    public function getUsageSubCategory()
     {
         return $this->getData(self::USAGE_SUBCATEGORY);
     }
@@ -299,7 +299,7 @@ class GetItem_GetItem extends AbstractModel
         return $this->setData(self::USAGE_SUBCATEGORY, $value);
     }
 
-    public function getValue(): ?Code
+    public function getValue()
     {
         return $this->getData(self::VALUE);
     }

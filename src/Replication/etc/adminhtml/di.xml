@@ -259,6 +259,14 @@
             </argument>
         </arguments>
     </virtualType>
+    <virtualType name="Ls\Replication\Model\ResourceModel\ReplLscItemHtmlMl\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">ls_replication_repl_lsc_item_html_ml</argument>
+            <argument name="resourceModel" xsi:type="string">Ls\Replication\Model\ResourceModel\ReplLscItemHtmlMl
+            </argument>
+        </arguments>
+    </virtualType>
     <type name="Magento\Backend\Model\Menu\Config">
         <plugin name="ls_replication_remove_menu_item_admin" type="Ls\Replication\Plugin\Admin\Config"/>
     </type>

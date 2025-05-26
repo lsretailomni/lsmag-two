@@ -49,7 +49,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
     }
 
 
-    public function getAmount(): ?Decimal
+    public function getAmount()
     {
         return $this->getData(self::AMOUNT);
     }
@@ -59,7 +59,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::AMOUNT, $value);
     }
 
-    public function getAppliedAmount(): ?Decimal
+    public function getAppliedAmount()
     {
         return $this->getData(self::APPLIED_AMOUNT);
     }
@@ -69,7 +69,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::APPLIED_AMOUNT, $value);
     }
 
-    public function getCreatedByLineNo(): ?Integer
+    public function getCreatedByLineNo()
     {
         return $this->getData(self::CREATED_BY_LINE_NO);
     }
@@ -79,7 +79,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::CREATED_BY_LINE_NO, $value);
     }
 
-    public function getCurrencyCode(): ?Code
+    public function getCurrencyCode()
     {
         return $this->getData(self::CURRENCY_CODE);
     }
@@ -89,7 +89,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::CURRENCY_CODE, $value);
     }
 
-    public function getDataEntryBalance(): ?Decimal
+    public function getDataEntryBalance()
     {
         return $this->getData(self::DATA_ENTRY_BALANCE);
     }
@@ -99,7 +99,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::DATA_ENTRY_BALANCE, $value);
     }
 
-    public function getDateCreated(): ?Date
+    public function getDateCreated()
     {
         return $this->getData(self::DATE_CREATED);
     }
@@ -109,7 +109,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::DATE_CREATED, $value);
     }
 
-    public function getEntryCode(): ?Code
+    public function getEntryCode()
     {
         return $this->getData(self::ENTRY_CODE);
     }
@@ -119,7 +119,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::ENTRY_CODE, $value);
     }
 
-    public function getEntryType(): ?Code
+    public function getEntryType()
     {
         return $this->getData(self::ENTRY_TYPE);
     }
@@ -129,7 +129,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::ENTRY_TYPE, $value);
     }
 
-    public function getExpiringDate(): ?Date
+    public function getExpiringDate()
     {
         return $this->getData(self::EXPIRING_DATE);
     }
@@ -139,7 +139,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::EXPIRING_DATE, $value);
     }
 
-    public function getLscMemberSalesBuffer(): ?LSCMemberSalesBuffer
+    public function getLscMemberSalesBuffer()
     {
         return $this->getData(self::LSC_MEMBER_SALES_BUFFER);
     }
@@ -149,7 +149,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_BUFFER, $value);
     }
 
-    public function getLscMemberSalesDataEntry(): ?LSCMemberSalesDataEntry
+    public function getLscMemberSalesDataEntry()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DATA_ENTRY);
     }
@@ -159,7 +159,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DATA_ENTRY, $value);
     }
 
-    public function getLscMemberSalesDocDiscLine(): ?LSCMemberSalesDocDiscLine
+    public function getLscMemberSalesDocDiscLine()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_DISC_LINE);
     }
@@ -169,7 +169,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_DISC_LINE, $value);
     }
 
-    public function getLscMemberSalesDocLine(): ?array
+    public function getLscMemberSalesDocLine()
     {
         return $this->getData(self::LSC_MEMBER_SALES_DOC_LINE);
     }
@@ -179,7 +179,7 @@ class GetSelectedSalesDoc_GetSelectedSalesDoc extends AbstractModel
         return $this->setData(self::LSC_MEMBER_SALES_DOC_LINE, $value);
     }
 
-    public function getPin(): ?Integer
+    public function getPin()
     {
         return $this->getData(self::PIN);
     }
